@@ -1,0 +1,965 @@
+<?php
+
+return [
+    'categories' => [
+        // 1. Men's Fashion
+        [
+            'title' => "Men's Fashion",
+            'slug' => 'mens-fashion',
+            'children' => [
+                ['title' => 'T-Shirts & Tanks', 'slug' => 'mens-t-shirts-tanks', 'children' => []],
+                ['title' => 'Shirts', 'slug' => 'mens-shirts', 'children' => []],
+                ['title' => 'Hoodies & Sweatshirts', 'slug' => 'mens-hoodies-sweatshirts', 'children' => []],
+                ['title' => 'Jeans', 'slug' => 'mens-jeans', 'children' => []],
+                ['title' => 'Trousers & Chinos', 'slug' => 'mens-trousers-chinos', 'children' => []],
+                ['title' => 'Shorts', 'slug' => 'mens-shorts', 'children' => []],
+                ['title' => 'Suits & Blazers', 'slug' => 'mens-suits-blazers', 'children' => []],
+                ['title' => 'Underwear & Socks', 'slug' => 'mens-underwear-socks', 'children' => []],
+                ['title' => 'Sleepwear', 'slug' => 'mens-sleepwear', 'children' => []],
+            ],
+        ],
+
+        // 2. Women's Fashion
+        [
+            'title' => "Women's Fashion",
+            'slug' => 'womens-fashion',
+            'children' => [
+                ['title' => 'Tops & Blouses', 'slug' => 'womens-tops-blouses', 'children' => []],
+                ['title' => 'Dresses', 'slug' => 'womens-dresses', 'children' => []],
+                ['title' => 'Jumpsuits & Rompers', 'slug' => 'womens-jumpsuits-rompers', 'children' => []],
+                ['title' => 'Skirts', 'slug' => 'womens-skirts', 'children' => []],
+                ['title' => 'Jeans & Pants', 'slug' => 'womens-jeans-pants', 'children' => []],
+                ['title' => 'Leggings', 'slug' => 'womens-leggings', 'children' => []],
+                ['title' => 'Lingerie & Sleepwear', 'slug' => 'womens-lingerie-sleepwear', 'children' => []],
+                ['title' => 'Cardigans & Sweaters', 'slug' => 'womens-cardigans-sweaters', 'children' => []],
+                ['title' => 'Swimwear', 'slug' => 'womens-swimwear', 'children' => []],
+            ],
+        ],
+
+        // 3. Kids & Baby
+        [
+            'title' => 'Kids & Baby',
+            'slug' => 'kids-baby',
+            'children' => [
+                ['title' => 'Baby (0–24 months)', 'slug' => 'baby-0-24-months', 'children' => []],
+                ['title' => 'Toddler (2–4 years)', 'slug' => 'toddler-2-4-years', 'children' => []],
+                ['title' => 'Kids (5–12 years)', 'slug' => 'kids-5-12-years', 'children' => []],
+                ['title' => 'School Uniforms', 'slug' => 'school-uniforms', 'children' => []],
+                ['title' => 'Kids Shoes', 'slug' => 'kids-shoes', 'children' => []],
+                ['title' => 'Kids Accessories', 'slug' => 'kids-accessories', 'children' => []],
+            ],
+        ],
+
+        // 4. Shoes
+        [
+            'title' => 'Shoes',
+            'slug' => 'shoes',
+            'children' => [
+                ['title' => 'Sneakers', 'slug' => 'sneakers', 'children' => []],
+                ['title' => 'Loafers & Oxfords', 'slug' => 'loafers-oxfords', 'children' => []],
+                ['title' => 'Sandals & Flip-Flops', 'slug' => 'sandals-flipflops', 'children' => []],
+                ['title' => 'Boots', 'slug' => 'boots', 'children' => []],
+                ['title' => 'Heels', 'slug' => 'heels', 'children' => []],
+                ['title' => 'Sports Shoes', 'slug' => 'sports-shoes', 'children' => []],
+                ['title' => 'Slippers', 'slug' => 'slippers', 'children' => []],
+                ['title' => 'Formal Shoes', 'slug' => 'formal-shoes', 'children' => []],
+            ],
+        ],
+
+        // 5. Bags & Luggage
+        [
+            'title' => 'Bags & Luggage',
+            'slug' => 'bags-luggage',
+            'children' => [
+                ['title' => 'Backpacks', 'slug' => 'backpacks', 'children' => []],
+                ['title' => 'Handbags & Totes', 'slug' => 'handbags-totes', 'children' => []],
+                ['title' => 'Wallets & Cardholders', 'slug' => 'wallets-cardholders', 'children' => []],
+                ['title' => 'Gym Bags', 'slug' => 'gym-bags', 'children' => []],
+                ['title' => 'Travel Luggage', 'slug' => 'travel-luggage', 'children' => []],
+                ['title' => 'Laptop Bags', 'slug' => 'laptop-bags', 'children' => []],
+                ['title' => 'Crossbody Bags', 'slug' => 'crossbody-bags', 'children' => []],
+            ],
+        ],
+
+        // 6. Accessories
+        [
+            'title' => 'Accessories',
+            'slug' => 'accessories',
+            'children' => [
+                ['title' => 'Watches', 'slug' => 'watches', 'children' => []],
+                ['title' => 'Sunglasses', 'slug' => 'sunglasses', 'children' => []],
+                ['title' => 'Belts', 'slug' => 'belts', 'children' => []],
+                ['title' => 'Hats & Caps', 'slug' => 'hats-caps', 'children' => []],
+                ['title' => 'Scarves & Gloves', 'slug' => 'scarves-gloves', 'children' => []],
+                ['title' => 'Jewelry', 'slug' => 'jewelry', 'children' => []],
+                ['title' => 'Phone Cases', 'slug' => 'phone-cases', 'children' => []],
+                ['title' => 'Ties & Bowties', 'slug' => 'ties-bowties', 'children' => []],
+            ],
+        ],
+
+        // 7. Sportswear & Activewear
+        [
+            'title' => 'Sportswear & Activewear',
+            'slug' => 'sportswear-activewear',
+            'children' => [
+                ['title' => 'Sports Tops & Tanks', 'slug' => 'sports-tops-tanks', 'children' => []],
+                ['title' => 'Leggings & Shorts', 'slug' => 'active-leggings-shorts', 'children' => []],
+                ['title' => 'Tracksuits', 'slug' => 'tracksuits', 'children' => []],
+                ['title' => 'Sports Bras', 'slug' => 'sports-bras', 'children' => []],
+                ['title' => 'Yoga Pants', 'slug' => 'yoga-pants', 'children' => []],
+                ['title' => 'Running Gear', 'slug' => 'running-gear', 'children' => []],
+                ['title' => 'Swimwear', 'slug' => 'active-swimwear', 'children' => []],
+            ],
+        ],
+
+        // 8. Traditional & Cultural Wear
+        [
+            'title' => 'Traditional & Cultural Wear',
+            'slug' => 'traditional-cultural-wear',
+            'children' => [
+                ['title' => 'Kurtas & Sherwanis', 'slug' => 'kurtas-sherwanis', 'children' => []],
+                ['title' => 'Sarees & Lehengas', 'slug' => 'sarees-lehengas', 'children' => []],
+                ['title' => 'Kimonos & Yukatas', 'slug' => 'kimonos-yukatas', 'children' => []],
+                ['title' => 'Abayas & Thobes', 'slug' => 'abayas-thobes', 'children' => []],
+                ['title' => 'Dashikis & Kaftans', 'slug' => 'dashikis-kaftans', 'children' => []],
+            ],
+        ],
+
+        // 9. Electronics (adding a completely different category)
+        [
+            'title' => 'Electronics',
+            'slug' => 'electronics',
+            'children' => [
+                ['title' => 'Smartphones', 'slug' => 'smartphones', 'children' => []],
+                ['title' => 'Laptops', 'slug' => 'laptops', 'children' => []],
+                ['title' => 'Headphones', 'slug' => 'headphones', 'children' => []],
+                ['title' => 'Smartwatches', 'slug' => 'smartwatches', 'children' => []],
+                ['title' => 'Tablets', 'slug' => 'tablets', 'children' => []],
+                ['title' => 'Accessories', 'slug' => 'electronics-accessories', 'children' => []],
+            ],
+        ],
+
+        // 10. Home & Living
+        [
+            'title' => 'Home & Living',
+            'slug' => 'home-living',
+            'children' => [
+                ['title' => 'Home Decor', 'slug' => 'home-decor', 'children' => []],
+                ['title' => 'Bedding', 'slug' => 'bedding', 'children' => []],
+                ['title' => 'Bathroom', 'slug' => 'bathroom', 'children' => []],
+                ['title' => 'Kitchen', 'slug' => 'kitchen', 'children' => []],
+                ['title' => 'Furniture', 'slug' => 'furniture', 'children' => []],
+                ['title' => 'Lighting', 'slug' => 'lighting', 'children' => []],
+            ],
+        ],
+    ],
+    'options' => [
+        [
+            'title' => 'Size',
+            'slug' => 'size',
+            'values' => [
+                ['title' => 'XS', 'slug' => 'xs'],
+                ['title' => 'S', 'slug' => 's'],
+                ['title' => 'M', 'slug' => 'm'],
+                ['title' => 'L', 'slug' => 'l'],
+                ['title' => 'XL', 'slug' => 'xl'],
+                ['title' => '2XL', 'slug' => '2xl'],
+                ['title' => '4T', 'slug' => '4t'],
+                ['title' => '5', 'slug' => '5'],
+                ['title' => '6', 'slug' => '6'],
+                ['title' => '7', 'slug' => '7'],
+                ['title' => 'Shoe Size 6', 'slug' => 'shoe-6'],
+                ['title' => 'Shoe Size 7', 'slug' => 'shoe-7'],
+                ['title' => 'Shoe Size 8', 'slug' => 'shoe-8'],
+                ['title' => 'Shoe Size 9', 'slug' => 'shoe-9'],
+                ['title' => 'Shoe Size 10', 'slug' => 'shoe-10'],
+                ['title' => 'Shoe Size 11', 'slug' => 'shoe-11'],
+                ['title' => 'Waist 30', 'slug' => 'waist-30'],
+                ['title' => 'Waist 32', 'slug' => 'waist-32'],
+                ['title' => 'Waist 34', 'slug' => 'waist-34'],
+                ['title' => 'Waist 36', 'slug' => 'waist-36'],
+                ['title' => 'One Size', 'slug' => 'one-size'],
+            ],
+        ],
+        [
+            'title' => 'Color',
+            'slug' => 'color',
+            'values' => [
+                ['title' => 'Black', 'slug' => 'black'],
+                ['title' => 'White', 'slug' => 'white'],
+                ['title' => 'Navy Blue', 'slug' => 'navy-blue'],
+                ['title' => 'Charcoal', 'slug' => 'charcoal'],
+                ['title' => 'Gray', 'slug' => 'gray'],
+                ['title' => 'Tan', 'slug' => 'tan'],
+                ['title' => 'Brown', 'slug' => 'brown'],
+                ['title' => 'Red', 'slug' => 'red'],
+                ['title' => 'Blue', 'slug' => 'blue'],
+                ['title' => 'Green', 'slug' => 'green'],
+                ['title' => 'Burgundy', 'slug' => 'burgundy'],
+                ['title' => 'Camel', 'slug' => 'camel'],
+                ['title' => 'Ivory', 'slug' => 'ivory'],
+                ['title' => 'Light Blue', 'slug' => 'light-blue'],
+                ['title' => 'Pink', 'slug' => 'pink'],
+                ['title' => 'Purple', 'slug' => 'purple'],
+                ['title' => 'Olive', 'slug' => 'olive'],
+                ['title' => 'Coral', 'slug' => 'coral'],
+                ['title' => 'Teal', 'slug' => 'teal'],
+                ['title' => 'Mustard', 'slug' => 'mustard'],
+            ],
+        ],
+        [
+            'title' => 'Material',
+            'slug' => 'material',
+            'values' => [
+                ['title' => 'Cotton', 'slug' => 'cotton'],
+                ['title' => 'Polyester', 'slug' => 'polyester'],
+                ['title' => 'Wool', 'slug' => 'wool'],
+                ['title' => 'Cashmere', 'slug' => 'cashmere'],
+                ['title' => 'Silk', 'slug' => 'silk'],
+                ['title' => 'Leather', 'slug' => 'leather'],
+                ['title' => 'Vegan Leather', 'slug' => 'vegan-leather'],
+                ['title' => 'Denim', 'slug' => 'denim'],
+                ['title' => 'Linen', 'slug' => 'linen'],
+                ['title' => 'Rayon', 'slug' => 'rayon'],
+                ['title' => 'Spandex', 'slug' => 'spandex'],
+                ['title' => 'Nylon', 'slug' => 'nylon'],
+                ['title' => 'Fleece', 'slug' => 'fleece'],
+            ],
+        ],
+    ],
+    'attribute_groups' => [
+        [
+            'title' => 'General',
+            'attributes' => [
+                [
+                    'title' => 'Brand',
+                    'code' => 'brand',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'UrbanEdge'],
+                        ['title' => 'NorthPeak'],
+                        ['title' => 'ClassicCo'],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'title' => 'Specifications',
+            'attributes' => [
+                [
+                    'title' => 'Material',
+                    'code' => 'material',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'Cotton'],
+                        ['title' => 'Leather'],
+                        ['title' => 'Wool'],
+                    ],
+                ],
+                [
+                    'title' => 'Water Resistant',
+                    'code' => 'water_resistant',
+                    'data_type' => 'boolean',
+                    'is_filterable' => true,
+                ],
+            ],
+        ],
+    ],
+    'attribute_templates' => [
+        [
+            'title' => 'Default',
+            'description' => 'Standard attributes for all products.',
+            'groups' => ['General', 'Specifications'],
+        ],
+    ],
+    'products' => [
+        // 1. Men's Slim Fit Cotton T-Shirt (Variable)
+        [
+            'price' => 29.99,
+            'type' => 'variable',
+            'title' => 'Men\'s Slim Fit Cotton T-Shirt',
+            'slug' => 'mens-slim-fit-cotton-t-shirt',
+            'content' => '<p>This premium cotton t-shirt offers exceptional comfort and durability. The slim fit design provides a modern silhouette without restricting movement. Perfect for casual outings, layering under jackets, or wearing on its own.</p><ul><li>100% combed ring-spun cotton</li><li>Fabric weight: 180 GSM</li><li>Reinforced shoulder seams</li><li>Machine wash cold, tumble dry low</li><li>Pre-shrunk to minimize shrinkage</li></ul>',
+            'description' => 'Premium slim fit cotton t-shirt with reinforced seams. Breathable, durable, and pre-shrunk for the perfect fit every time.',
+            'categories' => ['mens-fashion', 'mens-t-shirts-tanks'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.20',
+                'weight_unit' => 'kg',
+                'package_length' => '30.00',
+                'package_width' => '22.00',
+                'package_height' => '3.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'MTS-BLK-S',
+                    'barcode' => '8901234560011',
+                    'price' => 29.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'MTS-BLK-M',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'MTS-BLK-L',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'MTS-BLK-XL',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'xl'],
+                ],
+                [
+                    'sku' => 'MTS-NAVY-S',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'MTS-NAVY-M',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'MTS-NAVY-L',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'MTS-NAVY-XL',
+                    'price' => 29.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 'xl'],
+                ],
+            ],
+        ],
+
+        // 2. Women's High-Waist Yoga Leggings (Variable)
+        [
+            'price' => 59.99,
+            'type' => 'variable',
+            'title' => 'Women\'s High-Waist Yoga Leggings',
+            'slug' => 'womens-high-waist-yoga-leggings',
+            'content' => '<p>Buttery-soft, squat-proof leggings designed for maximum comfort during yoga, running, or lounging. The high-waist band provides core support and stays in place during any movement.</p><ul><li>82% polyester, 18% spandex</li><li>Moisture-wicking fabric</li><li>Four-way stretch technology</li><li>Hidden waistband pocket</li><li>Flat-lock seams to prevent chafing</li></ul>',
+            'description' => 'Buttery-soft squat-proof leggings with high-waist support and hidden pocket. Moisture-wicking and four-way stretch for ultimate comfort.',
+            'categories' => ['womens-fashion', 'womens-leggings', 'sportswear-activewear'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.25',
+                'weight_unit' => 'kg',
+                'package_length' => '30.00',
+                'package_width' => '22.00',
+                'package_height' => '3.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'WYL-BLK-XS',
+                    'barcode' => '8901234560028',
+                    'price' => 59.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 'xs'],
+                ],
+                [
+                    'sku' => 'WYL-BLK-S',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'WYL-BLK-M',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'WYL-BLK-L',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'WYL-CHAR-XS',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'charcoal', 'size' => 'xs'],
+                ],
+                [
+                    'sku' => 'WYL-CHAR-S',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'charcoal', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'WYL-CHAR-M',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'charcoal', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'WYL-CHAR-L',
+                    'price' => 59.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'charcoal', 'size' => 'l'],
+                ],
+            ],
+        ],
+
+        // 3. Classic Denim Jacket (Variable)
+        [
+            'price' => 89.99,
+            'type' => 'variable',
+            'title' => 'Classic Denim Jacket',
+            'slug' => 'classic-denim-jacket',
+            'content' => '<p>A timeless denim jacket that never goes out of style. Made from 100% cotton denim with button-front closure and multiple pockets. Perfect for layering over hoodies or t-shirts.</p><ul><li>100% cotton denim</li><li>Button-front closure</li><li>Chest flap pockets with buttons</li><li>Adjustable side tabs</li><li>Machine washable</li></ul>',
+            'description' => 'Timeless 100% cotton denim jacket with button closure and chest pockets. Perfect layering piece for any season.',
+            'categories' => ['mens-fashion', 'womens-fashion'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.80',
+                'weight_unit' => 'kg',
+                'package_length' => '38.00',
+                'package_width' => '30.00',
+                'package_height' => '5.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'CDJ-LIGHT-S',
+                    'barcode' => '8901234560035',
+                    'price' => 89.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'light-blue', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'CDJ-LIGHT-M',
+                    'price' => 89.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'light-blue', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'CDJ-LIGHT-L',
+                    'price' => 89.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'light-blue', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'CDJ-LIGHT-XL',
+                    'price' => 89.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'light-blue', 'size' => 'xl'],
+                ],
+                [
+                    'sku' => 'CDJ-DARK-M',
+                    'price' => 89.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'CDJ-DARK-L',
+                    'price' => 89.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue', 'size' => 'l'],
+                ],
+            ],
+        ],
+
+        // 4. Men's Hooded Sweatshirt (Variable)
+        [
+            'price' => 79.99,
+            'type' => 'variable',
+            'title' => 'Men\'s Hooded Sweatshirt',
+            'slug' => 'mens-hooded-sweatshirt',
+            'content' => '<p>Stay warm and stylish with this premium fleece hoodie. Features a large front pocket, adjustable drawstring hood, and ribbed cuffs for a snug fit.</p><ul><li>80% cotton, 20% polyester fleece</li><li>Kangaroo pocket</li><li>Double-lined hood</li><li>Ribbed hem and cuffs</li><li>Heavyweight fabric for cold weather</li></ul>',
+            'description' => 'Premium heavyweight fleece hoodie with kangaroo pocket and adjustable hood. Ribbed cuffs for a snug, comfortable fit.',
+            'categories' => ['mens-fashion', 'mens-hoodies-sweatshirts'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.60',
+                'weight_unit' => 'kg',
+                'package_length' => '35.00',
+                'package_width' => '28.00',
+                'package_height' => '5.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'MHS-GRY-S',
+                    'barcode' => '8901234560042',
+                    'price' => 79.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'gray', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'MHS-GRY-M',
+                    'price' => 79.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'gray', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'MHS-GRY-L',
+                    'price' => 79.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'gray', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'MHS-GRY-XL',
+                    'price' => 79.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'gray', 'size' => 'xl'],
+                ],
+                [
+                    'sku' => 'MHS-BLK-M',
+                    'price' => 79.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'MHS-BLK-L',
+                    'price' => 79.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'l'],
+                ],
+            ],
+        ],
+
+        // 5. Women's Floral Summer Dress (Variable)
+        [
+            'price' => 49.99,
+            'type' => 'variable',
+            'title' => 'Women\'s Floral Summer Dress',
+            'slug' => 'womens-floral-summer-dress',
+            'content' => '<p>Light and airy summer dress featuring a beautiful floral print. Adjustable straps, elastic waistband, and flowing skirt make it perfect for beach days or brunch dates.</p><ul><li>100% rayon</li><li>Adjustable spaghetti straps</li><li>Elastic waistband</li><li>Pockets on both sides</li><li>Hand wash recommended</li></ul>',
+            'description' => 'Lightweight floral summer dress with adjustable straps, elastic waist, and hidden side pockets. Perfect for warm days.',
+            'categories' => ['womens-fashion', 'womens-dresses'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.30',
+                'weight_unit' => 'kg',
+                'package_length' => '32.00',
+                'package_width' => '24.00',
+                'package_height' => '3.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'WFSD-FL1-XS',
+                    'barcode' => '8901234560059',
+                    'price' => 49.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'pink', 'size' => 'xs'],
+                ],
+                [
+                    'sku' => 'WFSD-FL1-S',
+                    'price' => 49.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'pink', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'WFSD-FL1-M',
+                    'price' => 49.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'pink', 'size' => 'm'],
+                ],
+                [
+                    'sku' => 'WFSD-FL1-L',
+                    'price' => 49.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'pink', 'size' => 'l'],
+                ],
+                [
+                    'sku' => 'WFSD-FL2-S',
+                    'price' => 49.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'blue', 'size' => 's'],
+                ],
+                [
+                    'sku' => 'WFSD-FL2-M',
+                    'price' => 49.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'blue', 'size' => 'm'],
+                ],
+            ],
+        ],
+
+        // 6. Men's Leather Sneakers (Variable)
+        [
+            'price' => 119.99,
+            'type' => 'variable',
+            'title' => 'Men\'s Leather Sneakers',
+            'slug' => 'mens-leather-sneakers',
+            'content' => '<p>Premium full-grain leather sneakers that combine classic style with modern comfort. Cushioned insole and durable rubber outsole for all-day wear.</p><ul><li>Full-grain leather upper</li><li>Breathable textile lining</li><li>Memory foam insole</li><li>Rubber cupsole construction</li><li>Includes extra set of laces</li></ul>',
+            'description' => 'Full-grain leather sneakers with memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
+            'categories' => ['shoes', 'sneakers'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.90',
+                'weight_unit' => 'kg',
+                'package_length' => '33.00',
+                'package_width' => '21.00',
+                'package_height' => '12.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'MLS-BLK-7',
+                    'barcode' => '8901234560066',
+                    'price' => 119.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-7'],
+                ],
+                [
+                    'sku' => 'MLS-BLK-8',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-8'],
+                ],
+                [
+                    'sku' => 'MLS-BLK-9',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-9'],
+                ],
+                [
+                    'sku' => 'MLS-BLK-10',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-10'],
+                ],
+                [
+                    'sku' => 'MLS-BLK-11',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-11'],
+                ],
+                [
+                    'sku' => 'MLS-TAN-8',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan', 'size' => 'shoe-8'],
+                ],
+                [
+                    'sku' => 'MLS-TAN-9',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan', 'size' => 'shoe-9'],
+                ],
+                [
+                    'sku' => 'MLS-TAN-10',
+                    'price' => 119.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan', 'size' => 'shoe-10'],
+                ],
+            ],
+        ],
+
+        // 7. Unisex Baseball Cap (Variable) — no shipping (hat)
+        [
+            'price' => 34.99,
+            'type' => 'variable',
+            'title' => 'Unisex Baseball Cap',
+            'slug' => 'unisex-baseball-cap',
+            'content' => '<p>Classic structured baseball cap with embroidered eyelets and adjustable strap. Pre-curved visor provides shade without blocking vision.</p><ul><li>100% cotton twill</li><li>Adjustable snapback closure</li><li>Embroidered eyelets for ventilation</li><li>Pre-curved visor</li><li>One size fits most</li></ul>',
+            'description' => 'Classic structured cotton cap with adjustable snapback and pre-curved visor. Breathable and comfortable for daily wear.',
+            'categories' => ['accessories', 'hats-caps'],
+            'variants' => [
+                [
+                    'sku' => 'UBC-BLK-OS',
+                    'barcode' => '8901234560073',
+                    'price' => 34.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black'],
+                ],
+                [
+                    'sku' => 'UBC-NAVY-OS',
+                    'price' => 34.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'navy-blue'],
+                ],
+                [
+                    'sku' => 'UBC-GRY-OS',
+                    'price' => 34.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'gray'],
+                ],
+            ],
+        ],
+
+        // 8. Women's Ankle Boots (Variable)
+        [
+            'price' => 149.99,
+            'type' => 'variable',
+            'title' => 'Women\'s Ankle Boots',
+            'slug' => 'womens-ankle-boots',
+            'content' => '<p>Chic leather ankle boots with a low block heel. Side zipper for easy on/off and cushioned insole for comfort. Versatile enough for office or weekend wear.</p><ul><li>Genuine leather upper</li><li>2-inch block heel</li><li>Side zipper closure</li><li>Rubber outsole for traction</li><li>Padded footbed</li></ul>',
+            'description' => 'Genuine leather ankle boots with 2-inch block heel and side zipper. Comfortable cushioned insole for all-day wear.',
+            'categories' => ['shoes', 'boots'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '1.00',
+                'weight_unit' => 'kg',
+                'package_length' => '33.00',
+                'package_width' => '21.00',
+                'package_height' => '13.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'WAB-BLK-6',
+                    'barcode' => '8901234560080',
+                    'price' => 149.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-6'],
+                ],
+                [
+                    'sku' => 'WAB-BLK-7',
+                    'price' => 149.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-7'],
+                ],
+                [
+                    'sku' => 'WAB-BLK-8',
+                    'price' => 149.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-8'],
+                ],
+                [
+                    'sku' => 'WAB-BLK-9',
+                    'price' => 149.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-9'],
+                ],
+                [
+                    'sku' => 'WAB-TAN-7',
+                    'price' => 149.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan', 'size' => 'shoe-7'],
+                ],
+                [
+                    'sku' => 'WAB-TAN-8',
+                    'price' => 149.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan', 'size' => 'shoe-8'],
+                ],
+            ],
+        ],
+
+        // 9. Leather Belt (Variable)
+        [
+            'price' => 39.99,
+            'type' => 'variable',
+            'title' => 'Leather Belt',
+            'slug' => 'leather-belt',
+            'content' => '<p>Genuine leather belt with classic pin buckle. Available in multiple sizes and colors. Durable construction with reinforced stitching.</p><ul><li>100% genuine leather</li><li>Polished brass buckle</li><li>5 holes for adjustability</li><li>Strap width: 1.25 inches</li><li>Spot clean only</li></ul>',
+            'description' => 'Genuine leather belt with polished brass buckle. Durable and classic design for everyday wear.',
+            'categories' => ['accessories', 'belts'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.15',
+                'weight_unit' => 'kg',
+                'package_length' => '30.00',
+                'package_width' => '10.00',
+                'package_height' => '3.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'LB-BLK-30',
+                    'barcode' => '8901234560097',
+                    'price' => 39.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 'waist-30'],
+                ],
+                [
+                    'sku' => 'LB-BLK-32',
+                    'price' => 39.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'waist-32'],
+                ],
+                [
+                    'sku' => 'LB-BLK-34',
+                    'price' => 39.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'waist-34'],
+                ],
+                [
+                    'sku' => 'LB-BLK-36',
+                    'price' => 39.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'waist-36'],
+                ],
+                [
+                    'sku' => 'LB-BRN-32',
+                    'price' => 39.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'brown', 'size' => 'waist-32'],
+                ],
+                [
+                    'sku' => 'LB-BRN-34',
+                    'price' => 39.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'brown', 'size' => 'waist-34'],
+                ],
+            ],
+        ],
+
+        // 10. Women's Crossbody Bag (Variable)
+        [
+            'price' => 69.99,
+            'type' => 'variable',
+            'title' => 'Women\'s Crossbody Bag',
+            'slug' => 'womens-crossbody-bag',
+            'content' => '<p>Stylish vegan leather crossbody bag perfect for daily essentials. Adjustable strap and multiple compartments for organization.</p><ul><li>Vegan leather exterior</li><li>Polyester lining</li><li>Adjustable strap (20-25 inches)</li><li>Main zip compartment + front pocket</li><li>Interior card slots</li></ul>',
+            'description' => 'Vegan leather crossbody bag with adjustable strap and multiple compartments. Compact yet spacious for daily essentials.',
+            'categories' => ['bags-luggage', 'handbags-totes'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.40',
+                'weight_unit' => 'kg',
+                'package_length' => '28.00',
+                'package_width' => '20.00',
+                'package_height' => '8.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'WCB-BLK-OS',
+                    'barcode' => '8901234560103',
+                    'price' => 69.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black'],
+                ],
+                [
+                    'sku' => 'WCB-TAN-OS',
+                    'price' => 69.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'tan'],
+                ],
+                [
+                    'sku' => 'WCB-COG-OS',
+                    'price' => 69.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'camel'],
+                ],
+                [
+                    'sku' => 'WCB-RED-OS',
+                    'price' => 69.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'red'],
+                ],
+            ],
+        ],
+
+        // 11. Unisex Polarized Sunglasses (Variable)
+        [
+            'price' => 44.99,
+            'type' => 'variable',
+            'title' => 'Unisex Polarized Sunglasses',
+            'slug' => 'unisex-polarized-sunglasses',
+            'content' => '<p>Classic wayfarer sunglasses with polarized lenses for UV400 protection. Lightweight frame suitable for all face shapes.</p><ul><li>Polycarbonate polarized lenses</li><li>UV400 protection</li><li>TR90 lightweight frame</li><li>Includes microfiber pouch</li><li>Spring hinges for flexibility</li></ul>',
+            'description' => 'Polarized wayfarer sunglasses with UV400 protection. Lightweight frame with spring hinges for all-day comfort.',
+            'categories' => ['accessories', 'sunglasses'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.10',
+                'weight_unit' => 'kg',
+                'package_length' => '18.00',
+                'package_width' => '10.00',
+                'package_height' => '5.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'UPS-BLK-OS',
+                    'barcode' => '8901234560110',
+                    'price' => 44.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black'],
+                ],
+                [
+                    'sku' => 'UPS-TOR-OS',
+                    'price' => 44.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'brown'],
+                ],
+                [
+                    'sku' => 'UPS-MAT-OS',
+                    'price' => 44.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black'],
+                ],
+            ],
+        ],
+
+        // 12. Men's Running Shoes (Variable)
+        [
+            'price' => 159.99,
+            'type' => 'variable',
+            'title' => 'Men\'s Running Shoes',
+            'slug' => 'mens-running-shoes',
+            'content' => '<p>Performance running shoes with responsive cushioning and breathable mesh upper. Designed for neutral pronation and daily training.</p><ul><li>Engineered mesh upper</li><li>Responsive EVA foam midsole</li><li>Rubber outsole with grip pattern</li><li>Removable foam insole</li><li>Reflective accents for night runs</li></ul>',
+            'description' => 'Breathable mesh running shoes with responsive cushioning. Designed for neutral pronation and daily training comfort.',
+            'categories' => ['shoes', 'sports-shoes', 'sportswear-activewear'],
+            'shipping' => [
+                'requires_shipping' => true,
+                'weight' => '0.85',
+                'weight_unit' => 'kg',
+                'package_length' => '33.00',
+                'package_width' => '21.00',
+                'package_height' => '12.00',
+                'dimension_unit' => 'cm',
+            ],
+            'variants' => [
+                [
+                    'sku' => 'MRS-BLK-8',
+                    'barcode' => '8901234560127',
+                    'price' => 159.99,
+                    'is_default' => true,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-8'],
+                ],
+                [
+                    'sku' => 'MRS-BLK-9',
+                    'price' => 159.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-9'],
+                ],
+                [
+                    'sku' => 'MRS-BLK-10',
+                    'price' => 159.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-10'],
+                ],
+                [
+                    'sku' => 'MRS-BLK-11',
+                    'price' => 159.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'black', 'size' => 'shoe-11'],
+                ],
+                [
+                    'sku' => 'MRS-BLU-9',
+                    'price' => 159.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'blue', 'size' => 'shoe-9'],
+                ],
+                [
+                    'sku' => 'MRS-BLU-10',
+                    'price' => 159.99,
+                    'is_default' => false,
+                    'option_values' => ['color' => 'blue', 'size' => 'shoe-10'],
+                ],
+            ],
+        ],
+    ],
+];
