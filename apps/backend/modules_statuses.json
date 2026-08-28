@@ -1,0 +1,14 @@
+{
+    "Core": true,
+    "Catalog": true,
+    "Cart": true,
+    "Order": true,
+    "Payment": true,
+    "Setting": true,
+    "Content": true,
+    "Inventory": true,
+    "Auth": true,
+    "User": true,
+    "Media": true,
+    "Notification": true
+}
