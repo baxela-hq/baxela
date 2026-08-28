@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { type z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -20,6 +19,14 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
@@ -30,35 +37,17 @@ import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { fetchSettings, updateSettings } from './api/settings.api.ts';
 import { FeatureRoutes, Locales } from './data/routes';
-import { formSchema, defaultValues, type SettingRequest, type Setting } from './data/schema';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import {
+  formSchema,
+  defaultValues,
+  buildSettingsValues,
+  buildSettingsRequest,
+  type SettingsForm,
+  type Setting,
+} from './data/schema';
+import { fetchLanguages } from '@/features/core/languages/api/languages.api'
+import { fetchCurrencies } from '@/features/core/currencies/api/currencies.api'
+import type { Language, Currency } from '@/shared/types/locale.types'
 
 const route = getRouteApi('/_authenticated/setting/settings/')
 
@@ -66,51 +55,51 @@ export function Settings() {
   const [isUpdating, setIsUpdating] = useState(false)
   const search = route.useSearch()
   const queryClient = useQueryClient()
-  // const [isLoading, setIsLoading] = useState(false)
-  const [values, setValues] = useState(defaultValues)
-  const { tAction,tPageTitle, tPlaceHolder, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
-  const { tLabel, tStatus, tMessage: tM, tTooltip } = useAppTranslation(Locales.SETTING)
+  const { tAction, tPageTitle, tPlaceHolder, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel, tStatus, tTooltip } = useAppTranslation(Locales.SETTING)
 
   const entityName = {
     singular: tLabel("setting"),
     plural: tLabel("settings")
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues,
-    values,
-  });
-
-  const { data, isSuccess, isLoading } = useQuery<Setting[]>({
+  const { data: settings, isLoading: settingsLoading } = useQuery<Setting[]>({
     queryKey: [FeatureRoutes.CACHE_KEY, search],
     queryFn: () => fetchSettings(search),
   });
 
-// Side effect runs *after* data successfully loaded
+  const { data: languages, isLoading: languagesLoading } = useQuery<Language[]>({
+    queryKey: ['languages'],
+    queryFn: () => fetchLanguages(),
+  });
+
+  const { data: currencies, isLoading: currenciesLoading } = useQuery<Currency[]>({
+    queryKey: ['currencies'],
+    queryFn: () => fetchCurrencies(),
+  });
+
+  const languagesSafe = languages ?? []
+  const currenciesSafe = currencies ?? []
+  const settingsSafe = settings ?? []
+  const isLoading = settingsLoading || languagesLoading || currenciesLoading
+
+  const form = useForm<SettingsForm>({
+    resolver: zodResolver(formSchema),
+    defaultValues,
+  });
+
   useEffect(() => {
-    if (isSuccess && data) {
-      const newValues = {
-        website_title: data.find(item => item.name === 'website_title')?.value || "",
-        website_keywords: data.find(item => item.name === 'website_keywords')?.value || "",
-        website_description: data.find(item => item.name === 'website_description')?.value || "",
-      };
-      setValues(newValues);
+    if (!isLoading) {
+      form.reset(buildSettingsValues(languagesSafe, settingsSafe));
     }
-  }, [isSuccess, data]);
+  }, [isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
+  async function handleSubmit(values: SettingsForm) {
     setIsUpdating(true)
     try {
-      const body: SettingRequest[] = [
-        { name: 'website_title', value: values.website_title },
-        { name: 'website_keywords', value: values.website_keywords },
-        { name: 'website_description', value: values.website_description },
-      ];
-      await updateSettings(body)
+      await updateSettings(buildSettingsRequest(values, languagesSafe))
       await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] });
-      toast.error(tM('success.updated'));
+      toast.success(tMessage('success.record.updated', { name: entityName.singular }));
     } catch (error: unknown) {
       if (error instanceof ApiError) {
         parseAndToastError(error)
@@ -122,8 +111,7 @@ export function Settings() {
     }
   }
 
-
-  if (isLoading) return <SkeletonWidget />; // or any loading UI
+  if (isLoading) return <SkeletonWidget />;
 
   return (
     <>
@@ -151,77 +139,129 @@ export function Settings() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className={isLoading ? 'hidden' : 'space-y-8'}
+            className='space-y-8'
           >
             <div className='grid gap-4'>
 
-              {/* website_title Field */}
+              {languagesSafe.length > 0 && (
+                <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                  <TabsList className='w-full'>
+                    {languagesSafe.map((language) => (
+                      <TabsTrigger key={language.code} value={language.code}>
+                        {language.code.toUpperCase()}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+
+                  {languagesSafe.map((language, index) => (
+                    <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                      <FormField
+                        control={form.control}
+                        name={`website_title.translations.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className='grid gap-2'>
+                            <FormLabel htmlFor={`website_title-${language.code}`}>{tStatus('name.website_title')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                id={`website_title-${language.code}`}
+                                placeholder={tPlaceHolder('input')}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <FormDescription>
+                              {tTooltip('name.website_title')}
+                            </FormDescription>
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name={`website_description.translations.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className='grid gap-2'>
+                            <FormLabel htmlFor={`website_description-${language.code}`}>{tStatus('name.website_description')}</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                id={`website_description-${language.code}`}
+                                placeholder={tPlaceHolder('textarea')}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                            <FormDescription>
+                              {tTooltip('name.website_description')}
+                            </FormDescription>
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                  ))}
+                </Tabs>
+              )}
+
               <FormField
                 control={form.control}
-                name='website_title'
+                name='language_id'
                 render={({ field }) => (
                   <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='website_title'>{tStatus('name.website_title')}</FormLabel>
-                    <FormControl>
-                      <Input
-                        id='website_title'
-                        placeholder={tPlaceHolder('input')}
-                        {...field}
-                      />
-                    </FormControl>
+                    <FormLabel htmlFor='language_id'>{tStatus('name.language_id')}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger id='language_id' className='w-full'>
+                          <SelectValue placeholder={tPlaceHolder('select')} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {languagesSafe.map((language) => (
+                          <SelectItem key={language.id} value={String(language.id)}>
+                            {language.native_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                     <FormDescription>
-                      {tTooltip('name.website_title')}
+                      {tTooltip('name.language_id')}
                     </FormDescription>
                   </FormItem>
                 )}
               />
 
-              {/* website_description Field */}
               <FormField
                 control={form.control}
-                name='website_description'
+                name='currency_id'
                 render={({ field }) => (
                   <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='website_description'>{tStatus('name.website_description')}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id='website_description'
-                        placeholder={tPlaceHolder('textarea')}
-                        {...field}
-                      />
-                    </FormControl>
+                    <FormLabel htmlFor='currency_id'>{tStatus('name.currency_id')}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger id='currency_id' className='w-full'>
+                          <SelectValue placeholder={tPlaceHolder('select')} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {currenciesSafe.map((currency) => (
+                          <SelectItem key={currency.id} value={String(currency.id)}>
+                            {currency.native_name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                     <FormDescription>
-                      {tTooltip('name.website_description')}
+                      {tTooltip('name.currency_id')}
                     </FormDescription>
                   </FormItem>
                 )}
               />
-
-              {/* website_keywords Field */}
-              <FormField
-                control={form.control}
-                name='website_keywords'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='website_keywords'>{tStatus('name.website_keywords')}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id='website_keywords'
-                        placeholder={tPlaceHolder('textarea')}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                    <FormDescription>
-                      {tTooltip('name.website_keywords')}
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-
-
 
             </div>
             <div className='flex-col'>
