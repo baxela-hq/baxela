@@ -1,0 +1,31 @@
+meta {
+  name: Delete
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/cart/user/cart-items/11
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "quantity": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

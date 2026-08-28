@@ -1,0 +1,47 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/content/admin/pages
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "published",
+    "translations": [
+      {
+        "language": "en",
+        "title": "About Us",
+        "slug": "about-us",
+        "content": "<p>This is Test</p>",
+        "description": "Short Text"
+      },
+      {
+        "language": "fa",
+        "title": "درباره ما",
+        "slug": "about-us",
+        "content": "<p>متن آزمایشی</p>",
+        "description": "توضیحات"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

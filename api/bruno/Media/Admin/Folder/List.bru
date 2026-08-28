@@ -1,0 +1,30 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/media/admin/folders
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[parent_id]: null
+  ~filter[parent_id]: 42
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

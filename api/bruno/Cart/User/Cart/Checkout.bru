@@ -1,0 +1,32 @@
+meta {
+  name: Checkout
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/cart/user/checkout
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+  ~X-Idempotency-Key: MeysamWillBeKing12
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "address_id": "11"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

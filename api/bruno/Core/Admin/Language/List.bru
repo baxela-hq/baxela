@@ -1,0 +1,157 @@
+meta {
+  name: List
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/core/admin/languages
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~include: variants,categories
+  ~filter[is_published]: true
+  ~filter[status]: in_stock
+  ~page: 1
+  ~sort: -base_price
+  ~sort: -id
+  ~filter[type]: simple
+  ~filter[categories.id]: 2
+  ~filter[variants.price]: 99
+  ~filter[variants.sku]: 55555
+  ~filter[base_price]: 99.98
+  ~filter[id]: 11
+  ~filter[title]: e
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Product 2",
+    "slug": "product-3",
+    "description": "this is a short description",
+    "content": "<p>This is a long text!</p>",
+    "base_price": "10.10",
+    "type": "simple",
+    "status": "published"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+example {
+  name: example EN, FA
+  
+  request: {
+    url: {{baseUrl}}/api/v1/core/admin/languages
+    method: GET
+    mode: none
+    params:query: {
+      ~include: variants,categories
+      ~filter[is_published]: true
+      ~filter[status]: in_stock
+      ~page: 1
+      ~sort: -base_price
+      ~sort: -id
+      ~filter[type]: simple
+      ~filter[categories.id]: 2
+      ~filter[variants.price]: 99
+      ~filter[variants.sku]: 55555
+      ~filter[base_price]: 99.98
+      ~filter[id]: 11
+      ~filter[title]: e
+    }
+  
+    headers: {
+      Accept: application/json
+      Content-Type: application/json
+    }
+  
+    body:json: {
+      {
+        "title": "Product 2",
+        "slug": "product-3",
+        "description": "this is a short description",
+        "content": "<p>This is a long text!</p>",
+        "base_price": "10.10",
+        "type": "simple",
+        "status": "published"
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      server: nginx/1.30.4
+      content-type: application/json
+      transfer-encoding: chunked
+      connection: keep-alive
+      cache-control: no-cache, private
+      date: Mon, 03 Aug 2026 18:26:38 GMT
+      x-request-id: 20035188-7468-4115-b4df-ebaa287fd4b8
+      access-control-allow-origin: *
+      x-frame-options: SAMEORIGIN
+      x-content-type-options: nosniff
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "data": [
+            {
+              "id": 1,
+              "locale": "en-US",
+              "name": "English",
+              "native_name": "English",
+              "code": "en",
+              "code3": "eng",
+              "is_rtl": false,
+              "is_active": true,
+              "is_default": true,
+              "position": 1,
+              "date_format": null,
+              "time_format": null,
+              "created_at": null,
+              "updated_at": null
+            },
+            {
+              "id": 2,
+              "locale": "fa-IR",
+              "name": "Persian",
+              "native_name": "پارسی",
+              "code": "fa",
+              "code3": "fas",
+              "is_rtl": true,
+              "is_active": true,
+              "is_default": false,
+              "position": 2,
+              "date_format": null,
+              "time_format": null,
+              "created_at": null,
+              "updated_at": null
+            }
+          ]
+        }
+      '''
+    }
+  }
+}

@@ -1,0 +1,109 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/catalog/admin/products/3
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "type": "variable",
+    "status": "in_stock",
+    "is_published": false,
+    "shipping": {
+      "requires_shipping": true,
+      "weight": "1.20",
+      "weight_unit": "kg",
+      "package_length": "30.00",
+      "package_width": "20.00",
+      "package_height": "5.00",
+      "dimension_unit": "cm"
+    },
+    "categories": [6,7],
+    "images": [
+      {
+        "position": 1,
+        "collection": "photos",
+        "media_id": 1,
+        "url": "http://xshop-backend.local/storage/catalog/8njwdnXPCUHahagBU5A4UzqNgJUQGbFoxgvDfWQD.png"
+      }
+    ],
+    "variants": [
+      {
+        "sku": "TSHIRT-M-BLUE",
+        "barcode": "123456678",
+        "price": "29.99",
+        "quantity": 12,
+        "option_value_ids": [10,11],
+        "is_default": true
+      }
+    ],
+    "attribute_values": [
+      {
+        "attribute_id": 1,
+        "attribute_value_id": 1,
+        "text_value": null,
+        "number_value": null,
+        "boolean_value": null
+      },
+      {
+        "attribute_id": 2,
+        "attribute_value_id": null,
+        "text_value": null,
+        "number_value": "6.70",
+        "boolean_value": null
+      }
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "title": "Product 2",
+        "slug": "product-2",
+        "description": "this is a short description",
+        "content": "<p>This is a long text!</p>"
+      },
+      {
+        "language": "fa",
+        "title": "محصول ۲",
+        "slug": "product-2",
+        "description": "توضیحات کوتاه",
+        "content": "<p>توضیحات بلند</p>"
+      }
+    ],
+    "seo": [
+      {
+        "language": "en",
+        "meta_title": "Product 2 — XShop",
+        "meta_description": "Buy Product 2 at the best price.",
+        "open_graph_title": "Product 2",
+        "open_graph_description": "Buy Product 2 at the best price."
+      },
+      {
+        "language": "fa",
+        "meta_title": null,
+        "meta_description": null,
+        "open_graph_title": null,
+        "open_graph_description": null
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,30 @@
+meta {
+  name: List
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/options/16/values
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[value]: One
+  ~sort: -position
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

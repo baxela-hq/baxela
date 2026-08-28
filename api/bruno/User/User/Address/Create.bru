@@ -1,0 +1,37 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/user/user/addresses
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "type": "shipping",
+    "full_name": "Meysam MKF",
+    "phone": "02144865715",
+    "address_line": "fsdfj skdfj lsdfjksdlf",
+    "city": "Tehran",
+    "postal_code": "1469819585",
+    "is_default": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

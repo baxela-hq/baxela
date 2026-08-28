@@ -1,0 +1,43 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/catalog/admin/options/9/values/6
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "position": 2,
+    "translations": [
+      {
+        "language": "en",
+        "value": "Red2",
+        "slug": "red"
+      },
+      {
+        "language": "fa",
+        "value": "قرمز",
+        "slug": "red"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

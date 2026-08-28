@@ -1,0 +1,45 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/admin/attributes
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "group_id": 2,
+    "code": "screen_size3",
+    "data_type": "number",
+    "is_filterable": true,
+    "position": 1,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Screen size"
+      },
+      {
+        "language": "fa",
+        "title": "اندازه صفحه"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

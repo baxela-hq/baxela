@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/auth/admin/users
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~sort: id
+  ~filter[is_active]: true
+  ~filter[id]: 1
+  ~filter[is_active]: true
+  ~filter[email]: maysam69
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

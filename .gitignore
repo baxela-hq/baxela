@@ -17,5 +17,9 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 
+# --- Bruno API client ---
+api/bruno/environments/*
+!api/bruno/environments/.gitkeep
+
 # --- OS ---
 Thumbs.db

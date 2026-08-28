@@ -1,0 +1,43 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/catalog/admin/options/7
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "position": 2,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Category 555",
+        "slug": "category222"
+      },
+      {
+        "language": "fa",
+        "title": "Category 555",
+        "slug": "category222"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

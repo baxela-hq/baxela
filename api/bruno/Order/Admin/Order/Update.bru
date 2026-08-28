@@ -1,0 +1,31 @@
+meta {
+  name: Update
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/order/admin/orders/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "cancelled"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
