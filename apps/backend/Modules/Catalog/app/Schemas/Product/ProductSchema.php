@@ -35,5 +35,7 @@ class ProductSchema
 
     public const string RES_IMAGES = 'images';
 
+    public const string RES_ATTRIBUTES = 'attributes';
+
     public const string RES_ATTRIBUTE_VALUES = 'attributeValues';
 }

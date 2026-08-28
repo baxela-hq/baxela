@@ -240,6 +240,21 @@ return [
                         ['title' => 'UrbanEdge'],
                         ['title' => 'NorthPeak'],
                         ['title' => 'ClassicCo'],
+                        ['title' => 'StepWell'],
+                        ['title' => 'Rialta'],
+                        ['title' => 'CarryAll'],
+                        ['title' => 'Flo'],
+                    ],
+                ],
+                [
+                    'title' => 'Gender',
+                    'code' => 'gender',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'Men'],
+                        ['title' => 'Women'],
+                        ['title' => 'Unisex'],
                     ],
                 ],
             ],
@@ -254,8 +269,14 @@ return [
                     'is_filterable' => true,
                     'values' => [
                         ['title' => 'Cotton'],
+                        ['title' => 'Cotton-Polyester Fleece'],
+                        ['title' => 'Polyester-Spandex'],
+                        ['title' => 'Rayon'],
+                        ['title' => 'Denim'],
                         ['title' => 'Leather'],
-                        ['title' => 'Wool'],
+                        ['title' => 'Vegan Leather'],
+                        ['title' => 'Polycarbonate'],
+                        ['title' => 'Engineered Mesh'],
                     ],
                 ],
                 [
@@ -263,6 +284,77 @@ return [
                     'code' => 'water_resistant',
                     'data_type' => 'boolean',
                     'is_filterable' => true,
+                ],
+                [
+                    'title' => 'Breathable',
+                    'code' => 'breathable',
+                    'data_type' => 'boolean',
+                    'is_filterable' => true,
+                ],
+            ],
+        ],
+        [
+            'title' => 'Fit & Style',
+            'attributes' => [
+                [
+                    'title' => 'Fit',
+                    'code' => 'fit',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'Slim'],
+                        ['title' => 'Regular'],
+                        ['title' => 'Relaxed'],
+                        ['title' => 'High-Waist'],
+                        ['title' => 'One Size'],
+                    ],
+                ],
+                [
+                    'title' => 'Closure',
+                    'code' => 'closure',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'Pull-On'],
+                        ['title' => 'Button'],
+                        ['title' => 'Zip'],
+                        ['title' => 'Lace-Up'],
+                        ['title' => 'Snapback'],
+                        ['title' => 'Buckle'],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'title' => 'Footwear',
+            'attributes' => [
+                [
+                    'title' => 'Sole',
+                    'code' => 'sole',
+                    'data_type' => 'select',
+                    'is_filterable' => true,
+                    'values' => [
+                        ['title' => 'Rubber'],
+                        ['title' => 'EVA Foam'],
+                        ['title' => 'Block Heel'],
+                    ],
+                ],
+                [
+                    'title' => 'Insole',
+                    'code' => 'insole',
+                    'data_type' => 'select',
+                    'is_filterable' => false,
+                    'values' => [
+                        ['title' => 'Memory Foam'],
+                        ['title' => 'Cushioned'],
+                        ['title' => 'Removable'],
+                    ],
+                ],
+                [
+                    'title' => 'Heel Height',
+                    'code' => 'heel_height',
+                    'data_type' => 'number',
+                    'is_filterable' => false,
                 ],
             ],
         ],
@@ -272,6 +364,16 @@ return [
             'title' => 'Default',
             'description' => 'Standard attributes for all products.',
             'groups' => ['General', 'Specifications'],
+        ],
+        [
+            'title' => 'Apparel',
+            'description' => 'Attributes for clothing and fashion products.',
+            'groups' => ['General', 'Specifications', 'Fit & Style'],
+        ],
+        [
+            'title' => 'Footwear',
+            'description' => 'Attributes for shoes and boots.',
+            'groups' => ['General', 'Specifications', 'Footwear'],
         ],
     ],
     'products' => [
@@ -284,6 +386,13 @@ return [
             'content' => '<p>This premium cotton t-shirt offers exceptional comfort and durability. The slim fit design provides a modern silhouette without restricting movement. Perfect for casual outings, layering under jackets, or wearing on its own.</p><ul><li>100% combed ring-spun cotton</li><li>Fabric weight: 180 GSM</li><li>Reinforced shoulder seams</li><li>Machine wash cold, tumble dry low</li><li>Pre-shrunk to minimize shrinkage</li></ul>',
             'description' => 'Premium slim fit cotton t-shirt with reinforced seams. Breathable, durable, and pre-shrunk for the perfect fit every time.',
             'categories' => ['mens-fashion', 'mens-t-shirts-tanks'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'UrbanEdge'],
+                ['code' => 'gender', 'value' => 'Men'],
+                ['code' => 'material', 'value' => 'Cotton'],
+                ['code' => 'fit', 'value' => 'Slim'],
+                ['code' => 'closure', 'value' => 'Pull-On'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.20',
@@ -355,6 +464,14 @@ return [
             'content' => '<p>Buttery-soft, squat-proof leggings designed for maximum comfort during yoga, running, or lounging. The high-waist band provides core support and stays in place during any movement.</p><ul><li>82% polyester, 18% spandex</li><li>Moisture-wicking fabric</li><li>Four-way stretch technology</li><li>Hidden waistband pocket</li><li>Flat-lock seams to prevent chafing</li></ul>',
             'description' => 'Buttery-soft squat-proof leggings with high-waist support and hidden pocket. Moisture-wicking and four-way stretch for ultimate comfort.',
             'categories' => ['womens-fashion', 'womens-leggings', 'sportswear-activewear'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'UrbanEdge'],
+                ['code' => 'gender', 'value' => 'Women'],
+                ['code' => 'material', 'value' => 'Polyester-Spandex'],
+                ['code' => 'fit', 'value' => 'High-Waist'],
+                ['code' => 'closure', 'value' => 'Pull-On'],
+                ['code' => 'breathable', 'value' => true],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.25',
@@ -426,6 +543,13 @@ return [
             'content' => '<p>A timeless denim jacket that never goes out of style. Made from 100% cotton denim with button-front closure and multiple pockets. Perfect for layering over hoodies or t-shirts.</p><ul><li>100% cotton denim</li><li>Button-front closure</li><li>Chest flap pockets with buttons</li><li>Adjustable side tabs</li><li>Machine washable</li></ul>',
             'description' => 'Timeless 100% cotton denim jacket with button closure and chest pockets. Perfect layering piece for any season.',
             'categories' => ['mens-fashion', 'womens-fashion'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'ClassicCo'],
+                ['code' => 'gender', 'value' => 'Unisex'],
+                ['code' => 'material', 'value' => 'Denim'],
+                ['code' => 'fit', 'value' => 'Regular'],
+                ['code' => 'closure', 'value' => 'Button'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.80',
@@ -485,6 +609,13 @@ return [
             'content' => '<p>Stay warm and stylish with this premium fleece hoodie. Features a large front pocket, adjustable drawstring hood, and ribbed cuffs for a snug fit.</p><ul><li>80% cotton, 20% polyester fleece</li><li>Kangaroo pocket</li><li>Double-lined hood</li><li>Ribbed hem and cuffs</li><li>Heavyweight fabric for cold weather</li></ul>',
             'description' => 'Premium heavyweight fleece hoodie with kangaroo pocket and adjustable hood. Ribbed cuffs for a snug, comfortable fit.',
             'categories' => ['mens-fashion', 'mens-hoodies-sweatshirts'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'NorthPeak'],
+                ['code' => 'gender', 'value' => 'Men'],
+                ['code' => 'material', 'value' => 'Cotton-Polyester Fleece'],
+                ['code' => 'fit', 'value' => 'Regular'],
+                ['code' => 'closure', 'value' => 'Pull-On'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.60',
@@ -544,6 +675,13 @@ return [
             'content' => '<p>Light and airy summer dress featuring a beautiful floral print. Adjustable straps, elastic waistband, and flowing skirt make it perfect for beach days or brunch dates.</p><ul><li>100% rayon</li><li>Adjustable spaghetti straps</li><li>Elastic waistband</li><li>Pockets on both sides</li><li>Hand wash recommended</li></ul>',
             'description' => 'Lightweight floral summer dress with adjustable straps, elastic waist, and hidden side pockets. Perfect for warm days.',
             'categories' => ['womens-fashion', 'womens-dresses'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'Flo'],
+                ['code' => 'gender', 'value' => 'Women'],
+                ['code' => 'material', 'value' => 'Rayon'],
+                ['code' => 'fit', 'value' => 'Relaxed'],
+                ['code' => 'closure', 'value' => 'Pull-On'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.30',
@@ -603,6 +741,15 @@ return [
             'content' => '<p>Premium full-grain leather sneakers that combine classic style with modern comfort. Cushioned insole and durable rubber outsole for all-day wear.</p><ul><li>Full-grain leather upper</li><li>Breathable textile lining</li><li>Memory foam insole</li><li>Rubber cupsole construction</li><li>Includes extra set of laces</li></ul>',
             'description' => 'Full-grain leather sneakers with memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
             'categories' => ['shoes', 'sneakers'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'StepWell'],
+                ['code' => 'gender', 'value' => 'Men'],
+                ['code' => 'material', 'value' => 'Leather'],
+                ['code' => 'closure', 'value' => 'Lace-Up'],
+                ['code' => 'sole', 'value' => 'Rubber'],
+                ['code' => 'insole', 'value' => 'Memory Foam'],
+                ['code' => 'heel_height', 'value' => 1],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.90',
@@ -665,34 +812,29 @@ return [
             ],
         ],
 
-        // 7. Unisex Baseball Cap (Variable) — no shipping (hat)
+        // 7. Unisex Baseball Cap (Simple) — no shipping (hat)
         [
             'price' => 34.99,
-            'type' => 'variable',
+            'type' => 'simple',
             'title' => 'Unisex Baseball Cap',
             'slug' => 'unisex-baseball-cap',
             'content' => '<p>Classic structured baseball cap with embroidered eyelets and adjustable strap. Pre-curved visor provides shade without blocking vision.</p><ul><li>100% cotton twill</li><li>Adjustable snapback closure</li><li>Embroidered eyelets for ventilation</li><li>Pre-curved visor</li><li>One size fits most</li></ul>',
             'description' => 'Classic structured cotton cap with adjustable snapback and pre-curved visor. Breathable and comfortable for daily wear.',
             'categories' => ['accessories', 'hats-caps'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'NorthPeak'],
+                ['code' => 'gender', 'value' => 'Unisex'],
+                ['code' => 'material', 'value' => 'Cotton'],
+                ['code' => 'fit', 'value' => 'One Size'],
+                ['code' => 'closure', 'value' => 'Snapback'],
+            ],
             'variants' => [
                 [
                     'sku' => 'UBC-BLK-OS',
                     'barcode' => '8901234560073',
                     'price' => 34.99,
                     'is_default' => true,
-                    'option_values' => ['color' => 'black'],
-                ],
-                [
-                    'sku' => 'UBC-NAVY-OS',
-                    'price' => 34.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'navy-blue'],
-                ],
-                [
-                    'sku' => 'UBC-GRY-OS',
-                    'price' => 34.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'gray'],
+                    'option_values' => [],
                 ],
             ],
         ],
@@ -706,6 +848,15 @@ return [
             'content' => '<p>Chic leather ankle boots with a low block heel. Side zipper for easy on/off and cushioned insole for comfort. Versatile enough for office or weekend wear.</p><ul><li>Genuine leather upper</li><li>2-inch block heel</li><li>Side zipper closure</li><li>Rubber outsole for traction</li><li>Padded footbed</li></ul>',
             'description' => 'Genuine leather ankle boots with 2-inch block heel and side zipper. Comfortable cushioned insole for all-day wear.',
             'categories' => ['shoes', 'boots'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'StepWell'],
+                ['code' => 'gender', 'value' => 'Women'],
+                ['code' => 'material', 'value' => 'Leather'],
+                ['code' => 'closure', 'value' => 'Zip'],
+                ['code' => 'sole', 'value' => 'Block Heel'],
+                ['code' => 'insole', 'value' => 'Cushioned'],
+                ['code' => 'heel_height', 'value' => 2],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '1.00',
@@ -765,6 +916,12 @@ return [
             'content' => '<p>Genuine leather belt with classic pin buckle. Available in multiple sizes and colors. Durable construction with reinforced stitching.</p><ul><li>100% genuine leather</li><li>Polished brass buckle</li><li>5 holes for adjustability</li><li>Strap width: 1.25 inches</li><li>Spot clean only</li></ul>',
             'description' => 'Genuine leather belt with polished brass buckle. Durable and classic design for everyday wear.',
             'categories' => ['accessories', 'belts'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'ClassicCo'],
+                ['code' => 'gender', 'value' => 'Men'],
+                ['code' => 'material', 'value' => 'Leather'],
+                ['code' => 'closure', 'value' => 'Buckle'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.15',
@@ -815,15 +972,21 @@ return [
             ],
         ],
 
-        // 10. Women's Crossbody Bag (Variable)
+        // 10. Women's Crossbody Bag (Simple)
         [
             'price' => 69.99,
-            'type' => 'variable',
+            'type' => 'simple',
             'title' => 'Women\'s Crossbody Bag',
             'slug' => 'womens-crossbody-bag',
             'content' => '<p>Stylish vegan leather crossbody bag perfect for daily essentials. Adjustable strap and multiple compartments for organization.</p><ul><li>Vegan leather exterior</li><li>Polyester lining</li><li>Adjustable strap (20-25 inches)</li><li>Main zip compartment + front pocket</li><li>Interior card slots</li></ul>',
             'description' => 'Vegan leather crossbody bag with adjustable strap and multiple compartments. Compact yet spacious for daily essentials.',
             'categories' => ['bags-luggage', 'handbags-totes'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'CarryAll'],
+                ['code' => 'gender', 'value' => 'Women'],
+                ['code' => 'material', 'value' => 'Vegan Leather'],
+                ['code' => 'closure', 'value' => 'Zip'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.40',
@@ -839,38 +1002,25 @@ return [
                     'barcode' => '8901234560103',
                     'price' => 69.99,
                     'is_default' => true,
-                    'option_values' => ['color' => 'black'],
-                ],
-                [
-                    'sku' => 'WCB-TAN-OS',
-                    'price' => 69.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'tan'],
-                ],
-                [
-                    'sku' => 'WCB-COG-OS',
-                    'price' => 69.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'camel'],
-                ],
-                [
-                    'sku' => 'WCB-RED-OS',
-                    'price' => 69.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'red'],
+                    'option_values' => [],
                 ],
             ],
         ],
 
-        // 11. Unisex Polarized Sunglasses (Variable)
+        // 11. Unisex Polarized Sunglasses (Simple)
         [
             'price' => 44.99,
-            'type' => 'variable',
+            'type' => 'simple',
             'title' => 'Unisex Polarized Sunglasses',
             'slug' => 'unisex-polarized-sunglasses',
             'content' => '<p>Classic wayfarer sunglasses with polarized lenses for UV400 protection. Lightweight frame suitable for all face shapes.</p><ul><li>Polycarbonate polarized lenses</li><li>UV400 protection</li><li>TR90 lightweight frame</li><li>Includes microfiber pouch</li><li>Spring hinges for flexibility</li></ul>',
             'description' => 'Polarized wayfarer sunglasses with UV400 protection. Lightweight frame with spring hinges for all-day comfort.',
             'categories' => ['accessories', 'sunglasses'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'Rialta'],
+                ['code' => 'gender', 'value' => 'Unisex'],
+                ['code' => 'material', 'value' => 'Polycarbonate'],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.10',
@@ -886,19 +1036,7 @@ return [
                     'barcode' => '8901234560110',
                     'price' => 44.99,
                     'is_default' => true,
-                    'option_values' => ['color' => 'black'],
-                ],
-                [
-                    'sku' => 'UPS-TOR-OS',
-                    'price' => 44.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'brown'],
-                ],
-                [
-                    'sku' => 'UPS-MAT-OS',
-                    'price' => 44.99,
-                    'is_default' => false,
-                    'option_values' => ['color' => 'black'],
+                    'option_values' => [],
                 ],
             ],
         ],
@@ -912,6 +1050,16 @@ return [
             'content' => '<p>Performance running shoes with responsive cushioning and breathable mesh upper. Designed for neutral pronation and daily training.</p><ul><li>Engineered mesh upper</li><li>Responsive EVA foam midsole</li><li>Rubber outsole with grip pattern</li><li>Removable foam insole</li><li>Reflective accents for night runs</li></ul>',
             'description' => 'Breathable mesh running shoes with responsive cushioning. Designed for neutral pronation and daily training comfort.',
             'categories' => ['shoes', 'sports-shoes', 'sportswear-activewear'],
+            'attributes' => [
+                ['code' => 'brand', 'value' => 'StepWell'],
+                ['code' => 'gender', 'value' => 'Men'],
+                ['code' => 'material', 'value' => 'Engineered Mesh'],
+                ['code' => 'closure', 'value' => 'Lace-Up'],
+                ['code' => 'sole', 'value' => 'EVA Foam'],
+                ['code' => 'insole', 'value' => 'Removable'],
+                ['code' => 'heel_height', 'value' => 0.8],
+                ['code' => 'breathable', 'value' => true],
+            ],
             'shipping' => [
                 'requires_shipping' => true,
                 'weight' => '0.85',
