@@ -1,0 +1,32 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/media/admin/folders
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "parent_id": 28,
+    "name": "Catalog889"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

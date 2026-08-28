@@ -1,0 +1,35 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/auth/admin/users
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "meysam4@gmail.com",
+    "password": "12345678",
+    "is_active": false,
+    "is_admin": true,
+    "comment": "This user was created manually by Meysam"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

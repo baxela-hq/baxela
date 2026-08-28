@@ -1,0 +1,66 @@
+meta {
+  name: Update
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/setting/admin/settings
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  [
+    {
+      "name": "website_title",
+      "value": "XShop",
+      "translations": [
+        {
+          "language": "en",
+          "value": "XShop"
+        },
+        {
+          "language": "fa",
+          "value": "فروشگاه ایکس"
+        }
+      ]
+    },
+    {
+      "name": "website_description",
+      "value": "Powered by XShop",
+      "translations": [
+        {
+          "language": "en",
+          "value": "Powered by XShop"
+        },
+        {
+          "language": "fa",
+          "value": "قدرت گرفته از ایکسشاپ"
+        }
+      ]
+    },
+    {
+      "name": "language_id",
+      "value": "1"
+    },
+    {
+      "name": "currency_id",
+      "value": "1"
+    }
+  ]
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

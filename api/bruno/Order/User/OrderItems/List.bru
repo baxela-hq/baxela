@@ -1,0 +1,32 @@
+meta {
+  name: List
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/order/user/orders/3/items
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "variant_id": 1,
+    "quantity": 5
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

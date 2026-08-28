@@ -1,0 +1,28 @@
+meta {
+  name: SignUp
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/auth/public/auth/signup
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "meysam4n@gmail.com",
+    "password": "12345678",
+    "password_confirmation": "12345678" 
+  }
+}

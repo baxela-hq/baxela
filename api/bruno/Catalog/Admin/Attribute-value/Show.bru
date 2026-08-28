@@ -1,0 +1,25 @@
+meta {
+  name: Show
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/attributes/2/values/2
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,53 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/core/admin/currencies
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~include: variants,categories
+  ~filter[is_published]: true
+  ~filter[status]: in_stock
+  ~page: 1
+  ~sort: -base_price
+  ~sort: -id
+  ~filter[type]: simple
+  ~filter[categories.id]: 2
+  ~filter[variants.price]: 99
+  ~filter[variants.sku]: 55555
+  ~filter[base_price]: 99.98
+  ~filter[id]: 11
+  ~filter[title]: e
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Product 2",
+    "slug": "product-3",
+    "description": "this is a short description",
+    "content": "<p>This is a long text!</p>",
+    "base_price": "10.10",
+    "type": "simple",
+    "status": "published"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

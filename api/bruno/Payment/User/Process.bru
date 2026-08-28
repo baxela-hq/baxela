@@ -1,0 +1,32 @@
+meta {
+  name: Process
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/v1/payment/user/process
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "order_id": "2",
+    "method": "paypal"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

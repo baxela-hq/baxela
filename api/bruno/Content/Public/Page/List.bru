@@ -1,0 +1,28 @@
+meta {
+  name: List
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/content/public/pages
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+    "title": "Product 2",
+    "slug": "product-3",
+    "description": "this is a short description",
+    "content": "<p>This is a long text!</p>",
+    "base_price": "10.10",
+    "type": "simple",
+    "status": "published"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

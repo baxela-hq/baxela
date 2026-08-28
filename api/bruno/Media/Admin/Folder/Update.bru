@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/media/admin/folders/29
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Catalog333",
+    "parent_id": 27
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

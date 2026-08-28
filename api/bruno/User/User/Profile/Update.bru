@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/user/user/profile
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "first_name": "Meysam 4",
+    "last_name": "Miami"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

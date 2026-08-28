@@ -1,0 +1,36 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/inventory/admin/inventory-stocks
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Page 4",
+    "slug": "page4",
+    "content": "Hello World!",
+    "keywords": "word1, word2",
+    "description": "word1, word2",
+    "status": "published"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

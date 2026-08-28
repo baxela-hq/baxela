@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "XShop",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Update
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/auth/admin/users/6
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "meysamx@gmail.com",
+    "password": "12345678",
+    "is_active": true,
+    "is_admin": true,
+    "comment": "The user was created manually by MeysamX"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,43 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/admin/options/1/values
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "position": 1,
+    "translations": [
+      {
+        "language": "en",
+        "value": "Blue",
+        "slug": "blue"
+      },
+      {
+        "language": "fa",
+        "value": "آبی",
+        "slug": "blue"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,31 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/attribute-groups
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[title]: نمایشگر
+  ~sort: -position
+  ~per_page: 15
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

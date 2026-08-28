@@ -1,0 +1,45 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/categories?per_page=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  per_page: 100
+  @description('position, parent_id')
+  ~sort: -parent_id
+  ~filter[title]: 
+  ~language_id: 1
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Product 2",
+    "slug": "product-3",
+    "description": "this is a short description",
+    "content": "<p>This is a long text!</p>",
+    "base_price": "10.10",
+    "type": "simple",
+    "status": "published"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
