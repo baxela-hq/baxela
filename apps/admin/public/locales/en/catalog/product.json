@@ -14,6 +14,18 @@
       "is_published": {
         "false": "No",
         "true": "Yes"
+      },
+      "weight_unit": {
+        "kg": "Kilogram (kg)",
+        "g": "Gram (g)",
+        "lb": "Pound (lb)",
+        "oz": "Ounce (oz)"
+      },
+      "dimension_unit": {
+        "mm": "Millimeter (mm)",
+        "cm": "Centimeter (cm)",
+        "m": "Meter (m)",
+        "in": "Inch (in)"
       }
     },
     "labels": {
@@ -61,12 +73,24 @@
       "manage_values": "Manage values",
       "ungrouped": "Ungrouped",
       "not_set": "Not set",
-      "remove_attribute": "Remove attribute"
+      "remove_attribute": "Remove attribute",
+      "shipping": "Shipping",
+      "requires_shipping": "Requires Shipping",
+      "weight": "Weight",
+      "weight_unit": "Weight Unit",
+      "package_length": "Length",
+      "package_width": "Width",
+      "package_height": "Height",
+      "dimension_unit": "Dimension Unit"
     },
     "tooltips": {
       "is_published": {
         "active": "When enabled, the product will be visible on the website.",
         "inactive": "When disabled, the product will only be visible in the admin panel."
+      },
+      "requires_shipping": {
+        "active": "When enabled, the product is a physical item and the weight and dimensions below are used for shipping.",
+        "inactive": "When disabled, the product does not require shipment (e.g. digital goods) and the fields below are ignored."
       },
       "is_default": {
         "active": "When enabled, the variant will be selected as default in the website",
@@ -82,7 +106,8 @@
     "help_texts": {
       "is_default": "When enabled, this variant will be selected as the default option on the website.",
       "images": "The first image is the featured photo. Use the arrows to change the order.",
-      "attributes": "Load attributes from a template, add them manually, or mix both — then remove what you don't need. Attributes left without a value are not saved."
+      "attributes": "Load attributes from a template, add them manually, or mix both — then remove what you don't need. Attributes left without a value are not saved.",
+      "shipping": "Set the package weight and dimensions used to calculate shipping costs. Each value needs its unit; leave everything empty when not needed."
     }
   }
 }

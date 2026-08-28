@@ -37,8 +37,9 @@ import { FeatureRoutes, Locales } from './data/routes';
 import { createProduct, fetchOneProduct, updateProduct } from './api/products.api';
 import { fetchCategories } from '@/features/catalog/categories/api/categories.api';
 import { Provider } from './components/provider.tsx';
-import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type ProductPayload, type Product, buildDefaultValues, buildEditValues, serializeAttributeValues } from './data/schema';
+import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type ProductPayload, type Product, buildDefaultValues, buildEditValues, serializeAttributeValues, serializeShipping } from './data/schema';
 import { ProductAttributesTab } from './components/attributes-tab';
+import { ProductShippingTab } from './components/shipping-tab';
 import { type Category } from '../categories/data/schema';
 import { getDefaultLanguage, getDefaultCurrency } from '@/shared/lib/locale.ts';
 import { fetchOptions } from '@/features/catalog/options/api/options.api';
@@ -206,6 +207,7 @@ export function ProductForm() {
     if (field === 'images' || field.startsWith('images')) return 'images';
     if (field === 'categories') return 'categories';
     if (field.startsWith('attribute_values')) return 'attributes';
+    if (field === 'shipping' || field.startsWith('shipping')) return 'shipping';
     if (field === 'status' || field === 'is_published') return 'publish';
     return 'general';
   }
@@ -241,6 +243,9 @@ export function ProductForm() {
         // The backend expects flat rows (multiselect = repeated attribute_id)
         // and rejects rows with an empty value slot.
         attribute_values: serializeAttributeValues(values.attribute_values),
+        // The API requires a fixed shape: every key present, null for unused
+        // values, and a unit only alongside its value(s).
+        shipping: serializeShipping(values.shipping),
       }
       let request: Product
       if (id) {
@@ -566,6 +571,7 @@ export function ProductForm() {
                 <TabsTrigger value="images">{tLabel('images')}</TabsTrigger>
                 <TabsTrigger value="categories">{tLabel('categories')}</TabsTrigger>
                 <TabsTrigger value="attributes">{tLabel('attributes')}</TabsTrigger>
+                <TabsTrigger value="shipping">{tLabel('shipping')}</TabsTrigger>
                 <TabsTrigger value="publish">{tLabel('publish')}</TabsTrigger>
               </TabsList>
               <TabsContent value="general" className="pt-5 pb-5">
@@ -978,6 +984,9 @@ export function ProductForm() {
               </TabsContent>
               <TabsContent value="attributes" className="pt-5 pb-5">
                 <ProductAttributesTab control={form.control} />
+              </TabsContent>
+              <TabsContent value="shipping" className="pt-5 pb-5">
+                <ProductShippingTab control={form.control} />
               </TabsContent>
               <TabsContent value="publish" className="pt-5 pb-5">
 
