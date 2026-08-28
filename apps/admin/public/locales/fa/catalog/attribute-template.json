@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "قالب مشخصه",
+      "attribute_templates": "قالب های مشخصه",
+      "id": "شناسه",
+      "title": "عنوان",
+      "description": "توضیحات",
+      "is_active": "فعال",
+      "position": "موقعیت",
+      "groups": "گروه ها",
+      "groups_count": "تعداد گروه ها",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "فعال",
+        "false": "غیرفعال"
+      }
+    },
+    "help_texts": {
+      "position": "موقعیت این آیتم را مشخص کنید",
+      "groups": "گروه ها را انتخاب و مرتب کنید — ترتیب، چیدمان فرم محصول را تعیین می کند"
+    }
+  }
+}

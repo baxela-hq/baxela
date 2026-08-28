@@ -1,0 +1,30 @@
+{
+  "messages": {
+    "success": {
+      "updated": "تنظیمات باموفقیت بروزرسانی شد"
+    }
+  },
+  "form": {
+    "labels": {
+      "setting": "تنظیم",
+      "settings": "تنظیمات",
+      "id": "شناسه",
+      "name": "نام",
+      "value": "مقدار"
+    },
+    "statuses": {
+      "name": {
+        "website_title": "عنوان وبسایت",
+        "website_description": "توضیحات وبسایت",
+        "website_keywords": "کلمات کلیدی وبسایت"
+      }
+    },
+    "tooltips": {
+      "name": {
+        "website_title": "عنوان صفحه اصلی",
+        "website_description": "توضیحات صفحه اصلی که در سئو کاربرد دارد",
+        "website_keywords": "کلمات کلیدی صفحه اصلی که در سئو کاربرد دارد"
+      }
+    }
+  }
+}

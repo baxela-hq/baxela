@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "attribute_group": "گروه مشخصه",
+      "attribute_groups": "گروه های مشخصه",
+      "attributes": "مشخصه ها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "position": "موقعیت",
+      "attributes_count": "تعداد مشخصه ها",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "help_texts": {
+      "position": "موقعیت این آیتم را مشخص کنید"
+    }
+  }
+}

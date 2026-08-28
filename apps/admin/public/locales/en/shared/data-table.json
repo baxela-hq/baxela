@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "View",
+    "toggle-columns": "Toggle columns"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "Warning",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "delete_item": "Delete Item",
+      "delete_confirmation": "Are you sure you want to delete this item",
+      "enter_to_confirm": "Enter {{word}} to confirm deletion.",
+      "operation_warning": "Please be careful, this operation can not be rolled back."
+    },
+    "bulk": {
+      "toolbar-aria": "Bulk actions for {{selectedCount}} selected {{name}}",
+      "toolbar_available": "Bulk actions toolbar is available.",
+      "clear-selection": "Clear selection",
+      "selected": "selected"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "Delete Selected Items",
+      "delete_items_x": "Delete {{n}} {{name}}",
+      "deleted_items_x": "Deleted {{n}} {{name}}",
+      "deleted": "deleted",
+      "deleting-items": "Deleting Items ...",
+      "delete_confirmation": "Are you sure you want to delete the selected items?",
+      "action_warning": "This action cannot be undone.",
+      "confirm_by_typing": "Confirm by typing",
+      "type_to_confirm": "Please type {{word}} to confirm."
+    }
+  },
+  "toolbar": {
+    "reset": "Reset",
+    "filter": "Search in {{name}}..."
+  },
+  "filter": {
+    "clear-filters": "Clear filters"
+  },
+  "columns": {
+    "aria-select-all": "Select All",
+    "aria-select-row": "Select Row"
+  },
+  "shared": {
+    "item": "Item",
+    "items": "Items"
+  },
+  "pagination": {
+    "current_status": "Page {{currentPage}} of {{totalPages}}",
+    "page": "Page",
+    "rows-per-page": "Rows per page",
+    "go-to-page": "Go to page",
+    "go-first-page": "Go to first page",
+    "go-last-page": "Go to last page",
+    "go-next-page": "Go to next page",
+    "go-previous-page": "Go to previous page"
+  }
+}

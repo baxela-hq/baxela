@@ -1,0 +1,90 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "{{entity}} List",
+      "subtitle": "View and manage all {{entity}}"
+    },
+    "form": {
+      "title_create": "Create a {{entity}}",
+      "title_edit": "Edit the {{entity}} #{{id}}",
+      "subtitle": "Please fill in the details below"
+    },
+    "show": {
+      "title": "View {{entity}} #{{id}} ",
+      "subtitle": "View all details"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "The {{name}} was {{action}} successfully.",
+      "record": {
+        "created": "The {{name}} was created successfully.",
+        "updated": "The {{name}} was updated successfully.",
+        "deleted": "The {{name}} was deleted successfully.",
+        "deleted_general": "The Item was deleted successfully."
+      },
+      "upload_general": "the file was uploaded successfully"
+    },
+    "error": {
+      "default": "An error occurred during the {{action}} operation.",
+      "general": "Something went wrong. Please try again later.",
+      "api": "Failed to fetch data. Please check your connection.",
+      "validation": "Please check the provided information for errors.",
+      "invalid_name": "The name contains characters that are not allowed.",
+      "record": {
+        "not_found": "The requested record was not found.",
+        "already_exists": "A record with this identifier already exists."
+      }
+    },
+    "info": {
+      "loading": "Loading...",
+      "processing": "Processing your request..."
+    },
+    "warning": {
+      "session_timeout": "Your session will expire soon. Please save your work."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "Record",
+      "item": "Item",
+      "items": "Items",
+      "yes": "Yes",
+      "no": "No",
+      "active": "Active",
+      "inactive": "Inactive",
+      "id": "ID",
+      "image": "Image",
+      "images": "Images",
+      "main": "Main"
+    },
+    "actions": {
+      "ok": "Ok",
+      "confirm": "Confirm",
+      "create": "Create",
+      "import": "Import",
+      "export": "Export",
+      "download": "Download",
+      "update": "Update",
+      "delete": "Delete",
+      "edit": "Edit",
+      "show_details": "Show Details",
+      "remove": "Remove",
+      "save": "Save",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "close": "Close",
+      "add": "Add",
+      "add_item": "Add Item",
+      "remove_item": "Remove Item"
+    },
+    "placeholders": {
+      "input": "Enter a value here",
+      "select": "Select an option",
+      "textarea": "Write here"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}

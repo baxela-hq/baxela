@@ -1,0 +1,58 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "catalog": "Catalog",
+    "products": "Products",
+    "categories": "Categories",
+    "options": "Options",
+    "attributes": "Attributes",
+    "settings": "Settings",
+    "content": "Content",
+    "pages": "Pages",
+    "media": "Media",
+    "order": "Order",
+    "orders": "Orders",
+    "modules": "Modules",
+    "tasks": "Tasks",
+    "apps": "Apps",
+    "chats": "Chats",
+    "users": "Users",
+    "general": "general",
+    "other": "other",
+    "profile": "Profile",
+    "account": "Account",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "display": "Display",
+    "help-center": "Help Center",
+    "errors": "Errors",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "not-found": "Not Found",
+    "internal-server-error": "Internal Server Error",
+    "maintenance-error": "Maintenance Error"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "Sign out",
+      "body": "Are you sure you want to sign out? You will need to sign in again to access your account."
+    },
+    "cancel": "Cancel"
+  },
+  "toolbar": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "upgrade-to-pro": "Upgrade to Pro",
+    "theme": {
+      "label": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "search": {
+    "placeholder": "Search...",
+    "command_input": "Type a command or search..."
+  }
+}

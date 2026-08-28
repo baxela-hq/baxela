@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "value": "Value",
+      "values": "Values",
+      "options": "Options",
+      "id": "ID",
+      "title": "Title",
+      "slug": "Slug",
+      "position": "Position",
+      "description": "Description",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "position": "Enter your item position"
+    }
+  }
+}

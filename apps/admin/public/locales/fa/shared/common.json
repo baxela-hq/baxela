@@ -1,0 +1,90 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "لیست {{entity}}",
+      "subtitle": "مشاهده و مدیریت تمام {{entity}}"
+    },
+    "form": {
+      "title_create": "ایجاد یک {{entity}}",
+      "title_edit": "ویرایش {{entity}} #{{id}}",
+      "subtitle": "لطفاً جزئیات زیر را پر کنید"
+    },
+    "show": {
+      "title": "نمایش {{entity}} #{{id}} ",
+      "subtitle": "نمایش تمام جزئیات"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "{{name}} با موفقیت {{action}} شد.",
+      "record": {
+        "created": "{{name}} با موفقیت ایجاد شد.",
+        "updated": "{{name}} با موفقیت به‌روزرسانی شد.",
+        "deleted": "{{name}} با موفقیت حذف شد.",
+        "deleted_general": "مورد با موفقیت حذف شد."
+      },
+      "upload_general": "فایل با موفقیت آپلود شد"
+    },
+    "error": {
+      "default": "یک خطا در حین عملیات {{action}} رخ داد.",
+      "general": "چیزی اشتباه پیش رفت. لطفاً بعداً دوباره امتحان کنید.",
+      "api": "گرفتن داده‌ها ناموفق بود. لطفاً اتصال خود را بررسی کنید.",
+      "validation": "لطفاً اطلاعات ارائه شده را برای خطاها بررسی کنید.",
+      "invalid_name": "نام شامل کاراکترهای غیرمجاز است.",
+      "record": {
+        "not_found": "سابقه درخواستی پیدا نشد.",
+        "already_exists": "سابقه‌ای با این شناسه در حال حاضر وجود دارد."
+      }
+    },
+    "info": {
+      "loading": "در حال بارگذاری...",
+      "processing": "در حال پردازش درخواست شما..."
+    },
+    "warning": {
+      "session_timeout": "جلسه شما به زودی منقضی خواهد شد. لطفاً کار خود را ذخیره کنید."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "سابقه",
+      "item": "آیتم",
+      "items": "آیتم ها",
+      "yes": "بله",
+      "no": "خیر",
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "id": "شناسه",
+      "image": "تصویر",
+      "images": "تصاویر",
+      "main": "اصلی"
+    },
+    "actions": {
+      "ok": "باشه",
+      "confirm": "تأیید",
+      "create": "ایجاد",
+      "import": "وارد کردن",
+      "export": "خروجی",
+      "download": "دانلود",
+      "update": "به‌روزرسانی",
+      "delete": "حذف",
+      "edit": "ویرایش",
+      "show_details": "نمایش جزئیات",
+      "remove": "حذف",
+      "save": "ذخیره",
+      "submit": "ارسال",
+      "cancel": "لغو",
+      "close": "بستن",
+      "add": "اضافه کردن",
+      "add_item": "اضافه کردن آیتم",
+      "remove_item": "حذف آیتم"
+    },
+    "placeholders": {
+      "input": "مقداری وارد کنید",
+      "select": "یک گزینه انتخاب کنید",
+      "textarea": "اینجا بنویسید"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}
