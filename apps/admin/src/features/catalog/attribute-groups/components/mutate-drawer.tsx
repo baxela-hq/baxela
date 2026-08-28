@@ -165,12 +165,12 @@ export function MutateDrawer({
           </form>
         </Form>
         <SheetFooter className='gap-2'>
-          <SheetClose asChild>
-            <Button variant='outline'>{tAction('close')}</Button>
-          </SheetClose>
           <Button form='attribute-groups-form' type='submit'>
             {tAction(isUpdate ? 'save' : 'submit')}
           </Button>
+          <SheetClose asChild>
+            <Button variant='outline'>{tAction('close')}</Button>
+          </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
