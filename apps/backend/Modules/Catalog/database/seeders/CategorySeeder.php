@@ -17,57 +17,98 @@ class CategorySeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
 
+    /** @var array<string, int|null> */
+    private array $languageIds = [];
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
-        //        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
-        $langs = ['en'];
         $moduleKey = Module::NAME_LOWER.'::seeder.categories';
 
+        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
+
+        $masterTree = [];
+        $data = [];
         foreach ($langs as $lang) {
-
-            $categories = Lang::get($moduleKey, [], $lang);
-
-            CategoryTranslation::query()->delete();
-            Category::query()->delete();
-
-            $this->generate($categories);
+            $rows = Lang::get($moduleKey, [], $lang) ?? [];
+            $masterTree[$lang] = $rows;
+            $data[$lang] = $this->flatten($rows);
         }
 
+        $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
+        $categories = $masterTree[$masterLang];
+
+        CategoryTranslation::query()->delete();
+        Category::query()->delete();
+
+        $this->generate($categories, $data, $langs, null);
     }
 
     /**
-     * @param  array{title: string, slug: string, children: array}  $categories
+     * Collapse the nested category tree into a slug => translations lookup.
+     *
+     * @param  array<string, array{translations: array, children?: array}>  $nodes
+     * @return array<string, array<string, array{translations: array, children?: array}>>
      */
-    private function generate(array $categories, ?int $parentId = null): void
+    private function flatten(array $nodes, ?array $carry = null): array
     {
-        $languageId = $this->coreGateway->getLanguageIdByCode(App::currentLocale());
+        $carry ??= [];
 
-        if (is_null($languageId)) {
-            return;
+        foreach ($nodes as $slug => $node) {
+            $carry[$slug] = $node;
+
+            if (isset($node['children'])) {
+                $carry = $this->flatten($node['children'], $carry);
+            }
         }
 
-        /* @var array{title: string, slug: string, children: array} $category */
+        return $carry;
+    }
+
+    /**
+     * @param  array<string, array{translations: array, children?: array}>  $nodes
+     * @param  array<string, array<string, array{translations: array, children?: array}>>  $data
+     * @param  array<int, string>  $langs
+     */
+    private function generate(array $nodes, array $data, array $langs, ?int $parentId): void
+    {
         $i = 1;
-        foreach ($categories as $category) {
-            $catModel = Category::query()->create([
+
+        foreach ($nodes as $slug => $node) {
+            $category = Category::query()->create([
                 CategorySchema::PARENT_ID => $parentId,
                 CategorySchema::POSITION => $i,
             ]);
-            $id = $catModel->{CategorySchema::ID};
-            CategoryTranslation::query()->create([
-                CTSchema::CATEGORY_ID => $id,
-                CTSchema::LANGUAGE_ID => $languageId,
-                CTSchema::TITLE => $category[CTSchema::TITLE],
-                CTSchema::SLUG => $category[CTSchema::SLUG],
-            ]);
-            if (count($category['children'])) {
-                $this->generate($category['children'], $id);
+            $categoryId = $category->{CategorySchema::ID};
+
+            foreach ($langs as $lang) {
+                foreach ($data[$lang][$slug]['translations'] ?? [] as $translation) {
+                    CategoryTranslation::query()->create([
+                        CTSchema::CATEGORY_ID => $categoryId,
+                        CTSchema::LANGUAGE_ID => $this->languageId($lang),
+                        CTSchema::TITLE => $translation[CTSchema::TITLE],
+                        CTSchema::SLUG => $translation[CTSchema::SLUG] ?? $slug,
+                        CTSchema::DESCRIPTION => $translation[CTSchema::DESCRIPTION] ?? null,
+                    ]);
+                }
+            }
+
+            if (count($node['children'] ?? [])) {
+                $this->generate($node['children'], $data, $langs, $categoryId);
             }
             $i++;
         }
+    }
+
+    private function languageId(string $code): ?int
+    {
+        if (! array_key_exists($code, $this->languageIds)) {
+            $this->languageIds[$code] = $this->coreGateway->getLanguageIdByCode($code);
+        }
+
+        return $this->languageIds[$code];
     }
 }
