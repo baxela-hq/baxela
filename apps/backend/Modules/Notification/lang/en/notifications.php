@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'database' => [
+    'en' => [
         'auth' => [
             'user' => [
                 'user' => [
