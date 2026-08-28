@@ -15,6 +15,13 @@ export const STATUSES = [
 
 export const TYPES = ['simple', 'variable']
 
+export const WEIGHT_UNITS = ['kg', 'g', 'lb', 'oz'] as const
+
+export const DIMENSION_UNITS = ['mm', 'cm', 'm', 'in'] as const
+
+// decimal:12,2 columns — the API sends/receives these as strings ("1.20")
+const DECIMAL_12_2_PATTERN = /^\d{1,12}(\.\d{1,2})?$/
+
 export const IMAGE_COLLECTION = 'photos';
 
 export const productImageSchema = z.object({
@@ -77,6 +84,17 @@ const productAttributeRowSchema = z.object({
 });
 type ProductAttributeRow = z.infer<typeof productAttributeRowSchema>
 
+const productShippingSchema = z.object({
+  requires_shipping: z.boolean(),
+  weight: z.string().nullable(),
+  weight_unit: z.enum(WEIGHT_UNITS).nullable(),
+  package_length: z.string().nullable(),
+  package_width: z.string().nullable(),
+  package_height: z.string().nullable(),
+  dimension_unit: z.enum(DIMENSION_UNITS).nullable(),
+})
+type ProductShipping = z.infer<typeof productShippingSchema>
+
 const _productSchema = z.object({
   id: z.number(),
   translations: z.array(translationSchema),
@@ -87,6 +105,7 @@ const _productSchema = z.object({
   variants: z.array(variantSchema),
   images: z.array(productImageSchema).optional(),
   attributeValues: z.array(productAttributeRowSchema).optional(),
+  shipping: productShippingSchema.nullish(),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -106,6 +125,27 @@ const productAttributeValueFormSchema = z.object({
 });
 export type ProductAttributeValueEntry = z.infer<typeof productAttributeValueFormSchema>
 
+const shippingFormSchema = z.object({
+  requires_shipping: z.boolean(),
+  weight: z.string().nullable(),
+  weight_unit: z.enum(WEIGHT_UNITS).nullable(),
+  package_length: z.string().nullable(),
+  package_width: z.string().nullable(),
+  package_height: z.string().nullable(),
+  dimension_unit: z.enum(DIMENSION_UNITS).nullable(),
+})
+type ProductShippingForm = z.infer<typeof shippingFormSchema>
+
+const defaultShipping: ProductShippingForm = {
+  requires_shipping: true,
+  weight: null,
+  weight_unit: null,
+  package_length: null,
+  package_width: null,
+  package_height: null,
+  dimension_unit: null,
+}
+
 export const formSchema = z.object({
   type: z.enum(TYPES),
   status: z.enum(STATUSES),
@@ -117,6 +157,7 @@ export const formSchema = z.object({
   images: z.array(productImageSchema),
   attribute_values: z.array(productAttributeValueFormSchema),
   translations: z.array(translationSchema),
+  shipping: shippingFormSchema,
 }).superRefine((data, ctx) => {
   if (data.type === 'variable') {
     data.variants.forEach((variant, index) => {
@@ -133,7 +174,7 @@ export const formSchema = z.object({
     if (
       entry.data_type === 'number' &&
       entry.number_value &&
-      !/^\d{1,12}(\.\d{1,2})?$/.test(entry.number_value)
+      !DECIMAL_12_2_PATTERN.test(entry.number_value)
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -142,6 +183,66 @@ export const formSchema = z.object({
       });
     }
   });
+
+  // Shipping values and units are sent as pairs — a lone value or a lone unit
+  // is rejected by the API with a 422.
+  const shipping = data.shipping;
+  const hasWeight = !!shipping.weight?.trim();
+  const hasDimensions =
+    !!shipping.package_length?.trim() ||
+    !!shipping.package_width?.trim() ||
+    !!shipping.package_height?.trim();
+
+  if (shipping.weight && !DECIMAL_12_2_PATTERN.test(shipping.weight)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['shipping', 'weight'],
+      message: 'The number can have up to 12 digits and 2 decimals like 99.99',
+    });
+  }
+  if (hasWeight && !shipping.weight_unit) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['shipping', 'weight_unit'],
+      message: 'Select the weight unit when a weight is set.',
+    });
+  }
+  if (!hasWeight && shipping.weight_unit) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['shipping', 'weight_unit'],
+      message: 'Clear the unit or enter a weight.',
+    });
+  }
+  (
+    [
+      ['package_length', shipping.package_length],
+      ['package_width', shipping.package_width],
+      ['package_height', shipping.package_height],
+    ] as const
+  ).forEach(([field, value]) => {
+    if (value && !DECIMAL_12_2_PATTERN.test(value)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['shipping', field],
+        message: 'The number can have up to 12 digits and 2 decimals like 99.99',
+      });
+    }
+  });
+  if (hasDimensions && !shipping.dimension_unit) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['shipping', 'dimension_unit'],
+      message: 'Select the dimension unit when a dimension is set.',
+    });
+  }
+  if (!hasDimensions && shipping.dimension_unit) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['shipping', 'dimension_unit'],
+      message: 'Clear the unit or enter a dimension.',
+    });
+  }
 })
 type ProductForm = z.infer<typeof formSchema>
 
@@ -155,9 +256,31 @@ type ProductAttributeValuePayload = {
   boolean_value: boolean | null;
 };
 
-export type ProductPayload = Omit<ProductForm, 'attribute_values'> & {
+export type ProductPayload = Omit<ProductForm, 'attribute_values' | 'shipping'> & {
   attribute_values: ProductAttributeValuePayload[];
+  shipping: ProductShippingPayload;
 };
+
+// The fixed-shape nested object the create/update endpoints expect: every key
+// always present, null for unused values, and a unit only alongside its value(s).
+type ProductShippingPayload = ProductShipping;
+
+export function serializeShipping(shipping: ProductShippingForm): ProductShippingPayload {
+  const weight = shipping.weight?.trim() || null;
+  const package_length = shipping.package_length?.trim() || null;
+  const package_width = shipping.package_width?.trim() || null;
+  const package_height = shipping.package_height?.trim() || null;
+  const hasDimensions = !!(package_length || package_width || package_height);
+  return {
+    requires_shipping: shipping.requires_shipping,
+    weight,
+    weight_unit: weight ? shipping.weight_unit : null,
+    package_length,
+    package_width,
+    package_height,
+    dimension_unit: hasDimensions ? shipping.dimension_unit : null,
+  };
+}
 
 // The backend rejects rows whose typed slot is empty, so unfilled entries are
 // dropped — they only exist as unsaved UI state. Booleans always count as set
@@ -236,6 +359,7 @@ export const defaultValues: ProductForm = {
   images: [] as ProductImage[],
   attribute_values: [] as ProductAttributeValueEntry[],
   translations: [] as TranslationForm[],
+  shipping: { ...defaultShipping },
 }
 
 export function buildDefaultValues(languages: Language[]): ProductForm {
@@ -257,6 +381,7 @@ export function buildDefaultValues(languages: Language[]): ProductForm {
       description: '',
       content: '',
     })),
+    shipping: { ...defaultShipping },
   }
 }
 
@@ -296,6 +421,9 @@ export function buildEditValues(
         url: image.url,
       })),
     attribute_values: buildAttributeValueEntries(currentRow.attributeValues ?? []),
+    shipping: currentRow.shipping
+      ? { ...defaultShipping, ...currentRow.shipping }
+      : { ...defaultShipping },
     translations: base.translations.map((baseTranslation, index) => {
       const existing = translationsMap.get(baseTranslation.language)
       return existing
