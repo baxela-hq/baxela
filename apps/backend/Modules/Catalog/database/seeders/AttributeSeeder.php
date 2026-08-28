@@ -28,100 +28,139 @@ class AttributeSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
 
+    /** @var array<string, int|null> */
+    private array $languageIds = [];
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
-        //        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
-        $langs = ['en'];
 
+        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
+
+        $groupsData = [];
+        $templatesData = [];
         foreach ($langs as $lang) {
-            $groups = Lang::get(Module::NAME_LOWER.'::seeder.attribute_groups', [], $lang);
-            $templates = Lang::get(Module::NAME_LOWER.'::seeder.attribute_templates', [], $lang);
-
-            AttributeValueTranslation::query()->delete();
-            AttributeValue::query()->delete();
-            AttributeTranslation::query()->delete();
-            Attribute::query()->delete();
-            AttributeGroupTranslation::query()->delete();
-            AttributeGroup::query()->delete();
-            AttributeTemplate::query()->delete();
-
-            $this->generate($groups, $templates, $lang);
+            $groupsData[$lang] = Lang::get(Module::NAME_LOWER.'::seeder.attribute_groups', [], $lang) ?? [];
+            $templatesData[$lang] = Lang::get(Module::NAME_LOWER.'::seeder.attribute_templates', [], $lang) ?? [];
         }
+
+        $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
+        $groups = $groupsData[$masterLang];
+        $templates = $templatesData[$masterLang];
+
+        AttributeValueTranslation::query()->delete();
+        AttributeValue::query()->delete();
+        AttributeTranslation::query()->delete();
+        Attribute::query()->delete();
+        AttributeGroupTranslation::query()->delete();
+        AttributeGroup::query()->delete();
+        AttributeTemplate::query()->delete();
+
+        $this->generate($groups, $templates, $groupsData, $langs);
     }
 
     /**
-     * @param  array{title: string, attributes: array}  $groups
-     * @param  array{title: string, description: string, groups: array}  $templates
+     * @param  array<string, array{translations: array, attributes: array}>  $groups
+     * @param  array<string, array{description: string, groups: array}>  $templates
+     * @param  array<string, array<string, array{translations: array, attributes: array}>>  $groupsData
+     * @param  array<int, string>  $langs
      */
-    private function generate(array $groups, array $templates, string $lang): void
+    private function generate(array $groups, array $templates, array $groupsData, array $langs): void
     {
-        $languageId = $this->coreGateway->getLanguageIdByCode($lang);
-
-        if (is_null($languageId)) {
-            return;
-        }
-
         $groupIds = [];
 
-        foreach ($groups as $i => $group) {
+        $i = 1;
+        foreach ($groups as $groupKey => $group) {
             $attributeGroup = AttributeGroup::query()->create([
-                AttributeGroupSchema::POSITION => $i + 1,
+                AttributeGroupSchema::POSITION => $i,
             ]);
-            $groupIds[$group[AGTSchema::TITLE]] = $attributeGroup->{AttributeGroupSchema::ID};
+            $groupId = $attributeGroup->{AttributeGroupSchema::ID};
+            $groupIds[$groupKey] = $groupId;
 
-            AttributeGroupTranslation::query()->create([
-                AGTSchema::ATTRIBUTE_GROUP_ID => $attributeGroup->{AttributeGroupSchema::ID},
-                AGTSchema::LANGUAGE_ID => $languageId,
-                AGTSchema::TITLE => $group[AGTSchema::TITLE],
-            ]);
-
-            foreach ($group[AttributeGroupSchema::RES_ATTRIBUTES] as $j => $attribute) {
-                $attributeRecord = Attribute::query()->create([
-                    AttributeSchema::GROUP_ID => $attributeGroup->{AttributeGroupSchema::ID},
-                    AttributeSchema::CODE => $attribute[AttributeSchema::CODE],
-                    AttributeSchema::DATA_TYPE => $attribute[AttributeSchema::DATA_TYPE],
-                    AttributeSchema::IS_FILTERABLE => $attribute[AttributeSchema::IS_FILTERABLE],
-                    AttributeSchema::POSITION => $j + 1,
-                ]);
-
-                AttributeTranslation::query()->create([
-                    ATSchema::ATTRIBUTE_ID => $attributeRecord->{AttributeSchema::ID},
-                    ATSchema::LANGUAGE_ID => $languageId,
-                    ATSchema::TITLE => $attribute[ATSchema::TITLE],
-                ]);
-
-                foreach ($attribute[AttributeSchema::RES_VALUES] ?? [] as $k => $value) {
-                    $attributeValue = AttributeValue::query()->create([
-                        AttributeValueSchema::ATTRIBUTE_ID => $attributeRecord->{AttributeSchema::ID},
-                        AttributeValueSchema::POSITION => $k + 1,
-                    ]);
-
-                    AttributeValueTranslation::query()->create([
-                        AVTSchema::ATTRIBUTE_VALUE_ID => $attributeValue->{AttributeValueSchema::ID},
-                        AVTSchema::LANGUAGE_ID => $languageId,
-                        AVTSchema::TITLE => $value[AVTSchema::TITLE],
+            foreach ($langs as $lang) {
+                foreach ($groupsData[$lang][$groupKey]['translations'] ?? [] as $translation) {
+                    AttributeGroupTranslation::query()->create([
+                        AGTSchema::ATTRIBUTE_GROUP_ID => $groupId,
+                        AGTSchema::LANGUAGE_ID => $this->languageId($lang),
+                        AGTSchema::TITLE => $translation[AGTSchema::TITLE],
                     ]);
                 }
             }
+
+            $j = 1;
+            foreach ($group[AttributeGroupSchema::RES_ATTRIBUTES] as $code => $attribute) {
+                $attributeRecord = Attribute::query()->create([
+                    AttributeSchema::GROUP_ID => $groupId,
+                    AttributeSchema::CODE => $code,
+                    AttributeSchema::DATA_TYPE => $attribute[AttributeSchema::DATA_TYPE],
+                    AttributeSchema::IS_FILTERABLE => $attribute[AttributeSchema::IS_FILTERABLE],
+                    AttributeSchema::POSITION => $j,
+                ]);
+                $attributeId = $attributeRecord->{AttributeSchema::ID};
+
+                foreach ($langs as $lang) {
+                    foreach ($groupsData[$lang][$groupKey]['attributes'][$code]['translations'] ?? [] as $translation) {
+                        AttributeTranslation::query()->create([
+                            ATSchema::ATTRIBUTE_ID => $attributeId,
+                            ATSchema::LANGUAGE_ID => $this->languageId($lang),
+                            ATSchema::TITLE => $translation[ATSchema::TITLE],
+                        ]);
+                    }
+                }
+
+                $k = 1;
+                foreach (array_keys($attribute[AttributeSchema::RES_VALUES] ?? []) as $valueKey) {
+                    $attributeValue = AttributeValue::query()->create([
+                        AttributeValueSchema::ATTRIBUTE_ID => $attributeId,
+                        AttributeValueSchema::POSITION => $k,
+                    ]);
+                    $attributeValueId = $attributeValue->{AttributeValueSchema::ID};
+
+                    foreach ($langs as $lang) {
+                        foreach ($groupsData[$lang][$groupKey]['attributes'][$code]['values'][$valueKey]['translations'] ?? [] as $translation) {
+                            AttributeValueTranslation::query()->create([
+                                AVTSchema::ATTRIBUTE_VALUE_ID => $attributeValueId,
+                                AVTSchema::LANGUAGE_ID => $this->languageId($lang),
+                                AVTSchema::TITLE => $translation[AVTSchema::TITLE],
+                            ]);
+                        }
+                    }
+                    $k++;
+                }
+                $j++;
+            }
+            $i++;
         }
 
-        foreach ($templates as $i => $template) {
+        $n = 1;
+        foreach ($templates as $templateKey => $template) {
             $attributeTemplate = AttributeTemplate::query()->create([
-                AttributeTemplateSchema::TITLE => $template[AttributeTemplateSchema::TITLE],
-                AttributeTemplateSchema::DESCRIPTION => $template[AttributeTemplateSchema::DESCRIPTION],
+                AttributeTemplateSchema::TITLE => $templateKey,
+                AttributeTemplateSchema::DESCRIPTION => $template[AttributeTemplateSchema::DESCRIPTION] ?? null,
                 AttributeTemplateSchema::IS_ACTIVE => true,
-                AttributeTemplateSchema::POSITION => $i + 1,
+                AttributeTemplateSchema::POSITION => $n,
             ]);
 
             $attach = [];
-            foreach ($template[AttributeTemplateSchema::RES_GROUPS] as $j => $groupTitle) {
-                $attach[$groupIds[$groupTitle]] = [AttributeTemplateGroupSchema::POSITION => $j + 1];
+            foreach ($template[AttributeTemplateSchema::RES_GROUPS] as $m => $groupTitle) {
+                if (isset($groupIds[$groupTitle])) {
+                    $attach[$groupIds[$groupTitle]] = [AttributeTemplateGroupSchema::POSITION => $m + 1];
+                }
             }
             $attributeTemplate->groups()->attach($attach);
+            $n++;
         }
+    }
+
+    private function languageId(string $code): ?int
+    {
+        if (! array_key_exists($code, $this->languageIds)) {
+            $this->languageIds[$code] = $this->coreGateway->getLanguageIdByCode($code);
+        }
+
+        return $this->languageIds[$code];
     }
 }

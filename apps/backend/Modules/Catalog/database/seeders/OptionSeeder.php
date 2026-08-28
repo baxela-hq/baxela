@@ -9,7 +9,6 @@ use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\OptionTranslation;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\OptionValueTranslation;
-use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema as OTSchema;
@@ -22,71 +21,91 @@ class OptionSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
 
+    /** @var array<string, int|null> */
+    private array $languageIds = [];
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
-        //        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
-        $langs = ['en'];
         $moduleKey = Module::NAME_LOWER.'::seeder.options';
 
+        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
+
+        $data = [];
         foreach ($langs as $lang) {
-
-            $options = Lang::get($moduleKey, [], $lang);
-
-            Option::query()->delete();
-            OptionTranslation::query()->delete();
-            OptionValue::query()->delete();
-            OptionValueTranslation::query()->delete();
-
-            $this->generate($options);
+            $data[$lang] = Lang::get($moduleKey, [], $lang) ?? [];
         }
 
+        $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
+        $options = $data[$masterLang];
+
+        OptionTranslation::query()->delete();
+        OptionValueTranslation::query()->delete();
+        OptionValue::query()->delete();
+        Option::query()->delete();
+
+        $this->generate($options, $data, $langs);
     }
 
     /**
-     * @param  array{title: string, slug: string, children: array}  $options
+     * @param  array<string, array{translations: array, values: array}>  $options
+     * @param  array<string, array<string, array{translations: array, values: array}>>  $data
+     * @param  array<int, string>  $langs
      */
-    private function generate(array $options, ?int $parentId = null): void
+    private function generate(array $options, array $data, array $langs): void
     {
-        $languageId = $this->coreGateway->getLanguageIdByCode(App::currentLocale());
-
-        if (is_null($languageId)) {
-            return;
-        }
-
-        /* @var array{title: string, slug: string, children: array} $option */
         $i = 1;
-        foreach ($options as $option) {
-            $options = Option::query()->create([
+
+        foreach ($options as $slug => $option) {
+            $optionRecord = Option::query()->create([
                 OptionSchema::POSITION => $i,
             ]);
-            $id = $options->{CategorySchema::ID};
-            OptionTranslation::query()->create([
-                OTSchema::OPTION_ID => $id,
-                OTSchema::LANGUAGE_ID => $languageId,
-                OTSchema::TITLE => $option[OTSchema::TITLE],
-                OTSchema::SLUG => $option[OTSchema::SLUG],
-            ]);
-            if (count($option['values'])) {
-                $j = 1;
-                foreach ($option['values'] as $value) {
-                    $optionValue = OptionValue::query()->create([
-                        OVSchema::OPTION_ID => $id,
-                        OVSchema::POSITION => $j,
+            $optionId = $optionRecord->{OptionSchema::ID};
+
+            foreach ($langs as $lang) {
+                foreach ($data[$lang][$slug]['translations'] ?? [] as $translation) {
+                    OptionTranslation::query()->create([
+                        OTSchema::OPTION_ID => $optionId,
+                        OTSchema::LANGUAGE_ID => $this->languageId($lang),
+                        OTSchema::TITLE => $translation[OTSchema::TITLE],
+                        OTSchema::SLUG => $translation[OTSchema::SLUG] ?? $slug,
                     ]);
-                    OptionValueTranslation::query()->create([
-                        OVTSchema::LANGUAGE_ID => $languageId,
-                        OVTSchema::OPTION_VALUE_ID => $optionValue->{OVSchema::ID},
-                        OVTSchema::TITLE => $value[OVTSchema::TITLE],
-                        OVTSchema::SLUG => $value[OVTSchema::SLUG],
-                    ]);
-                    $j++;
                 }
+            }
+
+            $j = 1;
+            foreach (array_keys($option[OptionSchema::RES_VALUES] ?? []) as $valueSlug) {
+                $optionValue = OptionValue::query()->create([
+                    OVSchema::OPTION_ID => $optionId,
+                    OVSchema::POSITION => $j,
+                ]);
+                $optionValueId = $optionValue->{OVSchema::ID};
+
+                foreach ($langs as $lang) {
+                    foreach ($data[$lang][$slug]['values'][$valueSlug]['translations'] ?? [] as $translation) {
+                        OptionValueTranslation::query()->create([
+                            OVTSchema::OPTION_VALUE_ID => $optionValueId,
+                            OVTSchema::LANGUAGE_ID => $this->languageId($lang),
+                            OVTSchema::TITLE => $translation[OVTSchema::TITLE],
+                            OVTSchema::SLUG => $translation[OVTSchema::SLUG] ?? $valueSlug,
+                        ]);
+                    }
+                }
+                $j++;
             }
             $i++;
         }
+    }
+
+    private function languageId(string $code): ?int
+    {
+        if (! array_key_exists($code, $this->languageIds)) {
+            $this->languageIds[$code] = $this->coreGateway->getLanguageIdByCode($code);
+        }
+
+        return $this->languageIds[$code];
     }
 }
