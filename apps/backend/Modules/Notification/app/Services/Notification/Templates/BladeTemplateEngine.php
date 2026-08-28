@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Modules\Notification\Schemas\Module;
 use Modules\Notification\Services\Notification\Contracts\TemplateEngineInterface;
 use Modules\Notification\Services\Notification\DTOs\RenderedTemplate;
+use Throwable;
 
 class BladeTemplateEngine implements TemplateEngineInterface
 {
@@ -14,26 +15,43 @@ class BladeTemplateEngine implements TemplateEngineInterface
 
     public function render(array $variables, string $locale, string $code, string $audience): RenderedTemplate
     {
-        $codeArr = explode('.', $code);
-        $module = $codeArr[0];
-        $entity = $codeArr[1];
-        $action = $codeArr[2];
+        [$module, $entity, $action] = array_pad(explode('.', $code), 3, null);
 
-        $viewPathBase = Module::NAME_LOWER."::notifications.$module.$locale.$audience.$entity.$action";
-        $subjectViewPath = "$viewPathBase.subject";
-        $bodyViewPath = "$viewPathBase.body";
+        foreach ($this->candidateLocales($locale) as $candidate) {
+            $viewPathBase = Module::NAME_LOWER."::notifications.$module.$candidate.$audience.$entity.$action";
+            $subjectViewPath = "$viewPathBase.subject";
+            $bodyViewPath = "$viewPathBase.body";
 
-        $subjectContent = null;
-        $bodyContent = null;
+            if (! $this->view->exists($subjectViewPath) || ! $this->view->exists($bodyViewPath)) {
+                continue;
+            }
 
-        try {
-            $subjectContent = $this->view->make($subjectViewPath, $variables)->render();
-            $bodyContent = $this->view->make($bodyViewPath, $variables)->render();
+            try {
+                $subject = $this->view->make($subjectViewPath, $variables)->render();
+                $body = $this->view->make($bodyViewPath, $variables)->render();
 
-        } catch (\Throwable $th) {
-            Log::error("Error rendering template {$viewPathBase}: ".$th->getMessage());
+                return new RenderedTemplate($subject, $body);
+            } catch (Throwable $th) {
+                Log::error("Error rendering template {$viewPathBase}: ".$th->getMessage());
+            }
         }
 
-        return new RenderedTemplate($subjectContent, $bodyContent);
+        return new RenderedTemplate(null, '');
+    }
+
+    /**
+     * Locale candidates in order of preference: the requested locale first,
+     * then the configured fallback, then English — so a locale for which no
+     * templates are shipped still renders instead of failing the request.
+     *
+     * @return array<int, string>
+     */
+    private function candidateLocales(string $locale): array
+    {
+        return collect([$locale, config('app.fallback_locale'), 'en'])
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 }
