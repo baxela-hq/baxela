@@ -1,0 +1,74 @@
+# Development-only compose file for the backend.
+# Build contexts point at ./apps/backend; per-app env comes from .env at the repo root.
+
+services:
+    app:
+        build:
+            context: ./apps/backend/docker/php
+            dockerfile: Dockerfile
+            args:
+                - WWWUSER=${WWWUSER:-1000}
+                - WWWGROUP=${WWWGROUP:-1000}
+        image: xshop-app
+        container_name: xshop-app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - ./apps/backend:/var/www/html
+        networks:
+            - xshop
+        depends_on:
+            - redis
+            - mysql
+        environment:
+            - WWWUSER=${WWWUSER:-1000}
+            - WWWGROUP=${WWWGROUP:-1000}
+
+    web:
+        image: nginx:stable-bookworm
+        container_name: xshop-web
+        restart: unless-stopped
+        ports:
+            - "${BACKEND_APP_PORT:-8085}:80"
+        volumes:
+            - ./apps/backend:/var/www/html
+            - ./apps/backend/docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - xshop
+        depends_on:
+            - app
+
+    redis:
+        image: redis:7-bookworm
+        container_name: xshop-redis
+        restart: unless-stopped
+        ports:
+            - "${BACKEND_REDIS_PORT:-6378}:6379"
+        volumes:
+            - redis-data:/data
+        networks:
+            - xshop
+
+    mysql:
+        image: mysql:8-debian
+        container_name: xshop-mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${LEGACY_DB_DATABASE:-xshop}
+            MYSQL_USER: ${LEGACY_DB_USERNAME:-xshop}
+            MYSQL_PASSWORD: ${LEGACY_DB_PASSWORD:-password}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
+        ports:
+            - "${BACKEND_MYSQL_PORT:-3308}:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+        networks:
+            - xshop
+
+networks:
+    xshop:
+        driver: bridge
+
+volumes:
+    redis-data:
+    mysql-data:
