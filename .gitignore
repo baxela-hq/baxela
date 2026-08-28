@@ -1,0 +1,21 @@
+# --- Local / editor ---
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+*.iml
+
+# --- Environment ---
+.env
+.env.local
+.env.*.local
+
+# --- Logs / runtime ---
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# --- OS ---
+Thumbs.db
