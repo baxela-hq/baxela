@@ -18,16 +18,17 @@ class SettingRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        if (! $this->exists('*.translations')) {
-            return;
-        }
+        $items = collect($this->input());
 
-        $codes = collect($this->input('*.translations'))
-            ->filter()
-            ->flatten(1)
-            ->pluck('language')
+        $codes = $items
+            ->flatMap(fn ($setting) => $setting[SettingSchema::RES_TRANSLATIONS] ?? [])
+            ->pluck(TSchema::LANGUAGE)
             ->unique()
             ->all();
+
+        if (empty($codes)) {
+            return;
+        }
 
         $this->languageMap = Language::query()
             ->whereIn(LanguageSchema::CODE, $codes)
@@ -38,19 +39,20 @@ class SettingRequest extends FormRequest
             return;
         }
 
-        $settings = collect($this->input())->map(function ($setting) {
-            if (isset($setting['translations']) && is_array($setting['translations'])) {
-                $setting['translations'] = collect($setting['translations'])->map(function ($translation) {
-                    $translation['language_id'] = $this->languageMap[$translation['language']] ?? null;
+        $settings = $items->map(function ($setting) {
+            if (! empty($setting[SettingSchema::RES_TRANSLATIONS])) {
+                $setting[SettingSchema::RES_TRANSLATIONS] = collect($setting[SettingSchema::RES_TRANSLATIONS])
+                    ->map(function ($translation) {
+                        $translation[TSchema::LANGUAGE_ID] = $this->languageMap[$translation[TSchema::LANGUAGE]] ?? null;
 
-                    return $translation;
-                })->all();
+                        return $translation;
+                    })->all();
             }
 
             return $setting;
         })->all();
 
-        $this->merge(['*' => $settings]);
+        $this->replace($settings);
     }
 
     public function rules(): array
@@ -59,7 +61,7 @@ class SettingRequest extends FormRequest
             '*.'.SettingSchema::NAME => ['required', 'string', new Enum(SettingNameEnum::class)],
             '*.'.SettingSchema::VALUE => ['required', 'string'],
             '*.'.SettingSchema::RES_TRANSLATIONS => ['nullable', 'array'],
-            '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::LANGUAGE => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'string', 'distinct', 'size:2',
+            '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::LANGUAGE => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'string',
                 Rule::in(array_keys($this->languageMap))],
             '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::LANGUAGE_ID => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'integer'],
             '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::VALUE => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'string'],
