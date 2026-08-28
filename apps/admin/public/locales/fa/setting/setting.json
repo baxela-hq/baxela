@@ -1,9 +1,4 @@
 {
-  "messages": {
-    "success": {
-      "updated": "تنظیمات باموفقیت بروزرسانی شد"
-    }
-  },
   "form": {
     "labels": {
       "setting": "تنظیم",
@@ -14,16 +9,18 @@
     },
     "statuses": {
       "name": {
-        "website_title": "عنوان وبسایت",
-        "website_description": "توضیحات وبسایت",
-        "website_keywords": "کلمات کلیدی وبسایت"
+        "website_title": "عنوان وب‌سایت",
+        "website_description": "توضیحات وب‌سایت",
+        "language_id": "زبان پیش‌فرض",
+        "currency_id": "ارز پیش‌فرض"
       }
     },
     "tooltips": {
       "name": {
         "website_title": "عنوان صفحه اصلی",
         "website_description": "توضیحات صفحه اصلی که در سئو کاربرد دارد",
-        "website_keywords": "کلمات کلیدی صفحه اصلی که در سئو کاربرد دارد"
+        "language_id": "زبانی که برای نمایش فروشگاه استفاده می‌شود",
+        "currency_id": "ارزی که برای قیمت‌گذاری استفاده می‌شود"
       }
     }
   }

@@ -1,10 +1,5 @@
 {
   "form": {
-    "messages": {
-      "success": {
-        "updated": "Settings were updated successfully"
-      }
-    },
     "labels": {
       "setting": "Setting",
       "settings": "Settings",
@@ -16,14 +11,16 @@
       "name": {
         "website_title": "Website Title",
         "website_description": "Website Description",
-        "website_keywords": "Website Keywords"
+        "language_id": "Default Language",
+        "currency_id": "Default Currency"
       }
     },
     "tooltips": {
       "name": {
-        "website_title": "Title of you home page",
+        "website_title": "Title of your home page",
         "website_description": "Description of your home page which is used for SEO",
-        "website_keywords": "Keywords of your home page which is used for SEO"
+        "language_id": "Language used to display the storefront",
+        "currency_id": "Currency used for pricing"
       }
     }
   }
