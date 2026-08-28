@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "attribute_group": "Attribute Group",
+      "attribute_groups": "Attribute Groups",
+      "attributes": "Attributes",
+      "id": "ID",
+      "title": "Title",
+      "position": "Position",
+      "attributes_count": "Attributes Count",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "position": "Enter your item position"
+    }
+  }
+}

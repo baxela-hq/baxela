@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "value": "مقدار",
+      "values": "مقادیر",
+      "options": "ویژگی‌ها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "slug": "نامک",
+      "position": "موقعیت",
+      "description": "توضیحات",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "help_texts": {
+      "position": "موقعیت این آیتم را مشخص کنید"
+    }
+  }
+}

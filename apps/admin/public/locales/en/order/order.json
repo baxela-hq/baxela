@@ -1,0 +1,52 @@
+{
+  "messages": {
+    "no_items": "No items found for this order"
+  },
+  "form": {
+    "labels": {
+      "order": "Order",
+      "orders": "Orders",
+      "id": "ID",
+      "user_id": "User ID",
+      "status": "Status",
+      "description": "Description",
+      "note": "Note",
+      "total_amount": "Total Amount",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "variant_id": "Variant ID",
+      "product_name_snapshot": "Product name",
+      "quantity": "Quantity",
+      "price_snapshot": "Price Snapshot"
+    },
+    "help_texts": {
+      "description": "The text has been written by the Customer and is not editable",
+      "note": "The text is only visible in the admin panel and is shown by Admins",
+      "status": "The customer will be notified after changing the status"
+    },
+    "statuses": {
+      "status": {
+        "draft": "Draft ",
+        "pending_payment": "Pending Payment",
+        "paid": "Paid",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      }
+    },
+    "tooltips": {
+      "status": {
+        "draft": "Temporary ",
+        "pending_payment": "The Order has been waiting for customer's payment",
+        "paid": "The Order has been paid and need the process starts",
+        "processing": "The Order is processing and need to to be shipped",
+        "shipped": "The Order has been shipped and has not received by customer",
+        "completed": "The Order has been received by customer",
+        "cancelled": "The Order has been cancelled",
+        "refunded": "The Order payment has been refunded"
+      }
+    }
+  }
+}

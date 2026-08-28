@@ -1,0 +1,25 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "پیش نویس",
+        "published": "منتشر شده"
+      }
+    },
+    "labels": {
+      "page": "برگه",
+      "pages": "برگه ها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "slug": "نامک",
+      "content": "محتوا",
+      "description": "توضیحات",
+      "status": "وضعیت",
+      "general": "عمومی",
+      "images": "تصاویر",
+      "publish": "انتشار",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    }
+  }
+}

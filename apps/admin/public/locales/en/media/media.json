@@ -1,0 +1,73 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Media Library",
+      "subtitle": "Upload, organize and manage your files and folders"
+    },
+    "picker": {
+      "title": "Select media",
+      "subtitle": "Browse folders, upload new files or pick an existing one"
+    }
+  },
+  "form": {
+    "labels": {
+      "root": "Media",
+      "folder": "Folder",
+      "folders": "Folders",
+      "file": "File",
+      "files": "Files",
+      "name": "Name",
+      "filename": "Physical filename",
+      "parent_id": "Parent folder",
+      "none": "None (root)",
+      "size": "Size",
+      "type": "Type",
+      "created_at": "Created At",
+      "url": "URL"
+    },
+    "actions": {
+      "upload": "Upload",
+      "new_folder": "New Folder",
+      "open": "Open",
+      "open_menu": "Open menu",
+      "preview": "Preview",
+      "rename_move": "Rename / Move",
+      "copy_url": "Copy URL",
+      "select": "Select",
+      "deselect": "Deselect",
+      "grid_view": "Grid view",
+      "list_view": "List view"
+    },
+    "placeholders": {
+      "search": "Search files and folders...",
+      "name": "Enter folder name",
+      "media_name": "Enter file name"
+    },
+    "help_texts": {
+      "parent_id": "Select a parent folder to nest this one under it, or choose None for a top-level folder.",
+      "folder_id": "Move this file to another folder, or choose None to place it in the root.",
+      "media_name": "Enter the name without the extension — it stays fixed. The physical file \"{{filename}}\" is never changed, so existing URLs keep working."
+    }
+  },
+  "messages": {
+    "success": {
+      "url_copied": "URL copied to clipboard."
+    },
+    "error": {
+      "no_url": "This file has no accessible URL.",
+      "clipboard_insecure": "Clipboard is blocked because this page is not secure (http on a LAN IP/vhost). Open the app via localhost or https.",
+      "file_too_large": "\"{{name}}\" exceeds the server's maximum upload size."
+    },
+    "info": {
+      "drop_files": "Drop files to upload to the current folder",
+      "no_results": "No results.",
+      "empty_folder": "This folder is empty. Drag & drop files here to upload.",
+      "selected_count": "{{count}} selected"
+    },
+    "dialog": {
+      "delete": {
+        "folder_warning_body": "Deleting this folder may also delete all files and sub-folders inside it. This action cannot be undone."
+      }
+    }
+  }
+}

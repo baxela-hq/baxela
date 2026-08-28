@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "نمایش",
+    "toggle-columns": "تغییر ستون‌ها"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "هشدار",
+      "delete": "حذف",
+      "cancel": "انصراف",
+      "delete_item": "حذف آیتم",
+      "delete_confirmation": "آیا مطمئن هستید که می‌خواهید این آیتم را حذف کنید ",
+      "enter_to_confirm": "برای تأیید حذف، {{word}} را وارد کنید.",
+      "operation_warning": "لطفاً مواظب باشید، این عمل قابل برگشت نیست."
+    },
+    "bulk": {
+      "toolbar-aria": "عملیات گروهی برای {{selectedCount}} مورد انتخاب شده {{name}}",
+      "toolbar_available": "نوار ابزار عملیات گروهی در دسترس است.",
+      "clear-selection": "پاک کردن انتخاب",
+      "selected": "انتخاب شده"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "حذف موارد انتخاب شده",
+      "delete_items_x": "حذف {{n}} {{name}}",
+      "deleted_items_x": "{{n}} {{name}} حذف شد",
+      "deleted": "حذف شده",
+      "deleting-items": "در حال حذف موارد ...",
+      "delete_confirmation": "آیا مطمئن هستید که می‌خواهید موارد انتخاب شده را حذف کنید؟",
+      "action_warning": "این عمل قابل برگشت نیست.",
+      "confirm_by_typing": "تأیید با تایپ کردن",
+      "type_to_confirm": "لطفا برای تأیید، {{word}} را تایپ کنید."
+    }
+  },
+  "toolbar": {
+    "reset": "تنظیم مجدد",
+    "filter": "جستجو در {{name}}..."
+  },
+  "filter": {
+    "clear-filters": "پاک کردن فیلترها"
+  },
+  "columns": {
+    "aria-select-all": "انتخاب همه",
+    "aria-select-row": "انتخاب ردیف"
+  },
+  "shared": {
+    "item": "آیتم",
+    "items": "آیتم"
+  },
+  "pagination": {
+    "current_status": "صفحه {{currentPage}} از {{totalPages}}",
+    "page": "صفحه",
+    "rows-per-page": "ردیف‌ها در هر صفحه",
+    "go-to-page": "رفتن به صفحه",
+    "go-first-page": "رفتن به صفحه اول",
+    "go-last-page": "رفتن به صفحه آخر",
+    "go-next-page": "رفتن به صفحه بعد",
+    "go-previous-page": "رفتن به صفحه قبلی"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "Attribute",
+      "attributes": "Attributes",
+      "id": "ID",
+      "title": "Title",
+      "code": "Code",
+      "data_type": "Data Type",
+      "is_filterable": "Filterable",
+      "group": "Group",
+      "position": "Position",
+      "values": "Values",
+      "values_count": "Values Count",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "Text",
+        "number": "Number",
+        "boolean": "Boolean",
+        "select": "Select",
+        "multiselect": "Multiselect"
+      }
+    },
+    "help_texts": {
+      "position": "Enter your item position",
+      "code": "Unique slug-like identifier, e.g. screen_size",
+      "is_filterable": "Use this attribute in storefront filters"
+    }
+  }
+}

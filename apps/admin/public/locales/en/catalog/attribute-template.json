@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "Attribute Template",
+      "attribute_templates": "Attribute Templates",
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "is_active": "Active",
+      "position": "Position",
+      "groups": "Groups",
+      "groups_count": "Groups Count",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Active",
+        "false": "Inactive"
+      }
+    },
+    "help_texts": {
+      "position": "Enter your item position",
+      "groups": "Pick groups and order them — the order defines the product form layout"
+    }
+  }
+}

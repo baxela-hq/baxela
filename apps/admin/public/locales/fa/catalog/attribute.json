@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "مشخصه",
+      "attributes": "مشخصه ها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "code": "کد",
+      "data_type": "نوع داده",
+      "is_filterable": "قابل فیلتر",
+      "group": "گروه",
+      "position": "موقعیت",
+      "values": "مقادیر",
+      "values_count": "تعداد مقادیر",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "متن",
+        "number": "عدد",
+        "boolean": "بولی",
+        "select": "تک انتخابی",
+        "multiselect": "چند انتخابی"
+      }
+    },
+    "help_texts": {
+      "position": "موقعیت این آیتم را مشخص کنید",
+      "code": "شناسه یکتای شبیه نامک، مثال screen_size",
+      "is_filterable": "استفاده از این مشخصه در فیلترهای فروشگاه"
+    }
+  }
+}

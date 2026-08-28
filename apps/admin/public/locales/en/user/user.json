@@ -1,0 +1,31 @@
+{
+  "form": {
+    "labels": {
+      "user": "User",
+      "users": "Users",
+      "id": "ID",
+      "email": "Email",
+      "email_verified_at": "Email Verified At",
+      "password": "Password",
+      "is_active": "Is Active?",
+      "is_admin": "Is Admin?",
+      "comment": "Comment",
+      "created_at": "Signed Up At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "password": "leave it blank, if you don't want to change the user's password",
+      "comment": "Comment admins can leave for the user. (seen only by admins)"
+    },
+    "tooltips": {
+      "is_active": {
+        "active": "When enabled, the user has verified their email.",
+        "inactive": "When disabled, the user has not verified their email yet."
+      },
+      "is_admin": {
+        "active": "When enabled, the user can access the admin panel.",
+        "inactive": "When disabled, the user cannot access the admin panel."
+      }
+    }
+  }
+}

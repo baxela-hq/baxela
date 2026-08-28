@@ -1,0 +1,88 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "discontinued": "Discontinued",
+        "out_of_stock": "Out Of Stock",
+        "in_stock": "In Stock",
+        "inactive": "Inactive"
+      },
+      "type": {
+        "simple": "Simple",
+        "variable": "Variable"
+      },
+      "is_published": {
+        "false": "No",
+        "true": "Yes"
+      }
+    },
+    "labels": {
+      "product": "Product",
+      "products": "Products",
+      "id": "ID",
+      "title": "Title",
+      "slug": "Slug",
+      "content": "Content",
+      "description": "Description",
+      "base_price": "Base Price",
+      "type": "Type",
+      "status": "Status",
+      "is_published": "Is Published",
+      "categories": "Categories",
+      "variants": "Variants",
+      "price": "Price",
+      "sku": "SKU",
+      "quantity": "Quantity",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "general": "General",
+      "images": "Images",
+      "publish": "Publish",
+      "is_default": "Is Default?",
+      "options": "Options",
+      "add_option": "Add Option",
+      "generate": "Generate",
+      "no_options_added": "No options added yet.",
+      "no_more_options": "No more options available.",
+      "select_values_before_generate": "Please select at least one value for each option before generating.",
+      "add_images": "Add Images",
+      "featured_image": "Featured",
+      "move_left": "Move Left",
+      "move_right": "Move Right",
+      "image_preview": "Image Preview",
+      "open_original": "Open Original",
+      "attributes": "Attributes",
+      "load_from_template": "Load from template",
+      "add_attribute": "Add attribute",
+      "no_attributes_added": "No attributes yet. Load a template or add attributes manually.",
+      "no_templates": "No templates available",
+      "no_more_attributes": "No more attributes available",
+      "no_attribute_values": "This attribute has no predefined values.",
+      "manage_values": "Manage values",
+      "ungrouped": "Ungrouped",
+      "not_set": "Not set",
+      "remove_attribute": "Remove attribute"
+    },
+    "tooltips": {
+      "is_published": {
+        "active": "When enabled, the product will be visible on the website.",
+        "inactive": "When disabled, the product will only be visible in the admin panel."
+      },
+      "is_default": {
+        "active": "When enabled, the variant will be selected as default in the website",
+        "inactive": "When disabled, the variant will not be selected as default in the website."
+      },
+      "status": {
+        "in_stock": "Active and available for purchase. Customers can see and buy this product.",
+        "out_of_stock": "Visible on the storefront, but customers cannot add it to their cart. Used when inventory reaches zero.",
+        "inactive": "Hidden from the storefront. Customers cannot see or buy this product, but it remains in your catalog.",
+        "discontinued": "Permanently retired. This product is hidden, cannot be purchased, and will not be restocked."
+      }
+    },
+    "help_texts": {
+      "is_default": "When enabled, this variant will be selected as the default option on the website.",
+      "images": "The first image is the featured photo. Use the arrows to change the order.",
+      "attributes": "Load attributes from a template, add them manually, or mix both — then remove what you don't need. Attributes left without a value are not saved."
+    }
+  }
+}

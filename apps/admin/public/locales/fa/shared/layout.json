@@ -1,0 +1,58 @@
+{
+  "sidebar": {
+    "dashboard": "داشبورد",
+    "catalog": "کاتالوگ",
+    "products": "محصولات",
+    "categories": "دسته بندی ها",
+    "options": "گزینه ها",
+    "attributes": "مشخصه ها",
+    "settings": "تنظیمات",
+    "content": "محتوا",
+    "pages": "برگه ها",
+    "media": "رسانه ها",
+    "order": "سفارش",
+    "orders": "سفارشات",
+    "modules": "ماژول ها",
+    "tasks": "وظایف",
+    "apps": "اپ ها",
+    "chats": "چت ها",
+    "users": "کاربران",
+    "general": "عمومی",
+    "other": "سایر",
+    "profile": "پروفایل",
+    "account": "اکانت",
+    "appearance": "ظاهر",
+    "notifications": "نوتیفیکیشن ها",
+    "display": "نمایش",
+    "help-center": "مرکز راهنمایی",
+    "errors": "خطاها",
+    "unauthorized": "غیرمجاز",
+    "forbidden": "ممنوعه",
+    "not-found": "ناپیدا",
+    "internal-server-error": "خطای سرور داخلی",
+    "maintenance-error": "خطای تعمیر و نگهداری"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "خروج",
+      "body": "آیا مطمئنید که میخواهید از سیستم خارج شوید؟ برای دسترسی به حساب کاربری خود باید دوباره وارد سیستم شوید."
+    },
+    "cancel": "انصراف"
+  },
+  "toolbar": {
+    "profile": "پروفایل",
+    "settings": "تنظیمات",
+    "logout": "خروج",
+    "upgrade-to-pro": "ارتقا به پلن حرفه ای",
+    "theme": {
+      "label": "پوسته",
+      "light": "روشن",
+      "dark": "تیره",
+      "system": "سیستمی"
+    }
+  },
+  "search": {
+    "placeholder": "جستجو...",
+    "command_input": "یک دستور یا جستجو را تایپ کنید..."
+  }
+}
