@@ -15,7 +15,15 @@ api/           # Bruno API collections
 docs/          # Documentation
 ```
 
-Each app keeps its own `AGENTS.md` with app-specific conventions (read the relevant one before touching that app).
+## Agent Guidelines Index
+
+Each app keeps its own `AGENTS.md` with app-specific conventions. Read the relevant one before touching that app:
+
+- `apps/backend/AGENTS.md` — Laravel/backend conventions: module structure, Action/Controller patterns, error handling, tests.
+- `apps/admin/AGENTS.md` — React/TypeScript conventions: feature layout, data tables, i18n, commit tooling.
+- `apps/storefront/AGENTS.md` — not created yet (app is upcoming).
+
+The **Git Conventions** below are monorepo-level and take precedence over per-app `AGENTS.md` sections that define their own commit-scope rules.
 
 ## Git Conventions
 
