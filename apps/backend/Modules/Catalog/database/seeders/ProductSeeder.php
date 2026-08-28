@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 use Modules\Catalog\Actions\Admin\Product\CreateProductAction;
 use Modules\Catalog\Exceptions\Product\CreationFailedException;
+use Modules\Catalog\Models\Attribute;
+use Modules\Catalog\Models\AttributeValueTranslation;
 use Modules\Catalog\Models\CategoryTranslation;
 use Modules\Catalog\Models\OptionValueTranslation;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\Attribute\AttributeSchema;
+use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
+use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
+use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
+use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema as PSTSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
@@ -28,6 +35,12 @@ use Throwable;
 class ProductSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
+
+    /** @var array<string, Attribute|null> */
+    private array $attributes = [];
+
+    /** @var array<int, array<string, int>> */
+    private array $attributeValueIds = [];
 
     /**
      * Run the database seeds.
@@ -114,8 +127,96 @@ class ProductSeeder extends Seeder
                 $payload[ProductSchema::RES_SHIPPING] = $product[ProductSchema::RES_SHIPPING];
             }
 
+            if (isset($product[ProductSchema::RES_ATTRIBUTES])) {
+                $payload[PAVSchema::REQ_ATTRIBUTE_VALUES] = $this->resolveAttributeValues(
+                    $product[ProductSchema::RES_ATTRIBUTES],
+                    $languageId,
+                );
+            }
+
             $service->handle($payload);
 
         }
+    }
+
+    /**
+     * @param  array<int, array{code: string, value: mixed}>  $attributes
+     * @return array<int, array<string, mixed>>
+     */
+    private function resolveAttributeValues(array $attributes, int $languageId): array
+    {
+        $rows = [];
+
+        foreach ($attributes as $item) {
+            $code = $item[AttributeSchema::CODE];
+
+            if (! array_key_exists($code, $this->attributes)) {
+                $this->attributes[$code] = Attribute::query()
+                    ->where(AttributeSchema::CODE, $code)
+                    ->first();
+            }
+
+            $attribute = $this->attributes[$code];
+
+            if (is_null($attribute)) {
+                continue;
+            }
+
+            $row = [
+                PAVSchema::ATTRIBUTE_ID => $attribute->{AttributeSchema::ID},
+                PAVSchema::ATTRIBUTE_VALUE_ID => null,
+                PAVSchema::TEXT_VALUE => null,
+                PAVSchema::NUMBER_VALUE => null,
+                PAVSchema::BOOLEAN_VALUE => null,
+            ];
+
+            switch ($attribute->{AttributeSchema::DATA_TYPE}) {
+                case AttributeTypeEnum::BOOLEAN:
+                    $row[PAVSchema::BOOLEAN_VALUE] = (bool) $item['value'];
+
+                    break;
+
+                case AttributeTypeEnum::NUMBER:
+                    $row[PAVSchema::NUMBER_VALUE] = $item['value'];
+
+                    break;
+
+                case AttributeTypeEnum::SELECT:
+                case AttributeTypeEnum::MULTISELECT:
+                    $row[PAVSchema::ATTRIBUTE_VALUE_ID] = $this->resolveAttributeValueId(
+                        $attribute->{AttributeSchema::ID},
+                        $item['value'],
+                        $languageId,
+                    );
+
+                    break;
+
+                default:
+                    $row[PAVSchema::TEXT_VALUE] = $item['value'];
+
+                    break;
+            }
+
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+
+    private function resolveAttributeValueId(int $attributeId, string $title, int $languageId): ?int
+    {
+        if (! isset($this->attributeValueIds[$attributeId])) {
+            $this->attributeValueIds[$attributeId] = AttributeValueTranslation::query()
+                ->where(AVTSchema::LANGUAGE_ID, $languageId)
+                ->whereIn(AVTSchema::ATTRIBUTE_VALUE_ID, function ($query) use ($attributeId) {
+                    $query->select(AttributeValueSchema::ID)
+                        ->from(AttributeValueSchema::TABLE)
+                        ->where(AttributeValueSchema::ATTRIBUTE_ID, $attributeId);
+                })
+                ->pluck(AVTSchema::ATTRIBUTE_VALUE_ID, AVTSchema::TITLE)
+                ->toArray();
+        }
+
+        return $this->attributeValueIds[$attributeId][$title] ?? null;
     }
 }

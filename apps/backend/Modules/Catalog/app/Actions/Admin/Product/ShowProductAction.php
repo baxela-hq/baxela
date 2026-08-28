@@ -16,6 +16,7 @@ class ShowProductAction extends AbstractProductAction
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_SEO,
+                ProductSchema::RES_SHIPPING,
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.ProductAttributeValueSchema::RES_ATTRIBUTE,
             ])
