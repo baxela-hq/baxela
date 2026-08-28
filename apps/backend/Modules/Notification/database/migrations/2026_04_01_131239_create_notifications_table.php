@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum(NotificationSchema::CODE, NotificationCodeEnum::cases())->index();
             $table->enum(NotificationSchema::AUDIENCE, NotificationAudienceEnum::cases())->index();
             $table->string(NotificationSchema::TITLE);
-            $table->string(NotificationSchema::BODY);
+            $table->string(NotificationSchema::BODY, 500);
             $table->json(NotificationSchema::META)->nullable();
             $table->timestamp(NotificationSchema::READ_AT)->nullable();
             $table->timestamp(NotificationSchema::CREATED_AT);

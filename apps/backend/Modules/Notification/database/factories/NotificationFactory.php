@@ -24,7 +24,7 @@ class NotificationFactory extends Factory
             NotificationSchema::USER_ID => $this->faker->randomDigitNotZero(),
             NotificationSchema::CODE => $this->faker->randomElement(NotificationCodeEnum::cases()),
             NotificationSchema::AUDIENCE => $this->faker->randomElement(NotificationAudienceEnum::cases()),
-            NotificationSchema::TITLE => $this->faker->word(),
+            NotificationSchema::TITLE => $this->faker->word(2),
             NotificationSchema::BODY => $this->faker->paragraph(),
             NotificationSchema::META => null,
             NotificationSchema::READ_AT => null,
