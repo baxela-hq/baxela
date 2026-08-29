@@ -1,17 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { type PaginatedResponse } from '@/shared/types/common.types.ts';
 import { SkeletonWidget } from '@/components/shared/skeleton-widget'
-import { FeatureRoutes, Locales } from './data/routes.ts';
+import { Locales } from './data/routes.ts';
 import { Dialogs } from './components/dialogs.tsx';
 import { PrimaryButtons } from './components/primary-buttons.tsx';
 import { Provider } from './components/provider.tsx';
 import { DataTable } from './components/data-table.tsx';
-import { type AttributeValue } from './data/schema.ts';
-import { fetchAttributeValues } from './api/attribute-values.api.ts'
-import { fetchOneAttribute } from '../attributes/api/attributes.api.ts'
+import { useAttributeValuesList } from './hooks/use-attribute-values';
+import { useOneAttribute } from '../attributes/hooks/use-attributes';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { type Attribute } from '../attributes/data/schema.ts';
 import { getDefaultLanguage } from '@/shared/lib/locale.ts';
 
 const route = getRouteApi('/_authenticated/catalog/attributes/values/$id/')
@@ -27,15 +23,9 @@ export function AttributeValues() {
     plural: tLabel("values")
   };
 
-  const {data, isLoading, isSuccess} = useQuery<PaginatedResponse<AttributeValue>>({
-    queryKey: [FeatureRoutes.CACHE_KEY, id, search ],
-    queryFn: () => fetchAttributeValues(id, search),
-  });
+  const {data, isLoading, isSuccess} = useAttributeValuesList(id, search);
 
-  const {data: attributeData, isSuccess: attributeIsSuccess} = useQuery<Attribute>({
-    queryKey: ['attribute', id ],
-    queryFn: () => fetchOneAttribute(id),
-  });
+  const {data: attributeData, isSuccess: attributeIsSuccess} = useOneAttribute(id);
 
   const languageIndex = attributeIsSuccess && attributeData
     ? (getDefaultLanguage(attributeData.translations) ?? 0)

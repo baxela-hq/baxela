@@ -5,7 +5,6 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useQuery } from '@tanstack/react-query'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import {
@@ -20,13 +19,10 @@ import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
 import { DATA_TYPES, type Attribute } from '../data/schema.ts'
 import { DataTableBulkActions } from './data-table-bulk-actions.tsx'
 import { Columns } from './columns.tsx'
-import { type PaginatedResponse } from '@/shared/types/common.types'
+import { useAttributeGroupOptions } from '../../attribute-groups/hooks/use-attribute-groups'
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes.ts';
-import {
-  fetchAttributeGroups,
-} from '../../attribute-groups/api/attribute-groups.api.ts'
-import { type AttributeGroup } from '../../attribute-groups/data/schema.ts'
+import { type PaginatedResponse } from '@/shared/types/common.types'
 import { getDefaultLanguage } from '@/shared/lib/locale.ts'
 
 type DataTableProps = {
@@ -46,12 +42,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
   const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t: tDataTable } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const { data: groupsData } = useQuery<PaginatedResponse<AttributeGroup>>({
-    queryKey: ['attribute-groups', 'all'],
-    queryFn: () => fetchAttributeGroups({ per_page: 1000 }),
-  })
-
-  const groups = useMemo(() => groupsData?.data ?? [], [groupsData])
+  const groups = useAttributeGroupOptions()
 
   const groupNames = useMemo(() => {
     const names: Record<number, string> = {}

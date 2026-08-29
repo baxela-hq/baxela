@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseAndToastError } from '@/shared/lib/utils';
 import { getDefaultLanguage } from '@/shared/lib/locale';
-import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -13,8 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { createAttribute, updateAttribute } from '../api/attributes.api'
-import { Locales, FeatureRoutes } from '../data/routes'
+import { Locales } from '../data/routes'
 import {
   formSchema,
   DATA_TYPES,
@@ -23,12 +19,9 @@ import {
   buildDefaultValues,
   buildEditValues,
 } from '../data/schema'
-import { fetchAttributeGroups } from '../../attribute-groups/api/attribute-groups.api'
-import { type AttributeGroup } from '../../attribute-groups/data/schema'
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import type { Language } from '@/shared/types/locale.types'
-import type { PaginatedResponse } from '@/shared/types/common.types'
-import { ApiError } from '@/shared/lib/api-error.ts'
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+import { useAttributeGroupOptions } from '../../attribute-groups/hooks/use-attribute-groups'
+import { useSaveAttribute } from '../hooks/use-attribute-mutations'
 
 
 type MutateDrawerProps = {
@@ -43,8 +36,7 @@ export function MutateDrawer({
   currentRow,
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
-  const queryClient = useQueryClient()
-  const { tAction, tMessage, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText, tStatus } = useAppTranslation(Locales.ATTRIBUTE)
 
   const entityName = {
@@ -52,19 +44,11 @@ export function MutateDrawer({
     plural: tLabel("attributes")
   };
 
-  const { data: languages, isLoading: languagesIsLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  })
+  const { data: languages, isLoading: languagesIsLoading } = useLanguages()
 
   const languagesSafe = languages ?? []
 
-  const { data: groupsData } = useQuery<PaginatedResponse<AttributeGroup>>({
-    queryKey: ['attribute-groups', 'all'],
-    queryFn: () => fetchAttributeGroups({ per_page: 1000 }),
-  })
-
-  const groups = groupsData?.data ?? []
+  const groups = useAttributeGroupOptions()
 
   const form = useForm<AttributeForm>({
     resolver: zodResolver(formSchema),
@@ -77,24 +61,18 @@ export function MutateDrawer({
     }
   }, [languages, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSubmit = async (data: AttributeForm) => {
-    try {
-      if (isUpdate){
-        await updateAttribute(currentRow?.id.toString(), data)
-      } else {
-        await createAttribute(data)
+  const saveAttribute = useSaveAttribute()
+
+  const onSubmit = (data: AttributeForm) => {
+    saveAttribute.mutate(
+      { id: currentRow?.id?.toString(), data },
+      {
+        onSuccess: () => {
+          onOpenChange(false)
+          form.reset()
+        },
       }
-      toast.success(tMessage(`success.record.${isUpdate ? 'updated' : 'created'}`, {name: entityName.singular}))
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-      onOpenChange(false)
-      form.reset()
-    } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        parseAndToastError(err)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
-    }
+    )
   }
 
   return (

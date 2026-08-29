@@ -2,16 +2,14 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { useQueryClient } from '@tanstack/react-query'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { type Product } from '../data/schema'
-import { deleteProduct } from '../api/products.api'
+import { useDeleteProduct } from '../hooks/use-product-mutations'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { FeatureRoutes, Locales } from '../data/routes'
+import { Locales } from '../data/routes'
 
 type DeleteDialogProps = {
   open: boolean
@@ -25,23 +23,17 @@ export function DeleteDialog({
   currentRow,
 }: DeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { tMessage, tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
-  const queryClient = useQueryClient()
 
-  const handleDelete = async () => {
+  const deleteProduct = useDeleteProduct()
+
+  const handleDelete = () => {
     if (value.trim() !== currentRow.id.toString()) return
 
     onOpenChange(false)
 
-    try{
-      await deleteProduct(currentRow.id.toString())
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-
-      showSubmittedData(currentRow, tMessage('success.record.deleted_general'))
-    } catch (_err){
-      showSubmittedData(currentRow, tMessage('error.general'))
-    }
+    deleteProduct.mutate(currentRow)
   }
 
   return (

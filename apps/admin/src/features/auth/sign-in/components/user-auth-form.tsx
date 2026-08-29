@@ -1,12 +1,9 @@
-import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { Loader2, LogIn } from 'lucide-react'
-import { toast } from 'sonner'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
-import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,9 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
-import { signIn } from '../api/sign-in.api'
-import { ApiError } from '@/shared/lib/api-error'
-import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility';
+import { useSignIn } from '../hooks/use-sign-in'
 
 const formSchema = z.object({
   email: z.email({
@@ -42,9 +37,7 @@ export function UserAuthForm({
   redirectTo,
   ...props
 }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate()
-  const { setUser, setAccessToken } = useAuthStore()
+  const signIn = useSignIn()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,73 +47,8 @@ export function UserAuthForm({
     },
   })
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-
-    try {
-      const response = await signIn(data);
-
-      // check if the user is admin
-      if (!response.user.is_admin) {
-        toast.error("You're not allowed to see this page")
-      } else {
-        toast.success("You logged in successfully")
-
-        StorageUtility.setItem(StorageKeys.DEFAULT_LANGUAGE, response.settings.language);
-        StorageUtility.setItem(StorageKeys.DEFAULT_CURRENCY, response.settings.currency);
-
-        // Set user and access token
-        setUser({
-          accountNo: 'ACC001',
-          email: response.user.email,
-          role: ['admin'],
-          name: " ", //TODO: set name
-          exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30*24 hours from now
-        })
-        setAccessToken(response.token)
-        // Redirect to the stored location or default to dashboard
-        const targetPath = redirectTo || '/'
-        await navigate({ to: targetPath, replace: true })
-      }
-
-    } catch (err: unknown) {
-
-      if (err instanceof ApiError) {
-        toast.error(err.message)
-      }
-
-    } finally {
-      setIsLoading(false)
-    }
-
-
-
-
-    // toast.promise(sleep(2000), {
-    //   loading: 'Signing in...',
-    //   success: () => {
-    //     setIsLoading(false)
-
-    //     // Mock successful authentication with expiry computed at success time
-    //     const mockUser = {
-    //       accountNo: 'ACC001',
-    //       email: data.email,
-    //       role: ['user'],
-    //       exp: Date.now() + 24 * 60 * 60 * 1000, // 24 hours from now
-    //     }
-
-    //     // Set user and access token
-    //     auth.setUser(mockUser)
-    //     auth.setAccessToken('mock-access-token')
-
-    //     // Redirect to the stored location or default to dashboard
-    //     const targetPath = redirectTo || '/'
-    //     navigate({ to: targetPath, replace: true })
-
-    //     return `Welcome back, ${data.email}!`
-    //   },
-    //   error: 'Error',
-    // })
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    signIn.mutate({ ...data, redirectTo })
   }
 
   return (
@@ -162,8 +90,8 @@ export function UserAuthForm({
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
-          {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
+        <Button className='mt-2' disabled={signIn.isPending}>
+          {signIn.isPending ? <Loader2 className='animate-spin' /> : <LogIn />}
           Sign in
         </Button>
 
@@ -179,10 +107,10 @@ export function UserAuthForm({
         </div>
 
         <div className='grid grid-cols-2 gap-2'>
-          <Button variant='outline' type='button' disabled={isLoading}>
+          <Button variant='outline' type='button' disabled={signIn.isPending}>
             <IconGithub className='h-4 w-4' /> GitHub
           </Button>
-          <Button variant='outline' type='button' disabled={isLoading}>
+          <Button variant='outline' type='button' disabled={signIn.isPending}>
             <IconFacebook className='h-4 w-4' /> Facebook
           </Button>
         </div>

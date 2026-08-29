@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { type PaginatedResponse } from '@/shared/types/common.types.ts';
 import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
@@ -8,12 +6,11 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
 import { ThemeSwitch } from '@/components/theme-switch';
-import { FeatureRoutes, Locales } from './data/routes';
+import { Locales } from './data/routes';
 import { Dialogs } from './components/dialogs.tsx';
 import { Provider } from './components/provider.tsx';
 import { DataTable } from './components/data-table.tsx';
-import { type Order } from './data/schema';
-import { fetchOrders } from './api/orders.api.ts'
+import { useOrdersList } from './hooks/use-orders';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 
 const route = getRouteApi('/_authenticated/order/orders/')
@@ -28,11 +25,7 @@ export function Orders() {
     plural: tLabel("orders")
   };
 
-  const {data, isLoading, isSuccess} = useQuery<PaginatedResponse<Order>>({
-    queryKey: [FeatureRoutes.CACHE_KEY, search ],
-    queryFn: () => fetchOrders(search),
-    // placeholderData: (prev) => prev,
-  });
+  const {data, isLoading, isSuccess} = useOrdersList(search);
 
 
   return (

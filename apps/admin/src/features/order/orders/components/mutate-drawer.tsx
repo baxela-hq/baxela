@@ -1,19 +1,15 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
 import { InfoIcon } from 'lucide-react'
-import { ApiError } from '@/shared/lib/api-error'
-import { parseAndToastError } from '@/shared/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select.tsx'
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, } from '@/components/ui/sheet'
 import { Textarea } from '@/components/ui/textarea'
-import { updateOrder } from '../api/orders.api'
-import { FeatureRoutes, Locales } from '../data/routes'
+import { Locales } from '../data/routes'
 import { formSchema, type OrderForm, type Order, defaultValues, statuses, } from '../data/schema'
+import { useUpdateOrder } from '../hooks/use-order-mutations'
 
 type MutateDrawerProps = {
   open: boolean
@@ -27,8 +23,7 @@ export function MutateDrawer({
   currentRow,
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
-  const queryClient = useQueryClient()
-  const { tAction, tMessage, tPageTitle, tPlaceHolder, } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder, } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText, tTooltip, tStatus } = useAppTranslation(Locales.ORDER)
 
   const entityName = {
@@ -41,27 +36,20 @@ export function MutateDrawer({
     defaultValues: currentRow ?? defaultValues,
   })
 
-  const onSubmit = async (data: OrderForm) => {
+  const updateOrder = useUpdateOrder()
+
+  const onSubmit = (data: OrderForm) => {
     if (!currentRow) return;
 
-    try {
-      await updateOrder(currentRow.id.toString(), data)
-
-      toast.success(
-        tMessage('success.record.updated', { name: entityName.singular })
-      )
-      await queryClient.invalidateQueries({
-        queryKey: [FeatureRoutes.CACHE_KEY],
-      })
-      onOpenChange(false)
-      form.reset()
-    } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        parseAndToastError(err)
-      } else {
-        toast.error(tMessage('error.general'))
+    updateOrder.mutate(
+      { id: currentRow.id.toString(), data },
+      {
+        onSuccess: () => {
+          onOpenChange(false)
+          form.reset()
+        },
       }
-    }
+    )
   }
 
   return (

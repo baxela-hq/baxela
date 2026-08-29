@@ -2,14 +2,10 @@ import { useEffect, useState } from 'react';
 import { type z } from 'zod';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import type { Language } from '@/shared/types/locale.types'
-import { buildHierarchy } from '@/shared/lib/tree';
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
 import { parseAndToastError } from '@/shared/lib/utils';
-import { ApiError } from '@/shared/lib/api-error';
-import { type PaginatedResponse } from '@/shared/types/common.types';
+import { type ApiError } from '@/shared/lib/api-error';
 import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon, XIcon, InfoIcon, ImagePlusIcon, ChevronLeftIcon, ChevronRightIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
@@ -34,47 +30,30 @@ import { cn } from '@/lib/utils';
 import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
 import { type MediaItem, getMediaUrl } from '@/features/media/data/schema';
 import { FeatureRoutes, Locales } from './data/routes';
-import { createProduct, fetchOneProduct, updateProduct } from './api/products.api';
-import { fetchCategories } from '@/features/catalog/categories/api/categories.api';
+import { fetchOneProduct } from './api/products.api';
+import { useCategoryTree } from '@/features/catalog/categories/hooks/use-categories';
+import { useOptionsAll } from '@/features/catalog/options/hooks/use-options';
+import { useSaveProduct } from './hooks/use-product-mutations';
 import { Provider } from './components/provider.tsx';
-import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type ProductPayload, type Product, buildDefaultValues, buildEditValues, serializeAttributeValues, serializeShipping } from './data/schema';
+import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type Product, buildDefaultValues, buildEditValues } from './data/schema';
 import { ProductAttributesTab } from './components/attributes-tab';
 import { ProductShippingTab } from './components/shipping-tab';
-import { type Category } from '../categories/data/schema';
-import { getDefaultLanguage, getDefaultCurrency } from '@/shared/lib/locale.ts';
-import { fetchOptions } from '@/features/catalog/options/api/options.api';
+import { getDefaultCurrency, pickTranslation } from '@/shared/lib/locale.ts';
 import type { Option } from '@/features/catalog/options/data/schema';
 import { fetchOptionValues } from '@/features/catalog/option-values/api/option-values.api';
 import type { OptionValue } from '@/features/catalog/option-values/data/schema';
+import { generateVariants, type MatrixOption } from './data/variant-matrix';
 
 
 
-
-type MatrixValue = { id: number; title: string };
-type MatrixOption = { option: Option; values: MatrixValue[]; selectedIds: number[] };
-
-function cartesian<T>(groups: T[][]): T[][] {
-  return groups.reduce<T[][]>(
-    (acc, combo) => acc.flatMap((prefix) => combo.map((item) => [...prefix, item])),
-    [[]]
-  );
-}
-
-function sanitizeSkuPart(value: string): string {
-  return value
-    .replace(/[^A-Za-z0-9_-]/g, '-')
-    .replace(/-{2,}/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
 
 export function ProductForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [id, setId] = useState<number | null>(null)
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const [currentRow, setCurrentRow] = useState<Product | null>(null)
-  const [categories, setCategories] = useState<(Category & { title: string; depth: number })[]>([]);
-  const [options, setOptions] = useState<Option[]>([]);
+  const categories = useCategoryTree()
+  const options = useOptionsAll()
   const [matrix, setMatrix] = useState<MatrixOption[]>([]);
   const [addOptionValue, setAddOptionValue] = useState('');
   const [activeTab, setActiveTab] = useState('general');
@@ -86,12 +65,11 @@ export function ProductForm() {
     plural: tLabel("products")
   };
 
-  const { data: languages, isLoading: languagesIsLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  });
+  const { data: languages, isLoading: languagesIsLoading } = useLanguages();
 
   const languagesSafe = languages ?? []
+
+  const saveProduct = useSaveProduct()
 
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
@@ -141,23 +119,6 @@ export function ProductForm() {
       }
       fetchData()
     }
-    const fetchData = async () => {
-      const categories: PaginatedResponse<Category> = await fetchCategories({ "per_page": 1000 });
-      const tree = buildHierarchy<Category>(categories.data, (cat) => {
-        const index = getDefaultLanguage(cat.translations);
-        return cat.translations[index ?? 0]?.title ?? '';
-      });
-
-      setCategories(tree)
-    };
-    fetchData();
-
-  }, [])
-
-  useEffect(() => {
-    fetchOptions({ per_page: 1000 })
-      .then((res) => setOptions(res.data))
-      .catch((error) => parseAndToastError(error));
   }, [])
 
   useEffect(() => {
@@ -235,38 +196,16 @@ export function ProductForm() {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
     try {
-      const postRequest: ProductPayload = {
-        ...values,
-        // The array order is the source of truth — positions are re-sequenced
-        // so the first image is always position 1 (featured) after reordering.
-        images: values.images.map((image, index) => ({ ...image, position: index + 1 })),
-        // The backend expects flat rows (multiselect = repeated attribute_id)
-        // and rejects rows with an empty value slot.
-        attribute_values: serializeAttributeValues(values.attribute_values),
-        // The API requires a fixed shape: every key present, null for unused
-        // values, and a unit only alongside its value(s).
-        shipping: serializeShipping(values.shipping),
-      }
-      let request: Product
+      const request = await saveProduct.mutateAsync({ id, values })
       if (id) {
-        request = await updateProduct(id.toString(), postRequest)
         getItem(id)
-
-        toast.success(tMessage('success.record.updated', { name: entityName.singular }))
       } else {
-        request = await createProduct(postRequest)
-        toast.success(tMessage('success.record.created', { name: entityName.singular }))
         const redirectUrl = FeatureRoutes.EDIT.replace('$id', request.id.toString())
         setId(request.id)
         navigate({ to: redirectUrl })
       }
-      queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-    } catch (error) {
-      if (error instanceof ApiError) {
-        parseAndToastError(error)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
+    } catch {
+      // errors are toasted by the mutation hook's onError
     } finally {
       setIsLoading(false)
     }
@@ -297,13 +236,11 @@ export function ProductForm() {
   };
 
   const getOptionTitle = (option: Option) => {
-    const index = getDefaultLanguage(option.translations);
-    return option.translations[index ?? 0]?.title ?? '';
+    return pickTranslation(option.translations)?.title ?? '';
   };
 
   const getValueTitle = (value: OptionValue) => {
-    const index = getDefaultLanguage(value.translations);
-    return value.translations[index ?? 0]?.title ?? '';
+    return pickTranslation(value.translations)?.title ?? '';
   };
 
   const handleAddOption = async (optionId: string) => {
@@ -339,8 +276,7 @@ export function ProductForm() {
 
   const getProductTitle = () => {
     const translations = form.getValues('translations');
-    const index = getDefaultLanguage(translations);
-    return translations?.[index ?? 0]?.title?.trim() ?? '';
+    return pickTranslation(translations ?? [])?.title?.trim() ?? '';
   };
 
   const handleGenerate = () => {
@@ -349,37 +285,7 @@ export function ProductForm() {
       toast.warning(tLabel('select_values_before_generate'));
       return;
     }
-    const title = getProductTitle();
-    const groups = active.map((m) =>
-      m.selectedIds.map((valueId) => {
-        const value = m.values.find((v) => v.id === valueId);
-        return { id: valueId, title: value?.title ?? '' };
-      })
-    );
-    const combos = cartesian(groups);
-    const seen = new Set<string>();
-    const variants = combos.map((combo, index) => {
-      const baseSku = [title, ...combo.map((c) => c.title)]
-        .filter(Boolean)
-        .map(sanitizeSkuPart)
-        .filter(Boolean)
-        .join('-');
-      let sku = baseSku;
-      let suffix = 2;
-      while (seen.has(sku.toLowerCase())) {
-        sku = `${baseSku}-${suffix++}`;
-      }
-      seen.add(sku.toLowerCase());
-      return {
-        sku,
-        price: '',
-        quantity: 0,
-        is_default: index === 0,
-        currency_id: getDefaultCurrency()?.id ?? null,
-        option_value_ids: combo.map((c) => c.id),
-      };
-    });
-    replace(variants);
+    replace(generateVariants(getProductTitle(), matrix, getDefaultCurrency()?.id ?? null));
   };
 
   const renderVariantEditor = (key: string, index: number, single: boolean) => (

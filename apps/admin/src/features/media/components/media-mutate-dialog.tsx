@@ -42,6 +42,7 @@ import { Locales } from '../data/routes'
 import {
   buildMediaEditValues,
   buildMediaFormSchema,
+  buildMediaUpdatePayload,
   getDisplayName,
   type MediaForm,
   type MediaItem,
@@ -92,25 +93,9 @@ export function MediaMutateDialog({
   }, [open, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async (data: MediaForm) => {
-    // Send only changed fields: the backend validates the `name` extension on
-    // every save, so re-sending an unchanged exotic-extension name (legacy
-    // data) would 422 even when the user only moved the file.
+    // Send only changed fields (see buildMediaUpdatePayload)
     const original = buildMediaEditValues(currentRow)
-    const payload: Partial<MediaForm> = {}
-    if (data.name !== original.name) {
-      // `name` is stored without the extension — strip it if the user typed
-      // the full filename anyway (e.g. pasted "photo.png")
-      let nextName = data.name.trim()
-      if (
-        extSuffix &&
-        nextName.toLowerCase().endsWith(extSuffix.toLowerCase())
-      ) {
-        nextName = nextName.slice(0, -extSuffix.length).trim()
-      }
-      if (nextName) payload.name = nextName
-    }
-    if (data.folder_id !== original.folder_id)
-      payload.folder_id = data.folder_id
+    const payload = buildMediaUpdatePayload(data, original, extSuffix)
 
     if (Object.keys(payload).length === 0) {
       onOpenChange(false)

@@ -32,3 +32,14 @@ export function getDefaultCurrency(): Currency | null {
   return defaultLanguage
 }
 
+/**
+ * The translation row to display for an entity: the row matching the stored
+ * default language, falling back to the first row when no match exists.
+ */
+export function pickTranslation<T extends Translation>(
+  translations: T[]
+): T | undefined {
+  const index = getDefaultLanguage(translations)
+  return translations[index ?? 0]
+}
+

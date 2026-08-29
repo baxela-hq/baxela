@@ -1,17 +1,13 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseAndToastError } from '@/shared/lib/utils';
-import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { createAttributeValue, updateAttributeValue } from '../api/attribute-values.api'
-import { Locales, FeatureRoutes } from '../data/routes'
+import { Locales } from '../data/routes'
 import {
   formSchema,
   type AttributeValueForm,
@@ -19,9 +15,8 @@ import {
   buildDefaultValues,
   buildEditValues,
 } from '../data/schema'
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import type { Language } from '@/shared/types/locale.types'
-import { ApiError } from '@/shared/lib/api-error.ts'
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+import { useSaveAttributeValue } from '../hooks/use-attribute-value-mutations'
 
 
 type MutateDrawerProps = {
@@ -38,8 +33,7 @@ export function MutateDrawer({
   currentRow,
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
-  const queryClient = useQueryClient()
-  const { tAction, tMessage, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText } = useAppTranslation(Locales.ATTRIBUTE_VALUE)
 
   const entityName = {
@@ -47,10 +41,7 @@ export function MutateDrawer({
     plural: tLabel("values")
   };
 
-  const { data: languages, isLoading: languagesIsLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  })
+  const { data: languages, isLoading: languagesIsLoading } = useLanguages()
 
   const languagesSafe = languages ?? []
 
@@ -65,24 +56,18 @@ export function MutateDrawer({
     }
   }, [languages, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSubmit = async (data: AttributeValueForm) => {
-    try {
-      if (isUpdate){
-        await updateAttributeValue(attributeId, currentRow?.id.toString(), data)
-      } else {
-        await createAttributeValue(attributeId, data)
+  const saveAttributeValue = useSaveAttributeValue()
+
+  const onSubmit = (data: AttributeValueForm) => {
+    saveAttributeValue.mutate(
+      { attributeId, id: currentRow?.id?.toString(), data },
+      {
+        onSuccess: () => {
+          onOpenChange(false)
+          form.reset()
+        },
       }
-      toast.success(tMessage(`success.record.${isUpdate ? 'updated' : 'created'}`, {name: entityName.singular}))
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-      onOpenChange(false)
-      form.reset()
-    } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        parseAndToastError(err)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
-    }
+    )
   }
 
   return (

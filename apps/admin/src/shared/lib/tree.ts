@@ -42,3 +42,32 @@ export function buildHierarchy<T extends TreeItem>(
 
   return result;
 }
+
+/**
+ * Drops the node with `excludeId` and all its descendants from a flattened
+ * tree produced by `buildHierarchy` (prevents making an entity its own
+ * parent in parent-select inputs).
+ */
+export function excludeSubtree<T extends TreeItem>(
+  tree: TreeNode<T>[],
+  excludeId: number | null | undefined
+): TreeNode<T>[] {
+  if (excludeId === null || excludeId === undefined) return tree;
+
+  const filtered: TreeNode<T>[] = [];
+  let excluding = false;
+  let excludeDepth = 0;
+  for (const item of tree) {
+    if (item.id === excludeId) {
+      excluding = true;
+      excludeDepth = item.depth;
+      continue;
+    }
+    if (excluding) {
+      if (item.depth > excludeDepth) continue;
+      excluding = false;
+    }
+    filtered.push(item);
+  }
+  return filtered;
+}

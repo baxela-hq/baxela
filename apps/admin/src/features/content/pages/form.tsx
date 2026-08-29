@@ -2,12 +2,8 @@ import { useEffect, useState } from 'react';
 import { type z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import type { Language } from '@/shared/types/locale.types'
-import { parseAndToastError } from '@/shared/lib/utils';
-import { ApiError } from '@/shared/lib/api-error';
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
 import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
@@ -26,7 +22,8 @@ import ImageUploader from '@/components/shared/image-uploader.tsx'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
 import { FeatureRoutes, Locales } from './data/routes';
-import { BASE_URL, createPage, fetchOnePage, updatePage } from './api/pages.api.ts';
+import { BASE_URL, fetchOnePage } from './api/pages.api.ts';
+import { useSavePage } from './hooks/use-page-mutations';
 import { Provider } from './components/provider.tsx';
 import { formSchema, statuses, buildDefaultValues, buildEditValues, type PageForm, type Page } from './data/schema';
 
@@ -35,7 +32,6 @@ export function PageForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [id, setId] = useState<number | null>(null)
   const navigate = useNavigate()
-  const queryClient = useQueryClient()
   const [currentRow, setCurrentRow] = useState<Page | null>(null)
   const [activeTab, setActiveTab] = useState('general')
   const { tAction,tPageTitle, tPlaceHolder, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
@@ -46,12 +42,13 @@ export function PageForm() {
     plural: tLabel("pages")
   };
 
-  const { data: languages, isLoading: languagesIsLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  });
+  const { data: languages, isLoading: languagesIsLoading } = useLanguages();
 
   const languagesSafe = languages ?? []
+
+  const savePage = useSavePage()
+
+  const busy = isLoading || savePage.isPending
 
   const uploadEndpoints = {
     a: `${BASE_URL}/${id}/images`,
@@ -69,7 +66,15 @@ export function PageForm() {
     }
   }, [languages, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  async function getItem(id: number) {
+    setIsLoading(true)
+    const result = await fetchOnePage(id.toString());
+    setCurrentRow(result)
+    setIsLoading(false)
+  }
+
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     const currentPath = window.location.pathname
     const match = currentPath.match(/^\/content\/pages\/(\d+)\/edit$/);
 
@@ -81,47 +86,30 @@ export function PageForm() {
       }
       fetchData()
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [])
-
-  async function getItem(id: number) {
-    setIsLoading(true)
-    const result = await fetchOnePage(id.toString());
-    setCurrentRow(result)
-    setIsLoading(false)
-  }
 
   const tabForField = (field: string): string => {
     if (field === 'status') return 'publish';
     return 'general';
   }
 
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    try {
-      const postRequest: PageForm = values
-      let request: Page
-      if (id) {
-        request = await updatePage(id.toString(), postRequest)
-        await getItem(id);
-
-        toast.success(tMessage('success.record.updated', {name: entityName.singular}))
-      } else {
-        request = await createPage(postRequest)
-        toast.success(tMessage('success.record.created', {name: entityName.singular}))
-        const redirectUrl = FeatureRoutes.EDIT.replace('$id', request.id.toString())
-        setId(request.id)
-        navigate({ to: redirectUrl })
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    const postRequest: PageForm = values
+    savePage.mutate(
+      { id, data: postRequest },
+      {
+        onSuccess: (request, vars) => {
+          if (vars.id) {
+            getItem(vars.id)
+          } else {
+            const redirectUrl = FeatureRoutes.EDIT.replace('$id', request.id.toString())
+            setId(request.id)
+            navigate({ to: redirectUrl })
+          }
+        },
       }
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-    } catch (error) {
-      if (error instanceof ApiError) {
-        parseAndToastError(error)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
-    } finally {
-      setIsLoading(false)
-    }
+    )
   }
 
 
@@ -160,8 +148,8 @@ export function PageForm() {
               <span>{entityName.plural}</span>
               <ListCheckIcon size={18} />
             </Button>
-            <Button type="submit" form="my-form" className='btn' disabled={isLoading}>
-              <LoaderIcon className={isLoading ? 'animate-spin' : 'hidden'} />
+            <Button type="submit" form="my-form" className='btn' disabled={busy}>
+              <LoaderIcon className={busy ? 'animate-spin' : 'hidden'} />
               <SaveIcon />
               {tAction('submit')}
             </Button>
@@ -176,7 +164,7 @@ export function PageForm() {
               if (firstField) setActiveTab(tabForField(firstField))
               toast.error(tMessage('error.validation'))
             })}
-            className={isLoading ? 'hidden' : 'space-y-8'}
+            className={busy ? 'hidden' : 'space-y-8'}
           >
 
             <Tabs value={activeTab} onValueChange={setActiveTab}>

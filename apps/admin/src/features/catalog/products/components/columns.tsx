@@ -10,7 +10,7 @@ import { DataTableRowActions } from './data-table-row-actions';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
 import type { TranslationForm } from '@/features/catalog/categories/data/schema.ts'
-import { getDefaultLanguage } from '@/shared/lib/locale.ts'
+import { pickTranslation } from '@/shared/lib/locale.ts'
 
 export const Columns = (): ColumnDef<Product>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.PRODUCT)
@@ -70,8 +70,7 @@ export const Columns = (): ColumnDef<Product>[] => {
       ),
       cell: ({ row }) => {
         const translations : TranslationForm[] = row.getValue('title');
-        const index : number | null = getDefaultLanguage(translations)
-        const title = translations?.[index ?? 0]?.title || '';
+        const title = pickTranslation(translations)?.title || '';
         return <LongText className='max-w-36 ps-3'>{title}</LongText>;
       },
       meta: {
