@@ -1,11 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseAndToastError } from '@/shared/lib/utils';
-import { buildHierarchy } from '@/shared/lib/tree';
-import { getDefaultLanguage } from '@/shared/lib/locale';
-import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -14,8 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { createCategory, fetchCategories, updateCategory } from '../api/categories.api'
-import { Locales, FeatureRoutes } from '../data/routes'
+import { Locales } from '../data/routes'
 import {
   formSchema,
   type CategoryForm,
@@ -23,10 +17,9 @@ import {
   buildDefaultValues,
   buildEditValues,
 } from '../data/schema'
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import type { Language } from '@/shared/types/locale.types'
-import type { PaginatedResponse } from '@/shared/types/common.types'
-import { ApiError } from '@/shared/lib/api-error.ts'
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+import { useCategoryTree } from '../hooks/use-categories'
+import { useSaveCategory } from '../hooks/use-category-mutations'
 
 
 type MutateDrawerProps = {
@@ -41,8 +34,7 @@ export function MutateDrawer({
   currentRow,
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
-  const queryClient = useQueryClient()
-  const { tAction, tMessage, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText } = useAppTranslation(Locales.CATEGORY)
 
   const entityName = {
@@ -50,46 +42,11 @@ export function MutateDrawer({
     plural: tLabel("categories")
   };
 
-  const { data: languages, isLoading: languagesIsLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  })
+  const { data: languages, isLoading: languagesIsLoading } = useLanguages()
 
   const languagesSafe = languages ?? []
 
-  const [categoryTree, setCategoryTree] = useState<(Category & { title: string; depth: number })[]>([]);
-
-  useEffect(() => {
-    fetchCategories({ per_page: 1000 })
-      .then((res: PaginatedResponse<Category>) => {
-        const tree = buildHierarchy<Category>(res.data, (cat) => {
-          const index = getDefaultLanguage(cat.translations);
-          return cat.translations[index ?? 0]?.title ?? '';
-        });
-
-        if (currentRow) {
-          const filtered: (Category & { title: string; depth: number })[] = [];
-          let excluding = false;
-          let excludeDepth = 0;
-          for (const item of tree) {
-            if (item.id === currentRow.id) {
-              excluding = true;
-              excludeDepth = item.depth;
-              continue;
-            }
-            if (excluding) {
-              if (item.depth > excludeDepth) continue;
-              excluding = false;
-            }
-            filtered.push(item);
-          }
-          setCategoryTree(filtered);
-        } else {
-          setCategoryTree(tree);
-        }
-      })
-      .catch((error) => parseAndToastError(error));
-  }, [currentRow])
+  const categoryTree = useCategoryTree(currentRow?.id)
 
   const form = useForm<CategoryForm>({
     resolver: zodResolver(formSchema),
@@ -102,24 +59,18 @@ export function MutateDrawer({
     }
   }, [languages, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSubmit = async (data: CategoryForm) => {
-    try {
-      if (isUpdate){
-        await updateCategory(currentRow?.id.toString(), data)
-      } else {
-        await createCategory(data)
+  const saveCategory = useSaveCategory()
+
+  const onSubmit = (data: CategoryForm) => {
+    saveCategory.mutate(
+      { id: currentRow?.id?.toString(), data },
+      {
+        onSuccess: () => {
+          onOpenChange(false)
+          form.reset()
+        },
       }
-      toast.success(tMessage(`success.record.${isUpdate ? 'updated' : 'created'}`, {name: entityName.singular}))
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-      onOpenChange(false)
-      form.reset()
-    } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        parseAndToastError(err)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
-    }
+    )
   }
 
   return (

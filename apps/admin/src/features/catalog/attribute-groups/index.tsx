@@ -1,14 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { type PaginatedResponse } from '@/shared/types/common.types.ts';
 import { SkeletonWidget } from '@/components/shared/skeleton-widget'
-import { FeatureRoutes, Locales } from './data/routes.ts';
+import { Locales } from './data/routes.ts';
 import { Dialogs } from './components/dialogs.tsx';
 import { PrimaryButtons } from './components/primary-buttons.tsx';
 import { Provider } from './components/provider.tsx';
 import { DataTable } from './components/data-table.tsx';
-import { type AttributeGroup } from './data/schema.ts';
-import { fetchAttributeGroups } from './api/attribute-groups.api.ts'
+import { useAttributeGroupsList } from './hooks/use-attribute-groups';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 
 const route = getRouteApi('/_authenticated/catalog/attributes/groups')
@@ -23,10 +20,7 @@ export function AttributeGroups() {
     plural: tLabel("attribute_groups")
   };
 
-  const {data, isLoading, isSuccess} = useQuery<PaginatedResponse<AttributeGroup>>({
-    queryKey: [FeatureRoutes.CACHE_KEY, search ],
-    queryFn: () => fetchAttributeGroups(search),
-  });
+  const {data, isLoading, isSuccess} = useAttributeGroupsList(search);
 
   return (
     <Provider>

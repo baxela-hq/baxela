@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import { Locales } from '@/features/catalog/products/data/routes';
-import { deletePage } from '../api/pages.api.ts';
+import { useBulkDeletePages } from '../hooks/use-page-mutations';
 
 
 
@@ -45,7 +45,9 @@ export function MultiDeleteDialog<TData>({
 
   const { t, tMessage } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const handleDelete = async () => {
+  const bulkDeletePages = useBulkDeletePages()
+
+  const handleDelete = () => {
     if (value.trim() !== CONFIRM_WORD) {
       toast.error(t('dialog.bulk_delete.type_to_confirm', {word: CONFIRM_WORD}))
       return
@@ -54,11 +56,9 @@ export function MultiDeleteDialog<TData>({
     onOpenChange(false)
 
     toast.promise(
-      (async () => {
-        for (const row of selectedRows) {
-          await deletePage(row.id.toString())
-        }
-      })(),
+      bulkDeletePages.mutateAsync(
+        selectedRows.map((row) => row.id.toString())
+      ),
       {
         loading: t('dialog.bulk_delete.deleting-items'),
         success: () => {

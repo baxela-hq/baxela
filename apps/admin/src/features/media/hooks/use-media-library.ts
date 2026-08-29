@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { buildHierarchy } from '@/shared/lib/tree'
+import { buildHierarchy, excludeSubtree } from '@/shared/lib/tree'
 import type { AllResponse } from '@/shared/types/common.types'
 import { fetchFolders, fetchMedia } from '../api/media.api'
 import { FeatureRoutes } from '../data/routes'
@@ -58,29 +58,12 @@ export function useFolderTree(
   excludeId?: number | null
 ): (MediaFolder & { depth: number })[] {
   const { data } = useFolders()
-  return useMemo(() => {
-    const tree = buildHierarchy<MediaFolder>(
-      data?.data ?? [],
-      (folder) => folder.name
-    )
-
-    if (excludeId === null || excludeId === undefined) return tree
-
-    const filtered: (MediaFolder & { depth: number })[] = []
-    let excluding = false
-    let excludeDepth = 0
-    for (const item of tree) {
-      if (item.id === excludeId) {
-        excluding = true
-        excludeDepth = item.depth
-        continue
-      }
-      if (excluding) {
-        if (item.depth > excludeDepth) continue
-        excluding = false
-      }
-      filtered.push(item)
-    }
-    return filtered
-  }, [data, excludeId])
+  return useMemo(
+    () =>
+      excludeSubtree(
+        buildHierarchy<MediaFolder>(data?.data ?? [], (folder) => folder.name),
+        excludeId
+      ),
+    [data, excludeId]
+  )
 }

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import { Locales } from '../data/routes';
-import { deleteProduct } from '../api/products.api';
+import { useBulkDeleteProducts } from '../hooks/use-product-mutations';
 
 
 type UserMultiDeleteDialogProps<TData> = {
@@ -33,7 +33,9 @@ export function MultiDeleteDialog<TData>({
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
   const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
-  const handleDelete = async () => {
+  const bulkDeleteProducts = useBulkDeleteProducts()
+
+  const handleDelete = () => {
     if (value.trim() !== CONFIRM_WORD) {
       toast.error(t('dialog.bulk_delete.type_to_confirm', {word: CONFIRM_WORD}))
       return
@@ -42,11 +44,9 @@ export function MultiDeleteDialog<TData>({
     onOpenChange(false)
 
     toast.promise(
-      (async () => {
-        for (const row of selectedRows) {
-          await deleteProduct(row.id.toString())
-        }
-      })(),
+      bulkDeleteProducts.mutateAsync(
+        selectedRows.map((row) => row.id.toString())
+      ),
       {
         loading: t('dialog.bulk_delete.deleting-items'),
         success: () => {

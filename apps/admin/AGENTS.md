@@ -49,7 +49,7 @@ Always run `pnpm build` (typecheck) and `pnpm lint` before finishing a task. The
 | --------------- | ------- |
 | UI runtime      | React 19, Vite 7 (SWC), TypeScript ~5.9 (strict) |
 | Routing         | TanStack Router (file-based, `autoCodeSplitting`) |
-| Server state    | TanStack Query v5 (no per-feature query hooks; `useQuery` inline in components) |
+| Server state    | TanStack Query v5 (per-feature query/mutation hooks in `features/*/*/hooks/`) |
 | Tables          | TanStack Table v8 (manual pagination/filter/sort — server-side) |
 | Styling         | Tailwind CSS v4 (CSS-first config in `src/styles/`), shadcn/ui "new-york", `cva` |
 | Forms           | react-hook-form + zod v4 (`@hookform/resolvers`) |
@@ -132,9 +132,16 @@ features/<domain>/<entity>/
 ├── data/
 │   ├── schema.ts                  # zod: entitySchema, formSchema, types, defaultValues,
 │   │                              #   buildDefaultValues(languages), buildEditValues(languages, row)
+│   ├── <domain>.ts                # (optional, big modules) pure domain logic, no React —
+│   │                              #   e.g. products' variant-matrix.ts, attribute-grouping.ts
 │   ├── routes.ts                  # class FeatureRoutes { LIST/CREATE/EDIT, CACHE_KEY, CACHE_SINGLE_KEY }
 │   │                              #   class Locales { SHARED_COMMON, SHARED_DATA_TABLE, <ENTITY> }
 │   └── data.ts                    # (optional) status → tailwind badge-color maps
+├── hooks/                         # business-logic layer (no JSX)
+│   ├── use-<entity>.ts            # query hooks: use<Entity>List(search), useOne<Entity>(id),
+│   │                              #   use<Entity>Tree(excludeId) … (useQuery wiring lives here)
+│   └── use-<entity>-mutations.ts  # useSave<Entity>() / useDelete<Entity>() / useBulkDelete<Entity>():
+│                                  #   useMutation + success toast + invalidation + onError
 ├── components/
 │   ├── columns.tsx                # export const Columns = (): ColumnDef<T>[] => ... (hook for i18n)
 │   ├── data-table.tsx             # useReactTable wiring (manual pagination/sort/filter)
@@ -146,12 +153,13 @@ features/<domain>/<entity>/
 │   ├── dialogs.tsx                # single host rendering all dialogs; mounted by index.tsx
 │   ├── primary-buttons.tsx        # header "Create" button(s)
 │   └── provider.tsx               # context wrapping useDialogState + currentRow (exported as use<Entity>)
-├── index.tsx                      # list page: getRouteApi + useSearch + useQuery + Header/Main + Provider>Dialogs
+├── index.tsx                      # list page: getRouteApi + useSearch + use<Entity>List + Header/Main + Provider>Dialogs
 └── form.tsx                       # (products/pages only) full-page create/edit for /create and /$id/edit
 ```
 
-Media (`src/features/media/`) is the structural outlier: no data-table, has `hooks/` folder
-(`use-media-library.ts`), dialog-based CRUD, and a reusable `media-picker-dialog.tsx`.
+Media (`src/features/media/`) has no data-table (dialog-based CRUD, reusable `media-picker-dialog.tsx`)
+and is the original reference for the `hooks/` layer (`hooks/use-media-library.ts`) that all modules
+now adopt.
 
 ## API Layer Conventions
 
@@ -186,16 +194,37 @@ Table `pageCount` = `data.meta.last_page`.
 
 ## TanStack Query Conventions
 
-- No per-feature query hooks; call `useQuery` directly in feature components:
-  `queryKey: [CACHE_KEY, search]` (search = full URL search object), `queryFn: () => fetchX(search)`.
-- Detail pages: `queryKey: [CACHE_SINGLE_KEY, id]`.
-- Languages (translatable forms): shared key `['languages']` via `fetchLanguages()`.
-- After a successful mutation: `toast.success(tMessage('success.record.updated', { name }))` →
-  `await queryClient.invalidateQueries({ queryKey: [CACHE_KEY] })` → close dialog → `form.reset()`.
-- On error: `if (err instanceof ApiError) parseAndToastError(err)` else `toast.error(tMessage('error.general'))`.
-- Global defaults (in `src/main.tsx`): `staleTime: 10_000`, global mutation `onError: handleServerError`.
-- `useMutation` is currently NOT used in features — API calls are awaited inside `onSubmit` handlers.
-  Match the existing pattern.
+- Server state and mutations live in **per-feature hooks**, not inline in components:
+  `hooks/use-<entity>.ts` (queries) and `hooks/use-<entity>-mutations.ts` (mutations).
+  Components consume the hooks and contain no `useQuery`/`useQueryClient` logic.
+- Query hooks keep the canonical keys: list `queryKey: [CACHE_KEY, search]`
+  (search = full URL search object), detail `[CACHE_SINGLE_KEY, id]`.
+- Languages (translatable forms): `useLanguages()` from
+  `@/features/core/languages/hooks/use-languages` (shared key `['languages']`).
+  Currencies: `useCurrencies()` from `@/features/core/currencies/hooks/use-currencies`.
+- Mutation hooks (`useSaveX` / `useDeleteX` / `useBulkDeleteX`) encapsulate the whole flow:
+  API call → `toast.success(tMessage('success.record.…', { name }))` →
+  `await queryClient.invalidateQueries({ queryKey: [CACHE_KEY] })`, and
+  `onError`: `if (err instanceof ApiError) parseAndToastError(err)` else
+  `toast.error(tMessage('error.general'))`.
+- Components call `mutation.mutate(variables, { onSuccess: … })` for the pure-UI aftermath
+  only (close dialog, `form.reset()`, redirect). Per-call callbacks run after (and await)
+  the hook-level ones, so ordering is preserved. Do NOT re-implement toasts in components.
+- Naming: `use<Entity>List(search)` / `useOne<Entity>(id)` / `use<Entity>Tree(excludeId)` for
+  queries; `useSave<Entity>()` (create+update) / `useDelete<Entity>()` / `useBulkDelete<Entity>()`
+  for mutations.
+- Global defaults (in `src/main.tsx`): `staleTime: 10_000`, global mutation `onError: handleServerError`
+  — a backstop only; a hook-level `onError` replaces it (v5 spread-merges defaults).
+- Status maps for badges stay in `data/data.ts`; translated-field display uses
+  `pickTranslation(translations)` from `@/shared/lib/locale` (never hand-roll the
+  `getDefaultLanguage` index dance). Tree selects use `buildHierarchy`/`excludeSubtree`
+  from `@/shared/lib/tree`.
+- All real modules follow this (canonical reference: `catalog/categories`). Full-page
+  forms additionally keep **pure domain modules** next to the schema
+  (`products/data/variant-matrix.ts`, `products/data/attribute-grouping.ts`) and reuse
+  cross-feature picker hooks: `useCategoryTree` (categories), `useOptionsAll` (options),
+  `useAttributeOptions` (attributes), `useAttributeGroupOptions` (attribute-groups),
+  `useActiveAttributeTemplates` + `useAttributeValueOptions` (attribute-templates/-values).
 
 ## Routing Conventions
 

@@ -10,13 +10,15 @@ import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { fetchItems, fetchOneOrder } from './api/orders.api.ts';
 import { Dialogs } from './components/dialogs.tsx';
 import { Provider } from './components/provider.tsx';
-import { type Order, type OrderItem } from './data/schema';
 import { Buttons } from './components/buttons.tsx'
-import { FeatureRoutes, Locales } from './data/routes.ts'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { Locales } from './data/routes.ts'
+import {
+  useOneOrder,
+  useOrderItems,
+  useInvalidateOrder,
+} from './hooks/use-orders'
 
 
 
@@ -25,51 +27,18 @@ const route = getRouteApi('/_authenticated/order/orders/$id/show')
 
 export function OrderShow() {
   const { id } = route.useParams()
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [record, setRecord] = useState<Order>()
-  // const [items, setItems] = useState<OrderItem[]>([])
   const { tPageTitle, tLabel:tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
-  const queryClient = useQueryClient()
   const { tLabel, tMessage, tStatus } = useAppTranslation(Locales.ORDER)
   const entityName = {
     singular: tLabel("order"),
     plural: tLabel("orders")
   };
 
-  // async function getItem(id: string) {
-  //   setIsLoading(true)
-  //   const response = await fetchOneOrder(id);
-  //   const items = await fetchItems(id);
-  //   setRecord(response);
-  //   setItems(items);
-  //   setIsLoading(false)
-  // }
-  //
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await getItem(id);
-  //   }
-  //   fetchData()
-  // }, []);
+  const clearCache = useInvalidateOrder(id)
 
-  async function clearCache() {
-    await queryClient.invalidateQueries({
-      queryKey: [FeatureRoutes.CACHE_SINGLE_KEY, id],
-    });
-  }
+  const {data: record, isLoading } = useOneOrder(id)
 
-
-  const {data: record, isLoading } = useQuery<Order>({
-    queryKey: [ FeatureRoutes.CACHE_SINGLE_KEY, id],
-    queryFn: () => fetchOneOrder(id),
-    // placeholderData: (prev) => prev,
-  });
-
-  const {data: items} = useQuery<OrderItem[]>({
-    queryKey: [ `order-id-${id}-items`],
-    queryFn: () => fetchItems(id),
-    // placeholderData: (prev) => prev,
-  });
+  const {data: items} = useOrderItems(id)
 
 
   return (

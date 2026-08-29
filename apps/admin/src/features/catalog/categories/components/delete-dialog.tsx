@@ -2,13 +2,12 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { type Category } from '../data/schema'
-import { deleteCategory } from '../api/categories.api'
+import { useDeleteCategory } from '../hooks/use-category-mutations'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Locales } from '../data/routes'
 
@@ -24,20 +23,17 @@ export function DeleteDialog({
   currentRow,
 }: DeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { tMessage, tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const handleDelete = async () => {
+  const deleteCategory = useDeleteCategory()
+
+  const handleDelete = () => {
     if (value.trim() !== currentRow.id.toString()) return
 
     onOpenChange(false)
 
-    try{
-      await deleteCategory(currentRow.id.toString())
-      showSubmittedData(currentRow, tMessage('success.record.deleted_general'))
-    } catch (_err){
-      showSubmittedData(currentRow, tMessage('error.general'))
-    }
+    deleteCategory.mutate(currentRow)
   }
 
   return (

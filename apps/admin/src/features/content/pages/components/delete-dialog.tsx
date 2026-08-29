@@ -2,13 +2,12 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { type Page } from '../data/schema'
-import { deletePage } from '../api/pages.api'
+import { useDeletePage } from '../hooks/use-page-mutations'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Locales } from '../data/routes'
 
@@ -24,21 +23,17 @@ export function DeleteDialog({
   currentRow,
 }: PageDeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { tMessage, tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const handleDelete = async () => {
+  const deletePage = useDeletePage()
+
+  const handleDelete = () => {
     if (value.trim() !== currentRow.id.toString()) return
 
     onOpenChange(false)
 
-    try{
-      await deletePage(currentRow.id.toString())
-      showSubmittedData(currentRow, tMessage('success.record.deleted_general'))
-       
-    } catch (_err){
-      showSubmittedData(currentRow, tMessage('error.general'))
-    }
+    deletePage.mutate(currentRow)
   }
 
   return (

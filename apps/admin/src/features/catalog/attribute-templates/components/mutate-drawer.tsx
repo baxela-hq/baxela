@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { parseAndToastError } from '@/shared/lib/utils';
 import { getDefaultLanguage } from '@/shared/lib/locale';
-import { toast } from 'sonner';
 import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
@@ -14,10 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { createAttributeTemplate, updateAttributeTemplate, fetchOneAttributeTemplate } from '../api/attribute-templates.api'
-import { fetchAttributeGroups } from '../../attribute-groups/api/attribute-groups.api'
 import { type AttributeGroup } from '../../attribute-groups/data/schema'
-import { Locales, FeatureRoutes } from '../data/routes'
+import { Locales } from '../data/routes'
 import {
   formSchema,
   defaultValues,
@@ -25,8 +20,9 @@ import {
   type AttributeTemplate,
   buildEditValues,
 } from '../data/schema'
-import type { PaginatedResponse } from '@/shared/types/common.types'
-import { ApiError } from '@/shared/lib/api-error.ts'
+import { useAttributeGroupOptions } from '../../attribute-groups/hooks/use-attribute-groups'
+import { useOneAttributeTemplate } from '../hooks/use-attribute-templates'
+import { useSaveAttributeTemplate } from '../hooks/use-attribute-template-mutations'
 
 
 type MutateDrawerProps = {
@@ -41,8 +37,7 @@ export function MutateDrawer({
   currentRow,
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
-  const queryClient = useQueryClient()
-  const { tAction, tMessage, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText } = useAppTranslation(Locales.ATTRIBUTE_TEMPLATE)
 
   const entityName = {
@@ -50,20 +45,11 @@ export function MutateDrawer({
     plural: tLabel("attribute_templates")
   };
 
-  const { data: groupsData } = useQuery<PaginatedResponse<AttributeGroup>>({
-    queryKey: ['attribute-groups', 'all'],
-    queryFn: () => fetchAttributeGroups({ per_page: 1000 }),
-  })
-
-  const groups = groupsData?.data ?? []
+  const groups = useAttributeGroupOptions()
 
   // The list response carries no `groups[]` — fetch the detail (ordered) for edit values.
   const detailId = currentRow?.id
-  const { data: detail, isSuccess: detailIsSuccess } = useQuery<AttributeTemplate>({
-    queryKey: [FeatureRoutes.CACHE_SINGLE_KEY, detailId],
-    queryFn: () => fetchOneAttributeTemplate(detailId!.toString()),
-    enabled: isUpdate,
-  })
+  const { data: detail, isSuccess: detailIsSuccess } = useOneAttributeTemplate(detailId, isUpdate)
 
   const form = useForm<AttributeTemplateForm>({
     resolver: zodResolver(formSchema),
@@ -90,24 +76,18 @@ export function MutateDrawer({
     return acc
   }, {})
 
-  const onSubmit = async (data: AttributeTemplateForm) => {
-    try {
-      if (isUpdate){
-        await updateAttributeTemplate(currentRow?.id.toString(), data)
-      } else {
-        await createAttributeTemplate(data)
+  const saveAttributeTemplate = useSaveAttributeTemplate()
+
+  const onSubmit = (data: AttributeTemplateForm) => {
+    saveAttributeTemplate.mutate(
+      { id: currentRow?.id?.toString(), data },
+      {
+        onSuccess: () => {
+          onOpenChange(false)
+          form.reset()
+        },
       }
-      toast.success(tMessage(`success.record.${isUpdate ? 'updated' : 'created'}`, {name: entityName.singular}))
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
-      onOpenChange(false)
-      form.reset()
-    } catch (err: unknown) {
-      if (err instanceof ApiError) {
-        parseAndToastError(err)
-      } else {
-        toast.error(tMessage('error.general'))
-      }
-    }
+    )
   }
 
   return (

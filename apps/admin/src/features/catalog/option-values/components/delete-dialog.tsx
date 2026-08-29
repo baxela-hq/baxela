@@ -2,13 +2,12 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { type OptionValue } from '../data/schema'
-import { deleteOptionValue } from '../api/option-values.api'
+import { useDeleteOptionValue } from '../hooks/use-option-value-mutations'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Locales } from '../data/routes'
 
@@ -26,20 +25,17 @@ export function DeleteDialog({
   optionId,
 }: UserDeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { tMessage, tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const handleDelete = async () => {
+  const deleteOptionValue = useDeleteOptionValue()
+
+  const handleDelete = () => {
     if (value.trim() !== currentRow.id.toString()) return
 
     onOpenChange(false)
 
-    try{
-      await deleteOptionValue(optionId, currentRow.id.toString())
-      showSubmittedData(currentRow, tMessage('success.record.deleted_general'))
-    } catch (_err){
-      showSubmittedData(currentRow, tMessage('error.general'))
-    }
+    deleteOptionValue.mutate({ optionId, value: currentRow })
   }
 
   return (

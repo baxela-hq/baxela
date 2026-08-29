@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { ApiError } from '@/shared/lib/api-error.ts';
-import { parseAndToastError } from '@/shared/lib/utils';
 import { LoaderIcon, SaveIcon } from 'lucide-react';
-import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Button } from '@/components/ui/button'
 import {
@@ -35,27 +31,23 @@ import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
 import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx';
 import { ThemeSwitch } from '@/components/theme-switch';
-import { fetchSettings, updateSettings } from './api/settings.api.ts';
-import { FeatureRoutes, Locales } from './data/routes';
+import { useSettings } from './hooks/use-settings';
+import { useUpdateSettings } from './hooks/use-setting-mutations';
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+import { useCurrencies } from '@/features/core/currencies/hooks/use-currencies'
+import { Locales } from './data/routes';
 import {
   formSchema,
   defaultValues,
   buildSettingsValues,
-  buildSettingsRequest,
   type SettingsForm,
-  type Setting,
 } from './data/schema';
-import { fetchLanguages } from '@/features/core/languages/api/languages.api'
-import { fetchCurrencies } from '@/features/core/currencies/api/currencies.api'
-import type { Language, Currency } from '@/shared/types/locale.types'
 
 const route = getRouteApi('/_authenticated/setting/settings/')
 
 export function Settings() {
-  const [isUpdating, setIsUpdating] = useState(false)
   const search = route.useSearch()
-  const queryClient = useQueryClient()
-  const { tAction, tPageTitle, tPlaceHolder, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tStatus, tTooltip } = useAppTranslation(Locales.SETTING)
 
   const entityName = {
@@ -63,20 +55,13 @@ export function Settings() {
     plural: tLabel("settings")
   };
 
-  const { data: settings, isLoading: settingsLoading } = useQuery<Setting[]>({
-    queryKey: [FeatureRoutes.CACHE_KEY, search],
-    queryFn: () => fetchSettings(search),
-  });
+  const { data: settings, isLoading: settingsLoading } = useSettings(search);
 
-  const { data: languages, isLoading: languagesLoading } = useQuery<Language[]>({
-    queryKey: ['languages'],
-    queryFn: () => fetchLanguages(),
-  });
+  const { data: languages, isLoading: languagesLoading } = useLanguages();
 
-  const { data: currencies, isLoading: currenciesLoading } = useQuery<Currency[]>({
-    queryKey: ['currencies'],
-    queryFn: () => fetchCurrencies(),
-  });
+  const { data: currencies, isLoading: currenciesLoading } = useCurrencies();
+
+  const updateSettings = useUpdateSettings()
 
   const languagesSafe = languages ?? []
   const currenciesSafe = currencies ?? []
@@ -94,21 +79,8 @@ export function Settings() {
     }
   }, [isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  async function handleSubmit(values: SettingsForm) {
-    setIsUpdating(true)
-    try {
-      await updateSettings(buildSettingsRequest(values, languagesSafe))
-      await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] });
-      toast.success(tMessage('success.record.updated', { name: entityName.singular }));
-    } catch (error: unknown) {
-      if (error instanceof ApiError) {
-        parseAndToastError(error)
-      } else {
-        toast.error(tMessage('error.general'));
-      }
-    } finally {
-      setIsUpdating(false)
-    }
+  const handleSubmit = (values: SettingsForm) => {
+    updateSettings.mutate({ values, languages: languagesSafe })
   }
 
   if (isLoading) return <SkeletonWidget />;
@@ -265,8 +237,8 @@ export function Settings() {
 
             </div>
             <div className='flex-col'>
-              <Button type='submit' className='btn' disabled={isUpdating}>
-                <LoaderIcon className={isUpdating ? 'animate-spin' : 'hidden'} />
+              <Button type='submit' className='btn' disabled={updateSettings.isPending}>
+                <LoaderIcon className={updateSettings.isPending ? 'animate-spin' : 'hidden'} />
                 <SaveIcon />
                 {tAction('submit')}
               </Button>

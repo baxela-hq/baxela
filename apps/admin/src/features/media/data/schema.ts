@@ -217,3 +217,31 @@ export function buildFolderPath(
 
   return chain
 }
+
+/**
+ * Diff payload for a media update: only changed fields are sent. The
+ * backend validates the `name` extension on every save, so re-sending an
+ * unchanged exotic-extension name (legacy data) would 422 even when the
+ * user only moved the file. `name` is stored without the extension —
+ * `extSuffix` is stripped if the user typed the full filename anyway
+ * (e.g. pasted "photo.png"). Returns {} when nothing changed.
+ */
+export function buildMediaUpdatePayload(
+  data: MediaForm,
+  original: MediaForm,
+  extSuffix: string
+): Partial<MediaForm> {
+  const payload: Partial<MediaForm> = {}
+  if (data.name !== original.name) {
+    let nextName = data.name.trim()
+    if (
+      extSuffix &&
+      nextName.toLowerCase().endsWith(extSuffix.toLowerCase())
+    ) {
+      nextName = nextName.slice(0, -extSuffix.length).trim()
+    }
+    if (nextName) payload.name = nextName
+  }
+  if (data.folder_id !== original.folder_id) payload.folder_id = data.folder_id
+  return payload
+}

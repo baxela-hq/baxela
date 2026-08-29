@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
-import { deleteAttributeValue } from '../api/attribute-values.api'
+import { useBulkDeleteAttributeValues } from '../hooks/use-attribute-value-mutations'
 import { type AttributeValue } from '../data/schema'
 
 type MultiDeleteDialogProps<TData> = {
@@ -35,6 +35,8 @@ export function MultiDeleteDialog<TData>({
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
   const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
+  const bulkDeleteAttributeValues = useBulkDeleteAttributeValues()
+
   const handleDelete = () => {
     if (value.trim() !== CONFIRM_WORD) {
       toast.error(t('dialog.bulk_delete.type_to_confirm', {word: CONFIRM_WORD}))
@@ -44,12 +46,10 @@ export function MultiDeleteDialog<TData>({
     onOpenChange(false)
 
     toast.promise(
-      (async () => {
-        for (const row of selectedRows) {
-          const item = row.original as AttributeValue
-          await deleteAttributeValue(attributeId, item.id.toString())
-        }
-      })(),
+      bulkDeleteAttributeValues.mutateAsync({
+        attributeId,
+        values: selectedRows.map((row) => row.original as AttributeValue),
+      }),
       {
       loading: t('dialog.bulk_delete.deleting-items'),
       success: () => {

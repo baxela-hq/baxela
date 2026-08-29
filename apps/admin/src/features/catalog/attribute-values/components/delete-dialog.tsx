@@ -2,13 +2,12 @@
 
 import { useState } from 'react'
 import { AlertTriangle } from 'lucide-react'
-import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { type AttributeValue } from '../data/schema'
-import { deleteAttributeValue } from '../api/attribute-values.api'
+import { useDeleteAttributeValue } from '../hooks/use-attribute-value-mutations'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Locales } from '../data/routes'
 
@@ -26,19 +25,17 @@ export function DeleteDialog({
   attributeId,
 }: DeleteDialogProps) {
   const [value, setValue] = useState('')
-  const { tMessage, tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
 
-  const handleDelete = async () => {
+  const deleteAttributeValue = useDeleteAttributeValue()
+
+  const handleDelete = () => {
     if (value.trim() !== currentRow.id.toString()) return
 
     onOpenChange(false)
 
-    try{
-      await deleteAttributeValue(attributeId, currentRow.id.toString())
-    } catch (_err){
-      showSubmittedData(currentRow, tMessage('error.general'))
-    }
+    deleteAttributeValue.mutate({ attributeId, value: currentRow })
   }
 
   return (

@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { type PaginatedResponse } from '@/shared/types/common.types.ts';
 import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
@@ -8,13 +6,12 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
 import { ThemeSwitch } from '@/components/theme-switch';
-import { FeatureRoutes, Locales } from './data/routes';
+import { Locales } from './data/routes';
 import { Dialogs } from './components/dialogs.tsx';
 import { PrimaryButtons } from './components/primary-buttons.tsx';
 import { Provider } from './components/provider.tsx';
 import { DataTable } from './components/data-table.tsx';
-import { type Category } from './data/schema';
-import { fetchCategories } from './api/categories.api'
+import { useCategoriesList } from './hooks/use-categories';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 
 const route = getRouteApi('/_authenticated/catalog/categories/')
@@ -29,11 +26,7 @@ export function Categories() {
     plural: tLabel("categories")
   };
 
-  const {data, isLoading, isSuccess} = useQuery<PaginatedResponse<Category>>({
-    queryKey: [FeatureRoutes.CACHE_KEY, search ],
-    queryFn: () => fetchCategories(search),
-    // placeholderData: (prev) => prev,
-  });
+  const {data, isLoading, isSuccess} = useCategoriesList(search);
 
   return (
     <Provider>
