@@ -17,6 +17,12 @@ class OrderSchema
 
     public const string TOTAL_AMOUNT = 'total_amount';
 
+    public const string SHIPPING_METHOD_ID = 'shipping_method_id';
+
+    public const string SHIPPING_METHOD_NAME = 'shipping_method_name';
+
+    public const string SHIPPING_COST = 'shipping_cost';
+
     public const string EXPIRES_AT = 'expires_at';
 
     public const string RES_ITEMS = 'items';

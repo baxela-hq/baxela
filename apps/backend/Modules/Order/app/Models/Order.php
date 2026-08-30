@@ -23,6 +23,9 @@ class Order extends Model
         OrderSchema::USER_ID,
         OrderSchema::STATUS,
         OrderSchema::TOTAL_AMOUNT,
+        OrderSchema::SHIPPING_METHOD_ID,
+        OrderSchema::SHIPPING_METHOD_NAME,
+        OrderSchema::SHIPPING_COST,
         OrderSchema::EXPIRES_AT,
     ];
 

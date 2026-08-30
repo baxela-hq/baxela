@@ -24,6 +24,7 @@ class OrderAddress extends Model
         OrderAddressSchema::ADDRESS_LINE,
         OrderAddressSchema::CITY,
         OrderAddressSchema::POSTAL_CODE,
+        OrderAddressSchema::COUNTRY_CODE,
     ];
 
     public static function boot(): void
