@@ -10,5 +10,6 @@
     "Auth": true,
     "User": true,
     "Media": true,
-    "Notification": true
+    "Notification": true,
+    "Shipping": true
 }
