@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "rate": "Shipping Rate",
+      "rates": "Shipping Rates",
+      "id": "ID",
+      "method_id": "Method",
+      "zone_id": "Zone",
+      "price": "Price",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "method_id": "Select the shipping method this rate applies to",
+      "zone_id": "Select the zone this rate applies to",
+      "price": "Flat price for this method in this zone — 0.00 means free shipping"
+    }
+  }
+}

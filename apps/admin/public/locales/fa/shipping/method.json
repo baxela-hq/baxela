@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "روش ارسال",
+      "methods": "روش‌های ارسال",
+      "id": "شناسه",
+      "code": "کد",
+      "name": "نام",
+      "is_active": "فعال",
+      "position": "موقعیت",
+      "description": "توضیحات",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی"
+    },
+    "help_texts": {
+      "code": "کد یکتای این روش ارسال (مثلاً standard یا express)",
+      "position": "موقعیت این مورد را وارد کنید"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "فعال",
+        "false": "غیرفعال"
+      }
+    }
+  }
+}

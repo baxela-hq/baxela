@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "Shipping Method",
+      "methods": "Shipping Methods",
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "is_active": "Active",
+      "position": "Position",
+      "description": "Description",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "code": "Unique code identifying this method (e.g. standard, express)",
+      "position": "Enter your item position"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Active",
+        "false": "Inactive"
+      }
+    }
+  }
+}

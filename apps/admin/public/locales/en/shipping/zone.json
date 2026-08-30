@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "zone": "Shipping Zone",
+      "zones": "Shipping Zones",
+      "id": "ID",
+      "name": "Name",
+      "is_active": "Active",
+      "position": "Position",
+      "country_codes": "Countries",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "position": "Enter your item position",
+      "country_codes": "Leave empty to use this zone as a worldwide fallback (rest of world)"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Active",
+        "false": "Inactive"
+      },
+      "country_codes": {
+        "rest_of_world": "Rest of World"
+      }
+    }
+  }
+}

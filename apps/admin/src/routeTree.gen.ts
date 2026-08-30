@@ -42,6 +42,10 @@ import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_auth
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedCatalogAttributesRouteRouteImport } from './routes/_authenticated/catalog/attributes/route'
 import { Route as AuthenticatedUserUsersIndexRouteImport } from './routes/_authenticated/user/users/index'
+import { Route as AuthenticatedShippingZonesIndexRouteImport } from './routes/_authenticated/shipping/zones/index'
+import { Route as AuthenticatedShippingShipmentsIndexRouteImport } from './routes/_authenticated/shipping/shipments/index'
+import { Route as AuthenticatedShippingRatesIndexRouteImport } from './routes/_authenticated/shipping/rates/index'
+import { Route as AuthenticatedShippingMethodsIndexRouteImport } from './routes/_authenticated/shipping/methods/index'
 import { Route as AuthenticatedSettingSettingsIndexRouteImport } from './routes/_authenticated/setting/settings/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
@@ -232,6 +236,30 @@ const AuthenticatedUserUsersIndexRoute =
     path: '/user/users/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedShippingZonesIndexRoute =
+  AuthenticatedShippingZonesIndexRouteImport.update({
+    id: '/shipping/zones/',
+    path: '/shipping/zones/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedShippingShipmentsIndexRoute =
+  AuthenticatedShippingShipmentsIndexRouteImport.update({
+    id: '/shipping/shipments/',
+    path: '/shipping/shipments/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedShippingRatesIndexRoute =
+  AuthenticatedShippingRatesIndexRouteImport.update({
+    id: '/shipping/rates/',
+    path: '/shipping/rates/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedShippingMethodsIndexRoute =
+  AuthenticatedShippingMethodsIndexRouteImport.update({
+    id: '/shipping/methods/',
+    path: '/shipping/methods/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingSettingsIndexRoute =
   AuthenticatedSettingSettingsIndexRouteImport.update({
     id: '/setting/settings/',
@@ -370,6 +398,10 @@ export interface FileRoutesByFullPath {
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
+  '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
+  '/shipping/rates': typeof AuthenticatedShippingRatesIndexRoute
+  '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
+  '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -416,6 +448,10 @@ export interface FileRoutesByTo {
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
+  '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
+  '/shipping/rates': typeof AuthenticatedShippingRatesIndexRoute
+  '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
+  '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -468,6 +504,10 @@ export interface FileRoutesById {
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
   '/_authenticated/setting/settings/': typeof AuthenticatedSettingSettingsIndexRoute
+  '/_authenticated/shipping/methods/': typeof AuthenticatedShippingMethodsIndexRoute
+  '/_authenticated/shipping/rates/': typeof AuthenticatedShippingRatesIndexRoute
+  '/_authenticated/shipping/shipments/': typeof AuthenticatedShippingShipmentsIndexRoute
+  '/_authenticated/shipping/zones/': typeof AuthenticatedShippingZonesIndexRoute
   '/_authenticated/user/users/': typeof AuthenticatedUserUsersIndexRoute
   '/_authenticated/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/_authenticated/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -518,6 +558,10 @@ export interface FileRouteTypes {
     | '/content/pages'
     | '/order/orders'
     | '/setting/settings'
+    | '/shipping/methods'
+    | '/shipping/rates'
+    | '/shipping/shipments'
+    | '/shipping/zones'
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
@@ -564,6 +608,10 @@ export interface FileRouteTypes {
     | '/content/pages'
     | '/order/orders'
     | '/setting/settings'
+    | '/shipping/methods'
+    | '/shipping/rates'
+    | '/shipping/shipments'
+    | '/shipping/zones'
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
@@ -615,6 +663,10 @@ export interface FileRouteTypes {
     | '/_authenticated/content/pages/'
     | '/_authenticated/order/orders/'
     | '/_authenticated/setting/settings/'
+    | '/_authenticated/shipping/methods/'
+    | '/_authenticated/shipping/rates/'
+    | '/_authenticated/shipping/shipments/'
+    | '/_authenticated/shipping/zones/'
     | '/_authenticated/user/users/'
     | '/_authenticated/catalog/products/$id/edit'
     | '/_authenticated/content/pages/$id/edit'
@@ -871,6 +923,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUserUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/shipping/zones/': {
+      id: '/_authenticated/shipping/zones/'
+      path: '/shipping/zones'
+      fullPath: '/shipping/zones'
+      preLoaderRoute: typeof AuthenticatedShippingZonesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/shipping/shipments/': {
+      id: '/_authenticated/shipping/shipments/'
+      path: '/shipping/shipments'
+      fullPath: '/shipping/shipments'
+      preLoaderRoute: typeof AuthenticatedShippingShipmentsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/shipping/rates/': {
+      id: '/_authenticated/shipping/rates/'
+      path: '/shipping/rates'
+      fullPath: '/shipping/rates'
+      preLoaderRoute: typeof AuthenticatedShippingRatesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/shipping/methods/': {
+      id: '/_authenticated/shipping/methods/'
+      path: '/shipping/methods'
+      fullPath: '/shipping/methods'
+      preLoaderRoute: typeof AuthenticatedShippingMethodsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/setting/settings/': {
       id: '/_authenticated/setting/settings/'
       path: '/setting/settings'
@@ -1052,6 +1132,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
   AuthenticatedSettingSettingsIndexRoute: typeof AuthenticatedSettingSettingsIndexRoute
+  AuthenticatedShippingMethodsIndexRoute: typeof AuthenticatedShippingMethodsIndexRoute
+  AuthenticatedShippingRatesIndexRoute: typeof AuthenticatedShippingRatesIndexRoute
+  AuthenticatedShippingShipmentsIndexRoute: typeof AuthenticatedShippingShipmentsIndexRoute
+  AuthenticatedShippingZonesIndexRoute: typeof AuthenticatedShippingZonesIndexRoute
   AuthenticatedUserUsersIndexRoute: typeof AuthenticatedUserUsersIndexRoute
   AuthenticatedCatalogProductsIdEditRoute: typeof AuthenticatedCatalogProductsIdEditRoute
   AuthenticatedContentPagesIdEditRoute: typeof AuthenticatedContentPagesIdEditRoute
@@ -1083,6 +1167,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
   AuthenticatedSettingSettingsIndexRoute:
     AuthenticatedSettingSettingsIndexRoute,
+  AuthenticatedShippingMethodsIndexRoute:
+    AuthenticatedShippingMethodsIndexRoute,
+  AuthenticatedShippingRatesIndexRoute: AuthenticatedShippingRatesIndexRoute,
+  AuthenticatedShippingShipmentsIndexRoute:
+    AuthenticatedShippingShipmentsIndexRoute,
+  AuthenticatedShippingZonesIndexRoute: AuthenticatedShippingZonesIndexRoute,
   AuthenticatedUserUsersIndexRoute: AuthenticatedUserUsersIndexRoute,
   AuthenticatedCatalogProductsIdEditRoute:
     AuthenticatedCatalogProductsIdEditRoute,

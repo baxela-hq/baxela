@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "shipment": "مرسوله",
+      "shipments": "مرسوله‌ها",
+      "id": "شناسه",
+      "order_id": "سفارش",
+      "carrier_name": "شرکت حمل",
+      "tracking_number": "شماره رهگیری",
+      "tracking_url": "لینک رهگیری",
+      "status": "وضعیت",
+      "shipped_at": "تاریخ ارسال",
+      "delivered_at": "تاریخ تحویل",
+      "notes": "یادداشت‌ها",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی"
+    },
+    "help_texts": {
+      "order_id": "شناسه سفارشی که این مرسوله به آن تعلق دارد",
+      "status": "وضعیت فقط می‌تواند در مسیر چرخه عمر جلو برود",
+      "tracking_url": "لینک عمومی رهگیری که به مشتری نمایش داده می‌شود"
+    },
+    "statuses": {
+      "status": {
+        "pending": "در انتظار",
+        "packed": "بسته‌بندی شده",
+        "shipped": "ارسال شده",
+        "in_transit": "در حال حمل",
+        "delivered": "تحویل شده",
+        "failed": "ناموفق"
+      }
+    }
+  }
+}

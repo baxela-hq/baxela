@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "zone": "منطقه ارسال",
+      "zones": "مناطق ارسال",
+      "id": "شناسه",
+      "name": "نام",
+      "is_active": "فعال",
+      "position": "موقعیت",
+      "country_codes": "کشورها",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی"
+    },
+    "help_texts": {
+      "position": "موقعیت این مورد را وارد کنید",
+      "country_codes": "برای استفاده از این منطقه به‌عنوان پوشش جهانی، آن را خالی بگذارید (بقیه جهان)"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "فعال",
+        "false": "غیرفعال"
+      },
+      "country_codes": {
+        "rest_of_world": "بقیه جهان"
+      }
+    }
+  }
+}

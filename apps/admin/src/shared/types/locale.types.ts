@@ -32,3 +32,12 @@ export interface Language {
   "created_at": string,
   "updated_at": string
 }
+
+export interface Country {
+  "id": number,
+  "code": string,
+  "code3": string,
+  "name": string,
+  "native_name": string,
+  "emoji": string
+}
