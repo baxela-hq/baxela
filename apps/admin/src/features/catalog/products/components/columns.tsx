@@ -10,12 +10,14 @@ import { DataTableRowActions } from './data-table-row-actions';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
 import type { TranslationForm } from '@/features/catalog/categories/data/schema.ts'
-import { pickTranslation } from '@/shared/lib/locale.ts'
+import { getDefaultCurrency, pickTranslation } from '@/shared/lib/locale.ts'
 
 export const Columns = (): ColumnDef<Product>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.PRODUCT)
   const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const currency = getDefaultCurrency()
+  const symbol = currency?.symbol ?? '$'
 
   return [
     {
@@ -83,13 +85,21 @@ export const Columns = (): ColumnDef<Product>[] => {
       enableSorting: false,
     },
     {
-      accessorKey: 'price',
+      id: 'price',
+      accessorKey: 'variants',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('price')} />
       ),
-      cell: ({ row }) => (
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('price')}</div>
-      ),
+      cell: ({ row }) => {
+        const price = row.original.variants?.[0]?.price
+        return (
+          <div className='flex w-fit items-center gap-0.5 ps-2 text-nowrap'>
+            {!currency?.is_symbol_right && <span>{symbol}</span>}
+            <span>{price}</span>
+            {currency?.is_symbol_right && <span>{symbol}</span>}
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'type',
