@@ -25,5 +25,7 @@ class AddressSchema
 
     public const string POSTAL_CODE = 'postal_code';
 
+    public const string COUNTRY_CODE = 'country_code';
+
     public const string IS_DEFAULT = 'is_default';
 }

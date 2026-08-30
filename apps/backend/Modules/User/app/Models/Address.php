@@ -22,6 +22,7 @@ class Address extends Model
         AddressSchema::ADDRESS_LINE,
         AddressSchema::CITY,
         AddressSchema::POSTAL_CODE,
+        AddressSchema::COUNTRY_CODE,
         AddressSchema::IS_DEFAULT,
     ];
 

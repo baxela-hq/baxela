@@ -4,6 +4,7 @@ namespace Modules\User\Http\Requests\User\Address;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
+use Modules\Core\Rules\CountryCodeRule;
 use Modules\User\Schemas\Address\AddressSchema;
 use Modules\User\Schemas\Address\AddressTypeEnum;
 
@@ -21,6 +22,7 @@ class AddressRequest extends FormRequest
             AddressSchema::ADDRESS_LINE => ['required', 'string', 'max:255'],
             AddressSchema::CITY => ['required', 'string', 'max:255'],
             AddressSchema::POSTAL_CODE => ['required', 'string', 'max:255'],
+            AddressSchema::COUNTRY_CODE => ['required', 'string', 'size:2', new CountryCodeRule],
             AddressSchema::IS_DEFAULT => ['required', 'boolean'],
         ];
     }
