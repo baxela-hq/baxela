@@ -2,15 +2,22 @@
 
 namespace Modules\Core\Contracts\Gateways\Order;
 
+use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 
 interface OrderGatewayInterface
 {
     /**
-     * @param  array{variant_id:int, price_snapshot:string, product_name_snapshot:string, quantity:int}  $cartItems
+     * @param  CreateOrderInput  $input  cart items, address snapshot, shipping choice
      * @return null|int OrderId
      */
-    public function createFromCart(array $cartItems): ?int;
+    public function createFromCart(CreateOrderInput $input): ?int;
 
     public function getOrder(string $orderId, string $userId): ?GetOrderOutput;
+
+    public function findOrder(int $orderId): ?GetOrderOutput;
+
+    public function markAsShipped(int $orderId): bool;
+
+    public function markAsDelivered(int $orderId): bool;
 }

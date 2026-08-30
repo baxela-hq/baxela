@@ -18,6 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger(OrderSchema::USER_ID)->index();
             $table->enum(OrderSchema::STATUS, OrderStatusEnum::cases());
             $table->decimal(OrderSchema::TOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->unsignedBigInteger(OrderSchema::SHIPPING_METHOD_ID)->nullable();
+            $table->string(OrderSchema::SHIPPING_METHOD_NAME)->nullable();
+            $table->decimal(OrderSchema::SHIPPING_COST, 12, 2)->unsigned()->default(0.00);
             $table->timestamp(OrderSchema::EXPIRES_AT)->nullable();
             $table->timestamps();
         });

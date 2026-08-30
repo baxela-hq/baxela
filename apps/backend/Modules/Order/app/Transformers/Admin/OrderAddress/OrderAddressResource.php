@@ -21,6 +21,7 @@ class OrderAddressResource extends JsonResource
             OrderAddressSchema::ADDRESS_LINE => $this->resource->{OrderAddressSchema::ADDRESS_LINE},
             OrderAddressSchema::CITY => $this->resource->{OrderAddressSchema::CITY},
             OrderAddressSchema::POSTAL_CODE => $this->resource->{OrderAddressSchema::POSTAL_CODE},
+            OrderAddressSchema::COUNTRY_CODE => $this->resource->{OrderAddressSchema::COUNTRY_CODE},
 
         ];
     }

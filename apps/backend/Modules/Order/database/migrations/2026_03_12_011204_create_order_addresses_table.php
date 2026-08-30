@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string(OrderAddressSchema::ADDRESS_LINE);
             $table->string(OrderAddressSchema::CITY);
             $table->string(OrderAddressSchema::POSTAL_CODE)->nullable();
+            $table->char(OrderAddressSchema::COUNTRY_CODE, 2)->nullable();
             $table->timestamp(OrderAddressSchema::CREATED_AT);
         });
     }
