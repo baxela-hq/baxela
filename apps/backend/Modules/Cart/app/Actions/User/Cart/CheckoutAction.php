@@ -4,6 +4,7 @@ namespace Modules\Cart\Actions\User\Cart;
 
 use Modules\Cart\Exceptions\User\Checkout\EmptyCardException;
 use Modules\Cart\Exceptions\User\Checkout\InvalidAddressException;
+use Modules\Cart\Exceptions\User\Checkout\InvalidShippingMethodException;
 use Modules\Cart\Exceptions\User\Checkout\OrderFailedException;
 use Modules\Cart\Exceptions\User\Checkout\OutOfStockException;
 use Modules\Cart\Http\Requests\User\Cart\CheckoutRequest;
@@ -12,7 +13,9 @@ use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
+use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Utils\Auth;
 
@@ -25,6 +28,7 @@ class CheckoutAction
      *
      * @throws EmptyCardException
      * @throws InvalidAddressException
+     * @throws InvalidShippingMethodException
      * @throws OrderFailedException
      * @throws OutOfStockException
      */
@@ -37,8 +41,8 @@ class CheckoutAction
             throw new EmptyCardException;
         }
 
-        $UserGateway = app(UserGatewayInterface::class);
-        if (! $UserGateway->isUserAddressValid(Auth::id(), $request->input('address_id'))) {
+        $address = $this->userGateway->getAddress(Auth::id(), $request->input('address_id'));
+        if (is_null($address)) {
             throw new InvalidAddressException;
         }
 
@@ -52,8 +56,25 @@ class CheckoutAction
             }
         }
 
+        $input = new CreateOrderInput;
+        $input->cart_items = $cartItems->toArray();
+        $input->address = $address;
+
+        $shippingMethodId = $request->input('shipping_method_id');
+        if (! is_null($shippingMethodId)) {
+            $quote = app(ShippingGatewayInterface::class)
+                ->getQuote($shippingMethodId, $address->country_code);
+            if (is_null($quote)) {
+                throw new InvalidShippingMethodException;
+            }
+
+            $input->shipping_method_id = $quote->id;
+            $input->shipping_method_name = $quote->name;
+            $input->shipping_cost = $quote->price;
+        }
+
         $orderGateway = app(OrderGatewayInterface::class);
-        $orderId = $orderGateway->createFromCart($cartItems->toArray());
+        $orderId = $orderGateway->createFromCart($input);
         if (! $orderId) {
             throw new OrderFailedException;
         }

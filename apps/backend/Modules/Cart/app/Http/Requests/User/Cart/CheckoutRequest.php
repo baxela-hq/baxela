@@ -13,6 +13,7 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'address_id' => ['required', 'integer'],
+            'shipping_method_id' => ['nullable', 'integer'],
         ];
     }
 
