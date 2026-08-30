@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/shipping/admin/zones?per_page=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  per_page: 100
+  @description('id, name, position')
+  ~sort: -position
+  ~filter[name]:
+  ~filter[is_active]:
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/shipping/admin/rates?per_page=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  per_page: 100
+  @description('id, price')
+  ~sort: -price
+  ~filter[method_id]:
+  ~filter[zone_id]:
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

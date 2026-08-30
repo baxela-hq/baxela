@@ -1,0 +1,36 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/shipping/admin/shipments
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "order_id": 1,
+    "carrier_name": "DHL",
+    "tracking_number": "TRK-000123",
+    "tracking_url": "https://www.dhl.com/track?tracking-id=TRK-000123",
+    "notes": "Fragile - handle with care",
+    "status": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

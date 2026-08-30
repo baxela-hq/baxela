@@ -1,0 +1,34 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/shipping/admin/zones/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Domestic US",
+    "is_active": true,
+    "position": 2,
+    "country_codes": ["US", "CA"]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
