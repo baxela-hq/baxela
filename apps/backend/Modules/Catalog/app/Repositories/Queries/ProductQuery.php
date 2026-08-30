@@ -40,6 +40,7 @@ class ProductQuery implements QueryInterface
             )
             ->with(
                 ProductSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_VARIANTS,
             )
             ->orderBy(ProductSchema::ID, 'desc');
     }
