@@ -4,6 +4,7 @@
 *.swo
 .idea/
 .vscode/
+.zcode/
 *.iml
 
 # --- Environment ---
