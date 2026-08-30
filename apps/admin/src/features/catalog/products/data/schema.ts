@@ -61,6 +61,16 @@ export const translationSchema = z.object({
 });
 export type TranslationForm = z.infer<typeof translationSchema>
 
+export const productSeoTranslationSchema = z.object({
+  language_id: z.number(),
+  language: z.string(),
+  meta_title: z.string().max(255).nullable(),
+  meta_description: z.string().max(255).nullable(),
+  open_graph_title: z.string().max(255).nullable(),
+  open_graph_description: z.string().max(255).nullable(),
+});
+export type ProductSeoTranslationForm = z.infer<typeof productSeoTranslationSchema>
+
 // Rows returned by the product endpoints under `attributeValues` — the nested
 // attribute is eager-loaded without translations/group/values.
 const productAttributeRowSchema = z.object({
@@ -106,6 +116,7 @@ const _productSchema = z.object({
   images: z.array(productImageSchema).optional(),
   attributeValues: z.array(productAttributeRowSchema).optional(),
   shipping: productShippingSchema.nullish(),
+  seo: z.array(productSeoTranslationSchema).optional(),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -157,6 +168,7 @@ export const formSchema = z.object({
   images: z.array(productImageSchema),
   attribute_values: z.array(productAttributeValueFormSchema),
   translations: z.array(translationSchema),
+  seo: z.array(productSeoTranslationSchema),
   shipping: shippingFormSchema,
 }).superRefine((data, ctx) => {
   if (data.type === 'variable') {
@@ -256,14 +268,29 @@ type ProductAttributeValuePayload = {
   boolean_value: boolean | null;
 };
 
-export type ProductPayload = Omit<ProductForm, 'attribute_values' | 'shipping'> & {
+export type ProductPayload = Omit<ProductForm, 'attribute_values' | 'shipping' | 'seo'> & {
   attribute_values: ProductAttributeValuePayload[];
   shipping: ProductShippingPayload;
+  seo: ProductSeoTranslationPayload[];
 };
 
 // The fixed-shape nested object the create/update endpoints expect: every key
 // always present, null for unused values, and a unit only alongside its value(s).
 type ProductShippingPayload = ProductShipping;
+
+// The API maps the seo `language` code to a language_id server-side, so the
+// payload carries the code only — no language_id key.
+export type ProductSeoTranslationPayload = Omit<ProductSeoTranslationForm, 'language_id'>;
+
+export function serializeSeo(items: ProductSeoTranslationForm[]): ProductSeoTranslationPayload[] {
+  return items.map((item) => ({
+    language: item.language,
+    meta_title: item.meta_title,
+    meta_description: item.meta_description,
+    open_graph_title: item.open_graph_title,
+    open_graph_description: item.open_graph_description,
+  }));
+}
 
 export function serializeShipping(shipping: ProductShippingForm): ProductShippingPayload {
   const weight = shipping.weight?.trim() || null;
@@ -359,6 +386,7 @@ export const defaultValues: ProductForm = {
   images: [] as ProductImage[],
   attribute_values: [] as ProductAttributeValueEntry[],
   translations: [] as TranslationForm[],
+  seo: [] as ProductSeoTranslationForm[],
   shipping: { ...defaultShipping },
 }
 
@@ -381,6 +409,14 @@ export function buildDefaultValues(languages: Language[]): ProductForm {
       description: '',
       content: '',
     })),
+    seo: languages.map((language, index) => ({
+      language_id: index,
+      language: language.code,
+      meta_title: null,
+      meta_description: null,
+      open_graph_title: null,
+      open_graph_description: null,
+    })),
     shipping: { ...defaultShipping },
   }
 }
@@ -396,6 +432,12 @@ export function buildEditValues(
   const translationsMap = new Map(
     currentRow.translations.map((t) => {
       return [t.language, t];
+    })
+  )
+
+  const seoMap = new Map(
+    (currentRow.seo ?? []).map((item) => {
+      return [item.language, item];
     })
   )
 
@@ -429,6 +471,12 @@ export function buildEditValues(
       return existing
         ? { ...baseTranslation, ...existing }
         : { ...baseTranslation, language_id: index }
+    }),
+    seo: base.seo.map((baseSeo, index) => {
+      const existing = seoMap.get(baseSeo.language)
+      return existing
+        ? { ...baseSeo, ...existing }
+        : { ...baseSeo, language_id: index }
     }),
   }
 }

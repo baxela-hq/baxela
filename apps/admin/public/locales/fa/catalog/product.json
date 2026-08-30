@@ -81,7 +81,12 @@
       "package_length": "طول",
       "package_width": "عرض",
       "package_height": "ارتفاع",
-      "dimension_unit": "واحد ابعاد"
+      "dimension_unit": "واحد ابعاد",
+      "seo": "سئو",
+      "meta_title": "عنوان متا",
+      "meta_description": "توضیحات متا",
+      "open_graph_title": "عنوان Open Graph",
+      "open_graph_description": "توضیحات Open Graph"
     },
     "tooltips": {
       "is_published": {
