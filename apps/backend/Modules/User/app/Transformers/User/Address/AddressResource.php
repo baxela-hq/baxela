@@ -21,6 +21,7 @@ class AddressResource extends JsonResource
             AddressSchema::ADDRESS_LINE => $this->resource->{AddressSchema::ADDRESS_LINE},
             AddressSchema::CITY => $this->resource->{AddressSchema::CITY},
             AddressSchema::POSTAL_CODE => $this->resource->{AddressSchema::POSTAL_CODE},
+            AddressSchema::COUNTRY_CODE => $this->resource->{AddressSchema::COUNTRY_CODE},
             AddressSchema::IS_DEFAULT => $this->resource->{AddressSchema::IS_DEFAULT},
             AddressSchema::CREATED_AT => $this->resource->{AddressSchema::CREATED_AT},
             AddressSchema::UPDATED_AT => $this->resource->{AddressSchema::UPDATED_AT},

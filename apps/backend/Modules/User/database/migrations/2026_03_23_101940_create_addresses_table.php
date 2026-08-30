@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string(AddressSchema::ADDRESS_LINE);
             $table->string(AddressSchema::CITY);
             $table->string(AddressSchema::POSTAL_CODE)->nullable();
+            $table->char(AddressSchema::COUNTRY_CODE, 2)->nullable();
             $table->boolean(AddressSchema::IS_DEFAULT)->default(false);
             $table->timestamps();
         });
