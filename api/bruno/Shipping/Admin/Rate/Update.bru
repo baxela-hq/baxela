@@ -1,0 +1,33 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/shipping/admin/rates/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "method_id": 1,
+    "zone_id": 1,
+    "price": "7.50"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,45 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/shipping/admin/methods
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "standard",
+    "is_active": true,
+    "position": 1,
+    "translations": [
+      {
+        "language": "en",
+        "name": "Standard",
+        "description": "Delivered in 5-7 business days"
+      },
+      {
+        "language": "fa",
+        "name": "استاندارد",
+        "description": "تحویل در ۵ تا ۷ روز کاری"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

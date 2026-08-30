@@ -1,19 +1,18 @@
 meta {
-  name: Checkout
+  name: Create
   type: http
   seq: 1
 }
 
 post {
-  url: {{baseUrl}}/api/v1/cart/user/checkout
+  url: {{baseUrl}}/api/v1/shipping/admin/rates
   body: json
   auth: bearer
 }
 
 headers {
-  Content-Type: application/json
   Accept: application/json
-  ~X-Idempotency-Key: MeysamWillBeKing12
+  Content-Type: application/json
 }
 
 auth:bearer {
@@ -22,8 +21,9 @@ auth:bearer {
 
 body:json {
   {
-    "address_id": "11",
-    "shipping_method_id": 1
+    "method_id": 1,
+    "zone_id": 1,
+    "price": "5.00"
   }
 }
 
