@@ -21,6 +21,7 @@ import {
   Command,
   GalleryVerticalEnd,
   Images,
+  Truck,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { useAuthStore } from '@/stores/auth-store'
@@ -156,6 +157,28 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.orders'),
                 url: '/order/orders',
+              },
+            ],
+          },
+          {
+            title: t('sidebar.shipping'),
+            icon: Truck,
+            items: [
+              {
+                title: t('sidebar.methods'),
+                url: '/shipping/methods',
+              },
+              {
+                title: t('sidebar.zones'),
+                url: '/shipping/zones',
+              },
+              {
+                title: t('sidebar.rates'),
+                url: '/shipping/rates',
+              },
+              {
+                title: t('sidebar.shipments'),
+                url: '/shipping/shipments',
               },
             ],
           },

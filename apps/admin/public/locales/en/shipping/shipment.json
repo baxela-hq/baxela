@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "shipment": "Shipment",
+      "shipments": "Shipments",
+      "id": "ID",
+      "order_id": "Order",
+      "carrier_name": "Carrier",
+      "tracking_number": "Tracking Number",
+      "tracking_url": "Tracking URL",
+      "status": "Status",
+      "shipped_at": "Shipped At",
+      "delivered_at": "Delivered At",
+      "notes": "Notes",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "order_id": "ID of the order this shipment belongs to",
+      "status": "The status can only move forward along the lifecycle",
+      "tracking_url": "Public tracking link shown to the customer"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pending",
+        "packed": "Packed",
+        "shipped": "Shipped",
+        "in_transit": "In Transit",
+        "delivered": "Delivered",
+        "failed": "Failed"
+      }
+    }
+  }
+}
