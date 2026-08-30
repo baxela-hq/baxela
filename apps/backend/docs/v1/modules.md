@@ -18,6 +18,7 @@ Welcome! This guide helps you understand all modules in under 30 minutes.
 ├── Order
 ├── Payment
 ├── Setting
+├── Shipping
 └── User
 ```
 
@@ -62,6 +63,10 @@ Welcome! This guide helps you understand all modules in under 30 minutes.
 │   └── PaymentSucceededEvent.php
 ├── Setting
 │   └── SettingUpdatedEvent.php
+├── Shipping
+│   ├── ShipmentCreatedEvent.php
+│   ├── ShipmentDeliveredEvent.php
+│   └── ShipmentShippedEvent.php
 └── User
     └── UserProfileUpdatedEvent.php
 ```
@@ -381,6 +386,44 @@ This module is responsible for keeping settings
 
 
 
+
+
+
+
+
+---
+
+## Shipping
+This module is responsible for shipping methods, zones, rates and per-order shipments with tracking
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| shipping_methods             |  |
+| shipping_method_translations |  |
+| shipping_zones               |  |
+| shipping_zone_countries      |  |
+| shipping_rates               |  |
+| shipping_shipments           |  |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| ShipmentCreatedEvent  | Shipment created for an order |
+| ShipmentShippedEvent  | Shipment transitioned to shipped |
+| ShipmentDeliveredEvent  | Shipment transitioned to delivered |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| Core  | Contracts, country rule and default language |
+| Order  | findOrder / markAsShipped / markAsDelivered |
+| User  | getAddress for checkout quotes |
 
 
 
