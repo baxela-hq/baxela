@@ -14,6 +14,7 @@ import { FeatureRoutes, Locales } from '../data/routes'
 import {
   type formSchema,
   serializeAttributeValues,
+  serializeSeo,
   serializeShipping,
   type Product,
   type ProductPayload,
@@ -47,6 +48,9 @@ export function useSaveProduct() {
         // The API requires a fixed shape: every key present, null for unused
         // values, and a unit only alongside its value(s).
         shipping: serializeShipping(values.shipping),
+        // The API maps the seo language code to a language_id server-side —
+        // the payload carries the code only.
+        seo: serializeSeo(values.seo),
       }
       return id
         ? updateProduct(id.toString(), postRequest)

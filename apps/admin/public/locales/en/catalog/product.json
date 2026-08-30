@@ -81,7 +81,12 @@
       "package_length": "Length",
       "package_width": "Width",
       "package_height": "Height",
-      "dimension_unit": "Dimension Unit"
+      "dimension_unit": "Dimension Unit",
+      "seo": "SEO",
+      "meta_title": "Meta Title",
+      "meta_description": "Meta Description",
+      "open_graph_title": "Open Graph Title",
+      "open_graph_description": "Open Graph Description"
     },
     "tooltips": {
       "is_published": {
