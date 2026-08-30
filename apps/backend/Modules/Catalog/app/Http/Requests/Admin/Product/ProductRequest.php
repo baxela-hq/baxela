@@ -117,6 +117,7 @@ class ProductRequest extends FormRequest
             Schema::RES_SEO => ['nullable', 'array'],
             Schema::RES_SEO.'.*.'.PSTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
                 Rule::in(array_keys($this->languageMap))],
+            Schema::RES_SEO.'.*.'.PSTSchema::LANGUAGE_ID => ['required', 'integer'],
             Schema::RES_SEO.'.*.'.PSTSchema::META_TITLE => ['nullable', 'string', 'max:255'],
             Schema::RES_SEO.'.*.'.PSTSchema::META_DESCRIPTION => ['nullable', 'string', 'max:255'],
             Schema::RES_SEO.'.*.'.PSTSchema::OPEN_GRAPH_TITLE => ['nullable', 'string', 'max:255'],
