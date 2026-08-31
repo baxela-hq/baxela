@@ -2,6 +2,7 @@
 
 namespace Modules\Cart\Actions\User\Cart;
 
+use Illuminate\Support\Facades\DB;
 use Modules\Cart\Exceptions\User\Checkout\EmptyCardException;
 use Modules\Cart\Exceptions\User\Checkout\InvalidAddressException;
 use Modules\Cart\Exceptions\User\Checkout\InvalidShippingMethodException;
@@ -74,13 +75,25 @@ class CheckoutAction
         }
 
         $orderGateway = app(OrderGatewayInterface::class);
-        $orderId = $orderGateway->createFromCart($input);
+
+        // One transaction: the gateway's own transaction nests as a savepoint,
+        // so a cart-teardown failure rolls the freshly created order back too
+        // instead of leaving a duplicate-order trap for a retry
+        $orderId = DB::transaction(function () use ($orderGateway, $input, $cart): ?int {
+            $orderId = $orderGateway->createFromCart($input);
+            if (! $orderId) {
+                return null;
+            }
+
+            $cart->items()->delete();
+            $cart->delete();
+
+            return $orderId;
+        });
+
         if (! $orderId) {
             throw new OrderFailedException;
         }
-
-        $cart->items()->delete();
-        $cart->delete();
 
         event(CartCheckedOutEvent::fill($cart->toArray()));
 
