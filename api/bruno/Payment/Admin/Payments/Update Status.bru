@@ -1,0 +1,37 @@
+meta {
+  name: Update Status
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/payment/admin/payments/:id
+  body: json
+  auth: bearer
+}
+
+params:path {
+  id: 1
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "success"
+  }
+}
+
+docs {
+  Manually confirms (success) or fails a pending payment — the manual payment
+  flow until a PSP webhook exists. Confirming drives the order to `paid`.
+
+  Allowed values: success | failed. Only pending payments can transition.
+}
