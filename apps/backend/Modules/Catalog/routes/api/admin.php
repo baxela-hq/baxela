@@ -41,6 +41,11 @@ use Modules\Catalog\Http\Controllers\Admin\Product\DeleteProductController;
 use Modules\Catalog\Http\Controllers\Admin\Product\ListProductController;
 use Modules\Catalog\Http\Controllers\Admin\Product\ShowProductController;
 use Modules\Catalog\Http\Controllers\Admin\Product\UpdateProductController;
+use Modules\Catalog\Http\Controllers\Admin\ProductComment\CreateProductCommentController;
+use Modules\Catalog\Http\Controllers\Admin\ProductComment\DeleteProductCommentController;
+use Modules\Catalog\Http\Controllers\Admin\ProductComment\ListProductCommentController;
+use Modules\Catalog\Http\Controllers\Admin\ProductComment\ShowProductCommentController;
+use Modules\Catalog\Http\Controllers\Admin\ProductComment\UpdateProductCommentController;
 use Modules\Core\Http\Middleware\AdminMiddleware;
 
 Route::middleware(['auth:sanctum', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
@@ -49,6 +54,12 @@ Route::middleware(['auth:sanctum', AdminMiddleware::class])->prefix('admin')->na
     Route::get('/products/{id}', ShowProductController::class)->name('products.show');
     Route::patch('/products/{id}', UpdateProductController::class)->name('products.update');
     Route::delete('/products/{id}', DeleteProductController::class)->name('products.delete');
+
+    Route::get('/product-comments', ListProductCommentController::class)->name('product-comments.list');
+    Route::post('/product-comments', CreateProductCommentController::class)->name('product-comments.create');
+    Route::get('/product-comments/{id}', ShowProductCommentController::class)->name('product-comments.show');
+    Route::patch('/product-comments/{id}', UpdateProductCommentController::class)->name('product-comments.update');
+    Route::delete('/product-comments/{id}', DeleteProductCommentController::class)->name('product-comments.delete');
 
     Route::get('/categories', ListCategoryController::class)->name('categories.list');
     Route::post('/categories', CreateCategoryController::class)->name('categories.create');

@@ -38,4 +38,6 @@ class ProductSchema
     public const string RES_ATTRIBUTES = 'attributes';
 
     public const string RES_ATTRIBUTE_VALUES = 'attributeValues';
+
+    public const string RES_COMMENTS = 'comments';
 }

@@ -76,6 +76,11 @@ class Product extends Model
         return $this->hasMany(ProductAttributeValue::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ProductComment::class);
+    }
+
     public function translations(): HasMany
     {
         return $this->hasMany(ProductTranslation::class);
