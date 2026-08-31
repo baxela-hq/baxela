@@ -12,13 +12,13 @@ import {
 import { Locales } from '../data/routes'
 import {
   formatBytes,
-  formatDate,
   getDisplayName,
   getMediaUrl,
   isImage,
   isVideo,
   type MediaItem,
 } from '../data/schema'
+import { formatDate } from '@/shared/lib/datetime.ts'
 import { useMediaActions } from '../hooks/use-media-actions'
 import { MediaThumb } from './media-card'
 

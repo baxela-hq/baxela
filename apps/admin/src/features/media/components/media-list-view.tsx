@@ -18,12 +18,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Locales } from '../data/routes'
-import {
-  formatBytes,
-  formatDate,
-  getDisplayName,
-  type MediaItem,
-} from '../data/schema'
+import { formatBytes, getDisplayName, type MediaItem } from '../data/schema'
+import { formatDate } from '@/shared/lib/datetime.ts'
 import { useMediaActions } from '../hooks/use-media-actions'
 import { MediaThumb } from './media-card'
 

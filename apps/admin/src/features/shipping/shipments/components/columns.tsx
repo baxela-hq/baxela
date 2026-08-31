@@ -8,9 +8,11 @@ import { Locales } from '../data/routes'
 import { statusColors } from '../data/data'
 import { type Shipment } from '../data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<Shipment>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.SHIPMENT)
+  const { formatDateTime } = useFormatDateTime()
 
   return [
     {
@@ -128,7 +130,7 @@ export const Columns = (): ColumnDef<Shipment>[] => {
         <DataTableColumnHeader column={column} title={tLabel('updated_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('updated_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('updated_at'))}</div>,
       enableHiding: true,
       enableSorting: false,
     },

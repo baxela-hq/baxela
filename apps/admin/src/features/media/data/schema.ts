@@ -181,17 +181,6 @@ export function formatBytes(bytes?: number | null): string {
   return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1))} ${units[i]}`
 }
 
-export function formatDate(value?: string | null): string {
-  if (!value) return '—'
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return '—'
-  return date.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
-
 /**
  * Build the breadcrumb chain (root → current folder) for the given folder id.
  * Returns an empty array for the root folder.

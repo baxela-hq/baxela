@@ -19,6 +19,7 @@ import {
   useOrderItems,
   useInvalidateOrder,
 } from './hooks/use-orders'
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 
 
@@ -29,6 +30,7 @@ export function OrderShow() {
   const { id } = route.useParams()
   const { tPageTitle, tLabel:tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tMessage, tStatus } = useAppTranslation(Locales.ORDER)
+  const { formatDateTime } = useFormatDateTime()
   const entityName = {
     singular: tLabel("order"),
     plural: tLabel("orders")
@@ -103,8 +105,8 @@ export function OrderShow() {
                       <TableCell>
                         <Badge variant="outline">{tStatus(`status.${record.status}`)}</Badge>
                       </TableCell>
-                      <TableCell>{record.created_at}</TableCell>
-                      <TableCell>{record.updated_at}</TableCell>
+                      <TableCell>{formatDateTime(record.created_at)}</TableCell>
+                      <TableCell>{formatDateTime(record.updated_at)}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

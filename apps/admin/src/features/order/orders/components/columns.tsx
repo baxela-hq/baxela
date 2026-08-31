@@ -8,9 +8,11 @@ import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
 import { statusTypes } from '../data/data.ts'
 import { Badge } from '@/components/ui/badge.tsx'
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<Order>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.ORDER)
+  const { formatDateTime } = useFormatDateTime()
 
   return [
     {
@@ -76,7 +78,7 @@ export const Columns = (): ColumnDef<Order>[] => {
         <DataTableColumnHeader column={column} title={tLabel('created_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('created_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('created_at'))}</div>,
       enableSorting: false,
       enableHiding: true,
     },
@@ -86,7 +88,7 @@ export const Columns = (): ColumnDef<Order>[] => {
         <DataTableColumnHeader column={column} title={tLabel('updated_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('updated_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('updated_at'))}</div>,
       enableHiding: true,
       enableSorting: false,
     },
