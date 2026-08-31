@@ -4,6 +4,7 @@ namespace Modules\Cart\Http\Requests\User\CartItem;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Catalog\Schemas\Variant\VariantSchema;
 
 class CreateCartItemRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class CreateCartItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            CartItemSchema::VARIANT_ID => ['required', 'integer'],
+            CartItemSchema::VARIANT_ID => ['required', 'integer', 'exists:'.VariantSchema::TABLE.','.VariantSchema::ID],
             CartItemSchema::QUANTITY => ['required', 'integer', 'min:1', 'max:10000'],
         ];
     }
