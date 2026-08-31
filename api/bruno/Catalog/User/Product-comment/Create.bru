@@ -1,0 +1,32 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/user/products/27/comments
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "body": "This is a great product, highly recommended!",
+    "parent_id": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
