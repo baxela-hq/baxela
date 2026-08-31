@@ -2,7 +2,7 @@
 
 namespace Modules\Payment\Actions\User\Payment;
 
-use Modules\Core\Contracts\Gateway\Order\OrderGatewayInterface;
+use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Utils\Auth;
 use Modules\Payment\DTOs\User\Payment\CreatePaymentOutput;
 use Modules\Payment\Exceptions\PaymentException;
