@@ -1,0 +1,25 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/public/products/27/comments
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+}
+
+headers {
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

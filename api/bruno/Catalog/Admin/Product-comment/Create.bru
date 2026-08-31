@@ -1,0 +1,34 @@
+meta {
+  name: Create
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/admin/product-comments
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "product_id": 27,
+    "parent_id": 3,
+    "body": "Thank you for your feedback! The product is back in stock.",
+    "status": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
