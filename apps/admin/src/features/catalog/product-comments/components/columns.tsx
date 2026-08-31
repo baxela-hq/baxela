@@ -10,10 +10,12 @@ import { Locales } from '../data/routes'
 import { statusBadgeVariants } from '../data/data'
 import { type ProductComment, type ProductCommentStatus } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<ProductComment>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.PRODUCT_COMMENT)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { formatDateTime } = useFormatDateTime()
 
   return [
     {
@@ -132,7 +134,7 @@ export const Columns = (): ColumnDef<ProductComment>[] => {
       ),
       cell: ({ row }) => (
         <div className='w-fit ps-2 text-nowrap'>
-          {row.getValue('created_at')}
+          {formatDateTime(row.getValue('created_at'))}
         </div>
       ),
       enableHiding: true,

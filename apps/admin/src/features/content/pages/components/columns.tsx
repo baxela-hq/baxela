@@ -10,10 +10,12 @@ import { DataTableRowActions } from './data-table-row-actions';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
 import { pickTranslation } from '@/shared/lib/locale.ts'
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<Page>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.PAGE)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { formatDateTime } = useFormatDateTime()
 
   return [
     {
@@ -108,7 +110,7 @@ export const Columns = (): ColumnDef<Page>[] => {
         <DataTableColumnHeader column={column} title={tLabel('created_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('created_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('created_at'))}</div>,
       enableSorting: false,
       enableHiding: true,
     },
@@ -118,7 +120,7 @@ export const Columns = (): ColumnDef<Page>[] => {
         <DataTableColumnHeader column={column} title={tLabel('updated_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('updated_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('updated_at'))}</div>,
       enableHiding: true,
       enableSorting: false,
     },

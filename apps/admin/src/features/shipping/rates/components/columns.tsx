@@ -8,10 +8,12 @@ import { getDefaultCurrency } from '@/shared/lib/locale'
 import { Locales } from '../data/routes'
 import { type Rate } from '../data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<Rate>[] => {
   const { tLabel } = useAppTranslation(Locales.RATE)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { formatDateTime } = useFormatDateTime()
 
   const currency = getDefaultCurrency()
   const symbol = currency?.symbol ?? '$'
@@ -99,7 +101,7 @@ export const Columns = (): ColumnDef<Rate>[] => {
         <DataTableColumnHeader column={column} title={tLabel('created_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('created_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('created_at'))}</div>,
       enableSorting: false,
       enableHiding: true,
     },
@@ -109,7 +111,7 @@ export const Columns = (): ColumnDef<Rate>[] => {
         <DataTableColumnHeader column={column} title={tLabel('updated_at')} />
       ),
       cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('updated_at')}</div>,
+        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('updated_at'))}</div>,
       enableHiding: true,
       enableSorting: false,
     },
