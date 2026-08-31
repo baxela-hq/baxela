@@ -15,7 +15,7 @@ class InventoryStockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            InventoryStockSchema::VARIANT_ID => ['required', Rule::exists(VariantSchema::TABLE)],
+            InventoryStockSchema::VARIANT_ID => ['required', Rule::exists(VariantSchema::TABLE, VariantSchema::ID)],
             InventoryStockSchema::QUANTITY => ['required', 'numeric', 'min:1', 'max:100000'],
         ];
     }
