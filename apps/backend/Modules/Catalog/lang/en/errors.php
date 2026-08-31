@@ -4,6 +4,11 @@ return [
     'product' => [
         'creation_failed' => 'Product creation failed',
     ],
+    'product_comment' => [
+        'creation_failed' => 'Product comment creation failed',
+        'invalid_parent' => 'The comment being replied to is invalid',
+        'update_failed' => 'Product comment update failed',
+    ],
     'attribute_group' => [
         'creation_failed' => 'Attribute group creation failed',
         'update_failed' => 'Attribute group update failed',

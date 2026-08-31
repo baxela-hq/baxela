@@ -4,6 +4,11 @@ return [
     'product' => [
         'creation_failed' => 'ایجاد محصول ناموفق بود',
     ],
+    'product_comment' => [
+        'creation_failed' => 'ایجاد دیدگاه محصول ناموفق بود',
+        'invalid_parent' => 'دیدگاه انتخاب‌شده برای پاسخ نامعتبر است',
+        'update_failed' => 'به‌روزرسانی دیدگاه محصول ناموفق بود',
+    ],
     'attribute_group' => [
         'creation_failed' => 'ایجاد گروه ویژگی ناموفق بود',
         'update_failed' => 'به‌روزرسانی گروه ویژگی ناموفق بود',
