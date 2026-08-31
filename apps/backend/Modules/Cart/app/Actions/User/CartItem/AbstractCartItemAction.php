@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\DB;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
+use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Cart\CartCreatedEvent;
+use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Core\Utils\Auth;
 
 abstract class AbstractCartItemAction
@@ -36,5 +38,41 @@ abstract class AbstractCartItemAction
     protected function getVariant(int $variantId): \stdClass
     {
         return DB::Table(VariantSchema::TABLE)->find($variantId);
+    }
+
+    /**
+     * Display title of the variant's product: the default language's
+     * translation when present, else any translation — snapshotted onto cart
+     * items and later onto order lines.
+     */
+    protected function getProductTitle(int $variantId): string
+    {
+        $productId = DB::Table(VariantSchema::TABLE)
+            ->where(VariantSchema::ID, $variantId)
+            ->value(VariantSchema::PRODUCT_ID);
+
+        if (is_null($productId)) {
+            return '';
+        }
+
+        $translations = DB::Table(ProductTranslationSchema::TABLE)
+            ->where(ProductTranslationSchema::PRODUCT_ID, $productId)
+            ->get([
+                ProductTranslationSchema::LANGUAGE_ID,
+                ProductTranslationSchema::TITLE,
+            ]);
+
+        if ($translations->isEmpty()) {
+            return '';
+        }
+
+        $defaultLanguageId = DB::Table(LanguageSchema::TABLE)
+            ->where(LanguageSchema::IS_DEFAULT, true)
+            ->value(LanguageSchema::ID);
+
+        return $translations
+            ->firstWhere(ProductTranslationSchema::LANGUAGE_ID, $defaultLanguageId)
+            ?->{ProductTranslationSchema::TITLE}
+            ?? $translations->first()->{ProductTranslationSchema::TITLE};
     }
 }

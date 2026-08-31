@@ -11,26 +11,39 @@ class CreateCartItemAction extends AbstractCartItemAction
 {
     public function handle(CreateCartItemRequest $request)
     {
+        $cartId = $this->getCartId();
+
         $cartItem = $this->cartItem
             ->query()
-            ->where([CartItemSchema::VARIANT_ID => $request->input(CartItemSchema::VARIANT_ID)])->first();
-
-        if (! $cartItem) {
-            $cartId = $this->getCartId();
-            $variant = $this->getVariant($request->input(CartItemSchema::VARIANT_ID));
-
-            $data = [
+            ->where([
                 CartItemSchema::CART_ID => $cartId,
                 CartItemSchema::VARIANT_ID => $request->input(CartItemSchema::VARIANT_ID),
-                CartItemSchema::PRICE_SNAPSHOT => $variant->{VariantSchema::PRICE},
-                CartItemSchema::PRODUCT_NAME_SNAPSHOT => 'TEST',
-                CartItemSchema::QUANTITY => $request->input(CartItemSchema::QUANTITY),
-            ];
-            $cartItem = $this->cartItem->query()->create($data);
-            $cartItem = $cartItem->fresh();
+            ])->first();
 
-            event(CartItemAddedEvent::fill($cartItem->toArray()));
+        if ($cartItem) {
+            $cartItem->increment(
+                CartItemSchema::QUANTITY,
+                $request->input(CartItemSchema::QUANTITY)
+            );
+
+            return $cartItem;
         }
+
+        $variant = $this->getVariant($request->input(CartItemSchema::VARIANT_ID));
+
+        $data = [
+            CartItemSchema::CART_ID => $cartId,
+            CartItemSchema::VARIANT_ID => $request->input(CartItemSchema::VARIANT_ID),
+            CartItemSchema::PRICE_SNAPSHOT => $variant->{VariantSchema::PRICE},
+            CartItemSchema::PRODUCT_NAME_SNAPSHOT => $this->getProductTitle(
+                $request->input(CartItemSchema::VARIANT_ID)
+            ),
+            CartItemSchema::QUANTITY => $request->input(CartItemSchema::QUANTITY),
+        ];
+        $cartItem = $this->cartItem->query()->create($data);
+        $cartItem = $cartItem->fresh();
+
+        event(CartItemAddedEvent::fill($cartItem->toArray()));
 
         return $cartItem;
     }
