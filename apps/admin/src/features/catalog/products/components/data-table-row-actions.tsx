@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Trash2, UserPen } from 'lucide-react'
+import { MessageSquare, Trash2, UserPen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -24,6 +24,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = useProducts()
   const navigate = useNavigate()
   const { tAction } = useAppTranslation(Locales.SHARED_COMMON)
+  const { tLabel } = useAppTranslation(Locales.PRODUCT)
 
   return (
     <>
@@ -47,6 +48,19 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             {tAction('edit')}
             <DropdownMenuShortcut>
               <UserPen size={16} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              navigate({
+                to: '/catalog/product-comments',
+                search: { 'filter[product_id]': row.original.id },
+              })
+            }}
+          >
+            {tLabel('comments')}
+            <DropdownMenuShortcut>
+              <MessageSquare size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

@@ -133,6 +133,10 @@ export const useSidebarData = (): SidebarData => {
                 title: t('sidebar.attributes'),
                 url: '/catalog/attributes',
               },
+              {
+                title: t('sidebar.productComments'),
+                url: '/catalog/product-comments',
+              },
             ],
           },
           {

@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "comment": "Comment",
+      "comments": "Comments",
+      "id": "ID",
+      "body": "Body",
+      "product": "Product",
+      "user": "User",
+      "anonymous": "Anonymous",
+      "status": "Status",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "reply": "Reply",
+      "reply_title": "Reply to the comment",
+      "reply_subtitle": "Your reply is published immediately",
+      "approve": "Approve",
+      "approved": "approved",
+      "reject": "Reject",
+      "rejected": "rejected"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      }
+    }
+  }
+}
