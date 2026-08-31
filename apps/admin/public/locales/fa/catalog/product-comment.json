@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "comment": "دیدگاه",
+      "comments": "دیدگاه‌ها",
+      "id": "شناسه",
+      "body": "متن",
+      "product": "محصول",
+      "user": "کاربر",
+      "anonymous": "ناشناس",
+      "status": "وضعیت",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی",
+      "reply": "پاسخ",
+      "reply_title": "پاسخ به دیدگاه",
+      "reply_subtitle": "پاسخ شما بلافاصله منتشر می‌شود",
+      "approve": "تایید",
+      "approved": "تایید شد",
+      "reject": "رد",
+      "rejected": "رد شد"
+    },
+    "statuses": {
+      "status": {
+        "pending": "در انتظار",
+        "approved": "تاییدشده",
+        "rejected": "ردشده"
+      }
+    }
+  }
+}
