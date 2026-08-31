@@ -17,6 +17,8 @@ interface OrderGatewayInterface
 
     public function findOrder(int $orderId): ?GetOrderOutput;
 
+    public function markAsPaid(int $orderId): bool;
+
     public function markAsShipped(int $orderId): bool;
 
     public function markAsDelivered(int $orderId): bool;

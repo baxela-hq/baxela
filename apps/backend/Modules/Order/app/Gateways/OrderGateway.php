@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
+use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
@@ -85,7 +86,8 @@ class OrderGateway implements OrderGatewayInterface
     {
         $order = Order::query()
             ->where(OrderSchema::ID, $orderId)
-            ->where(OrderSchema::EXPIRES_AT, '<=', now())
+            ->where(OrderSchema::USER_ID, $userId)
+            ->where(OrderSchema::EXPIRES_AT, '>=', now())
             ->first();
 
         return $order ? new GetOrderOutput($order->toArray()) : null;
@@ -100,6 +102,11 @@ class OrderGateway implements OrderGatewayInterface
         return $order ? new GetOrderOutput($order->toArray()) : null;
     }
 
+    public function markAsPaid(int $orderId): bool
+    {
+        return $this->updateStatus($orderId, OrderStatusEnum::PAID, OrderPaidEvent::class);
+    }
+
     public function markAsShipped(int $orderId): bool
     {
         return $this->updateStatus($orderId, OrderStatusEnum::SHIPPED, OrderShippedEvent::class);
@@ -111,7 +118,7 @@ class OrderGateway implements OrderGatewayInterface
     }
 
     /**
-     * @param  class-string<OrderShippedEvent|OrderCompletedEvent>  $event
+     * @param  class-string<OrderPaidEvent|OrderShippedEvent|OrderCompletedEvent>  $event
      */
     private function updateStatus(int $orderId, OrderStatusEnum $status, string $event): bool
     {
