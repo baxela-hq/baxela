@@ -13,23 +13,24 @@ baxela/
 ├── api/
 │   └── bruno/            # Bruno API collections
 ├── docs/                 # Cross-project documentation
+├── infrastructure/
+│   └── docker/           # Per-environment compose setups (develop/, production/)
 ├── .github/              # CI / PR templates
-├── docker-compose.yml    # Dev only; build contexts -> ./apps/backend
-├── .env.example          # Compose-level vars only (ports etc.)
 └── README.md
 ```
 
 ## Quick start
 
-1. Copy environment: `cp .env.example .env`
-2. Start dev services: `docker compose up -d`
+1. Start the dev stack: `cd infrastructure/docker/develop && cp .env.example .env && docker compose up -d`
+2. Follow the develop [README](infrastructure/docker/develop/README.md) for the
+   first-time Laravel setup (composer install, key, migrate).
 3. See `apps/<app>/README.md` for per-app setup.
 
 ## Layout guidelines
 
 - Each app owns its code, config, and its own `.env`.
-- The root `.env` holds only compose/infra-level variables (ports, user ids).
-- The root `docker-compose.yml` is development-only and builds from `./apps/backend`.
+- Docker assets live in `infrastructure/docker/<environment>/` — there is no
+  root compose file; each environment is run from its own directory.
 - Cross-project documentation lives in `docs/`.
 
 ## Contributing
@@ -39,4 +40,4 @@ baxela/
 ## Moving apps
 
 Each app was moved as-is into `apps/` preserving its git history and existing config
-(e.g. `apps/backend` keeps its `docker/` and `AGENTS.md`).
+(e.g. `apps/backend` keeps its `AGENTS.md`).
