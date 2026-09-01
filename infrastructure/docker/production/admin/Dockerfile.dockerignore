@@ -1,0 +1,13 @@
+# BuildKit per-Dockerfile ignore (context = repo root). Whitelist only what
+# this image needs: the admin app and its own nginx config.
+
+*
+!apps
+!apps/admin
+!apps/admin/**
+
+# Dependencies and previous build output are rebuilt inside the image.
+apps/admin/node_modules
+apps/admin/dist
+
+!infrastructure/docker/production/admin/nginx.conf

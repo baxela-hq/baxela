@@ -1,0 +1,19 @@
+# BuildKit per-Dockerfile ignore (context = repo root). Whitelist only what
+# this image needs: the backend app and its own config files.
+
+*
+!apps
+!apps/backend
+!apps/backend/**
+
+# Keep the context small — vendor/node_modules are rebuilt inside the image.
+apps/backend/vendor
+apps/backend/node_modules
+# Never bake a local .env into the image.
+apps/backend/.env
+# Generated caches reference dev-dependency providers (e.g. laravel/pail)
+# that don't exist in the --no-dev vendor; the entrypoint regenerates them.
+apps/backend/bootstrap/cache/*
+
+!infrastructure/docker/production/backend/entrypoint.sh
+!infrastructure/docker/production/backend/php.ini
