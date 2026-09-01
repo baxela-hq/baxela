@@ -13,6 +13,8 @@ apps/
   storefront/  # (upcoming)
 api/           # Bruno API collections
 docs/          # Documentation
+infrastructure/
+  docker/      # Per-environment compose setups (develop/, production/)
 ```
 
 ## Agent Guidelines Index
@@ -28,7 +30,7 @@ The **Git Conventions** below are monorepo-level and take precedence over per-ap
 ## Git Conventions
 
 - Conventional commits: `type(scope): subject` — types: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`, `build`, `ci`.
-- **Scope is the app** the change belongs to: `backend`, `admin`, `storefront`, `api`, or `infra` for root-level changes (compose files, root config, etc.).
+- **Scope is the app** the change belongs to: `backend`, `admin`, `storefront`, `api`, or `infra` for `infrastructure/` and other root-level changes (root config, CI, etc.).
 - For a deeper change, append the app's module/feature after a slash — e.g. `feat(backend/catalog): ...` or `fix(admin/auth): ...`. The app scope stays primary so a commit's target is identifiable from the subject alone.
 - Examples:
   - `feat(backend/catalog): add product shipping dimensions`
