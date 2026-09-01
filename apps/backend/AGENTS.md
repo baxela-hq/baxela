@@ -166,9 +166,10 @@ Request payloads must keep a fixed shape: every key is always present — its va
 ## Commands
 
 ```bash
+# Dev stack lives in infrastructure/docker/develop (run compose from there)
 docker compose up -d        # MySQL/Redis/nginx dev environment
-composer install
-php artisan migrate
+docker compose exec app composer install
+docker compose exec app php artisan migrate
 composer test               # = config:clear + artisan test (Pest)
 php artisan test            # run tests
 vendor/bin/pint             # format code (use --test to check only)
