@@ -1,0 +1,81 @@
+# Development environment: php-fpm + nginx + MySQL + Redis, with the backend
+# source bind-mounted from apps/backend (no host PHP required).
+# Start from this directory: docker compose up -d
+
+name: baxela-develop
+
+services:
+    app:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+            args:
+                WWWUSER: ${WWWUSER:-1000}
+                WWWGROUP: ${WWWGROUP:-1000}
+        image: baxela/backend:develop
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - ../../../apps/backend:/var/www/html
+        environment:
+            WWWUSER: ${WWWUSER:-1000}
+            WWWGROUP: ${WWWGROUP:-1000}
+        depends_on:
+            mysql:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+
+    web:
+        image: nginx:stable-bookworm
+        restart: unless-stopped
+        ports:
+            - "${BACKEND_APP_PORT:-8085}:80"
+        volumes:
+            - ../../../apps/backend:/var/www/html
+            - ./nginx/backend.conf:/etc/nginx/conf.d/default.conf:ro
+        depends_on:
+            - app
+
+    mysql:
+        image: mysql:8-debian
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DEV_DB_DATABASE:-xshop_backend}
+            MYSQL_USER: ${DEV_DB_USERNAME:-xshop}
+            MYSQL_PASSWORD: ${DEV_DB_PASSWORD:-password}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+        ports:
+            - "${BACKEND_MYSQL_PORT:-3308}:3306"
+        volumes:
+            - mysql-data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD-SHELL", "mysqladmin ping -hlocalhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+
+    redis:
+        image: redis:7-bookworm
+        restart: unless-stopped
+        ports:
+            - "${BACKEND_REDIS_PORT:-6378}:6379"
+        volumes:
+            - redis-data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+
+    mail:
+        image: axllent/mailpit
+        profiles:
+            - mail
+        restart: unless-stopped
+        ports:
+            - "${MAILPIT_PORT:-8025}:8025"
+
+volumes:
+    mysql-data:
+    redis-data:
