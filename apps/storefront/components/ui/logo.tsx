@@ -14,11 +14,11 @@ export function Logo({
     <Link
       href={href}
       aria-label="Baxela home"
-      className={cn("inline-flex items-center gap-3", className)}
+      className={cn("inline-flex items-center gap-2 sm:gap-3", className)}
     >
       <span
         className={cn(
-          "grid size-10 place-items-center rounded-default text-lg font-bold",
+          "grid size-9 place-items-center rounded-default text-lg font-bold sm:size-10",
           variant === "dark"
             ? "bg-primary text-primary-foreground"
             : "bg-white text-primary",
@@ -28,7 +28,7 @@ export function Logo({
       </span>
       <span
         className={cn(
-          "text-[26px] font-bold leading-none tracking-tight",
+          "text-xl font-bold leading-none tracking-tight sm:text-[26px]",
           variant === "dark" ? "text-primary" : "text-white",
         )}
       >

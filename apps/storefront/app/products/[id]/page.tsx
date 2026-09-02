@@ -8,12 +8,12 @@ import { ProductTabs } from "@/components/product-tabs";
 import { Button } from "@/components/ui/button";
 import {
   HeartIcon,
-  SearchIcon,
   ShoppingCartIcon,
   StarSolidIcon,
 } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/mobile-menu";
+import { SearchMenu } from "@/components/search-menu";
 
 export interface ProductDetail {
   id: number;
@@ -62,7 +62,7 @@ export default async function ProductPage({
       </p>
 
       <header className="sticky top-0 z-40 border-b border-border-light bg-white">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <nav
             aria-label="Main navigation"
@@ -78,14 +78,8 @@ export default async function ProductPage({
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              aria-label="Search"
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
-            >
-              <SearchIcon className="size-5" />
-            </button>
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <SearchMenu />
             <button
               type="button"
               aria-label="Wishlist"

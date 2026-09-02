@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import {
   HeartIcon,
-  SearchIcon,
   ShoppingCartIcon,
   StarSolidIcon,
 } from "@/components/ui/icons";
 import ProductCard from "@/components/product-card";
 import { MegaMenuNavItem } from "@/components/mega-menu";
 import { MobileMenu } from "@/components/mobile-menu";
+import { SearchMenu } from "@/components/search-menu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -42,7 +42,7 @@ export default function HomePage() {
 
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border-light bg-white">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Logo variant="dark" />
           <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((link) =>
@@ -64,10 +64,8 @@ export default function HomePage() {
               )
             )}
           </nav>
-          <div className="flex items-center gap-1">
-            <button type="button" aria-label="Search" className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted">
-              <SearchIcon className="size-5" />
-            </button>
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <SearchMenu />
             <button type="button" aria-label="Wishlist" className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted">
               <HeartIcon className="size-5" />
             </button>
@@ -169,9 +167,9 @@ export default function HomePage() {
                   required
                   placeholder="Enter your email address"
                   aria-label="Email address"
-                  className="h-14 flex-1 rounded-default border border-border bg-white px-4 text-base outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
+                  className="h-14 min-w-0 flex-1 rounded-default border border-border bg-white px-4 text-base outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
                 />
-                <Button type="submit" fullWidth={false} className="px-8">Subscribe</Button>
+                <Button type="submit" fullWidth={false} className="shrink-0 px-8">Subscribe</Button>
               </form>
             </div>
           </div>

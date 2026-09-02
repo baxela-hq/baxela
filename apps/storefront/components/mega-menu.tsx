@@ -7,9 +7,8 @@ import { cn } from "@/lib/utils";
  * Screen 07 — Mega menu (Figma node 3235:1719).
  *
  * The Figma frame is a flattened image mockup, so the panel layout follows the
- * storefront's established conventions: a full-width dropdown under the
- * "Products" nav link with category columns on a white surface above a light
- * border.
+ * storefront's established conventions: a centered dropdown card under the
+ * "Products" nav link with category columns on a white surface.
  */
 
 interface MegaMenuCategory {
@@ -56,7 +55,7 @@ export function MegaMenu({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "absolute left-0 right-0 top-full border-b border-border-light bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]",
+        "bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]",
         className,
       )}
     >
