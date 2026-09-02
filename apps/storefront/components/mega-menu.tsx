@@ -17,7 +17,7 @@ interface MegaMenuCategory {
   links: { label: string; href: string }[];
 }
 
-const MEGA_MENU_COLUMNS: MegaMenuCategory[] = [
+export const MEGA_MENU_COLUMNS: MegaMenuCategory[] = [
   {
     title: "Sneakers",
     links: [

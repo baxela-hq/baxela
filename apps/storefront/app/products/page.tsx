@@ -5,12 +5,12 @@ import ProductCard, {
 } from "@/components/product-card";
 import {
   HeartIcon,
-  MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
 } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
 import ProductFilters from "@/components/product-filters";
+import { MobileMenu } from "@/components/mobile-menu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -96,13 +96,7 @@ export default function ProductsPage() {
             >
               <ShoppingCartIcon className="size-5" />
             </button>
-            <button
-              type="button"
-              aria-label="Open menu"
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted md:hidden"
-            >
-              <MenuIcon className="size-5" />
-            </button>
+            <MobileMenu />
           </div>
         </div>
       </header>
