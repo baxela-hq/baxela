@@ -5,12 +5,12 @@ import ProductCard, {
 } from "@/components/product-card";
 import {
   HeartIcon,
-  SearchIcon,
   ShoppingCartIcon,
 } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
 import ProductFilters from "@/components/product-filters";
 import { MobileMenu } from "@/components/mobile-menu";
+import { SearchMenu } from "@/components/search-menu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -46,7 +46,18 @@ export const metadata = {
   title: "Products — Baxela Storefront",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: PageProps<"/products">) {
+  const { q } = await searchParams;
+  const query = (Array.isArray(q) ? q[0] : q)?.trim() ?? "";
+  const normalizedQuery = query.toLowerCase();
+  const visibleProducts = query
+    ? PRODUCTS.filter((product) =>
+        product.name.toLowerCase().includes(normalizedQuery),
+      )
+    : PRODUCTS;
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <p className="bg-primary py-2.5 text-center text-sm text-primary-foreground">
@@ -54,7 +65,7 @@ export default function ProductsPage() {
       </p>
 
       <header className="sticky top-0 z-40 border-b border-border-light bg-white">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <nav
             aria-label="Main navigation"
@@ -74,14 +85,8 @@ export default function ProductsPage() {
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              aria-label="Search"
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
-            >
-              <SearchIcon className="size-5" />
-            </button>
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <SearchMenu />
             <button
               type="button"
               aria-label="Wishlist"
@@ -118,9 +123,15 @@ export default function ProductsPage() {
         </nav>
 
         <section className="mx-auto max-w-7xl px-6 py-12">
-          <h1 className="text-3xl font-bold text-foreground">All Products</h1>
+          <h1 className="text-3xl font-bold text-foreground">
+            {query ? `Search results for “${query}”` : "All Products"}
+          </h1>
           <p className="mt-2 text-sm text-secondary-text">
-            Showing 1–9 of 123 results
+            {query
+              ? `Showing ${visibleProducts.length} ${
+                  visibleProducts.length === 1 ? "result" : "results"
+                }`
+              : "Showing 1–9 of 123 results"}
           </p>
 
           <ProductFilters
@@ -128,15 +139,21 @@ export default function ProductsPage() {
             sizes={SIZE_FILTERS}
             sortOptions={SORT_OPTIONS}
           >
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-                {PRODUCTS.map((product) => (
+            {visibleProducts.length > 0 ? (
+              <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+                {visibleProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
+            ) : (
+              <p className="text-base text-secondary-text">
+                No products found for “{query}”. Try a different search term.
+              </p>
+            )}
 
               <nav
                 aria-label="Pagination"
-                className="mt-12 flex items-center justify-center gap-2"
+                className="mt-12 flex flex-wrap items-center justify-center gap-2"
               >
                 <button
                   type="button"
