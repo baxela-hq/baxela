@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   HeartIcon,
-  MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
 } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
+import { MobileMenu } from "@/components/mobile-menu";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -80,13 +80,7 @@ export default function CheckoutPage() {
             >
               <ShoppingCartIcon className="size-5" />
             </button>
-            <button
-              type="button"
-              aria-label="Open menu"
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted md:hidden"
-            >
-              <MenuIcon className="size-5" />
-            </button>
+            <MobileMenu />
           </div>
         </div>
       </header>

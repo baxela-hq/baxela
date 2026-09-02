@@ -8,12 +8,12 @@ import { ProductTabs } from "@/components/product-tabs";
 import { Button } from "@/components/ui/button";
 import {
   HeartIcon,
-  MenuIcon,
   SearchIcon,
   ShoppingCartIcon,
   StarSolidIcon,
 } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
+import { MobileMenu } from "@/components/mobile-menu";
 
 export interface ProductDetail {
   id: number;
@@ -100,13 +100,7 @@ export default async function ProductPage({
             >
               <ShoppingCartIcon className="size-5" />
             </button>
-            <button
-              type="button"
-              aria-label="Open menu"
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted md:hidden"
-            >
-              <MenuIcon className="size-5" />
-            </button>
+            <MobileMenu />
           </div>
         </div>
       </header>
