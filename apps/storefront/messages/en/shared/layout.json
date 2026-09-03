@@ -1,0 +1,111 @@
+{
+  "announcement": {
+    "text": "Free shipping on orders over $75 — 30-day returns, no questions asked."
+  },
+  "header": {
+    "labels": {
+      "main_navigation": "Main navigation"
+    },
+    "nav": {
+      "home": "Home",
+      "products": "Products",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "actions": {
+      "search": "Search",
+      "wishlist": "Wishlist",
+      "cart": "Cart",
+      "open_menu": "Open menu",
+      "close_menu": "Close menu"
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "Search products",
+      "input": "Search products"
+    },
+    "texts": {
+      "title": "Search products",
+      "popular_categories": "Popular categories"
+    },
+    "placeholders": {
+      "query": "Search products…"
+    },
+    "actions": {
+      "submit": "Search",
+      "close": "Close search"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "Mobile navigation"
+    },
+    "texts": {
+      "categories": "Shop by category"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "Breadcrumb"
+    },
+    "links": {
+      "home": "Home"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "Everyday essentials, built to last. Designed in small batches since 2019.",
+      "tagline_short": "Everyday essentials, built to last."
+    },
+    "columns": {
+      "shop": {
+        "title": "Shop"
+      },
+      "support": {
+        "title": "Support",
+        "links": {
+          "contact_us": "Contact us",
+          "shipping_returns": "Shipping & returns",
+          "size_guide": "Size guide",
+          "faq": "FAQ"
+        }
+      },
+      "account": {
+        "title": "Account",
+        "links": {
+          "login": "Login",
+          "create_account": "Create account",
+          "forgot_password": "Forgot password"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "Newsletter",
+        "description": "Sign up for new arrivals and offers."
+      },
+      "placeholders": {
+        "email": "Enter your email address"
+      },
+      "actions": {
+        "subscribe": "Subscribe"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "You have subscribed to the newsletter successfully."
+        },
+        "error": {
+          "invalid_email": "Please enter a valid email address."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "Privacy policy",
+      "terms_of_service": "Terms of service"
+    },
+    "copyright": {
+      "text": "© {year} {company}. All rights reserved."
+    }
+  }
+}

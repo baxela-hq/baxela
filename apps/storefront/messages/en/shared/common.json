@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "actions": {
+      "back": "Back",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "close": "Close"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "email": "Please enter a valid email address.",
+      "min_length": "Must be at least {min} characters.",
+      "password_mismatch": "Passwords do not match."
+    }
+  },
+  "messages": {
+    "error": {
+      "general": "Something went wrong. Please try again later.",
+      "network": "Failed to connect. Please check your connection."
+    },
+    "info": {
+      "loading": "Loading…"
+    }
+  }
+}
