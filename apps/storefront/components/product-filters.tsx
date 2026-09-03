@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 
 export interface ProductFilterCategory {
   label: string;
@@ -32,6 +33,7 @@ export default function ProductFilters({
   children,
 }: ProductFiltersProps) {
   const [expanded, setExpanded] = useState(true);
+  const t = useTranslations("catalog.products");
 
   return (
     <div
@@ -40,19 +42,19 @@ export default function ProductFilters({
       }
     >
       {expanded ? (
-        <aside aria-label="Product filters" className="space-y-8">
+        <aside aria-label={t("filters.labels.aside")} className="space-y-8">
           <button
             type="button"
             onClick={() => setExpanded(false)}
             aria-expanded={expanded}
             className="text-sm text-secondary-text transition-colors hover:text-accent"
           >
-            Hide filters
+            {t("filters.actions.hide")}
           </button>
 
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-              Category
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+              {t("filters.labels.category")}
             </h2>
             <ul className="mt-4 space-y-3">
               {categories.map((category) => (
@@ -74,8 +76,8 @@ export default function ProductFilters({
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-              Size
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+              {t("filters.labels.size")}
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {sizes.map((size) => (
@@ -91,8 +93,8 @@ export default function ProductFilters({
           </div>
 
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
-              Price
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+              {t("filters.labels.price")}
             </h2>
             <p className="mt-4 text-sm text-secondary-text">$0 — $150</p>
             <input
@@ -100,7 +102,7 @@ export default function ProductFilters({
               min={0}
               max={150}
               defaultValue={150}
-              aria-label="Maximum price"
+              aria-label={t("filters.labels.max_price")}
               className="mt-3 w-full accent-accent"
             />
           </div>
@@ -110,8 +112,8 @@ export default function ProductFilters({
       <div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-light pb-4">
           {expanded ? (
-            <label htmlFor="sort" className="text-sm text-secondary-text">
-              Sort by
+            <label htmlFor="sort" className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+              {t("sort.labels.by")}
             </label>
           ) : (
             <button
@@ -120,14 +122,14 @@ export default function ProductFilters({
               aria-expanded={expanded}
               className="rounded-default border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
-              Filters
+              {t("filters.actions.show")}
             </button>
           )}
 
           <div className="flex items-center gap-4">
             {!expanded ? (
-              <label htmlFor="sort" className="text-sm text-secondary-text">
-                Sort by
+              <label htmlFor="sort" className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {t("sort.labels.by")}
               </label>
             ) : null}
             <select

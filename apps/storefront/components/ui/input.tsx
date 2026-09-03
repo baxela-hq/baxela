@@ -7,6 +7,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
 } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { EyeIcon, EyeOffIcon } from "@/components/ui/icons";
 
@@ -25,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const [show, setShow] = useState(false);
   const isPassword = type === "password";
   const resolvedType = isPassword && show ? "text" : type;
+  const tCommon = useTranslations("shared.common");
 
   return (
     <div className="w-full">
@@ -35,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       ) : null}
       <div className="relative">
         {icon ? (
-          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-secondary-text [&>svg]:size-5">
+          <span className="pointer-events-none absolute start-4 top-1/2 -translate-y-1/2 text-secondary-text [&>svg]:size-5">
             {icon}
           </span>
         ) : null}
@@ -45,8 +47,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           type={resolvedType}
           className={cn(
             "h-14 w-full rounded-default border border-border bg-white text-base text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary",
-            icon ? "pl-12" : "pl-4",
-            isPassword ? "pr-16" : "pr-4",
+            icon ? "ps-12" : "ps-4",
+            isPassword ? "pe-16" : "pe-4",
             className,
           )}
           {...props}
@@ -55,10 +57,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
-            className="absolute right-3.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-1 text-sm font-medium text-accent"
+            className="absolute end-3.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-1 text-sm font-medium text-accent"
           >
             {show ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
-            <span>{show ? "Hide" : "Show"}</span>
+            <span>{show ? tCommon("form.actions.hide") : tCommon("form.actions.show")}</span>
           </button>
         ) : null}
       </div>

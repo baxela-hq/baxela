@@ -15,7 +15,7 @@ export function AuthShell({
           className="relative hidden w-[58.7%] shrink-0 bg-cover bg-center lg:block"
           style={{ backgroundImage: `url(${image})` }}
         >
-          <div className="absolute left-[60px] top-[60px]">
+          <div className="absolute start-[60px] top-[60px]">
             <Logo variant="light" />
           </div>
         </div>

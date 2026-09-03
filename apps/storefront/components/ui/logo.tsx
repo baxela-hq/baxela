@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
 
 export function Logo({
   variant = "dark",

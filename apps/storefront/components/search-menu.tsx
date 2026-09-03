@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
-import { MEGA_MENU_COLUMNS } from "@/components/mega-menu";
+import { MEGA_MENU_COLUMNS } from "@/components/mega-menu-columns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CloseIcon, SearchIcon } from "@/components/ui/icons";
+import { Link } from "@/i18n/navigation";
 
 /**
  * Search trigger + overlay panel for the header. Mirrors the MobileMenu
@@ -20,6 +21,7 @@ export function SearchMenu() {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const t = useTranslations("shared.layout");
 
   useEffect(() => {
     if (!open) return;
@@ -53,7 +55,7 @@ export function SearchMenu() {
     <div>
       <button
         type="button"
-        aria-label="Search"
+        aria-label={t("header.actions.search")}
         aria-expanded={open}
         aria-controls="search-menu"
         onClick={() => setOpen(true)}
@@ -76,7 +78,7 @@ export function SearchMenu() {
         id="search-menu"
         role="dialog"
         aria-modal="true"
-        aria-label="Search products"
+        aria-label={t("search.labels.dialog")}
         inert={!open}
         className={`fixed left-1/2 top-24 z-50 w-[min(92vw,40rem)] -translate-x-1/2 rounded-default border border-border-light bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)] transition duration-200 ${
           open
@@ -85,12 +87,12 @@ export function SearchMenu() {
         }`}
       >
         <div className="flex items-center justify-between border-b border-border-light px-6 py-4">
-          <p className="text-base font-medium text-foreground">
-            Search products
+          <p className="text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+            {t("search.texts.title")}
           </p>
           <button
             type="button"
-            aria-label="Close search"
+            aria-label={t("search.actions.close")}
             onClick={close}
             className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
           >
@@ -105,19 +107,19 @@ export function SearchMenu() {
             name="q"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search products…"
-            aria-label="Search products"
+            placeholder={t("search.placeholders.query")}
+            aria-label={t("search.labels.input")}
             className="h-12"
             icon={<SearchIcon />}
           />
           <Button type="submit" fullWidth={false} className="h-12 self-center">
-            Search
+            {t("search.actions.submit")}
           </Button>
         </form>
 
         <div className="px-6 pb-6 pt-6">
-          <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text">
-            Popular categories
+          <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
+            {t("search.texts.popular_categories")}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {MEGA_MENU_COLUMNS.map((column) => (
