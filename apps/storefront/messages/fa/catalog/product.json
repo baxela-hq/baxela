@@ -1,0 +1,53 @@
+{
+  "texts": {
+    "reviews_count": "({count} دیدگاه)",
+    "related_title": "شاید این‌ها را هم بپسندید"
+  },
+  "labels": {
+    "size": "سایز",
+    "main_image": "تصویر اصلی {name}",
+    "quantity_decrease": "کاهش تعداد",
+    "quantity_increase": "افزایش تعداد"
+  },
+  "actions": {
+    "add_to_cart": "افزودن به سبد خرید",
+    "add_to_wishlist": "افزودن به علاقه‌مندی‌ها"
+  },
+  "tabs": {
+    "labels": {
+      "group": "اطلاعات محصول",
+      "description": "توضیحات",
+      "additional": "اطلاعات تکمیلی",
+      "reviews": "دیدگاه‌ها ({count})"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "بر اساس {count} دیدگاه",
+      "stars": "{count} ستاره"
+    },
+    "labels": {
+      "rated": "امتیاز {rating} از ۵"
+    },
+    "form": {
+      "texts": {
+        "title": "ثبت دیدگاه"
+      },
+      "labels": {
+        "name": "نام شما",
+        "email": "ایمیل شما",
+        "rating": "امتیاز",
+        "review": "دیدگاه شما"
+      },
+      "placeholders": {
+        "name": "نام شما",
+        "email": "ایمیل شما",
+        "rating": "امتیاز (۱ تا ۵)",
+        "review": "نظر خود را بنویسید"
+      },
+      "actions": {
+        "submit": "ثبت دیدگاه"
+      }
+    }
+  }
+}

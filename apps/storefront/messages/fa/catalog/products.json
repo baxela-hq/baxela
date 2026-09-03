@@ -1,0 +1,42 @@
+{
+  "texts": {
+    "title": "همه محصولات",
+    "search_results_title": "نتایج جستجو برای «{query}»",
+    "results_count": "نمایش {from} تا {to} از {total} نتیجه",
+    "search_results_count": "نمایش {count} نتیجه",
+    "empty_search": "محصولی برای «{query}» پیدا نشد. عبارت دیگری را جستجو کنید."
+  },
+  "filters": {
+    "labels": {
+      "aside": "فیلترهای محصولات",
+      "category": "دسته",
+      "size": "سایز",
+      "price": "قیمت",
+      "max_price": "بیشترین قیمت"
+    },
+    "actions": {
+      "hide": "بستن فیلترها",
+      "show": "فیلترها"
+    }
+  },
+  "sort": {
+    "labels": {
+      "by": "مرتب‌سازی"
+    },
+    "options": {
+      "featured": "ویژه",
+      "newest": "جدیدترین",
+      "price_low_high": "قیمت: کم به زیاد",
+      "price_high_low": "قیمت: زیاد به کم"
+    }
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "صفحه‌بندی"
+    },
+    "actions": {
+      "previous": "قبلی",
+      "next": "بعدی"
+    }
+  }
+}

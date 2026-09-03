@@ -1,0 +1,78 @@
+{
+  "texts": {
+    "title": "تسویه حساب"
+  },
+  "contact": {
+    "texts": {
+      "title": "اطلاعات تماس"
+    },
+    "labels": {
+      "email": "ایمیل",
+      "phone": "تلفن"
+    },
+    "placeholders": {
+      "email": "ایمیل",
+      "phone": "تلفن (اختیاری)"
+    }
+  },
+  "shipping_address": {
+    "texts": {
+      "title": "آدرس ارسال"
+    },
+    "labels": {
+      "first_name": "نام",
+      "last_name": "نام خانوادگی",
+      "street": "آدرس",
+      "apartment": "آپارتمان",
+      "city": "شهر",
+      "state": "استان",
+      "zip_code": "کد پستی"
+    },
+    "placeholders": {
+      "first_name": "نام",
+      "last_name": "نام خانوادگی",
+      "street": "آدرس",
+      "apartment": "آپارتمان، واحد و… (اختیاری)",
+      "city": "شهر",
+      "state": "استان",
+      "zip_code": "کد پستی"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "روش ارسال"
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "خلاصه سفارش",
+      "title": "خلاصه سفارش",
+      "subtotal": "جمع کل کالاها",
+      "shipping": "ارسال",
+      "tax": "مالیات (تخمینی)",
+      "total": "مجموع"
+    },
+    "texts": {
+      "qty": "تعداد {count}"
+    }
+  },
+  "discount": {
+    "labels": {
+      "code": "کد تخفیف"
+    },
+    "placeholders": {
+      "code": "کد تخفیف"
+    },
+    "actions": {
+      "apply": "اعمال"
+    }
+  },
+  "actions": {
+    "place_order": "ثبت سفارش"
+  },
+  "messages": {
+    "success": {
+      "order_placed": "سفارش شما با موفقیت ثبت شد."
+    }
+  }
+}
