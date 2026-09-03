@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "texts": {
+      "eyebrow": "New season, new staples",
+      "title": "Everyday essentials, built to last.",
+      "description": "Timeless sneakers, apparel and accessories made from responsibly sourced materials — designed in small batches, priced fairly.",
+      "image_placeholder": "Featured campaign"
+    },
+    "actions": {
+      "primary": "Shop now",
+      "secondary": "Our story"
+    }
+  },
+  "categories": {
+    "texts": {
+      "title": "Shop by category",
+      "count": "{count, plural, one {# product} other {# products}}"
+    },
+    "actions": {
+      "view_all": "View all"
+    }
+  },
+  "featured": {
+    "texts": {
+      "title": "Featured products"
+    },
+    "actions": {
+      "view_all": "View all"
+    }
+  },
+  "promo": {
+    "texts": {
+      "title": "Members get 10% off their first order.",
+      "description": "Create an account to unlock early access to drops, free returns and a permanent member discount."
+    },
+    "actions": {
+      "create_account": "Create an account"
+    }
+  },
+  "newsletter": {
+    "texts": {
+      "title": "Join our newsletter",
+      "description": "Get 10% off your first order plus early access to new releases."
+    },
+    "labels": {
+      "email": "Email address"
+    },
+    "placeholders": {
+      "email": "Enter your email address"
+    },
+    "actions": {
+      "subscribe": "Subscribe"
+    }
+  }
+}

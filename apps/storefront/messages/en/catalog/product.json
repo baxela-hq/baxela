@@ -1,0 +1,53 @@
+{
+  "texts": {
+    "reviews_count": "({count, plural, one {# review} other {# reviews}})",
+    "related_title": "You may also like"
+  },
+  "labels": {
+    "size": "Size",
+    "main_image": "{name} main image",
+    "quantity_decrease": "Decrease quantity",
+    "quantity_increase": "Increase quantity"
+  },
+  "actions": {
+    "add_to_cart": "Add to cart",
+    "add_to_wishlist": "Add to wishlist"
+  },
+  "tabs": {
+    "labels": {
+      "group": "Product information",
+      "description": "Description",
+      "additional": "Additional Information",
+      "reviews": "Reviews ({count})"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "Based on {count, plural, one {# review} other {# reviews}}",
+      "stars": "{count, plural, one {# star} other {# stars}}"
+    },
+    "labels": {
+      "rated": "Rated {rating} out of 5"
+    },
+    "form": {
+      "texts": {
+        "title": "Write a review"
+      },
+      "labels": {
+        "name": "Your name",
+        "email": "Your email",
+        "rating": "Rating",
+        "review": "Your review"
+      },
+      "placeholders": {
+        "name": "Your name",
+        "email": "Your email",
+        "rating": "Rating (1–5)",
+        "review": "Share your thoughts"
+      },
+      "actions": {
+        "submit": "Submit review"
+      }
+    }
+  }
+}

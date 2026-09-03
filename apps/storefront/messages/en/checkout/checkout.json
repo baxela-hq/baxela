@@ -1,0 +1,78 @@
+{
+  "texts": {
+    "title": "Checkout"
+  },
+  "contact": {
+    "texts": {
+      "title": "Contact information"
+    },
+    "labels": {
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "placeholders": {
+      "email": "Email",
+      "phone": "Phone (optional)"
+    }
+  },
+  "shipping_address": {
+    "texts": {
+      "title": "Shipping address"
+    },
+    "labels": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "street": "Street address",
+      "apartment": "Apartment",
+      "city": "City",
+      "state": "State",
+      "zip_code": "ZIP code"
+    },
+    "placeholders": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "street": "Street address",
+      "apartment": "Apartment, suite, etc. (optional)",
+      "city": "City",
+      "state": "State",
+      "zip_code": "ZIP code"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "Shipping method"
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "Order summary",
+      "title": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Tax (estimated)",
+      "total": "Total"
+    },
+    "texts": {
+      "qty": "Qty {count}"
+    }
+  },
+  "discount": {
+    "labels": {
+      "code": "Discount code"
+    },
+    "placeholders": {
+      "code": "Discount code"
+    },
+    "actions": {
+      "apply": "Apply"
+    }
+  },
+  "actions": {
+    "place_order": "Place order"
+  },
+  "messages": {
+    "success": {
+      "order_placed": "Your order has been placed successfully."
+    }
+  }
+}
