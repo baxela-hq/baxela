@@ -14,7 +14,8 @@
     },
     "placeholders": {
       "email": "Enter your email",
-      "password": "Enter your password"
+      "password": "Enter your password",
+      "select": "Select an option"
     },
     "validation": {
       "required": "This field is required.",
