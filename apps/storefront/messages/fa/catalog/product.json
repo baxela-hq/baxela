@@ -11,42 +11,54 @@
   },
   "actions": {
     "add_to_cart": "افزودن به سبد خرید",
-    "add_to_wishlist": "افزودن به علاقه‌مندی‌ها"
+    "add_to_wishlist": "افزودن به علاقه‌مندی‌ها",
+    "added_to_cart": "به سبد اضافه شد"
+  },
+  "messages": {
+    "info": {
+      "adding": "در حال افزودن…"
+    },
+    "error": {
+      "add_failed": "افزودن کالا به سبد خرید ناموفق بود."
+    }
   },
   "tabs": {
     "labels": {
       "group": "اطلاعات محصول",
       "description": "توضیحات",
-      "additional": "اطلاعات تکمیلی",
       "reviews": "دیدگاه‌ها ({count})"
+    },
+    "texts": {
+      "no_description": "هنوز توضیحی برای این محصول ثبت نشده است."
     }
   },
   "reviews": {
     "texts": {
       "based_on": "بر اساس {count} دیدگاه",
-      "stars": "{count} ستاره"
-    },
-    "labels": {
-      "rated": "امتیاز {rating} از ۵"
+      "empty": "هنوز دیدگاهی ثبت نشده است. اولین نفر باشید.",
+      "anonymous": "مشتری"
     },
     "form": {
       "texts": {
         "title": "ثبت دیدگاه"
       },
       "labels": {
-        "name": "نام شما",
-        "email": "ایمیل شما",
-        "rating": "امتیاز",
         "review": "دیدگاه شما"
       },
       "placeholders": {
-        "name": "نام شما",
-        "email": "ایمیل شما",
-        "rating": "امتیاز (۱ تا ۵)",
         "review": "نظر خود را بنویسید"
       },
       "actions": {
         "submit": "ثبت دیدگاه"
+      },
+      "messages": {
+        "success": {
+          "submitted": "سپاس! دیدگاه شما ثبت شد و پس از تایید نمایش داده می‌شود."
+        },
+        "info": {
+          "login_required": "برای ثبت دیدگاه وارد حساب خود شوید.",
+          "login_link": "ورود"
+        }
       }
     }
   }

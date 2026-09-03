@@ -13,8 +13,7 @@
   },
   "categories": {
     "texts": {
-      "title": "خرید بر اساس دسته",
-      "count": "{count} کالا"
+      "title": "خرید بر اساس دسته"
     },
     "actions": {
       "view_all": "مشاهده همه"

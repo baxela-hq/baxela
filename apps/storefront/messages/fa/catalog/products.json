@@ -4,6 +4,7 @@
     "search_results_title": "نتایج جستجو برای «{query}»",
     "results_count": "نمایش {from} تا {to} از {total} نتیجه",
     "search_results_count": "نمایش {count} نتیجه",
+    "empty": "محصولی پیدا نشد.",
     "empty_search": "محصولی برای «{query}» پیدا نشد. عبارت دیگری را جستجو کنید."
   },
   "filters": {

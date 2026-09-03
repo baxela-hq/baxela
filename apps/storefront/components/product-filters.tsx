@@ -1,39 +1,69 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
 export interface ProductFilterCategory {
-  label: string;
-  count: number;
-  checked?: boolean;
+  id: number;
+  title: string | null;
 }
 
 interface ProductFiltersProps {
   categories: ProductFilterCategory[];
-  sizes: string[];
-  sortOptions: string[];
+  selectedCategoryId: number | null;
+  sortValue: string;
   children: ReactNode;
 }
 
 /**
- * Filter sidebar + toolbar for the products listing.
- *
- * Expanded (default) renders the left sidebar (Category / Size / Price) next
- * to the sort row, matching the product-listing screen. Collapsed collapses
- * the sidebar into a single compact "Filters" trigger on the left of the
- * toolbar row with the sort control on the right, matching the
- * filter-collapsed screen. The product grid and pagination are passed as
- * children so they stay server-rendered.
+ * Filter sidebar + toolbar for the products listing. Category and sort are
+ * real: they update URL search params so the server-rendered grid refetches.
+ * Size and price stay visual mocks until public option/price endpoints exist.
  */
 export default function ProductFilters({
   categories,
-  sizes,
-  sortOptions,
+  selectedCategoryId,
+  sortValue,
   children,
 }: ProductFiltersProps) {
   const [expanded, setExpanded] = useState(true);
   const t = useTranslations("catalog.products");
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const pushParams = (mutate: (params: URLSearchParams) => void) => {
+    const params = new URLSearchParams(searchParams.toString());
+    mutate(params);
+    params.delete("page"); // any filter change resets pagination
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname);
+  };
+
+  const toggleCategory = (id: number) => {
+    pushParams((params) => {
+      if (selectedCategoryId === id) {
+        params.delete("category");
+      } else {
+        params.set("category", String(id));
+      }
+    });
+  };
+
+  const changeSort = (value: string) => {
+    pushParams((params) => {
+      params.set("sort", value);
+    });
+  };
+
+  const sortOptions = [
+    { value: "featured", label: t("sort.options.featured") },
+    { value: "newest", label: t("sort.options.newest") },
+    { value: "price_asc", label: t("sort.options.price_low_high") },
+    { value: "price_desc", label: t("sort.options.price_high_low") },
+  ];
 
   return (
     <div
@@ -58,17 +88,15 @@ export default function ProductFilters({
             </h2>
             <ul className="mt-4 space-y-3">
               {categories.map((category) => (
-                <li key={category.label}>
-                  <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground">
+                <li key={category.id}>
+                  <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
                     <input
                       type="checkbox"
-                      defaultChecked={category.checked}
+                      checked={selectedCategoryId === category.id}
+                      onChange={() => toggleCategory(category.id)}
                       className="size-4 rounded-default border border-border accent-accent"
                     />
-                    {category.label}
-                    <span className="text-secondary-text">
-                      ({category.count})
-                    </span>
+                    {category.title}
                   </label>
                 </li>
               ))}
@@ -80,7 +108,7 @@ export default function ProductFilters({
               {t("filters.labels.size")}
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
-              {sizes.map((size) => (
+              {["XS", "S", "M", "L", "XL"].map((size) => (
                 <button
                   key={size}
                   type="button"
@@ -112,7 +140,10 @@ export default function ProductFilters({
       <div>
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border-light pb-4">
           {expanded ? (
-            <label htmlFor="sort" className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+            <label
+              htmlFor="sort"
+              className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal"
+            >
               {t("sort.labels.by")}
             </label>
           ) : (
@@ -128,17 +159,23 @@ export default function ProductFilters({
 
           <div className="flex items-center gap-4">
             {!expanded ? (
-              <label htmlFor="sort" className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+              <label
+                htmlFor="sort"
+                className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal"
+              >
                 {t("sort.labels.by")}
               </label>
             ) : null}
             <select
               id="sort"
-              defaultValue="Featured"
+              value={sortValue}
+              onChange={(event) => changeSort(event.target.value)}
               className="h-11 rounded-default border border-border bg-white px-4 text-sm text-foreground focus:border-primary focus:outline-none"
             >
               {sortOptions.map((option) => (
-                <option key={option}>{option}</option>
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </select>
           </div>

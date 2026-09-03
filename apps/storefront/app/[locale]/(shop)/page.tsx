@@ -1,24 +1,24 @@
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/product-card";
+import { serverApiGet } from "@/lib/api/server";
+import type { ApiProduct, ApiPublicCategory, Paginated } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
-
-const CATEGORIES = [
-  { name: "Sneakers", count: 123 },
-  { name: "Apparel", count: 89 },
-  { name: "Accessories", count: 56 },
-  { name: "Footwear", count: 45 },
-];
-
-const FEATURED_PRODUCTS = [
-  { id: 1, name: "Product 1", price: 29.99 },
-  { id: 2, name: "Product 2", price: 39.99 },
-  { id: 3, name: "Product 3", price: 49.99 },
-  { id: 4, name: "Product 4", price: 59.99 },
-];
 
 export default async function HomePage() {
   const t = await getTranslations("home.home");
+
+  // The backend has no "featured" concept yet — the newest products stand
+  // in until a curated endpoint exists.
+  const [categoriesPage, productsPage] = await Promise.all([
+    serverApiGet<Paginated<ApiPublicCategory>>("/catalog/public/categories")
+      .catch(() => null),
+    serverApiGet<Paginated<ApiProduct>>("/catalog/public/products?per_page=4")
+      .catch(() => null),
+  ]);
+
+  const categories = (categoriesPage?.data ?? []).slice(0, 4);
+  const featured = productsPage?.data ?? [];
 
   return (
     <>
@@ -53,64 +53,65 @@ export default async function HomePage() {
       </section>
 
       {/* Categories */}
-      <section className="border-b border-border-light">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="flex items-end justify-between">
-            <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
-              {t("categories.texts.title")}
-            </h2>
-            <Link
-              href="/products"
-              className="text-sm font-medium text-accent hover:underline"
-            >
-              {t("categories.actions.view_all")}
-            </Link>
-          </div>
-          <div className="mt-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
-            {CATEGORIES.map((category) => (
+      {categories.length > 0 ? (
+        <section className="border-b border-border-light">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+                {t("categories.texts.title")}
+              </h2>
               <Link
-                key={category.name}
                 href="/products"
-                className="group flex flex-col items-center rounded-default border border-border-light p-8 transition-colors hover:border-primary"
+                className="text-sm font-medium text-accent hover:underline"
               >
-                <div className="flex aspect-square w-full max-w-40 items-center justify-center rounded-default bg-muted transition-colors group-hover:bg-border-light">
-                  <span className="text-sm text-secondary-text">
-                    {category.name}
-                  </span>
-                </div>
-                <h3 className="mt-4 text-base font-medium text-foreground">
-                  {category.name}
-                </h3>
-                <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                  {t("categories.texts.count", { count: category.count })}
-                </p>
+                {t("categories.actions.view_all")}
               </Link>
-            ))}
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-6 lg:grid-cols-4">
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/products?category=${category.id}`}
+                  className="group flex flex-col items-center rounded-default border border-border-light p-8 transition-colors hover:border-primary"
+                >
+                  <div className="flex aspect-square w-full max-w-40 items-center justify-center rounded-default bg-muted transition-colors group-hover:bg-border-light">
+                    <span className="px-4 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                      {category.title}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                    {category.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* Featured products */}
-      <section className="border-b border-border-light">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="flex items-end justify-between">
-            <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
-              {t("featured.texts.title")}
-            </h2>
-            <Link
-              href="/products"
-              className="text-sm font-medium text-accent hover:underline"
-            >
-              {t("featured.actions.view_all")}
-            </Link>
+      {featured.length > 0 ? (
+        <section className="border-b border-border-light">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+                {t("featured.texts.title")}
+              </h2>
+              <Link
+                href="/products"
+                className="text-sm font-medium text-accent hover:underline"
+              >
+                {t("featured.actions.view_all")}
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
+              {featured.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
-            {FEATURED_PRODUCTS.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* Promo banner */}
       <section className="border-b border-border-light bg-primary">
