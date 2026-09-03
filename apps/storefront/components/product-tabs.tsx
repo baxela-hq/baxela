@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,11 +12,9 @@ import {
 
 type TabKey = "description" | "additional" | "reviews";
 
-const TABS: { key: TabKey; label: string }[] = [
-  { key: "description", label: "Description" },
-  { key: "additional", label: "Additional Information" },
-  { key: "reviews", label: "Reviews (12)" },
-];
+// Mock total (matches the PDP's reviewCount) — the teaser array below is
+// only a sample of the full review list.
+const REVIEW_COUNT = 12;
 
 const SPECS = [
   { label: "Material", value: "Premium cotton blend, 280 GSM" },
@@ -57,8 +56,13 @@ function RatingStars({
   rating: number;
   size?: string;
 }) {
+  const t = useTranslations("catalog.product");
+
   return (
-    <span className="flex items-center gap-1" aria-label={`Rated ${rating} out of 5`}>
+    <span
+      className="flex items-center gap-1"
+      aria-label={t("reviews.labels.rated", { rating })}
+    >
       {[1, 2, 3, 4, 5].map((star) =>
         star <= rating ? (
           <StarSolidIcon key={star} className={`${size} text-accent`} />
@@ -72,12 +76,19 @@ function RatingStars({
 
 export function ProductTabs() {
   const [tab, setTab] = useState<TabKey>("description");
+  const t = useTranslations("catalog.product");
+
+  const TABS: { key: TabKey; label: string }[] = [
+    { key: "description", label: t("tabs.labels.description") },
+    { key: "additional", label: t("tabs.labels.additional") },
+    { key: "reviews", label: t("tabs.labels.reviews", { count: REVIEW_COUNT }) },
+  ];
 
   return (
     <section className="mx-auto max-w-7xl px-6 pb-12">
       <div
         role="tablist"
-        aria-label="Product information"
+        aria-label={t("tabs.labels.group")}
         className="flex flex-wrap items-center gap-6 border-b border-border-light"
       >
         {TABS.map(({ key, label }) => (
@@ -136,15 +147,15 @@ export function ProductTabs() {
               <div className="mt-3">
                 <RatingStars rating={5} />
               </div>
-              <p className="mt-2 text-sm text-secondary-text">
-                Based on 12 reviews
+              <p className="mt-2 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {t("reviews.texts.based_on", { count: REVIEW_COUNT })}
               </p>
 
               <div className="mt-6 space-y-3">
                 {RATING_DISTRIBUTION.map(({ stars, percent }) => (
                   <div key={stars} className="flex items-center gap-3">
-                    <span className="w-12 text-sm text-secondary-text">
-                      {stars} star{stars === 1 ? "" : "s"}
+                    <span className="w-12 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                      {t("reviews.texts.stars", { count: stars })}
                     </span>
                     <div
                       className="h-2 flex-1 overflow-hidden rounded-full bg-muted"
@@ -155,7 +166,7 @@ export function ProductTabs() {
                         style={{ width: `${percent}%` }}
                       />
                     </div>
-                    <span className="w-10 text-right text-sm text-secondary-text">
+                    <span className="w-10 text-end text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {percent}%
                     </span>
                   </div>
@@ -198,32 +209,36 @@ export function ProductTabs() {
               </ul>
 
               <form className="mt-10 max-w-xl">
-                <h3 className="text-lg font-semibold text-foreground">
-                  Write a review
+                <h3 className="text-lg font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
+                  {t("reviews.form.texts.title")}
                 </h3>
                 <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Input type="text" placeholder="Your name" aria-label="Your name" />
+                  <Input
+                    type="text"
+                    placeholder={t("reviews.form.placeholders.name")}
+                    aria-label={t("reviews.form.labels.name")}
+                  />
                   <Input
                     type="email"
-                    placeholder="Your email"
-                    aria-label="Your email"
+                    placeholder={t("reviews.form.placeholders.email")}
+                    aria-label={t("reviews.form.labels.email")}
                   />
                 </div>
                 <div className="mt-4">
                   <Input
                     type="text"
-                    placeholder="Rating (1–5)"
-                    aria-label="Rating"
+                    placeholder={t("reviews.form.placeholders.rating")}
+                    aria-label={t("reviews.form.labels.rating")}
                   />
                 </div>
                 <textarea
                   rows={4}
-                  placeholder="Share your thoughts"
-                  aria-label="Your review"
+                  placeholder={t("reviews.form.placeholders.review")}
+                  aria-label={t("reviews.form.labels.review")}
                   className="mt-4 w-full rounded-default border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-secondary-text focus:border-primary focus:outline-none"
                 />
                 <Button type="submit" className="mt-6">
-                  Submit review
+                  {t("reviews.form.actions.submit")}
                 </Button>
               </form>
             </div>

@@ -37,3 +37,9 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Persian uses Vazirmatn — Geist has no Arabic-script glyphs */
+html[dir="rtl"] body {
+  font-family: var(--font-vazirmatn), var(--font-sans), Arial, Helvetica,
+    sans-serif;
+}
+
