@@ -1,14 +1,93 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { Suspense, useState, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { api, ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { LockIcon } from "@/components/ui/icons";
+import { LockIcon, MailIcon } from "@/components/ui/icons";
+import { useRouter } from "@/i18n/navigation";
 
-export const metadata = { title: "Verify Your Identity — Baxela Storefront" };
+/**
+ * Dual-purpose OTP screen: account activation (email + code) and password
+ * reset (email + code + new password), driven by ?mode=activation|reset.
+ */
+function EnterOtpForm() {
+  const t = useTranslations("auth.auth");
+  const tCommon = useTranslations("shared.common");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-export default async function EnterOtpPage() {
-  const t = await getTranslations("auth.auth");
+  const isReset = searchParams.get("mode") === "reset";
+  const [email, setEmail] = useState(searchParams.get("email") ?? "");
+  const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmation, setConfirmation] = useState("");
+  const [pending, setPending] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isReset && password !== confirmation) {
+      setError(tCommon("form.validation.password_mismatch"));
+      return;
+    }
+
+    setPending(true);
+    setError(null);
+    try {
+      if (isReset) {
+        await api.post("/auth/public/auth/reset-password/verify", {
+          email,
+          code,
+          password,
+          password_confirmation: confirmation,
+        });
+      } else {
+        await api.post("/auth/public/auth/account-activation/verify", {
+          email,
+          code,
+        });
+      }
+      router.replace("/login");
+    } catch (cause) {
+      setError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setPending(false);
+    }
+  };
+
+  const onResend = async () => {
+    setResending(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await api.post(
+        isReset
+          ? "/auth/public/auth/reset-password/request"
+          : "/auth/public/auth/account-activation/request",
+        { email },
+      );
+      setNotice(t("enter_otp.messages.info.resent"));
+    } catch (cause) {
+      setError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setResending(false);
+    }
+  };
 
   return (
     <AuthShell>
@@ -18,27 +97,101 @@ export default async function EnterOtpPage() {
           {t("enter_otp.texts.title")}
         </h1>
         <p className="mt-3 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-          {t("enter_otp.texts.description")}
+          {isReset
+            ? t("enter_otp.texts.reset_description")
+            : t("enter_otp.texts.description")}
         </p>
         <form
           className="mt-10 flex w-full flex-col gap-6"
-          action="/login"
-          method="post"
+          onSubmit={onSubmit}
         >
           <Input
+            type="email"
+            required
+            label={tCommon("form.labels.email")}
+            placeholder={tCommon("form.placeholders.email")}
+            icon={<MailIcon />}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <Input
+            required
+            inputMode="numeric"
+            maxLength={6}
             label={t("enter_otp.labels.code")}
             placeholder={t("enter_otp.placeholders.code")}
             icon={<LockIcon />}
+            value={code}
+            onChange={(event) => setCode(event.target.value)}
           />
+          {isReset ? (
+            <>
+              <Input
+                type="password"
+                required
+                minLength={8}
+                label={tCommon("form.labels.password")}
+                placeholder={tCommon("form.placeholders.password")}
+                icon={<LockIcon />}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+              <Input
+                type="password"
+                required
+                minLength={8}
+                label={t("signup.labels.confirm_password")}
+                placeholder={t("signup.placeholders.confirm_password")}
+                icon={<LockIcon />}
+                value={confirmation}
+                onChange={(event) => setConfirmation(event.target.value)}
+              />
+            </>
+          ) : null}
+
           <button
             type="button"
-            className="-mt-2 text-sm font-medium text-accent hover:underline rtl:normal-case rtl:tracking-normal"
+            disabled={resending || !email}
+            onClick={onResend}
+            className="-mt-2 text-sm font-medium text-accent hover:underline disabled:opacity-50 rtl:normal-case rtl:tracking-normal"
           >
-            {t("enter_otp.actions.resend")}
+            {resending
+              ? tCommon("messages.info.loading")
+              : t("enter_otp.actions.resend")}
           </button>
-          <Button type="submit">{t("enter_otp.actions.submit")}</Button>
+
+          {notice ? (
+            <p
+              role="status"
+              className="text-sm text-accent rtl:normal-case rtl:tracking-normal"
+            >
+              {notice}
+            </p>
+          ) : null}
+          {error ? (
+            <p
+              role="alert"
+              className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
+            >
+              {error}
+            </p>
+          ) : null}
+
+          <Button type="submit" disabled={pending}>
+            {pending
+              ? tCommon("messages.info.loading")
+              : t("enter_otp.actions.submit")}
+          </Button>
         </form>
       </div>
     </AuthShell>
+  );
+}
+
+export default function EnterOtpPage() {
+  return (
+    <Suspense>
+      <EnterOtpForm />
+    </Suspense>
   );
 }

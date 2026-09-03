@@ -1,36 +1,74 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { Suspense, useState, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
+import { ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { LockIcon, MailIcon } from "@/components/ui/icons";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
-export const metadata = { title: "Login — Baxela Storefront" };
+function LoginForm() {
+  const t = useTranslations("auth.auth");
+  const tCommon = useTranslations("shared.common");
+  const { signIn } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-export default async function LoginPage() {
-  const [t, tCommon] = await Promise.all([
-    getTranslations("auth.auth"),
-    getTranslations("shared.common"),
-  ]);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+    try {
+      await signIn({ email, password });
+      const next = searchParams.get("next");
+      router.replace(
+        next && next.startsWith("/") ? next : "/login-successful",
+      );
+    } catch (cause) {
+      setError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setPending(false);
+    }
+  };
 
   return (
     <AuthShell image="/images/auth-photo.jpg">
       <h1 className="text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
         {t("login.texts.title")}
       </h1>
-      <form className="mt-10 flex flex-col gap-6" action="/login" method="post">
+      <form className="mt-10 flex flex-col gap-6" onSubmit={onSubmit}>
         <Input
           type="email"
+          required
           label={tCommon("form.labels.email")}
           placeholder={tCommon("form.placeholders.email")}
           icon={<MailIcon />}
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
         />
         <Input
           type="password"
+          required
+          minLength={8}
           label={tCommon("form.labels.password")}
           placeholder={tCommon("form.placeholders.password")}
           icon={<LockIcon />}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <div className="flex items-center justify-between">
           <Checkbox label={t("login.labels.remember_me")} />
@@ -41,7 +79,19 @@ export default async function LoginPage() {
             {t("login.actions.forgot_password")}
           </Link>
         </div>
-        <Button type="submit">{t("login.actions.submit")}</Button>
+        {error ? (
+          <p
+            role="alert"
+            className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
+          >
+            {error}
+          </p>
+        ) : null}
+        <Button type="submit" disabled={pending}>
+          {pending
+            ? tCommon("messages.info.loading")
+            : t("login.actions.submit")}
+        </Button>
       </form>
       <p className="mt-8 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
         {t("login.texts.no_account")}{" "}
@@ -53,5 +103,13 @@ export default async function LoginPage() {
         </Link>
       </p>
     </AuthShell>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
