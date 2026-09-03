@@ -4,6 +4,7 @@
     "search_results_title": "Search results for “{query}”",
     "results_count": "Showing {from}–{to} of {total} results",
     "search_results_count": "Showing {count, plural, one {# result} other {# results}}",
+    "empty": "No products found.",
     "empty_search": "No products found for “{query}”. Try a different search term."
   },
   "filters": {

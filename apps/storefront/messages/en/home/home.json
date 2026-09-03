@@ -13,8 +13,7 @@
   },
   "categories": {
     "texts": {
-      "title": "Shop by category",
-      "count": "{count, plural, one {# product} other {# products}}"
+      "title": "Shop by category"
     },
     "actions": {
       "view_all": "View all"

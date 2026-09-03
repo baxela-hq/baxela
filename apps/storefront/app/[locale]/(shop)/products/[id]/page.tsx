@@ -1,50 +1,58 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
-import ProductCard, {
-  type Product,
-} from "@/components/product-card";
+import ProductCard from "@/components/product-card";
+import { ProductActions } from "@/components/product-actions";
 import { ProductTabs } from "@/components/product-tabs";
-import { Button } from "@/components/ui/button";
-import {
-  HeartIcon,
-  StarSolidIcon,
-} from "@/components/ui/icons";
+import { StarSolidIcon } from "@/components/ui/icons";
+import { serverApiGet } from "@/lib/api/server";
+import type {
+  ApiProduct,
+  ApiProductComment,
+  ApiProductDetail,
+  Paginated,
+} from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
-
-export interface ProductDetail {
-  id: number;
-  name: string;
-  price: number;
-  rating: number;
-  reviewCount: number;
-  sizes: string[];
-}
-
-const PRODUCT: ProductDetail = {
-  id: 1,
-  name: "Product 1",
-  price: 74.99,
-  rating: 4.8,
-  reviewCount: 12,
-  sizes: ["XS", "S", "M", "L", "XL"],
-};
-
-const RELATED: Product[] = [
-  { id: 2, name: "Product 2", price: 39.99 },
-  { id: 3, name: "Product 3", price: 49.99 },
-  { id: 4, name: "Product 4", price: 59.99 },
-];
 
 export const metadata: Metadata = {
   title: "Product — Baxela Storefront",
 };
 
-export default async function ProductPage() {
-  const [t, tLayout, format] = await Promise.all([
+export default async function ProductPage({
+  params,
+}: PageProps<"/[locale]/products/[id]">) {
+  const { id } = await params;
+  const productId = Number.parseInt(id, 10);
+  if (Number.isNaN(productId)) {
+    notFound();
+  }
+
+  const product = await serverApiGet<ApiProductDetail>(
+    `/catalog/public/products/${productId}`,
+  ).catch(() => null);
+  if (!product) {
+    notFound();
+  }
+
+  const [t, tLayout, format, commentsPage, relatedPage] = await Promise.all([
     getTranslations("catalog.product"),
     getTranslations("shared.layout"),
     getFormatter(),
+    serverApiGet<Paginated<ApiProductComment>>(
+      `/catalog/public/products/${productId}/comments?per_page=10`,
+    ).catch(() => null),
+    serverApiGet<Paginated<ApiProduct>>(
+      "/catalog/public/products?per_page=8",
+    ).catch(() => null),
   ]);
+
+  const comments = commentsPage?.data ?? [];
+  const related = (relatedPage?.data ?? [])
+    .filter((candidate) => candidate.id !== productId)
+    .slice(0, 3);
+
+  const photos = product.images.filter((image) => image.collection === "photos");
+  const mainImage = photos[0] ?? null;
 
   return (
     <>
@@ -71,7 +79,9 @@ export default async function ProductPage() {
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="font-medium text-foreground">{PRODUCT.name}</li>
+          <li className="font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+            {product.title}
+          </li>
         </ol>
       </nav>
 
@@ -79,118 +89,95 @@ export default async function ProductPage() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <div className="space-y-4">
             <div
-              className="aspect-square w-full rounded-default border border-border bg-muted"
+              className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-default border border-border bg-muted"
               role="img"
-              aria-label={t("labels.main_image", { name: PRODUCT.name })}
-            />
-            <div className="grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((thumb) => (
-                <div
-                  key={thumb}
-                  className="aspect-square rounded-default border border-border bg-muted"
+              aria-label={t("labels.main_image", { name: product.title ?? "" })}
+            >
+              {mainImage ? (
+                // Backend-served images — see product-card for the img rationale
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={mainImage.url}
+                  alt={product.title ?? ""}
+                  className="size-full object-cover"
                 />
-              ))}
+              ) : null}
             </div>
+            {photos.length > 1 ? (
+              <div className="grid grid-cols-4 gap-4">
+                {photos.slice(1, 5).map((thumb) => (
+                  <div
+                    key={thumb.id}
+                    className="aspect-square overflow-hidden rounded-default border border-border bg-muted"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={thumb.url}
+                      alt=""
+                      className="size-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <div>
-            <p className="text-sm text-secondary-text">Sneakers</p>
+            {product.categories[0]?.title ? (
+              <p className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {product.categories[0].title}
+              </p>
+            ) : null}
             <h1 className="mt-2 text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
-              {PRODUCT.name}
+              {product.title}
             </h1>
             <div className="mt-3 flex items-center gap-2">
               <StarSolidIcon className="size-5 text-accent" />
-              <span className="text-sm text-foreground">
-                {format.number(PRODUCT.rating)}
-              </span>
               <span className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                {t("texts.reviews_count", { count: PRODUCT.reviewCount })}
+                {t("texts.reviews_count", {
+                  count: commentsPage?.meta.total ?? 0,
+                })}
               </span>
             </div>
             <p className="mt-4 text-2xl font-semibold text-foreground">
-              {format.number(PRODUCT.price, {
-                style: "currency",
-                currency: "USD",
-              })}
+              {product.price !== null
+                ? format.number(Number(product.price), {
+                    style: "currency",
+                    currency: "USD",
+                  })
+                : null}
             </p>
-            <p className="mt-4 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
-              Built for everyday wear with materials chosen to keep their
-              shape and feel wash after wash. A relaxed fit and understated
-              design make this an easy piece to live in.
-            </p>
+            {product.description ? (
+              <p className="mt-4 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {product.description}
+              </p>
+            ) : null}
 
-            <div className="mt-6">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
-                {t("labels.size")}
-              </h2>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {PRODUCT.sizes.map((size) => (
-                  <button
-                    key={size}
-                    type="button"
-                    aria-pressed={size === "M"}
-                    className={
-                      size === "M"
-                        ? "rounded-default border border-primary bg-primary px-4 py-2 text-sm text-primary-foreground"
-                        : "rounded-default border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-muted"
-                    }
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 flex items-center gap-4">
-              <div className="flex items-center rounded-default border border-border">
-                <button
-                  type="button"
-                  aria-label={t("labels.quantity_decrease")}
-                  className="px-4 py-3 text-foreground transition-colors hover:bg-muted"
-                >
-                  −
-                </button>
-                <span
-                  className="px-4 text-sm text-foreground"
-                  aria-live="polite"
-                >
-                  1
-                </span>
-                <button
-                  type="button"
-                  aria-label={t("labels.quantity_increase")}
-                  className="px-4 py-3 text-foreground transition-colors hover:bg-muted"
-                >
-                  +
-                </button>
-              </div>
-              <Button type="button" className="flex-1">
-                {t("actions.add_to_cart")}
-              </Button>
-              <button
-                type="button"
-                aria-label={t("actions.add_to_wishlist")}
-                className="rounded-default border border-border p-3.5 text-foreground transition-colors hover:bg-muted"
-              >
-                <HeartIcon className="size-5" />
-              </button>
-            </div>
+            <ProductActions productId={product.id} variants={product.variants} />
           </div>
         </div>
       </section>
 
-      <ProductTabs />
+      <ProductTabs
+        productId={product.id}
+        content={product.content}
+        comments={comments}
+        commentsTotal={commentsPage?.meta.total ?? 0}
+      />
 
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <h2 className="text-2xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
-          {t("texts.related_title")}
-        </h2>
-        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
-          {RELATED.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
+      {related.length > 0 ? (
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <h2 className="text-2xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+            {t("texts.related_title")}
+          </h2>
+          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
+            {related.map((candidate) => (
+              <ProductCard key={candidate.id} product={candidate} />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </>
   );
 }

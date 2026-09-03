@@ -11,42 +11,54 @@
   },
   "actions": {
     "add_to_cart": "Add to cart",
-    "add_to_wishlist": "Add to wishlist"
+    "add_to_wishlist": "Add to wishlist",
+    "added_to_cart": "Added to cart"
+  },
+  "messages": {
+    "info": {
+      "adding": "Adding…"
+    },
+    "error": {
+      "add_failed": "Could not add the item to the cart."
+    }
   },
   "tabs": {
     "labels": {
       "group": "Product information",
       "description": "Description",
-      "additional": "Additional Information",
       "reviews": "Reviews ({count})"
+    },
+    "texts": {
+      "no_description": "No description is available for this product yet."
     }
   },
   "reviews": {
     "texts": {
       "based_on": "Based on {count, plural, one {# review} other {# reviews}}",
-      "stars": "{count, plural, one {# star} other {# stars}}"
-    },
-    "labels": {
-      "rated": "Rated {rating} out of 5"
+      "empty": "No reviews yet. Be the first to share your thoughts.",
+      "anonymous": "Customer"
     },
     "form": {
       "texts": {
         "title": "Write a review"
       },
       "labels": {
-        "name": "Your name",
-        "email": "Your email",
-        "rating": "Rating",
         "review": "Your review"
       },
       "placeholders": {
-        "name": "Your name",
-        "email": "Your email",
-        "rating": "Rating (1–5)",
         "review": "Share your thoughts"
       },
       "actions": {
         "submit": "Submit review"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Thank you! Your review was submitted and will appear after approval."
+        },
+        "info": {
+          "login_required": "Please sign in to write a review.",
+          "login_link": "Sign in"
+        }
       }
     }
   }
