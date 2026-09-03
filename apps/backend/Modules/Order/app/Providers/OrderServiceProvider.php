@@ -2,9 +2,11 @@
 
 namespace Modules\Order\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Order\Console\Commands\CancelExpiredOrdersCommand;
 use Modules\Order\Gateways\OrderGateway;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -49,7 +51,9 @@ class OrderServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            CancelExpiredOrdersCommand::class,
+        ]);
     }
 
     /**
@@ -57,10 +61,10 @@ class OrderServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function (): void {
+            $schedule = $this->app->make(Schedule::class);
+            $schedule->command('order:cancel-expired')->everyFiveMinutes();
+        });
     }
 
     /**
