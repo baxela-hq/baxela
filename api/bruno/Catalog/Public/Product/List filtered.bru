@@ -1,0 +1,31 @@
+meta {
+  name: List filtered
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/public/products
+  body: none
+  auth: inherit
+}
+
+params:query {
+  per_page: 24
+  filter[title]: sneak
+  filter[categories.id]: 1
+  filter[option_value_id]: 5
+  filter[price_min]: 10
+  filter[price_max]: 150
+  sort: -price
+}
+
+headers {
+  Accept: application/json
+  Accept-Language: en
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
