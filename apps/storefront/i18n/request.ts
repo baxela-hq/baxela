@@ -10,7 +10,7 @@ import { routing } from "./routing";
  *   messages/{locale}/shared/common.json -> useTranslations('shared.common')
  */
 async function loadMessages(locale: string) {
-  const [common, layout, home, products, product, checkout, auth] =
+  const [common, layout, home, products, product, checkout, cart, auth] =
     await Promise.all([
       import(`../messages/${locale}/shared/common.json`),
       import(`../messages/${locale}/shared/layout.json`),
@@ -18,6 +18,7 @@ async function loadMessages(locale: string) {
       import(`../messages/${locale}/catalog/products.json`),
       import(`../messages/${locale}/catalog/product.json`),
       import(`../messages/${locale}/checkout/checkout.json`),
+      import(`../messages/${locale}/cart/cart.json`),
       import(`../messages/${locale}/auth/auth.json`),
     ]);
 
@@ -32,6 +33,7 @@ async function loadMessages(locale: string) {
       product: product.default,
     },
     checkout: { checkout: checkout.default },
+    cart: { cart: cart.default },
     auth: { auth: auth.default },
   };
 }

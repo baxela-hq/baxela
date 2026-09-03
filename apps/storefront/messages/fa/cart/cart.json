@@ -1,0 +1,24 @@
+{
+  "texts": {
+    "title": "سبد خرید",
+    "empty": "سبد خرید شما خالی است.",
+    "empty_hint": "محصولات را ببینید و چیزهایی که دوست دارید به سبد اضافه کنید."
+  },
+  "labels": {
+    "product": "کالا",
+    "unit_price": "قیمت",
+    "quantity": "تعداد",
+    "item_total": "جمع"
+  },
+  "actions": {
+    "remove": "حذف",
+    "checkout": "ادامه فرآیند خرید",
+    "continue_shopping": "ادامه خرید"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "به‌روزرسانی آیتم سبد خرید ناموفق بود.",
+      "remove_failed": "حذف آیتم سبد خرید ناموفق بود."
+    }
+  }
+}
