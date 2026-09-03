@@ -24,6 +24,9 @@ return [
                     'user' => ['database', 'email'],
                     'admin' => ['database'],
                 ],
+                'otp_code' => [
+                    'user' => ['email'],
+                ],
             ],
         ],
     ],

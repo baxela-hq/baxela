@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Actions\Public\Auth;
 
-use Illuminate\Support\Facades\Log;
 use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\InvalidOtpException;
@@ -14,6 +13,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Utils\Utility;
+use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserEmailVerifiedEvent;
 use Random\RandomException;
 
@@ -36,8 +36,11 @@ abstract class AbstractAuthAction
 
         $this->storeOtp($type, $value, $otpCode, $action);
 
-        //  TODO: add actual implementation later
-        Log::info("requestOtp: mobile:$value code:$otpCode");
+        event(OtpRequestedEvent::fill([
+            'email' => $value,
+            'code' => $otpCode,
+            'action' => $action->value,
+        ]));
     }
 
     /**

@@ -9,6 +9,7 @@ enum NotificationCodeEnum: string
     case AUTH_USER_EMAIL_VERIFIED = 'auth.user.email_verified';
     case AUTH_USER_SIGNED_IN = 'auth.user.signed_in';
     case AUTH_USER_DEACTIVATED = 'auth.user.deactivated';
+    case AUTH_USER_OTP_CODE = 'auth.user.otp_code';
 
     // CART
     case CART_CHECKOUT_STARTED = 'cart.checkout.started';

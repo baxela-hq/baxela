@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Actions\Public\Auth;
 
-use Illuminate\Support\Facades\Log;
 use Modules\Auth\Exceptions\OtpTooManyRequestsException;
 use Modules\Auth\Http\Requests\Public\Auth\SignUpRequest;
 use Modules\Auth\Models\User;
@@ -11,6 +10,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Utils\Utility;
+use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedUpEvent;
 use Random\RandomException;
 
@@ -38,7 +38,10 @@ class SignUpAuthAction extends AbstractAuthAction
             $user->{UserSchema::CREATED_AT},
         ));
 
-        //  TODO: add actual implementation later
-        Log::info("requestOtp: mobile:$email code:$otpCode");
+        event(OtpRequestedEvent::fill([
+            'email' => $email,
+            'code' => $otpCode,
+            'action' => OtpCodeActionEnum::VERIFY_EMAIL->value,
+        ]));
     }
 }

@@ -3,7 +3,9 @@
 namespace Modules\Notification\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
+use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Auth\UserSignedIn\SendNewLoginAlertToUserListener;
 
 class EventServiceProvider extends ServiceProvider
@@ -16,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         UserSignedInEvent::class => [
             SendNewLoginAlertToUserListener::class,
+        ],
+        OtpRequestedEvent::class => [
+            SendOtpCodeToUserListener::class,
         ],
     ];
 

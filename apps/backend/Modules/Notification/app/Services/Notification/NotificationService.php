@@ -18,7 +18,7 @@ class NotificationService implements NotificationDispatcherInterface
 
     public function dispatch(NotificationMessage $message): void
     {
-        $channels = $message->channels
+        $channels = $message->channel
             ?? config("notification.notifications.notifications.{$message->code}.{$message->audience}", []);
 
         foreach ($channels as $channelName) {
