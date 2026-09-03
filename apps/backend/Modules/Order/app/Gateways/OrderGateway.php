@@ -13,6 +13,7 @@ use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Utils\Auth;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 use Modules\Order\Models\Order;
+use Modules\Order\Models\OrderItem;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
@@ -100,6 +101,25 @@ class OrderGateway implements OrderGatewayInterface
             ->first();
 
         return $order ? new GetOrderOutput($order->toArray()) : null;
+    }
+
+    public function findOrderItems(int $orderId): array
+    {
+        $order = Order::query()
+            ->where(OrderSchema::ID, $orderId)
+            ->first();
+
+        if (is_null($order)) {
+            return [];
+        }
+
+        return $order->items()
+            ->get([OrderItemSchema::VARIANT_ID, OrderItemSchema::QUANTITY])
+            ->map(fn (OrderItem $item): array => [
+                OrderItemSchema::VARIANT_ID => $item->{OrderItemSchema::VARIANT_ID},
+                OrderItemSchema::QUANTITY => $item->{OrderItemSchema::QUANTITY},
+            ])
+            ->all();
     }
 
     public function markAsPaid(int $orderId): bool
