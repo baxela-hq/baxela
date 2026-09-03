@@ -6,7 +6,9 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Core\Contracts\Events\Inventory\StockDecreasedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockDepletedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockIncreasedEvent;
+use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Listeners\LogAllEvents;
+use Modules\Inventory\Listeners\Order\OrderCancelled\RestoreStockListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class EventServiceProvider extends ServiceProvider
         StockDecreasedEvent::class => [LogAllEvents::class],
         StockDepletedEvent::class => [LogAllEvents::class],
         StockIncreasedEvent::class => [LogAllEvents::class],
+        OrderCancelledEvent::class => [RestoreStockListener::class],
     ];
 
     /**
