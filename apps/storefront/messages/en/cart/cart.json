@@ -1,0 +1,24 @@
+{
+  "texts": {
+    "title": "Shopping cart",
+    "empty": "Your cart is empty.",
+    "empty_hint": "Browse the products and add something you like."
+  },
+  "labels": {
+    "product": "Product",
+    "unit_price": "Price",
+    "quantity": "Quantity",
+    "item_total": "Total"
+  },
+  "actions": {
+    "remove": "Remove",
+    "checkout": "Proceed to checkout",
+    "continue_shopping": "Continue shopping"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "Could not update the cart item.",
+      "remove_failed": "Could not remove the cart item."
+    }
+  }
+}

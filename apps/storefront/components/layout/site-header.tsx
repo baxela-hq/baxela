@@ -60,13 +60,13 @@ export async function SiteHeader() {
             >
               <HeartIcon className="size-5" />
             </button>
-            <button
-              type="button"
+            <Link
+              href="/cart"
               aria-label={t("header.actions.cart")}
               className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
             >
               <ShoppingCartIcon className="size-5" />
-            </button>
+            </Link>
             <LanguageSwitcher />
             <MobileMenu />
           </div>
