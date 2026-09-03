@@ -21,7 +21,9 @@ class EmailPayloadBuilder implements ChannelPayloadBuilderInterface
         );
 
         return new EmailMessage(
-            recipients: $message->recipients['emails'] ?? [],
+            // Channel keys match the channel names (see DatabasePayloadBuilder);
+            // this was 'emails' and silently dropped every recipient.
+            recipients: $message->recipients['email'] ?? [],
             subject: $rendered->subject,
             body: $rendered->body,
             meta: $message->meta,
