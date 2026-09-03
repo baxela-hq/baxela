@@ -77,12 +77,24 @@ class CheckoutAction
         $orderGateway = app(OrderGatewayInterface::class);
 
         // One transaction: the gateway's own transaction nests as a savepoint,
-        // so a cart-teardown failure rolls the freshly created order back too
-        // instead of leaving a duplicate-order trap for a retry
-        $orderId = DB::transaction(function () use ($orderGateway, $input, $cart): ?int {
+        // so a stock-decrement or cart-teardown failure rolls the freshly
+        // created order back too instead of leaving a duplicate-order trap
+        // for a retry
+        $orderId = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $cartItems): ?int {
             $orderId = $orderGateway->createFromCart($input);
             if (! $orderId) {
                 return null;
+            }
+
+            foreach ($cartItems as $cartItem) {
+                if (! $inventoryGateway->decrement(
+                    $cartItem->{CartItemSchema::VARIANT_ID},
+                    $cartItem->{CartItemSchema::QUANTITY}
+                )) {
+                    throw new OutOfStockException(meta: [
+                        CartItemSchema::VARIANT_ID => $cartItem->{CartItemSchema::VARIANT_ID},
+                    ]);
+                }
             }
 
             $cart->items()->delete();

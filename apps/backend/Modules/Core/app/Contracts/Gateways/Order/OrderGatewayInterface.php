@@ -17,6 +17,11 @@ interface OrderGatewayInterface
 
     public function findOrder(int $orderId): ?GetOrderOutput;
 
+    /**
+     * @return array<int, array{variant_id: int, quantity: int}>
+     */
+    public function findOrderItems(int $orderId): array;
+
     public function markAsPaid(int $orderId): bool;
 
     public function markAsShipped(int $orderId): bool;
