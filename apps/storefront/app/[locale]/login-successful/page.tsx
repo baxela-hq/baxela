@@ -1,13 +1,24 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { useAuth } from "@/context/auth-context";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/navigation";
 
-export const metadata = { title: "Login Successful — Baxela Storefront" };
+export default function LoginSuccessfulPage() {
+  const t = useTranslations("auth.auth");
+  const { status, user, signOut } = useAuth();
+  const router = useRouter();
 
-// NOTE: Right-panel copy is unverified (Figma capture for screen 05 was
-// partially recorded). Skeleton below flags the unconfirmed text.
-export default async function LoginSuccessfulPage() {
-  const t = await getTranslations("auth.auth");
+  // Landing here signed out (e.g. reload after the session was dropped)
+  // sends the visitor back to the form.
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/login");
+    }
+  }, [status, router]);
 
   return (
     <AuthShell image="/images/auth-success.jpg">
@@ -16,11 +27,18 @@ export default async function LoginSuccessfulPage() {
           {t("login_successful.texts.title")}
         </h1>
         <p className="mt-3 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-          {t("login_successful.texts.description")}
+          {status === "authenticated" && user
+            ? t("login_successful.texts.signed_in_as", { email: user.email })
+            : t("login_successful.texts.description")}
         </p>
-        <Button className="mt-10" onClick={undefined} /* TODO: wire to home route */>
-          {t("login_successful.actions.continue_shopping")}
-        </Button>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <Button onClick={() => router.replace("/")}>
+            {t("login_successful.actions.continue_shopping")}
+          </Button>
+          <Button variant="outline" onClick={signOut}>
+            {t("login_successful.actions.sign_out")}
+          </Button>
+        </div>
       </div>
     </AuthShell>
   );

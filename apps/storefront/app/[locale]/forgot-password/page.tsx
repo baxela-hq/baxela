@@ -1,17 +1,43 @@
-import { getTranslations } from "next-intl/server";
+"use client";
+
+import { useState, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
+import { api, ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { MailIcon } from "@/components/ui/icons";
+import { useRouter } from "@/i18n/navigation";
 
-export const metadata = { title: "Forgot Password — Baxela Storefront" };
+export default function ForgotPasswordPage() {
+  const t = useTranslations("auth.auth");
+  const tCommon = useTranslations("shared.common");
+  const router = useRouter();
 
-export default async function ForgotPasswordPage() {
-  const [t, tCommon] = await Promise.all([
-    getTranslations("auth.auth"),
-    getTranslations("shared.common"),
-  ]);
+  const [email, setEmail] = useState("");
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+    try {
+      await api.post("/auth/public/auth/reset-password/request", { email });
+      router.replace(
+        `/enter-otp?mode=reset&email=${encodeURIComponent(email)}`,
+      );
+    } catch (cause) {
+      setError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setPending(false);
+    }
+  };
 
   return (
     <AuthShell>
@@ -25,16 +51,30 @@ export default async function ForgotPasswordPage() {
         </p>
         <form
           className="mt-10 flex w-full flex-col gap-6"
-          action="/enter-otp"
-          method="post"
+          onSubmit={onSubmit}
         >
           <Input
             type="email"
+            required
             label={tCommon("form.labels.email")}
             placeholder={tCommon("form.placeholders.email")}
             icon={<MailIcon />}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
           />
-          <Button type="submit">{t("forgot_password.actions.submit")}</Button>
+          {error ? (
+            <p
+              role="alert"
+              className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
+            >
+              {error}
+            </p>
+          ) : null}
+          <Button type="submit" disabled={pending}>
+            {pending
+              ? tCommon("messages.info.loading")
+              : t("forgot_password.actions.submit")}
+          </Button>
         </form>
       </div>
     </AuthShell>
