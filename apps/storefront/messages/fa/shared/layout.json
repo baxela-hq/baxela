@@ -1,0 +1,112 @@
+{
+  "announcement": {
+    "text": "ارسال رایگان برای سفارش‌های بالای ۷۵ دلار — مرجوعی تا ۳۰ روز، بدون هیچ سوالی."
+  },
+  "header": {
+    "labels": {
+      "main_navigation": "ناوبری اصلی"
+    },
+    "nav": {
+      "home": "خانه",
+      "products": "محصولات",
+      "about": "درباره ما",
+      "contact": "تماس با ما"
+    },
+    "actions": {
+      "search": "جستجو",
+      "wishlist": "علاقه‌مندی‌ها",
+      "cart": "سبد خرید",
+      "open_menu": "باز کردن منو",
+      "close_menu": "بستن منو",
+      "language": "تغییر زبان"
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "جستجوی محصولات",
+      "input": "جستجوی محصولات"
+    },
+    "texts": {
+      "title": "جستجوی محصولات",
+      "popular_categories": "دسته‌های محبوب"
+    },
+    "placeholders": {
+      "query": "جستجوی محصولات…"
+    },
+    "actions": {
+      "submit": "جستجو",
+      "close": "بستن جستجو"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "ناوبری موبایل"
+    },
+    "texts": {
+      "categories": "خرید بر اساس دسته"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "مسیر صفحه"
+    },
+    "links": {
+      "home": "خانه"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "کالاهای همیشگی، ساخته‌شده برای ماندگاری. طراحی در سری‌های کوچک از سال ۲۰۱۹.",
+      "tagline_short": "کالاهای همیشگی، ساخته‌شده برای ماندگاری."
+    },
+    "columns": {
+      "shop": {
+        "title": "فروشگاه"
+      },
+      "support": {
+        "title": "پشتیبانی",
+        "links": {
+          "contact_us": "تماس با ما",
+          "shipping_returns": "ارسال و مرجوعی",
+          "size_guide": "راهنمای سایز",
+          "faq": "سوالات متداول"
+        }
+      },
+      "account": {
+        "title": "حساب کاربری",
+        "links": {
+          "login": "ورود",
+          "create_account": "ایجاد حساب کاربری",
+          "forgot_password": "فراموشی گذرواژه"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "خبرنامه",
+        "description": "برای جدیدترین محصولات و تخفیف‌ها عضو شوید."
+      },
+      "placeholders": {
+        "email": "ایمیل خود را وارد کنید"
+      },
+      "actions": {
+        "subscribe": "عضویت"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "عضویت شما در خبرنامه با موفقیت انجام شد."
+        },
+        "error": {
+          "invalid_email": "لطفاً یک ایمیل معتبر وارد کنید."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "سیاست حریم خصوصی",
+      "terms_of_service": "شرایط استفاده"
+    },
+    "copyright": {
+      "text": "© {year} {company}. تمامی حقوق محفوظ است."
+    }
+  }
+}

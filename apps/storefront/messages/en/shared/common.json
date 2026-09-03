@@ -8,7 +8,9 @@
       "back": "Back",
       "continue": "Continue",
       "cancel": "Cancel",
-      "close": "Close"
+      "close": "Close",
+      "show": "Show",
+      "hide": "Hide"
     },
     "placeholders": {
       "email": "Enter your email",
@@ -27,7 +29,8 @@
       "network": "Failed to connect. Please check your connection."
     },
     "info": {
-      "loading": "Loading…"
+      "loading": "Loading…",
+      "not_found": "The page you are looking for was not found."
     }
   }
 }
