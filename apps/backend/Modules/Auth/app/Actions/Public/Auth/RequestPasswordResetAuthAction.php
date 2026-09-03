@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Actions\Public\Auth;
 
-use Illuminate\Support\Facades\Log;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\OtpTooManyRequestsException;
 use Modules\Auth\Http\Requests\Public\Auth\RequestPasswordResetOtpRequest;
@@ -10,6 +9,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeActionEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Utils\Utility;
+use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Random\RandomException;
 
 class RequestPasswordResetAuthAction extends AbstractAuthAction
@@ -35,7 +35,10 @@ class RequestPasswordResetAuthAction extends AbstractAuthAction
             OtpCodeActionEnum::FORGOT_PASSWORD
         );
 
-        //  TODO: add actual implementation later
-        Log::info("requestOtp: mobile:$email code:$otpCode");
+        event(OtpRequestedEvent::fill([
+            'email' => $email,
+            'code' => $otpCode,
+            'action' => OtpCodeActionEnum::FORGOT_PASSWORD->value,
+        ]));
     }
 }

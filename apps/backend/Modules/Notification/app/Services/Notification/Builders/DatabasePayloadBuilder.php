@@ -15,7 +15,7 @@ class DatabasePayloadBuilder implements ChannelPayloadBuilderInterface
     {
         $rendered = $this->templates->get('locale')->render(
             $message->data['database'] ?? [],
-            'database',
+            app()->getLocale(),
             $message->code,
             $message->audience
         );

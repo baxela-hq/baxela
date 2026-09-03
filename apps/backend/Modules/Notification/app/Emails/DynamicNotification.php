@@ -24,6 +24,8 @@ class DynamicNotification extends Mailable
      */
     public function build(): self
     {
-        return $this->view('view.name');
+        return $this
+            ->subject($this->subject)
+            ->html($this->body);
     }
 }
