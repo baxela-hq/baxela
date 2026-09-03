@@ -1,46 +1,43 @@
 {
   "texts": {
-    "title": "تسویه حساب"
+    "title": "تسویه حساب",
+    "empty_cart": "سبد خرید شما خالی است."
   },
-  "contact": {
-    "texts": {
-      "title": "اطلاعات تماس"
-    },
-    "labels": {
-      "email": "ایمیل",
-      "phone": "تلفن"
-    },
-    "placeholders": {
-      "email": "ایمیل",
-      "phone": "تلفن (اختیاری)"
-    }
-  },
-  "shipping_address": {
+  "address": {
     "texts": {
       "title": "آدرس ارسال"
     },
     "labels": {
-      "first_name": "نام",
-      "last_name": "نام خانوادگی",
-      "street": "آدرس",
-      "apartment": "آپارتمان",
+      "full_name": "نام و نام خانوادگی",
+      "phone": "تلفن",
+      "address_line": "نشانی",
       "city": "شهر",
-      "state": "استان",
-      "zip_code": "کد پستی"
+      "postal_code": "کد پستی",
+      "country": "کشور"
     },
     "placeholders": {
-      "first_name": "نام",
-      "last_name": "نام خانوادگی",
-      "street": "آدرس",
-      "apartment": "آپارتمان، واحد و… (اختیاری)",
+      "full_name": "نام و نام خانوادگی",
+      "phone": "شماره تلفن",
+      "address_line": "خیابان، پلاک، واحد",
       "city": "شهر",
-      "state": "استان",
-      "zip_code": "کد پستی"
+      "postal_code": "کد پستی"
+    },
+    "actions": {
+      "new": "افزودن آدرس جدید",
+      "save": "ذخیره آدرس"
     }
   },
   "shipping_method": {
     "texts": {
-      "title": "روش ارسال"
+      "title": "روش ارسال",
+      "select_address_first": "برای دیدن روش‌های ارسال، ابتدا یک آدرس انتخاب کنید.",
+      "none_available": "برای آدرس انتخاب‌شده روش ارسالی در دسترس نیست."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "پرداخت",
+      "method_manual": "پرداخت دستی — تیم ما برای هماهنگی و تایید پرداخت با شما تماس می‌گیرد."
     }
   },
   "summary": {
@@ -49,30 +46,23 @@
       "title": "خلاصه سفارش",
       "subtotal": "جمع کل کالاها",
       "shipping": "ارسال",
-      "tax": "مالیات (تخمینی)",
       "total": "مجموع"
     },
     "texts": {
       "qty": "تعداد {count}"
     }
   },
-  "discount": {
-    "labels": {
-      "code": "کد تخفیف"
-    },
-    "placeholders": {
-      "code": "کد تخفیف"
-    },
-    "actions": {
-      "apply": "اعمال"
-    }
-  },
   "actions": {
     "place_order": "ثبت سفارش"
   },
-  "messages": {
-    "success": {
-      "order_placed": "سفارش شما با موفقیت ثبت شد."
+  "success": {
+    "texts": {
+      "title": "سفارش ثبت شد!",
+      "order_number": "شماره سفارش: {id}",
+      "description": "سفارش شما دریافت شد و در انتظار تایید پرداخت است. به‌زودی با شما تماس می‌گیریم."
+    },
+    "actions": {
+      "continue_shopping": "ادامه خرید"
     }
   }
 }

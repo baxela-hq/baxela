@@ -1,46 +1,43 @@
 {
   "texts": {
-    "title": "Checkout"
+    "title": "Checkout",
+    "empty_cart": "Your cart is empty."
   },
-  "contact": {
-    "texts": {
-      "title": "Contact information"
-    },
-    "labels": {
-      "email": "Email",
-      "phone": "Phone"
-    },
-    "placeholders": {
-      "email": "Email",
-      "phone": "Phone (optional)"
-    }
-  },
-  "shipping_address": {
+  "address": {
     "texts": {
       "title": "Shipping address"
     },
     "labels": {
-      "first_name": "First name",
-      "last_name": "Last name",
-      "street": "Street address",
-      "apartment": "Apartment",
+      "full_name": "Full name",
+      "phone": "Phone",
+      "address_line": "Address line",
       "city": "City",
-      "state": "State",
-      "zip_code": "ZIP code"
+      "postal_code": "Postal code",
+      "country": "Country"
     },
     "placeholders": {
-      "first_name": "First name",
-      "last_name": "Last name",
-      "street": "Street address",
-      "apartment": "Apartment, suite, etc. (optional)",
+      "full_name": "First and last name",
+      "phone": "Phone number",
+      "address_line": "Street address, number, unit",
       "city": "City",
-      "state": "State",
-      "zip_code": "ZIP code"
+      "postal_code": "Postal code"
+    },
+    "actions": {
+      "new": "Add a new address",
+      "save": "Save address"
     }
   },
   "shipping_method": {
     "texts": {
-      "title": "Shipping method"
+      "title": "Shipping method",
+      "select_address_first": "Choose a shipping address to see available methods.",
+      "none_available": "No shipping method is available for the selected address."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "Payment",
+      "method_manual": "Manual payment — our team will contact you to arrange and confirm it."
     }
   },
   "summary": {
@@ -49,30 +46,23 @@
       "title": "Order summary",
       "subtotal": "Subtotal",
       "shipping": "Shipping",
-      "tax": "Tax (estimated)",
       "total": "Total"
     },
     "texts": {
       "qty": "Qty {count}"
     }
   },
-  "discount": {
-    "labels": {
-      "code": "Discount code"
-    },
-    "placeholders": {
-      "code": "Discount code"
-    },
-    "actions": {
-      "apply": "Apply"
-    }
-  },
   "actions": {
     "place_order": "Place order"
   },
-  "messages": {
-    "success": {
-      "order_placed": "Your order has been placed successfully."
+  "success": {
+    "texts": {
+      "title": "Order placed!",
+      "order_number": "Order number: {id}",
+      "description": "Your order has been received and is awaiting payment confirmation. We will contact you shortly."
+    },
+    "actions": {
+      "continue_shopping": "Continue shopping"
     }
   }
 }
