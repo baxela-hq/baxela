@@ -215,7 +215,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
         {visibleOrders.map((order) => {
           const items = itemsByOrderId[order.id] ?? [];
           const expanded = expandedId === order.id;
-          const shippingAddress = order.addresses.find(
+          const shippingAddress = (order.addresses ?? []).find(
             (address) => address.type === "shipping",
           );
           const cancellable = CANCELLABLE_STATUSES.includes(order.status);
