@@ -102,6 +102,49 @@ export interface ApiCartItem {
   updated_at: string;
 }
 
+export interface ApiProfile {
+  first_name: string | null;
+  last_name: string | null;
+}
+
+export type ApiOrderStatus =
+  | "draft"
+  | "pending_payment"
+  | "paid"
+  | "processing"
+  | "shipped"
+  | "completed"
+  | "cancelled"
+  | "refunded";
+
+export interface ApiOrder {
+  id: number;
+  status: ApiOrderStatus;
+  total_amount: string;
+  shipping_method_name: string | null;
+  shipping_cost: string | null;
+  addresses: ApiOrderAddress[];
+}
+
+export interface ApiOrderItem {
+  id: number;
+  variant_id: number;
+  product_name_snapshot: string;
+  price_snapshot: string;
+  quantity: number;
+}
+
+export interface ApiOrderAddress {
+  order_id: number;
+  type: string;
+  full_name: string;
+  phone: string;
+  address_line: string;
+  city: string;
+  postal_code: string | null;
+  country_code: string;
+}
+
 export interface ApiAddress {
   id: number;
   type: string;
