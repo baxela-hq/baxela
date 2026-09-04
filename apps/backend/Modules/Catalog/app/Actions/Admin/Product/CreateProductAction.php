@@ -10,6 +10,7 @@ use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
 use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
+use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Throwable;
 
 class CreateProductAction
@@ -45,6 +46,13 @@ class CreateProductAction
             foreach ($data[ProductSchema::RES_VARIANTS] as $variantInput) {
                 $variant = $record->variants()->create($variantInput);
                 $variant->optionValues()->attach(array_values($variantInput[VSchema::REQ_OPTION_VALUE_IDS]));
+
+                // The variant quantity is the stock level the admin manages;
+                // mirror it into the inventory ledger the shop sells from.
+                app(InventoryGatewayInterface::class)->upsertStock(
+                    (int) $variant->{VSchema::ID},
+                    (int) $variantInput[VSchema::QUANTITY],
+                );
             }
             foreach ($data[ProductAttributeValueSchema::REQ_ATTRIBUTE_VALUES] ?? [] as $attributeValue) {
                 $record->attributeValues()->create($attributeValue);

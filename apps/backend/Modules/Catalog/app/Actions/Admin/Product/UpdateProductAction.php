@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
 use Modules\Core\Contracts\Events\Catalog\ProductUpdatedEvent;
+use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
 class UpdateProductAction
 {
@@ -47,7 +48,18 @@ class UpdateProductAction
             if (! empty($variant[VSchema::REQ_OPTION_VALUE_IDS])) {
                 $variantRecord->optionValues()->attach(array_values($variant[VSchema::REQ_OPTION_VALUE_IDS]));
             }
+
+            // The variant quantity is the stock level the admin manages;
+            // mirror it into the inventory ledger the shop sells from.
+            app(InventoryGatewayInterface::class)->upsertStock(
+                (int) $variantRecord->{VSchema::ID},
+                (int) $variant[VSchema::QUANTITY],
+            );
         }
+
+        // Variants are recreated with fresh ids on every save, so the old
+        // ids' ledger rows are now orphans.
+        app(InventoryGatewayInterface::class)->pruneOrphanedStocks();
 
         $record->attributeValues()->delete();
         foreach ($data[ProductAttributeValueSchema::REQ_ATTRIBUTE_VALUES] ?? [] as $attributeValue) {
