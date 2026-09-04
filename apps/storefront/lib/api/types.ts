@@ -149,6 +149,9 @@ export interface ApiOrderItem {
   id: number;
   variant_id: number;
   product_name_snapshot: string;
+  // Product slug captured at purchase time; links the item to the product
+  // page (null on legacy rows without it).
+  product_slug_snapshot: string | null;
   price_snapshot: string;
   quantity: number;
 }
