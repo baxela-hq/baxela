@@ -19,6 +19,7 @@ import {
   useOrderItems,
   useInvalidateOrder,
 } from './hooks/use-orders'
+import { getDefaultCurrency } from '@/shared/lib/locale'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 
@@ -31,6 +32,10 @@ export function OrderShow() {
   const { tPageTitle, tLabel:tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tMessage, tStatus } = useAppTranslation(Locales.ORDER)
   const { formatDateTime } = useFormatDateTime()
+  const currency = getDefaultCurrency()
+  const symbol = currency?.symbol ?? '$'
+  const formatPrice = (price: string | number) =>
+    currency?.is_symbol_right ? `${price} ${symbol}` : `${symbol}${price}`
   const entityName = {
     singular: tLabel("order"),
     plural: tLabel("orders")
@@ -98,7 +103,7 @@ export function OrderShow() {
                     <TableRow>
                       <TableCell>{record.id}</TableCell>
                       <TableCell>{record.user_id}</TableCell>
-                      <TableCell>{record.total_amount}</TableCell>
+                      <TableCell>{formatPrice(record.total_amount)}</TableCell>
                       <TableCell className="max-w-[240px] truncate">
                         {record.description}
                       </TableCell>
@@ -143,7 +148,7 @@ export function OrderShow() {
                             {item.product_name_snapshot}
                           </TableCell>
                           <TableCell>{item.quantity}</TableCell>
-                          <TableCell>{item.price_snapshot}</TableCell>
+                          <TableCell>{formatPrice(item.price_snapshot)}</TableCell>
                         </TableRow>
                       ))}
 
