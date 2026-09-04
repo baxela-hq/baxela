@@ -22,6 +22,7 @@ class OrderItem extends Model
         OrderItemSchema::ORDER_ID,
         OrderItemSchema::VARIANT_ID,
         OrderItemSchema::PRODUCT_NAME_SNAPSHOT,
+        OrderItemSchema::PRODUCT_SLUG_SNAPSHOT,
         OrderItemSchema::PRICE_SNAPSHOT,
         OrderItemSchema::QUANTITY,
     ];
