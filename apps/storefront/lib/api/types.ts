@@ -105,6 +105,8 @@ export interface ApiCartItem {
   cart_id: number;
   price_snapshot: string;
   product_name_snapshot: string;
+  // Option-value titles joined for display ("S / Black"), request language.
+  variant_label: string | null;
   quantity: number;
   created_at: string;
   updated_at: string;
