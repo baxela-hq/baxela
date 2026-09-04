@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 return null;
             }
 
+            // Error messages localize by the Accept-Language header; the
+            // translator otherwise renders in the configured app locale.
+            app()->setLocale($request->getPreferredLanguage(['en', 'fa']));
+
             $mapper = app(ExceptionMapper::class);
             $exception = $mapper->map($e);
 
