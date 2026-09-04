@@ -20,7 +20,7 @@ import {
 } from "@/components/account/orders-toolbar";
 import { SavedCards } from "@/components/account/saved-cards";
 import { Settings } from "@/components/account/settings";
-import { PersonalInfo } from "@/components/account/personal-info";
+import { EMPTY_PROFILE, PersonalInfo } from "@/components/account/personal-info";
 import { HeartIcon } from "@/components/ui/icons";
 
 /**
@@ -53,7 +53,7 @@ export default function ProfilePage() {
         // to the email prefix.
         setProfile(await api.get<ApiProfile>("/user/user/profile", { token }));
       } catch {
-        setProfile({ first_name: null, last_name: null });
+        setProfile(EMPTY_PROFILE);
       }
     })();
   }, [status, token]);
@@ -68,10 +68,10 @@ export default function ProfilePage() {
     );
   }
 
-  const fullName = [profile?.first_name, profile?.last_name]
-    .filter(Boolean)
-    .join(" ")
-    .trim();
+  const fullName =
+    [profile?.full_name, profile?.display_name]
+      .find((value) => Boolean(value?.trim()))
+      ?.trim() ?? "";
   const emailPrefix = user?.email.split("@")[0] ?? "";
   const displayName = fullName || emailPrefix;
   const initials = (fullName || emailPrefix)

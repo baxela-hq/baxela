@@ -102,9 +102,15 @@ export interface ApiCartItem {
   updated_at: string;
 }
 
+export type ApiGender = "male" | "female" | "other";
+
 export interface ApiProfile {
-  first_name: string | null;
-  last_name: string | null;
+  full_name: string | null;
+  display_name: string | null;
+  bio: string | null;
+  avatar: string | null;
+  gender: ApiGender | null;
+  date_of_birth: string | null;
 }
 
 export type ApiOrderStatus =
