@@ -5,6 +5,7 @@ namespace Modules\Cart\Actions\User\CartItem;
 use Modules\Cart\Exceptions\User\CartItem\OutOfStockException;
 use Modules\Cart\Http\Requests\User\CartItem\CreateCartItemRequest;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Cart\Support\VariantDisplayName;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Cart\CartItemAddedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
@@ -30,7 +31,7 @@ class CreateCartItemAction extends AbstractCartItemAction
             ->availableQuantity((string) $request->input(CartItemSchema::VARIANT_ID));
         if (is_null($available) || $available < $desiredQuantity) {
             throw new OutOfStockException(
-                $this->variantDisplayName((int) $request->input(CartItemSchema::VARIANT_ID)),
+                VariantDisplayName::for((int) $request->input(CartItemSchema::VARIANT_ID)),
                 $available ?? 0,
                 (int) $request->input(CartItemSchema::VARIANT_ID),
             );

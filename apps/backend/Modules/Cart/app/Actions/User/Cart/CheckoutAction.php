@@ -12,6 +12,7 @@ use Modules\Cart\Http\Requests\User\Cart\CheckoutRequest;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Cart\Support\VariantDisplayName;
 use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
@@ -49,11 +50,14 @@ class CheckoutAction
 
         $inventoryGateway = app(InventoryGatewayInterface::class);
         foreach ($cartItems as $cartItem) {
-            if (! $inventoryGateway->checkAvailability(
-                $cartItem->{CartItemSchema::VARIANT_ID}, $cartItem->{CartItemSchema::QUANTITY})) {
-                throw new OutOfStockException(meta: [
-                    CartItemSchema::VARIANT_ID => $cartItem->{CartItemSchema::VARIANT_ID},
-                ]);
+            $variantId = $cartItem->{CartItemSchema::VARIANT_ID};
+            $available = $inventoryGateway->availableQuantity((string) $variantId) ?? 0;
+            if ($available < $cartItem->{CartItemSchema::QUANTITY}) {
+                throw new OutOfStockException(
+                    VariantDisplayName::for((int) $variantId),
+                    $available,
+                    (int) $variantId,
+                );
             }
         }
 
@@ -91,9 +95,12 @@ class CheckoutAction
                     $cartItem->{CartItemSchema::VARIANT_ID},
                     $cartItem->{CartItemSchema::QUANTITY}
                 )) {
-                    throw new OutOfStockException(meta: [
-                        CartItemSchema::VARIANT_ID => $cartItem->{CartItemSchema::VARIANT_ID},
-                    ]);
+                    $variantId = $cartItem->{CartItemSchema::VARIANT_ID};
+                    throw new OutOfStockException(
+                        VariantDisplayName::for((int) $variantId),
+                        $inventoryGateway->availableQuantity((string) $variantId) ?? 0,
+                        (int) $variantId,
+                    );
                 }
             }
 

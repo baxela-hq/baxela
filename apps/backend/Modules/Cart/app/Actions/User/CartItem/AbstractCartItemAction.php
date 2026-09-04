@@ -6,10 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
-use Modules\Cart\Schemas\CartItem\CartItemSchema;
-use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
-use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Cart\CartCreatedEvent;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -18,45 +15,6 @@ use Modules\Core\Utils\Auth;
 abstract class AbstractCartItemAction
 {
     public function __construct(protected Cart $cart, protected CartItem $cartItem) {}
-
-    /**
-     * Display name for stock errors: product title plus the variant's
-     * option values ("Men's Running Shoes (Shoe Size 10 / Black)") —
-     * default-language titles, mirroring getProductTitle.
-     */
-    protected function variantDisplayName(int $variantId): string
-    {
-        $title = $this->getProductTitle($variantId);
-
-        $defaultLanguageId = DB::Table(LanguageSchema::TABLE)
-            ->where(LanguageSchema::IS_DEFAULT, true)
-            ->value(LanguageSchema::ID);
-
-        $optionValueIds = DB::Table(VariantOptionValueSchema::TABLE)
-            ->where(VariantOptionValueSchema::VARIANT_ID, $variantId)
-            ->pluck(VariantOptionValueSchema::OPTION_VALUE_ID);
-
-        $labels = $optionValueIds
-            ->map(function (int $optionValueId) use ($defaultLanguageId): ?string {
-                $translations = DB::Table(OptionValueTranslationSchema::TABLE)
-                    ->where(OptionValueTranslationSchema::OPTION_VALUE_ID, $optionValueId)
-                    ->get([
-                        OptionValueTranslationSchema::LANGUAGE_ID,
-                        OptionValueTranslationSchema::TITLE,
-                    ]);
-
-                return $translations
-                    ->firstWhere(OptionValueTranslationSchema::LANGUAGE_ID, $defaultLanguageId)
-                    ?->{OptionValueTranslationSchema::TITLE}
-                    ?? $translations->first()?->{OptionValueTranslationSchema::TITLE};
-            })
-            ->filter()
-            ->values();
-
-        $label = $labels->isNotEmpty() ? " ({$labels->join(' / ')})" : '';
-
-        return $title.$label;
-    }
 
     protected function getCartId(): int
     {

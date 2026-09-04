@@ -9,12 +9,27 @@ use Throwable;
 class OutOfStockException extends BaseException
 {
     public function __construct(
-        $code = null,
+        string $itemName,
+        int $available,
+        int $variantId,
         int $httpStatus = 400,
-        array $meta = [],
         bool $isSafe = true,
-        ?Throwable $previous = null
+        ?Throwable $previous = null,
     ) {
-        parent::__construct($code ?? ErrorCodeEnum::CHECKOUT_OUT_OF_STOCK->value, $httpStatus, $meta, $isSafe, $previous);
+        $code = $available > 0
+            ? ErrorCodeEnum::CHECKOUT_INSUFFICIENT_STOCK->value
+            : ErrorCodeEnum::CHECKOUT_OUT_OF_STOCK->value;
+
+        parent::__construct(
+            $code,
+            $httpStatus,
+            [
+                'variant_id' => $variantId,
+                'available' => $available,
+            ],
+            $isSafe,
+            $previous,
+            ['name' => $itemName, 'available' => $available],
+        );
     }
 }
