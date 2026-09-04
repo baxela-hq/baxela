@@ -95,6 +95,34 @@
       }
     }
   },
+  "notifications": {
+    "texts": {
+      "just_now": "Just Now",
+      "yesterday": "Yesterday"
+    },
+    "items": {
+      "profile_updated": {
+        "title": "Profile Update",
+        "description": "You just updated your profile picture"
+      },
+      "order_placed": {
+        "title": "Your order placed successfully",
+        "description": "You placed a new order"
+      },
+      "order_delivered": {
+        "title": "Order delivered",
+        "description": "Your order has been delivered successfully"
+      },
+      "feedback_shared": {
+        "title": "You shared your feedback",
+        "description": "“It was an amazing experience with your company”"
+      },
+      "password_updated": {
+        "title": "Password updated successfully",
+        "description": "Your password has been updated successfully"
+      }
+    }
+  },
   "cards": {
     "texts": {
       "add_title": "Add a new card",

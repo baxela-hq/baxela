@@ -95,6 +95,34 @@
       }
     }
   },
+  "notifications": {
+    "texts": {
+      "just_now": "همین حالا",
+      "yesterday": "دیروز"
+    },
+    "items": {
+      "profile_updated": {
+        "title": "به‌روزرسانی پروفایل",
+        "description": "تصویر پروفایل خود را به‌روزرسانی کردید"
+      },
+      "order_placed": {
+        "title": "سفارش شما با موفقیت ثبت شد",
+        "description": "شما یک سفارش جدید ثبت کردید"
+      },
+      "order_delivered": {
+        "title": "سفارش تحویل داده شد",
+        "description": "سفارش شما با موفقیت تحویل داده شد"
+      },
+      "feedback_shared": {
+        "title": "بازخورد شما ثبت شد",
+        "description": "«تجربه‌ای فوق‌العاده با شرکت شما داشتم»"
+      },
+      "password_updated": {
+        "title": "رمز عبور با موفقیت به‌روزرسانی شد",
+        "description": "رمز عبور شما با موفقیت به‌روزرسانی شد"
+      }
+    }
+  },
   "cards": {
     "texts": {
       "add_title": "افزودن کارت جدید",
