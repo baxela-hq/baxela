@@ -13,7 +13,7 @@ import {
   SettingsIcon,
   UserIcon,
 } from "@/components/ui/icons";
-import { useRouter } from "@/i18n/navigation";
+import { Link, usePathname, useRouter } from "@/i18n/navigation";
 
 export type AccountTab =
   | "personal_information"
@@ -24,36 +24,59 @@ export type AccountTab =
   | "notifications"
   | "settings";
 
-const TABS: { key: AccountTab; icon: ReactNode }[] = [
-  { key: "personal_information", icon: <UserIcon className="size-5" /> },
-  { key: "my_orders", icon: <BoxIcon className="size-5" /> },
-  { key: "my_wishlists", icon: <HeartIcon className="size-5" /> },
-  { key: "manage_addresses", icon: <MapPinIcon className="size-5" /> },
-  { key: "saved_cards", icon: <CreditCardIcon className="size-5" /> },
-  { key: "notifications", icon: <BellIcon className="size-5" /> },
-  { key: "settings", icon: <SettingsIcon className="size-5" /> },
+const TABS: { key: AccountTab; href: string; icon: ReactNode }[] = [
+  {
+    key: "personal_information",
+    href: "/profile/personal-information",
+    icon: <UserIcon className="size-5" />,
+  },
+  { key: "my_orders", href: "/profile/orders", icon: <BoxIcon className="size-5" /> },
+  {
+    key: "my_wishlists",
+    href: "/profile/wishlists",
+    icon: <HeartIcon className="size-5" />,
+  },
+  {
+    key: "manage_addresses",
+    href: "/profile/addresses",
+    icon: <MapPinIcon className="size-5" />,
+  },
+  {
+    key: "saved_cards",
+    href: "/profile/cards",
+    icon: <CreditCardIcon className="size-5" />,
+  },
+  {
+    key: "notifications",
+    href: "/profile/notifications",
+    icon: <BellIcon className="size-5" />,
+  },
+  {
+    key: "settings",
+    href: "/profile/settings",
+    icon: <SettingsIcon className="size-5" />,
+  },
 ];
 
 interface AccountSidebarProps {
-  active: AccountTab;
-  onSelect: (tab: AccountTab) => void;
   displayName: string;
   initials: string;
 }
 
 /**
- * The account navigation card from the profile screen: greeting with the
- * customer's initials, one section per tab, and sign out at the bottom.
+ * The account navigation card from the profile screens: greeting with the
+ * customer's initials, one section per route, and sign out at the bottom.
+ * The active item follows the current pathname; `/profile` itself redirects
+ * to the orders tab, which is the fallback here too.
  */
-export function AccountSidebar({
-  active,
-  onSelect,
-  displayName,
-  initials,
-}: AccountSidebarProps) {
+export function AccountSidebar({ displayName, initials }: AccountSidebarProps) {
   const t = useTranslations("account.account");
   const { signOut } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const active =
+    TABS.find((tab) => pathname.startsWith(tab.href))?.key ?? "my_orders";
 
   const onSignOut = () => {
     signOut();
@@ -79,16 +102,12 @@ export function AccountSidebar({
         </span>
       </div>
 
-      <nav
-        aria-label={t("texts.title")}
-        className="p-3"
-      >
+      <nav aria-label={t("texts.title")} className="p-3">
         <ul className="space-y-1">
           {TABS.map((tab) => (
             <li key={tab.key}>
-              <button
-                type="button"
-                onClick={() => onSelect(tab.key)}
+              <Link
+                href={tab.href}
                 aria-current={active === tab.key ? "page" : undefined}
                 className={
                   active === tab.key
@@ -98,7 +117,7 @@ export function AccountSidebar({
               >
                 {tab.icon}
                 {t(`labels.${tab.key}`)}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
