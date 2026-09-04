@@ -27,9 +27,20 @@
   },
   "profile": {
     "labels": {
-      "first_name": "نام",
-      "last_name": "نام خانوادگی",
+      "full_name": "نام کامل",
+      "display_name": "نام نمایشی",
+      "bio": "درباره",
+      "gender": "جنسیت",
+      "date_of_birth": "تاریخ تولد",
       "email_address": "نشانی ایمیل"
+    },
+    "placeholders": {
+      "bio": "چیزی درباره خودتان بنویسید"
+    },
+    "gender_options": {
+      "male": "مرد",
+      "female": "زن",
+      "other": "سایر"
     },
     "actions": {
       "edit": "ویرایش پروفایل",
