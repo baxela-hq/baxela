@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { api, ApiError } from "@/lib/api/client";
 import type { ApiVariant } from "@/lib/api/types";
@@ -22,10 +23,10 @@ function variantLabel(variant: ApiVariant): string {
  * with a `next` param so they land back here.
  */
 export function ProductActions({
-  productId,
+  productHref,
   variants,
 }: {
-  productId: number;
+  productHref: string;
   variants: ApiVariant[];
 }) {
   const t = useTranslations("catalog.product");
@@ -46,7 +47,7 @@ export function ProductActions({
     setError(null);
 
     if (status !== "authenticated" || !token) {
-      router.replace(`/login?next=/products/${productId}`);
+      router.replace(`/login?next=${productHref}`);
       return;
     }
     if (variantId === null) return;
@@ -60,6 +61,12 @@ export function ProductActions({
         { token },
       );
       setAdded(true);
+      toast.success(t("messages.success.added_to_cart"), {
+        action: {
+          label: t("actions.view_cart"),
+          onClick: () => router.push("/cart"),
+        },
+      });
     } catch (cause) {
       setError(
         cause instanceof ApiError

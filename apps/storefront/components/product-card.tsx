@@ -14,7 +14,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
   return (
     <Link
-      href={`/products/${product.id}`}
+      href={`/products/${product.slug ?? product.id}`}
       className={cn("group block", className)}
     >
       <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-default bg-muted transition-colors group-hover:bg-border-light">
