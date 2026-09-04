@@ -1,6 +1,6 @@
-# xShop Admin
+# Baxela Admin
 
-The admin panel of the **xShop** e-commerce platform — a React SPA that consumes the xShop
+The admin panel of the **Baxela** e-commerce platform — a React SPA that consumes the Baxela
 Laravel API to manage catalog, content, media, orders, users and system settings.
 
 Built on top of [shadcn-admin](https://github.com/satnaing/shadcn-admin) (see
@@ -37,7 +37,7 @@ backend language list — more locales can be added without structural changes.
 
 - **Node.js** ≥ 20.19 (or ≥ 22.12) — required by Vite 7
 - **pnpm** (`corepack enable` or `npm i -g pnpm`)
-- A running **xShop backend** (Laravel API) the panel can talk to
+- A running **Baxela backend** (Laravel API) the panel can talk to
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ pnpm dev
 
 | Variable | Description |
 | --- | --- |
-| `VITE_API_BASE_URL` | Base URL of the xShop Laravel API (e.g. `http://xshop-backend.local/api/v1`) |
+| `VITE_API_BASE_URL` | Base URL of the Baxela Laravel API (e.g. `http://Baxela-backend.local/api/v1`) |
 | `VITE_STORE_FRONT_URL` | Storefront base URL, used for product/page preview links |
 | `VITE_CLERK_PUBLISHABLE_KEY` | Optional — only for the `/clerk/*` demo tree; leave empty otherwise |
 

@@ -40,7 +40,7 @@ export const useSidebarData = (): SidebarData => {
     },
     teams: [
       {
-        name: 'XShop Admin',
+        name: 'Baxela Admin',
         logo: Command,
         plan: 'Vite + ShadcnUI',
       },
