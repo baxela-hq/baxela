@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "@/components/ui/icons";
+import type { ApiOptionGroup } from "@/lib/api/types";
 
 export interface ProductFilterCategory {
   id: number;
@@ -17,18 +18,26 @@ interface ProductFiltersProps {
   categories: ProductFilterCategory[];
   selectedCategoryId: number | null;
   sortValue: string;
+  optionGroups: ApiOptionGroup[];
+  selectedOptionValueIds: number[];
+  maxPriceValue: number | null;
+  priceBound: number;
   children: ReactNode;
 }
 
 /**
- * Filter sidebar + toolbar for the products listing. Category and sort are
- * real: they update URL search params so the server-rendered grid refetches.
- * Size and price stay visual mocks until public option/price endpoints exist.
+ * Filter sidebar + toolbar for the products listing. Categories, option
+ * values (size/color/…), price and sort all update URL search params so the
+ * server-rendered grid refetches.
  */
 export default function ProductFilters({
   categories,
   selectedCategoryId,
   sortValue,
+  optionGroups,
+  selectedOptionValueIds,
+  maxPriceValue,
+  priceBound,
   children,
 }: ProductFiltersProps) {
   const [expanded, setExpanded] = useState(true);
@@ -62,12 +71,48 @@ export default function ProductFilters({
   };
 
   const hasActiveFilters =
-    selectedCategoryId !== null || sortValue !== "featured";
+    selectedCategoryId !== null ||
+    selectedOptionValueIds.length > 0 ||
+    maxPriceValue !== null ||
+    sortValue !== "featured";
 
   const resetFilters = () => {
     pushParams((params) => {
       params.delete("category");
+      params.delete("sizes");
+      params.delete("max_price");
       params.delete("sort");
+    });
+  };
+
+  const toggleOptionValue = (id: number) => {
+    pushParams((params) => {
+      const current = new Set(
+        (params.get("sizes") ?? "")
+          .split(",")
+          .map((value) => Number.parseInt(value, 10))
+          .filter((value) => Number.isFinite(value)),
+      );
+      if (current.has(id)) {
+        current.delete(id);
+      } else {
+        current.add(id);
+      }
+      if (current.size > 0) {
+        params.set("sizes", [...current].join(","));
+      } else {
+        params.delete("sizes");
+      }
+    });
+  };
+
+  const commitMaxPrice = (value: number) => {
+    pushParams((params) => {
+      if (value >= priceBound) {
+        params.delete("max_price");
+      } else {
+        params.set("max_price", String(value));
+      }
     });
   };
 
@@ -181,37 +226,36 @@ export default function ProductFilters({
             </div>
           </div>
 
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
-              {t("filters.labels.size")}
-            </h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {["XS", "S", "M", "L", "XL"].map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className="rounded-default border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-muted"
-                >
-                  {size}
-                </button>
-              ))}
+          {optionGroups.map((group) => (
+            <div key={group.id}>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+                {group.title}
+              </h2>
+              <ul className="mt-4 space-y-3">
+                {group.values.map((value) => (
+                  <li key={value.id}>
+                    <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+                      <input
+                        type="checkbox"
+                        checked={selectedOptionValueIds.includes(value.id)}
+                        onChange={() => toggleOptionValue(value.id)}
+                        className="size-4 rounded-default border border-border accent-accent"
+                      />
+                      {value.title}
+                    </label>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          ))}
 
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
-              {t("filters.labels.price")}
-            </h2>
-            <p className="mt-4 text-sm text-secondary-text">$0 — $150</p>
-            <input
-              type="range"
-              min={0}
-              max={150}
-              defaultValue={150}
-              aria-label={t("filters.labels.max_price")}
-              className="mt-3 w-full accent-accent"
-            />
-          </div>
+          <PriceFilter
+            key={`${priceBound}-${maxPriceValue ?? "max"}`}
+            bound={priceBound}
+            initialValue={maxPriceValue}
+            label={t("filters.labels.max_price")}
+            onCommit={commitMaxPrice}
+          />
         </aside>
       ) : null}
 
@@ -270,6 +314,46 @@ export default function ProductFilters({
 
         <div className="mt-8">{children}</div>
       </div>
+    </div>
+  );
+}
+
+interface PriceFilterProps {
+  bound: number;
+  initialValue: number | null;
+  label: string;
+  onCommit: (value: number) => void;
+}
+
+/**
+ * Max-price slider. Dragging updates the label locally; the filter commits
+ * to the URL on release / keyboard step. Remounts (via key) when the bound
+ * or the URL value changes so the knob never drifts from the applied state.
+ */
+function PriceFilter({ bound, initialValue, label, onCommit }: PriceFilterProps) {
+  const t = useTranslations("catalog.products");
+  const [value, setValue] = useState(initialValue ?? bound);
+
+  return (
+    <div>
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+        {t("filters.labels.price")}
+      </h2>
+      <p className="mt-4 text-sm text-secondary-text">
+        $0 — ${value.toLocaleString()}
+      </p>
+      <input
+        type="range"
+        min={0}
+        max={bound}
+        step={5}
+        value={value}
+        onChange={(event) => setValue(Number(event.target.value))}
+        onPointerUp={() => onCommit(value)}
+        onKeyUp={() => onCommit(value)}
+        aria-label={label}
+        className="mt-3 w-full accent-accent"
+      />
     </div>
   );
 }

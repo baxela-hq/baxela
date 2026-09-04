@@ -82,6 +82,14 @@ export interface ApiPublicCategory {
   slug: string | null;
 }
 
+// Variant option group (Size, Color, …) with its values — public options
+// listing used by the products filters.
+export interface ApiOptionGroup {
+  id: number;
+  title: string | null;
+  values: { id: number; title: string | null }[];
+}
+
 export interface ApiUser {
   id: number;
   email: string;
