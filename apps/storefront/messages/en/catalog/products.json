@@ -18,7 +18,9 @@
     "actions": {
       "hide": "Hide filters",
       "show": "Filters",
-      "reset": "Reset filters"
+      "reset": "Reset filters",
+      "expand_category": "Show subcategories",
+      "collapse_category": "Hide subcategories"
     }
   },
   "sort": {
