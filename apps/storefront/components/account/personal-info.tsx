@@ -23,6 +23,8 @@ const GENDERS: ApiGender[] = ["male", "female", "other"];
 interface PersonalInfoProps {
   profile: ApiProfile;
   onSaved: (profile: ApiProfile) => void;
+  /** Opens the form immediately (used by the profile-completion banner). */
+  initialEditing?: boolean;
 }
 
 /**
@@ -32,12 +34,16 @@ interface PersonalInfoProps {
  * so it renders when set and falls back to initials. Email has no change
  * endpoint and is shown read-only from the session.
  */
-export function PersonalInfo({ profile, onSaved }: PersonalInfoProps) {
+export function PersonalInfo({
+  profile,
+  onSaved,
+  initialEditing = false,
+}: PersonalInfoProps) {
   const t = useTranslations("account.account");
   const tCommon = useTranslations("shared.common");
   const { user, token } = useAuth();
 
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(initialEditing);
   const [pending, setPending] = useState(false);
   const [form, setForm] = useState({
     full_name: profile.full_name ?? "",

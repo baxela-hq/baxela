@@ -106,6 +106,16 @@
       }
     }
   },
+  "banner": {
+    "texts": {
+      "title": "Complete your profile",
+      "description": "Add your name and we'll pre-fill checkout for you."
+    },
+    "actions": {
+      "complete": "Complete now",
+      "dismiss": "Dismiss"
+    }
+  },
   "settings": {
     "appearance": {
       "title": "Appearance",

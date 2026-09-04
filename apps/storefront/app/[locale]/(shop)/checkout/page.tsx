@@ -8,6 +8,7 @@ import type {
   ApiAddress,
   ApiCartItem,
   ApiCountry,
+  ApiProfile,
   ApiShippingMethod,
 } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
@@ -58,14 +59,21 @@ export default function CheckoutPage() {
     if (status !== "authenticated" || !token) return;
     void (async () => {
       try {
-        const [items, savedAddresses, countryList] = await Promise.all([
+        const [items, savedAddresses, countryList, profile] = await Promise.all([
           api.get<ApiCartItem[]>("/cart/user/cart-items", { token }),
           api.get<ApiAddress[]>("/user/user/addresses", { token }),
           api.get<ApiCountry[]>("/core/public/countries"),
+          // A missing profile row must not fail checkout; it only pre-fills
+          // the address form's name.
+          api.get<ApiProfile>("/user/user/profile", { token }).catch(() => null),
         ]);
         setCartItems(items);
         setAddresses(savedAddresses);
         setCountries(countryList);
+        if (profile?.full_name) {
+          const name = profile.full_name;
+          setAddressForm((form) => ({ ...form, full_name: name }));
+        }
         const preferred =
           savedAddresses.find((address) => address.is_default) ??
           savedAddresses[0];
