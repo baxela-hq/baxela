@@ -27,8 +27,7 @@ See `/docs/modules.md`
 ## 🚀 Installation
 ```bash
 git clone ...
-cd infrastructure/docker/develop
-cp .env.example .env
+cp .env.example .env         # repo root: compose variables (ports, DB creds)
 docker compose up -d          # php-fpm + nginx + MySQL + Redis
 docker compose exec app composer install
 docker compose exec app php artisan key:generate

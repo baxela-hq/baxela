@@ -1,13 +1,15 @@
-# Development environment: php-fpm + nginx + MySQL + Redis, with the backend
-# source bind-mounted from apps/backend (no host PHP required).
-# Start from this directory: docker compose up -d
+# Development environment (default compose file): php-fpm + nginx + MySQL +
+# Redis, with the backend source bind-mounted from apps/backend (no host PHP
+# required). Run from the repo root: docker compose up -d
+#
+# Variables come from .env at the repo root (see .env.example).
 
 name: baxela-develop
 
 services:
     app:
         build:
-            context: ./backend
+            context: ./infrastructure/docker/develop/backend
             dockerfile: Dockerfile
             args:
                 WWWUSER: ${WWWUSER:-1000}
@@ -16,7 +18,7 @@ services:
         restart: unless-stopped
         working_dir: /var/www/html
         volumes:
-            - ../../../apps/backend:/var/www/html
+            - ./apps/backend:/var/www/html
         environment:
             WWWUSER: ${WWWUSER:-1000}
             WWWGROUP: ${WWWGROUP:-1000}
@@ -32,8 +34,8 @@ services:
         ports:
             - "${BACKEND_APP_PORT:-8085}:80"
         volumes:
-            - ../../../apps/backend:/var/www/html
-            - ./nginx/backend.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./apps/backend:/var/www/html
+            - ./infrastructure/docker/develop/nginx/backend.conf:/etc/nginx/conf.d/default.conf:ro
         depends_on:
             - app
 

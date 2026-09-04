@@ -14,7 +14,9 @@ apps/
 api/           # Bruno API collections
 docs/          # Documentation
 infrastructure/
-  docker/      # Per-environment compose setups (develop/, production/)
+  docker/      # Docker build assets per environment (Dockerfiles, nginx, php.ini)
+docker-compose.yml         # Develop stack (default): docker compose up -d
+docker-compose.prod.yml    # Production stack (single-server deploy)
 ```
 
 ## Agent Guidelines Index

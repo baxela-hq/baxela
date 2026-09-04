@@ -166,7 +166,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 ## Commands
 
 ```bash
-# Dev stack lives in infrastructure/docker/develop (run compose from there)
+# Dev stack is the root docker-compose.yml (run compose from the repo root)
 docker compose up -d        # MySQL/Redis/nginx dev environment
 docker compose exec app composer install
 docker compose exec app php artisan migrate

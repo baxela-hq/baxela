@@ -1,21 +1,30 @@
 # Production environment
 
 Single-server deployment: backend (php-fpm + nginx), one-shot migrate,
-queue worker, scheduler, admin SPA, MySQL, Redis. Images are built from the
-**repo root** context, so they are self-contained and reusable as-is in
-Kubernetes later. Runtime configuration comes from `.env` via `env_file` —
-nothing secret is baked into the images.
+queue worker, scheduler, admin SPA, MySQL, Redis. Defined in
+[`docker-compose.prod.yml`](../../../docker-compose.prod.yml) at the repo
+root; this directory only holds the build assets (Dockerfiles, nginx configs,
+php.ini, entrypoint). Images are built from the **repo root** context, so
+they are self-contained and reusable as-is in Kubernetes later. Runtime
+configuration comes from `.env.production` via `env_file` — nothing secret is
+baked into the images.
+
+> On the server, a bare `docker compose up -d` (no `-f`) would start the
+> **develop** stack. Always pass `--env-file .env.production -f
+> docker-compose.prod.yml` in production.
 
 ## First run
 
+From the repo root:
+
 ```bash
-cd infrastructure/docker/production
-cp .env.example .env        # then edit: DB creds, APP_URL, VITE_API_BASE_URL, ...
+cp .env.production.example .env.production   # then edit: DB creds, APP_URL, VITE_API_BASE_URL, ...
 
-# Generate an APP_KEY and put it in .env
-docker compose run --rm --no-deps --entrypoint php migrate artisan key:generate --show
+# Generate an APP_KEY and put it in .env.production
+docker compose --env-file .env.production -f docker-compose.prod.yml \
+    run --rm --no-deps --entrypoint php migrate artisan key:generate --show
 
-docker compose up -d --build
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
 ```
 
 `up` starts MySQL/Redis, runs the one-shot `migrate` service, then brings up
@@ -26,6 +35,9 @@ fpm, nginx, queue, scheduler, and the admin panel. `backend`, `queue`, and
 - Admin panel: `http://<host>:${ADMIN_PORT:-8081}`
 
 ## Day-2 operations
+
+All `docker compose` commands below are short for
+`docker compose --env-file .env.production -f docker-compose.prod.yml`.
 
 ```bash
 # Deploy a new version
