@@ -2,6 +2,7 @@
 
 import { Suspense, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { ApiError } from "@/lib/api/client";
@@ -30,6 +31,7 @@ function LoginForm() {
     setError(null);
     try {
       await signIn({ email, password });
+      toast.success(t("login.messages.success.signed_in"));
       const next = searchParams.get("next");
       router.replace(
         next && next.startsWith("/") ? next : "/login-successful",

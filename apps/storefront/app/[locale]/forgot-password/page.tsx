@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { api, ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export default function ForgotPasswordPage() {
     setError(null);
     try {
       await api.post("/auth/public/auth/reset-password/request", { email });
+      toast.success(t("forgot_password.messages.success.code_sent"));
       router.replace(
         `/enter-otp?mode=reset&email=${encodeURIComponent(email)}`,
       );

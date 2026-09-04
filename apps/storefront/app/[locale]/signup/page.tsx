@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { api, ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ export default function SignupPage() {
         password_confirmation: confirmation,
       });
       // Activation OTP was emailed — continue to verification
+      toast.success(t("signup.messages.success.signed_up"));
       router.replace(
         `/enter-otp?mode=activation&email=${encodeURIComponent(email)}`,
       );
