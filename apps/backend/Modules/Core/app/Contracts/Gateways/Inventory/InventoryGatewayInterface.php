@@ -22,4 +22,16 @@ interface InventoryGatewayInterface
      * Return stock for a variant (order cancelled/expired before payment).
      */
     public function restore(string $variantId, int $quantity): void;
+
+    /**
+     * Insert or update the ledger row for a variant to the given quantity —
+     * the admin's variant quantity is the stock level it manages.
+     */
+    public function upsertStock(int $variantId, int $quantity): void;
+
+    /**
+     * Drop ledger rows whose variant no longer exists (product edits
+     * recreate variants, product deletes cascade them).
+     */
+    public function pruneOrphanedStocks(): void;
 }

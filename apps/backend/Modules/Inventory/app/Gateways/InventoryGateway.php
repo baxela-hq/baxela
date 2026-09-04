@@ -6,6 +6,8 @@ use Modules\Core\Contracts\Events\Inventory\StockDecreasedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockDepletedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockIncreasedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
+use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
@@ -67,5 +69,20 @@ class InventoryGateway implements InventoryGatewayInterface
             'variant_id' => (int) $variantId,
             'quantity' => $quantity,
         ]));
+    }
+
+    public function upsertStock(int $variantId, int $quantity): void
+    {
+        InventoryStock::query()->updateOrCreate(
+            [InventoryStockSchema::VARIANT_ID => $variantId],
+            [InventoryStockSchema::QUANTITY => $quantity],
+        );
+    }
+
+    public function pruneOrphanedStocks(): void
+    {
+        InventoryStock::query()
+            ->whereNotIn(InventoryStockSchema::VARIANT_ID, Variant::query()->select(VariantSchema::ID))
+            ->delete();
     }
 }
