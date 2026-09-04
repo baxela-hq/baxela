@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/logo";
 import { MegaMenuNavItem } from "@/components/mega-menu";
 import { MobileMenu } from "@/components/mobile-menu";
 import { SearchMenu } from "@/components/search-menu";
+import { AccountMenu } from "@/components/layout/account-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { Link } from "@/i18n/navigation";
 
@@ -67,6 +68,7 @@ export async function SiteHeader() {
             >
               <ShoppingCartIcon className="size-5" />
             </Link>
+            <AccountMenu />
             <LanguageSwitcher />
             <MobileMenu />
           </div>
