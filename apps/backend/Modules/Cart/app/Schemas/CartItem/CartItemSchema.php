@@ -20,4 +20,8 @@ class CartItemSchema
     public const string PRICE_SNAPSHOT = 'price_snapshot';
 
     public const string PRODUCT_NAME_SNAPSHOT = 'product_name_snapshot';
+
+    public const string VARIANT_LABEL = 'variant_label';
+
+    public const string RES_VARIANT = 'variant';
 }
