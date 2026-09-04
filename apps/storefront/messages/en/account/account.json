@@ -95,6 +95,33 @@
       }
     }
   },
+  "settings": {
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize how your theme looks on your device",
+      "theme_light": "Light"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Select your language"
+    },
+    "two_factor": {
+      "title": "Two-factor Authentication",
+      "description": "Keep your account secure by enabling 2FA via mail"
+    },
+    "push_notifications": {
+      "title": "Push Notifications",
+      "description": "Receive push notification"
+    },
+    "desktop_notifications": {
+      "title": "Desktop Notification",
+      "description": "Receive push notification in desktop"
+    },
+    "email_notifications": {
+      "title": "Email Notifications",
+      "description": "Receive email notification"
+    }
+  },
   "notifications": {
     "texts": {
       "just_now": "Just Now",

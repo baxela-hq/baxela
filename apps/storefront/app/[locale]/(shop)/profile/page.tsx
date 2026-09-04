@@ -19,13 +19,14 @@ import {
   type OrderStatusFilter,
 } from "@/components/account/orders-toolbar";
 import { SavedCards } from "@/components/account/saved-cards";
+import { Settings } from "@/components/account/settings";
 import { PersonalInfo } from "@/components/account/personal-info";
-import { HeartIcon, SettingsIcon } from "@/components/ui/icons";
+import { HeartIcon } from "@/components/ui/icons";
 
 /**
  * The account hub ("My Profile" screen): sidebar navigation plus the active
- * section. Wishlists and settings are design placeholders — the backend has
- * no endpoints for them yet; saved cards and notifications are mock UI.
+ * section. Wishlists is a design placeholder — the backend has no endpoint
+ * for it yet; saved cards, notifications and settings are mock UI.
  */
 export default function ProfilePage() {
   const t = useTranslations("account.account");
@@ -131,12 +132,7 @@ export default function ProfilePage() {
           {tab === "notifications" ? (
             <Notifications initials={initials} />
           ) : null}
-          {tab === "settings" ? (
-            <ComingSoonPanel
-              icon={<SettingsIcon className="size-6" />}
-              title={t("labels.settings")}
-            />
-          ) : null}
+          {tab === "settings" ? <Settings /> : null}
         </div>
       </div>
     </section>
