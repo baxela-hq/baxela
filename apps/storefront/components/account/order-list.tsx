@@ -236,9 +236,18 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                     className="size-16 shrink-0 rounded-default border border-border bg-muted"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
-                      {item.product_name_snapshot}
-                    </p>
+                    {item.product_slug_snapshot ? (
+                      <Link
+                        href={`/products/${item.product_slug_snapshot}`}
+                        className="truncate text-sm font-medium text-foreground transition-colors hover:text-accent rtl:normal-case rtl:tracking-normal"
+                      >
+                        {item.product_name_snapshot}
+                      </Link>
+                    ) : (
+                      <p className="truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                        {item.product_name_snapshot}
+                      </p>
+                    )}
                     <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {t("labels.qty", { count: item.quantity })}
                     </p>
