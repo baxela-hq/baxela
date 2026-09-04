@@ -2,7 +2,12 @@ import { getTranslations } from "next-intl/server";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
 import { serverApiGet } from "@/lib/api/server";
-import type { ApiProduct, ApiPublicCategory, Paginated } from "@/lib/api/types";
+import type {
+  ApiOptionGroup,
+  ApiProduct,
+  ApiPublicCategory,
+  Paginated,
+} from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
 
 // URL sort value -> backend allowed sort
@@ -35,15 +40,30 @@ export default async function ProductsPage({
   const sort = firstParam(sp.sort);
   const category = firstParam(sp.category);
   const page = Math.max(1, Number.parseInt(firstParam(sp.page) || "1", 10) || 1);
+  const sizesParam = firstParam(sp.sizes);
+  const sizeIds = sizesParam
+    ? sizesParam
+        .split(",")
+        .map((value) => Number.parseInt(value, 10))
+        .filter((value) => Number.isFinite(value))
+    : [];
+  const maxPriceParam = Number.parseInt(firstParam(sp.max_price), 10);
+  const maxPrice = Number.isFinite(maxPriceParam) ? maxPriceParam : null;
 
-  // Categories first: the category param accepts an id or a slug (the
-  // mega-menu links use slugs) and must be resolved to an id for the
-  // backend's categories.id filter. per_page=100 covers the whole list for
-  // the sidebar and the slug lookup.
-  const categoriesPage = await serverApiGet<Paginated<ApiPublicCategory>>(
-    "/catalog/public/categories?per_page=100",
-  ).catch(() => null);
+  // Categories + option groups (Size, Color, …) first: the category param
+  // accepts an id or a slug (the mega-menu links use slugs) and must be
+  // resolved to an id for the backend's categories.id filter. per_page=100
+  // covers the whole list for the sidebar and the slug lookup.
+  const [categoriesPage, optionsPage] = await Promise.all([
+    serverApiGet<Paginated<ApiPublicCategory>>(
+      "/catalog/public/categories?per_page=100",
+    ).catch(() => null),
+    serverApiGet<Paginated<ApiOptionGroup>>(
+      "/catalog/public/options?per_page=100",
+    ).catch(() => null),
+  ]);
   const categories = categoriesPage?.data ?? [];
+  const optionGroups = optionsPage?.data ?? [];
 
   const matchedCategory = category
     ? categories.find(
@@ -61,6 +81,10 @@ export default async function ProductsPage({
   if (categoryId !== null) {
     search.set("filter[categories.id]", String(categoryId));
   }
+  for (const sizeId of sizeIds) {
+    search.append("filter[option_value_id]", String(sizeId));
+  }
+  if (maxPrice !== null) search.set("filter[price_max]", String(maxPrice));
   if (sort && SORT_MAP[sort]) search.set("sort", SORT_MAP[sort]);
 
   const productsPage = await serverApiGet<Paginated<ApiProduct>>(
@@ -74,12 +98,19 @@ export default async function ProductsPage({
     title: c.title,
     parent_id: c.parent_id,
   }));
+  // Slider scale: at least 150, raised to just above the priciest product
+  // on the page, rounded up to a clean step of 10.
+  const priceBound = Math.ceil(
+    Math.max(150, ...products.map((p) => Number(p.price) || 0)) / 10,
+  ) * 10;
 
   const pageHref = (target: number): string => {
     const params = new URLSearchParams();
     if (query) params.set("q", query);
     if (sort) params.set("sort", sort);
     if (category) params.set("category", category);
+    if (sizeIds.length > 0) params.set("sizes", sizeIds.join(","));
+    if (maxPrice !== null) params.set("max_price", String(maxPrice));
     if (target > 1) params.set("page", String(target));
     const qs = params.toString();
     return qs ? `/products?${qs}` : "/products";
@@ -140,6 +171,10 @@ export default async function ProductsPage({
             categories={categoryOptions}
             selectedCategoryId={categoryId}
             sortValue={sort || "featured"}
+            optionGroups={optionGroups}
+            selectedOptionValueIds={sizeIds}
+            maxPriceValue={maxPrice}
+            priceBound={priceBound}
           >
             {products.length > 0 ? (
               <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
