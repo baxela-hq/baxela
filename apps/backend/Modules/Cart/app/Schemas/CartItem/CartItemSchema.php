@@ -23,5 +23,9 @@ class CartItemSchema
 
     public const string VARIANT_LABEL = 'variant_label';
 
+    public const string PRODUCT_ID = 'product_id';
+
+    public const string PRODUCT_SLUG = 'product_slug';
+
     public const string RES_VARIANT = 'variant';
 }
