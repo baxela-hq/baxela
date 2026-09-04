@@ -95,6 +95,33 @@
       }
     }
   },
+  "settings": {
+    "appearance": {
+      "title": "ظاهر",
+      "description": "نمای قالب را در دستگاه خود تنظیم کنید",
+      "theme_light": "روشن"
+    },
+    "language": {
+      "title": "زبان",
+      "description": "زبان خود را انتخاب کنید"
+    },
+    "two_factor": {
+      "title": "ورود دو مرحله‌ای",
+      "description": "با فعال کردن ورود دو مرحله‌ای از طریق ایمیل، حساب خود را ایمن نگه دارید"
+    },
+    "push_notifications": {
+      "title": "اعلان‌های فوری",
+      "description": "دریافت اعلان فوری"
+    },
+    "desktop_notifications": {
+      "title": "اعلان دسکتاپ",
+      "description": "دریافت اعلان در دسکتاپ"
+    },
+    "email_notifications": {
+      "title": "اعلان‌های ایمیلی",
+      "description": "دریافت اعلان ایمیلی"
+    }
+  },
   "notifications": {
     "texts": {
       "just_now": "همین حالا",
