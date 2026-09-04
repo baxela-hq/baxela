@@ -14,6 +14,6 @@ class ListCategoryController extends Controller
 
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        return CategoryResource::collection($this->action->handle());
+        return CategoryResource::collection($this->action->handle($request));
     }
 }
