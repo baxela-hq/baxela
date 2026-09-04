@@ -58,6 +58,16 @@ export default function ProductFilters({
     });
   };
 
+  const hasActiveFilters =
+    selectedCategoryId !== null || sortValue !== "featured";
+
+  const resetFilters = () => {
+    pushParams((params) => {
+      params.delete("category");
+      params.delete("sort");
+    });
+  };
+
   const sortOptions = [
     { value: "featured", label: t("sort.options.featured") },
     { value: "newest", label: t("sort.options.newest") },
@@ -158,6 +168,15 @@ export default function ProductFilters({
           )}
 
           <div className="flex items-center gap-4">
+            {hasActiveFilters ? (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="text-sm text-secondary-text underline underline-offset-2 transition-colors hover:text-accent rtl:normal-case rtl:tracking-normal"
+              >
+                {t("filters.actions.reset")}
+              </button>
+            ) : null}
             {!expanded ? (
               <label
                 htmlFor="sort"
