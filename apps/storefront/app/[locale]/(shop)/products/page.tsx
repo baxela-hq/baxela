@@ -72,6 +72,7 @@ export default async function ProductsPage({
   const categoryOptions = categories.map((c) => ({
     id: c.id,
     title: c.title,
+    parent_id: c.parent_id,
   }));
 
   const pageHref = (target: number): string => {

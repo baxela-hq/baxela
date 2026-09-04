@@ -4,10 +4,13 @@ import { useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon } from "@/components/ui/icons";
 
 export interface ProductFilterCategory {
   id: number;
   title: string | null;
+  parent_id: number | null;
 }
 
 interface ProductFiltersProps {
@@ -75,6 +78,43 @@ export default function ProductFilters({
     { value: "price_desc", label: t("sort.options.price_high_low") },
   ];
 
+  // Tree view: parents first, their children nested and hidden behind the
+  // + expander (like the design). A category whose parent is not in the
+  // list is treated as a root so orphans still show.
+  const roots = categories.filter(
+    (category) =>
+      category.parent_id === null ||
+      !categories.some((other) => other.id === category.parent_id),
+  );
+  const childrenOf = (parentId: number) =>
+    categories.filter((category) => category.parent_id === parentId);
+  const [expandedParents, setExpandedParents] = useState<Set<number>>(
+    new Set(),
+  );
+  const toggleExpanded = (id: number) => {
+    setExpandedParents((previous) => {
+      const next = new Set(previous);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const categoryCheckbox = (category: ProductFilterCategory) => (
+    <label className="flex min-w-0 cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+      <input
+        type="checkbox"
+        checked={selectedCategoryId === category.id}
+        onChange={() => toggleCategory(category.id)}
+        className="size-4 shrink-0 rounded-default border border-border accent-accent"
+      />
+      <span className="truncate">{category.title}</span>
+    </label>
+  );
+
   return (
     <div
       className={
@@ -96,21 +136,49 @@ export default function ProductFilters({
             <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
               {t("filters.labels.category")}
             </h2>
-            <ul className="mt-4 space-y-3">
-              {categories.map((category) => (
-                <li key={category.id}>
-                  <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategoryId === category.id}
-                      onChange={() => toggleCategory(category.id)}
-                      className="size-4 rounded-default border border-border accent-accent"
-                    />
-                    {category.title}
-                  </label>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4 max-h-72 space-y-3 overflow-y-auto pe-1">
+              {roots.map((category) => {
+                const children = childrenOf(category.id);
+                const expanded = expandedParents.has(category.id);
+
+                return (
+                  <div key={category.id}>
+                    <div className="flex items-center justify-between gap-2">
+                      {categoryCheckbox(category)}
+                      {children.length > 0 ? (
+                        <button
+                          type="button"
+                          aria-expanded={expanded}
+                          aria-label={
+                            expanded
+                              ? t("filters.actions.collapse_category")
+                              : t("filters.actions.expand_category")
+                          }
+                          onClick={() => toggleExpanded(category.id)}
+                          className="shrink-0 p-1 text-secondary-text transition-colors hover:text-foreground"
+                        >
+                          <ChevronDownIcon
+                            className={cn(
+                              "size-4 transition-transform",
+                              expanded
+                                ? "rotate-0"
+                                : "ltr:-rotate-90 rtl:rotate-90",
+                            )}
+                          />
+                        </button>
+                      ) : null}
+                    </div>
+                    {children.length > 0 && expanded ? (
+                      <ul className="mt-3 space-y-3 ps-6">
+                        {children.map((child) => (
+                          <li key={child.id}>{categoryCheckbox(child)}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div>
