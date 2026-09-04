@@ -2,6 +2,7 @@
 
 import { Suspense, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { api, ApiError } from "@/lib/api/client";
 import { AuthShell } from "@/components/auth/auth-shell";
@@ -54,6 +55,11 @@ function EnterOtpForm() {
           code,
         });
       }
+      toast.success(
+        isReset
+          ? t("enter_otp.messages.success.password_reset")
+          : t("enter_otp.messages.success.activated"),
+      );
       router.replace("/login");
     } catch (cause) {
       setError(
