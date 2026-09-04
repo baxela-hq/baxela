@@ -95,6 +95,31 @@
       }
     }
   },
+  "cards": {
+    "texts": {
+      "add_title": "Add a new card",
+      "empty": "You have no saved cards.",
+      "empty_hint": "Save a card to speed up checkout."
+    },
+    "labels": {
+      "number": "Card Number"
+    },
+    "placeholders": {
+      "number": "Enter Card Number"
+    },
+    "actions": {
+      "add": "Add New Card",
+      "delete": "Delete",
+      "confirm_delete": "Yes, delete it",
+      "keep": "Keep it",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "error": {
+        "invalid": "Please enter a valid card number."
+      }
+    }
+  },
   "address": {
     "texts": {
       "add_title": "Add a new address",
