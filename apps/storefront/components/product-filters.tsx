@@ -231,7 +231,7 @@ export default function ProductFilters({
               <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
                 {group.title}
               </h2>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 max-h-44 space-y-3 overflow-y-auto pe-1">
                 {group.values.map((value) => (
                   <li key={value.id}>
                     <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
