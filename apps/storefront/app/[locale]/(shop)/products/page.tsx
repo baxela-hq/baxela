@@ -36,25 +36,40 @@ export default async function ProductsPage({
   const category = firstParam(sp.category);
   const page = Math.max(1, Number.parseInt(firstParam(sp.page) || "1", 10) || 1);
 
+  // Categories first: the category param accepts an id or a slug (the
+  // mega-menu links use slugs) and must be resolved to an id for the
+  // backend's categories.id filter. per_page=100 covers the whole list for
+  // the sidebar and the slug lookup.
+  const categoriesPage = await serverApiGet<Paginated<ApiPublicCategory>>(
+    "/catalog/public/categories?per_page=100",
+  ).catch(() => null);
+  const categories = categoriesPage?.data ?? [];
+
+  const matchedCategory = category
+    ? categories.find(
+        (c) => String(c.id) === category || c.slug === category,
+      )
+    : undefined;
+  const categoryId =
+    matchedCategory?.id ??
+    (/^\d+$/.test(category) ? Number(category) : null);
+
   const search = new URLSearchParams();
   search.set("per_page", "9");
   if (page > 1) search.set("page", String(page));
   if (query) search.set("filter[title]", query);
-  if (category) search.set("filter[categories.id]", category);
+  if (categoryId !== null) {
+    search.set("filter[categories.id]", String(categoryId));
+  }
   if (sort && SORT_MAP[sort]) search.set("sort", SORT_MAP[sort]);
 
-  const [productsPage, categoriesPage] = await Promise.all([
-    serverApiGet<Paginated<ApiProduct>>(
-      `/catalog/public/products?${search.toString()}`,
-    ).catch(() => null),
-    serverApiGet<Paginated<ApiPublicCategory>>(
-      "/catalog/public/categories",
-    ).catch(() => null),
-  ]);
+  const productsPage = await serverApiGet<Paginated<ApiProduct>>(
+    `/catalog/public/products?${search.toString()}`,
+  ).catch(() => null);
 
   const products = productsPage?.data ?? [];
   const meta = productsPage?.meta;
-  const categories = (categoriesPage?.data ?? []).map((c) => ({
+  const categoryOptions = categories.map((c) => ({
     id: c.id,
     title: c.title,
   }));
@@ -121,8 +136,8 @@ export default async function ProductsPage({
           </p>
         ) : (
           <ProductFilters
-            categories={categories}
-            selectedCategoryId={category ? Number(category) : null}
+            categories={categoryOptions}
+            selectedCategoryId={categoryId}
             sortValue={sort || "featured"}
           >
             {products.length > 0 ? (
