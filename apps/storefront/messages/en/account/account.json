@@ -96,24 +96,28 @@
     }
   },
   "address": {
+    "texts": {
+      "add_title": "Add a new address",
+      "edit_title": "Edit address"
+    },
     "labels": {
-      "full_name": "Full name",
-      "phone": "Phone",
-      "address_line": "Address line",
+      "full_name": "Name",
+      "phone": "Mobile Number",
+      "address_line": "Flat, House no., Building, Company, Apartment",
+      "address_line_2": "Area, Colony, Street, Sector, Village",
       "city": "City",
-      "postal_code": "Postal code",
+      "postal_code": "Pin Code",
       "country": "Country",
-      "is_default": "Set as default address"
+      "is_default": "Use as my default address"
     },
     "placeholders": {
-      "full_name": "First and last name",
-      "phone": "Phone number",
-      "address_line": "Street address, number, unit",
-      "city": "City",
-      "postal_code": "Postal code"
+      "full_name": "Enter Name",
+      "phone": "Enter Mobile Number",
+      "city": "Enter City",
+      "postal_code": "Enter Pin Code"
     },
     "actions": {
-      "add": "Add a new address",
+      "add": "Add New Address",
       "edit": "Edit",
       "delete": "Delete",
       "confirm_delete": "Yes, delete it",
