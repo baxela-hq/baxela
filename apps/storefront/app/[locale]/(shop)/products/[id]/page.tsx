@@ -22,17 +22,16 @@ export default async function ProductPage({
   params,
 }: PageProps<"/[locale]/products/[id]">) {
   const { id } = await params;
-  const productId = Number.parseInt(id, 10);
-  if (Number.isNaN(productId)) {
-    notFound();
-  }
-
+  // The param is the product slug (linked everywhere) but numeric ids keep
+  // working — the backend resolves both.
   const product = await serverApiGet<ApiProductDetail>(
-    `/catalog/public/products/${productId}`,
+    `/catalog/public/products/${id}`,
   ).catch(() => null);
   if (!product) {
     notFound();
   }
+  const productId = product.id;
+  const productHref = `/products/${product.slug ?? product.id}`;
 
   const [t, tLayout, format, commentsPage, relatedPage] = await Promise.all([
     getTranslations("catalog.product"),
@@ -154,7 +153,10 @@ export default async function ProductPage({
               </p>
             ) : null}
 
-            <ProductActions productId={product.id} variants={product.variants} />
+            <ProductActions
+              productHref={productHref}
+              variants={product.variants}
+            />
           </div>
         </div>
       </section>

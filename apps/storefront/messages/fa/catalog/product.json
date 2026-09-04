@@ -12,9 +12,13 @@
   "actions": {
     "add_to_cart": "افزودن به سبد خرید",
     "add_to_wishlist": "افزودن به علاقه‌مندی‌ها",
-    "added_to_cart": "به سبد اضافه شد"
+    "added_to_cart": "به سبد اضافه شد",
+    "view_cart": "مشاهده سبد خرید"
   },
   "messages": {
+    "success": {
+      "added_to_cart": "محصول به سبد خرید شما اضافه شد."
+    },
     "info": {
       "adding": "در حال افزودن…"
     },

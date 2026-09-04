@@ -12,9 +12,13 @@
   "actions": {
     "add_to_cart": "Add to cart",
     "add_to_wishlist": "Add to wishlist",
-    "added_to_cart": "Added to cart"
+    "added_to_cart": "Added to cart",
+    "view_cart": "View cart"
   },
   "messages": {
+    "success": {
+      "added_to_cart": "Added to your cart."
+    },
     "info": {
       "adding": "Adding…"
     },
