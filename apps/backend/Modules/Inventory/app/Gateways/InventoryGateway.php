@@ -19,6 +19,15 @@ class InventoryGateway implements InventoryGatewayInterface
         ])->exists();
     }
 
+    public function availableQuantity(string $variantId): ?int
+    {
+        $quantity = InventoryStock::query()
+            ->where(InventoryStockSchema::VARIANT_ID, $variantId)
+            ->value(InventoryStockSchema::QUANTITY);
+
+        return is_null($quantity) ? null : (int) $quantity;
+    }
+
     public function decrement(string $variantId, int $quantity): bool
     {
         $decremented = InventoryStock::query()->where([

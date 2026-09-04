@@ -2,10 +2,12 @@
 
 namespace Modules\Cart\Actions\User\CartItem;
 
+use Modules\Cart\Exceptions\User\CartItem\OutOfStockException;
 use Modules\Cart\Http\Requests\User\CartItem\CreateCartItemRequest;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Cart\CartItemAddedEvent;
+use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
 class CreateCartItemAction extends AbstractCartItemAction
 {
@@ -19,6 +21,20 @@ class CreateCartItemAction extends AbstractCartItemAction
                 CartItemSchema::CART_ID => $cartId,
                 CartItemSchema::VARIANT_ID => $request->input(CartItemSchema::VARIANT_ID),
             ])->first();
+
+        // Stock gates the whole quantity the cart would hold for the
+        // variant (existing + newly added), not just the added amount.
+        $desiredQuantity = (int) $request->input(CartItemSchema::QUANTITY)
+            + (int) ($cartItem?->{CartItemSchema::QUANTITY} ?? 0);
+        $available = app(InventoryGatewayInterface::class)
+            ->availableQuantity((string) $request->input(CartItemSchema::VARIANT_ID));
+        if (is_null($available) || $available < $desiredQuantity) {
+            throw new OutOfStockException(
+                $this->variantDisplayName((int) $request->input(CartItemSchema::VARIANT_ID)),
+                $available ?? 0,
+                (int) $request->input(CartItemSchema::VARIANT_ID),
+            );
+        }
 
         if ($cartItem) {
             $cartItem->increment(

@@ -23,7 +23,7 @@ class ExceptionHelper
 
         $key = self::resolve_translation_key($e->code);
 
-        $translated = __($key);
+        $translated = __($key, $e->messageParams);
 
         if ($translated !== $key) {
             return $translated;

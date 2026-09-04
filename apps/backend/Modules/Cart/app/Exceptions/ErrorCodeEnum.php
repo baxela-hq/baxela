@@ -11,4 +11,6 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case CHECKOUT_INVALID_SHIPPING_METHOD = 'cart.checkout.invalid_shipping_method';
     case CHECKOUT_ORDER_FAILED = 'cart.checkout.order_failed';
     case CHECKOUT_OUT_OF_STOCK = 'cart.checkout.out_of_stock';
+    case ITEM_OUT_OF_STOCK = 'cart.item.out_of_stock';
+    case ITEM_INSUFFICIENT_STOCK = 'cart.item.insufficient_stock';
 }
