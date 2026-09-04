@@ -31,9 +31,7 @@ function LoginForm() {
       await signIn({ email, password });
       toast.success(t("login.messages.success.signed_in"));
       const next = searchParams.get("next");
-      router.replace(
-        next && next.startsWith("/") ? next : "/login-successful",
-      );
+      router.replace(next && next.startsWith("/") ? next : "/profile");
     } catch (cause) {
       toast.error(
         cause instanceof ApiError
