@@ -14,8 +14,12 @@ class ProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            ProfileSchema::FIRST_NAME => $this->resource?->{ProfileSchema::FIRST_NAME},
-            ProfileSchema::LAST_NAME => $this->resource?->{ProfileSchema::LAST_NAME},
+            ProfileSchema::FULL_NAME => $this->resource?->{ProfileSchema::FULL_NAME},
+            ProfileSchema::DISPLAY_NAME => $this->resource?->{ProfileSchema::DISPLAY_NAME},
+            ProfileSchema::BIO => $this->resource?->{ProfileSchema::BIO},
+            ProfileSchema::AVATAR => $this->resource?->{ProfileSchema::AVATAR},
+            ProfileSchema::GENDER => $this->resource?->{ProfileSchema::GENDER},
+            ProfileSchema::DATE_OF_BIRTH => $this->resource?->{ProfileSchema::DATE_OF_BIRTH},
         ];
     }
 }
