@@ -1,0 +1,25 @@
+meta {
+  name: Cancel
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/order/user/orders/3/cancel
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
