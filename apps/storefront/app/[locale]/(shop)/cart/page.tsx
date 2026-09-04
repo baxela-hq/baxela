@@ -179,6 +179,11 @@ export default function CartPage() {
                     <p className="truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                       {item.product_name_snapshot}
                     </p>
+                    {item.variant_label ? (
+                      <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        {item.variant_label}
+                      </p>
+                    ) : null}
                     <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {t("labels.unit_price")}:{" "}
                       {format.number(Number(item.price_snapshot), usd)}

@@ -500,6 +500,11 @@ export default function CheckoutPage() {
                       <span className="block truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                         {item.product_name_snapshot}
                       </span>
+                      {item.variant_label ? (
+                        <span className="block text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                          {item.variant_label}
+                        </span>
+                      ) : null}
                       <span className="block text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                         {t("summary.texts.qty", { count: item.quantity })}
                       </span>
