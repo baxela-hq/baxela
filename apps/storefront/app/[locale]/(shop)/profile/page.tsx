@@ -12,6 +12,7 @@ import {
 } from "@/components/account/account-sidebar";
 import { AddressManager } from "@/components/account/address-manager";
 import { ComingSoonPanel } from "@/components/account/coming-soon-panel";
+import { Notifications } from "@/components/account/notifications";
 import { OrderList } from "@/components/account/order-list";
 import {
   OrdersToolbar,
@@ -19,12 +20,12 @@ import {
 } from "@/components/account/orders-toolbar";
 import { SavedCards } from "@/components/account/saved-cards";
 import { PersonalInfo } from "@/components/account/personal-info";
-import { BellIcon, HeartIcon, SettingsIcon } from "@/components/ui/icons";
+import { HeartIcon, SettingsIcon } from "@/components/ui/icons";
 
 /**
  * The account hub ("My Profile" screen): sidebar navigation plus the active
- * section. Wishlists, notifications and settings are design placeholders —
- * the backend has no endpoints for them yet; saved cards are mock UI.
+ * section. Wishlists and settings are design placeholders — the backend has
+ * no endpoints for them yet; saved cards and notifications are mock UI.
  */
 export default function ProfilePage() {
   const t = useTranslations("account.account");
@@ -128,10 +129,7 @@ export default function ProfilePage() {
           ) : null}
           {tab === "saved_cards" ? <SavedCards /> : null}
           {tab === "notifications" ? (
-            <ComingSoonPanel
-              icon={<BellIcon className="size-6" />}
-              title={t("labels.notifications")}
-            />
+            <Notifications initials={initials} />
           ) : null}
           {tab === "settings" ? (
             <ComingSoonPanel
