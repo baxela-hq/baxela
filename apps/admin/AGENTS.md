@@ -4,11 +4,11 @@ Guidelines for AI agents working in this repository. Read this before making cha
 
 ## Project Overview
 
-**xshop-admin** — the admin panel of the xShop e-commerce platform. It is a fork of the
+**Baxela-admin** — the admin panel of the Baxela e-commerce platform. It is a fork of the
 [shadcn-admin](https://github.com/satnaing/shadcn-admin) template (v2.2.1, keep this in mind:
-template/demo code and real xShop modules coexist — see [Template vs xShop Modules](#template-vs-xshop-modules)).
+template/demo code and real Baxela modules coexist — see [Template vs Baxela Modules](#template-vs-Baxela-modules)).
 
-- **SPA** talking to a Laravel backend (`VITE_API_BASE_URL`), currently `http://xshop-backend.local/api/v1`.
+- **SPA** talking to a Laravel backend (`VITE_API_BASE_URL`), currently `http://Baxela-backend.local/api/v1`.
 - UI language defaults to **Farsi (`fa`)**, fallback `en`. Full **RTL support** (direction is a manual UI
   preference, decoupled from i18n language).
 - **Multilingual by design**: `en`/`fa` are simply the locales shipped today — the whole structure
@@ -90,7 +90,7 @@ src/
 │   ├── confirm-dialog.tsx   # shared destructive-confirm dialog
 │   └── shared/              # image-uploader, skeleton-widget
 ├── shared/
-│   ├── lib/                 # xShop infra: api-client, ApiError, storage-utility,
+│   ├── lib/                 # Baxela infra: api-client, ApiError, storage-utility,
 │   │                        # locale helpers, tree builder, parseAndToastError
 │   └── types/               # common.types.ts (API envelopes), locale.types.ts
 ├── lib/                     # template utils: cn(), cookies.ts, getPageNumbers, handleServerError
@@ -105,9 +105,9 @@ public/locales/{lang}/...    # translation JSONs per locale (namespace = folder/
 ```
 
 **`src/lib/` vs `src/shared/lib/`:** `lib/` = generic template utilities (`cn`, cookies);
-`shared/lib/` = xShop API/domain infrastructure. New API/domain helpers go in `shared/lib`.
+`shared/lib/` = Baxela API/domain infrastructure. New API/domain helpers go in `shared/lib`.
 
-## Template vs xShop Modules
+## Template vs Baxela Modules
 
 The repo contains **duplicates** — know which one you are working on:
 
@@ -395,7 +395,7 @@ Backend entities carry `translations: Translation[]` (`{ language_id, language (
    intentional shared→feature dependency: the media picker is the designated reusable picker.
 3. `image-uploader.tsx` uses manual `useEffect` fetching (its react-query version is commented out) —
    deliberate endpoint-driven component with `$id` placeholder endpoints.
-4. Most xShop feature files are **not prettier-formatted** (mixed styles predating the current
+4. Most Baxela feature files are **not prettier-formatted** (mixed styles predating the current
    config — verified on git history). Don't hand-format in feature PRs; a dedicated repo-wide
    `pnpm format` commit is the fix when desired.
 5. The `options` form intentionally has **no `description` field** — the backend schema for option
