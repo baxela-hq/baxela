@@ -3,6 +3,7 @@
 namespace Modules\Catalog\Repositories\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Category\CategorySchema;
@@ -49,12 +50,25 @@ class PublicProductQuery implements QueryInterface
                 }),
                 AllowedFilter::exact(ProductSchema::RES_CATEGORIES.'.'.CategorySchema::ID),
                 AllowedFilter::callback('option_value_id', function (Builder $query, $value): void {
-                    $query->whereHas(ProductSchema::RES_VARIANTS, function (Builder $variant) use ($value): void {
-                        $variant->whereHas(
-                            VariantSchema::RES_OPTION_VALUES,
-                            fn (Builder $optionValue) => $optionValue->whereIn(OptionValueSchema::ID, (array) $value)
-                        );
-                    });
+                    // Values of different options narrow the result
+                    // (S AND Red); values of the same option widen it
+                    // (S OR M). One whereHas per option.
+                    $ids = collect((array) $value)->map(fn ($id) => (int) $id);
+                    $optionIds = OptionValue::query()
+                        ->whereIn(OptionValueSchema::ID, $ids)
+                        ->pluck(OptionValueSchema::OPTION_ID)
+                        ->unique();
+
+                    foreach ($optionIds as $optionId) {
+                        $query->whereHas(ProductSchema::RES_VARIANTS, function (Builder $variant) use ($optionId, $ids): void {
+                            $variant->whereHas(
+                                VariantSchema::RES_OPTION_VALUES,
+                                fn (Builder $optionValue) => $optionValue
+                                    ->where(OptionValueSchema::OPTION_ID, $optionId)
+                                    ->whereIn(OptionValueSchema::ID, $ids->all())
+                            );
+                        });
+                    }
                 }),
                 AllowedFilter::callback('price_min', function (Builder $query, $value): void {
                     $query->whereHas(
