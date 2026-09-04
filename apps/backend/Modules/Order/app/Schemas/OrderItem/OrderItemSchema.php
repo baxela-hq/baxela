@@ -17,6 +17,8 @@ class OrderItemSchema
 
     public const string PRODUCT_NAME_SNAPSHOT = 'product_name_snapshot';
 
+    public const string PRODUCT_SLUG_SNAPSHOT = 'product_slug_snapshot';
+
     public const string PRICE_SNAPSHOT = 'price_snapshot';
 
     public const string QUANTITY = 'quantity';

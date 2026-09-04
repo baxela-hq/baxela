@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId(OrderItemSchema::ORDER_ID)->constrained(OrderSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(OrderItemSchema::VARIANT_ID);
             $table->string(OrderItemSchema::PRODUCT_NAME_SNAPSHOT);
+            $table->string(OrderItemSchema::PRODUCT_SLUG_SNAPSHOT)->nullable();
             $table->decimal(OrderItemSchema::PRICE_SNAPSHOT, 12, 2)->unsigned()->default(0.00);
             $table->unsignedTinyInteger(OrderItemSchema::QUANTITY)->default(0);
             $table->timestamp(OrderItemSchema::CREATED_AT)->nullable();
