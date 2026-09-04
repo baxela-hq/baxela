@@ -17,18 +17,14 @@ import {
   OrdersToolbar,
   type OrderStatusFilter,
 } from "@/components/account/orders-toolbar";
+import { SavedCards } from "@/components/account/saved-cards";
 import { PersonalInfo } from "@/components/account/personal-info";
-import {
-  BellIcon,
-  CreditCardIcon,
-  HeartIcon,
-  SettingsIcon,
-} from "@/components/ui/icons";
+import { BellIcon, HeartIcon, SettingsIcon } from "@/components/ui/icons";
 
 /**
  * The account hub ("My Profile" screen): sidebar navigation plus the active
- * section. Wishlists, saved cards, notifications and settings are design
- * placeholders — the backend has no endpoints for them yet.
+ * section. Wishlists, notifications and settings are design placeholders —
+ * the backend has no endpoints for them yet; saved cards are mock UI.
  */
 export default function ProfilePage() {
   const t = useTranslations("account.account");
@@ -130,12 +126,7 @@ export default function ProfilePage() {
               title={t("labels.my_wishlists")}
             />
           ) : null}
-          {tab === "saved_cards" ? (
-            <ComingSoonPanel
-              icon={<CreditCardIcon className="size-6" />}
-              title={t("labels.saved_cards")}
-            />
-          ) : null}
+          {tab === "saved_cards" ? <SavedCards /> : null}
           {tab === "notifications" ? (
             <ComingSoonPanel
               icon={<BellIcon className="size-6" />}
