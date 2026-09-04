@@ -171,14 +171,33 @@ export default function CartPage() {
                   key={item.id}
                   className="flex flex-wrap items-center gap-4 p-6"
                 >
-                  <span
-                    className="size-16 shrink-0 rounded-default border border-border bg-muted"
-                    aria-hidden="true"
-                  />
+                  {item.product_id !== null ? (
+                    <Link
+                      href={`/products/${item.product_slug ?? item.product_id}`}
+                      aria-label={item.product_name_snapshot}
+                      className="size-16 shrink-0 rounded-default border border-border bg-muted transition-colors hover:border-primary"
+                    >
+                      <span aria-hidden="true" className="block size-full" />
+                    </Link>
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="size-16 shrink-0 rounded-default border border-border bg-muted"
+                    />
+                  )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
-                      {item.product_name_snapshot}
-                    </p>
+                    {item.product_id !== null ? (
+                      <Link
+                        href={`/products/${item.product_slug ?? item.product_id}`}
+                        className="truncate text-sm font-medium text-foreground transition-colors hover:text-accent rtl:normal-case rtl:tracking-normal"
+                      >
+                        {item.product_name_snapshot}
+                      </Link>
+                    ) : (
+                      <p className="truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                        {item.product_name_snapshot}
+                      </p>
+                    )}
                     {item.variant_label ? (
                       <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                         {item.variant_label}
