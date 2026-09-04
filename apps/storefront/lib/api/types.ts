@@ -130,8 +130,7 @@ export interface ApiCountry {
 
 export interface ApiProductCommentUser {
   id: number;
-  first_name: string | null;
-  last_name: string | null;
+  name: string | null;
 }
 
 export interface ApiProductComment {
