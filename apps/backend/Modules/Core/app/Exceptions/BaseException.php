@@ -12,7 +12,12 @@ class BaseException extends Exception
         public int $httpStatus = 400,
         public array $meta = [],
         public bool $isSafe = true,
-        ?Throwable $previous = null
+        ?Throwable $previous = null,
+        /**
+         * Placeholders substituted into the translated message (:name, …),
+         * letting exceptions name the entity they are about.
+         */
+        public array $messageParams = [],
     ) {
         parent::__construct($code, 0, $previous);
     }
