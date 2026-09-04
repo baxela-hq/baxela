@@ -107,6 +107,9 @@ export interface ApiCartItem {
   product_name_snapshot: string;
   // Option-value titles joined for display ("S / Black"), request language.
   variant_label: string | null;
+  // The variant's parent product, for linking to the detail page.
+  product_id: number | null;
+  product_slug: string | null;
   quantity: number;
   created_at: string;
   updated_at: string;
