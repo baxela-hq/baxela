@@ -9,8 +9,8 @@ import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { LockIcon, MailIcon } from "@/components/ui/icons";
-import { useRouter } from "@/i18n/navigation";
+import { ArrowLeftIcon, LockIcon, MailIcon } from "@/components/ui/icons";
+import { Link, useRouter } from "@/i18n/navigation";
 
 /**
  * Dual-purpose OTP screen: account activation (email + code) and password
@@ -93,6 +93,15 @@ function EnterOtpForm() {
   return (
     <AuthShell>
       <div className="flex flex-col items-center">
+        {/* The flows land here via router.replace, so the browser back
+            button skips the source page — offer an explicit way back. */}
+        <Link
+          href={isReset ? "/forgot-password" : "/signup"}
+          className="self-start mb-10 inline-flex items-center gap-2 text-sm font-medium text-secondary-text transition-colors hover:text-foreground rtl:normal-case rtl:tracking-normal"
+        >
+          <ArrowLeftIcon className="size-4 rtl:rotate-180" />
+          {tCommon("form.actions.back")}
+        </Link>
         <Logo />
         <h1 className="mt-16 text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
           {t("enter_otp.texts.title")}
