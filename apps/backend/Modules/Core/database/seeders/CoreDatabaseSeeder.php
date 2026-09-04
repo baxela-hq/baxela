@@ -78,24 +78,8 @@ class CoreDatabaseSeeder extends Seeder
         }, $currencies);
         Currency::query()->insert($currencies);
 
-        $countries = [
-            [
-                CountrySchema::NAME => 'United States',
-                CountrySchema::NATIVE_NAME => 'United States',
-                CountrySchema::CODE => 'US',
-                CountrySchema::CODE3 => 'USA',
-                CountrySchema::PHONE_CODE => '1',
-                CountrySchema::EMOJI => '🇺🇸',
-            ],
-            [
-                CountrySchema::NAME => 'Iran',
-                CountrySchema::NATIVE_NAME => 'ایران',
-                CountrySchema::CODE => 'IR',
-                CountrySchema::CODE3 => 'IRN',
-                CountrySchema::PHONE_CODE => '98',
-                CountrySchema::EMOJI => '🦁',
-            ],
-        ];
+        $countries = require __DIR__.'/../data/countries.php';
+
         $countries = array_map(function ($row) {
             return array_merge($row, [
                 'created_at' => now(),
