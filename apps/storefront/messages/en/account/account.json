@@ -1,0 +1,135 @@
+{
+  "texts": {
+    "title": "My Profile",
+    "greeting": "Hello",
+    "coming_soon": "This section is coming soon.",
+    "orders_empty": "You have no orders yet.",
+    "orders_empty_hint": "Once you place an order, it will show up here.",
+    "orders_none_matching": "No orders match your search.",
+    "addresses_empty": "You have no saved addresses.",
+    "addresses_empty_hint": "Save an address to speed up checkout."
+  },
+  "labels": {
+    "personal_information": "Personal Information",
+    "my_orders": "My Orders",
+    "my_wishlists": "My Wishlists",
+    "manage_addresses": "Manage Addresses",
+    "saved_cards": "Saved Cards",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "sign_out": "Sign out",
+    "order_number": "Order {id}",
+    "qty": "Qty {count}",
+    "total": "Total",
+    "shipping_address": "Shipping address",
+    "shipping_method": "Shipping method",
+    "default_badge": "Default"
+  },
+  "profile": {
+    "labels": {
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email_address": "Email Address"
+    },
+    "actions": {
+      "edit": "Edit Profile",
+      "save": "Save Changes",
+      "cancel_edit": "Cancel"
+    },
+    "messages": {
+      "success": {
+        "saved": "Your profile has been updated."
+      },
+      "error": {
+        "save_failed": "Updating your profile failed."
+      }
+    }
+  },
+  "orders": {
+    "placeholders": {
+      "search": "Search orders"
+    },
+    "labels": {
+      "filter": "Filter",
+      "status": "Status"
+    },
+    "actions": {
+      "view_order": "View Order",
+      "hide_order": "Hide Details",
+      "cancel_order": "Cancel Order",
+      "confirm_cancel": "Yes, cancel it",
+      "keep_order": "Keep Order",
+      "continue_shopping": "Continue shopping",
+      "prev_page": "Previous page",
+      "next_page": "Next page"
+    },
+    "filters": {
+      "all": "All statuses",
+      "delivered": "Delivered",
+      "in_process": "In process",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "draft": "Draft",
+      "pending_payment": "Awaiting payment",
+      "paid": "Paid",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "completed": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    },
+    "hints": {
+      "awaiting_payment": "This order is awaiting payment confirmation.",
+      "in_process": "Your order is being processed.",
+      "delivered": "Your product has been delivered.",
+      "cancelled": "This order has been cancelled."
+    },
+    "messages": {
+      "success": {
+        "cancelled": "The order has been cancelled."
+      },
+      "error": {
+        "cancel_failed": "Cancelling the order failed.",
+        "load_failed": "Loading your orders failed."
+      }
+    }
+  },
+  "address": {
+    "labels": {
+      "full_name": "Full name",
+      "phone": "Phone",
+      "address_line": "Address line",
+      "city": "City",
+      "postal_code": "Postal code",
+      "country": "Country",
+      "is_default": "Set as default address"
+    },
+    "placeholders": {
+      "full_name": "First and last name",
+      "phone": "Phone number",
+      "address_line": "Street address, number, unit",
+      "city": "City",
+      "postal_code": "Postal code"
+    },
+    "actions": {
+      "add": "Add a new address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirm_delete": "Yes, delete it",
+      "keep": "Keep it",
+      "save": "Save address",
+      "cancel_edit": "Cancel"
+    },
+    "messages": {
+      "success": {
+        "saved": "The address has been saved.",
+        "deleted": "The address has been deleted."
+      },
+      "error": {
+        "save_failed": "Saving the address failed.",
+        "delete_failed": "Deleting the address failed."
+      }
+    }
+  }
+}

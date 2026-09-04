@@ -1,0 +1,135 @@
+{
+  "texts": {
+    "title": "پروفایل من",
+    "greeting": "سلام",
+    "coming_soon": "این بخش به‌زودی در دسترس قرار می‌گیرد.",
+    "orders_empty": "هنوز سفارشی ثبت نکرده‌اید.",
+    "orders_empty_hint": "پس از ثبت سفارش، اینجا نمایش داده می‌شود.",
+    "orders_none_matching": "سفارشی مطابق با جستجوی شما یافت نشد.",
+    "addresses_empty": "هنوز آدرسی ذخیره نکرده‌اید.",
+    "addresses_empty_hint": "با ذخیره آدرس، تسویه حساب سریع‌تر می‌شود."
+  },
+  "labels": {
+    "personal_information": "اطلاعات شخصی",
+    "my_orders": "سفارش‌های من",
+    "my_wishlists": "علاقه‌مندی‌های من",
+    "manage_addresses": "مدیریت آدرس‌ها",
+    "saved_cards": "کارت‌های ذخیره‌شده",
+    "notifications": "اطلاع‌رسانی‌ها",
+    "settings": "تنظیمات",
+    "sign_out": "خروج از حساب",
+    "order_number": "سفارش {id}",
+    "qty": "تعداد {count}",
+    "total": "مجموع",
+    "shipping_address": "آدرس ارسال",
+    "shipping_method": "روش ارسال",
+    "default_badge": "پیش‌فرض"
+  },
+  "profile": {
+    "labels": {
+      "first_name": "نام",
+      "last_name": "نام خانوادگی",
+      "email_address": "نشانی ایمیل"
+    },
+    "actions": {
+      "edit": "ویرایش پروفایل",
+      "save": "ذخیره تغییرات",
+      "cancel_edit": "انصراف"
+    },
+    "messages": {
+      "success": {
+        "saved": "پروفایل شما به‌روزرسانی شد."
+      },
+      "error": {
+        "save_failed": "به‌روزرسانی پروفایل ناموفق بود."
+      }
+    }
+  },
+  "orders": {
+    "placeholders": {
+      "search": "جستجوی سفارش‌ها"
+    },
+    "labels": {
+      "filter": "فیلتر",
+      "status": "وضعیت"
+    },
+    "actions": {
+      "view_order": "مشاهده سفارش",
+      "hide_order": "پنهان کردن جزئیات",
+      "cancel_order": "لغو سفارش",
+      "confirm_cancel": "بله، لغو شود",
+      "keep_order": "نگه داشتن سفارش",
+      "continue_shopping": "ادامه خرید",
+      "prev_page": "صفحه قبل",
+      "next_page": "صفحه بعد"
+    },
+    "filters": {
+      "all": "همه وضعیت‌ها",
+      "delivered": "تحویل‌شده",
+      "in_process": "در حال انجام",
+      "cancelled": "لغو‌شده"
+    },
+    "status": {
+      "draft": "پیش‌نویس",
+      "pending_payment": "در انتظار پرداخت",
+      "paid": "پرداخت‌شده",
+      "processing": "در حال پردازش",
+      "shipped": "ارسال‌شده",
+      "completed": "تحویل‌شده",
+      "cancelled": "لغو‌شده",
+      "refunded": "بازپرداخت‌شده"
+    },
+    "hints": {
+      "awaiting_payment": "این سفارش در انتظار تایید پرداخت است.",
+      "in_process": "سفارش شما در حال پردازش است.",
+      "delivered": "محصول شما تحویل داده شده است.",
+      "cancelled": "این سفارش لغو شده است."
+    },
+    "messages": {
+      "success": {
+        "cancelled": "سفارش لغو شد."
+      },
+      "error": {
+        "cancel_failed": "لغو سفارش ناموفق بود.",
+        "load_failed": "بارگذاری سفارش‌ها ناموفق بود."
+      }
+    }
+  },
+  "address": {
+    "labels": {
+      "full_name": "نام و نام خانوادگی",
+      "phone": "تلفن",
+      "address_line": "نشانی",
+      "city": "شهر",
+      "postal_code": "کد پستی",
+      "country": "کشور",
+      "is_default": "تعیین به‌عنوان آدرس پیش‌فرض"
+    },
+    "placeholders": {
+      "full_name": "نام و نام خانوادگی",
+      "phone": "شماره تلفن",
+      "address_line": "خیابان، پلاک، واحد",
+      "city": "شهر",
+      "postal_code": "کد پستی"
+    },
+    "actions": {
+      "add": "افزودن آدرس جدید",
+      "edit": "ویرایش",
+      "delete": "حذف",
+      "confirm_delete": "بله، حذف شود",
+      "keep": "نگه داشتن",
+      "save": "ذخیره آدرس",
+      "cancel_edit": "انصراف"
+    },
+    "messages": {
+      "success": {
+        "saved": "آدرس ذخیره شد.",
+        "deleted": "آدرس حذف شد."
+      },
+      "error": {
+        "save_failed": "ذخیره آدرس ناموفق بود.",
+        "delete_failed": "حذف آدرس ناموفق بود."
+      }
+    }
+  }
+}
