@@ -99,7 +99,7 @@ export function AddressManager() {
       address_line_2: "",
       city: address.city,
       postal_code: address.postal_code ?? "",
-      country_code: address.country_code,
+      country_code: address.country_code ?? "",
       is_default: address.is_default,
     });
     setShowForm(true);

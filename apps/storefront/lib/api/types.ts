@@ -159,7 +159,8 @@ export interface ApiAddress {
   address_line: string;
   city: string;
   postal_code: string | null;
-  country_code: string;
+  // Nullable in the database: rows created before the column existed.
+  country_code: string | null;
   is_default: boolean;
   created_at: string;
   updated_at: string;
