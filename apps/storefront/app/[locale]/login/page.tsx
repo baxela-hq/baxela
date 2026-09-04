@@ -23,12 +23,10 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setPending(true);
-    setError(null);
     try {
       await signIn({ email, password });
       toast.success(t("login.messages.success.signed_in"));
@@ -37,7 +35,7 @@ function LoginForm() {
         next && next.startsWith("/") ? next : "/login-successful",
       );
     } catch (cause) {
-      setError(
+      toast.error(
         cause instanceof ApiError
           ? cause.message
           : tCommon("messages.error.general"),
@@ -81,14 +79,6 @@ function LoginForm() {
             {t("login.actions.forgot_password")}
           </Link>
         </div>
-        {error ? (
-          <p
-            role="alert"
-            className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
-          >
-            {error}
-          </p>
-        ) : null}
         <Button type="submit" disabled={pending}>
           {pending
             ? tCommon("messages.info.loading")

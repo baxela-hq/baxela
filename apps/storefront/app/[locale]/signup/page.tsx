@@ -20,17 +20,15 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (password !== confirmation) {
-      setError(tCommon("form.validation.password_mismatch"));
+      toast.error(tCommon("form.validation.password_mismatch"));
       return;
     }
 
     setPending(true);
-    setError(null);
     try {
       await api.post("/auth/public/auth/signup", {
         email,
@@ -45,9 +43,9 @@ export default function SignupPage() {
     } catch (cause) {
       if (cause instanceof ApiError && cause.errors) {
         const first = Object.values(cause.errors).flat()[0];
-        setError(first ?? cause.message);
+        toast.error(first ?? cause.message);
       } else {
-        setError(
+        toast.error(
           cause instanceof ApiError
             ? cause.message
             : tCommon("messages.error.general"),
@@ -101,14 +99,6 @@ export default function SignupPage() {
           value={confirmation}
           onChange={(event) => setConfirmation(event.target.value)}
         />
-        {error ? (
-          <p
-            role="alert"
-            className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
-          >
-            {error}
-          </p>
-        ) : null}
         <Button type="submit" disabled={pending}>
           {pending
             ? tCommon("messages.info.loading")

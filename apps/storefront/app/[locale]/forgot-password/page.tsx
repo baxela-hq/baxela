@@ -18,12 +18,10 @@ export default function ForgotPasswordPage() {
 
   const [email, setEmail] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setPending(true);
-    setError(null);
     try {
       await api.post("/auth/public/auth/reset-password/request", { email });
       toast.success(t("forgot_password.messages.success.code_sent"));
@@ -31,7 +29,7 @@ export default function ForgotPasswordPage() {
         `/enter-otp?mode=reset&email=${encodeURIComponent(email)}`,
       );
     } catch (cause) {
-      setError(
+      toast.error(
         cause instanceof ApiError
           ? cause.message
           : tCommon("messages.error.general"),
@@ -64,14 +62,6 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          {error ? (
-            <p
-              role="alert"
-              className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
-            >
-              {error}
-            </p>
-          ) : null}
           <Button type="submit" disabled={pending}>
             {pending
               ? tCommon("messages.info.loading")

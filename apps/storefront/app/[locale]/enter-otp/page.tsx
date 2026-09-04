@@ -29,18 +29,15 @@ function EnterOtpForm() {
   const [confirmation, setConfirmation] = useState("");
   const [pending, setPending] = useState(false);
   const [resending, setResending] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isReset && password !== confirmation) {
-      setError(tCommon("form.validation.password_mismatch"));
+      toast.error(tCommon("form.validation.password_mismatch"));
       return;
     }
 
     setPending(true);
-    setError(null);
     try {
       if (isReset) {
         await api.post("/auth/public/auth/reset-password/verify", {
@@ -62,7 +59,7 @@ function EnterOtpForm() {
       );
       router.replace("/login");
     } catch (cause) {
-      setError(
+      toast.error(
         cause instanceof ApiError
           ? cause.message
           : tCommon("messages.error.general"),
@@ -74,8 +71,6 @@ function EnterOtpForm() {
 
   const onResend = async () => {
     setResending(true);
-    setError(null);
-    setNotice(null);
     try {
       await api.post(
         isReset
@@ -83,9 +78,9 @@ function EnterOtpForm() {
           : "/auth/public/auth/account-activation/request",
         { email },
       );
-      setNotice(t("enter_otp.messages.info.resent"));
+      toast.success(t("enter_otp.messages.info.resent"));
     } catch (cause) {
-      setError(
+      toast.error(
         cause instanceof ApiError
           ? cause.message
           : tCommon("messages.error.general"),
@@ -165,23 +160,6 @@ function EnterOtpForm() {
               ? tCommon("messages.info.loading")
               : t("enter_otp.actions.resend")}
           </button>
-
-          {notice ? (
-            <p
-              role="status"
-              className="text-sm text-accent rtl:normal-case rtl:tracking-normal"
-            >
-              {notice}
-            </p>
-          ) : null}
-          {error ? (
-            <p
-              role="alert"
-              className="text-sm text-red-600 rtl:normal-case rtl:tracking-normal"
-            >
-              {error}
-            </p>
-          ) : null}
 
           <Button type="submit" disabled={pending}>
             {pending
