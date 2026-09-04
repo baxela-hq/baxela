@@ -32,13 +32,10 @@ class UserGateway implements UserGatewayInterface
     public function getUserNamesByIds(array $ids): array
     {
         return Profile::query()
-            ->where(ProfileSchema::USER_ID, $ids)
+            ->whereIn(ProfileSchema::USER_ID, $ids)
             ->get()
             ->mapWithKeys(function (Profile $profile) {
-                $name = trim(implode(' ', array_filter([
-                    $profile->{ProfileSchema::FIRST_NAME},
-                    $profile->{ProfileSchema::LAST_NAME},
-                ])));
+                $name = trim($profile->{ProfileSchema::DISPLAY_NAME} ?? '') ?: trim($profile->{ProfileSchema::FULL_NAME} ?? '');
 
                 return [$profile->{ProfileSchema::USER_ID} => $name !== '' ? $name : null];
             })

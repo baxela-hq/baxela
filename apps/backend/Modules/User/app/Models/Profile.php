@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Database\Factories\ProfileFactory;
+use Modules\User\Schemas\Profile\GenderEnum;
 use Modules\User\Schemas\Profile\ProfileSchema;
 
 /**
@@ -19,9 +20,21 @@ class Profile extends Model
 
     protected $fillable = [
         ProfileSchema::USER_ID,
-        ProfileSchema::FIRST_NAME,
-        ProfileSchema::LAST_NAME,
+        ProfileSchema::FULL_NAME,
+        ProfileSchema::DISPLAY_NAME,
+        ProfileSchema::BIO,
+        ProfileSchema::AVATAR,
+        ProfileSchema::GENDER,
+        ProfileSchema::DATE_OF_BIRTH,
     ];
+
+    protected function casts(): array
+    {
+        return [
+            ProfileSchema::GENDER => GenderEnum::class,
+            ProfileSchema::DATE_OF_BIRTH => 'date:Y-m-d',
+        ];
+    }
 
     protected static function newFactory(): ProfileFactory
     {

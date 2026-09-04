@@ -15,8 +15,12 @@ return new class extends Migration
         Schema::create(ProfileSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(ProfileSchema::USER_ID)->unique();
-            $table->string(ProfileSchema::FIRST_NAME);
-            $table->string(ProfileSchema::LAST_NAME);
+            $table->string(ProfileSchema::FULL_NAME);
+            $table->string(ProfileSchema::DISPLAY_NAME)->nullable();
+            $table->text(ProfileSchema::BIO)->nullable();
+            $table->string(ProfileSchema::AVATAR)->nullable();
+            $table->string(ProfileSchema::GENDER)->nullable();
+            $table->date(ProfileSchema::DATE_OF_BIRTH)->nullable();
             $table->timestamps();
         });
     }

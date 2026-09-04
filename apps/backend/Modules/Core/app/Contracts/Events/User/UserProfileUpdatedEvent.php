@@ -10,7 +10,15 @@ class UserProfileUpdatedEvent extends AbstractBaseEvent
 
     public int $user_id;
 
-    public string $first_name;
+    public string $full_name;
 
-    public string $last_name;
+    public ?string $display_name;
+
+    public ?string $bio;
+
+    public ?string $avatar;
+
+    public ?string $gender;
+
+    public ?string $date_of_birth;
 }
