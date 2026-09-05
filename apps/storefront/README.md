@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+It runs as part of the Baxela monorepo: `docker compose up -d` from the repo
+root starts it (with the rest of the platform) in containers — see the
+[develop README](../../infrastructure/docker/develop/README.md). Running on
+the host with `pnpm dev` works too; point `NEXT_PUBLIC_API_BASE_URL` at the
+backend in `.env.local` (see `.env.example`).
+
 ## Getting Started
 
 First, run the development server:
