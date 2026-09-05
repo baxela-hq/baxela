@@ -21,7 +21,7 @@ feat(backend/catalog): add attributes
 fix(admin/ui): fix sidebar collapse on mobile
 chore(storefront): bump next to 15.x
 docs(compose): document dev port overrides
-chore(monorepo): move xshop-backend into apps/backend
+chore(monorepo): move baxela-backend into apps/backend
 ```
 
 ## `<type>` (mandatory)
@@ -71,7 +71,7 @@ refactor(storefront): extract shared api client
 Use `monorepo` or a root-area scope for work that lives at the repo root (compose, env, docs, shared config). This is the one family of scopes that is inherently monorepo-only.
 
 ```
-chore(monorepo): move xshop-backend into apps/backend
+chore(monorepo): move baxela-backend into apps/backend
 chore(deps): bump root dev dependencies
 build(compose): parameterize backend host ports
 docs(compose): document dev overrides

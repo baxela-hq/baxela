@@ -8,7 +8,7 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
 baxela/
 ├── apps/
 │   ├── backend/          # API / backend (Laravel)
-│   ├── admin/            # Admin panel (from xshop-admin)
+│   ├── admin/            # Admin panel
 │   └── storefront/       # Next.js storefront
 ├── api/
 │   └── bruno/            # Bruno API collections
