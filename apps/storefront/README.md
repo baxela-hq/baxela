@@ -1,42 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Baxela Storefront
 
-It runs as part of the Baxela monorepo: `docker compose up -d` from the repo
-root starts it (with the rest of the platform) in containers — see the
-[develop README](../../infrastructure/docker/develop/README.md). Running on
-the host with `pnpm dev` works too; point `NEXT_PUBLIC_API_BASE_URL` at the
-backend in `.env.local` (see `.env.example`).
+The customer-facing storefront of the **Baxela** e-commerce platform — a
+Next.js App Router application that consumes the Baxela Laravel API for
+catalog browsing, product pages, cart, checkout and customer accounts.
+
+Multilingual by default: English and Farsi (RTL) via `next-intl`, with locale
+routing under `app/[locale]/`.
+
+## Tech Stack
+
+| Concern | Choice |
+| --- | --- |
+| Runtime | Next.js (App Router), React 19, TypeScript |
+| Styling | Tailwind CSS v4 |
+| i18n | next-intl (`en` / `fa`, RTL-ready) |
+| API | fetch wrapper in `lib/api` (server + client helpers) |
 
 ## Getting Started
 
-First, run the development server:
+The storefront runs as part of the monorepo develop stack:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# from the repo root
+cp .env.example .env
+docker compose up -d
+# → http://localhost:3000 (storefront), :5173 (admin), :8085 (API)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+No host Node needed; the container installs dependencies on first start. To
+run on the host instead:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+cp .env.example .env.local   # then adjust the API URL
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Environment Variables
 
-## Learn More
+| Variable | Description |
+| --- | --- |
+| `NEXT_PUBLIC_API_BASE_URL` | Browser-facing API base URL (e.g. `http://localhost:8085/api/v1`) |
+| `SERVER_API_BASE_URL` | Optional override for server-side (SSR) fetches — used inside the compose networks to reach nginx directly |
 
-To learn more about Next.js, take a look at the following resources:
+## Commands
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev      # start the dev server (HMR)
+pnpm build    # production build (.next/standalone — used by the prod Docker image)
+pnpm start    # serve the production build
+pnpm lint     # ESLint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/[locale]/        # locale-scoped routes (shop pages, auth, account)
+lib/api/             # fetch wrapper + server-side helpers, shared types
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Full conventions — route organization, API layer patterns, i18n rules — are
+documented in **[AGENTS.md](./AGENTS.md)**. Read it before contributing.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+The production image (`infrastructure/docker/production/storefront/`) builds
+the standalone server and runs `server.js` behind the port published by
+`docker-compose.prod.yml`. `NEXT_PUBLIC_API_BASE_URL` is baked in at build
+time; `SERVER_API_BASE_URL` is provided at runtime.
