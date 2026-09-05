@@ -4,8 +4,13 @@
 
 const DEFAULT_BASE_URL = "http://baxela-backend.local/api/v1";
 
+// The browser must reach the API through the host-published backend port,
+// while server-side fetches (SSR) may run inside the develop compose network
+// and reach the nginx service directly via SERVER_API_BASE_URL.
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_BASE_URL;
+  (typeof window === "undefined" ? process.env.SERVER_API_BASE_URL : undefined) ??
+  process.env.NEXT_PUBLIC_API_BASE_URL ??
+  DEFAULT_BASE_URL;
 
 export class ApiError extends Error {
   constructor(
