@@ -26,6 +26,10 @@ body:json {
   }
 }
 
+vars:pre-request {
+  baseUrl: http://baxela-backend.local
+}
+
 script:post-response {
   let data =res.body;
   console.log(data.data.token);

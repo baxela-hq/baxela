@@ -107,8 +107,8 @@ services:
         image: mysql:8-debian
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: ${DEV_DB_DATABASE:-xshop_backend}
-            MYSQL_USER: ${DEV_DB_USERNAME:-xshop}
+            MYSQL_DATABASE: ${DEV_DB_DATABASE:-baxela_backend}
+            MYSQL_USER: ${DEV_DB_USERNAME:-baxela}
             MYSQL_PASSWORD: ${DEV_DB_PASSWORD:-password}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
         ports:
