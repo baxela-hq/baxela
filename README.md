@@ -24,9 +24,12 @@ baxela/
 ## Quick start
 
 1. Start the dev stack from the repo root: `cp .env.example .env && docker compose up -d`
+   — backend on `:8085`, admin on `:5173`, storefront on `:3000`. The
+   frontends are the `frontend` compose profile, on by default; set
+   `COMPOSE_PROFILES=` (empty) in `.env` for a backend-only stack.
 2. Follow the develop [README](infrastructure/docker/develop/README.md) for the
    first-time Laravel setup (composer install, key, migrate).
-3. See `apps/<app>/README.md` for per-app setup.
+3. Frontend dev servers can also run on the host — see `apps/<app>/README.md`.
 
 ## Layout guidelines
 

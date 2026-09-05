@@ -1,6 +1,8 @@
 # Development environment (default compose file): php-fpm + nginx + MySQL +
 # Redis, with the backend source bind-mounted from apps/backend (no host PHP
-# required). Run from the repo root: docker compose up -d
+# required), plus the admin and storefront dev servers behind the `frontend`
+# profile (enabled by default via COMPOSE_PROFILES in .env.example). Run from
+# the repo root: docker compose up -d
 #
 # Variables come from .env at the repo root (see .env.example).
 
@@ -38,6 +40,60 @@ services:
             - ./infrastructure/docker/develop/nginx/backend.conf:/etc/nginx/conf.d/default.conf:ro
         depends_on:
             - app
+
+    admin:
+        build:
+            context: ./infrastructure/docker/develop/admin
+            dockerfile: Dockerfile
+            args:
+                WWWUSER: ${WWWUSER:-1000}
+                WWWGROUP: ${WWWGROUP:-1000}
+        image: baxela/admin:develop
+        profiles:
+            - frontend
+        restart: unless-stopped
+        working_dir: /app
+        ports:
+            - "${ADMIN_DEV_PORT:-5173}:5173"
+        volumes:
+            - ./apps/admin:/app
+            - /app/node_modules
+        environment:
+            # The browser runs on the host, so the API URL must be
+            # host-reachable — compose service names don't resolve there.
+            VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:${BACKEND_APP_PORT:-8085}/api/v1}
+            VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY:-}
+            VITE_STORE_FRONT_URL: ${VITE_STORE_FRONT_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
+        depends_on:
+            - web
+
+    storefront:
+        build:
+            context: ./infrastructure/docker/develop/storefront
+            dockerfile: Dockerfile
+            args:
+                WWWUSER: ${WWWUSER:-1000}
+                WWWGROUP: ${WWWGROUP:-1000}
+        image: baxela/storefront:develop
+        profiles:
+            - frontend
+        restart: unless-stopped
+        working_dir: /app
+        command: ["pnpm", "exec", "next", "dev", "-H", "0.0.0.0"]
+        ports:
+            - "${STOREFRONT_DEV_PORT:-3000}:3000"
+        volumes:
+            - ./apps/storefront:/app
+            - /app/node_modules
+            - /app/.next
+        environment:
+            # Browser fetches go through the host-published backend port;
+            # SSR fetches run inside the compose network and use the nginx
+            # service directly.
+            NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:${BACKEND_APP_PORT:-8085}/api/v1}
+            SERVER_API_BASE_URL: ${SERVER_API_BASE_URL:-http://web:80/api/v1}
+        depends_on:
+            - web
 
     mysql:
         image: mysql:8-debian
