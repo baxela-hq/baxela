@@ -71,6 +71,21 @@ services:
         ports:
             - "${ADMIN_PORT:-8081}:80"
 
+    storefront:
+        image: baxela/storefront:production
+        build:
+            context: .
+            dockerfile: infrastructure/docker/production/storefront/Dockerfile
+            args:
+                NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+        restart: unless-stopped
+        environment:
+            # Browser code uses the build-time NEXT_PUBLIC value; server-side
+            # fetches run on the compose network and reach nginx directly.
+            SERVER_API_BASE_URL: ${SERVER_API_BASE_URL:-http://backend-nginx/api/v1}
+        ports:
+            - "${STOREFRONT_PORT:-8082}:3000"
+
     mysql:
         image: mysql:8-debian
         restart: unless-stopped

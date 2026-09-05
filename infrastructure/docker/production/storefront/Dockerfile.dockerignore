@@ -1,0 +1,11 @@
+# BuildKit per-Dockerfile ignore (context = repo root). Whitelist only what
+# this image needs: the storefront app.
+
+*
+!apps
+!apps/storefront
+!apps/storefront/**
+
+# Dependencies and previous build output are rebuilt inside the image.
+apps/storefront/node_modules
+apps/storefront/.next

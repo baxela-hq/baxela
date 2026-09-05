@@ -1,7 +1,8 @@
 # Production environment
 
 Single-server deployment: backend (php-fpm + nginx), one-shot migrate,
-queue worker, scheduler, admin SPA, MySQL, Redis. Defined in
+queue worker, scheduler, admin SPA, storefront (Next.js standalone server),
+MySQL, Redis. Defined in
 [`docker-compose.prod.yml`](../../../docker-compose.prod.yml) at the repo
 root; this directory only holds the build assets (Dockerfiles, nginx configs,
 php.ini, entrypoint). Images are built from the **repo root** context, so
@@ -33,6 +34,7 @@ fpm, nginx, queue, scheduler, and the admin panel. `backend`, `queue`, and
 
 - Backend API: `http://<host>:${BACKEND_PORT:-8080}` (health: `/up`)
 - Admin panel: `http://<host>:${ADMIN_PORT:-8081}`
+- Storefront: `http://<host>:${STOREFRONT_PORT:-8082}`
 
 ## Day-2 operations
 
@@ -66,7 +68,9 @@ gunzip -c backup-2026-09-01.sql.gz | docker compose exec -T mysql sh -c 'exec my
   A future gateway may replace this layer.
 - MySQL has **no published host port** by default; reach it through the
   compose network or add an explicit `ports:` entry if needed.
-- The admin SPA's `VITE_*` values are build args — changing them requires
-  `docker compose build admin` (they are baked into the JS bundle).
-- The storefront does not have a production image yet; one will be added
-  under `production/storefront/` when the app becomes real.
+- The admin SPA's `VITE_*` values and the storefront's `NEXT_PUBLIC_*` values
+  are build args — changing them requires `docker compose build admin` /
+  `docker compose build storefront` (they are baked into the JS bundle). The
+  storefront's server-side fetches use the runtime `SERVER_API_BASE_URL`.
+- The storefront runs the Next.js standalone server (`server.js`) built by
+  `infrastructure/docker/production/storefront/`.
