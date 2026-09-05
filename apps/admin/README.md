@@ -53,6 +53,10 @@ cp .env.example .env
 pnpm dev
 ```
 
+Prefer Docker? The [develop compose stack](../../infrastructure/docker/develop/README.md)
+runs this dev server in a container together with the rest of the platform
+(`docker compose up -d` from the repo root) — no host Node needed.
+
 ### Environment Variables
 
 | Variable | Description |
