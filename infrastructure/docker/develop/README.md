@@ -21,21 +21,12 @@ This starts the backend stack plus (via `COMPOSE_PROFILES=frontend`, the
 `.env.example` default) the admin and storefront dev servers — see
 [Frontend dev servers](#frontend-dev-servers) below.
 
-Then, still from the repo root (commands run inside the container):
-
-```bash
-# Install dependencies (bind mount makes apps/backend the container's workdir)
-docker compose exec app composer install
-
-# Configure the Laravel app (defaults match the root .env.example)
-cd apps/backend && cp .env.example .env
-cd ../..
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate
-```
-
-The API is served at `http://localhost:${BACKEND_APP_PORT:-8085}` — check it
-with `curl http://localhost:8085/up`.
+The `app` container's entrypoint bootstraps Laravel on first start (composer
+install, `.env` from its example, `APP_KEY`, migrations) and skips settled
+steps on later starts, so no manual setup is required. The API is served at
+`http://localhost:${BACKEND_APP_PORT:-8085}` — check it with
+`curl http://localhost:8085/up` (the `web` service healthcheck uses the same
+route).
 
 ## Services
 

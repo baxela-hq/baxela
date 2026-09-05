@@ -59,8 +59,12 @@ RUN groupmod -g ${WWWGROUP} www-data \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY php.ini /usr/local/etc/php/conf.d/app.ini
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set working directory
 WORKDIR /var/www/html
 
+# First-run bootstrap (composer install, .env, key, migrate) — idempotent.
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
