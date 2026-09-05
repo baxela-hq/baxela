@@ -40,6 +40,14 @@ services:
             - ./infrastructure/docker/develop/nginx/backend.conf:/etc/nginx/conf.d/default.conf:ro
         depends_on:
             - app
+        # /up goes through php-fpm into Laravel, so healthy means the whole
+        # request path works (the app entrypoint bootstraps it on first run).
+        healthcheck:
+            test: ["CMD-SHELL", "curl -sf http://localhost/up || exit 1"]
+            interval: 5s
+            timeout: 5s
+            retries: 20
+            start_period: 30s
 
     admin:
         build:
