@@ -19,6 +19,10 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 
+# pnpm content store created by the develop compose frontend containers
+# (their source is bind-mounted, so pnpm keeps its store in the workdir)
+**/.pnpm-store/
+
 # --- Bruno API client ---
 api/bruno/environments/*
 !api/bruno/environments/.gitkeep
