@@ -2,8 +2,11 @@
 
 namespace Modules\Auth\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Modules\Auth\Console\Commands\SyncPermissionsCommand;
 use Modules\Auth\Gateways\AccessGateway;
@@ -37,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->registerCommands();
         $this->registerCommandSchedules();
+        $this->registerRateLimiters();
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
@@ -71,6 +75,21 @@ class AuthServiceProvider extends ServiceProvider
         //     $schedule = $this->app->make(Schedule::class);
         //     $schedule->command('inspire')->hourly();
         // });
+    }
+
+    /**
+     * Per-IP rate limiters for the public auth endpoints. Limits are read
+     * per-request from config so tests can override them at runtime.
+     */
+    protected function registerRateLimiters(): void
+    {
+        RateLimiter::for('auth-sign-in', fn (Request $request) => Limit::perMinute((int) config('auth.rate_limit.sign_in'))->by($request->ip()));
+
+        RateLimiter::for('auth-sign-up', fn (Request $request) => Limit::perMinute((int) config('auth.rate_limit.sign_up'))->by($request->ip()));
+
+        RateLimiter::for('auth-otp-request', fn (Request $request) => Limit::perMinute((int) config('auth.rate_limit.otp_request'))->by($request->ip()));
+
+        RateLimiter::for('auth-otp-verify', fn (Request $request) => Limit::perMinute((int) config('auth.rate_limit.otp_verify'))->by($request->ip()));
     }
 
     /**
