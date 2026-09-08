@@ -1,0 +1,25 @@
+{
+  "form": {
+    "labels": {
+      "menu": "Menu",
+      "menus": "Menus",
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "location": "Location",
+      "location_header": "Header",
+      "location_footer": "Footer",
+      "is_active": "Active",
+      "active": "Active",
+      "inactive": "Inactive",
+      "links": "Links",
+      "sort": "Sort",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "location": "Where this menu is rendered on the storefront",
+      "is_active": "Inactive menus are hidden from the storefront"
+    }
+  }
+}

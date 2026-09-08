@@ -1,0 +1,25 @@
+{
+  "form": {
+    "labels": {
+      "menu": "منو",
+      "menus": "منوها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "description": "توضیحات",
+      "location": "محل نمایش",
+      "location_header": "هدر",
+      "location_footer": "فوتر",
+      "is_active": "فعال",
+      "active": "فعال",
+      "inactive": "غیرفعال",
+      "links": "لینک‌ها",
+      "sort": "مرتب‌سازی",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "help_texts": {
+      "location": "این منو در کجای فروشگاه نمایش داده می‌شود",
+      "is_active": "منوهای غیرفعال در فروشگاه نمایش داده نمی‌شوند"
+    }
+  }
+}
