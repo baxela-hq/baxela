@@ -194,6 +194,34 @@ This module is responsible for providing content like Pages
 ### 🔗 Dependencies
 | Module | Reason           |
 |--------|------------------|
+| Notification  | Notifies admins by email when a contact message is submitted (listener lives in the Notification module) |
+
+
+
+---
+## Contact
+This module stores messages submitted through the storefront contact-us form and manages them in the admin inbox
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| contact_messages                   | Contact form submissions (name, email, phone, subject, content, status, ip_address) |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| ContactMessageCreatedEvent  | Public contact form submission stored (public endpoint, per-IP rate limited) |
+| ContactMessageStatusUpdatedEvent  | Admin changed a message status (unread/read/replied/archived) |
+| ContactMessageDeletedEvent  | Admin deleted a message |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
 | None  | None |
 
 
