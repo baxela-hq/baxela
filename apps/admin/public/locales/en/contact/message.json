@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "message": "Contact Message",
+      "messages": "Contact Messages",
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "subject": "Subject",
+      "content": "Message",
+      "status": "Status",
+      "ip_address": "IP Address",
+      "view": "View",
+      "read": "Mark as Read",
+      "replied": "Mark as Replied",
+      "archived": "Archive",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "status": {
+        "unread": "Unread",
+        "read": "Read",
+        "replied": "Replied",
+        "archived": "Archived"
+      }
+    }
+  }
+}

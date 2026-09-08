@@ -1,0 +1,145 @@
+import { type ColumnDef } from '@tanstack/react-table'
+import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
+import { cn } from '@/lib/utils'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
+import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { statusBadgeVariants } from '../data/data'
+import { Locales } from '../data/routes'
+import { type ContactMessage, type ContactMessageStatus } from '../data/schema'
+import { DataTableRowActions } from './data-table-row-actions'
+
+export const Columns = (): ColumnDef<ContactMessage>[] => {
+  const { tLabel, tStatus } = useAppTranslation(Locales.CONTACT_MESSAGE)
+  const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { formatDateTime } = useFormatDateTime()
+
+  return [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label={t('columns.aria-select-all')}
+          className='translate-y-[2px]'
+        />
+      ),
+      meta: {
+        className: cn('max-md:sticky start-0 z-10 rounded-tl-[inherit]'),
+      },
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label={t('columns.aria-select-row')}
+          className='translate-y-[2px]'
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'id',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('id')} />
+      ),
+      cell: ({ row }) => (
+        <LongText className='max-w-36 ps-3'>{row.getValue('id')}</LongText>
+      ),
+      meta: {
+        className: cn(
+          'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+          'ps-0.5 max-md:sticky start-6 @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        ),
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'name',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('name')} />
+      ),
+      cell: ({ row }) => (
+        <LongText className='max-w-36 ps-3'>{row.getValue('name')}</LongText>
+      ),
+      meta: {
+        className: cn(
+          'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)]',
+          'ps-0.5 max-md:sticky start-6 @4xl/content:table-cell @4xl/content:drop-shadow-none'
+        ),
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'email',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('email')} />
+      ),
+      cell: ({ row }) => (
+        <LongText className='max-w-48 ps-3'>{row.getValue('email')}</LongText>
+      ),
+      enableSorting: false,
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'subject',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('subject')} />
+      ),
+      cell: ({ row }) => (
+        <LongText className='max-w-48 ps-3'>{row.getValue('subject')}</LongText>
+      ),
+      enableSorting: false,
+      enableHiding: true,
+    },
+    {
+      accessorKey: 'status',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('status')} />
+      ),
+      cell: ({ row }) => {
+        const { status } = row.original
+        const badgeColor = statusBadgeVariants.get(
+          status as ContactMessageStatus
+        )
+        return (
+          <div className='flex space-x-2'>
+            <Badge variant='outline' className={cn(badgeColor)}>
+              {tStatus(`status.${row.getValue('status')}`)}
+            </Badge>
+          </div>
+        )
+      },
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
+      enableHiding: false,
+      enableSorting: true,
+    },
+    {
+      accessorKey: 'created_at',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('created_at')} />
+      ),
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>
+          {formatDateTime(row.getValue('created_at'))}
+        </div>
+      ),
+      enableHiding: true,
+      enableSorting: true,
+    },
+    {
+      id: 'actions',
+      cell: DataTableRowActions,
+    },
+  ]
+}
