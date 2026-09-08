@@ -12,5 +12,6 @@
     "Media": true,
     "Notification": true,
     "Shipping": true,
-    "Menu": true
+    "Menu": true,
+    "Contact": true
 }
