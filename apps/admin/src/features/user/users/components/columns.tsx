@@ -100,22 +100,25 @@ export const Columns = (): ColumnDef<User>[] => {
       enableSorting: false,
     },
     {
-      accessorKey: 'is_admin',
+      accessorKey: 'roles',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={tLabel('is_admin')} />
+        <DataTableColumnHeader column={column} title={tLabel('roles')} />
       ),
       cell: ({ row }) => {
-        const { is_admin } = row.original
+        const { roles } = row.original
         return (
-          <div className='flex space-x-2'>
-            <Badge variant={is_admin ? 'default' : 'destructive'}>
-              {row.getValue('is_admin') ? tcLabel('yes') : tcLabel('no')}
-            </Badge>
+          <div className='flex flex-wrap gap-1'>
+            {roles.length > 0
+              ? roles.map((role) => (
+                  <Badge key={role.id} variant='default'>{role.name}</Badge>
+                ))
+              : <span className='ps-2 text-muted-foreground'>—</span>}
           </div>
         )
       },
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id))
+      filterFn: (row, _id, value) => {
+        const selected = value as string[]
+        return row.original.roles.some((role) => selected.includes(role.name))
       },
       enableHiding: false,
       enableSorting: false,

@@ -5,16 +5,17 @@ import { useAuthStore } from '@/stores/auth-store'
 import { ApiError } from '@/shared/lib/api-error'
 import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
 import { signIn } from '../api/sign-in.api'
+import { fetchAdminAccount } from '../api/account.api'
 import { type SignInRequest } from '../types/sign-in'
 
 /**
- * Full sign-in flow: API call, admin gate, default language/currency
+ * Full sign-in flow: API call, staff gate, default language/currency
  * persistence, auth store writes and the post-login redirect. The component
  * only supplies credentials and the redirect target.
  */
 export function useSignIn() {
   const navigate = useNavigate()
-  const { setUser, setAccessToken } = useAuthStore()
+  const { setUser, setAccessToken, reset } = useAuthStore()
 
   return useMutation({
     mutationFn: ({
@@ -22,8 +23,16 @@ export function useSignIn() {
       ...credentials
     }: SignInRequest & { redirectTo?: string }) => signIn(credentials),
     onSuccess: async (response, { redirectTo }) => {
-      // check if the user is admin
-      if (!response.user.is_admin) {
+      // the token must be stored first so the account call is authenticated
+      setAccessToken(response.token)
+
+      // staff gate: an admin-scope permission check on the server, not a
+      // payload flag — non-staff users get a 403 here
+      let account
+      try {
+        account = await fetchAdminAccount()
+      } catch {
+        reset()
         toast.error("You're not allowed to see this page")
         return
       }
@@ -42,12 +51,11 @@ export function useSignIn() {
       // Set user and access token
       setUser({
         accountNo: 'ACC001',
-        email: response.user.email,
-        role: ['admin'],
+        email: account.email,
+        role: account.roles.map((role) => role.name),
         name: ' ', //TODO: set name
         exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30*24 hours from now
       })
-      setAccessToken(response.token)
       // Redirect to the stored location or default to dashboard
       const targetPath = redirectTo || '/'
       await navigate({ to: targetPath, replace: true })

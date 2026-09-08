@@ -11,6 +11,8 @@ import { Locales } from '../data/routes'
 import { formSchema, type UserForm, type User, defaultValues } from '../data/schema';
 import { useSaveUser } from '../hooks/use-user-mutations'
 import { Switch } from '@/components/ui/switch.tsx'
+import { Checkbox } from '@/components/ui/checkbox.tsx'
+import { useRoles } from '@/features/user/roles/hooks/use-roles'
 
 
 
@@ -29,6 +31,8 @@ export function MutateDrawer({
   const isUpdate = !!currentRow
   const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel, tHelpText, tTooltip } = useAppTranslation(Locales.USER)
+  const { data: roles, isLoading: rolesIsLoading } = useRoles()
+  const roleList = roles ?? []
 
   const entityName = {
     singular: tLabel("user"),
@@ -37,7 +41,9 @@ export function MutateDrawer({
 
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
-    defaultValues: currentRow ?? defaultValues,
+    defaultValues: currentRow
+      ? { ...currentRow, role_ids: currentRow.roles.map((role) => role.id) }
+      : defaultValues,
   })
 
   useEffect(() => {
@@ -147,20 +153,43 @@ export function MutateDrawer({
 
             <FormField
               control={form.control}
-              name="is_admin"
+              name='role_ids'
               render={({ field }) => (
-                <FormItem className="flex flex-col gap-3">
-                  <FormLabel>{tLabel('is_admin')}</FormLabel>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                <FormItem>
+                  <FormLabel>{tLabel('roles')}</FormLabel>
+                  <div className='max-h-64 space-y-2 overflow-y-auto rounded-md border p-3'>
+                    {rolesIsLoading && (
+                      <p className='py-4 text-center text-sm text-muted-foreground'>
+                        ...
+                      </p>
+                    )}
+                    {!rolesIsLoading && roleList.map((role) => (
+                      <label
+                        key={role.id}
+                        className='flex flex-row items-center gap-2'
+                      >
+                        <Checkbox
+                          checked={field.value.includes(role.id)}
+                          onCheckedChange={(checked) => {
+                            return checked
+                              ? field.onChange([...field.value, role.id])
+                              : field.onChange(
+                                  field.value.filter(
+                                    (value: number) => value !== role.id
+                                  )
+                                )
+                          }}
+                        />
+                        <span className='text-sm font-normal'>
+                          {role.name}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                   <FormDescription>
-                    {tTooltip(`is_admin.${field.value ? 'active' : 'inactive'}`)}
+                    {tHelpText('roles')}
                   </FormDescription>
+                  <FormMessage />
                 </FormItem>
               )}
             />
