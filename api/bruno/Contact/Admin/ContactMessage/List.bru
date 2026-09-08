@@ -1,0 +1,35 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/contact/admin/messages
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+  ~sort: -id
+  ~filter[status]: unread
+  ~filter[name]: john
+  ~filter[email]: example.com
+  ~filter[subject]: order
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
