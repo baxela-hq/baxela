@@ -21,6 +21,9 @@ enum NotificationCodeEnum: string
     case CATALOG_PRODUCT_DEACTIVATED = 'catalog.product.deactivated';
     case CATALOG_PRODUCT_DELETED = 'catalog.product.deleted';
 
+    // Contact
+    case CONTACT_MESSAGE_CREATED = 'contact.message.created';
+
     // Content
     case CONTENT_PAGE_PUBLISHED = 'content.page.published';
     case CONTENT_PAGE_UNPUBLISHED = 'content.page.unpublished';
