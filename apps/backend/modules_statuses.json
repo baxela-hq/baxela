@@ -11,5 +11,6 @@
     "User": true,
     "Media": true,
     "Notification": true,
-    "Shipping": true
+    "Shipping": true,
+    "Menu": true
 }
