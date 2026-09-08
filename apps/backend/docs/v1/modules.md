@@ -286,8 +286,44 @@ This module is responsible for uploading new media
 
 
 
+---
+## Menu
+This module is responsible for managing navigation menus and their nested links
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| menu_menus                        | Menus per location (header/footer) with is_active toggle |
+| menu_menu_translations            | Per-language menu title/description |
+| menu_menu_links                   | Nested links of a menu (parent_id adjacency list, position, url, target) |
+| menu_menu_link_translations       | Per-language link title/description |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| MenuCreatedEvent  | Menu created |
+| MenuUpdatedEvent  | Menu updated |
+| MenuDeletedEvent  | Menu deleted |
+| MenuLinkCreatedEvent  | Menu link created |
+| MenuLinkUpdatedEvent  | Menu link updated (incl. reparenting with circular-move guard) |
+| MenuLinkDeletedEvent  | Menu link deleted (with its subtree) |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| None  | None |
+
+
+
+
 
 ---
+
 ## Order
 This module is responsible for Ordering
 
