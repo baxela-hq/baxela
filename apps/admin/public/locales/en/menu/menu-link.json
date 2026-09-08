@@ -1,0 +1,32 @@
+{
+  "form": {
+    "labels": {
+      "link": "Link",
+      "links": "Links",
+      "menus": "Menus",
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "parent": "Parent",
+      "no_parent": "No parent (root)",
+      "url": "URL",
+      "target": "Target",
+      "target__self": "Same tab",
+      "target__blank": "New tab",
+      "position": "Position",
+      "sort": "Sort",
+      "sort_links": "Sort menu links",
+      "sort_help": "Drag items to reorder them within their group",
+      "sorting": "Sorting links...",
+      "no_links": "This menu has no links yet.",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "parent": "Nested links render as a dropdown under their parent",
+      "url": "Relative path (/products) or absolute URL",
+      "position": "Enter your item position",
+      "delete_subtree": "Deleting a link also deletes all of its nested links."
+    }
+  }
+}

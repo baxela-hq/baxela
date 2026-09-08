@@ -8,6 +8,7 @@ import {
   HelpCircle,
   Lock,
   Bell,
+  Menu as MenuIcon,
   Package,
   Palette,
   ServerOff,
@@ -148,6 +149,11 @@ export const useSidebarData = (): SidebarData => {
                 url: '/content/pages',
               },
             ],
+          },
+          {
+            title: t('sidebar.menus'),
+            url: '/menu/menus',
+            icon: MenuIcon,
           },
           {
             title: t('sidebar.media'),

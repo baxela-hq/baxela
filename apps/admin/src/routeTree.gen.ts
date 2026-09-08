@@ -48,6 +48,7 @@ import { Route as AuthenticatedShippingRatesIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedShippingMethodsIndexRouteImport } from './routes/_authenticated/shipping/methods/index'
 import { Route as AuthenticatedSettingSettingsIndexRouteImport } from './routes/_authenticated/setting/settings/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
+import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
 import { Route as AuthenticatedCatalogProductsIndexRouteImport } from './routes/_authenticated/catalog/products/index'
 import { Route as AuthenticatedCatalogProductCommentsIndexRouteImport } from './routes/_authenticated/catalog/product-comments/index'
@@ -58,6 +59,7 @@ import { Route as AuthenticatedContentPagesCreateRouteImport } from './routes/_a
 import { Route as AuthenticatedCatalogProductsCreateRouteImport } from './routes/_authenticated/catalog/products/create'
 import { Route as AuthenticatedCatalogAttributesTemplatesRouteImport } from './routes/_authenticated/catalog/attributes/templates'
 import { Route as AuthenticatedCatalogAttributesGroupsRouteImport } from './routes/_authenticated/catalog/attributes/groups'
+import { Route as AuthenticatedMenuMenuLinksIdIndexRouteImport } from './routes/_authenticated/menu/menu-links/$id/index'
 import { Route as AuthenticatedCatalogOptionValuesIdIndexRouteImport } from './routes/_authenticated/catalog/option-values/$id/index'
 import { Route as AuthenticatedOrderOrdersIdShowRouteImport } from './routes/_authenticated/order/orders/$id/show'
 import { Route as AuthenticatedContentPagesIdEditRouteImport } from './routes/_authenticated/content/pages/$id/edit'
@@ -273,6 +275,12 @@ const AuthenticatedOrderOrdersIndexRoute =
     path: '/order/orders/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMenuMenusIndexRoute =
+  AuthenticatedMenuMenusIndexRouteImport.update({
+    id: '/menu/menus/',
+    path: '/menu/menus/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesIndexRoute =
   AuthenticatedContentPagesIndexRouteImport.update({
     id: '/content/pages/',
@@ -332,6 +340,12 @@ const AuthenticatedCatalogAttributesGroupsRoute =
     id: '/groups',
     path: '/groups',
     getParentRoute: () => AuthenticatedCatalogAttributesRouteRoute,
+  } as any)
+const AuthenticatedMenuMenuLinksIdIndexRoute =
+  AuthenticatedMenuMenuLinksIdIndexRouteImport.update({
+    id: '/menu/menu-links/$id/',
+    path: '/menu/menu-links/$id/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedCatalogOptionValuesIdIndexRoute =
   AuthenticatedCatalogOptionValuesIdIndexRouteImport.update({
@@ -404,6 +418,7 @@ export interface FileRoutesByFullPath {
   '/catalog/product-comments': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
   '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
@@ -415,6 +430,7 @@ export interface FileRoutesByFullPath {
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/catalog/option-values/$id': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
+  '/menu/menu-links/$id': typeof AuthenticatedMenuMenuLinksIdIndexRoute
   '/catalog/attributes/values/$id': typeof AuthenticatedCatalogAttributesValuesIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -455,6 +471,7 @@ export interface FileRoutesByTo {
   '/catalog/product-comments': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
   '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
@@ -466,6 +483,7 @@ export interface FileRoutesByTo {
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/catalog/option-values/$id': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
+  '/menu/menu-links/$id': typeof AuthenticatedMenuMenuLinksIdIndexRoute
   '/catalog/attributes/values/$id': typeof AuthenticatedCatalogAttributesValuesIdIndexRoute
 }
 export interface FileRoutesById {
@@ -512,6 +530,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/product-comments/': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/_authenticated/catalog/products/': typeof AuthenticatedCatalogProductsIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
+  '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
   '/_authenticated/setting/settings/': typeof AuthenticatedSettingSettingsIndexRoute
   '/_authenticated/shipping/methods/': typeof AuthenticatedShippingMethodsIndexRoute
@@ -523,6 +542,7 @@ export interface FileRoutesById {
   '/_authenticated/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
   '/_authenticated/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/_authenticated/catalog/option-values/$id/': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
+  '/_authenticated/menu/menu-links/$id/': typeof AuthenticatedMenuMenuLinksIdIndexRoute
   '/_authenticated/catalog/attributes/values/$id/': typeof AuthenticatedCatalogAttributesValuesIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -567,6 +587,7 @@ export interface FileRouteTypes {
     | '/catalog/product-comments'
     | '/catalog/products'
     | '/content/pages'
+    | '/menu/menus'
     | '/order/orders'
     | '/setting/settings'
     | '/shipping/methods'
@@ -578,6 +599,7 @@ export interface FileRouteTypes {
     | '/content/pages/$id/edit'
     | '/order/orders/$id/show'
     | '/catalog/option-values/$id'
+    | '/menu/menu-links/$id'
     | '/catalog/attributes/values/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -618,6 +640,7 @@ export interface FileRouteTypes {
     | '/catalog/product-comments'
     | '/catalog/products'
     | '/content/pages'
+    | '/menu/menus'
     | '/order/orders'
     | '/setting/settings'
     | '/shipping/methods'
@@ -629,6 +652,7 @@ export interface FileRouteTypes {
     | '/content/pages/$id/edit'
     | '/order/orders/$id/show'
     | '/catalog/option-values/$id'
+    | '/menu/menu-links/$id'
     | '/catalog/attributes/values/$id'
   id:
     | '__root__'
@@ -674,6 +698,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/product-comments/'
     | '/_authenticated/catalog/products/'
     | '/_authenticated/content/pages/'
+    | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
     | '/_authenticated/setting/settings/'
     | '/_authenticated/shipping/methods/'
@@ -685,6 +710,7 @@ export interface FileRouteTypes {
     | '/_authenticated/content/pages/$id/edit'
     | '/_authenticated/order/orders/$id/show'
     | '/_authenticated/catalog/option-values/$id/'
+    | '/_authenticated/menu/menu-links/$id/'
     | '/_authenticated/catalog/attributes/values/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -978,6 +1004,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrderOrdersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/menu/menus/': {
+      id: '/_authenticated/menu/menus/'
+      path: '/menu/menus'
+      fullPath: '/menu/menus'
+      preLoaderRoute: typeof AuthenticatedMenuMenusIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/pages/': {
       id: '/_authenticated/content/pages/'
       path: '/content/pages'
@@ -1047,6 +1080,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/catalog/attributes/groups'
       preLoaderRoute: typeof AuthenticatedCatalogAttributesGroupsRouteImport
       parentRoute: typeof AuthenticatedCatalogAttributesRouteRoute
+    }
+    '/_authenticated/menu/menu-links/$id/': {
+      id: '/_authenticated/menu/menu-links/$id/'
+      path: '/menu/menu-links/$id'
+      fullPath: '/menu/menu-links/$id'
+      preLoaderRoute: typeof AuthenticatedMenuMenuLinksIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/catalog/option-values/$id/': {
       id: '/_authenticated/catalog/option-values/$id/'
@@ -1151,6 +1191,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCatalogProductCommentsIndexRoute: typeof AuthenticatedCatalogProductCommentsIndexRoute
   AuthenticatedCatalogProductsIndexRoute: typeof AuthenticatedCatalogProductsIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
+  AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
   AuthenticatedSettingSettingsIndexRoute: typeof AuthenticatedSettingSettingsIndexRoute
   AuthenticatedShippingMethodsIndexRoute: typeof AuthenticatedShippingMethodsIndexRoute
@@ -1162,6 +1203,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentPagesIdEditRoute: typeof AuthenticatedContentPagesIdEditRoute
   AuthenticatedOrderOrdersIdShowRoute: typeof AuthenticatedOrderOrdersIdShowRoute
   AuthenticatedCatalogOptionValuesIdIndexRoute: typeof AuthenticatedCatalogOptionValuesIdIndexRoute
+  AuthenticatedMenuMenuLinksIdIndexRoute: typeof AuthenticatedMenuMenuLinksIdIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1187,6 +1229,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogProductsIndexRoute:
     AuthenticatedCatalogProductsIndexRoute,
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
+  AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
   AuthenticatedSettingSettingsIndexRoute:
     AuthenticatedSettingSettingsIndexRoute,
@@ -1203,6 +1246,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOrderOrdersIdShowRoute: AuthenticatedOrderOrdersIdShowRoute,
   AuthenticatedCatalogOptionValuesIdIndexRoute:
     AuthenticatedCatalogOptionValuesIdIndexRoute,
+  AuthenticatedMenuMenuLinksIdIndexRoute:
+    AuthenticatedMenuMenuLinksIdIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
