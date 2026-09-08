@@ -1,21 +1,13 @@
 meta {
-  name: List
+  name: Show
   type: http
-  seq: 3
+  seq: 1
 }
 
 get {
-  url: {{baseUrl}}/api/v1/auth/admin/users
+  url: {{baseUrl}}/api/v1/auth/admin/account
   body: none
   auth: bearer
-}
-
-params:query {
-  ~sort: id
-  ~filter[is_active]: true
-  ~filter[id]: 1
-  ~filter[email]: maysam69
-  ~filter[roles]: super-admin
 }
 
 headers {
