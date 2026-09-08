@@ -6,9 +6,9 @@ use Modules\Content\Http\Controllers\Admin\Page\DeletePageController;
 use Modules\Content\Http\Controllers\Admin\Page\ListPageController;
 use Modules\Content\Http\Controllers\Admin\Page\ShowPageController;
 use Modules\Content\Http\Controllers\Admin\Page\UpdatePageController;
-use Modules\Core\Http\Middleware\AdminMiddleware;
+use Modules\Core\Http\Middleware\PermissionMiddleware;
 
-Route::middleware(['auth:sanctum', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/pages', ListPageController::class)->name('pages.list');
     Route::post('/pages', CreatePageController::class)->name('pages.create');
     Route::get('/pages/{id}', ShowPageController::class)->name('pages.show');

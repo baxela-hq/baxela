@@ -13,12 +13,16 @@ class ListUserAction
 {
     public function handle(Request $request): LengthAwarePaginator
     {
-        return QueryBuilder::for(User::class)
+        return QueryBuilder::for(User::query()->with(UserSchema::ROLES))
             ->allowedFilters(
                 AllowedFilter::exact(UserSchema::ID),
                 AllowedFilter::partial(UserSchema::EMAIL),
                 AllowedFilter::exact(UserSchema::IS_ACTIVE),
-                AllowedFilter::exact(UserSchema::IS_ADMIN),
+                AllowedFilter::callback(UserSchema::ROLES, function ($query, $value) {
+                    $query->whereHas(UserSchema::ROLES, function ($roles) use ($value) {
+                        $roles->whereIn('name', (array) $value);
+                    });
+                }),
             )
             ->allowedSorts(
                 UserSchema::ID,

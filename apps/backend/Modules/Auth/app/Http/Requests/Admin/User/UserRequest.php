@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Auth\Models\Role;
 use Modules\Auth\Schemas\User\UserSchema;
 
 class UserRequest extends FormRequest
@@ -18,8 +19,9 @@ class UserRequest extends FormRequest
             UserSchema::EMAIL => ['required', 'email', 'max:255',
                 $id ? $unique->ignore($id) : $unique],
             UserSchema::IS_ACTIVE => ['required', 'boolean'],
-            UserSchema::IS_ADMIN => ['required', 'boolean'],
             UserSchema::COMMENT => ['nullable', 'string', 'max:255'],
+            UserSchema::ROLE_IDS => ['nullable', 'array'],
+            UserSchema::ROLE_IDS.'.*' => ['integer', Rule::exists(Role::class, 'id')],
         ];
     }
 

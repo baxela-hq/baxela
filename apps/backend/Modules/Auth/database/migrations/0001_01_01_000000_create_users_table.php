@@ -20,7 +20,6 @@ return new class extends Migration
             //            $table->timestamp(UserSchema::MOBILE_VERIFIED_AT)->nullable();
             $table->string(UserSchema::PASSWORD);
             $table->boolean(UserSchema::IS_ACTIVE)->index()->default(false);
-            $table->boolean(UserSchema::IS_ADMIN)->default(false);
             $table->string(UserSchema::COMMENT)->nullable();
             $table->rememberToken();
             $table->timestamps();
