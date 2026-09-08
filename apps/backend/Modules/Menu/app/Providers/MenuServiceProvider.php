@@ -43,4 +43,21 @@ class MenuServiceProvider extends ModuleServiceProvider
     // {
     //     $schedule->command('inspire')->hourly();
     // }
+
+    /**
+     * Register translations under the module namespace ("menu::…") so that
+     * seeder payloads and error messages resolve like the other modules.
+     */
+    public function registerTranslations(): void
+    {
+        $langPath = resource_path('lang/modules/'.$this->nameLower);
+
+        if (is_dir($langPath)) {
+            $this->loadTranslationsFrom($langPath, $this->nameLower);
+            $this->loadJsonTranslationsFrom($langPath);
+        } else {
+            $this->loadTranslationsFrom(module_path($this->name, 'lang'), $this->nameLower);
+            $this->loadJsonTranslationsFrom(module_path($this->name, 'lang'));
+        }
+    }
 }
