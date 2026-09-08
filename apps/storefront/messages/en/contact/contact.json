@@ -1,0 +1,41 @@
+{
+  "page": {
+    "title": "Contact Us",
+    "subtitle": "Questions, feedback, or a problem with an order — we'd love to hear from you."
+  },
+  "info": {
+    "title": "Get in touch",
+    "description": "Send us a message and our support team will get back to you as soon as possible.",
+    "response_time": "We usually reply within one business day.",
+    "email_label": "Email",
+    "email": "support@baxela.com",
+    "phone_label": "Phone",
+    "phone": "+1 (555) 000-0000",
+    "hours_label": "Support hours",
+    "hours": "Saturday – Thursday, 9:00 – 18:00"
+  },
+  "form": {
+    "title": "Send us a message",
+    "labels": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Enter your full name",
+      "email": "Enter your email",
+      "phone": "Enter your phone number",
+      "subject": "How can we help?",
+      "message": "Tell us more about your request…"
+    },
+    "actions": {
+      "submit": "Send Message"
+    }
+  },
+  "messages": {
+    "success": "Your message has been sent. We'll get back to you soon!",
+    "error_general": "Something went wrong. Please try again later."
+  }
+}
