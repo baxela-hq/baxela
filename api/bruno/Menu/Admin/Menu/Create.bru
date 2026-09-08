@@ -1,0 +1,44 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/menu/admin/menus
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "location": "header",
+    "is_active": true,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Main Menu",
+        "description": "Primary storefront navigation"
+      },
+      {
+        "language": "fa",
+        "title": "منوی اصلی",
+        "description": "ناوبری اصلی فروشگاه"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

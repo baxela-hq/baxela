@@ -1,0 +1,44 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/menu/admin/menus/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "location": "footer",
+    "is_active": false,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Footer Menu",
+        "description": "Footer navigation"
+      },
+      {
+        "language": "fa",
+        "title": "منوی فوتر",
+        "description": "ناوبری فوتر"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
