@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/menu/admin/menus/1/links
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+  ~sort: position
+  ~filter[parent_id]: null
+  ~filter[title]: products
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

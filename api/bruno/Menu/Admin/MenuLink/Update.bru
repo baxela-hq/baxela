@@ -1,0 +1,46 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/menu/admin/menus/1/links/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "parent_id": 2,
+    "url": "/products/shoes",
+    "target": "_self",
+    "position": 2,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Shoes",
+        "description": "All kinds of shoes"
+      },
+      {
+        "language": "fa",
+        "title": "کفش",
+        "description": "انواع کفش"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

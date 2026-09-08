@@ -1,0 +1,46 @@
+meta {
+  name: Create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/menu/admin/menus/1/links
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "parent_id": null,
+    "url": "/products",
+    "target": "_self",
+    "position": 1,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Products",
+        "description": "Browse the catalog"
+      },
+      {
+        "language": "fa",
+        "title": "محصولات",
+        "description": "مشاهده کاتالوگ"
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

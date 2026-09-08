@@ -1,0 +1,34 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/menu/admin/menus
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+  ~sort: -id
+  ~filter[location]: header
+  ~filter[is_active]: true
+  ~filter[title]: main
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
