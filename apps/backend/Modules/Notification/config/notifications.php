@@ -29,6 +29,19 @@ return [
                 ],
             ],
         ],
+        'contact' => [
+            'message' => [
+                'created' => [
+                    'admin' => ['email'],
+                ],
+            ],
+        ],
+    ],
+
+    // Recipients for audience="admin" email notifications; a comma-separated
+    // list of addresses, defaulting to the mail sender address.
+    'admin_recipients' => [
+        'email' => array_values(array_filter(array_map('trim', explode(',', (string) env('ADMIN_NOTIFICATION_EMAILS', env('MAIL_FROM_ADDRESS', 'hello@example.com')))))),
     ],
 
     'templates' => [

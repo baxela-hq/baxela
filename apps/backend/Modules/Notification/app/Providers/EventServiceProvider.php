@@ -5,8 +5,10 @@ namespace Modules\Notification\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
+use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Auth\UserSignedIn\SendNewLoginAlertToUserListener;
+use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OtpRequestedEvent::class => [
             SendOtpCodeToUserListener::class,
+        ],
+        ContactMessageCreatedEvent::class => [
+            NotifyAdminContactMessageCreatedListener::class,
         ],
     ];
 
