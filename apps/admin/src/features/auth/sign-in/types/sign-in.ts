@@ -3,7 +3,6 @@ export interface UserModel {
     email: string,
     email_verified_at: string,
     is_active: boolean,
-    is_admin: boolean,
 }
 
 export interface Currency {

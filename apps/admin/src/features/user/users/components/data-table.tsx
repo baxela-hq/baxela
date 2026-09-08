@@ -22,6 +22,7 @@ import { Columns } from './columns.tsx'
 import { type PaginatedResponse } from '@/shared/types/common.types'
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
+import { useRoles } from '@/features/user/roles/hooks/use-roles'
 
 type DataTableProps = {
   data: PaginatedResponse<User>,
@@ -41,6 +42,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
   const { tLabel } = useAppTranslation(Locales.USER)
   const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t: tDataTable } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { data: roles } = useRoles()
   const columns = Columns();
 
 
@@ -65,7 +67,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
       // username per-column text filter
       { columnId: 'email', searchKey: 'filter[email]', type: 'string' },
       { columnId: 'is_active', searchKey: 'filter[is_active]', type: 'array' },
-      { columnId: 'is_admin', searchKey: 'filter[is_admin]', type: 'array' },
+      { columnId: 'roles', searchKey: 'filter[roles]', type: 'array' },
     ],
     sorting: { key: 'sort' },
   })
@@ -118,12 +120,12 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
             ],
           },
           {
-            columnId: 'is_admin',
-            title: tLabel('is_admin'),
-            options: [
-              { label: tcLabel('yes'), value: 'true' },
-              { label: tcLabel('no'), value: 'false' },
-            ],
+            columnId: 'roles',
+            title: tLabel('roles'),
+            options: (roles ?? []).map((role) => ({
+              label: role.name,
+              value: role.name,
+            })),
           },
         ]}
       />
