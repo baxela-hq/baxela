@@ -5,6 +5,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,9 +31,16 @@ return Application::configure(basePath: dirname(__DIR__))
             $mapper = app(ExceptionMapper::class);
             $exception = $mapper->map($e);
 
-            return response()->json(
+            $response = response()->json(
                 ExceptionHelper::format_exception_response($exception),
                 $exception->httpStatus
             );
+
+            // Keep protocol headers (e.g. Retry-After from throttling) on the envelope.
+            if ($e instanceof HttpExceptionInterface) {
+                $response->withHeaders($e->getHeaders());
+            }
+
+            return $response;
         });
     })->create();
