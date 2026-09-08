@@ -46,9 +46,9 @@ use Modules\Catalog\Http\Controllers\Admin\ProductComment\DeleteProductCommentCo
 use Modules\Catalog\Http\Controllers\Admin\ProductComment\ListProductCommentController;
 use Modules\Catalog\Http\Controllers\Admin\ProductComment\ShowProductCommentController;
 use Modules\Catalog\Http\Controllers\Admin\ProductComment\UpdateProductCommentController;
-use Modules\Core\Http\Middleware\AdminMiddleware;
+use Modules\Core\Http\Middleware\PermissionMiddleware;
 
-Route::middleware(['auth:sanctum', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/products', ListProductController::class)->name('products.list');
     Route::post('/products', CreateProductController::class)->name('products.create');
     Route::get('/products/{id}', ShowProductController::class)->name('products.show');

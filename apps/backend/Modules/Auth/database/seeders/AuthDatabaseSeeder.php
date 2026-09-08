@@ -15,13 +15,11 @@ class AuthDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
         User::query()->create([
             UserSchema::PASSWORD => '12345678',
             UserSchema::EMAIL => 'meysam4n@gmail.com',
             UserSchema::EMAIL_VERIFIED_AT => now(),
             UserSchema::IS_ACTIVE => true,
-            UserSchema::IS_ADMIN => true,
             UserSchema::COMMENT => null,
         ]);
 
@@ -30,7 +28,6 @@ class AuthDatabaseSeeder extends Seeder
             UserSchema::EMAIL => 'maysam69@gmail.com',
             UserSchema::EMAIL_VERIFIED_AT => now(),
             UserSchema::IS_ACTIVE => true,
-            UserSchema::IS_ADMIN => true,
             UserSchema::COMMENT => null,
         ]);
 
@@ -39,8 +36,9 @@ class AuthDatabaseSeeder extends Seeder
             UserSchema::EMAIL => 'ai@test.com',
             UserSchema::EMAIL_VERIFIED_AT => now(),
             UserSchema::IS_ACTIVE => true,
-            UserSchema::IS_ADMIN => true,
             UserSchema::COMMENT => null,
         ]);
+
+        $this->call(AccessDatabaseSeeder::class);
     }
 }

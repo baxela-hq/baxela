@@ -3,7 +3,13 @@
 namespace Modules\Auth\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Modules\Auth\Console\Commands\SyncPermissionsCommand;
+use Modules\Auth\Gateways\AccessGateway;
+use Modules\Auth\Models\Role;
+use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -16,11 +22,19 @@ class AuthServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'auth';
 
+    public array $bindings = [
+        AccessGatewayInterface::class => AccessGateway::class,
+    ];
+
     /**
      * Boot the application events.
      */
     public function boot(): void
     {
+        Gate::before(function ($user) {
+            return $user instanceof User && $user->hasRole(Role::SUPER_ADMIN) ? true : null;
+        });
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
@@ -43,7 +57,9 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            SyncPermissionsCommand::class,
+        ]);
     }
 
     /**

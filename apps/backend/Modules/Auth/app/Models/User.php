@@ -10,11 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Auth\Database\factories\UserFactory;
 use Modules\Auth\Schemas\User\UserSchema;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     protected $table = UserSchema::TABLE;
 
@@ -23,7 +24,6 @@ class User extends Authenticatable
         UserSchema::EMAIL_VERIFIED_AT,
         UserSchema::PASSWORD,
         UserSchema::IS_ACTIVE,
-        UserSchema::IS_ADMIN,
         UserSchema::COMMENT,
     ];
 
@@ -49,7 +49,6 @@ class User extends Authenticatable
             UserSchema::MOBILE_VERIFIED_AT => 'datetime',
             UserSchema::PASSWORD => 'hashed',
             UserSchema::IS_ACTIVE => 'boolean',
-            UserSchema::IS_ADMIN => 'boolean',
         ];
     }
 

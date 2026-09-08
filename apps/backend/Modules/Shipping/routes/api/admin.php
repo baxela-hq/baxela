@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Core\Http\Middleware\AdminMiddleware;
+use Modules\Core\Http\Middleware\PermissionMiddleware;
 use Modules\Shipping\Http\Controllers\Admin\Method\CreateMethodController;
 use Modules\Shipping\Http\Controllers\Admin\Method\DeleteMethodController;
 use Modules\Shipping\Http\Controllers\Admin\Method\ListMethodController;
@@ -22,7 +22,7 @@ use Modules\Shipping\Http\Controllers\Admin\Zone\ListZoneController;
 use Modules\Shipping\Http\Controllers\Admin\Zone\ShowZoneController;
 use Modules\Shipping\Http\Controllers\Admin\Zone\UpdateZoneController;
 
-Route::middleware(['auth:sanctum', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/methods', ListMethodController::class)->name('methods.list');
     Route::post('/methods', CreateMethodController::class)->name('methods.create');
     Route::get('/methods/{id}', ShowMethodController::class)->name('methods.show');

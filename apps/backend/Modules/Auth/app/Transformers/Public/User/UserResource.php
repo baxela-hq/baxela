@@ -18,7 +18,6 @@ class UserResource extends JsonResource
             UserSchema::EMAIL => $this->resource->{UserSchema::EMAIL},
             UserSchema::EMAIL_VERIFIED_AT => $this->resource->{UserSchema::EMAIL_VERIFIED_AT},
             UserSchema::IS_ACTIVE => $this->resource->{UserSchema::IS_ACTIVE},
-            UserSchema::IS_ADMIN => $this->resource->{UserSchema::IS_ADMIN},
             UserSchema::COMMENT => $this->resource->{UserSchema::COMMENT},
         ];
     }
