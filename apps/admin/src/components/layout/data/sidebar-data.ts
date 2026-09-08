@@ -8,6 +8,7 @@ import {
   HelpCircle,
   Lock,
   Bell,
+  Inbox,
   Menu as MenuIcon,
   Package,
   Palette,
@@ -154,6 +155,11 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.menus'),
             url: '/menu/menus',
             icon: MenuIcon,
+          },
+          {
+            title: t('sidebar.contactMessages'),
+            url: '/contact/messages',
+            icon: Inbox,
           },
           {
             title: t('sidebar.media'),
