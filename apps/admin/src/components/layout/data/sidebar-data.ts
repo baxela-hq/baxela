@@ -18,7 +18,6 @@ import {
   UserCog,
   UserX,
   Users,
-  MessagesSquare,
   ShieldCheck,
   Command,
   GalleryVerticalEnd,
@@ -80,12 +79,6 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.apps'),
             url: '/apps',
             icon: Package,
-          },
-          {
-            title: t('sidebar.chats'),
-            url: '/chats',
-            badge: '3',
-            icon: MessagesSquare,
           },
           {
             title: t('sidebar.users'),
