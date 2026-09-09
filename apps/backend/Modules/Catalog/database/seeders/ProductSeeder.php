@@ -178,49 +178,57 @@ class ProductSeeder extends Seeder
     }
 
     /**
-     * Publish the product's seeded photo on the public disk and return its
-     * catalog image row. Photos live next to this seeder, keyed by product
-     * slug, so seeding stays reproducible without network access.
+     * Publish the product's seeded photos on the public disk and return
+     * their catalog image rows. Photos live next to this seeder, keyed by
+     * product slug — `{slug}.jpg` is the primary shot, `{slug}-2.jpg` (and
+     * so on) are additional gallery photos — so seeding stays reproducible
+     * without network access.
      *
      * @return array<int, array<string, mixed>>
      */
     private function imagesFor(string $slug): array
     {
-        $source = __DIR__.'/media/products/'.$slug.'.jpg';
-
-        if (! file_exists($source)) {
-            return [];
-        }
-
-        $path = 'catalog/products/'.$slug.'.jpg';
-        Storage::disk('public')->put($path, file_get_contents($source));
-
-        // catalog_images.media_id is NOT NULL, so every image row needs a
-        // media record; ownership follows the Media module's own seeder.
-        // updateOrCreate keeps the media id stable across re-seeds while
-        // refreshing file metadata.
-        $media = Media::query()->updateOrCreate(
-            [MediaSchema::PATH => $path],
-            [
-                MediaSchema::USER_ID => 1,
-                MediaSchema::FOLDER_ID => null,
-                MediaSchema::DISK => MediaDiskEnum::PUBLIC->value,
-                MediaSchema::NAME => $slug,
-                MediaSchema::FILENAME => $slug.'.jpg',
-                MediaSchema::EXTENSION => 'jpg',
-                MediaSchema::MIME_TYPE => 'image/jpeg',
-                MediaSchema::SIZE => filesize($source),
-            ],
+        $directory = __DIR__.'/media/products';
+        $extras = glob($directory.'/'.$slug.'-*.jpg') ?: [];
+        natsort($extras);
+        $sources = array_merge(
+            file_exists($directory.'/'.$slug.'.jpg') ? [$directory.'/'.$slug.'.jpg'] : [],
+            $extras,
         );
 
-        return [
-            [
+        $rows = [];
+        foreach ($sources as $position => $source) {
+            $filename = basename($source);
+            $path = 'catalog/products/'.$filename;
+            Storage::disk('public')->put($path, file_get_contents($source));
+
+            // catalog_images.media_id is NOT NULL, so every image row needs
+            // a media record; ownership follows the Media module's own
+            // seeder. updateOrCreate keeps the media id stable across
+            // re-seeds while refreshing file metadata.
+            $media = Media::query()->updateOrCreate(
+                [MediaSchema::PATH => $path],
+                [
+                    MediaSchema::USER_ID => 1,
+                    MediaSchema::FOLDER_ID => null,
+                    MediaSchema::DISK => MediaDiskEnum::PUBLIC->value,
+                    MediaSchema::NAME => pathinfo($filename, PATHINFO_FILENAME),
+                    MediaSchema::FILENAME => $filename,
+                    MediaSchema::EXTENSION => 'jpg',
+                    MediaSchema::MIME_TYPE => 'image/jpeg',
+                    MediaSchema::SIZE => filesize($source),
+                ],
+            );
+
+            $rows[] = [
                 ImageSchema::MEDIA_ID => $media->getKey(),
                 ImageSchema::URL => Storage::disk('public')->url($path),
                 ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
-                ImageSchema::POSITION => 1,
-            ],
-        ];
+                ImageSchema::POSITION => $position + 1,
+            ];
+        }
+
+        return $rows;
     }
 
     /**

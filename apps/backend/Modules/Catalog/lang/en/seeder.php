@@ -752,11 +752,11 @@ return [
                 [
                     'title' => 'Women\'s Floral Summer Dress',
                     'slug' => 'womens-floral-summer-dress',
-                    'description' => 'Lightweight floral summer dress with adjustable straps, elastic waist, and hidden side pockets. Perfect for warm days.',
-                    'content' => '<p>Light and airy summer dress featuring a beautiful floral print. Adjustable straps, elastic waistband, and flowing skirt make it perfect for beach days or brunch dates.</p><ul><li>100% rayon</li><li>Adjustable spaghetti straps</li><li>Elastic waistband</li><li>Pockets on both sides</li><li>Hand wash recommended</li></ul>',
+                    'description' => 'Lightweight floral maxi dress with a flowy skirt and hidden side pockets. Perfect for warm days.',
+                    'content' => '<p>Light and airy summer dress featuring a beautiful floral print. Flowing skirt and hidden pockets make it perfect for beach days or brunch dates.</p><ul><li>100% rayon</li><li>Flowy maxi skirt</li><li>Hidden side pockets</li><li>Hand wash recommended</li></ul>',
                     'seo' => [
                         'meta_title' => 'Women\'s Floral Summer Dress',
-                        'meta_description' => 'Lightweight floral summer dress with adjustable straps, elastic waist, and hidden side pockets. Perfect for warm days.',
+                        'meta_description' => 'Lightweight floral maxi dress with a flowy skirt and hidden side pockets. Perfect for warm days.',
                     ],
                 ],
             ],
@@ -844,10 +844,10 @@ return [
                 ['code' => 'brand', 'value' => 'StepWell'],
                 ['code' => 'gender', 'value' => 'Women'],
                 ['code' => 'material', 'value' => 'Leather'],
-                ['code' => 'closure', 'value' => 'Zip'],
-                ['code' => 'sole', 'value' => 'Block Heel'],
+                ['code' => 'closure', 'value' => 'Lace-Up'],
+                ['code' => 'sole', 'value' => 'Rubber'],
                 ['code' => 'insole', 'value' => 'Cushioned'],
-                ['code' => 'heel_height', 'value' => 2],
+                ['code' => 'heel_height', 'value' => 0],
             ],
             'shipping' => [
                 'requires_shipping' => true,
@@ -870,11 +870,11 @@ return [
                 [
                     'title' => 'Women\'s Ankle Boots',
                     'slug' => 'womens-ankle-boots',
-                    'description' => 'Genuine leather ankle boots with 2-inch block heel and side zipper. Comfortable cushioned insole for all-day wear.',
-                    'content' => '<p>Chic leather ankle boots with a low block heel. Side zipper for easy on/off and cushioned insole for comfort. Versatile enough for office or weekend wear.</p><ul><li>Genuine leather upper</li><li>2-inch block heel</li><li>Side zipper closure</li><li>Rubber outsole for traction</li><li>Padded footbed</li></ul>',
+                    'description' => 'Flat lace-up leather ankle boots with chunky lug sole, side zipper and cushioned insole. Comfortable for all-day wear.',
+                    'content' => '<p>Chic flat leather ankle boots with lace-up front and side zipper for easy on/off. Chunky rubber lug sole and cushioned insole for comfort. Versatile enough for office or weekend wear.</p><ul><li>Genuine leather upper</li><li>Lace-up front with side zipper</li><li>Chunky rubber lug sole</li><li>Padded footbed</li></ul>',
                     'seo' => [
                         'meta_title' => 'Women\'s Ankle Boots',
-                        'meta_description' => 'Genuine leather ankle boots with 2-inch block heel and side zipper. Comfortable cushioned insole for all-day wear.',
+                        'meta_description' => 'Flat lace-up leather ankle boots with chunky lug sole, side zipper and cushioned insole. Comfortable for all-day wear.',
                     ],
                 ],
             ],
