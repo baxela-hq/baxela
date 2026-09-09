@@ -71,16 +71,6 @@ export const useSidebarData = (): SidebarData => {
             icon: ListTodo,
           },
           {
-            title: t('sidebar.apps'),
-            url: '/apps',
-            icon: Package,
-          },
-          {
-            title: t('sidebar.users'),
-            url: '/users',
-            icon: Users,
-          },
-          {
             title: 'Secured by Clerk',
             icon: ClerkLogo,
             items: [
