@@ -7,7 +7,8 @@
     "size": "Size",
     "main_image": "{name} main image",
     "quantity_decrease": "Decrease quantity",
-    "quantity_increase": "Increase quantity"
+    "quantity_increase": "Increase quantity",
+    "thumbnail_image": "{name} — photo {index}"
   },
   "actions": {
     "add_to_cart": "Add to cart",
