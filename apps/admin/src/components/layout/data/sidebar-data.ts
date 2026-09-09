@@ -66,11 +66,6 @@ export const useSidebarData = (): SidebarData => {
             icon: Settings,
           },
           {
-            title: t('sidebar.users'),
-            url: '/user/users',
-            icon: Users,
-          },
-          {
             title: t('sidebar.tasks'),
             url: '/tasks',
             icon: ListTodo,
@@ -153,6 +148,20 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.contactMessages'),
             url: '/contact/messages',
             icon: Inbox,
+          },
+          {
+            title: t('sidebar.users'),
+            icon: Users,
+            items: [
+              {
+                title: t('sidebar.users'),
+                url: '/user/users',
+              },
+              {
+                title: t('sidebar.roles'),
+                url: '/user/roles',
+              },
+            ],
           },
           {
             title: t('sidebar.media'),
