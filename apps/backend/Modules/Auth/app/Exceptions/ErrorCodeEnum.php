@@ -2,10 +2,19 @@
 
 namespace Modules\Auth\Exceptions;
 
+use Modules\Auth\Schemas\Module;
 use Modules\Core\Exceptions\ErrorCodeInterface;
 
 enum ErrorCodeEnum: string implements ErrorCodeInterface
 {
+    case ROLE_CREATION_FAILED = Module::NAME_LOWER.'.role.creation_failed';
+
+    case ROLE_UPDATE_FAILED = Module::NAME_LOWER.'.role.update_failed';
+
+    case ROLE_DELETION_FAILED = Module::NAME_LOWER.'.role.deletion_failed';
+
+    case ROLE_IN_USE = Module::NAME_LOWER.'.role.in_use';
+
     case OTP_TOO_MANY_REQUESTS = 'auth.otp.too_many_requests';
     case OTP_INVALID = 'auth.otp.invalid';
     case AUTH_INVALID_CREDENTIALS = 'auth.credentials.invalid';
