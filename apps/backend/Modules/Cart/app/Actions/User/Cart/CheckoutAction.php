@@ -44,7 +44,9 @@ class CheckoutAction
         }
 
         $address = $this->userGateway->getAddress(Auth::id(), $request->input('address_id'));
-        if (is_null($address)) {
+        // A country is required to quote shipping; without this guard a null
+        // country_code would surface as a TypeError from the shipping gateway
+        if (is_null($address) || is_null($address->country_code)) {
             throw new InvalidAddressException;
         }
 
