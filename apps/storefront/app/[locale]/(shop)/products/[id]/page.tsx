@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import ProductCard from "@/components/product-card";
 import { ProductActions } from "@/components/product-actions";
+import { ProductGallery } from "@/components/product-gallery";
 import { ProductTabs } from "@/components/product-tabs";
 import { StarSolidIcon } from "@/components/ui/icons";
 import { serverApiGet } from "@/lib/api/server";
@@ -51,7 +52,6 @@ export default async function ProductPage({
     .slice(0, 3);
 
   const photos = product.images.filter((image) => image.collection === "photos");
-  const mainImage = photos[0] ?? null;
 
   return (
     <>
@@ -86,41 +86,7 @@ export default async function ProductPage({
 
       <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div className="space-y-4">
-            <div
-              className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-default border border-border bg-muted"
-              role="img"
-              aria-label={t("labels.main_image", { name: product.title ?? "" })}
-            >
-              {mainImage ? (
-                // Backend-served images — see product-card for the img rationale
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={mainImage.url}
-                  alt={product.title ?? ""}
-                  className="size-full object-cover"
-                />
-              ) : null}
-            </div>
-            {photos.length > 1 ? (
-              <div className="grid grid-cols-4 gap-4">
-                {photos.slice(1, 5).map((thumb) => (
-                  <div
-                    key={thumb.id}
-                    className="aspect-square overflow-hidden rounded-default border border-border bg-muted"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={thumb.url}
-                      alt=""
-                      className="size-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </div>
+          <ProductGallery photos={photos} title={product.title ?? ""} />
 
           <div>
             {product.categories[0]?.title ? (
