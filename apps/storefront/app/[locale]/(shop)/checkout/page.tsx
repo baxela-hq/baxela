@@ -14,6 +14,7 @@ import type {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useRouter } from "@/i18n/navigation";
+import { uuidv4 } from "@/lib/utils";
 
 const EMPTY_ADDRESS_FORM = {
   full_name: "",
@@ -180,7 +181,7 @@ export default function CheckoutPage() {
     setError(null);
     try {
       // Idempotency guards against double-submits creating two orders
-      const idempotencyKey = crypto.randomUUID();
+      const idempotencyKey = uuidv4();
       const { order_id: orderId } = await api.post<{ order_id: number }>(
         "/cart/user/checkout",
         { address_id: addressId, shipping_method_id: methodId },
