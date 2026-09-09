@@ -41,6 +41,7 @@ import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_auth
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedCatalogAttributesRouteRouteImport } from './routes/_authenticated/catalog/attributes/route'
 import { Route as AuthenticatedUserUsersIndexRouteImport } from './routes/_authenticated/user/users/index'
+import { Route as AuthenticatedUserRolesIndexRouteImport } from './routes/_authenticated/user/roles/index'
 import { Route as AuthenticatedShippingZonesIndexRouteImport } from './routes/_authenticated/shipping/zones/index'
 import { Route as AuthenticatedShippingShipmentsIndexRouteImport } from './routes/_authenticated/shipping/shipments/index'
 import { Route as AuthenticatedShippingRatesIndexRouteImport } from './routes/_authenticated/shipping/rates/index'
@@ -232,6 +233,12 @@ const AuthenticatedUserUsersIndexRoute =
   AuthenticatedUserUsersIndexRouteImport.update({
     id: '/user/users/',
     path: '/user/users/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedUserRolesIndexRoute =
+  AuthenticatedUserRolesIndexRouteImport.update({
+    id: '/user/roles/',
+    path: '/user/roles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedShippingZonesIndexRoute =
@@ -426,6 +433,7 @@ export interface FileRoutesByFullPath {
   '/shipping/rates': typeof AuthenticatedShippingRatesIndexRoute
   '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
   '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
+  '/user/roles': typeof AuthenticatedUserRolesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -479,6 +487,7 @@ export interface FileRoutesByTo {
   '/shipping/rates': typeof AuthenticatedShippingRatesIndexRoute
   '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
   '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
+  '/user/roles': typeof AuthenticatedUserRolesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -538,6 +547,7 @@ export interface FileRoutesById {
   '/_authenticated/shipping/rates/': typeof AuthenticatedShippingRatesIndexRoute
   '/_authenticated/shipping/shipments/': typeof AuthenticatedShippingShipmentsIndexRoute
   '/_authenticated/shipping/zones/': typeof AuthenticatedShippingZonesIndexRoute
+  '/_authenticated/user/roles/': typeof AuthenticatedUserRolesIndexRoute
   '/_authenticated/user/users/': typeof AuthenticatedUserUsersIndexRoute
   '/_authenticated/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/_authenticated/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
@@ -595,6 +605,7 @@ export interface FileRouteTypes {
     | '/shipping/rates'
     | '/shipping/shipments'
     | '/shipping/zones'
+    | '/user/roles'
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
@@ -648,6 +659,7 @@ export interface FileRouteTypes {
     | '/shipping/rates'
     | '/shipping/shipments'
     | '/shipping/zones'
+    | '/user/roles'
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
@@ -706,6 +718,7 @@ export interface FileRouteTypes {
     | '/_authenticated/shipping/rates/'
     | '/_authenticated/shipping/shipments/'
     | '/_authenticated/shipping/zones/'
+    | '/_authenticated/user/roles/'
     | '/_authenticated/user/users/'
     | '/_authenticated/catalog/products/$id/edit'
     | '/_authenticated/content/pages/$id/edit'
@@ -956,6 +969,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUserUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/user/roles/': {
+      id: '/_authenticated/user/roles/'
+      path: '/user/roles'
+      fullPath: '/user/roles'
+      preLoaderRoute: typeof AuthenticatedUserRolesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/shipping/zones/': {
       id: '/_authenticated/shipping/zones/'
       path: '/shipping/zones'
@@ -1199,6 +1219,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedShippingRatesIndexRoute: typeof AuthenticatedShippingRatesIndexRoute
   AuthenticatedShippingShipmentsIndexRoute: typeof AuthenticatedShippingShipmentsIndexRoute
   AuthenticatedShippingZonesIndexRoute: typeof AuthenticatedShippingZonesIndexRoute
+  AuthenticatedUserRolesIndexRoute: typeof AuthenticatedUserRolesIndexRoute
   AuthenticatedUserUsersIndexRoute: typeof AuthenticatedUserUsersIndexRoute
   AuthenticatedCatalogProductsIdEditRoute: typeof AuthenticatedCatalogProductsIdEditRoute
   AuthenticatedContentPagesIdEditRoute: typeof AuthenticatedContentPagesIdEditRoute
@@ -1241,6 +1262,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedShippingShipmentsIndexRoute:
     AuthenticatedShippingShipmentsIndexRoute,
   AuthenticatedShippingZonesIndexRoute: AuthenticatedShippingZonesIndexRoute,
+  AuthenticatedUserRolesIndexRoute: AuthenticatedUserRolesIndexRoute,
   AuthenticatedUserUsersIndexRoute: AuthenticatedUserUsersIndexRoute,
   AuthenticatedCatalogProductsIdEditRoute:
     AuthenticatedCatalogProductsIdEditRoute,

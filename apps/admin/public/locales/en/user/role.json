@@ -1,0 +1,23 @@
+{
+  "form": {
+    "labels": {
+      "role": "Role",
+      "roles": "Roles",
+      "id": "ID",
+      "name": "Name",
+      "permissions": "Permissions",
+      "select_all": "Select all permissions in this module",
+      "no_permission_results": "No permissions match your search."
+    },
+    "placeholders": {
+      "search_permissions": "Search permissions (e.g. products.list)"
+    },
+    "help_texts": {
+      "name": "Lowercase letters, numbers and dashes (e.g. content-editor).",
+      "permissions": "Permissions grant access to admin capabilities. They are grouped by module; the super-admin role always bypasses all checks."
+    },
+    "statuses": {
+      "system": "system"
+    }
+  }
+}
