@@ -6,6 +6,8 @@ class Module
 {
     public const string NAME = 'Content';
 
+    public const string NAME_LOWER = 'content';
+
     public const string DB_PREFIX = 'content_';
 
     public const string ROUTE_PREFIX = 'content';
