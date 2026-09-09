@@ -101,7 +101,12 @@ export default function CheckoutPage() {
         );
         setMethods(quotes);
         setMethodId(quotes.length > 0 ? quotes[0].id : null);
+        setError(null);
       } catch (cause) {
+        // Drop any quotes from a previously selected address, or an order
+        // could be placed with a method quoted for another country
+        setMethods([]);
+        setMethodId(null);
         setError(
           cause instanceof ApiError
             ? cause.message
@@ -438,7 +443,7 @@ export default function CheckoutPage() {
                   <p className="mt-4 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                     {t("shipping_method.texts.select_address_first")}
                   </p>
-                ) : methods.length === 0 ? (
+                ) : methods.length === 0 && !error ? (
                   <p className="mt-4 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                     {t("shipping_method.texts.none_available")}
                   </p>
