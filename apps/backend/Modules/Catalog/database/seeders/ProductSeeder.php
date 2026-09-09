@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 use Modules\Catalog\Actions\Admin\Product\CreateProductAction;
 use Modules\Catalog\Exceptions\Product\CreationFailedException;
 use Modules\Catalog\Models\Attribute;
@@ -25,6 +26,8 @@ use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
+use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
@@ -35,6 +38,9 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Media\Models\Media;
+use Modules\Media\Schemas\Media\MediaDiskEnum;
+use Modules\Media\Schemas\Media\MediaSchema;
 use Throwable;
 
 class ProductSeeder extends Seeder
@@ -150,7 +156,7 @@ class ProductSeeder extends Seeder
                 ProductSchema::STATUS => ProductStatusEnum::IN_STOCK,
                 ProductSchema::IS_PUBLISHED => true,
                 ProductSchema::RES_CATEGORIES => $categoryIds,
-                ProductSchema::RES_IMAGES => [],
+                ProductSchema::RES_IMAGES => $this->imagesFor((string) $slug),
                 ProductSchema::RES_VARIANTS => $variants,
                 ProductSchema::RES_TRANSLATIONS => $translations,
                 ProductSchema::RES_SEO => $seo,
@@ -169,6 +175,52 @@ class ProductSeeder extends Seeder
 
             app(CreateProductAction::class)->handle($payload);
         }
+    }
+
+    /**
+     * Publish the product's seeded photo on the public disk and return its
+     * catalog image row. Photos live next to this seeder, keyed by product
+     * slug, so seeding stays reproducible without network access.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function imagesFor(string $slug): array
+    {
+        $source = __DIR__.'/media/products/'.$slug.'.jpg';
+
+        if (! file_exists($source)) {
+            return [];
+        }
+
+        $path = 'catalog/products/'.$slug.'.jpg';
+        Storage::disk('public')->put($path, file_get_contents($source));
+
+        // catalog_images.media_id is NOT NULL, so every image row needs a
+        // media record; ownership follows the Media module's own seeder.
+        // updateOrCreate keeps the media id stable across re-seeds while
+        // refreshing file metadata.
+        $media = Media::query()->updateOrCreate(
+            [MediaSchema::PATH => $path],
+            [
+                MediaSchema::USER_ID => 1,
+                MediaSchema::FOLDER_ID => null,
+                MediaSchema::DISK => MediaDiskEnum::PUBLIC->value,
+                MediaSchema::NAME => $slug,
+                MediaSchema::FILENAME => $slug.'.jpg',
+                MediaSchema::EXTENSION => 'jpg',
+                MediaSchema::MIME_TYPE => 'image/jpeg',
+                MediaSchema::SIZE => filesize($source),
+            ],
+        );
+
+        return [
+            [
+                ImageSchema::MEDIA_ID => $media->getKey(),
+                ImageSchema::URL => Storage::disk('public')->url($path),
+                ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
+                ImageSchema::POSITION => 1,
+            ],
+        ];
     }
 
     /**

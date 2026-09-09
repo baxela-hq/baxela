@@ -762,14 +762,14 @@ return [
             ],
         ],
 
-        // 6. Men's Leather Sneakers (Variable)
-        'mens-leather-sneakers' => [
+        // 6. Men's Knit Sneakers (Variable)
+        'mens-knit-sneakers' => [
             'type' => 'variable',
             'categories' => ['shoes', 'sneakers'],
             'attributes' => [
                 ['code' => 'brand', 'value' => 'StepWell'],
                 ['code' => 'gender', 'value' => 'Men'],
-                ['code' => 'material', 'value' => 'Leather'],
+                ['code' => 'material', 'value' => 'Polyester'],
                 ['code' => 'closure', 'value' => 'Lace-Up'],
                 ['code' => 'sole', 'value' => 'Rubber'],
                 ['code' => 'insole', 'value' => 'Memory Foam'],
@@ -785,24 +785,24 @@ return [
                 'dimension_unit' => 'cm',
             ],
             'variants' => [
-                ['sku' => 'MLS-BLK-7', 'barcode' => '8901234560066', 'price' => 119.99, 'is_default' => true, 'option_values' => ['color' => 'black', 'size' => 'shoe-7']],
-                ['sku' => 'MLS-BLK-8', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-8']],
-                ['sku' => 'MLS-BLK-9', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-9']],
-                ['sku' => 'MLS-BLK-10', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-10']],
-                ['sku' => 'MLS-BLK-11', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-11']],
-                ['sku' => 'MLS-TAN-8', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-8']],
-                ['sku' => 'MLS-TAN-9', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-9']],
-                ['sku' => 'MLS-TAN-10', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-10']],
+                ['sku' => 'MKS-WHT-7', 'barcode' => '8901234560066', 'price' => 119.99, 'is_default' => true, 'option_values' => ['color' => 'white', 'size' => 'shoe-7']],
+                ['sku' => 'MKS-WHT-8', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'white', 'size' => 'shoe-8']],
+                ['sku' => 'MKS-WHT-9', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'white', 'size' => 'shoe-9']],
+                ['sku' => 'MKS-WHT-10', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'white', 'size' => 'shoe-10']],
+                ['sku' => 'MKS-WHT-11', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'white', 'size' => 'shoe-11']],
+                ['sku' => 'MKS-MNT-8', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'teal', 'size' => 'shoe-8']],
+                ['sku' => 'MKS-MNT-9', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'teal', 'size' => 'shoe-9']],
+                ['sku' => 'MKS-MNT-10', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'teal', 'size' => 'shoe-10']],
             ],
             'translations' => [
                 [
-                    'title' => 'Men\'s Leather Sneakers',
-                    'slug' => 'mens-leather-sneakers',
-                    'description' => 'Full-grain leather sneakers with memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
-                    'content' => '<p>Premium full-grain leather sneakers that combine classic style with modern comfort. Cushioned insole and durable rubber outsole for all-day wear.</p><ul><li>Full-grain leather upper</li><li>Breathable textile lining</li><li>Memory foam insole</li><li>Rubber cupsole construction</li><li>Includes extra set of laces</li></ul>',
+                    'title' => 'Men\'s Knit Sneakers',
+                    'slug' => 'mens-knit-sneakers',
+                    'description' => 'Lightweight knit sneakers with a breathable upper, memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
+                    'content' => '<p>Lightweight knit sneakers that combine classic style with modern comfort. Breathable knit upper and cushioned outsole for all-day wear.</p><ul><li>Flexible knit upper</li><li>Breathable textile lining</li><li>Memory foam insole</li><li>Rubber cupsole construction</li><li>Includes extra set of laces</li></ul>',
                     'seo' => [
-                        'meta_title' => 'Men\'s Leather Sneakers',
-                        'meta_description' => 'Full-grain leather sneakers with memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
+                        'meta_title' => 'Men\'s Knit Sneakers',
+                        'meta_description' => 'Lightweight knit sneakers with a breathable upper, memory foam insole and durable rubber sole. Classic style meets all-day comfort.',
                     ],
                 ],
             ],
@@ -824,13 +824,13 @@ return [
             ],
             'translations' => [
                 [
-                    'title' => 'Unisex Baseball Cap',
+                    'title' => 'Unisex Two-Tone Trucker Cap',
                     'slug' => 'unisex-baseball-cap',
-                    'description' => 'Classic structured cotton cap with adjustable snapback and pre-curved visor. Breathable and comfortable for daily wear.',
-                    'content' => '<p>Classic structured baseball cap with embroidered eyelets and adjustable strap. Pre-curved visor provides shade without blocking vision.</p><ul><li>100% cotton twill</li><li>Adjustable snapback closure</li><li>Embroidered eyelets for ventilation</li><li>Pre-curved visor</li><li>One size fits most</li></ul>',
+                    'description' => 'Classic two-tone trucker cap with structured cotton front, breathable mesh back, adjustable snapback and pre-curved visor.',
+                    'content' => '<p>Classic two-tone trucker cap with a structured front panel and breathable mesh back. Adjustable snapback closure and pre-curved visor for everyday wear.</p><ul><li>Cotton front panels with polyester mesh back</li><li>Adjustable snapback closure</li><li>Pre-curved visor</li><li>One size fits most</li></ul>',
                     'seo' => [
-                        'meta_title' => 'Unisex Baseball Cap',
-                        'meta_description' => 'Classic structured cotton cap with adjustable snapback and pre-curved visor. Breathable and comfortable for daily wear.',
+                        'meta_title' => 'Unisex Two-Tone Trucker Cap',
+                        'meta_description' => 'Classic two-tone trucker cap with structured cotton front, breathable mesh back, adjustable snapback and pre-curved visor.',
                     ],
                 ],
             ],
