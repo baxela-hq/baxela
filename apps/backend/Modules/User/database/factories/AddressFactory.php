@@ -27,6 +27,7 @@ class AddressFactory extends Factory
             AddressSchema::ADDRESS_LINE => $this->faker->address(),
             AddressSchema::CITY => $this->faker->city(),
             AddressSchema::POSTAL_CODE => $this->faker->postcode(),
+            AddressSchema::COUNTRY_CODE => $this->faker->countryCode(),
             AddressSchema::IS_DEFAULT => $this->faker->boolean(),
         ];
     }
