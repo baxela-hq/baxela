@@ -2,7 +2,10 @@
 
 namespace Modules\Payment\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -27,6 +30,9 @@ class PaymentServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        RateLimiter::for('webhook', fn (Request $request) => Limit::perMinute((int) config('payment.rate_limit.webhook'))
+            ->by($request->ip()));
     }
 
     /**

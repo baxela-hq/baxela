@@ -53,8 +53,8 @@ Every module is self-contained. Its namespace root is `Modules\{Name}\` (autoloa
 ```
 Modules/{Name}/
   app/
-    Actions/{Admin|Public|User}/{Feature}/*Action.php   # business logic (handle())
-    Http/Controllers/{Admin|Public|User}/{Feature}/*Controller.php  # invokable, thin
+    Actions/{Admin|Public|User|Webhook}/{Feature}/*Action.php   # business logic (handle())
+    Http/Controllers/{Admin|Public|User|Webhook}/{Feature}/*Controller.php  # invokable, thin
     Http/Requests/{Admin|Public|User}/{Feature}/*Request.php        # validation
     Models/*.php                                              # Eloquent models
     Schemas/{Entity}/*Schema.php                              # table/column constants
@@ -65,13 +65,13 @@ Modules/{Name}/
     Providers/{Module}ServiceProvider.php, EventServiceProvider.php, RouteServiceProvider.php
   database/
     migrations/  factories/  seeders/
-  routes/api/{public,user,admin}.php      (or routes/api.php + require)
+  routes/api/{public,user,admin,webhook}.php   (or routes/api.php + require)
   lang/{en}/errors.php, seeder.php
   tests/Feature/  tests/Unit/
   config/config.php  module.json  composer.json
 ```
 
-**The `Admin`/`Public`/`User` directory under `Actions`, `Http/Controllers`, etc. denotes API audience.** Keep this naming convention for new features.
+**The `Admin`/`Public`/`User`/`Webhook` directory under `Actions`, `Http/Controllers`, etc. denotes API audience.** Keep this naming convention for new features. `Webhook` is machine-to-machine callbacks (no tokens); `Public` is any unauth'd caller.
 
 ## Non-Negotiable Conventions
 
@@ -123,6 +123,7 @@ Localizable entities (products, categories, options, option values) use a `*_tra
 - Module `RouteServiceProvider` mounts everything under `api` middleware with `prefix('api')` + `name('api.')`.
 - Module `routes/api.php` then groups under `prefix('v1'.'/'.$moduleRoutePrefix)` (e.g. `api/v1/catalog/...`, `api/v1/auth/...`), and is further split by audience:
   - `public.php` — no auth
+  - `webhook.php` — no auth, machine-to-machine callbacks (payment gateways, carriers). Each driver verifies the payload signature itself; never add `auth:sanctum` here. Per-module opt-in via `require` from `routes/api.php`.
   - `user.php` — `auth:sanctum` (any authenticated user)
   - `admin.php` — `auth:sanctum` + `Modules\Core\Http\Middleware\AdminMiddleware`
 - Auth uses `RouteSchema` constants for paths; other modules use inline strings. Route names: `{module}.{area}.{entity}.{action}`.

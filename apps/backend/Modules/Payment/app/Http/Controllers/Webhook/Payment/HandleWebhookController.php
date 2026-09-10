@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Payment\Http\Controllers\Public\Payment;
+namespace Modules\Payment\Http\Controllers\Webhook\Payment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Payment\Actions\Public\Payment\HandleWebhookAction;
+use Modules\Payment\Actions\Webhook\Payment\HandleWebhookAction;
 
 class HandleWebhookController extends Controller
 {

@@ -8,4 +8,10 @@ return [
     'drivers' => [
         'manual' => ManualPaymentDriver::class,
     ],
+
+    // Per-IP attempts per minute on the machine-to-machine webhook endpoints.
+    // Payment gateways retry in bursts, so keep this generous.
+    'rate_limit' => [
+        'webhook' => env('PAYMENT_WEBHOOK_RATE_LIMIT', 60),
+    ],
 ];
