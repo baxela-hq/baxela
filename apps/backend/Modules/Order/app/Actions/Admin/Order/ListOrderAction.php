@@ -19,6 +19,7 @@ class ListOrderAction
                 AllowedFilter::partial(OrderSchema::TOTAL_AMOUNT),
                 AllowedFilter::exact(OrderSchema::STATUS),
                 AllowedFilter::exact(OrderSchema::USER_ID),
+                AllowedFilter::exact(OrderSchema::ORDER_CODE),
             )
             ->allowedSorts(
                 OrderSchema::ID,

@@ -13,6 +13,11 @@ class OrderSchema
 
     public const string USER_ID = 'user_id';
 
+    /**
+     * Opaque customer-facing code; the sequential int PK stays internal.
+     */
+    public const string ORDER_CODE = 'order_code';
+
     public const string STATUS = 'status';
 
     public const string TOTAL_AMOUNT = 'total_amount';

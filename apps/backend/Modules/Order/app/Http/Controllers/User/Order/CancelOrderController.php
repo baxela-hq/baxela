@@ -10,8 +10,8 @@ class CancelOrderController extends Controller
 {
     public function __construct(protected CancelOrderAction $action) {}
 
-    public function __invoke(string $id): OrderResource
+    public function __invoke(string $code): OrderResource
     {
-        return OrderResource::make($this->action->handle($id));
+        return OrderResource::make($this->action->handle($code));
     }
 }

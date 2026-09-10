@@ -4,16 +4,16 @@ namespace Modules\Order\Gateways;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
+use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
-use Modules\Core\Utils\Auth;
-use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Utils\Auth;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
@@ -25,7 +25,7 @@ use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
 class OrderGateway implements OrderGatewayInterface
 {
-    public function createFromCart(CreateOrderInput $input): ?int
+    public function createFromCart(CreateOrderInput $input): ?string
     {
         try {
             DB::beginTransaction();
@@ -76,23 +76,23 @@ class OrderGateway implements OrderGatewayInterface
 
             DB::commit();
 
-            $orderId = $order->{OrderSchema::ID};
+            $orderCode = $order->{OrderSchema::ORDER_CODE};
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error(
                 sprintf('createFromCart failed error:%s line:%s code:%s',
                     $e->getMessage(), $e->getLine(), $e->getCode())
             );
-            $orderId = null;
+            $orderCode = null;
         }
 
-        return $orderId;
+        return $orderCode;
     }
 
-    public function getOrder(string $orderId, string $userId): ?GetOrderOutput
+    public function getOrder(string $orderCode, string $userId): ?GetOrderOutput
     {
         $order = Order::query()
-            ->where(OrderSchema::ID, $orderId)
+            ->where(OrderSchema::ORDER_CODE, $orderCode)
             ->where(OrderSchema::USER_ID, $userId)
             ->where(OrderSchema::EXPIRES_AT, '>=', now())
             ->first();
@@ -104,6 +104,15 @@ class OrderGateway implements OrderGatewayInterface
     {
         $order = Order::query()
             ->where(OrderSchema::ID, $orderId)
+            ->first();
+
+        return $order ? new GetOrderOutput($order->toArray()) : null;
+    }
+
+    public function findOrderByCode(string $code): ?GetOrderOutput
+    {
+        $order = Order::query()
+            ->where(OrderSchema::ORDER_CODE, $code)
             ->first();
 
         return $order ? new GetOrderOutput($order->toArray()) : null;

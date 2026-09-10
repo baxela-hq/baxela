@@ -10,8 +10,8 @@ class ShowShipmentController extends Controller
 {
     public function __construct(protected ShowShipmentAction $action) {}
 
-    public function __invoke(string $orderId): ShipmentResource
+    public function __invoke(string $code): ShipmentResource
     {
-        return ShipmentResource::make($this->action->handle($orderId));
+        return ShipmentResource::make($this->action->handle($code));
     }
 }

@@ -13,7 +13,7 @@ class CheckoutResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'order_id' => $this->resource->order_id,
+            'order_code' => $this->resource->order_code,
         ];
     }
 }

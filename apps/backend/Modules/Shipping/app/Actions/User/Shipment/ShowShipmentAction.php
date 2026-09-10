@@ -15,16 +15,16 @@ class ShowShipmentAction
     /**
      * @throws NotFoundException|Throwable
      */
-    public function handle(string $orderId): Shipment
+    public function handle(string $code): Shipment
     {
-        $order = $this->orderGateway->findOrder((int) $orderId);
+        $order = $this->orderGateway->findOrderByCode($code);
 
         if (is_null($order) || (int) $order->user_id !== (int) Auth::id()) {
             throw new NotFoundException;
         }
 
         return Shipment::query()
-            ->where(ShipmentSchema::ORDER_ID, (int) $orderId)
+            ->where(ShipmentSchema::ORDER_ID, $order->id)
             ->firstOrFail();
     }
 }

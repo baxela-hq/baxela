@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Database\Factories\OrderFactory;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Order\Utils\OrderCodeGenerator;
 
 /**
  * @mixin Builder
@@ -21,6 +22,7 @@ class Order extends Model
 
     protected $fillable = [
         OrderSchema::USER_ID,
+        OrderSchema::ORDER_CODE,
         OrderSchema::STATUS,
         OrderSchema::TOTAL_AMOUNT,
         OrderSchema::SHIPPING_METHOD_ID,
@@ -28,6 +30,15 @@ class Order extends Model
         OrderSchema::SHIPPING_COST,
         OrderSchema::EXPIRES_AT,
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (Order $model) {
+            $model->{OrderSchema::ORDER_CODE} ??= app(OrderCodeGenerator::class)->generate();
+        });
+    }
 
     protected function casts(): array
     {

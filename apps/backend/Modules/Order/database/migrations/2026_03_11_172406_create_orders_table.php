@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create(OrderSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(OrderSchema::USER_ID)->index();
+            $table->string(OrderSchema::ORDER_CODE)->unique();
             $table->enum(OrderSchema::STATUS, OrderStatusEnum::cases());
             $table->decimal(OrderSchema::TOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->unsignedBigInteger(OrderSchema::SHIPPING_METHOD_ID)->nullable();

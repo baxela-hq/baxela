@@ -11,8 +11,8 @@ class ListOrderItemController extends Controller
 {
     public function __construct(protected ListOrderItemAction $action) {}
 
-    public function __invoke(string $orderId, Request $request)
+    public function __invoke(string $code, Request $request)
     {
-        return OrderItemResource::collection($this->action->handle($orderId));
+        return OrderItemResource::collection($this->action->handle($code));
     }
 }
