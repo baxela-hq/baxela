@@ -15,7 +15,7 @@ class CartItemResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * Variant display fields (label, product link) come from the
+     * Variant display fields (label, product link, image) come from the
      * VariantSummary the list action attached; they are null when the
      * variant no longer resolves — the snapshots still identify the item.
      */
@@ -32,6 +32,7 @@ class CartItemResource extends JsonResource
             CartItemSchema::VARIANT_LABEL => $summary?->variant_label,
             CartItemSchema::PRODUCT_ID => $summary?->product_id,
             CartItemSchema::PRODUCT_SLUG => $summary?->product_slug,
+            CartItemSchema::IMAGE_URL => $summary?->image_url,
             CartItemSchema::QUANTITY => $this->resource->{CartItemSchema::QUANTITY},
             CartItemSchema::CREATED_AT => $this->resource->{CartItemSchema::CREATED_AT},
             CartItemSchema::UPDATED_AT => $this->resource->{CartItemSchema::UPDATED_AT},

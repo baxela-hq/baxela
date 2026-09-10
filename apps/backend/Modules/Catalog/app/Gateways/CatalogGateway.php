@@ -60,6 +60,7 @@ class CatalogGateway implements CatalogGatewayInterface
             ->with([
                 VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
                 VariantSchema::RES_PRODUCT.'.'.ProductSchema::RES_TRANSLATIONS,
+                VariantSchema::RES_PRODUCT.'.'.ProductSchema::RES_IMAGES,
             ])
             ->get()
             ->keyBy(VariantSchema::ID)
@@ -118,6 +119,7 @@ class CatalogGateway implements CatalogGatewayInterface
             compare_price: $variant->{VariantSchema::COMPARE_PRICE},
             product_title: $productTranslation?->{PTSchema::TITLE},
             product_slug: $productTranslation?->{PTSchema::SLUG},
+            image_url: $product?->{ProductSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
             variant_label: $labels->isNotEmpty() ? $labels->join(' / ') : null,
         );
     }

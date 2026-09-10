@@ -22,4 +22,13 @@ class OrderItemSchema
     public const string PRICE_SNAPSHOT = 'price_snapshot';
 
     public const string QUANTITY = 'quantity';
+
+    public const string IMAGE_URL = 'image_url';
+
+    /**
+     * Runtime-only attribute: the VariantSummary DTO attached by the list
+     * action (never stored — variant data is resolved through the Catalog
+     * gateway, not a relation).
+     */
+    public const string ATTR_VARIANT_SUMMARY = 'variantSummary';
 }

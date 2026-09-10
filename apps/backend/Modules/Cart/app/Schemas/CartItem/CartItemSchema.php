@@ -27,6 +27,8 @@ class CartItemSchema
 
     public const string PRODUCT_SLUG = 'product_slug';
 
+    public const string IMAGE_URL = 'image_url';
+
     public const string RES_VARIANT = 'variant';
 
     /**
