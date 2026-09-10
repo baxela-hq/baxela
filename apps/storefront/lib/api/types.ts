@@ -147,7 +147,8 @@ export type ApiOrderStatus =
   | "refunded";
 
 export interface ApiOrder {
-  id: number;
+  /** Opaque customer-facing code; the numeric order id is never exposed. */
+  order_code: string;
   status: ApiOrderStatus;
   total_amount: string;
   shipping_method_name: string | null;
@@ -156,7 +157,6 @@ export interface ApiOrder {
 }
 
 export interface ApiOrderItem {
-  id: number;
   variant_id: number;
   product_name_snapshot: string;
   // Product slug captured at purchase time; links the item to the product
@@ -169,7 +169,6 @@ export interface ApiOrderItem {
 }
 
 export interface ApiOrderAddress {
-  order_id: number;
   type: string;
   full_name: string;
   phone: string;

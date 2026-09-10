@@ -24,7 +24,7 @@
     "notifications": "Notifications",
     "settings": "Settings",
     "sign_out": "Sign out",
-    "order_number": "Order {id}",
+    "order_number": "Order #{code}",
     "qty": "Qty {count}",
     "total": "Total",
     "shipping_address": "Shipping address",
