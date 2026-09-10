@@ -5,7 +5,7 @@
 - Primary action: near-black (#171717–#1a1a1a range) buttons, white label text
 - Secondary text: gray (~#6b7280)
 - Input borders: light gray (~#d1d5db / #e5e7eb), radius ~8px
-- Accent (success/links): green (~#16a34a) — seen on "show" password toggle in signup
+- Accent (success/links/prominent CTAs): pink (#e84393) — superseded the green ~#16a34a on 2026-09
 
 ## Auth screens (01–05)
 - Layout: split-screen, left full-bleed photo panel (845×1024 of 1440×1024), white Logo (143×58) @(60,60) over photo; right column starts x≈895, content width 445px.
