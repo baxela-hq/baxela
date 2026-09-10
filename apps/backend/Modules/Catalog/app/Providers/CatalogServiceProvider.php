@@ -4,6 +4,8 @@ namespace Modules\Catalog\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Catalog\Gateways\CatalogGateway;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -15,6 +17,10 @@ class CatalogServiceProvider extends ServiceProvider
     protected string $name = 'Catalog';
 
     protected string $nameLower = 'catalog';
+
+    public array $bindings = [
+        CatalogGatewayInterface::class => CatalogGateway::class,
+    ];
 
     /**
      * Boot the application events.
