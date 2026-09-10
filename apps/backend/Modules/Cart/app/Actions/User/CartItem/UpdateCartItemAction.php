@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Cart\Exceptions\User\CartItem\OutOfStockException;
 use Modules\Cart\Http\Requests\User\CartItem\UpdateCartItemRequest;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
-use Modules\Cart\Support\VariantDisplayName;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
 class UpdateCartItemAction extends AbstractCartItemAction
@@ -23,7 +22,7 @@ class UpdateCartItemAction extends AbstractCartItemAction
             ->availableQuantity((string) $record->{CartItemSchema::VARIANT_ID});
         if (is_null($available) || $available < $quantity) {
             throw new OutOfStockException(
-                VariantDisplayName::for((int) $record->{CartItemSchema::VARIANT_ID}),
+                $this->variantDisplayName((int) $record->{CartItemSchema::VARIANT_ID}),
                 $available ?? 0,
                 (int) $record->{CartItemSchema::VARIANT_ID},
             );

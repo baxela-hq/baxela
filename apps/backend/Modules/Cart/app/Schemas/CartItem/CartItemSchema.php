@@ -28,4 +28,11 @@ class CartItemSchema
     public const string PRODUCT_SLUG = 'product_slug';
 
     public const string RES_VARIANT = 'variant';
+
+    /**
+     * Runtime-only attribute: the VariantSummary DTO attached by list
+     * actions (never stored — variant data is resolved through the
+     * Catalog gateway, not a relation).
+     */
+    public const string ATTR_VARIANT_SUMMARY = 'variantSummary';
 }

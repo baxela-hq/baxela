@@ -2,14 +2,12 @@
 
 namespace Modules\Cart\Actions\Public\CartItem;
 
-use Illuminate\Support\Facades\DB;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
-use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Cart\Support\VariantDisplayName;
 use Modules\Core\Contracts\Events\Cart\CartCreatedEvent;
-use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 
 /**
  * Guest-cart counterpart of the user cart-item actions. The cart is resolved
@@ -19,7 +17,11 @@ use Modules\Core\Schemas\Language\LanguageSchema;
  */
 abstract class AbstractCartItemAction
 {
-    public function __construct(protected Cart $cart, protected CartItem $cartItem) {}
+    public function __construct(
+        protected Cart $cart,
+        protected CartItem $cartItem,
+        protected CatalogGatewayInterface $catalogGateway,
+    ) {}
 
     /**
      * Resolve (and lazily create) the cart for the bound guest token. Only
@@ -55,44 +57,14 @@ abstract class AbstractCartItemAction
             ->value(CartSchema::ID);
     }
 
-    protected function getVariant(int $variantId): \stdClass
-    {
-        return DB::Table(VariantSchema::TABLE)->find($variantId);
-    }
-
     /**
-     * Display title of the variant's product: the default language's
-     * translation when present, else any translation — snapshotted onto cart
-     * items and later onto order lines.
+     * Stock-error name ("Product (Size / Black)") resolved through the
+     * Catalog gateway — empty when the variant no longer resolves.
      */
-    protected function getProductTitle(int $variantId): string
+    protected function variantDisplayName(int $variantId): string
     {
-        $productId = DB::Table(VariantSchema::TABLE)
-            ->where(VariantSchema::ID, $variantId)
-            ->value(VariantSchema::PRODUCT_ID);
-
-        if (is_null($productId)) {
-            return '';
-        }
-
-        $translations = DB::Table(ProductTranslationSchema::TABLE)
-            ->where(ProductTranslationSchema::PRODUCT_ID, $productId)
-            ->get([
-                ProductTranslationSchema::LANGUAGE_ID,
-                ProductTranslationSchema::TITLE,
-            ]);
-
-        if ($translations->isEmpty()) {
-            return '';
-        }
-
-        $defaultLanguageId = DB::Table(LanguageSchema::TABLE)
-            ->where(LanguageSchema::IS_DEFAULT, true)
-            ->value(LanguageSchema::ID);
-
-        return $translations
-            ->firstWhere(ProductTranslationSchema::LANGUAGE_ID, $defaultLanguageId)
-            ?->{ProductTranslationSchema::TITLE}
-            ?? $translations->first()->{ProductTranslationSchema::TITLE};
+        return VariantDisplayName::fromSummary(
+            $this->catalogGateway->getVariantSummaries([$variantId])->get($variantId)
+        );
     }
 }
