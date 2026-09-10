@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
-import { ApiError } from "@/lib/api/client";
+import { ApiError, api, buildQuery } from "@/lib/api/client";
 import { cartApi } from "@/lib/cart/client";
-import type { ApiVariant } from "@/lib/api/types";
+import type { ApiVariant, ApiWishlistItem } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
-import { HeartIcon } from "@/components/ui/icons";
+import { HeartIcon, HeartSolidIcon } from "@/components/ui/icons";
 import { useRouter } from "@/i18n/navigation";
 
 function variantLabel(variant: ApiVariant): string {
@@ -21,15 +21,20 @@ function variantLabel(variant: ApiVariant): string {
 /**
  * Variant selector + quantity stepper + add-to-cart for the product page.
  * Cart items are variant-based; adding works for guests too — cartApi picks
- * the guest cart (X-Cart-Token) until a session exists.
+ * the guest cart (X-Cart-Token) until a session exists. The wishlist heart
+ * is account-only: guests are sent to login and back here.
  */
 export function ProductActions({
+  productHref,
+  productId,
   variants,
 }: {
+  productHref: string;
+  productId: number;
   variants: ApiVariant[];
 }) {
   const t = useTranslations("catalog.product");
-  const { token } = useAuth();
+  const { status, token } = useAuth();
   const router = useRouter();
 
   const defaultVariant =
@@ -41,6 +46,67 @@ export function ProductActions({
   const [pending, setPending] = useState(false);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [wishlisted, setWishlisted] = useState(false);
+  const [wishlistPending, setWishlistPending] = useState(false);
+
+  useEffect(() => {
+    if (status !== "authenticated" || !token) return;
+    let active = true;
+    void (async () => {
+      try {
+        const rows = await api.get<ApiWishlistItem[]>(
+          `/wishlist/user/wishlist-items${buildQuery({ "filter[product_id]": productId })}`,
+          { token },
+        );
+        if (active) {
+          // Fetch-on-auth is a legitimate external-system sync; the rule
+          // flags setState statically even though it only runs in the
+          // async continuation after the fetch resolves.
+          // eslint-disable-next-line react-hooks/set-state-in-effect
+          setWishlisted(rows.length > 0);
+        }
+      } catch {
+        // The heart simply starts unfilled when the check fails.
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [status, token, productId]);
+
+  const onToggleWishlist = async () => {
+    if (status !== "authenticated" || !token) {
+      router.replace(`/login?next=${productHref}`);
+      return;
+    }
+
+    setWishlistPending(true);
+    try {
+      if (wishlisted) {
+        await api.delete(`/wishlist/user/wishlist-items/${productId}`, {
+          token,
+        });
+        setWishlisted(false);
+        toast.success(t("messages.success.wishlist_removed"));
+      } else {
+        await api.post<ApiWishlistItem>(
+          "/wishlist/user/wishlist-items",
+          { product_id: productId },
+          { token },
+        );
+        setWishlisted(true);
+        toast.success(t("messages.success.wishlist_added"));
+      }
+    } catch (cause) {
+      toast.error(
+        cause instanceof ApiError
+          ? cause.message
+          : t("messages.error.wishlist_failed"),
+      );
+    } finally {
+      setWishlistPending(false);
+    }
+  };
 
   const onAddToCart = async () => {
     setError(null);
@@ -132,10 +198,25 @@ export function ProductActions({
         </Button>
         <button
           type="button"
-          aria-label={t("actions.add_to_wishlist")}
-          className="rounded-default border border-border p-3.5 text-foreground transition-colors hover:bg-muted"
+          aria-label={
+            wishlisted
+              ? t("actions.remove_from_wishlist")
+              : t("actions.add_to_wishlist")
+          }
+          aria-pressed={wishlisted}
+          disabled={wishlistPending}
+          onClick={onToggleWishlist}
+          className={
+            wishlisted
+              ? "rounded-default border border-accent bg-accent/10 p-3.5 text-accent transition-colors hover:bg-accent/20 disabled:opacity-40"
+              : "rounded-default border border-border p-3.5 text-foreground transition-colors hover:bg-muted disabled:opacity-40"
+          }
         >
-          <HeartIcon className="size-5" />
+          {wishlisted ? (
+            <HeartSolidIcon className="size-5" />
+          ) : (
+            <HeartIcon className="size-5" />
+          )}
         </button>
       </div>
 

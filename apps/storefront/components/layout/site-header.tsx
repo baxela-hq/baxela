@@ -54,13 +54,13 @@ export async function SiteHeader() {
           </nav>
           <div className="flex items-center gap-0.5 sm:gap-1">
             <SearchMenu categories={categories} />
-            <button
-              type="button"
+            <Link
+              href="/profile/wishlists"
               aria-label={t("header.actions.wishlist")}
               className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
             >
               <HeartIcon className="size-5" />
-            </button>
+            </Link>
             <Link
               href="/cart"
               aria-label={t("header.actions.cart")}

@@ -32,6 +32,7 @@ export default async function ProductPage({
     notFound();
   }
   const productId = product.id;
+  const productHref = `/products/${product.slug ?? product.id}`;
 
   const [t, tLayout, format, commentsPage, relatedPage] = await Promise.all([
     getTranslations("catalog.product"),
@@ -118,7 +119,11 @@ export default async function ProductPage({
               </p>
             ) : null}
 
-            <ProductActions variants={product.variants} />
+            <ProductActions
+              productHref={productHref}
+              productId={productId}
+              variants={product.variants}
+            />
           </div>
         </div>
       </section>

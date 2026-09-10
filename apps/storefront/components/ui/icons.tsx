@@ -108,6 +108,14 @@ export function HeartIcon(props: IconProps) {
   );
 }
 
+export function HeartSolidIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M12 20.5S3.5 15.5 3.5 9.5A4.7 4.7 0 0 1 12 6.6a4.7 4.7 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11Z" />
+    </svg>
+  );
+}
+
 export function StarIcon(props: IconProps) {
   return (
     <Svg {...props}>
