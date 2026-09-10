@@ -21,6 +21,18 @@
       "open_menu": "Open menu",
       "close_menu": "Close menu",
       "language": "Change language"
+    },
+    "cart": {
+      "texts": {
+        "empty": "Your cart is empty."
+      },
+      "labels": {
+        "subtotal": "Subtotal"
+      },
+      "actions": {
+        "view_cart": "View cart",
+        "checkout": "Checkout"
+      }
     }
   },
   "search": {
