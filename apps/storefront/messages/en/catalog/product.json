@@ -5,6 +5,7 @@
   },
   "labels": {
     "size": "Size",
+    "in_cart": "In cart",
     "main_image": "{name} main image",
     "quantity_decrease": "Decrease quantity",
     "quantity_increase": "Increase quantity",
@@ -28,6 +29,7 @@
     },
     "error": {
       "add_failed": "Could not add the item to the cart.",
+      "update_failed": "Could not update the item in the cart.",
       "wishlist_failed": "Could not update your wishlist."
     }
   },
