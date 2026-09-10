@@ -89,7 +89,7 @@ return [
                 ],
             ],
             'about' => [
-                'url' => '/about',
+                'url' => '/pages/about-us',
                 'translations' => [['title' => 'About']],
                 'children' => [],
             ],
@@ -105,75 +105,43 @@ return [
         'title' => 'Footer Menu',
         'description' => 'Footer storefront navigation',
         'links' => [
-            'sneakers' => [
-                'url' => '/products?category=sneakers',
-                'translations' => [['title' => 'Sneakers']],
+            'help' => [
+                'url' => '/contact',
+                'translations' => [['title' => 'Help']],
                 'children' => [
-                    'footer-sneakers-low-top' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'Low top']],
+                    'contact' => [
+                        'url' => '/contact',
+                        'translations' => [['title' => 'Contact us']],
                     ],
-                    'footer-sneakers-high-top' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'High top']],
+                    'about' => [
+                        'url' => '/pages/about-us',
+                        'translations' => [['title' => 'About us']],
                     ],
-                    'footer-sneakers-runners' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'Runners']],
+                    'faq' => [
+                        'url' => '/pages/faq',
+                        'translations' => [['title' => 'FAQ']],
+                    ],
+                    'shipping' => [
+                        'url' => '/pages/shipping-delivery',
+                        'translations' => [['title' => 'Shipping & delivery']],
+                    ],
+                    'returns' => [
+                        'url' => '/pages/returns-refunds',
+                        'translations' => [['title' => 'Returns & refunds']],
                     ],
                 ],
             ],
-            'apparel' => [
-                'url' => '/products?category=apparel',
-                'translations' => [['title' => 'Apparel']],
+            'legal' => [
+                'url' => '/',
+                'translations' => [['title' => 'Legal']],
                 'children' => [
-                    'footer-apparel-tees' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'Tees']],
+                    'privacy-policy' => [
+                        'url' => '/pages/privacy-policy',
+                        'translations' => [['title' => 'Privacy policy']],
                     ],
-                    'footer-apparel-hoodies' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'Hoodies']],
-                    ],
-                    'footer-apparel-joggers' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'Joggers']],
-                    ],
-                ],
-            ],
-            'accessories' => [
-                'url' => '/products?category=accessories',
-                'translations' => [['title' => 'Accessories']],
-                'children' => [
-                    'footer-accessories-caps' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'Caps']],
-                    ],
-                    'footer-accessories-bags' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'Bags']],
-                    ],
-                    'footer-accessories-socks' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'Socks']],
-                    ],
-                ],
-            ],
-            'footwear' => [
-                'url' => '/products?category=footwear',
-                'translations' => [['title' => 'Footwear']],
-                'children' => [
-                    'footer-footwear-slip-ons' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'Slip-ons']],
-                    ],
-                    'footer-footwear-sandals' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'Sandals']],
-                    ],
-                    'footer-footwear-boots' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'Boots']],
+                    'terms-of-service' => [
+                        'url' => '/pages/terms-of-service',
+                        'translations' => [['title' => 'Terms of service']],
                     ],
                 ],
             ],
@@ -194,11 +162,6 @@ return [
                         'translations' => [['title' => 'Forgot password']],
                     ],
                 ],
-            ],
-            'support' => [
-                'url' => '/contact',
-                'translations' => [['title' => 'Support']],
-                'children' => [],
             ],
         ],
     ],
