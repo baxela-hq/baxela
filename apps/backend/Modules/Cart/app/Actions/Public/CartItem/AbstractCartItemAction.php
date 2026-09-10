@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Cart\Actions\User\CartItem;
+namespace Modules\Cart\Actions\Public\CartItem;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Cart\Models\Cart;
@@ -10,29 +10,49 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Cart\CartCreatedEvent;
 use Modules\Core\Schemas\Language\LanguageSchema;
-use Modules\Core\Utils\Auth;
 
+/**
+ * Guest-cart counterpart of the user cart-item actions. The cart is resolved
+ * by the X-Cart-Token header instead of the authenticated user, and audience
+ * logic is deliberately kept separate from Actions\User\CartItem — guest-cart
+ * rules may evolve independently.
+ */
 abstract class AbstractCartItemAction
 {
     public function __construct(protected Cart $cart, protected CartItem $cartItem) {}
 
-    protected function getCartId(): int
+    /**
+     * Resolve (and lazily create) the cart for the bound guest token. Only
+     * called when adding an item — the first item is what brings the cart
+     * into existence; listing never creates rows.
+     */
+    protected function getCartId(string $token): int
     {
-        $data = [CartSchema::USER_ID => Auth::id()];
-        $cart = $this->cart->where($data)->first();
+        $cart = $this->cart->query()->where(CartSchema::TOKEN, $token)->first();
 
         if (! $cart) {
-            $cart = $this->cart->create($data);
+            $cart = $this->cart->query()->create([CartSchema::TOKEN => $token]);
             $cart = $cart->refresh();
 
             event(CartCreatedEvent::fill([
                 CartSchema::ID => $cart->{CartSchema::ID},
-                CartSchema::USER_ID => $cart->{CartSchema::USER_ID},
+                CartSchema::USER_ID => null,
                 CartSchema::UPDATED_AT => $cart->{CartSchema::UPDATED_AT},
             ]));
         }
 
         return $cart->{CartSchema::ID};
+    }
+
+    /**
+     * Read-only cart lookup — null when the guest has no cart yet (list
+     * renders an empty cart; update/delete surface a 404).
+     */
+    protected function findCartId(string $token): ?int
+    {
+        return $this->cart->query()
+            ->where(CartSchema::TOKEN, $token)
+            ->value(CartSchema::ID);
     }
 
     protected function getVariant(int $variantId): \stdClass

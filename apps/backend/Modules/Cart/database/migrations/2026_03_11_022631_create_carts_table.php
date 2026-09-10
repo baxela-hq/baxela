@@ -14,7 +14,10 @@ return new class extends Migration
     {
         Schema::create(CartSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger(CartSchema::USER_ID)->unique();
+            // User carts key on user_id; guest carts key on token instead —
+            // exactly one of the two is set (both nullable, both unique).
+            $table->unsignedBigInteger(CartSchema::USER_ID)->nullable()->unique();
+            $table->string(CartSchema::TOKEN)->nullable()->unique();
             $table->timestamps();
         });
     }

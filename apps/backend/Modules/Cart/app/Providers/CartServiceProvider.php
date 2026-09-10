@@ -2,7 +2,10 @@
 
 namespace Modules\Cart\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -27,6 +30,9 @@ class CartServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        RateLimiter::for('cart-public', fn (Request $request) => Limit::perMinute((int) config('cart.rate_limit.public'))
+            ->by($request->header('X-Cart-Token') ?? $request->ip()));
     }
 
     /**

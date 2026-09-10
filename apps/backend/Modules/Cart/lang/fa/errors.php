@@ -9,4 +9,6 @@ return [
     'checkout.insufficient_stock' => 'تنها :available عدد از «:name» در سبد خرید شما موجود است',
     'item.out_of_stock' => '«:name» موجود نیست',
     'item.insufficient_stock' => 'تنها :available عدد از «:name» موجود است — تعداد را کم کنید',
+    'token.missing' => 'هدر X-Cart-Token الزامی است',
+    'token.invalid' => 'هدر X-Cart-Token یک UUID معتبر نیست',
 ];

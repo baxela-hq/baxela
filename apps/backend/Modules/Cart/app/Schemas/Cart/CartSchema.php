@@ -12,4 +12,6 @@ class CartSchema
     public const string TABLE = Module::DB_PREFIX.'carts';
 
     public const string USER_ID = 'user_id';
+
+    public const string TOKEN = 'token';
 }

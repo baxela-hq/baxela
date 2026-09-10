@@ -9,4 +9,6 @@ return [
     'checkout.insufficient_stock' => 'Only :available left in stock for :name in your cart',
     'item.out_of_stock' => ':name is out of stock',
     'item.insufficient_stock' => 'Only :available left in stock for :name — reduce the quantity',
+    'token.missing' => 'The X-Cart-Token header is required',
+    'token.invalid' => 'The X-Cart-Token header is not a valid UUID',
 ];
