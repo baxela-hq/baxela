@@ -498,10 +498,22 @@ export default function CheckoutPage() {
               <ul className="mt-6 space-y-4">
                 {cartItems.map((item) => (
                   <li key={item.id} className="flex items-center gap-4">
-                    <span
-                      className="size-16 shrink-0 rounded-default border border-border bg-muted"
-                      aria-hidden="true"
-                    />
+                    {item.image_url ? (
+                      // Backend-served images come from arbitrary hosts,
+                      // so this is a plain img rather than next/image.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={item.image_url}
+                        alt=""
+                        loading="lazy"
+                        className="size-16 shrink-0 rounded-default border border-border object-cover"
+                      />
+                    ) : (
+                      <span
+                        className="size-16 shrink-0 rounded-default border border-border bg-muted"
+                        aria-hidden="true"
+                      />
+                    )}
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                         {item.product_name_snapshot}
