@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Payment\Actions\Public\Payment;
+namespace Modules\Payment\Actions\Webhook\Payment;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
