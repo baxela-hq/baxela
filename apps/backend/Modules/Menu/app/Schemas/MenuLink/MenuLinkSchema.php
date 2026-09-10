@@ -22,4 +22,6 @@ class MenuLinkSchema
     public const string TARGET = 'target';
 
     public const string RES_TRANSLATIONS = 'translations';
+
+    public const string RES_CHILDREN = 'children';
 }

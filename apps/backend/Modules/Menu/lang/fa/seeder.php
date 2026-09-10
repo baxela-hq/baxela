@@ -89,7 +89,7 @@ return [
                 ],
             ],
             'about' => [
-                'url' => '/about',
+                'url' => '/pages/about-us',
                 'translations' => [['title' => 'درباره ما']],
                 'children' => [],
             ],
@@ -105,75 +105,43 @@ return [
         'title' => 'منوی فوتر',
         'description' => 'ناوبری فوتر فروشگاه',
         'links' => [
-            'sneakers' => [
-                'url' => '/products?category=sneakers',
-                'translations' => [['title' => 'کفش ورزشی']],
+            'help' => [
+                'url' => '/contact',
+                'translations' => [['title' => 'راهنما']],
                 'children' => [
-                    'footer-sneakers-low-top' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'ساق کوتاه']],
+                    'contact' => [
+                        'url' => '/contact',
+                        'translations' => [['title' => 'تماس با ما']],
                     ],
-                    'footer-sneakers-high-top' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'ساق بلند']],
+                    'about' => [
+                        'url' => '/pages/about-us',
+                        'translations' => [['title' => 'درباره ما']],
                     ],
-                    'footer-sneakers-runners' => [
-                        'url' => '/products?category=sneakers',
-                        'translations' => [['title' => 'رانینگ']],
+                    'faq' => [
+                        'url' => '/pages/faq',
+                        'translations' => [['title' => 'سوالات متداول']],
+                    ],
+                    'shipping' => [
+                        'url' => '/pages/shipping-delivery',
+                        'translations' => [['title' => 'ارسال و تحویل']],
+                    ],
+                    'returns' => [
+                        'url' => '/pages/returns-refunds',
+                        'translations' => [['title' => 'بازگشت و بازپرداخت']],
                     ],
                 ],
             ],
-            'apparel' => [
-                'url' => '/products?category=apparel',
-                'translations' => [['title' => 'پوشاک']],
+            'legal' => [
+                'url' => '/',
+                'translations' => [['title' => 'قانونی']],
                 'children' => [
-                    'footer-apparel-tees' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'تی‌شرت']],
+                    'privacy-policy' => [
+                        'url' => '/pages/privacy-policy',
+                        'translations' => [['title' => 'سیاست حریم خصوصی']],
                     ],
-                    'footer-apparel-hoodies' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'هودی']],
-                    ],
-                    'footer-apparel-joggers' => [
-                        'url' => '/products?category=apparel',
-                        'translations' => [['title' => 'شلوار ورزشی']],
-                    ],
-                ],
-            ],
-            'accessories' => [
-                'url' => '/products?category=accessories',
-                'translations' => [['title' => 'لوازم جانبی']],
-                'children' => [
-                    'footer-accessories-caps' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'کلاه']],
-                    ],
-                    'footer-accessories-bags' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'کیف']],
-                    ],
-                    'footer-accessories-socks' => [
-                        'url' => '/products?category=accessories',
-                        'translations' => [['title' => 'جوراب']],
-                    ],
-                ],
-            ],
-            'footwear' => [
-                'url' => '/products?category=footwear',
-                'translations' => [['title' => 'کفش']],
-                'children' => [
-                    'footer-footwear-slip-ons' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'اسلیپ‌ان']],
-                    ],
-                    'footer-footwear-sandals' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'صندل']],
-                    ],
-                    'footer-footwear-boots' => [
-                        'url' => '/products?category=footwear',
-                        'translations' => [['title' => 'نیم‌بوت']],
+                    'terms-of-service' => [
+                        'url' => '/pages/terms-of-service',
+                        'translations' => [['title' => 'قوانین و شرایط استفاده']],
                     ],
                 ],
             ],
@@ -194,11 +162,6 @@ return [
                         'translations' => [['title' => 'بازیابی رمز عبور']],
                     ],
                 ],
-            ],
-            'support' => [
-                'url' => '/contact',
-                'translations' => [['title' => 'پشتیبانی']],
-                'children' => [],
             ],
         ],
     ],
