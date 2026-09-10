@@ -1,59 +1,40 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
+import { useCart } from "@/context/cart-context";
 import { ApiError } from "@/lib/api/client";
-import { cartApi } from "@/lib/cart/client";
 import type { ApiCartItem } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
+import { QuantityStepper } from "@/components/ui/quantity-stepper";
 import { Link, useRouter } from "@/i18n/navigation";
 
 /**
  * Cart for both audiences: signed-in visitors get their per-user cart,
  * everyone else the guest cart keyed by the localStorage cart token. Login
- * is only requested at checkout — this page never redirects.
+ * is only requested at checkout — this page never redirects. State lives in
+ * the shared cart context so the header badge and hover preview stay in sync
+ * with edits made here.
  */
 export default function CartPage() {
   const t = useTranslations("cart.cart");
   const tLayout = useTranslations("shared.layout");
   const tCommon = useTranslations("shared.common");
   const format = useFormatter();
-  const { status, token } = useAuth();
+  const { status } = useAuth();
+  const { items, ready, subtotal, updateItem, removeItem } = useCart();
   const router = useRouter();
 
-  const [items, setItems] = useState<ApiCartItem[] | null>(null);
   const [busyItemId, setBusyItemId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    if (status === "loading") return;
-    try {
-      const fetched = await cartApi(token).list();
-      setItems(fetched);
-      setError(null);
-    } catch {
-      setError(tCommon("messages.error.general"));
-    }
-  }, [status, token, tCommon]);
-
-  useEffect(() => {
-    if (status !== "loading") {
-      // Fetch-on-auth is a legitimate external-system sync; the rule flags
-      // setState statically even though it only runs in the async
-      // continuation after the fetch resolves.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      void load();
-    }
-  }, [status, load]);
 
   const updateQuantity = async (item: ApiCartItem, quantity: number) => {
     if (quantity < 1) return;
     setBusyItemId(item.id);
     setError(null);
     try {
-      await cartApi(token).update(item.id, quantity);
-      await load();
+      await updateItem(item.id, quantity);
     } catch (cause) {
       setError(
         cause instanceof ApiError
@@ -65,12 +46,11 @@ export default function CartPage() {
     }
   };
 
-  const removeItem = async (item: ApiCartItem) => {
+  const removeItemAction = async (item: ApiCartItem) => {
     setBusyItemId(item.id);
     setError(null);
     try {
-      await cartApi(token).remove(item.id);
-      await load();
+      await removeItem(item.id);
     } catch (cause) {
       setError(
         cause instanceof ApiError
@@ -82,18 +62,12 @@ export default function CartPage() {
     }
   };
 
-  const subtotal =
-    items?.reduce(
-      (sum, item) => sum + Number(item.price_snapshot) * item.quantity,
-      0,
-    ) ?? 0;
-
   const usd = { style: "currency", currency: "USD" } as const;
 
-  // Hold rendering until the stored session (if any) has been restored, so
-  // the first cart fetch picks the right audience instead of briefly
-  // treating a signed-in visitor as a guest.
-  if (status === "loading") {
+  // Hold rendering until the shared context has settled the audience and
+  // fetched the list (it gates on the restored session before choosing the
+  // guest vs account cart).
+  if (!ready) {
     return (
       <section className="mx-auto max-w-7xl px-6 py-24 text-center">
         <p className="text-base text-secondary-text rtl:normal-case rtl:tracking-normal">
@@ -213,29 +187,15 @@ export default function CartPage() {
                       {format.number(Number(item.price_snapshot), usd)}
                     </p>
                   </div>
-                  <div className="flex items-center rounded-default border border-border">
-                    <button
-                      type="button"
-                      disabled={busyItemId === item.id || item.quantity <= 1}
-                      aria-label={tCommon("form.actions.back")}
-                      onClick={() => updateQuantity(item, item.quantity - 1)}
-                      className="px-4 py-3 text-foreground transition-colors hover:bg-muted disabled:opacity-40"
-                    >
-                      −
-                    </button>
-                    <span className="px-4 text-sm text-foreground">
-                      {item.quantity.toLocaleString()}
-                    </span>
-                    <button
-                      type="button"
-                      disabled={busyItemId === item.id}
-                      aria-label={t("labels.quantity")}
-                      onClick={() => updateQuantity(item, item.quantity + 1)}
-                      className="px-4 py-3 text-foreground transition-colors hover:bg-muted disabled:opacity-40"
-                    >
-                      +
-                    </button>
-                  </div>
+                  <QuantityStepper
+                    value={item.quantity}
+                    min={1}
+                    disabled={busyItemId === item.id}
+                    decreaseLabel={tCommon("form.actions.back")}
+                    increaseLabel={t("labels.quantity")}
+                    onDecrease={() => updateQuantity(item, item.quantity - 1)}
+                    onIncrease={() => updateQuantity(item, item.quantity + 1)}
+                  />
                   <p className="w-24 text-end text-sm font-semibold text-foreground">
                     {format.number(
                       Number(item.price_snapshot) * item.quantity,
@@ -245,7 +205,7 @@ export default function CartPage() {
                   <button
                     type="button"
                     disabled={busyItemId === item.id}
-                    onClick={() => removeItem(item)}
+                    onClick={() => removeItemAction(item)}
                     className="text-sm text-secondary-text underline underline-offset-2 transition-colors hover:text-red-600 rtl:normal-case rtl:tracking-normal"
                   >
                     {t("actions.remove")}
