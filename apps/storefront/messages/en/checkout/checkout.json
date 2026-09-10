@@ -58,7 +58,7 @@
   "success": {
     "texts": {
       "title": "Order placed!",
-      "order_number": "Order number: {id}",
+      "order_number": "Order code: {code}",
       "description": "Your order has been received and is awaiting payment confirmation. We will contact you shortly."
     },
     "actions": {

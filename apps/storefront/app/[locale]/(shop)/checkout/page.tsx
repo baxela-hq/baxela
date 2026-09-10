@@ -48,7 +48,7 @@ export default function CheckoutPage() {
   const [methodId, setMethodId] = useState<number | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [placedOrder, setPlacedOrder] = useState<number | null>(null);
+  const [placedOrder, setPlacedOrder] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -182,17 +182,17 @@ export default function CheckoutPage() {
     try {
       // Idempotency guards against double-submits creating two orders
       const idempotencyKey = uuidv4();
-      const { order_id: orderId } = await api.post<{ order_id: number }>(
+      const { order_code: orderCode } = await api.post<{ order_code: string }>(
         "/cart/user/checkout",
         { address_id: addressId, shipping_method_id: methodId },
         { token, headers: { "X-Idempotency-Key": idempotencyKey } },
       );
       await api.post(
         "/payment/user/process",
-        { order_id: String(orderId), method: "manual" },
+        { order_code: orderCode, method: "manual" },
         { token },
       );
-      setPlacedOrder(orderId);
+      setPlacedOrder(orderCode);
     } catch (cause) {
       setError(
         cause instanceof ApiError
@@ -221,9 +221,7 @@ export default function CheckoutPage() {
           {t("success.texts.title")}
         </h1>
         <p className="mt-4 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-          {t("success.texts.order_number", {
-            id: placedOrder.toLocaleString(),
-          })}
+          {t("success.texts.order_number", { code: placedOrder })}
         </p>
         <p className="mt-2 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
           {t("success.texts.description")}

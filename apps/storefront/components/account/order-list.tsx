@@ -67,13 +67,13 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const { token } = useAuth();
 
   const [orders, setOrders] = useState<ApiOrder[] | null>(null);
-  const [itemsByOrderId, setItemsByOrderId] = useState<
-    Record<number, ApiOrderItem[]>
-  >({});
+  const [itemsByCode, setItemsByCode] = useState<Record<string, ApiOrderItem[]>>(
+    {},
+  );
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [confirmingCancelId, setConfirmingCancelId] = useState<number | null>(
+  const [expandedCode, setExpandedCode] = useState<string | null>(null);
+  const [confirmingCancelCode, setConfirmingCancelCode] = useState<string | null>(
     null,
   );
   const [cancelling, setCancelling] = useState(false);
@@ -94,13 +94,13 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
         const itemLists = await Promise.all(
           paginated.data.map(async (order) => {
             const items = await api.get<ApiOrderItem[]>(
-              `/order/user/orders/${order.id}/items`,
+              `/order/user/orders/${order.order_code}/items`,
               { token },
             );
-            return [order.id, items] as const;
+            return [order.order_code, items] as const;
           }),
         );
-        setItemsByOrderId(Object.fromEntries(itemLists));
+        setItemsByCode(Object.fromEntries(itemLists));
         setError(null);
       } catch (cause) {
         setError(
@@ -127,14 +127,15 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
     setCancelling(true);
     try {
       const updated = await api.patch<ApiOrder>(
-        `/order/user/orders/${order.id}/cancel`,
+        `/order/user/orders/${order.order_code}/cancel`,
         undefined,
         { token },
       );
       setOrders(
         (previous) =>
-          previous?.map((entry) => (entry.id === updated.id ? updated : entry)) ??
-          previous,
+          previous?.map((entry) =>
+            entry.order_code === updated.order_code ? updated : entry,
+          ) ?? previous,
       );
       toast.success(t("orders.messages.success.cancelled"));
     } catch (cause) {
@@ -145,7 +146,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
       );
     } finally {
       setCancelling(false);
-      setConfirmingCancelId(null);
+      setConfirmingCancelCode(null);
     }
   };
 
@@ -157,14 +158,14 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
     return orders.filter((order) => {
       if (allowed && !allowed.includes(order.status)) return false;
       if (query === "") return true;
-      const items = itemsByOrderId[order.id] ?? [];
+      const items = itemsByCode[order.order_code] ?? [];
       return (
         items.some((item) =>
           item.product_name_snapshot.toLowerCase().includes(query),
-        ) || String(order.id).includes(query)
+        ) || order.order_code.toLowerCase().includes(query)
       );
     });
-  }, [orders, itemsByOrderId, search, statusFilter]);
+  }, [orders, itemsByCode, search, statusFilter]);
 
   if (orders === null || visibleOrders === null) {
     return (
@@ -213,22 +214,22 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
 
       <ul className="divide-y divide-border-light">
         {visibleOrders.map((order) => {
-          const items = itemsByOrderId[order.id] ?? [];
-          const expanded = expandedId === order.id;
+          const items = itemsByCode[order.order_code] ?? [];
+          const expanded = expandedCode === order.order_code;
           const shippingAddress = (order.addresses ?? []).find(
             (address) => address.type === "shipping",
           );
           const cancellable = CANCELLABLE_STATUSES.includes(order.status);
 
           return (
-            <li key={order.id} className="py-8 first:pt-0 last:pb-0">
+            <li key={order.order_code} className="py-8 first:pt-0 last:pb-0">
               <p className="text-sm font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
-                {t("labels.order_number", { id: order.id })}
+                {t("labels.order_number", { code: order.order_code })}
               </p>
 
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={`${item.variant_id}-${index}`}
                   className="mt-4 flex flex-wrap items-center gap-4"
                 >
                   {item.image_url ? (
@@ -286,7 +287,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  {confirmingCancelId === order.id ? (
+                  {confirmingCancelCode === order.order_code ? (
                     <>
                       <button
                         type="button"
@@ -300,7 +301,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setConfirmingCancelId(null)}
+                        onClick={() => setConfirmingCancelCode(null)}
                         className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
                       >
                         {t("orders.actions.keep_order")}
@@ -311,7 +312,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                       <button
                         type="button"
                         onClick={() =>
-                          setExpandedId(expanded ? null : order.id)
+                          setExpandedCode(expanded ? null : order.order_code)
                         }
                         aria-expanded={expanded}
                         className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
@@ -323,7 +324,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                       {cancellable ? (
                         <button
                           type="button"
-                          onClick={() => setConfirmingCancelId(order.id)}
+                          onClick={() => setConfirmingCancelCode(order.order_code)}
                           className="inline-flex h-10 items-center justify-center rounded-default bg-red-500 px-5 text-sm font-medium text-white transition-colors hover:bg-red-600 rtl:normal-case rtl:tracking-normal"
                         >
                           {t("orders.actions.cancel_order")}

@@ -24,7 +24,7 @@
     "notifications": "اطلاع‌رسانی‌ها",
     "settings": "تنظیمات",
     "sign_out": "خروج از حساب",
-    "order_number": "سفارش {id}",
+    "order_number": "سفارش #{code}",
     "qty": "تعداد {count}",
     "total": "مجموع",
     "shipping_address": "آدرس ارسال",
