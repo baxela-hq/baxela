@@ -12,7 +12,7 @@ export async function SiteFooter() {
     <footer className="border-t border-border-light bg-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
         <div>
-          <Logo variant="dark" />
+          <Logo />
           <p className="mt-4 max-w-xs text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
             {t("footer.texts.tagline")}
           </p>
