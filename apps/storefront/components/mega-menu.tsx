@@ -1,18 +1,25 @@
 "use client";
 
-import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { MEGA_MENU_COLUMNS } from "@/components/mega-menu-columns";
+import type { MegaMenuColumn } from "@/lib/menu";
+import { Link } from "@/i18n/navigation";
 
 /**
  * Screen 07 — Mega menu (Figma node 3235:1719).
  *
  * The Figma frame is a flattened image mockup, so the panel layout follows the
  * storefront's established conventions: a centered dropdown card under the
- * "Products" nav link with category columns on a white surface.
+ * triggering nav link with category columns on a white surface. Columns come
+ * from the header Menu API (the triggering nav link's children).
  */
 
-export function MegaMenu({ className }: { className?: string }) {
+export function MegaMenu({
+  columns,
+  className,
+}: {
+  columns: MegaMenuColumn[];
+  className?: string;
+}) {
   return (
     <div
       className={cn(
@@ -21,14 +28,14 @@ export function MegaMenu({ className }: { className?: string }) {
       )}
     >
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 py-10 md:grid-cols-4">
-        {MEGA_MENU_COLUMNS.map((column) => (
-          <div key={column.title}>
-            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text">
+        {columns.map((column) => (
+          <div key={column.title ?? column.links[0]?.href}>
+            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
               {column.title}
             </p>
             <ul className="mt-4 space-y-3">
               {column.links.map((link) => (
-                <li key={link.label}>
+                <li key={`${link.href}-${link.label ?? ""}`}>
                   <Link
                     href={link.href}
                     className="text-base text-foreground transition-colors hover:text-accent"
@@ -51,10 +58,12 @@ export function MegaMenu({ className }: { className?: string }) {
 export function MegaMenuNavItem({
   label,
   href,
+  columns,
   className,
 }: {
   label: string;
   href: string;
+  columns: MegaMenuColumn[];
   className?: string;
 }) {
   return (
@@ -62,9 +71,14 @@ export function MegaMenuNavItem({
       <Link href={href} className={className}>
         {label}
       </Link>
-      <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-4 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <MegaMenu className="w-[min(90vw,64rem)] rounded-default border border-border-light" />
-      </div>
+      {columns.length > 0 ? (
+        <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-4 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+          <MegaMenu
+            columns={columns}
+            className="w-[min(90vw,64rem)] rounded-default border border-border-light"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

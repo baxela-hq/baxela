@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 
-import { MEGA_MENU_COLUMNS } from "@/components/mega-menu-columns";
+import type { NavItem } from "@/lib/menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CloseIcon, SearchIcon } from "@/components/ui/icons";
@@ -15,8 +15,9 @@ import { Link } from "@/i18n/navigation";
  * overlay pattern: always-mounted panel with CSS transitions, inert when
  * closed, Escape to close and body scroll lock while open. Submitting
  * navigates to the products page filtered by the `q` search parameter.
+ * The popular-category shortcuts come from the header Menu API.
  */
-export function SearchMenu() {
+export function SearchMenu({ categories }: { categories: NavItem[] }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -117,23 +118,25 @@ export function SearchMenu() {
           </Button>
         </form>
 
-        <div className="px-6 pb-6 pt-6">
-          <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
-            {t("search.texts.popular_categories")}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {MEGA_MENU_COLUMNS.map((column) => (
-              <Link
-                key={column.title}
-                href={column.links[0].href}
-                onClick={close}
-                className="rounded-default border border-border px-4 py-2 text-sm text-foreground transition-colors hover:border-primary hover:text-accent"
-              >
-                {column.title}
-              </Link>
-            ))}
+        {categories.length > 0 ? (
+          <div className="px-6 pb-6 pt-6">
+            <p className="text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
+              {t("search.texts.popular_categories")}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {categories.map((category) => (
+                <Link
+                  key={category.href}
+                  href={category.href}
+                  onClick={close}
+                  className="rounded-default border border-border px-4 py-2 text-sm text-foreground transition-colors hover:border-primary hover:text-accent"
+                >
+                  {category.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );
