@@ -2,7 +2,8 @@
   "texts": {
     "title": "Shopping cart",
     "empty": "Your cart is empty.",
-    "empty_hint": "Browse the products and add something you like."
+    "empty_hint": "Browse the products and add something you like.",
+    "guest_checkout_hint": "You'll sign in at checkout."
   },
   "labels": {
     "product": "Product",

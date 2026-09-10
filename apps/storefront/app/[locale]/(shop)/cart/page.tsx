@@ -3,14 +3,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
-import { api, ApiError } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/client";
+import { cartApi } from "@/lib/cart/client";
 import type { ApiCartItem } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { Link, useRouter } from "@/i18n/navigation";
 
 /**
- * The backend cart is per-authenticated-user (no guest carts), so this page
- * requires a session; visitors without one are sent to login and back.
+ * Cart for both audiences: signed-in visitors get their per-user cart,
+ * everyone else the guest cart keyed by the localStorage cart token. Login
+ * is only requested at checkout — this page never redirects.
  */
 export default function CartPage() {
   const t = useTranslations("cart.cart");
@@ -24,27 +26,19 @@ export default function CartPage() {
   const [busyItemId, setBusyItemId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/login?next=/cart");
-    }
-  }, [status, router]);
-
   const load = useCallback(async () => {
-    if (!token) return;
+    if (status === "loading") return;
     try {
-      const fetched = await api.get<ApiCartItem[]>("/cart/user/cart-items", {
-        token,
-      });
+      const fetched = await cartApi(token).list();
       setItems(fetched);
       setError(null);
     } catch {
       setError(tCommon("messages.error.general"));
     }
-  }, [token, tCommon]);
+  }, [status, token, tCommon]);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status !== "loading") {
       // Fetch-on-auth is a legitimate external-system sync; the rule flags
       // setState statically even though it only runs in the async
       // continuation after the fetch resolves.
@@ -58,11 +52,7 @@ export default function CartPage() {
     setBusyItemId(item.id);
     setError(null);
     try {
-      await api.patch(
-        `/cart/user/cart-items/${item.id}`,
-        { quantity },
-        { token },
-      );
+      await cartApi(token).update(item.id, quantity);
       await load();
     } catch (cause) {
       setError(
@@ -79,7 +69,7 @@ export default function CartPage() {
     setBusyItemId(item.id);
     setError(null);
     try {
-      await api.delete(`/cart/user/cart-items/${item.id}`, { token });
+      await cartApi(token).remove(item.id);
       await load();
     } catch (cause) {
       setError(
@@ -100,7 +90,10 @@ export default function CartPage() {
 
   const usd = { style: "currency", currency: "USD" } as const;
 
-  if (status !== "authenticated") {
+  // Hold rendering until the stored session (if any) has been restored, so
+  // the first cart fetch picks the right audience instead of briefly
+  // treating a signed-in visitor as a guest.
+  if (status === "loading") {
     return (
       <section className="mx-auto max-w-7xl px-6 py-24 text-center">
         <p className="text-base text-secondary-text rtl:normal-case rtl:tracking-normal">
@@ -264,6 +257,11 @@ export default function CartPage() {
               >
                 {t("actions.checkout")}
               </Button>
+              {status === "unauthenticated" ? (
+                <p className="mt-3 text-center text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
+                  {t("texts.guest_checkout_hint")}
+                </p>
+              ) : null}
               <Link
                 href="/products"
                 className="mt-4 block text-center text-sm text-secondary-text underline underline-offset-2 hover:text-foreground rtl:normal-case rtl:tracking-normal"
