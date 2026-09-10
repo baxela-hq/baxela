@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# commit-msg hook: enforces the format in docs/COMMIT_CONVENTION.md
+#
+#   <type>(<scope>): <subject>
+#
+# Validates only the first subject line of the message at $1. Machine-generated
+# commits (merge, revert, fixup, squash) are exempt. Depends on POSIX sh plus
+# grep/sed/head/cut — no external tooling.
+
+set -u
+
+msg_file="$1"
+
+line="$(grep -Ev '^[[:space:]]*#' "$msg_file" | grep -Ev '^[[:space:]]*$' | head -n 1)"
+
+# Empty message — git itself rejects it; nothing to validate here.
+[ -z "$line" ] && exit 0
+
+# Exempt machine-generated commits.
+case "$line" in
+    'Merge '*|'Revert '*|'fixup! '*|'squash! '*)
+        exit 0 ;;
+esac
+
+# Whitelisted types and scopes (see docs/COMMIT_CONVENTION.md).
+TYPES='feat|fix|refactor|perf|docs|style|test|build|chore|ci|revert'
+APP_SCOPES='backend|admin|storefront|api|infra'
+ROOT_SCOPES='monorepo|deps|compose'
+SEG='[a-z0-9][a-z0-9._-]*'
+
+format_regex="^($TYPES)\((($APP_SCOPES)(/$SEG)*|$ROOT_SCOPES)\): (.+)$"
+
+reject() {
+    printf '\nCommit message rejected: %s\n\n' "$1"
+    printf '  %s\n\n' "$line"
+    printf 'Expected: <type>(<scope>): <subject>\n'
+    printf '  types:  %s\n' "$TYPES"
+    printf '  scopes: %s/<module> (app) or %s (root)\n' "$APP_SCOPES" "$ROOT_SCOPES"
+    printf '  <subject>: imperative mood, lowercase first letter, no trailing\n'
+    printf '             period, max 72 characters.\n\n'
+    printf 'Examples:\n'
+    printf '  feat(backend/catalog): add product shipping dimensions\n'
+    printf '  fix(admin): handle expired tokens on sign-in\n'
+    printf '  chore(api): add Bruno collection for media endpoints\n'
+    printf '  build(infra): add mysql healthcheck to compose\n\n'
+    printf 'See docs/COMMIT_CONVENTION.md. Bypass with: git commit --no-verify\n'
+    exit 1
+}
+
+if ! printf '%s\n' "$line" | grep -Eq "$format_regex"; then
+    reject 'does not match <type>(<scope>): <subject>'
+fi
+
+# Everything after the closing paren + ": ".
+subject="$(printf '%s\n' "$line" | sed -E 's/^[^)]*\): //')"
+
+# Max 72 characters.
+if [ "$(printf '%s' "$subject" | wc -c)" -gt 72 ]; then
+    reject 'subject is longer than 72 characters'
+fi
+
+# No trailing period.
+case "$subject" in
+    *.)
+        reject 'subject must not end with a period' ;;
+esac
+
+# Subject starts lowercase.
+case "$(printf '%s' "$subject" | cut -c1)" in
+    [A-Z])
+        reject 'subject must start with a lowercase letter' ;;
+esac
+
+# Imperative mood — reject common non-imperative first-word verbs.
+first_word="$(printf '%s' "$subject" | sed -E 's/[[:space:]].*$//')"
+case "$first_word" in
+    adds|added|adding|fixes|fixed|fixing|updates|updated|updating|removes|removed|removing|creates|created|creating|changes|changed|changing|implements|implemented|implementing|improves|improved|improving|refactors|refactored|refactoring|moves|moved|moving|deletes|deleted|deleting|makes|made|handles|handled|handling)
+        reject "subject starts with non-imperative verb '$first_word'" ;;
+esac
+
+exit 0

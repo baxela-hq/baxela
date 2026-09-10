@@ -43,7 +43,7 @@ baxela/
 
 ## Contributing
 
-- Follow the [commit message convention](docs/COMMIT_CONVENTION.md): `<type>(<scope>): <subject>` with a mandatory scope.
+- Follow the [commit message convention](docs/COMMIT_CONVENTION.md): `<type>(<scope>): <subject>` with a mandatory scope. A local git hook validates commit messages — enable it once after cloning with `sh scripts/install-hooks.sh`.
 
 ## Moving apps
 

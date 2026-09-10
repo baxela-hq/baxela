@@ -31,12 +31,14 @@ The **Git Conventions** below are monorepo-level and take precedence over per-ap
 
 ## Git Conventions
 
-- Conventional commits: `type(scope): subject` — types: `feat`, `fix`, `refactor`, `chore`, `test`, `docs`, `build`, `ci`.
+- Conventional commits: `<type>(<scope>): <subject>`, enforced by a local `commit-msg` git hook (`.githooks/commit-msg`) — `docs/COMMIT_CONVENTION.md` is the authoritative spec. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `style`, `test`, `build`, `chore`, `ci`, `revert`.
 - **Scope is the app** the change belongs to: `backend`, `admin`, `storefront`, `api`, or `infra` for `infrastructure/` and other root-level changes (root config, CI, etc.).
 - For a deeper change, append the app's module/feature after a slash — e.g. `feat(backend/catalog): ...` or `fix(admin/auth): ...`. The app scope stays primary so a commit's target is identifiable from the subject alone.
+- Root-level changes that touch neither an app nor `infrastructure/` use a root scope: `monorepo`, `deps`, or `compose`.
 - Examples:
   - `feat(backend/catalog): add product shipping dimensions`
   - `fix(admin): handle expired tokens on sign-in`
   - `chore(api): add Bruno collection for media endpoints`
-  - `infra(backend): add mysql healthcheck to compose`
+  - `build(infra): add mysql healthcheck to compose`
+- Enable the hook once after cloning with `sh scripts/install-hooks.sh`.
 - Only commit when explicitly asked.
