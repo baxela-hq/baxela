@@ -8,8 +8,8 @@ import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { MailIcon, ArrowLeftIcon } from "@/components/ui/icons";
-import { Link, useRouter } from "@/i18n/navigation";
+import { MailIcon } from "@/components/ui/icons";
+import { useRouter } from "@/i18n/navigation";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth.auth");
@@ -42,39 +42,31 @@ export default function ForgotPasswordPage() {
   return (
     <AuthShell>
       <div className="flex flex-col items-center">
-        <Link
-          href="/login"
-          className="self-start mb-10 inline-flex items-center gap-2 text-sm font-medium text-secondary-text transition-colors hover:text-foreground rtl:normal-case rtl:tracking-normal"
-        >
-          <ArrowLeftIcon className="size-4 rtl:rotate-180" />
-          {tCommon("form.actions.back")}
-        </Link>
         <Logo />
-        <h1 className="mt-16 text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
-          {t("forgot_password.texts.title")}
-        </h1>
-        <p className="mt-3 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-          {t("forgot_password.texts.description")}
-        </p>
-        <form
-          className="mt-10 flex w-full flex-col gap-6"
-          onSubmit={onSubmit}
-        >
-          <Input
-            type="email"
-            required
-            label={tCommon("form.labels.email")}
-            placeholder={tCommon("form.placeholders.email")}
-            icon={<MailIcon />}
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <Button type="submit" disabled={pending}>
-            {pending
-              ? tCommon("messages.info.loading")
-              : t("forgot_password.actions.submit")}
-          </Button>
-        </form>
+        <div className="mt-6 w-full rounded-default border border-border-light bg-white p-6 shadow-sm">
+          <h1 className="text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
+            {t("forgot_password.texts.title")}
+          </h1>
+          <p className="mt-3 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+            {t("forgot_password.texts.description")}
+          </p>
+          <form className="mt-8 flex flex-col gap-6" onSubmit={onSubmit}>
+            <Input
+              type="email"
+              required
+              label={tCommon("form.labels.email")}
+              placeholder={tCommon("form.placeholders.email")}
+              icon={<MailIcon />}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <Button type="submit" disabled={pending}>
+              {pending
+                ? tCommon("messages.info.loading")
+                : t("forgot_password.actions.submit")}
+            </Button>
+          </form>
+        </div>
       </div>
     </AuthShell>
   );
