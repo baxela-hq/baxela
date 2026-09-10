@@ -233,7 +233,8 @@
       },
       "error": {
         "save_failed": "Saving the address failed.",
-        "delete_failed": "Deleting the address failed."
+        "delete_failed": "Deleting the address failed.",
+        "country_required": "Please select a country."
       }
     }
   }

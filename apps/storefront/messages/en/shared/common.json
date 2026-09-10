@@ -15,7 +15,8 @@
     "placeholders": {
       "email": "Enter your email",
       "password": "Enter your password",
-      "select": "Select an option"
+      "select": "Select an option",
+      "search": "Search…"
     },
     "validation": {
       "required": "This field is required.",
@@ -31,7 +32,8 @@
     },
     "info": {
       "loading": "Loading…",
-      "not_found": "The page you are looking for was not found."
+      "not_found": "The page you are looking for was not found.",
+      "no_results": "No results found."
     }
   }
 }
