@@ -14,6 +14,7 @@ use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Cart\Support\VariantDisplayName;
 use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
@@ -99,7 +100,9 @@ class CheckoutAction
                 )) {
                     $variantId = $cartItem->{CartItemSchema::VARIANT_ID};
                     throw new OutOfStockException(
-                        VariantDisplayName::for((int) $variantId),
+                        VariantDisplayName::fromSummary(
+                            app(CatalogGatewayInterface::class)->getVariantSummaries([(int) $variantId])->get((int) $variantId)
+                        ),
                         $inventoryGateway->availableQuantity((string) $variantId) ?? 0,
                         (int) $variantId,
                     );

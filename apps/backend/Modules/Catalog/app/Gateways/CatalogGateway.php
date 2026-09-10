@@ -4,13 +4,17 @@ namespace Modules\Catalog\Gateways;
 
 use Illuminate\Support\Collection;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Image\ImageSchema;
+use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
+use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
+use Modules\Core\Contracts\Gateways\Catalog\DTOs\VariantSummary;
 
 class CatalogGateway implements CatalogGatewayInterface
 {
@@ -43,6 +47,30 @@ class CatalogGateway implements CatalogGatewayInterface
         return Product::query()->whereKey($productId)->exists();
     }
 
+    public function getVariantSummaries(array $variantIds): Collection
+    {
+        if ($variantIds === []) {
+            return collect();
+        }
+
+        $languageId = $this->resolvePublicLanguageId();
+
+        return Variant::query()
+            ->whereIn(VariantSchema::ID, $variantIds)
+            ->with([
+                VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
+                VariantSchema::RES_PRODUCT.'.'.ProductSchema::RES_TRANSLATIONS,
+            ])
+            ->get()
+            ->keyBy(VariantSchema::ID)
+            ->map(fn (Variant $variant) => $this->toVariantSummary($variant, $languageId));
+    }
+
+    public function variantExists(int $variantId): bool
+    {
+        return Variant::query()->whereKey($variantId)->exists();
+    }
+
     /**
      * Request-language translation with a first-translation fallback —
      * the same resolution the public product list applies.
@@ -62,6 +90,35 @@ class CatalogGateway implements CatalogGatewayInterface
             price: $variant?->{VariantSchema::PRICE},
             compare_price: $variant?->{VariantSchema::COMPARE_PRICE},
             image_url: $product->{ProductSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
+        );
+    }
+
+    private function toVariantSummary(Variant $variant, ?int $languageId): VariantSummary
+    {
+        $product = $variant->{VariantSchema::RES_PRODUCT};
+        $productTranslation = $product?->{ProductSchema::RES_TRANSLATIONS}
+            ->firstWhere(PTSchema::LANGUAGE_ID, $languageId)
+            ?? $product?->{ProductSchema::RES_TRANSLATIONS}->first();
+
+        $labels = $variant->{VariantSchema::RES_OPTION_VALUES}
+            ->map(function ($optionValue) use ($languageId): ?string {
+                $translation = $optionValue->{OptionValueSchema::RES_TRANSLATIONS}
+                    ->firstWhere(OVTSchema::LANGUAGE_ID, $languageId)
+                    ?? $optionValue->{OptionValueSchema::RES_TRANSLATIONS}->first();
+
+                return $translation?->{OVTSchema::TITLE};
+            })
+            ->filter()
+            ->values();
+
+        return new VariantSummary(
+            id: $variant->{VariantSchema::ID},
+            product_id: $variant->{VariantSchema::PRODUCT_ID},
+            price: $variant->{VariantSchema::PRICE},
+            compare_price: $variant->{VariantSchema::COMPARE_PRICE},
+            product_title: $productTranslation?->{PTSchema::TITLE},
+            product_slug: $productTranslation?->{PTSchema::SLUG},
+            variant_label: $labels->isNotEmpty() ? $labels->join(' / ') : null,
         );
     }
 }

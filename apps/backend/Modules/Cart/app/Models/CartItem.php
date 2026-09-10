@@ -2,15 +2,16 @@
 
 namespace Modules\Cart\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Cart\Database\Factories\CartItemFactory;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
-use Modules\Catalog\Models\Variant;
 
-// use Modules\Cart\Database\Factories\CartItemFactory;
-
+/**
+ * @mixin Builder
+ */
 class CartItem extends Model
 {
     use HasFactory;
@@ -31,11 +32,6 @@ class CartItem extends Model
     public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);
-    }
-
-    public function variant(): BelongsTo
-    {
-        return $this->belongsTo(Variant::class, CartItemSchema::VARIANT_ID);
     }
 
     protected static function newFactory(): CartItemFactory
