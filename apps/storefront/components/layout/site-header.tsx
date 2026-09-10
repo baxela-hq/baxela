@@ -27,7 +27,7 @@ export async function SiteHeader() {
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border-light bg-white">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Logo variant="dark" />
+          <Logo />
           <nav
             aria-label={t("header.labels.main_navigation")}
             className="hidden items-center gap-8 md:flex"

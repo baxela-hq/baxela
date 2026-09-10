@@ -9,6 +9,7 @@
 
 ## Auth screens (01–05)
 - Layout: split-screen, left full-bleed photo panel (845×1024 of 1440×1024), white Logo (143×58) @(60,60) over photo; right column starts x≈895, content width 445px.
+  - DEV NOTE (2026-09): login/signup intentionally deviate from the Figma split-screen spec (01/02). The photo panel was removed by product decision; ALL auth screens now use the centered single-column family of 03/04 (dark Logo top-center, 445px column, `AuthShell` in `components/auth/auth-shell.tsx`). Do not restore the photo panel from this spec.
 - Input component: 445×56 (+label = 445×80), light-gray 8px border, leading icon, small gray label above.
 - Button: 445×56, near-black bg, white text, radius ~8px.
 - Links (forgot password / signup): green or underlined gray text, right/left aligned in row with checkbox.

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { LockIcon, MailIcon } from "@/components/ui/icons";
+import { Logo } from "@/components/ui/logo";
 import { Link, useRouter } from "@/i18n/navigation";
 
 function LoginForm() {
@@ -44,54 +45,57 @@ function LoginForm() {
   };
 
   return (
-    <AuthShell image="/images/auth-photo.jpg">
-      <h1 className="text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
-        {t("login.texts.title")}
-      </h1>
-      <form className="mt-10 flex flex-col gap-6" onSubmit={onSubmit}>
-        <Input
-          type="email"
-          required
-          label={tCommon("form.labels.email")}
-          placeholder={tCommon("form.placeholders.email")}
-          icon={<MailIcon />}
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <Input
-          type="password"
-          required
-          minLength={8}
-          label={tCommon("form.labels.password")}
-          placeholder={tCommon("form.placeholders.password")}
-          icon={<LockIcon />}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <div className="flex items-center justify-between">
-          <Checkbox label={t("login.labels.remember_me")} />
+    <AuthShell>
+      <div className="flex flex-col items-center">
+        <Logo />
+        <h1 className="mt-16 text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
+          {t("login.texts.title")}
+        </h1>
+        <form className="mt-10 flex w-full flex-col gap-6" onSubmit={onSubmit}>
+          <Input
+            type="email"
+            required
+            label={tCommon("form.labels.email")}
+            placeholder={tCommon("form.placeholders.email")}
+            icon={<MailIcon />}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <Input
+            type="password"
+            required
+            minLength={8}
+            label={tCommon("form.labels.password")}
+            placeholder={tCommon("form.placeholders.password")}
+            icon={<LockIcon />}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <div className="flex items-center justify-between">
+            <Checkbox label={t("login.labels.remember_me")} />
+            <Link
+              href="/forgot-password"
+              className="text-sm text-secondary-text underline underline-offset-2 hover:text-foreground rtl:normal-case rtl:tracking-normal"
+            >
+              {t("login.actions.forgot_password")}
+            </Link>
+          </div>
+          <Button type="submit" disabled={pending}>
+            {pending
+              ? tCommon("messages.info.loading")
+              : t("login.actions.submit")}
+          </Button>
+        </form>
+        <p className="mt-8 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+          {t("login.texts.no_account")}{" "}
           <Link
-            href="/forgot-password"
-            className="text-sm text-secondary-text underline underline-offset-2 hover:text-foreground rtl:normal-case rtl:tracking-normal"
+            href="/signup"
+            className="font-medium text-accent hover:underline rtl:normal-case rtl:tracking-normal"
           >
-            {t("login.actions.forgot_password")}
+            {t("login.actions.signup_link")}
           </Link>
-        </div>
-        <Button type="submit" disabled={pending}>
-          {pending
-            ? tCommon("messages.info.loading")
-            : t("login.actions.submit")}
-        </Button>
-      </form>
-      <p className="mt-8 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-        {t("login.texts.no_account")}{" "}
-        <Link
-          href="/signup"
-          className="font-medium text-accent hover:underline rtl:normal-case rtl:tracking-normal"
-        >
-          {t("login.actions.signup_link")}
-        </Link>
-      </p>
+        </p>
+      </div>
     </AuthShell>
   );
 }
