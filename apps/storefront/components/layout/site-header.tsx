@@ -1,10 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { HeartIcon, ShoppingCartIcon } from "@/components/ui/icons";
+import { HeartIcon } from "@/components/ui/icons";
 import { Logo } from "@/components/ui/logo";
 import { MegaMenuNavItem } from "@/components/mega-menu";
 import { MobileMenu } from "@/components/mobile-menu";
 import { SearchMenu } from "@/components/search-menu";
 import { AccountMenu } from "@/components/layout/account-menu";
+import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { fetchMenu } from "@/lib/api/site";
 import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
@@ -61,13 +62,7 @@ export async function SiteHeader() {
             >
               <HeartIcon className="size-5" />
             </Link>
-            <Link
-              href="/cart"
-              aria-label={t("header.actions.cart")}
-              className="rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
-            >
-              <ShoppingCartIcon className="size-5" />
-            </Link>
+            <CartMenu />
             <AccountMenu />
             <LanguageSwitcher />
             <MobileMenu links={links} categories={categories} />

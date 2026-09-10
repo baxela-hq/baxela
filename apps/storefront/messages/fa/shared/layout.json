@@ -21,6 +21,18 @@
       "open_menu": "باز کردن منو",
       "close_menu": "بستن منو",
       "language": "تغییر زبان"
+    },
+    "cart": {
+      "texts": {
+        "empty": "سبد خرید شما خالی است."
+      },
+      "labels": {
+        "subtotal": "جمع کل"
+      },
+      "actions": {
+        "view_cart": "مشاهده سبد خرید",
+        "checkout": "پرداخت"
+      }
     }
   },
   "search": {
