@@ -6,9 +6,9 @@ use Modules\Core\Contracts\Events\AbstractBaseEvent;
 
 class CartCreatedEvent extends AbstractBaseEvent
 {
-    public int $id;
+    public ?int $id = null;
 
-    public int $user_id;
+    public ?int $user_id = null;
 
-    public string $updated_at;
+    public ?string $updated_at = null;
 }

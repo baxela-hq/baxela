@@ -3,6 +3,7 @@
 namespace Modules\Auth\Actions\Public\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\InvalidCredentialsException;
@@ -44,10 +45,16 @@ class SignInAuthAction extends AbstractAuthAction
         // Generate a new token for the logged-in user
         $token = $user->createToken(GuardsEnum::USER->value)->plainTextToken;
 
+        // Guest cart token (X-Cart-Token header) — forwarded only when it is
+        // a well-formed UUID so the Cart module can merge the guest cart.
+        $cartToken = $request->header('X-Cart-Token');
+        $cartToken = is_string($cartToken) && Str::isUuid($cartToken) ? $cartToken : null;
+
         event(new UserSignedInEvent(
             $user->{UserSchema::ID},
             $user->{UserSchema::EMAIL},
             now()->toDateTimeString(),
+            $cartToken,
         ));
 
         return (object) [

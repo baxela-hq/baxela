@@ -3,6 +3,8 @@
 namespace Modules\Cart\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Cart\Listeners\Auth\UserSignedIn\MergeGuestCartListener;
+use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
 use Modules\Core\Contracts\Events\Cart\CartCreatedEvent;
 use Modules\Core\Contracts\Events\Cart\CartItemAddedEvent;
@@ -21,6 +23,7 @@ class EventServiceProvider extends ServiceProvider
         CartCreatedEvent::class => [LogAllEvents::class],
         CartItemAddedEvent::class => [LogAllEvents::class],
         CartItemRemovedEvent::class => [LogAllEvents::class],
+        UserSignedInEvent::class => [MergeGuestCartListener::class],
     ];
 
     /**

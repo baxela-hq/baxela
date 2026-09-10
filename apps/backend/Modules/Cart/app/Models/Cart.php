@@ -20,6 +20,7 @@ class Cart extends Model
 
     protected $fillable = [
         CartSchema::USER_ID,
+        CartSchema::TOKEN,
     ];
 
     public function items(): HasMany
