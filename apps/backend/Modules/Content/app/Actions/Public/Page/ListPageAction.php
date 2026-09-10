@@ -10,6 +10,9 @@ class ListPageAction extends AbstractPageAction
 {
     public function handle(Request $request)
     {
-        return $this->model->where(PageSchema::STATUS, PageStatusEnum::PUBLISHED)->get();
+        return $this->model
+            ->where(PageSchema::STATUS, PageStatusEnum::PUBLISHED)
+            ->with(PageSchema::RES_TRANSLATIONS)
+            ->get();
     }
 }
