@@ -118,6 +118,8 @@ export interface ApiCartItem {
   // The variant's parent product, for linking to the detail page.
   product_id: number | null;
   product_slug: string | null;
+  // The product's current first image; null when it no longer resolves.
+  image_url: string | null;
   quantity: number;
   created_at: string;
   updated_at: string;
@@ -162,6 +164,8 @@ export interface ApiOrderItem {
   product_slug_snapshot: string | null;
   price_snapshot: string;
   quantity: number;
+  // The product's current first image; null when it no longer resolves.
+  image_url: string | null;
 }
 
 export interface ApiOrderAddress {

@@ -168,9 +168,21 @@ export default function CartPage() {
                     <Link
                       href={`/products/${item.product_slug ?? item.product_id}`}
                       aria-label={item.product_name_snapshot}
-                      className="size-16 shrink-0 rounded-default border border-border bg-muted transition-colors hover:border-primary"
+                      className="size-16 shrink-0 overflow-hidden rounded-default border border-border bg-muted transition-colors hover:border-primary"
                     >
-                      <span aria-hidden="true" className="block size-full" />
+                      {item.image_url ? (
+                        // Backend-served images come from arbitrary hosts,
+                        // so this is a plain img rather than next/image.
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.image_url}
+                          alt=""
+                          loading="lazy"
+                          className="block size-full object-cover"
+                        />
+                      ) : (
+                        <span aria-hidden="true" className="block size-full" />
+                      )}
                     </Link>
                   ) : (
                     <span

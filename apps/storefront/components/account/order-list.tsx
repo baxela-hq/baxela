@@ -231,10 +231,22 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                   key={item.id}
                   className="mt-4 flex flex-wrap items-center gap-4"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="size-16 shrink-0 rounded-default border border-border bg-muted"
-                  />
+                  {item.image_url ? (
+                    // Backend-served images come from arbitrary hosts, so
+                    // this is a plain img rather than next/image.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.image_url}
+                      alt={item.product_name_snapshot}
+                      loading="lazy"
+                      className="size-16 shrink-0 rounded-default border border-border object-cover"
+                    />
+                  ) : (
+                    <span
+                      aria-hidden="true"
+                      className="size-16 shrink-0 rounded-default border border-border bg-muted"
+                    />
+                  )}
                   <div className="min-w-0 flex-1">
                     {item.product_slug_snapshot ? (
                       <Link
