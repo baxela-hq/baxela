@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import { MailIcon } from "@/components/ui/icons";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth.auth");
@@ -66,6 +66,16 @@ export default function ForgotPasswordPage() {
                 : t("forgot_password.actions.submit")}
             </Button>
           </form>
+          <p className="mt-6 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+            {t("forgot_password.texts.no_account")}{" "}
+            <Link
+              href="/signup"
+              className="font-medium text-accent hover:underline rtl:normal-case rtl:tracking-normal"
+            >
+              {t("forgot_password.links.signup")}
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </AuthShell>
