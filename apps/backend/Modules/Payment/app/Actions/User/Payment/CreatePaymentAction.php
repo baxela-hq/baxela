@@ -25,7 +25,7 @@ class CreatePaymentAction
     public function handle(PaymentRequest $request): CreatePaymentOutput
     {
         $orderGateway = app(OrderGatewayInterface::class);
-        $order = $orderGateway->getOrder($request->input(PaymentSchema::ORDER_ID), Auth::id());
+        $order = $orderGateway->getOrder($request->input(PaymentSchema::REQ_ORDER_CODE), Auth::id());
         if (! $order) {
             throw PaymentException::processInvalidOrder();
         }
@@ -33,7 +33,7 @@ class CreatePaymentAction
         $method = PaymentMethodEnum::from($request->input(PaymentSchema::METHOD));
         $driver = app(PaymentDriverManager::class)->forMethod($method);
 
-        $orderId = (int) $request->input(PaymentSchema::ORDER_ID);
+        $orderId = $order->id;
 
         $payment = Payment::create([
             PaymentSchema::ORDER_ID => $orderId,

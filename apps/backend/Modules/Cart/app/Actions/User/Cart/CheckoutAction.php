@@ -27,7 +27,7 @@ class CheckoutAction
     public function __construct(protected UserGatewayInterface $userGateway) {}
 
     /**
-     * @return int OrderId
+     * @return null|string Order code (customer-facing)
      *
      * @throws EmptyCardException
      * @throws InvalidAddressException
@@ -35,7 +35,7 @@ class CheckoutAction
      * @throws OrderFailedException
      * @throws OutOfStockException
      */
-    public function handle(CheckoutRequest $request): int
+    public function handle(CheckoutRequest $request): ?string
     {
         $cart = Cart::query()->where(CartSchema::USER_ID, Auth::id())->first();
         $cartItems = $cart?->items;
@@ -87,9 +87,9 @@ class CheckoutAction
         // so a stock-decrement or cart-teardown failure rolls the freshly
         // created order back too instead of leaving a duplicate-order trap
         // for a retry
-        $orderId = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $cartItems): ?int {
-            $orderId = $orderGateway->createFromCart($input);
-            if (! $orderId) {
+        $orderCode = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $cartItems): ?string {
+            $orderCode = $orderGateway->createFromCart($input);
+            if (! $orderCode) {
                 return null;
             }
 
@@ -112,15 +112,15 @@ class CheckoutAction
             $cart->items()->delete();
             $cart->delete();
 
-            return $orderId;
+            return $orderCode;
         });
 
-        if (! $orderId) {
+        if (! $orderCode) {
             throw new OrderFailedException;
         }
 
         event(CartCheckedOutEvent::fill($cart->toArray()));
 
-        return $orderId;
+        return $orderCode;
     }
 }

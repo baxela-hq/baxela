@@ -21,10 +21,10 @@ class CancelOrderAction extends AbstractOrderAction
         OrderStatusEnum::PAID,
     ];
 
-    public function handle(string $id): Model
+    public function handle(string $code): Model
     {
         $order = $this->order
-            ->where(OrderSchema::ID, $id)
+            ->where(OrderSchema::ORDER_CODE, $code)
             ->where(OrderSchema::USER_ID, Auth::id())
             ->firstOrFail();
 

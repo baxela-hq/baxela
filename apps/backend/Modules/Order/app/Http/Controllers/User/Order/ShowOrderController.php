@@ -11,8 +11,8 @@ class ShowOrderController extends Controller
 {
     public function __construct(protected ShowOrderAction $action) {}
 
-    public function __invoke(string $id, Request $request): OrderResource
+    public function __invoke(string $code, Request $request): OrderResource
     {
-        return OrderResource::make($this->action->handle($id));
+        return OrderResource::make($this->action->handle($code));
     }
 }

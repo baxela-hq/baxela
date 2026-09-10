@@ -17,6 +17,7 @@ class OrderResource extends JsonResource
     {
         return [
             OrderSchema::ID => $this->resource->{OrderSchema::ID},
+            OrderSchema::ORDER_CODE => $this->resource->{OrderSchema::ORDER_CODE},
             OrderSchema::USER_ID => $this->resource->{OrderSchema::USER_ID},
             OrderSchema::STATUS => $this->resource->{OrderSchema::STATUS},
             OrderSchema::TOTAL_AMOUNT => $this->resource->{OrderSchema::TOTAL_AMOUNT},

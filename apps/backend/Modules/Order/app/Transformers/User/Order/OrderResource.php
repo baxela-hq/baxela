@@ -15,7 +15,7 @@ class OrderResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            OrderSchema::ID => $this->resource->{OrderSchema::ID},
+            OrderSchema::ORDER_CODE => $this->resource->{OrderSchema::ORDER_CODE},
             OrderSchema::STATUS => $this->resource->{OrderSchema::STATUS},
             OrderSchema::TOTAL_AMOUNT => $this->resource->{OrderSchema::TOTAL_AMOUNT},
             OrderSchema::SHIPPING_METHOD_NAME => $this->resource->{OrderSchema::SHIPPING_METHOD_NAME},

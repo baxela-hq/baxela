@@ -14,10 +14,10 @@ class ListOrderItemAction
         protected CatalogGatewayInterface $catalogGateway,
     ) {}
 
-    public function handle(string $orderId)
+    public function handle(string $code)
     {
         $order = Order::where([
-            OrderSchema::ID => $orderId,
+            OrderSchema::ORDER_CODE => $code,
             OrderSchema::USER_ID => Auth::id(),
         ])->firstOrfail();
 

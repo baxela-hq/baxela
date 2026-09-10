@@ -24,7 +24,7 @@ class CheckoutController extends Controller
     public function __invoke(CheckoutRequest $request): CheckoutResource
     {
         $response = new \StdClass;
-        $response->order_id = $this->action->handle($request);
+        $response->order_code = $this->action->handle($request);
 
         return CheckoutResource::make($response);
     }

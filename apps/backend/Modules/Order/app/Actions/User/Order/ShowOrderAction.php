@@ -8,11 +8,11 @@ use Modules\Order\Schemas\Order\OrderSchema;
 
 class ShowOrderAction extends AbstractOrderAction
 {
-    public function handle(string $id): Model
+    public function handle(string $code): Model
     {
         return $this->order
             ->with(OrderSchema::RES_ADDRESSES)
-            ->where(OrderSchema::ID, $id)
+            ->where(OrderSchema::ORDER_CODE, $code)
             ->where(OrderSchema::USER_ID, Auth::id())
             ->firstOrFail();
     }

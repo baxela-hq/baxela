@@ -15,7 +15,7 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            PaymentSchema::ORDER_ID => ['required', 'string', 'numeric'],
+            PaymentSchema::REQ_ORDER_CODE => ['required', 'string', 'regex:/^[2-9A-HJKMNP-Z]{8}$/'],
             PaymentSchema::METHOD => ['required', 'string', new Enum(PaymentMethodEnum::class)],
         ];
     }

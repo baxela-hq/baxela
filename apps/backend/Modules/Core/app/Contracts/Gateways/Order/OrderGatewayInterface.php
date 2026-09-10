@@ -9,13 +9,15 @@ interface OrderGatewayInterface
 {
     /**
      * @param  CreateOrderInput  $input  cart items, address snapshot, shipping choice
-     * @return null|int OrderId
+     * @return null|string The new order's customer-facing code
      */
-    public function createFromCart(CreateOrderInput $input): ?int;
+    public function createFromCart(CreateOrderInput $input): ?string;
 
-    public function getOrder(string $orderId, string $userId): ?GetOrderOutput;
+    public function getOrder(string $orderCode, string $userId): ?GetOrderOutput;
 
     public function findOrder(int $orderId): ?GetOrderOutput;
+
+    public function findOrderByCode(string $code): ?GetOrderOutput;
 
     /**
      * @return array<int, array{variant_id: int, quantity: int}>
