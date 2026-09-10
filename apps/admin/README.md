@@ -63,7 +63,6 @@ runs this dev server in a container together with the rest of the platform
 | --- | --- |
 | `VITE_API_BASE_URL` | Base URL of the Baxela Laravel API (e.g. `http://Baxela-backend.local/api/v1`) |
 | `VITE_STORE_FRONT_URL` | Storefront base URL, used for product/page preview links |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Optional — only for the `/clerk/*` demo tree; leave empty otherwise |
 
 ## Commands
 
@@ -126,8 +125,6 @@ This project is a customized fork of
 [@satnaing](https://github.com/satnaing) — an admin dashboard UI crafted with ShadcnUI,
 built with responsiveness, accessibility and RTL support in mind. Some `src/components/ui`
 components retain RTL customizations from the original.
-
-The optional `/clerk/*` demo tree is sponsored by [Clerk](https://go.clerk.com/GttUAaK).
 
 ## License
 
