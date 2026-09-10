@@ -95,3 +95,18 @@ Use a scope that **remains meaningful if the app becomes its own repo**.
 feat(backend/catalog): add attributes        ✔
 feat(backend/catalog): Adds attributes.      ✘
 ```
+
+## Enforcement
+
+A local `commit-msg` hook validates every commit against this spec.
+
+- Install once after cloning:
+
+  ```sh
+  sh scripts/install-hooks.sh
+  ```
+
+  This sets the repo-local `core.hooksPath` to `.githooks` (no global config is touched).
+- The hook lives at `.githooks/commit-msg` — dependency-free POSIX `sh` (`grep`/`sed`/`head`/`cut`).
+- Machine-generated commits are exempt: `Merge ...`, `Revert ...`, `fixup! ...`, `squash! ...`.
+- Escape hatch for rare justified cases: `git commit --no-verify`.
