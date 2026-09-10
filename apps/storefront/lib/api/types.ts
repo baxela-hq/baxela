@@ -206,3 +206,34 @@ export interface ApiProductComment {
   user: ApiProductCommentUser | null;
   replies: ApiProductComment[];
 }
+
+// CMS page (Content module) — plain-text copy localizing by Accept-Language.
+export interface ApiPage {
+  id: number;
+  title: string;
+  slug: string;
+  description: string | null;
+  content: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// Public site menus (Menu module). Titles are localized; recursive child
+// links are nested under top-level links, ordered by position.
+export interface ApiMenuLink {
+  id: number;
+  parent_id: number | null;
+  position: number | null;
+  url: string;
+  target: string;
+  title: string | null;
+  children: ApiMenuLink[];
+}
+
+export interface ApiMenu {
+  id: number;
+  location: string;
+  is_active: boolean;
+  title: string | null;
+  links: ApiMenuLink[];
+}

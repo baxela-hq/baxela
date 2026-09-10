@@ -3,25 +3,25 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { MEGA_MENU_COLUMNS } from "@/components/mega-menu-columns";
+import type { NavItem } from "@/lib/menu";
 import { Logo } from "@/components/ui/logo";
 import { CloseIcon, MenuIcon } from "@/components/ui/icons";
 import { Link, usePathname } from "@/i18n/navigation";
 
-const NAV_LINKS = [
-  { key: "home", href: "/" },
-  { key: "products", href: "/products" },
-  { key: "about", href: "/about" },
-  { key: "contact", href: "/contact" },
-] as const;
-
 /**
  * Hamburger trigger + slide-in navigation drawer for viewports below `md`,
  * where the desktop nav is hidden. Mirrors the desktop navigation: the main
- * links plus the category shortcuts from the mega menu. The whole component
- * is display:none at `md` and up, so the drawer never renders on desktop.
+ * links plus the category shortcuts, both driven by the header Menu API. The
+ * whole component is display:none at `md` and up, so the drawer never renders
+ * on desktop.
  */
-export function MobileMenu() {
+export function MobileMenu({
+  links,
+  categories,
+}: {
+  links: NavItem[];
+  categories: NavItem[];
+}) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const t = useTranslations("shared.layout");
@@ -100,8 +100,8 @@ export function MobileMenu() {
           className="flex-1 overflow-y-auto px-6 py-6"
         >
           <ul className="space-y-1">
-            {NAV_LINKS.map((link) => (
-              <li key={link.key}>
+            {links.map((link) => (
+              <li key={link.href}>
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
@@ -111,28 +111,32 @@ export function MobileMenu() {
                       : "block rounded-default px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted hover:text-accent rtl:normal-case rtl:tracking-normal"
                   }
                 >
-                  {t(`header.nav.${link.key}`)}
+                  {link.label}
                 </Link>
               </li>
             ))}
           </ul>
 
-          <p className="mt-8 text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
-            {t("mobile_menu.texts.categories")}
-          </p>
-          <ul className="mt-4 space-y-3">
-            {MEGA_MENU_COLUMNS.map((column) => (
-              <li key={column.title}>
-                <Link
-                  href={column.links[0].href}
-                  onClick={() => setOpen(false)}
-                  className="block py-1 text-base text-foreground transition-colors hover:text-accent"
-                >
-                  {column.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {categories.length > 0 ? (
+            <>
+              <p className="mt-8 text-sm font-semibold uppercase tracking-wide text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {t("mobile_menu.texts.categories")}
+              </p>
+              <ul className="mt-4 space-y-3">
+                {categories.map((category) => (
+                  <li key={category.href}>
+                    <Link
+                      href={category.href}
+                      onClick={() => setOpen(false)}
+                      className="block py-1 text-base text-foreground transition-colors hover:text-accent"
+                    >
+                      {category.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
         </nav>
       </div>
     </div>

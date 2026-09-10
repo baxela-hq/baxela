@@ -6,17 +6,16 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { SearchMenu } from "@/components/search-menu";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { fetchMenu } from "@/lib/api/site";
+import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
 import { Link } from "@/i18n/navigation";
-
-const NAV_LINKS = [
-  { key: "home", href: "/" },
-  { key: "products", href: "/products" },
-  { key: "about", href: "/about" },
-  { key: "contact", href: "/contact" },
-] as const;
 
 export async function SiteHeader() {
   const t = await getTranslations("shared.layout");
+  const headerMenu = await fetchMenu("header");
+  const nav = (headerMenu?.links ?? []).filter((link) => link.title);
+  const links = navItems(nav);
+  const categories = categoryItems(nav);
 
   return (
     <>
@@ -33,27 +32,28 @@ export async function SiteHeader() {
             aria-label={t("header.labels.main_navigation")}
             className="hidden items-center gap-8 md:flex"
           >
-            {NAV_LINKS.map((link) =>
-              link.key === "products" ? (
+            {nav.map((link) =>
+              link.children.length > 0 ? (
                 <MegaMenuNavItem
-                  key={link.key}
-                  label={t(`header.nav.${link.key}`)}
-                  href={link.href}
+                  key={link.id}
+                  label={link.title ?? ""}
+                  href={link.url}
+                  columns={megaMenuColumns(link)}
                   className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                 />
               ) : (
                 <Link
-                  key={link.key}
-                  href={link.href}
+                  key={link.id}
+                  href={link.url}
                   className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                 >
-                  {t(`header.nav.${link.key}`)}
+                  {link.title}
                 </Link>
               ),
             )}
           </nav>
           <div className="flex items-center gap-0.5 sm:gap-1">
-            <SearchMenu />
+            <SearchMenu categories={categories} />
             <button
               type="button"
               aria-label={t("header.actions.wishlist")}
@@ -70,7 +70,7 @@ export async function SiteHeader() {
             </Link>
             <AccountMenu />
             <LanguageSwitcher />
-            <MobileMenu />
+            <MobileMenu links={links} categories={categories} />
           </div>
         </div>
       </header>
