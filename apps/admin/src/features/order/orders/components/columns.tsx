@@ -33,6 +33,16 @@ export const Columns = (): ColumnDef<Order>[] => {
       enableSorting: true,
     },
     {
+      accessorKey: 'order_code',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('order_code')} />
+      ),
+      cell: ({ row }) =>
+        <div className='w-fit ps-2 text-nowrap'>{row.getValue('order_code')}</div>,
+      enableSorting: false,
+      enableHiding: true,
+    },
+    {
       accessorKey: 'user_id',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('user_id')} />

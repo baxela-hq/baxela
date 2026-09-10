@@ -7,6 +7,7 @@
       "order": "سفارش",
       "orders": "سفارشات",
       "id": "شناسه",
+      "order_code": "کد سفارش",
       "user_id": "شناسه کاربر",
       "status": "وضعیت",
       "description": "توضیحات",

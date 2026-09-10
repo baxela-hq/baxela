@@ -90,6 +90,7 @@ export function OrderShow() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>{tLabel('id')}</TableHead>
+                      <TableHead>{tLabel('order_code')}</TableHead>
                       <TableHead>{tLabel('user_id')}</TableHead>
                       <TableHead>{tLabel('total_amount')}</TableHead>
                       <TableHead>{tLabel('description')}</TableHead>
@@ -102,6 +103,7 @@ export function OrderShow() {
                   <TableBody>
                     <TableRow>
                       <TableCell>{record.id}</TableCell>
+                      <TableCell>{record.order_code}</TableCell>
                       <TableCell>{record.user_id}</TableCell>
                       <TableCell>{formatPrice(record.total_amount)}</TableCell>
                       <TableCell className="max-w-[240px] truncate">
