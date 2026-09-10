@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/wishlist",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Wishlist\\": "app/",
+            "Modules\\Wishlist\\Database\\Factories\\": "database/factories/",
+            "Modules\\Wishlist\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Wishlist\\Tests\\": "tests/"
+        }
+    }
+}

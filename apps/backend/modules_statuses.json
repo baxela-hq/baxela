@@ -13,5 +13,6 @@
     "Notification": true,
     "Shipping": true,
     "Menu": true,
-    "Contact": true
+    "Contact": true,
+    "Wishlist": true
 }
