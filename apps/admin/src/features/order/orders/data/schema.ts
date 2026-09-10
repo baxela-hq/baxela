@@ -13,6 +13,7 @@ export const statuses = [
 
 export const orderSchema = z.object({
   id: z.number(),
+  order_code: z.string(),
   user_id: z.number(),
   total_amount: z.number(),
   description: z.string(),

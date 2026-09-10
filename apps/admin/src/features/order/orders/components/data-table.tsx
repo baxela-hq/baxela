@@ -59,7 +59,8 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: false },
     columnFilters: [
-      // username per-column text filter
+      // order-code per-column text filter
+      { columnId: 'order_code', searchKey: 'filter[order_code]', type: 'string' },
       { columnId: 'user_id', searchKey: 'filter[user_id]', type: 'string' },
       { columnId: 'status', searchKey: 'filter[status]', type: 'array' },
     ],
@@ -102,8 +103,8 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
       <DataTableToolbar
         tLabel={tLabel}
         table={table}
-        searchPlaceholder={tDataTable('toolbar.filter', {name: tLabel('user_id')})}
-        searchKey='user_id'
+        searchPlaceholder={tDataTable('toolbar.filter', {name: tLabel('order_code')})}
+        searchKey='order_code'
         filters={[
           {
             columnId: 'status',
