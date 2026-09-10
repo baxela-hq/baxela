@@ -19,6 +19,7 @@ import {
   TrashIcon,
 } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 
 const EMPTY_FORM = {
   full_name: "",
@@ -54,6 +55,7 @@ export function AddressManager() {
   );
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [countryError, setCountryError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!token) return;
@@ -87,6 +89,7 @@ export function AddressManager() {
   const openCreateForm = () => {
     setEditingId(null);
     setForm({ ...EMPTY_FORM });
+    setCountryError(null);
     setShowForm(true);
   };
 
@@ -102,6 +105,7 @@ export function AddressManager() {
       country_code: address.country_code ?? "",
       is_default: address.is_default,
     });
+    setCountryError(null);
     setShowForm(true);
   };
 
@@ -109,6 +113,7 @@ export function AddressManager() {
     setShowForm(false);
     setEditingId(null);
     setForm({ ...EMPTY_FORM });
+    setCountryError(null);
   }, []);
 
   // Same overlay behaviour as the mobile menu drawer: lock the page behind
@@ -130,6 +135,10 @@ export function AddressManager() {
 
   const onSave = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!form.country_code) {
+      setCountryError(t("address.messages.error.country_required"));
+      return;
+    }
     setPending(true);
     setError(null);
     try {
@@ -405,36 +414,20 @@ export function AddressManager() {
                     }))
                   }
                 />
-                <div>
-                  <label
-                    htmlFor="account-address-country"
-                    className="mb-2 block text-sm text-secondary-text rtl:normal-case rtl:tracking-normal"
-                  >
-                    {t("address.labels.country")}
-                  </label>
-                  <select
-                    id="account-address-country"
-                    required
-                    value={form.country_code}
-                    disabled={pending}
-                    onChange={(event) =>
-                      setForm((current) => ({
-                        ...current,
-                        country_code: event.target.value,
-                      }))
-                    }
-                    className="h-14 w-full rounded-default border border-border bg-white px-4 text-base text-foreground focus:border-primary focus:outline-none"
-                  >
-                    <option value="">
-                      {tCommon("form.placeholders.select")}
-                    </option>
-                    {countries.map((country) => (
-                      <option key={country.id} value={country.code}>
-                        {country.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <SearchableSelect
+                  label={t("address.labels.country")}
+                  options={countries.map((country) => ({
+                    value: country.code,
+                    label: country.name,
+                  }))}
+                  value={form.country_code}
+                  disabled={pending}
+                  error={countryError}
+                  onChange={(country_code) => {
+                    setForm((current) => ({ ...current, country_code }));
+                    setCountryError(null);
+                  }}
+                />
                 <Checkbox
                   label={t("address.labels.is_default")}
                   checked={form.is_default}
