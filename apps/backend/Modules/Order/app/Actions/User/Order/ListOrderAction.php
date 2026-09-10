@@ -14,6 +14,7 @@ class ListOrderAction extends AbstractOrderAction
             // The resource only serializes addresses when loaded; the
             // storefront order list renders them in its detail view.
             ->with(OrderSchema::RES_ADDRESSES)
+            ->orderByDesc(OrderSchema::ID)
             ->paginate(15)
             ->withQueryString();
     }
