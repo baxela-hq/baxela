@@ -25,14 +25,16 @@ export function CartMenu() {
       <Link
         href="/cart"
         aria-label={t("header.actions.cart")}
-        className="relative rounded-default p-2.5 text-foreground transition-colors hover:bg-muted"
+        className="relative flex size-10 items-center justify-center rounded-default text-foreground transition-colors hover:bg-muted"
       >
-        <ShoppingCartIcon className="size-5" />
-        {ready && itemCount > 0 ? (
-          <span className="absolute -end-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold leading-none text-accent-foreground">
-            {itemCount > 99 ? "99+" : itemCount.toLocaleString()}
-          </span>
-        ) : null}
+        <span className="relative">
+          <ShoppingCartIcon className="size-5" />
+          {ready && itemCount > 0 ? (
+            <span className="absolute -top-1 -end-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold leading-none text-accent-foreground">
+              {itemCount > 99 ? "99+" : itemCount.toLocaleString()}
+            </span>
+          ) : null}
+        </span>
       </Link>
 
       <div className="invisible absolute end-0 top-full z-50 w-80 pt-4 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
