@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
-import { api, ApiError } from "@/lib/api/client";
+import { ApiError } from "@/lib/api/client";
+import { cartApi } from "@/lib/cart/client";
 import type { ApiVariant } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { HeartIcon } from "@/components/ui/icons";
@@ -19,18 +20,16 @@ function variantLabel(variant: ApiVariant): string {
 
 /**
  * Variant selector + quantity stepper + add-to-cart for the product page.
- * Cart items are variant-based; unauthenticated users are sent to login
- * with a `next` param so they land back here.
+ * Cart items are variant-based; adding works for guests too — cartApi picks
+ * the guest cart (X-Cart-Token) until a session exists.
  */
 export function ProductActions({
-  productHref,
   variants,
 }: {
-  productHref: string;
   variants: ApiVariant[];
 }) {
   const t = useTranslations("catalog.product");
-  const { status, token } = useAuth();
+  const { token } = useAuth();
   const router = useRouter();
 
   const defaultVariant =
@@ -46,20 +45,12 @@ export function ProductActions({
   const onAddToCart = async () => {
     setError(null);
 
-    if (status !== "authenticated" || !token) {
-      router.replace(`/login?next=${productHref}`);
-      return;
-    }
     if (variantId === null) return;
 
     setPending(true);
     setAdded(false);
     try {
-      await api.post(
-        "/cart/user/cart-items",
-        { variant_id: variantId, quantity },
-        { token },
-      );
+      await cartApi(token).add(variantId, quantity);
       setAdded(true);
       toast.success(t("messages.success.added_to_cart"), {
         action: {

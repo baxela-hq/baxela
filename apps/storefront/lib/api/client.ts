@@ -25,7 +25,10 @@ export class ApiError extends Error {
 }
 
 export interface ApiRequestOptions extends Omit<RequestInit, "body"> {
+  /** Sanctum bearer token (authenticated calls). */
   token?: string | null;
+  /** Guest cart token — sent as X-Cart-Token for /cart/public/* calls. */
+  cartToken?: string | null;
   locale?: string;
   body?: unknown;
 }
@@ -42,7 +45,7 @@ export async function apiFetch<T>(
   path: string,
   options: ApiRequestOptions = {},
 ): Promise<T> {
-  const { token, locale, body, headers, ...rest } = options;
+  const { token, cartToken, locale, body, headers, ...rest } = options;
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
@@ -52,6 +55,7 @@ export async function apiFetch<T>(
       "Accept-Language": resolveLocale(locale),
       ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(cartToken ? { "X-Cart-Token": cartToken } : {}),
       ...headers,
     },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),

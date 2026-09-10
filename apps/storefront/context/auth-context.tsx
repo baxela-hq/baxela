@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { api } from "@/lib/api/client";
+import { clearCartToken, getCartToken } from "@/lib/cart/client";
 import type { ApiUser } from "@/lib/api/types";
 
 // Sanctum bearer-token session. The backend signs in via
@@ -90,15 +91,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = useCallback(async ({ email, password }: SignInInput) => {
+    // Send the guest cart token along: the backend folds the guest cart
+    // into the account cart synchronously before responding.
     const { token: nextToken, user: nextUser } = await api.post<
       { token: string; user: ApiUser }
-    >("/auth/public/auth/signin", { email, password });
+    >("/auth/public/auth/signin", { email, password }, {
+      cartToken: getCartToken(),
+    });
 
     window.localStorage.setItem(TOKEN_KEY, nextToken);
     window.localStorage.setItem(USER_KEY, JSON.stringify(nextUser));
     setToken(nextToken);
     setUser(nextUser);
     setStatus("authenticated");
+
+    // Only drop the guest token once sign-in (and the server-side merge)
+    // has succeeded — a failed attempt must leave the guest cart reachable.
+    clearCartToken();
 
     return nextUser;
   }, []);
