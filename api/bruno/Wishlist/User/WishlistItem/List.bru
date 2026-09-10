@@ -1,0 +1,28 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/wishlist/user/wishlist-items
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+query {
+  filter[product_id]: 37
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
