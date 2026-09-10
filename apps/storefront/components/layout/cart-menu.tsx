@@ -58,8 +58,20 @@ export function CartMenu() {
                     >
                       <span
                         aria-hidden="true"
-                        className="size-12 shrink-0 rounded-default border border-border bg-muted"
-                      />
+                        className="relative block size-12 shrink-0 overflow-hidden rounded-default border border-border bg-muted"
+                      >
+                        {item.image_url ? (
+                          // Backend-served images come from arbitrary hosts,
+                          // so this is a plain img rather than next/image.
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={item.image_url}
+                            alt=""
+                            loading="lazy"
+                            className="block size-full object-cover"
+                          />
+                        ) : null}
+                      </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                           {item.product_name_snapshot}
