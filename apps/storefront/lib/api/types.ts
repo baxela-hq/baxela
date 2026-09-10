@@ -34,6 +34,14 @@ export interface ApiProduct {
   created_at: string;
 }
 
+export interface ApiWishlistItem {
+  id: number;
+  product_id: number;
+  /** Null when the product is no longer available (row survives for removal). */
+  product: ApiProduct | null;
+  created_at: string;
+}
+
 export interface ApiOptionValueRef {
   id: number;
   title: string | null;

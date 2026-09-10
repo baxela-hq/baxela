@@ -7,7 +7,13 @@
     "orders_empty_hint": "پس از ثبت سفارش، اینجا نمایش داده می‌شود.",
     "orders_none_matching": "سفارشی مطابق با جستجوی شما یافت نشد.",
     "addresses_empty": "هنوز آدرسی ذخیره نکرده‌اید.",
-    "addresses_empty_hint": "با ذخیره آدرس، تسویه حساب سریع‌تر می‌شود."
+    "addresses_empty_hint": "با ذخیره آدرس، تسویه حساب سریع‌تر می‌شود.",
+    "wishlist_empty": "لیست علاقه‌مندی‌های شما خالی است.",
+    "wishlist_empty_hint": "با لمس قلب روی هر محصول، آن را اینجا ذخیره کنید.",
+    "wishlist_unavailable": "این محصول دیگر موجود نیست.",
+    "wishlist_remove": "حذف",
+    "wishlist_remove_confirm_title": "حذف از علاقه‌مندی‌ها؟",
+    "wishlist_remove_confirm_message": "«{title}» از علاقه‌مندی‌های شما حذف شود؟"
   },
   "labels": {
     "personal_information": "اطلاعات شخصی",
@@ -237,5 +243,9 @@
         "country_required": "لطفاً کشور را انتخاب کنید."
       }
     }
+  },
+  "actions": {
+    "wishlist_continue_shopping": "ادامه خرید",
+    "wishlist_remove_cancel": "انصراف"
   }
 }

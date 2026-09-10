@@ -7,7 +7,13 @@
     "orders_empty_hint": "Once you place an order, it will show up here.",
     "orders_none_matching": "No orders match your search.",
     "addresses_empty": "You have no saved addresses.",
-    "addresses_empty_hint": "Save an address to speed up checkout."
+    "addresses_empty_hint": "Save an address to speed up checkout.",
+    "wishlist_empty": "Your wishlist is empty.",
+    "wishlist_empty_hint": "Tap the heart on a product to save it here.",
+    "wishlist_unavailable": "This product is no longer available.",
+    "wishlist_remove": "Remove",
+    "wishlist_remove_confirm_title": "Remove from wishlist?",
+    "wishlist_remove_confirm_message": "Remove {title} from your wishlist?"
   },
   "labels": {
     "personal_information": "Personal Information",
@@ -237,5 +243,9 @@
         "country_required": "Please select a country."
       }
     }
+  },
+  "actions": {
+    "wishlist_continue_shopping": "Continue shopping",
+    "wishlist_remove_cancel": "Cancel"
   }
 }

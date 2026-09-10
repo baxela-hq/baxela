@@ -13,18 +13,22 @@
   "actions": {
     "add_to_cart": "Add to cart",
     "add_to_wishlist": "Add to wishlist",
+    "remove_from_wishlist": "Remove from wishlist",
     "added_to_cart": "Added to cart",
     "view_cart": "View cart"
   },
   "messages": {
     "success": {
-      "added_to_cart": "Added to your cart."
+      "added_to_cart": "Added to your cart.",
+      "wishlist_added": "Saved to your wishlist.",
+      "wishlist_removed": "Removed from your wishlist."
     },
     "info": {
       "adding": "Adding…"
     },
     "error": {
-      "add_failed": "Could not add the item to the cart."
+      "add_failed": "Could not add the item to the cart.",
+      "wishlist_failed": "Could not update your wishlist."
     }
   },
   "tabs": {

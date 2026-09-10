@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 
 /**
  * Placeholder panel for account sections whose backend endpoints are not
- * implemented yet (wishlists, saved cards, notifications, settings).
+ * implemented yet (saved cards, notifications, settings).
  */
 export function ComingSoonPanel({
   icon,
