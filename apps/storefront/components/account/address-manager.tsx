@@ -151,21 +151,14 @@ export function AddressManager() {
         type: "shipping",
         is_default: isFirstAddress || form.is_default,
       };
-      const saved =
-        editingId === null
-          ? await api.post<ApiAddress>("/user/user/addresses", body, { token })
-          : await api.patch<ApiAddress>(
-              `/user/user/addresses/${editingId}`,
-              body,
-              { token },
-            );
-      setAddresses((previous) =>
-        editingId === null
-          ? [...(previous ?? []), saved]
-          : (previous ?? []).map((entry) =>
-              entry.id === saved.id ? saved : entry,
-            ),
-      );
+      if (editingId === null) {
+        await api.post("/user/user/addresses", body, { token });
+      } else {
+        await api.patch(`/user/user/addresses/${editingId}`, body, { token });
+      }
+      // The backend demotes the previous default when another address claims
+      // the flag, so the list is refetched instead of patched locally.
+      await load();
       toast.success(t("address.messages.success.saved"));
       closeForm();
     } catch (cause) {
