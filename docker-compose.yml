@@ -70,7 +70,6 @@ services:
             # The browser runs on the host, so the API URL must be
             # host-reachable — compose service names don't resolve there.
             VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:${BACKEND_APP_PORT:-8085}/api/v1}
-            VITE_CLERK_PUBLISHABLE_KEY: ${VITE_CLERK_PUBLISHABLE_KEY:-}
             VITE_STORE_FRONT_URL: ${VITE_STORE_FRONT_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
         depends_on:
             - web

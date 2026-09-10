@@ -24,7 +24,6 @@ import {
   Images,
   Truck,
 } from 'lucide-react'
-import { ClerkLogo } from '@/assets/clerk-logo'
 import { useAuthStore } from '@/stores/auth-store'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { type SidebarData } from '../types'
@@ -69,24 +68,6 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.tasks'),
             url: '/tasks',
             icon: ListTodo,
-          },
-          {
-            title: 'Secured by Clerk',
-            icon: ClerkLogo,
-            items: [
-              {
-                title: 'Sign In',
-                url: '/clerk/sign-in',
-              },
-              {
-                title: 'Sign Up',
-                url: '/clerk/sign-up',
-              },
-              {
-                title: 'User Management',
-                url: '/clerk/user-management',
-              },
-            ],
           },
         ],
       },

@@ -40,8 +40,6 @@ Always run `pnpm build` (typecheck) and `pnpm lint` before finishing a task. The
   select, table, sheet, sidebar, switch, …) and some are generally modified (scroll-area, sonner,
   separator). Re-running `shadcn add` over them destroys customizations. Also **ignored by ESLint**.
 - `pnpm-lock.yaml` — only via pnpm.
-- Dead code (do not extend, do not copy patterns from): `src/routes/clerk/**` — an optional,
-  self-contained Clerk demo tree independent of the real JWT auth.
 
 ## Tech Stack
 
@@ -68,7 +66,6 @@ Path alias: `@/` → `src/` (Vite + tsconfig).
 | --- | --- |
 | `VITE_API_BASE_URL` | `src/shared/lib/api-client.ts` (axios baseURL) |
 | `VITE_STORE_FRONT_URL` | product/page edit forms build storefront preview links |
-| `VITE_CLERK_PUBLISHABLE_KEY` | only the optional `/clerk/*` demo tree |
 
 ## Folder Structure
 
@@ -78,7 +75,6 @@ src/
 │   (auth)/                  #   import a component from features/ and export Route
 │   (errors)/                #   /401 /403 /404 /500 /503
 │   _authenticated/          #   all real pages live under this pathless layout
-│   clerk/                   #   optional Clerk demo (independent)
 ├── features/<domain>/<entity>/   # ALL page code lives here (see anatomy below)
 ├── components/
 │   ├── ui/                  # shadcn primitives (RTL-customized — see above)
@@ -237,7 +233,7 @@ Table `pageCount` = `data.meta.last_page`.
 - Navigation constants live in `data/routes.ts` (`FeatureRoutes.CREATE/EDIT/LIST` with `$id` placeholder,
   replaced via `.replace('$id', id)`).
 - **Auth is reactive, not route-guarded**: no `beforeLoad` anywhere. Protection = axios 401 interceptor +
-  QueryCache `onError` in `main.tsx`. Real auth is JWT (`/auth/public/auth/signin`); Clerk tree is separate demo.
+  QueryCache `onError` in `main.tsx`. Real auth is JWT (`/auth/public/auth/signin`).
 - Deleting a URL param requires explicitly setting it to `undefined` in the `navigate({ search: prev => ({...prev, key: undefined}) })` patch.
 - Known gap: most real list routes define **no `validateSearch`** (only template routes + media do), so
   search params are unvalidated. When adding a new route, adding a `validateSearch` zod schema is the
