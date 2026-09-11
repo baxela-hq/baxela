@@ -35,6 +35,8 @@ export const formSchema = z.object({
   website_description: translatableSettingSchema,
   language_id: z.string(),
   currency_id: z.string(),
+  announcement_bar_enabled: z.boolean(),
+  announcement_text: translatableSettingSchema,
 })
 export type SettingsForm = z.infer<typeof formSchema>
 
@@ -50,6 +52,8 @@ export const defaultValues: SettingsForm = {
   website_description: { value: '', translations: [] },
   language_id: '',
   currency_id: '',
+  announcement_bar_enabled: false,
+  announcement_text: { value: '', translations: [] },
 }
 
 function buildTranslatableValues(
@@ -81,6 +85,13 @@ export function buildSettingsValues(
     ),
     language_id: byName.get('language_id')?.value ?? '',
     currency_id: byName.get('currency_id')?.value ?? '',
+    announcement_bar_enabled:
+      byName.get('announcement_bar_enabled')?.value === '1' ||
+      byName.get('announcement_bar_enabled')?.value === 'true',
+    announcement_text: buildTranslatableValues(
+      languages,
+      byName.get('announcement_text')
+    ),
   }
 }
 
@@ -104,5 +115,7 @@ export function buildSettingsRequest(
     { name: 'website_description', ...resolve(values.website_description) },
     { name: 'language_id', value: values.language_id },
     { name: 'currency_id', value: values.currency_id },
+    { name: 'announcement_bar_enabled', value: values.announcement_bar_enabled ? '1' : '0' },
+    { name: 'announcement_text', ...resolve(values.announcement_text) },
   ]
 }

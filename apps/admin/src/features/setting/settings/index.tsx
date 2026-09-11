@@ -22,8 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea.tsx';
+import { TiptapEditor } from '@/components/tiptap/tiptap-editor';
 import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
@@ -48,7 +50,7 @@ const route = getRouteApi('/_authenticated/setting/settings/')
 export function Settings() {
   const search = route.useSearch()
   const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
-  const { tLabel, tStatus, tTooltip } = useAppTranslation(Locales.SETTING)
+  const { tLabel, tStatus, tTooltip, tHelpText } = useAppTranslation(Locales.SETTING)
 
   const entityName = {
     singular: tLabel("setting"),
@@ -67,6 +69,8 @@ export function Settings() {
   const currenciesSafe = currencies ?? []
   const settingsSafe = settings ?? []
   const isLoading = settingsLoading || languagesLoading || currenciesLoading
+
+  const hasAnnouncementGroup = settingsSafe.some((s) => s.group === 'announcement')
 
   const form = useForm<SettingsForm>({
     resolver: zodResolver(formSchema),
@@ -113,129 +117,198 @@ export function Settings() {
             onSubmit={form.handleSubmit(handleSubmit)}
             className='space-y-8'
           >
-            <div className='grid gap-4'>
+            <Tabs defaultValue='general' className='w-full'>
+              <TabsList className='w-full'>
+                <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
+                {hasAnnouncementGroup && (
+                  <TabsTrigger value='announcement'>{tLabel('announcement')}</TabsTrigger>
+                )}
+              </TabsList>
 
-              {languagesSafe.length > 0 && (
-                <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
-                  <TabsList className='w-full'>
-                    {languagesSafe.map((language) => (
-                      <TabsTrigger key={language.code} value={language.code}>
-                        {language.code.toUpperCase()}
-                      </TabsTrigger>
+              <TabsContent value='general' className='grid gap-4'>
+                {languagesSafe.length > 0 && (
+                  <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                    <TabsList className='w-full'>
+                      {languagesSafe.map((language) => (
+                        <TabsTrigger key={language.code} value={language.code}>
+                          {language.code.toUpperCase()}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+
+                    {languagesSafe.map((language, index) => (
+                      <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                        <FormField
+                          control={form.control}
+                          name={`website_title.translations.${index}.value`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2'>
+                              <FormLabel htmlFor={`website_title-${language.code}`}>{tStatus('name.website_title')}</FormLabel>
+                              <FormControl>
+                                <Input
+                                  id={`website_title-${language.code}`}
+                                  placeholder={tPlaceHolder('input')}
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                              <FormDescription>
+                                {tTooltip('name.website_title')}
+                              </FormDescription>
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name={`website_description.translations.${index}.value`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2'>
+                              <FormLabel htmlFor={`website_description-${language.code}`}>{tStatus('name.website_description')}</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  id={`website_description-${language.code}`}
+                                  placeholder={tPlaceHolder('textarea')}
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                              <FormDescription>
+                                {tTooltip('name.website_description')}
+                              </FormDescription>
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
                     ))}
-                  </TabsList>
+                  </Tabs>
+                )}
 
-                  {languagesSafe.map((language, index) => (
-                    <TabsContent key={language.code} value={language.code} className='space-y-4'>
-                      <FormField
-                        control={form.control}
-                        name={`website_title.translations.${index}.value`}
-                        render={({ field }) => (
-                          <FormItem className='grid gap-2'>
-                            <FormLabel htmlFor={`website_title-${language.code}`}>{tStatus('name.website_title')}</FormLabel>
-                            <FormControl>
-                              <Input
-                                id={`website_title-${language.code}`}
-                                placeholder={tPlaceHolder('input')}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                            <FormDescription>
-                              {tTooltip('name.website_title')}
-                            </FormDescription>
-                          </FormItem>
-                        )}
-                      />
+                <FormField
+                  control={form.control}
+                  name='language_id'
+                  render={({ field }) => (
+                    <FormItem className='grid gap-2'>
+                      <FormLabel htmlFor='language_id'>{tStatus('name.language_id')}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value || undefined}
+                      >
+                        <FormControl>
+                          <SelectTrigger id='language_id' className='w-full'>
+                            <SelectValue placeholder={tPlaceHolder('select')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {languagesSafe.map((language) => (
+                            <SelectItem key={language.id} value={String(language.id)}>
+                              {language.native_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                      <FormDescription>
+                        {tTooltip('name.language_id')}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
 
-                      <FormField
-                        control={form.control}
-                        name={`website_description.translations.${index}.value`}
-                        render={({ field }) => (
-                          <FormItem className='grid gap-2'>
-                            <FormLabel htmlFor={`website_description-${language.code}`}>{tStatus('name.website_description')}</FormLabel>
-                            <FormControl>
-                              <Textarea
-                                id={`website_description-${language.code}`}
-                                placeholder={tPlaceHolder('textarea')}
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                            <FormDescription>
-                              {tTooltip('name.website_description')}
-                            </FormDescription>
-                          </FormItem>
-                        )}
-                      />
-                    </TabsContent>
-                  ))}
-                </Tabs>
-              )}
+                <FormField
+                  control={form.control}
+                  name='currency_id'
+                  render={({ field }) => (
+                    <FormItem className='grid gap-2'>
+                      <FormLabel htmlFor='currency_id'>{tStatus('name.currency_id')}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value || undefined}
+                      >
+                        <FormControl>
+                          <SelectTrigger id='currency_id' className='w-full'>
+                            <SelectValue placeholder={tPlaceHolder('select')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {currenciesSafe.map((currency) => (
+                            <SelectItem key={currency.id} value={String(currency.id)}>
+                              {currency.native_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                      <FormDescription>
+                        {tTooltip('name.currency_id')}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+              </TabsContent>
 
-              <FormField
-                control={form.control}
-                name='language_id'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='language_id'>{tStatus('name.language_id')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || undefined}
-                    >
-                      <FormControl>
-                        <SelectTrigger id='language_id' className='w-full'>
-                          <SelectValue placeholder={tPlaceHolder('select')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
+              {hasAnnouncementGroup && (
+                <TabsContent value='announcement' className='grid gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='announcement_bar_enabled'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='announcement_bar_enabled'>{tStatus('name.announcement_bar_enabled')}</FormLabel>
+                        <FormControl>
+                          <Switch
+                            id='announcement_bar_enabled'
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription>
+                          {tTooltip('name.announcement_bar_enabled')}
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+
+                  {languagesSafe.length > 0 && (
+                    <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                      <TabsList className='w-full'>
                         {languagesSafe.map((language) => (
-                          <SelectItem key={language.id} value={String(language.id)}>
-                            {language.native_name}
-                          </SelectItem>
+                          <TabsTrigger key={language.code} value={language.code}>
+                            {language.code.toUpperCase()}
+                          </TabsTrigger>
                         ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    <FormDescription>
-                      {tTooltip('name.language_id')}
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+                      </TabsList>
 
-              <FormField
-                control={form.control}
-                name='currency_id'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='currency_id'>{tStatus('name.currency_id')}</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || undefined}
-                    >
-                      <FormControl>
-                        <SelectTrigger id='currency_id' className='w-full'>
-                          <SelectValue placeholder={tPlaceHolder('select')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {currenciesSafe.map((currency) => (
-                          <SelectItem key={currency.id} value={String(currency.id)}>
-                            {currency.native_name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    <FormDescription>
-                      {tTooltip('name.currency_id')}
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+                      {languagesSafe.map((language, index) => (
+                        <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                          <FormField
+                            control={form.control}
+                            name={`announcement_text.translations.${index}.value`}
+                            render={({ field }) => (
+                              <FormItem className='grid gap-2'>
+                                <FormLabel htmlFor={`announcement_text-${language.code}`}>{tStatus('name.announcement_text')}</FormLabel>
+                                <FormControl>
+                                  <TiptapEditor
+                                    initialContent={field.value}
+                                    onUpdate={({ html }) => field.onChange(html)}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                                <FormDescription>
+                                  {tHelpText('announcement_text')}
+                                </FormDescription>
+                              </FormItem>
+                            )}
+                          />
+                        </TabsContent>
+                      ))}
+                    </Tabs>
+                  )}
+                </TabsContent>
+              )}
+            </Tabs>
 
-            </div>
             <div className='flex-col'>
               <Button type='submit' className='btn' disabled={updateSettings.isPending}>
                 <LoaderIcon className={updateSettings.isPending ? 'animate-spin' : 'hidden'} />

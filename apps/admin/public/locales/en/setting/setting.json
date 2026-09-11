@@ -5,14 +5,18 @@
       "settings": "Settings",
       "id": "ID",
       "name": "Name",
-      "value": "Value"
+      "value": "Value",
+      "general": "General",
+      "announcement": "Announcement"
     },
     "statuses": {
       "name": {
         "website_title": "Website Title",
         "website_description": "Website Description",
         "language_id": "Default Language",
-        "currency_id": "Default Currency"
+        "currency_id": "Default Currency",
+        "announcement_text": "Announcement Text",
+        "announcement_bar_enabled": "Show Announcement Bar"
       }
     },
     "tooltips": {
@@ -20,8 +24,12 @@
         "website_title": "Title of your home page",
         "website_description": "Description of your home page which is used for SEO",
         "language_id": "Language used to display the storefront",
-        "currency_id": "Currency used for pricing"
+        "currency_id": "Currency used for pricing",
+        "announcement_bar_enabled": "Display the announcement bar on the storefront"
       }
+    },
+    "help_texts": {
+      "announcement_text": "Text can be saved while the bar is disabled"
     }
   }
 }
