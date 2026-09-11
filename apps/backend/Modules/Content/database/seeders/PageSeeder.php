@@ -29,6 +29,15 @@ class PageSeeder extends Seeder
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
+
+        $languageId = $this->coreGateway->getLanguageIdByCode(App::currentLocale());
+        if (! $languageId) {
+            $this->command->error('Language not found for default language: '.App::currentLocale());
+            $this->command->error('Run this seeder after running the core seeder.');
+
+            return;
+        }
+
         $moduleKey = Module::NAME_LOWER.'::seeder.pages';
 
         $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
