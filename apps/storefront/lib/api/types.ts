@@ -248,3 +248,14 @@ export interface ApiMenu {
   title: string | null;
   links: ApiMenuLink[];
 }
+
+// Public site settings (Setting module). Translatable settings (e.g.
+// announcement_text) resolve their value by Accept-Language on the backend;
+// non-translatable ones (e.g. announcement_bar_enabled) expose the raw
+// stored value.
+export interface ApiSetting {
+  group: string | null;
+  type: string | null;
+  name: string;
+  value: string | null;
+}
