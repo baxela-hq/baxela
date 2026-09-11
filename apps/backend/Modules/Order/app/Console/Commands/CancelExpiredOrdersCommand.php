@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Order\Models\Order;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 
@@ -19,7 +20,8 @@ class CancelExpiredOrdersCommand extends Command
     public function handle(): int
     {
         $expiredOrders = Order::query()
-            ->where(OrderSchema::STATUS, OrderStatusEnum::PENDING_PAYMENT)
+            ->where(OrderSchema::STATUS, OrderStatusEnum::PENDING)
+            ->where(OrderSchema::PAYMENT_STATUS, OrderPaymentStatusEnum::UNPAID)
             ->where(OrderSchema::EXPIRES_AT, '<', now())
             ->get();
 

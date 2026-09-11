@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
+use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
@@ -17,6 +18,7 @@ use Modules\Core\Utils\Auth;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
@@ -32,7 +34,8 @@ class OrderGateway implements OrderGatewayInterface
 
             $order = Order::query()->create([
                 OrderSchema::USER_ID => Auth::id(),
-                OrderSchema::STATUS => OrderStatusEnum::PENDING_PAYMENT,
+                OrderSchema::STATUS => OrderStatusEnum::PENDING,
+                OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::UNPAID,
                 OrderSchema::TOTAL_AMOUNT => 0,
                 OrderSchema::SHIPPING_METHOD_ID => $input->shipping_method_id,
                 OrderSchema::SHIPPING_METHOD_NAME => $input->shipping_method_name,
@@ -137,19 +140,55 @@ class OrderGateway implements OrderGatewayInterface
             ->all();
     }
 
+    /**
+     * Bespoke on top of applyPaymentStatus(): paying an order also starts
+     * fulfilment (pending → processing) and stamps paid_at. Idempotent, so
+     * webhook retries for an already-settled order are acked as no-ops.
+     */
     public function markAsPaid(int $orderId): bool
     {
-        return $this->updateStatus($orderId, OrderStatusEnum::PAID, OrderPaidEvent::class);
+        $order = Order::query()->where(OrderSchema::ID, $orderId)->first();
+
+        if (is_null($order)) {
+            return false;
+        }
+
+        if ($order->{OrderSchema::PAYMENT_STATUS} !== OrderPaymentStatusEnum::UNPAID) {
+            return true;
+        }
+
+        $order->{OrderSchema::PAYMENT_STATUS} = OrderPaymentStatusEnum::PAID;
+        $order->{OrderSchema::PAID_AT} = now();
+
+        if ($order->{OrderSchema::STATUS} === OrderStatusEnum::PENDING) {
+            $order->{OrderSchema::STATUS} = OrderStatusEnum::PROCESSING;
+        }
+
+        $order->save();
+
+        event(OrderPaidEvent::fill([
+            OrderSchema::ID => $order->{OrderSchema::ID},
+            OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
+            OrderSchema::STATUS => $order->{OrderSchema::STATUS}->value,
+            OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID->value,
+        ]));
+
+        return true;
+    }
+
+    public function markAsRefunded(int $orderId): bool
+    {
+        return $this->applyPaymentStatus($orderId, OrderPaymentStatusEnum::REFUNDED, OrderRefundedEvent::class);
     }
 
     public function markAsShipped(int $orderId): bool
     {
-        return $this->updateStatus($orderId, OrderStatusEnum::SHIPPED, OrderShippedEvent::class);
+        return $this->applyFulfillmentStatus($orderId, OrderStatusEnum::SHIPPED, OrderShippedEvent::class);
     }
 
     public function markAsDelivered(int $orderId): bool
     {
-        return $this->updateStatus($orderId, OrderStatusEnum::COMPLETED, OrderCompletedEvent::class);
+        return $this->applyFulfillmentStatus($orderId, OrderStatusEnum::COMPLETED, OrderCompletedEvent::class);
     }
 
     /**
@@ -179,14 +218,18 @@ class OrderGateway implements OrderGatewayInterface
     }
 
     /**
-     * @param  class-string<OrderPaidEvent|OrderShippedEvent|OrderCompletedEvent>  $event
+     * @param  class-string<OrderShippedEvent|OrderCompletedEvent>  $event
      */
-    private function updateStatus(int $orderId, OrderStatusEnum $status, string $event): bool
+    private function applyFulfillmentStatus(int $orderId, OrderStatusEnum $status, string $event): bool
     {
         $order = Order::query()->where(OrderSchema::ID, $orderId)->first();
 
-        if (is_null($order)) {
+        if (is_null($order) || ! $order->{OrderSchema::STATUS}->canTransitionTo($status)) {
             return false;
+        }
+
+        if ($order->{OrderSchema::STATUS} === $status) {
+            return true;
         }
 
         $order->{OrderSchema::STATUS} = $status;
@@ -196,6 +239,33 @@ class OrderGateway implements OrderGatewayInterface
             OrderSchema::ID => $order->{OrderSchema::ID},
             OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
             OrderSchema::STATUS => $status->value,
+        ]));
+
+        return true;
+    }
+
+    /**
+     * @param  class-string<OrderPaidEvent|OrderRefundedEvent>  $event
+     */
+    private function applyPaymentStatus(int $orderId, OrderPaymentStatusEnum $status, string $event): bool
+    {
+        $order = Order::query()->where(OrderSchema::ID, $orderId)->first();
+
+        if (is_null($order) || ! $order->{OrderSchema::PAYMENT_STATUS}->canTransitionTo($status)) {
+            return false;
+        }
+
+        if ($order->{OrderSchema::PAYMENT_STATUS} === $status) {
+            return true;
+        }
+
+        $order->{OrderSchema::PAYMENT_STATUS} = $status;
+        $order->save();
+
+        event($event::fill([
+            OrderSchema::ID => $order->{OrderSchema::ID},
+            OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
+            OrderSchema::PAYMENT_STATUS => $status->value,
         ]));
 
         return true;

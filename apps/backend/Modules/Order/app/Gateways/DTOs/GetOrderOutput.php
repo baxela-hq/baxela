@@ -10,6 +10,7 @@ class GetOrderOutput
         $this->order_code = $fields['order_code'];
         $this->user_id = $fields['user_id'] ?? null;
         $this->status = $fields['status'];
+        $this->payment_status = $fields['payment_status'];
         $this->total_amount = $fields['total_amount'];
     }
 
@@ -22,4 +23,6 @@ class GetOrderOutput
     public float $total_amount;
 
     public string $status;
+
+    public string $payment_status;
 }

@@ -4,6 +4,7 @@ namespace Modules\Order\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Order\Models\Order;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Utils\OrderCodeGenerator;
@@ -25,6 +26,7 @@ class OrderFactory extends Factory
             OrderSchema::ORDER_CODE => app(OrderCodeGenerator::class)->generate(),
             OrderSchema::TOTAL_AMOUNT => $this->faker->randomFloat(2, 0, 9999),
             OrderSchema::STATUS => $this->faker->randomElement(OrderStatusEnum::cases()),
+            OrderSchema::PAYMENT_STATUS => $this->faker->randomElement(OrderPaymentStatusEnum::cases()),
             OrderSchema::EXPIRES_AT => $this->faker->dateTimeBetween('now', '+1 month'),
         ];
     }
