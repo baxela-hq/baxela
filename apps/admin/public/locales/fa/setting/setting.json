@@ -5,14 +5,18 @@
       "settings": "تنظیمات",
       "id": "شناسه",
       "name": "نام",
-      "value": "مقدار"
+      "value": "مقدار",
+      "general": "عمومی",
+      "announcement": "اعلان"
     },
     "statuses": {
       "name": {
         "website_title": "عنوان وب‌سایت",
         "website_description": "توضیحات وب‌سایت",
         "language_id": "زبان پیش‌فرض",
-        "currency_id": "ارز پیش‌فرض"
+        "currency_id": "ارز پیش‌فرض",
+        "announcement_text": "متن اعلان",
+        "announcement_bar_enabled": "نمایش نوار اعلان"
       }
     },
     "tooltips": {
@@ -20,8 +24,12 @@
         "website_title": "عنوان صفحه اصلی",
         "website_description": "توضیحات صفحه اصلی که در سئو کاربرد دارد",
         "language_id": "زبانی که برای نمایش فروشگاه استفاده می‌شود",
-        "currency_id": "ارزی که برای قیمت‌گذاری استفاده می‌شود"
+        "currency_id": "ارزی که برای قیمت‌گذاری استفاده می‌شود",
+        "announcement_bar_enabled": "نمایش نوار اعلان در فروشگاه"
       }
+    },
+    "help_texts": {
+      "announcement_text": "متن را می‌توان در حالی که نوار غیرفعال است ذخیره کرد"
     }
   }
 }
