@@ -3,7 +3,9 @@
 namespace Modules\Auth\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
+use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 
 class AuthDatabaseSeeder extends Seeder
@@ -17,27 +19,24 @@ class AuthDatabaseSeeder extends Seeder
     {
         User::query()->create([
             UserSchema::PASSWORD => '12345678',
-            UserSchema::EMAIL => 'meysam4n@gmail.com',
+            UserSchema::EMAIL => 'info@baxela.com',
             UserSchema::EMAIL_VERIFIED_AT => now(),
             UserSchema::IS_ACTIVE => true,
             UserSchema::COMMENT => null,
         ]);
 
-        User::query()->create([
+        $admin = User::query()->create([
             UserSchema::PASSWORD => '12345678',
-            UserSchema::EMAIL => 'maysam69@gmail.com',
+            UserSchema::EMAIL => 'admin@baxela.com',
             UserSchema::EMAIL_VERIFIED_AT => now(),
             UserSchema::IS_ACTIVE => true,
             UserSchema::COMMENT => null,
         ]);
 
-        User::query()->create([
-            UserSchema::PASSWORD => '12345678',
-            UserSchema::EMAIL => 'ai@test.com',
-            UserSchema::EMAIL_VERIFIED_AT => now(),
-            UserSchema::IS_ACTIVE => true,
-            UserSchema::COMMENT => null,
-        ]);
+        $admin->assignRole(Role::query()->firstOrCreate([
+            'name' => Role::SUPER_ADMIN,
+            'guard_name' => GuardsEnum::WEB->value,
+        ]));
 
         $this->call(AccessDatabaseSeeder::class);
     }
