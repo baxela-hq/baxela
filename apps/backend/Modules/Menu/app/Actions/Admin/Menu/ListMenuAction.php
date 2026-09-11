@@ -4,6 +4,7 @@ namespace Modules\Menu\Actions\Admin\Menu;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Menu\Models\Menu;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as MTSchema;
 use Spatie\QueryBuilder\AllowedFilter;
