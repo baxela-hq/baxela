@@ -59,7 +59,7 @@ export function ProductActions({
     void (async () => {
       try {
         const rows = await api.get<ApiWishlistItem[]>(
-          `/wishlist/user/wishlist-items${buildQuery({ "filter[product_id]": productId })}`,
+          `/user/user/wishlist-items${buildQuery({ "filter[product_id]": productId })}`,
           { token },
         );
         if (active) {
@@ -89,14 +89,14 @@ export function ProductActions({
     setWishlistPending(true);
     try {
       if (wishlisted) {
-        await api.delete(`/wishlist/user/wishlist-items/${productId}`, {
+        await api.delete(`/user/user/wishlist-items/${productId}`, {
           token,
         });
         setWishlisted(false);
         toast.success(t("messages.success.wishlist_removed"));
       } else {
         await api.post<ApiWishlistItem>(
-          "/wishlist/user/wishlist-items",
+          "/user/user/wishlist-items",
           { product_id: productId },
           { token },
         );

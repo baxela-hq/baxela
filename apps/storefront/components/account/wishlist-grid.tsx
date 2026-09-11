@@ -30,7 +30,7 @@ export function WishlistGrid() {
     if (!token) return;
     try {
       const fetched = await api.get<ApiWishlistItem[]>(
-        "/wishlist/user/wishlist-items",
+        "/user/user/wishlist-items",
         { token },
       );
       setItems(fetched);
@@ -52,7 +52,7 @@ export function WishlistGrid() {
   const removeItem = async (item: ApiWishlistItem) => {
     setBusyProductId(item.product_id);
     try {
-      await api.delete(`/wishlist/user/wishlist-items/${item.product_id}`, {
+      await api.delete(`/user/user/wishlist-items/${item.product_id}`, {
         token,
       });
       setItems((current) =>
