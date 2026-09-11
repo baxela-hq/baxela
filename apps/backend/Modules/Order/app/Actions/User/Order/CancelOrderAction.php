@@ -17,8 +17,8 @@ class CancelOrderAction extends AbstractOrderAction
      * later states go through the admin/refund flow.
      */
     private const array CANCELLABLE_STATUSES = [
-        OrderStatusEnum::PENDING_PAYMENT,
-        OrderStatusEnum::PAID,
+        OrderStatusEnum::PENDING,
+        OrderStatusEnum::PROCESSING,
     ];
 
     public function handle(string $code): Model

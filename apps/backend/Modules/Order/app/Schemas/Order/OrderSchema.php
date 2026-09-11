@@ -20,6 +20,10 @@ class OrderSchema
 
     public const string STATUS = 'status';
 
+    public const string PAYMENT_STATUS = 'payment_status';
+
+    public const string PAID_AT = 'paid_at';
+
     public const string TOTAL_AMOUNT = 'total_amount';
 
     public const string SHIPPING_METHOD_ID = 'shipping_method_id';

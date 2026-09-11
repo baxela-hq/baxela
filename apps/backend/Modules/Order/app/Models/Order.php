@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Database\Factories\OrderFactory;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Utils\OrderCodeGenerator;
@@ -24,6 +25,8 @@ class Order extends Model
         OrderSchema::USER_ID,
         OrderSchema::ORDER_CODE,
         OrderSchema::STATUS,
+        OrderSchema::PAYMENT_STATUS,
+        OrderSchema::PAID_AT,
         OrderSchema::TOTAL_AMOUNT,
         OrderSchema::SHIPPING_METHOD_ID,
         OrderSchema::SHIPPING_METHOD_NAME,
@@ -44,6 +47,8 @@ class Order extends Model
     {
         return [
             OrderSchema::STATUS => OrderStatusEnum::class,
+            OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::class,
+            OrderSchema::PAID_AT => 'datetime',
             OrderSchema::EXPIRES_AT => 'datetime',
         ];
     }

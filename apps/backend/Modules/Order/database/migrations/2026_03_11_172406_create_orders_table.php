@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 
@@ -18,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger(OrderSchema::USER_ID)->index();
             $table->string(OrderSchema::ORDER_CODE)->unique();
             $table->enum(OrderSchema::STATUS, OrderStatusEnum::cases());
+            $table->enum(OrderSchema::PAYMENT_STATUS, OrderPaymentStatusEnum::cases())
+                ->default(OrderPaymentStatusEnum::UNPAID->value);
+            $table->timestamp(OrderSchema::PAID_AT)->nullable();
             $table->decimal(OrderSchema::TOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->unsignedBigInteger(OrderSchema::SHIPPING_METHOD_ID)->nullable();
             $table->string(OrderSchema::SHIPPING_METHOD_NAME)->nullable();

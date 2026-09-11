@@ -26,6 +26,8 @@ interface OrderGatewayInterface
 
     public function markAsPaid(int $orderId): bool;
 
+    public function markAsRefunded(int $orderId): bool;
+
     public function markAsShipped(int $orderId): bool;
 
     public function markAsDelivered(int $orderId): bool;

@@ -8,6 +8,7 @@ use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderPendingEvent;
+use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Listeners\LogAllEvents;
 
@@ -24,6 +25,7 @@ class EventServiceProvider extends ServiceProvider
         OrderCreatedEvent::class => [LogAllEvents::class],
         OrderPaidEvent::class => [LogAllEvents::class],
         OrderPendingEvent::class => [LogAllEvents::class],
+        OrderRefundedEvent::class => [LogAllEvents::class],
         OrderShippedEvent::class => [LogAllEvents::class],
     ];
 
