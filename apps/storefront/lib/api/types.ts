@@ -137,19 +137,20 @@ export interface ApiProfile {
 }
 
 export type ApiOrderStatus =
-  | "draft"
-  | "pending_payment"
-  | "paid"
+  | "pending"
   | "processing"
   | "shipped"
   | "completed"
-  | "cancelled"
-  | "refunded";
+  | "cancelled";
+
+export type ApiOrderPaymentStatus = "unpaid" | "paid" | "refunded";
 
 export interface ApiOrder {
   /** Opaque customer-facing code; the numeric order id is never exposed. */
   order_code: string;
+  /** Fulfillment track — independent from the payment track below. */
   status: ApiOrderStatus;
+  payment_status: ApiOrderPaymentStatus;
   total_amount: string;
   shipping_method_name: string | null;
   shipping_cost: string | null;

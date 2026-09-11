@@ -87,13 +87,15 @@
       "cancelled": "Cancelled"
     },
     "status": {
-      "draft": "Draft",
-      "pending_payment": "Awaiting payment",
-      "paid": "Paid",
+      "pending": "Pending",
       "processing": "Processing",
       "shipped": "Shipped",
       "completed": "Delivered",
-      "cancelled": "Cancelled",
+      "cancelled": "Cancelled"
+    },
+    "payment_status": {
+      "unpaid": "Awaiting payment",
+      "paid": "Paid",
       "refunded": "Refunded"
     },
     "hints": {
