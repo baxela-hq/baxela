@@ -23,6 +23,7 @@ class SettingDatabaseSeeder extends Seeder
         // $this->call([]);
 
         $lang = $coreGateway->getDefaultLanguage();
+        $languages = $coreGateway->getActiveLanguages();
         $currency = $coreGateway->getDefaultCurrency();
         Translation::query()->delete();
         Setting::query()->delete();
@@ -53,17 +54,36 @@ class SettingDatabaseSeeder extends Seeder
                 SettingSchema::IS_TRANSLATABLE => false,
                 SettingSchema::VALUE => $currency->id,
             ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::ANNOUNCEMENT,
+                SettingSchema::TYPE => SettingTypeEnum::TEXT,
+                SettingSchema::NAME => SettingNameEnum::ANNOUNCEMENT_TEXT,
+                SettingSchema::IS_TRANSLATABLE => true,
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::ANNOUNCEMENT,
+                SettingSchema::TYPE => SettingTypeEnum::BOOLEAN,
+                SettingSchema::NAME => SettingNameEnum::ANNOUNCEMENT_BAR_ENABLED,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '1',
+            ],
         ];
         foreach ($records as $record) {
             $setting = Setting::query()->create($record);
             $setting = $setting->refresh();
             if ($record[SettingSchema::IS_TRANSLATABLE]) {
                 $name = $record[SettingSchema::NAME]->value;
-                Translation::query()->create([
-                    TranslationSchema::SETTING_ID => $setting->{SettingSchema::ID},
-                    TranslationSchema::LANGUAGE_ID => $lang->id,
-                    TranslationSchema::VALUE => __(Module::NAME_LOWER.'::seeder.'.$name),
-                ]);
+                foreach ($languages as $language) {
+                    $key = Module::NAME_LOWER.'::seeder.'.$name;
+                    $value = trans($key, [], $language->code) === $key
+                        ? trans($key)
+                        : trans($key, [], $language->code);
+                    Translation::query()->create([
+                        TranslationSchema::SETTING_ID => $setting->{SettingSchema::ID},
+                        TranslationSchema::LANGUAGE_ID => $language->id,
+                        TranslationSchema::VALUE => $value,
+                    ]);
+                }
             }
         }
     }

@@ -9,4 +9,7 @@ enum SettingNameEnum: string
     case LANGUAGE_ID = 'language_id';
 
     case CURRENCY_ID = 'currency_id';
+
+    case ANNOUNCEMENT_TEXT = 'announcement_text';
+    case ANNOUNCEMENT_BAR_ENABLED = 'announcement_bar_enabled';
 }

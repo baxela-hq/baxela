@@ -16,6 +16,8 @@ class ListSettingAction
         $publicNames = [
             SettingNameEnum::WEBSITE_TITLE,
             SettingNameEnum::WEBSITE_DESCRIPTION,
+            SettingNameEnum::ANNOUNCEMENT_TEXT,
+            SettingNameEnum::ANNOUNCEMENT_BAR_ENABLED,
         ];
 
         return $this->model
