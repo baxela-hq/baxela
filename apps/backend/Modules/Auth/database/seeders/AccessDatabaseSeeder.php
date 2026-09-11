@@ -24,6 +24,6 @@ class AccessDatabaseSeeder extends Seeder
             'guard_name' => GuardsEnum::WEB->value,
         ]);
 
-        User::query()->first()?->assignRole($role);
+        User::query()->get()->each(fn (User $user) => $user->assignRole($role));
     }
 }
