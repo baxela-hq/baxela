@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Wishlist\Actions\User\WishlistItem;
+namespace Modules\User\Actions\User\WishlistItem;
 
 use Illuminate\Support\Collection;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Utils\Auth;
-use Modules\Wishlist\Models\WishlistItem;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Models\WishlistItem;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 

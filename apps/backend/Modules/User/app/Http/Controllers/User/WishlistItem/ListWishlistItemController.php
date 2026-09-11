@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Wishlist\Http\Controllers\User\WishlistItem;
+namespace Modules\User\Http\Controllers\User\WishlistItem;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Wishlist\Actions\User\WishlistItem\ListWishlistItemAction;
-use Modules\Wishlist\Transformers\User\WishlistItem\WishlistItemResource;
+use Modules\User\Actions\User\WishlistItem\ListWishlistItemAction;
+use Modules\User\Transformers\User\WishlistItem\WishlistItemResource;
 
 class ListWishlistItemController extends Controller
 {

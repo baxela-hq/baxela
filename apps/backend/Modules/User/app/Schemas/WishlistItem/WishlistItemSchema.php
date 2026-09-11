@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Wishlist\Schemas\WishlistItem;
+namespace Modules\User\Schemas\WishlistItem;
 
 use Modules\Core\Schemas\Shared\PkAndTimestampsTrait;
-use Modules\Wishlist\Schemas\Module;
+use Modules\User\Schemas\Module;
 
 class WishlistItemSchema
 {
