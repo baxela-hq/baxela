@@ -14,6 +14,7 @@ import { Dialogs } from './components/dialogs.tsx';
 import { Provider } from './components/provider.tsx';
 import { Buttons } from './components/buttons.tsx'
 import { Locales } from './data/routes.ts'
+import { statusTypes, paymentStatusTypes } from './data/data.ts'
 import {
   useOneOrder,
   useOrderItems,
@@ -21,6 +22,7 @@ import {
 } from './hooks/use-orders'
 import { getDefaultCurrency } from '@/shared/lib/locale'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
+import { cn } from '@/lib/utils'
 
 
 
@@ -95,6 +97,7 @@ export function OrderShow() {
                       <TableHead>{tLabel('total_amount')}</TableHead>
                       <TableHead>{tLabel('description')}</TableHead>
                       <TableHead>{tLabel('status')}</TableHead>
+                      <TableHead>{tLabel('payment_status')}</TableHead>
                       <TableHead>{tLabel('created_at')}</TableHead>
                       <TableHead>{tLabel('updated_at')}</TableHead>
                     </TableRow>
@@ -110,7 +113,14 @@ export function OrderShow() {
                         {record.description}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline">{tStatus(`status.${record.status}`)}</Badge>
+                        <Badge variant="outline" className={cn('capitalize', statusTypes.get(record.status))}>
+                          {tStatus(`status.${record.status}`)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline" className={cn('capitalize', paymentStatusTypes.get(record.payment_status))}>
+                          {tStatus(`payment_status.${record.payment_status}`)}
+                        </Badge>
                       </TableCell>
                       <TableCell>{formatDateTime(record.created_at)}</TableCell>
                       <TableCell>{formatDateTime(record.updated_at)}</TableCell>

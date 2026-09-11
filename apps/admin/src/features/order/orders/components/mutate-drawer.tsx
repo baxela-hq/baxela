@@ -8,7 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, } from '@/components/ui/sheet'
 import { Textarea } from '@/components/ui/textarea'
 import { Locales } from '../data/routes'
-import { formSchema, type OrderForm, type Order, defaultValues, statuses, } from '../data/schema'
+import {
+  formSchema,
+  type OrderForm,
+  type Order,
+  defaultValues,
+  allowedNextStatuses,
+  allowedNextPaymentStatuses,
+} from '../data/schema'
 import { useUpdateOrder } from '../hooks/use-order-mutations'
 
 type MutateDrawerProps = {
@@ -37,6 +44,15 @@ export function MutateDrawer({
   })
 
   const updateOrder = useUpdateOrder()
+
+  // Each track can only move along its backend transition map; the current
+  // value stays selectable so an unchanged field round-trips unchanged.
+  const statusOptions = isUpdate && currentRow
+    ? allowedNextStatuses(currentRow.status)
+    : []
+  const paymentStatusOptions = isUpdate && currentRow
+    ? allowedNextPaymentStatuses(currentRow.payment_status)
+    : []
 
   const onSubmit = (data: OrderForm) => {
     if (!currentRow) return;
@@ -80,7 +96,7 @@ export function MutateDrawer({
             onSubmit={form.handleSubmit(onSubmit)}
             className='flex-1 space-y-6 overflow-y-auto px-4'
           >
-            {/* Status Name Field */}
+            {/* Status Field */}
             <FormField
               control={form.control}
               name='status'
@@ -98,7 +114,7 @@ export function MutateDrawer({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {statuses.map((item: string) => (
+                      {statusOptions.map((item: string) => (
                         <SelectItem key={item} value={item}>
                           {tStatus(`status.${item}`)}
                         </SelectItem>
@@ -111,6 +127,42 @@ export function MutateDrawer({
                   </FormDescription>
                   <FormDescription>
                     <FormDescription><InfoIcon size="16" className="inline-block" /> <b>{tHelpText(`status`)}</b></FormDescription>
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+
+            {/* Payment Status Field */}
+            <FormField
+              control={form.control}
+              name='payment_status'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{tLabel('payment_status')}</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className='w-full'>
+                      <SelectTrigger>
+                        <SelectValue placeholder={tPlaceHolder('select')} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {paymentStatusOptions.map((item: string) => (
+                        <SelectItem key={item} value={item}>
+                          {tStatus(`payment_status.${item}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                  <FormDescription>
+                    {tTooltip(`payment_status.${field.value}`)}
+                  </FormDescription>
+                  <FormDescription>
+                    <FormDescription><InfoIcon size="16" className="inline-block" /> <b>{tHelpText(`payment_status`)}</b></FormDescription>
                   </FormDescription>
                 </FormItem>
               )}
