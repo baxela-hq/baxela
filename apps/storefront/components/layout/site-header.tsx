@@ -7,7 +7,7 @@ import { SearchMenu } from "@/components/search-menu";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
-import { fetchMenu } from "@/lib/api/site";
+import { fetchMenu, fetchSettings } from "@/lib/api/site";
 import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
 import { Link } from "@/i18n/navigation";
 
@@ -18,12 +18,22 @@ export async function SiteHeader() {
   const links = navItems(nav);
   const categories = categoryItems(nav);
 
+  const settings = await fetchSettings();
+  const announcementText =
+    settings?.find((setting) => setting.name === "announcement_text")?.value ?? "";
+  const announcementEnabled =
+    settings?.find((setting) => setting.name === "announcement_bar_enabled")?.value ===
+    "1";
+
   return (
     <>
       {/* Announcement bar */}
-      <div className="bg-primary py-2.5 text-center text-sm text-primary-foreground rtl:normal-case rtl:tracking-normal">
-        {t("announcement.text")}
-      </div>
+      {announcementEnabled && announcementText && (
+        <div
+          className="bg-primary py-2.5 text-center text-sm text-primary-foreground rtl:normal-case rtl:tracking-normal"
+          dangerouslySetInnerHTML={{ __html: announcementText }}
+        />
+      )}
 
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border-light bg-white">
