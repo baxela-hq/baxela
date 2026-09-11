@@ -63,6 +63,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
       { columnId: 'order_code', searchKey: 'filter[order_code]', type: 'string' },
       { columnId: 'user_id', searchKey: 'filter[user_id]', type: 'string' },
       { columnId: 'status', searchKey: 'filter[status]', type: 'array' },
+      { columnId: 'payment_status', searchKey: 'filter[payment_status]', type: 'array' },
     ],
     sorting: { key: 'sort' },
   })
@@ -110,14 +111,20 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
             columnId: 'status',
             title: tLabel('status'),
             options: [
-              { label: tStatus('status.draft'), value: 'draft' },
-              { label: tStatus('status.pending_payment'), value: 'pending_payment' },
-              { label: tStatus('status.paid'), value: 'paid' },
+              { label: tStatus('status.pending'), value: 'pending' },
               { label: tStatus('status.processing'), value: 'processing' },
               { label: tStatus('status.shipped'), value: 'shipped' },
               { label: tStatus('status.completed'), value: 'completed' },
               { label: tStatus('status.cancelled'), value: 'cancelled' },
-              { label: tStatus('status.refunded'), value: 'refunded' },
+            ],
+          },
+          {
+            columnId: 'payment_status',
+            title: tLabel('payment_status'),
+            options: [
+              { label: tStatus('payment_status.unpaid'), value: 'unpaid' },
+              { label: tStatus('payment_status.paid'), value: 'paid' },
+              { label: tStatus('payment_status.refunded'), value: 'refunded' },
             ],
           }
         ]}

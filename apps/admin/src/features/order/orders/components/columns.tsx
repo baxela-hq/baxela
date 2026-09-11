@@ -6,7 +6,7 @@ import { type Order } from '../data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
-import { statusTypes } from '../data/data.ts'
+import { statusTypes, paymentStatusTypes } from '../data/data.ts'
 import { Badge } from '@/components/ui/badge.tsx'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
@@ -65,6 +65,25 @@ export const Columns = (): ColumnDef<Order>[] => {
           <div className='flex space-x-2'>
             <Badge variant='outline' className={cn('capitalize', badgeColor)}>
               {tStatus(`status.${row.getValue('status')}`)}
+            </Badge>
+          </div>
+        )
+      },
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'payment_status',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('payment_status')} />
+      ),
+      cell: ({ row }) => {
+        const { payment_status } = row.original
+        const badgeColor = paymentStatusTypes.get(payment_status)
+        return (
+          <div className='flex space-x-2'>
+            <Badge variant='outline' className={cn('capitalize', badgeColor)}>
+              {tStatus(`payment_status.${row.getValue('payment_status')}`)}
             </Badge>
           </div>
         )
