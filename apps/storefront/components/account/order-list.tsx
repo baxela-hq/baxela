@@ -8,22 +8,27 @@ import { api, ApiError } from "@/lib/api/client";
 import type {
   ApiOrder,
   ApiOrderItem,
+  ApiOrderPaymentStatus,
   ApiOrderStatus,
   Paginated,
 } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
 import type { OrderStatusFilter } from "@/components/account/orders-toolbar";
 
-// Badge colour groups from the design: delivered is green, everything on
-// its way is amber, cancelled/refunded red, the rest neutral.
+// Badge colour groups from the design: completed is green, everything on
+// its way is amber, cancelled red, the rest neutral. Fulfillment and
+// payment are separate tracks, so each gets its own map.
 const BADGE_CLASSES: Record<ApiOrderStatus, string> = {
-  draft: "bg-muted text-secondary-text",
-  pending_payment: "bg-muted text-secondary-text",
-  paid: "bg-amber-100 text-amber-700",
+  pending: "bg-muted text-secondary-text",
   processing: "bg-amber-100 text-amber-700",
   shipped: "bg-amber-100 text-amber-700",
   completed: "bg-accent/10 text-accent",
   cancelled: "bg-red-100 text-red-600",
+};
+
+const PAYMENT_BADGE_CLASSES: Record<ApiOrderPaymentStatus, string> = {
+  unpaid: "bg-amber-100 text-amber-700",
+  paid: "bg-accent/10 text-accent",
   refunded: "bg-red-100 text-red-600",
 };
 
@@ -32,20 +37,19 @@ const STATUS_FILTER_GROUPS: Record<
   ApiOrderStatus[]
 > = {
   delivered: ["completed"],
-  in_process: ["paid", "processing", "shipped"],
-  cancelled: ["cancelled", "refunded"],
+  in_process: ["pending", "processing", "shipped"],
+  cancelled: ["cancelled"],
 };
 
-const CANCELLABLE_STATUSES: ApiOrderStatus[] = ["pending_payment", "paid"];
+const CANCELLABLE_STATUSES: ApiOrderStatus[] = ["pending", "processing"];
 
-function statusHintKey(status: ApiOrderStatus) {
+function statusHintKey(
+  status: ApiOrderStatus,
+  paymentStatus: ApiOrderPaymentStatus,
+) {
   if (status === "completed") return "delivered" as const;
-  if (status === "cancelled" || status === "refunded") {
-    return "cancelled" as const;
-  }
-  if (status === "draft" || status === "pending_payment") {
-    return "awaiting_payment" as const;
-  }
+  if (status === "cancelled") return "cancelled" as const;
+  if (paymentStatus === "unpaid") return "awaiting_payment" as const;
   return "in_process" as const;
 }
 
@@ -281,8 +285,15 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                   >
                     {t(`orders.status.${order.status}`)}
                   </span>
+                  <span
+                    className={`inline-flex items-center rounded-default px-3 py-1 text-xs font-medium rtl:normal-case rtl:tracking-normal ${PAYMENT_BADGE_CLASSES[order.payment_status]}`}
+                  >
+                    {t(`orders.payment_status.${order.payment_status}`)}
+                  </span>
                   <span className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                    {t(`orders.hints.${statusHintKey(order.status)}`)}
+                    {t(
+                      `orders.hints.${statusHintKey(order.status, order.payment_status)}`,
+                    )}
                   </span>
                 </p>
 

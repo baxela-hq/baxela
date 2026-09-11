@@ -87,13 +87,15 @@
       "cancelled": "لغو‌شده"
     },
     "status": {
-      "draft": "پیش‌نویس",
-      "pending_payment": "در انتظار پرداخت",
-      "paid": "پرداخت‌شده",
+      "pending": "در انتظار",
       "processing": "در حال پردازش",
       "shipped": "ارسال‌شده",
       "completed": "تحویل‌شده",
-      "cancelled": "لغو‌شده",
+      "cancelled": "لغو‌شده"
+    },
+    "payment_status": {
+      "unpaid": "در انتظار پرداخت",
+      "paid": "پرداخت‌شده",
       "refunded": "بازپرداخت‌شده"
     },
     "hints": {
