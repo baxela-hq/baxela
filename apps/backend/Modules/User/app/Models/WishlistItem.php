@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Wishlist\Models;
+namespace Modules\User\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 /**
  * @mixin Builder

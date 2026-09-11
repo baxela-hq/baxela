@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Wishlist\Http\Controllers\User\WishlistItem;
+namespace Modules\User\Http\Controllers\User\WishlistItem;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Wishlist\Actions\User\WishlistItem\DeleteWishlistItemAction;
+use Modules\User\Actions\User\WishlistItem\DeleteWishlistItemAction;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteWishlistItemController extends Controller

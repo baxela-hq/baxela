@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 return new class extends Migration
 {

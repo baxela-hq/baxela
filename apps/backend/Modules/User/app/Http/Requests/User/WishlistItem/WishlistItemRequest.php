@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Wishlist\Http\Requests\User\WishlistItem;
+namespace Modules\User\Http\Requests\User\WishlistItem;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 class WishlistItemRequest extends FormRequest
 {

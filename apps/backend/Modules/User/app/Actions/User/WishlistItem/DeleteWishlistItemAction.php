@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Wishlist\Actions\User\WishlistItem;
+namespace Modules\User\Actions\User\WishlistItem;
 
 use Modules\Core\Utils\Auth;
-use Modules\Wishlist\Models\WishlistItem;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Models\WishlistItem;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 class DeleteWishlistItemAction
 {

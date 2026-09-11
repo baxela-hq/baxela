@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Wishlist\Transformers\User\WishlistItem;
+namespace Modules\User\Transformers\User\WishlistItem;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
-use Modules\Wishlist\Models\WishlistItem;
-use Modules\Wishlist\Schemas\WishlistItem\WishlistItemSchema;
+use Modules\User\Models\WishlistItem;
+use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 /**
  * @mixin WishlistItem

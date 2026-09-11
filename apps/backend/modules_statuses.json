@@ -13,6 +13,5 @@
     "Notification": true,
     "Shipping": true,
     "Menu": true,
-    "Contact": true,
-    "Wishlist": true
+    "Contact": true
 }
