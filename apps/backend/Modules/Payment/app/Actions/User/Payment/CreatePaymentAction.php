@@ -6,7 +6,6 @@ use Modules\Core\Contracts\Events\Payment\PaymentInitiatedEvent;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Utils\Auth;
-use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Payment\DTOs\User\Payment\CreatePaymentOutput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaymentDriverManager;
@@ -33,7 +32,7 @@ class CreatePaymentAction
 
         // getOrder() already rejects orders past their expires_at; a settled
         // order must not be paid again either.
-        if ($order->payment_status !== OrderPaymentStatusEnum::UNPAID->value) {
+        if (! $order->is_payable) {
             throw PaymentException::processInvalidOrder();
         }
 

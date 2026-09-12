@@ -5,9 +5,8 @@ namespace Modules\Inventory\Gateways;
 use Modules\Core\Contracts\Events\Inventory\StockDecreasedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockDepletedEvent;
 use Modules\Core\Contracts\Events\Inventory\StockIncreasedEvent;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
-use Modules\Catalog\Models\Variant;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
@@ -81,8 +80,10 @@ class InventoryGateway implements InventoryGatewayInterface
 
     public function pruneOrphanedStocks(): void
     {
+        $variantIds = app(CatalogGatewayInterface::class)->variantQuantities()->keys();
+
         InventoryStock::query()
-            ->whereNotIn(InventoryStockSchema::VARIANT_ID, Variant::query()->select(VariantSchema::ID))
+            ->whereNotIn(InventoryStockSchema::VARIANT_ID, $variantIds)
             ->delete();
     }
 }

@@ -7,7 +7,6 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Storage;
 use Modules\Catalog\Actions\Admin\Product\CreateProductAction;
 use Modules\Catalog\Exceptions\Product\CreationFailedException;
 use Modules\Catalog\Models\Attribute;
@@ -37,10 +36,8 @@ use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
-use Modules\Media\Models\Media;
-use Modules\Media\Schemas\Media\MediaDiskEnum;
-use Modules\Media\Schemas\Media\MediaSchema;
 use Throwable;
 
 class ProductSeeder extends Seeder
@@ -200,29 +197,15 @@ class ProductSeeder extends Seeder
         foreach ($sources as $position => $source) {
             $filename = basename($source);
             $path = 'catalog/products/'.$filename;
-            Storage::disk('public')->put($path, file_get_contents($source));
 
             // catalog_images.media_id is NOT NULL, so every image row needs
-            // a media record; ownership follows the Media module's own
-            // seeder. updateOrCreate keeps the media id stable across
-            // re-seeds while refreshing file metadata.
-            $media = Media::query()->updateOrCreate(
-                [MediaSchema::PATH => $path],
-                [
-                    MediaSchema::USER_ID => 1,
-                    MediaSchema::FOLDER_ID => null,
-                    MediaSchema::DISK => MediaDiskEnum::PUBLIC->value,
-                    MediaSchema::NAME => pathinfo($filename, PATHINFO_FILENAME),
-                    MediaSchema::FILENAME => $filename,
-                    MediaSchema::EXTENSION => 'jpg',
-                    MediaSchema::MIME_TYPE => 'image/jpeg',
-                    MediaSchema::SIZE => filesize($source),
-                ],
-            );
+            // a media record; the media gateway registers the seeded photo
+            // idempotently, keeping the media id stable across re-seeds.
+            $media = app(MediaGatewayInterface::class)->upsertLocal($source, $path);
 
             $rows[] = [
-                ImageSchema::MEDIA_ID => $media->getKey(),
-                ImageSchema::URL => Storage::disk('public')->url($path),
+                ImageSchema::MEDIA_ID => (int) $media?->id,
+                ImageSchema::URL => $media?->url,
                 ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
                 ImageSchema::POSITION => $position + 1,
             ];

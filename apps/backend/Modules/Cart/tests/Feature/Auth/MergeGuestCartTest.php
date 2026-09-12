@@ -2,7 +2,6 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
-use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
@@ -10,7 +9,6 @@ use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Cart\Tests\Feature\HelperTrait;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Tests\TestCase;
 
@@ -22,7 +20,7 @@ function signInEvent(User $user, ?string $token): void
 {
     event(new UserSignedInEvent(
         $user->id,
-        $user->{UserSchema::EMAIL},
+        $user->email,
         now()->toDateTimeString(),
         $token,
     ));
@@ -98,9 +96,9 @@ it('skips guest items with no stock and leaves the user cart untouched', functio
     $userCart = Cart::factory()->create([CartSchema::USER_ID => $user->id]);
     $variant = $this->variantWithStock(5);
     // A variant with no inventory row: availableQuantity() resolves null.
-    $unstockedVariant = Variant::factory()->create([
-        VariantSchema::PRODUCT_ID => Product::factory()->create()->id,
-    ]);
+    $unstockedVariant = Variant::factory()
+        ->ofProduct(Product::factory()->create())
+        ->create();
 
     $token = $this->cartToken();
     guestCartWithItem($token, $variant->id, 2);
@@ -160,18 +158,17 @@ it('no-ops without a token or for an unknown token', function () {
 
 it('merges the guest cart through the sign-in endpoint', function () {
     $email = fake()->email();
-    $user = User::factory()->create([
-        UserSchema::EMAIL => $email,
-        UserSchema::PASSWORD => '12345678',
-        UserSchema::IS_ACTIVE => true,
+    $user = User::factory()->active()->create([
+        'email' => $email,
+        'password' => '12345678',
     ]);
     $variant = $this->variantWithStock(5);
     $token = $this->cartToken();
     guestCartWithItem($token, $variant->id, 3);
 
     $this->postJson('api/v1/auth/public/auth/signin', [
-        UserSchema::EMAIL => $email,
-        UserSchema::PASSWORD => '12345678',
+        'email' => $email,
+        'password' => '12345678',
     ], ['X-Cart-Token' => $token])
         ->assertOk();
 

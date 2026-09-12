@@ -5,8 +5,6 @@ use Illuminate\Support\Facades\Route;
 use Modules\Auth\Models\Permission;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
-use Modules\Auth\Schemas\GuardsEnum;
-use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
 use Tests\TestCase;
 
@@ -20,13 +18,7 @@ beforeEach(function () {
         Route::get('api/v1/test/admin/named', fn () => 'ok')->name('api.test.admin.things.list');
     });
 
-    $this->superAdmin = User::factory()->create([
-        UserSchema::IS_ACTIVE => true,
-    ]);
-    $this->superAdmin->assignRole(Role::query()->firstOrCreate([
-        'name' => Role::SUPER_ADMIN,
-        'guard_name' => GuardsEnum::WEB->value,
-    ]));
+    $this->superAdmin = User::factory()->superAdmin()->create();
 });
 
 it('denies an unnamed admin route even for a super-admin', function () {
@@ -44,18 +36,16 @@ it('denies a route name without the admin segment even for a super-admin', funct
 it('allows a properly named admin route when the permission is granted', function () {
     $permission = Permission::query()->firstOrCreate([
         'name' => 'test.admin.things.list',
-        'guard_name' => GuardsEnum::WEB->value,
+        'guard_name' => 'web',
     ]);
 
     $role = Role::query()->create([
         'name' => 'thing-viewer',
-        'guard_name' => GuardsEnum::WEB->value,
+        'guard_name' => 'web',
     ]);
     $role->givePermissionTo($permission);
 
-    $user = User::factory()->create([
-        UserSchema::IS_ACTIVE => true,
-    ]);
+    $user = User::factory()->active()->create();
     $user->assignRole($role);
     $this->actingAs($user);
 

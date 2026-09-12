@@ -4,6 +4,7 @@ namespace Modules\Catalog\Gateways;
 
 use Illuminate\Support\Collection;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
@@ -70,6 +71,30 @@ class CatalogGateway implements CatalogGatewayInterface
     public function variantExists(int $variantId): bool
     {
         return Variant::query()->whereKey($variantId)->exists();
+    }
+
+    public function getProductSlugForVariant(int $variantId): ?string
+    {
+        $productId = Variant::query()
+            ->whereKey($variantId)
+            ->value(VariantSchema::PRODUCT_ID);
+
+        if (is_null($productId)) {
+            return null;
+        }
+
+        $defaultLanguageId = app(CoreGatewayInterface::class)->getDefaultLanguage()?->id;
+
+        return ProductTranslation::query()
+            ->where(PTSchema::PRODUCT_ID, $productId)
+            ->orderByRaw(PTSchema::LANGUAGE_ID.' = ? desc', [$defaultLanguageId])
+            ->whereNotNull(PTSchema::SLUG)
+            ->value(PTSchema::SLUG);
+    }
+
+    public function variantQuantities(): Collection
+    {
+        return Variant::query()->pluck(VariantSchema::QUANTITY, VariantSchema::ID);
     }
 
     /**

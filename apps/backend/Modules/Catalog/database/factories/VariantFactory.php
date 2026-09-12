@@ -32,4 +32,15 @@ class VariantFactory extends Factory
             VariantSchema::IS_DEFAULT => $this->faker->boolean(),
         ];
     }
+
+    /**
+     * Attach the variant to a given product. Named ofProduct() to avoid
+     * colliding with Laravel's magic forProduct() relationship state.
+     */
+    public function ofProduct(Product $product): static
+    {
+        return $this->state(fn (array $attributes) => [
+            VariantSchema::PRODUCT_ID => $product->id,
+        ]);
+    }
 }

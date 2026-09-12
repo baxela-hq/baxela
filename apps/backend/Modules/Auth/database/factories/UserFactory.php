@@ -4,7 +4,10 @@ namespace Modules\Auth\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
+use Modules\Auth\Schemas\GuardsEnum;
+use Modules\Auth\Schemas\User\UserSchema;
 
 /**
  * @extends Factory<User>
@@ -41,5 +44,28 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            UserSchema::IS_ACTIVE => true,
+        ]);
+    }
+
+    /**
+     * Active user carrying the super-admin role — the standard admin-side
+     * test actor.
+     */
+    public function superAdmin(): static
+    {
+        return $this->active()->afterCreating(function (User $user): void {
+            $role = Role::query()->firstOrCreate([
+                'name' => Role::SUPER_ADMIN,
+                'guard_name' => GuardsEnum::WEB->value,
+            ]);
+
+            $user->assignRole($role);
+        });
     }
 }

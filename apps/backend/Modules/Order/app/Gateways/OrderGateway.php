@@ -4,16 +4,14 @@ namespace Modules\Order\Gateways;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
-use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Core\Utils\Auth;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 use Modules\Order\Models\Order;
@@ -49,7 +47,7 @@ class OrderGateway implements OrderGatewayInterface
                     OrderItemSchema::VARIANT_ID => $cartItem[OrderItemSchema::VARIANT_ID],
                     OrderItemSchema::PRICE_SNAPSHOT => $cartItem[OrderItemSchema::PRICE_SNAPSHOT],
                     OrderItemSchema::PRODUCT_NAME_SNAPSHOT => $cartItem[OrderItemSchema::PRODUCT_NAME_SNAPSHOT],
-                    OrderItemSchema::PRODUCT_SLUG_SNAPSHOT => $this->productSlugForVariant(
+                    OrderItemSchema::PRODUCT_SLUG_SNAPSHOT => app(CatalogGatewayInterface::class)->getProductSlugForVariant(
                         (int) $cartItem[OrderItemSchema::VARIANT_ID]
                     ),
                     OrderItemSchema::QUANTITY => $cartItem[OrderItemSchema::QUANTITY],
@@ -189,32 +187,6 @@ class OrderGateway implements OrderGatewayInterface
     public function markAsDelivered(int $orderId): bool
     {
         return $this->applyFulfillmentStatus($orderId, OrderStatusEnum::COMPLETED, OrderCompletedEvent::class);
-    }
-
-    /**
-     * The ordered product's slug at purchase time — order items keep
-     * working as product links even after admin edits recreate variants.
-     * Default-language translation, falling back to any slug.
-     */
-    private function productSlugForVariant(int $variantId): ?string
-    {
-        $productId = DB::table(VariantSchema::TABLE)
-            ->where(VariantSchema::ID, $variantId)
-            ->value(VariantSchema::PRODUCT_ID);
-
-        if (is_null($productId)) {
-            return null;
-        }
-
-        $defaultLanguageId = DB::table(LanguageSchema::TABLE)
-            ->where(LanguageSchema::IS_DEFAULT, true)
-            ->value(LanguageSchema::ID);
-
-        return DB::table(ProductTranslationSchema::TABLE)
-            ->where(ProductTranslationSchema::PRODUCT_ID, $productId)
-            ->orderByRaw(ProductTranslationSchema::LANGUAGE_ID.' = ? desc', [$defaultLanguageId])
-            ->whereNotNull(ProductTranslationSchema::SLUG)
-            ->value(ProductTranslationSchema::SLUG);
     }
 
     /**
