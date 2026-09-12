@@ -31,7 +31,11 @@ class IdempotencyMiddleware
             [IdempotencyKeysSchema::EXPIRED_AT, '>', now()->toDateTimeString()],
         ])->first();
         if ($idempotencyRecord) {
-            return response()->json($idempotencyRecord->{IdempotencyKeysSchema::RESPONSE});
+            // Tag the replay so terminate() knows a stored response already
+            // exists for this key and must not insert a duplicate row.
+            return response()
+                ->json($idempotencyRecord->{IdempotencyKeysSchema::RESPONSE})
+                ->withHeaders([self::IDEMPOTENCY_RESPONSE_KEY => 'true']);
         }
 
         return $next($request);
