@@ -159,11 +159,17 @@ Request payloads must keep a fixed shape: every key is always present — its va
 
 ## Testing
 
-- **Do NOT add tests for new or updated endpoints (pre-v1).** The API is still unstable — request/response payloads are likely to change, so maintaining endpoint tests right now is wasted effort. Tests will be written once the logic stabilizes. (Temporary rule — will be lifted after v1 is published.)
-- **Pest**. `phpunit.xml` auto-includes `Modules/*/tests/{Unit,Feature}` plus root `tests/`.
-- Test files use `uses(TestCase::class)`, `uses(RefreshDatabase::class)`, and module-level `HelperTrait` (e.g. `Modules\Auth\Tests\Feature\HelperTrait::baseUrl()`).
-- Tests run against SQLite `:memory:` (configured in `phpunit.xml`) — MySQL-only SQL or enums in `DB::statement` calls can break tests.
-- Always run the full suite (`composer test` / `php artisan test`) and at least `vendor/bin/pint --test` after changes.
+- **Pest, slim and focused.** Cover the happy path plus the 2–3 most plausible failure guards per flow (auth, validation, ownership, stock, state machine). No exhaustive CRUD matrices or unlikely-scenario tests; one representative covers a family of similar resources (e.g. nested admin resources).
+- **Hybrid test level:**
+  - HTTP feature tests for user-facing flows (checkout, payment, cart, cancellation) — request in through the route, assert status + key fields + DB state.
+  - Direct Action/Gateway/Service calls for domain logic (`OrderGateway`, `InventoryGateway`, `ShippingGateway`, `NotificationService`, `PaymentDriverManager`).
+- **Assert payloads loosely:** status code, `code` error key, `data.id`-style anchors, and database state — never full response shapes, so pre-v1 payload churn doesn't break the suite.
+- `phpunit.xml` auto-includes `Modules/*/tests/{Unit,Feature}` plus root `tests/`. The global binding in `tests/Pest.php` already extends `Tests\TestCase` over `Modules/*/tests/*` — do **not** re-declare `uses(TestCase::class)` in module test files (Pest fails on the double registration). Keep per-file `uses(RefreshDatabase::class)` and `uses(HelperTrait::class)`.
+- Each module keeps a `tests/Feature/HelperTrait.php` with `baseUrl()` plus fixture/actor helpers (`superAdminUser()` = `User::factory()->superAdmin()`). Auth via `$this->actingAs($user)`; guest carts via the `X-Cart-Token` header. Shared cross-module fixtures live on `Tests\TestCase` (e.g. `TestCase::defaultLanguage()`).
+- Prefer DB-state assertions over event fakes. Never blanket-`Event::fake()` where listeners carry the behavior under test (stock restore on cancel); use `Event::fakeFor()`/`assertDispatched` for dispatch-count checks and `Mail::fake()` for notification assertions.
+- Tests run against SQLite `:memory:` (configured in `phpunit.xml`) — MySQL-only SQL or enums in `DB::statement` calls can break tests. If an Action uses MySQL-only SQL, test it at the level that works and flag it rather than hacking around it.
+- Some factories are known-broken (`CategoryTranslationFactory` targets the wrong model; `OptionFactory` references removed schema constants) — build such rows through model relations instead.
+- Always run the full suite (`composer test` / `php artisan test`) and `vendor/bin/pint` on touched paths after changes.
 
 ## Commands
 
@@ -195,4 +201,4 @@ composer dev                # server + queue + logs + vite (concurrently)
 7. Register the route in the correct `routes/api/{audience}.php` (and `require` it from `routes/api.php` if needed).
 8. Add `ErrorCodeEnum`/exception + lang key if new failure modes exist.
 9. Dispatch/define event contracts if other modules must react.
-10. Run `composer test` and `pint` — but do **not** add tests for the new endpoint (see Testing).
+10. Run `composer test` and `pint`, and add slim tests per the Testing section above.
