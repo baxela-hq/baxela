@@ -45,7 +45,11 @@ class CreateProductAction
             }
             foreach ($data[ProductSchema::RES_VARIANTS] as $variantInput) {
                 $variant = $record->variants()->create($variantInput);
-                $variant->optionValues()->attach(array_values($variantInput[VSchema::REQ_OPTION_VALUE_IDS]));
+                // Simple products carry no option values; the key is only
+                // required for variable products.
+                if (! empty($variantInput[VSchema::REQ_OPTION_VALUE_IDS])) {
+                    $variant->optionValues()->attach(array_values($variantInput[VSchema::REQ_OPTION_VALUE_IDS]));
+                }
 
                 // The variant quantity is the stock level the admin manages;
                 // mirror it into the inventory ledger the shop sells from.
