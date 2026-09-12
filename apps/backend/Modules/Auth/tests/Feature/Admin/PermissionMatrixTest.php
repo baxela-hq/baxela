@@ -6,9 +6,7 @@ use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Auth\Schemas\User\UserSchema;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 
 function createPermission(string $name): Permission

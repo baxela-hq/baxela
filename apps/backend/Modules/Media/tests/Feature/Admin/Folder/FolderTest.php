@@ -5,9 +5,7 @@ use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Media\Models\Folder;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Tests\Feature\HelperTrait;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 

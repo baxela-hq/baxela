@@ -4,9 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Models\Permission;
 use Modules\Auth\Schemas\GuardsEnum;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 
 it('creates a permission per admin route with the web guard', function () {

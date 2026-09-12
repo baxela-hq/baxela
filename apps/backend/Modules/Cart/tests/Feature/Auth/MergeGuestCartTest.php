@@ -10,9 +10,7 @@ use Modules\Cart\Tests\Feature\HelperTrait;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 

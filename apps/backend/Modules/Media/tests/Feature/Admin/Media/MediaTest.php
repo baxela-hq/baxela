@@ -8,9 +8,7 @@ use Modules\Media\Models\Media;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaSchema;
 use Modules\Media\Tests\Feature\HelperTrait;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
