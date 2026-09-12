@@ -2,6 +2,9 @@
 // (which injects the request locale); client code uses these helpers —
 // locale falls back to <html lang>, which the [locale] layout always sets.
 
+import { routing } from "@/i18n/routing";
+import { clearAuthStorage } from "@/lib/auth-storage";
+
 const DEFAULT_BASE_URL = "http://baxela-backend.local/api/v1";
 
 // The browser must reach the API through the host-published backend port,
@@ -41,6 +44,41 @@ function resolveLocale(explicit?: string): string {
   return "en";
 }
 
+// A 401 on a token-bearing request means the session died server-side
+// (expired/revoked token). Clear the stored session and hard-navigate to
+// the login page: a full reload discards all in-memory state and avoids
+// the hydration-race soft navigations that dropped React-effect
+// redirects. The latch keeps parallel 401s (e.g. the 1 + N fetches on the
+// orders page) to a single clear/redirect; it resets with the page load
+// the redirect itself triggers.
+let handlingExpiredSession = false;
+
+// next-intl hrefs are locale-less: "/en/profile/orders?tab=x" →
+// "/profile/orders?tab=x" (the login page re-prefixes via the i18n router).
+function currentPathWithoutLocale(): string {
+  const { pathname, search } = window.location;
+  for (const locale of routing.locales) {
+    if (pathname === `/${locale}`) return `/${search}`;
+    if (pathname.startsWith(`/${locale}/`)) {
+      return `/${pathname.slice(locale.length + 2)}${search}`;
+    }
+  }
+  return `${pathname}${search}`;
+}
+
+function handleExpiredSession(): void {
+  handlingExpiredSession = true;
+  clearAuthStorage();
+  const path = currentPathWithoutLocale();
+  // Deliberately not useRouter()/redirect(): this runs outside React at
+  // module level (possibly mid-hydration), and the full reload is the
+  // point — it drops every in-memory copy of the dead session.
+  // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+  window.location.assign(
+    `/${resolveLocale()}/login?next=${encodeURIComponent(path)}&session_expired=1`,
+  );
+}
+
 export async function apiFetch<T>(
   path: string,
   options: ApiRequestOptions = {},
@@ -70,6 +108,18 @@ export async function apiFetch<T>(
     | null;
 
   if (!response.ok) {
+    // Only authenticated calls redirect — a failed sign-in or a guest
+    // cart/OTP request never carries a token and must keep rendering its
+    // inline error. The ApiError still throws so call-site catch blocks
+    // behave as before.
+    if (
+      response.status === 401 &&
+      token &&
+      typeof window !== "undefined" &&
+      !handlingExpiredSession
+    ) {
+      handleExpiredSession();
+    }
     throw new ApiError(
       payload?.message ?? `Request failed (${response.status})`,
       response.status,
