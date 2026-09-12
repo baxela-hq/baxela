@@ -10,7 +10,9 @@ use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Media\Actions\Admin\Media\CreateMediaAction;
 use Modules\Media\Actions\Admin\Media\DeleteMediaAction;
 use Modules\Media\DTOs\Admin\CreateMediaInput as CreateMediaInputDto;
+use Modules\Media\Models\Folder;
 use Modules\Media\Models\Media;
+use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaDiskEnum;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
 use Modules\Media\Schemas\Media\MediaSchema;
@@ -44,7 +46,7 @@ class MediaGateway implements MediaGatewayInterface
         return $action->handle($id);
     }
 
-    public function upsertLocal(string $sourcePath, string $targetPath): ?CreateMediaOutput
+    public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null): ?CreateMediaOutput
     {
         $disk = MediaDiskEnum::PUBLIC->value;
         $filename = basename($targetPath);
@@ -59,7 +61,7 @@ class MediaGateway implements MediaGatewayInterface
             [MediaSchema::PATH => $targetPath],
             [
                 MediaSchema::USER_ID => 1,
-                MediaSchema::FOLDER_ID => null,
+                MediaSchema::FOLDER_ID => $folderId,
                 MediaSchema::DISK => $disk,
                 MediaSchema::NAME => pathinfo($filename, PATHINFO_FILENAME),
                 MediaSchema::FILENAME => $filename,
@@ -75,5 +77,27 @@ class MediaGateway implements MediaGatewayInterface
             'filename' => $filename,
             'size' => filesize($sourcePath),
         ]);
+    }
+
+    public function getFolderIdByPath(string $path): ?int
+    {
+        $folderId = null;
+
+        foreach (array_filter(explode('/', trim($path)), 'strlen') as $segment) {
+            $folder = Folder::query()
+                ->where(FolderSchema::NAME, $segment)
+                ->when($folderId === null,
+                    fn ($q) => $q->whereNull(FolderSchema::PARENT_ID),
+                    fn ($q) => $q->where(FolderSchema::PARENT_ID, $folderId),
+                )->first();
+
+            if (! $folder) {
+                return null;
+            }
+
+            $folderId = $folder->getKey();
+        }
+
+        return $folderId;
     }
 }
