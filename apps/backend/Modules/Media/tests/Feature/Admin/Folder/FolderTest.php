@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Media\Models\Folder;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Tests\Feature\HelperTrait;
@@ -239,4 +240,46 @@ it('prevents creating a folder under another user folder', function () {
     ]);
 
     $response->assertStatus(404);
+});
+
+it('resolves a nested folder id by path via the media gateway', function () {
+
+    $user = $this->adminUser();
+
+    $catalog = Folder::factory()->create([
+        FolderSchema::USER_ID => $user->id,
+        FolderSchema::PARENT_ID => null,
+        FolderSchema::NAME => 'Catalog',
+    ]);
+    $product = Folder::factory()->create([
+        FolderSchema::USER_ID => $user->id,
+        FolderSchema::PARENT_ID => $catalog->id,
+        FolderSchema::NAME => 'Product',
+    ]);
+
+    $gateway = app(MediaGatewayInterface::class);
+
+    expect($gateway->getFolderIdByPath('Catalog/Product'))->toBe($product->id)
+        ->and($gateway->getFolderIdByPath('Catalog'))->toBe($catalog->id);
+});
+
+it('returns null for a missing folder path via the media gateway', function () {
+
+    $user = $this->adminUser();
+
+    $catalog = Folder::factory()->create([
+        FolderSchema::USER_ID => $user->id,
+        FolderSchema::PARENT_ID => null,
+        FolderSchema::NAME => 'Catalog',
+    ]);
+    Folder::factory()->create([
+        FolderSchema::USER_ID => $user->id,
+        FolderSchema::PARENT_ID => $catalog->id,
+        FolderSchema::NAME => 'Product',
+    ]);
+
+    $gateway = app(MediaGatewayInterface::class);
+
+    expect($gateway->getFolderIdByPath('Catalog/Missing'))->toBeNull()
+        ->and($gateway->getFolderIdByPath('Missing/Product'))->toBeNull();
 });
