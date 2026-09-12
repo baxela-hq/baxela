@@ -16,6 +16,7 @@ use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\VariantSummary;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 
 class CatalogGateway implements CatalogGatewayInterface
 {
