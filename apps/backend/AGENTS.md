@@ -111,6 +111,7 @@ Business logic lives in Action classes with a single `handle()` method. Multi-st
 - **Events** (async/de-coupled): define the event contract in `Modules\Core\Contracts\Events\...`, dispatch it with `event(new XxxEvent(...))` from the Action. Other modules subscribe via their `EventServiceProvider`. The `Notification` module is the main consumer today.
 - **Gateways** (sync reads): implement `Modules\{Name}\app\Gateways\*Gateway.php` against interfaces declared in `Modules\Core\Contracts\Gateways\...` (e.g. `CoreGatewayInterface::getActiveLanguages()`).
 - Do **not** reach into another module's models directly for cross-module concerns.
+- **Schemas are module-internal.** Never `use` another module's `Schemas\*` classes — the table/column constants and the enums living under `Schemas\` belong to the owning module alone. The only exporter is `Modules\Core` (shared schema traits, language/currency/country schemas). Cross-module table facts and lifecycle checks go through the Core gateway contracts instead — existence checks (`variantExists()`), read views (`getProductSlugForVariant()`), or derived DTO flags (`is_payable`) — and migrations/seeders likewise call gateways rather than querying another module's tables. Tests are exempt for models/factories but follow the same rule for Schema imports.
 
 ### 5. Multi-language entities
 Localizable entities (products, categories, options, option values) use a `*_translations` table (title/slug/content/description keyed by `language_id`).

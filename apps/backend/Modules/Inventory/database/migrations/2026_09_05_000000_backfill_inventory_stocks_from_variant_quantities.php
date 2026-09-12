@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
 return new class extends Migration
@@ -16,27 +16,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $missing = DB::table(VariantSchema::TABLE)
-            ->leftJoin(
-                InventoryStockSchema::TABLE,
-                InventoryStockSchema::TABLE.'.'.InventoryStockSchema::VARIANT_ID,
-                '=',
-                VariantSchema::TABLE.'.'.VariantSchema::ID
-            )
-            ->whereNull(InventoryStockSchema::TABLE.'.'.InventoryStockSchema::ID)
-            ->get([
-                VariantSchema::TABLE.'.'.VariantSchema::ID.' as variant_id',
-                VariantSchema::TABLE.'.'.VariantSchema::QUANTITY.' as quantity',
-            ]);
+        $quantities = app(CatalogGatewayInterface::class)->variantQuantities();
+
+        $existing = DB::table(InventoryStockSchema::TABLE)
+            ->whereIn(InventoryStockSchema::VARIANT_ID, $quantities->keys()->all())
+            ->pluck(InventoryStockSchema::VARIANT_ID)
+            ->all();
+
+        $missing = $quantities->except($existing);
 
         foreach ($missing->chunk(500) as $chunk) {
             DB::table(InventoryStockSchema::TABLE)->insert(
-                $chunk->map(fn ($variant): array => [
-                    InventoryStockSchema::VARIANT_ID => $variant->variant_id,
-                    InventoryStockSchema::QUANTITY => (int) ($variant->quantity ?? 0),
+                $chunk->map(fn ($quantity, $variantId): array => [
+                    InventoryStockSchema::VARIANT_ID => $variantId,
+                    InventoryStockSchema::QUANTITY => (int) ($quantity ?? 0),
                     'created_at' => now(),
                     'updated_at' => now(),
-                ])->all()
+                ])->values()->all()
             );
         }
     }

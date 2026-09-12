@@ -2,9 +2,9 @@
 
 namespace Modules\Inventory\Http\Requests\Admin\InventoryStock;
 
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
 class InventoryStockRequest extends FormRequest
@@ -15,7 +15,11 @@ class InventoryStockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            InventoryStockSchema::VARIANT_ID => ['required', Rule::exists(VariantSchema::TABLE, VariantSchema::ID)],
+            InventoryStockSchema::VARIANT_ID => ['required', 'integer', function (string $attribute, mixed $value, Closure $fail): void {
+                if (! app(CatalogGatewayInterface::class)->variantExists((int) $value)) {
+                    $fail('The selected '.$attribute.' is invalid.');
+                }
+            }],
             InventoryStockSchema::QUANTITY => ['required', 'numeric', 'min:1', 'max:100000'],
         ];
     }

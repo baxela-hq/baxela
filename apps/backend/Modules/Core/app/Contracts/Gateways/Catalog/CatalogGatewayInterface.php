@@ -37,4 +37,21 @@ interface CatalogGatewayInterface
      * productExists.
      */
     public function variantExists(int $variantId): bool;
+
+    /**
+     * The product slug that identifies the ordered product at purchase
+     * time — the default-language translation's slug, falling back to any
+     * slug — so order-item snapshots keep working as product links even
+     * after admin edits recreate variants. Null when the variant no longer
+     * resolves.
+     */
+    public function getProductSlugForVariant(int $variantId): ?string;
+
+    /**
+     * Every variant's catalog quantity keyed by variant id — the source of
+     * truth Inventory bootstraps its stock ledger from.
+     *
+     * @return Collection<int, mixed>
+     */
+    public function variantQuantities(): Collection;
 }

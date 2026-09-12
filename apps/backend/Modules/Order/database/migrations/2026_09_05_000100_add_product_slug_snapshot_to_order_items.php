@@ -4,9 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
-use Modules\Catalog\Schemas\Variant\VariantSchema;
-use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
 return new class extends Migration
@@ -24,25 +22,13 @@ return new class extends Migration
             });
         }
 
-        $defaultLanguageId = DB::table(LanguageSchema::TABLE)
-            ->where(LanguageSchema::IS_DEFAULT, true)
-            ->value(LanguageSchema::ID);
+        $catalogGateway = app(CatalogGatewayInterface::class);
 
         DB::table(OrderItemSchema::TABLE)
             ->whereNull(OrderItemSchema::PRODUCT_SLUG_SNAPSHOT)
             ->get(['id', OrderItemSchema::VARIANT_ID])
-            ->each(function ($item) use ($defaultLanguageId): void {
-                $productId = DB::table(VariantSchema::TABLE)
-                    ->where(VariantSchema::ID, $item->{OrderItemSchema::VARIANT_ID})
-                    ->value(VariantSchema::PRODUCT_ID);
-
-                $slug = $productId
-                    ? DB::table(ProductTranslationSchema::TABLE)
-                        ->where(ProductTranslationSchema::PRODUCT_ID, $productId)
-                        ->orderByRaw(ProductTranslationSchema::LANGUAGE_ID.' = ? desc', [$defaultLanguageId])
-                        ->whereNotNull(ProductTranslationSchema::SLUG)
-                        ->value(ProductTranslationSchema::SLUG)
-                    : null;
+            ->each(function ($item) use ($catalogGateway): void {
+                $slug = $catalogGateway->getProductSlugForVariant((int) $item->{OrderItemSchema::VARIANT_ID});
 
                 DB::table(OrderItemSchema::TABLE)
                     ->where('id', $item->id)
