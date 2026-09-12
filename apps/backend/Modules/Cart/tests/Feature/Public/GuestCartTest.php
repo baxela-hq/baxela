@@ -5,9 +5,7 @@ use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Tests\Feature\HelperTrait;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 

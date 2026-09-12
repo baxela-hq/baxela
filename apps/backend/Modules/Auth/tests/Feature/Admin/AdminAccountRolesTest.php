@@ -5,9 +5,7 @@ use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Tests\Feature\HelperTrait;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 

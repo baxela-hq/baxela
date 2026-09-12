@@ -8,9 +8,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Tests\Feature\HelperTrait;
-use Tests\TestCase;
 
-uses(TestCase::class);
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
