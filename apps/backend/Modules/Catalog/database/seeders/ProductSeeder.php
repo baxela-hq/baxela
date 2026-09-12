@@ -44,6 +44,10 @@ class ProductSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
 
+    private MediaGatewayInterface $mediaGateway;
+
+    private int $productFolderId;
+
     private string $masterLang = 'en';
 
     /** @var array<string, int|null> */
@@ -60,6 +64,17 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->mediaGateway = App::make(MediaGatewayInterface::class);
+
+        $productFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Product');
+        if ($productFolderId === null) {
+            $this->command->error('Folder Catalog/Product not found.');
+            $this->command->error('Run this seeder after running the media seeder.');
+
+            return;
+        }
+        $this->productFolderId = $productFolderId;
+
         $this->coreGateway = App::make(CoreGatewayInterface::class);
         $moduleKey = Module::NAME_LOWER.'::seeder.products';
 
@@ -200,8 +215,9 @@ class ProductSeeder extends Seeder
 
             // catalog_images.media_id is NOT NULL, so every image row needs
             // a media record; the media gateway registers the seeded photo
-            // idempotently, keeping the media id stable across re-seeds.
-            $media = app(MediaGatewayInterface::class)->upsertLocal($source, $path);
+            // idempotently — keeping the media id stable across re-seeds —
+            // and files it under the Catalog/Product media folder.
+            $media = $this->mediaGateway->upsertLocal($source, $path, $this->productFolderId);
 
             $rows[] = [
                 ImageSchema::MEDIA_ID => (int) $media?->id,
