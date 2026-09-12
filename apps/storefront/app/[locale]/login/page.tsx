@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
@@ -24,6 +24,18 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
+
+  // The API client's 401 interceptor lands here with session_expired=1
+  // after clearing a dead session. Toast once, then strip the flag so a
+  // refresh/re-render doesn't repeat it (next is kept for post-login).
+  useEffect(() => {
+    if (searchParams.get("session_expired") !== "1") return;
+    toast.error(t("login.messages.error.session_expired"));
+    const params = new URLSearchParams(searchParams);
+    params.delete("session_expired");
+    const query = params.toString();
+    router.replace(query ? `/login?${query}` : "/login");
+  }, [searchParams, router, t]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

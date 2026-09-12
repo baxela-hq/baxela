@@ -11,15 +11,18 @@ import {
 } from "react";
 import { api } from "@/lib/api/client";
 import { clearCartToken, getCartToken } from "@/lib/cart/client";
+import {
+  AUTH_TOKEN_KEY,
+  AUTH_USER_KEY,
+  clearAuthStorage,
+} from "@/lib/auth-storage";
 import type { ApiUser } from "@/lib/api/types";
 
 // Sanctum bearer-token session. The backend signs in via
 // POST /auth/public/auth/signin and returns a plain-text token; there is
 // no signout endpoint (tokens are revoked server-side only), so signing
-// out just drops the local session.
-
-const TOKEN_KEY = "baxela_token";
-const USER_KEY = "baxela_user";
+// out just drops the local session. Storage keys live in
+// lib/auth-storage, shared with the API client's 401 interceptor.
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -44,8 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>("loading");
 
   const clearSession = useCallback(() => {
-    window.localStorage.removeItem(TOKEN_KEY);
-    window.localStorage.removeItem(USER_KEY);
+    clearAuthStorage();
     setToken(null);
     setUser(null);
     setStatus("unauthenticated");
@@ -60,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void (async () => {
       await Promise.resolve();
 
-      const stored = window.localStorage.getItem(TOKEN_KEY);
+      const stored = window.localStorage.getItem(AUTH_TOKEN_KEY);
       if (!stored) {
         if (active) setStatus("unauthenticated");
         return;
@@ -71,14 +73,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           token: stored,
         });
         if (!active) return;
-        window.localStorage.setItem(USER_KEY, JSON.stringify(fresh));
+        window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(fresh));
         setToken(stored);
         setUser(fresh);
         setStatus("authenticated");
       } catch {
         if (!active) return;
-        window.localStorage.removeItem(TOKEN_KEY);
-        window.localStorage.removeItem(USER_KEY);
+        // A dead token 401s and the API client's interceptor has already
+        // cleared storage and started the login redirect; this only syncs
+        // the in-memory state (no-op by the time the reload lands).
+        clearAuthStorage();
         setToken(null);
         setUser(null);
         setStatus("unauthenticated");
@@ -99,8 +103,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cartToken: getCartToken(),
     });
 
-    window.localStorage.setItem(TOKEN_KEY, nextToken);
-    window.localStorage.setItem(USER_KEY, JSON.stringify(nextUser));
+    window.localStorage.setItem(AUTH_TOKEN_KEY, nextToken);
+    window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(nextUser));
     setToken(nextToken);
     setUser(nextUser);
     setStatus("authenticated");
