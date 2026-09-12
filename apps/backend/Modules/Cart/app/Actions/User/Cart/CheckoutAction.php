@@ -57,7 +57,9 @@ class CheckoutAction
             $available = $inventoryGateway->availableQuantity((string) $variantId) ?? 0;
             if ($available < $cartItem->{CartItemSchema::QUANTITY}) {
                 throw new OutOfStockException(
-                    VariantDisplayName::for((int) $variantId),
+                    VariantDisplayName::fromSummary(
+                        app(CatalogGatewayInterface::class)->getVariantSummaries([(int) $variantId])->get((int) $variantId)
+                    ),
                     $available,
                     (int) $variantId,
                 );
