@@ -47,9 +47,11 @@ pnpm dev
 
 ```bash
 pnpm dev      # start the dev server (HMR)
-pnpm build    # production build (.next/standalone — used by the prod Docker image)
+pnpm build    # production build (next build)
 pnpm start    # serve the production build
 pnpm lint     # ESLint
+pnpm preview  # build + run the Cloudflare Worker locally (demo branch)
+pnpm deploy   # build + deploy to Cloudflare Workers (demo branch)
 ```
 
 ## Project Structure
@@ -64,7 +66,33 @@ documented in **[AGENTS.md](./AGENTS.md)**. Read it before contributing.
 
 ## Deployment
 
+### Production (Docker, from `main`)
+
 The production image (`infrastructure/docker/production/storefront/`) builds
 the standalone server and runs `server.js` behind the port published by
 `docker-compose.prod.yml`. `NEXT_PUBLIC_API_BASE_URL` is baked in at build
 time; `SERVER_API_BASE_URL` is provided at runtime.
+
+### Demo (Cloudflare Workers, from `demo/storefront-cloudflare`)
+
+The demo branch deploys the SSR app to Cloudflare Workers via
+[@opennextjs/cloudflare](https://opennext.js.org/cloudflare) — the build
+transforms `next build` output into `.open-next/` (worker entry
+`.open-next/worker.js` + static assets in `.open-next/assets`). This branch
+drops `output: "standalone"` (Docker-only) and disables Next's image
+optimizer; build the production Docker image from `main`.
+
+```bash
+pnpm install        # after switching to the branch
+pnpm exec wrangler login   # once, with your Cloudflare account
+NEXT_PUBLIC_API_BASE_URL=https://api-demo.baxela.com/api/v1 pnpm deploy
+```
+
+| Variable | Where it lives | Notes |
+| --- | --- | --- |
+| `SERVER_API_BASE_URL` | `wrangler.jsonc` → `vars` | Runtime value for server-side (SSR) fetches |
+| `NEXT_PUBLIC_API_BASE_URL` | shell env when deploying | Inlined into client bundles at **build time** — must be set on every `pnpm deploy` |
+
+The backend must allow CORS from the Workers demo domain for client-side
+calls (cart, auth). `pnpm preview` runs the same Worker locally with
+`wrangler dev`.
