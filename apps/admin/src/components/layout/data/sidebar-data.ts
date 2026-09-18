@@ -19,11 +19,11 @@ import {
   UserX,
   Users,
   ShieldCheck,
-  Command,
   GalleryVerticalEnd,
   Images,
   Truck,
 } from 'lucide-react'
+import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { type SidebarData } from '../types'
@@ -41,8 +41,8 @@ export const useSidebarData = (): SidebarData => {
     teams: [
       {
         name: 'Baxela Admin',
-        logo: Command,
-        plan: 'Vite + ShadcnUI',
+        logo: BaxelaMark,
+        plan: t('sidebar.admin-panel'),
       },
       {
         name: 'Acme Inc',

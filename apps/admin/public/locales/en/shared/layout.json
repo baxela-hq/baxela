@@ -1,5 +1,6 @@
 {
   "sidebar": {
+    "admin-panel": "Admin Panel",
     "dashboard": "Dashboard",
     "catalog": "Catalog",
     "products": "Products",
