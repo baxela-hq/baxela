@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
+import { useCart } from "@/context/cart-context";
 import { api, ApiError } from "@/lib/api/client";
 import type {
   ApiAddress,
@@ -36,6 +37,7 @@ export default function CheckoutPage() {
   const tLayout = useTranslations("shared.layout");
   const format = useFormatter();
   const { status, token } = useAuth();
+  const { refresh } = useCart();
   const router = useRouter();
 
   const [cartItems, setCartItems] = useState<ApiCartItem[]>([]);
@@ -193,6 +195,10 @@ export default function CheckoutPage() {
         { token },
       );
       setPlacedOrder(orderCode);
+      // The backend emptied the cart at checkout; sync the shared cart context
+      // (header badge, cart page). Best-effort — a failure here must not hide
+      // the success panel for an order that was already placed.
+      void refresh().catch(() => {});
     } catch (cause) {
       setError(
         cause instanceof ApiError
