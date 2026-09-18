@@ -37,10 +37,13 @@
     "labels": {
       "group": "Product information",
       "description": "Description",
+      "specifications": "Specifications",
       "reviews": "Reviews ({count})"
     },
     "texts": {
-      "no_description": "No description is available for this product yet."
+      "no_description": "No description is available for this product yet.",
+      "yes": "Yes",
+      "no": "No"
     }
   },
   "reviews": {

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { api, ApiError } from "@/lib/api/client";
-import type { ApiProductComment } from "@/lib/api/types";
+import type { ApiProductAttribute, ApiProductComment } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { Link, useRouter } from "@/i18n/navigation";
 
-type TabKey = "description" | "reviews";
+type TabKey = "description" | "specifications" | "reviews";
 
 function CommentItem({
   comment,
@@ -55,18 +55,20 @@ function CommentItem({
 }
 
 /**
- * Product description + reviews tabs. Comments come from the public
- * comments endpoint (moderated server-side); writing one requires an
- * account and goes through admin approval before it appears.
+ * Product description / specifications / reviews tabs. Attributes and
+ * comments come from the public endpoints; comments require an account to
+ * write and go through admin approval before they appear.
  */
 export function ProductTabs({
   productId,
   content,
+  attributes,
   comments,
   commentsTotal,
 }: {
   productId: number;
   content: string | null;
+  attributes: ApiProductAttribute[];
   comments: ApiProductComment[];
   commentsTotal: number;
 }) {
@@ -85,8 +87,15 @@ export function ProductTabs({
   const formatDate = (iso: string) =>
     format.dateTime(new Date(iso), { dateStyle: "medium" });
 
+  // Titles/values arrive localized from the backend; boolean rows have no
+  // server-side wording, so they are mapped to locale strings here.
+  const specs = attributes.filter((attribute) => attribute.value !== null);
+
   const TABS: { key: TabKey; label: string }[] = [
     { key: "description", label: t("tabs.labels.description") },
+    ...(specs.length > 0
+      ? [{ key: "specifications" as const, label: t("tabs.labels.specifications") }]
+      : []),
     { key: "reviews", label: t("tabs.labels.reviews", { count: commentsTotal }) },
   ];
 
@@ -154,6 +163,28 @@ export function ProductTabs({
               <p>{t("tabs.texts.no_description")}</p>
             )}
           </div>
+        ) : null}
+
+        {tab === "specifications" ? (
+          <dl className="max-w-3xl">
+            {specs.map((attribute) => (
+              <div
+                key={attribute.id}
+                className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-border-light py-3"
+              >
+                <dt className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                  {attribute.title ?? attribute.code}
+                </dt>
+                <dd className="text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                  {typeof attribute.value === "boolean"
+                    ? attribute.value
+                      ? t("tabs.texts.yes")
+                      : t("tabs.texts.no")
+                    : String(attribute.value)}
+                </dd>
+              </div>
+            ))}
+          </dl>
         ) : null}
 
         {tab === "reviews" ? (

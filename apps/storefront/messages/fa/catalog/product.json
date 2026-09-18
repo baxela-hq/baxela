@@ -37,10 +37,13 @@
     "labels": {
       "group": "اطلاعات محصول",
       "description": "توضیحات",
+      "specifications": "مشخصات",
       "reviews": "دیدگاه‌ها ({count})"
     },
     "texts": {
-      "no_description": "هنوز توضیحی برای این محصول ثبت نشده است."
+      "no_description": "هنوز توضیحی برای این محصول ثبت نشده است.",
+      "yes": "بله",
+      "no": "خیر"
     }
   },
   "reviews": {
