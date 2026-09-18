@@ -300,6 +300,10 @@ useTableUrlState({
 - Translation JSON mirrors these prefixes (`form.labels`, `form.statuses`, `messages`, `page_titles`).
   When adding labels/statuses, update **every language folder** under `public/locales/` (currently
   `en` and `fa`) — locale files must stay in parity; a key missing from one language is a bug.
+- **All translation keys use kebab-case.** Every key, at every nesting level, must be written in
+  kebab-case (`admin-panel`, `internal-server-error`) — never camelCase (`adminPanel`) or
+  snake_case (`not_found`). Legacy non-kebab keys (e.g. the `form.help_texts` prefix) are kept
+  as-is: do not mass-rename existing keys, but every newly added key must follow this format.
 - Entity name object: `const entityName = { singular: tLabel('product'), plural: tLabel('products') }`.
 - There is currently NO runtime language switching (`i18n.changeLanguage` never called; `lng` is
   fixed at `fa` in `src/i18n/index.ts`). This is present state, not a design limit — the setup is
