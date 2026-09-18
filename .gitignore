@@ -12,6 +12,8 @@
 .env.production
 .env.local
 .env.*.local
+.env.gcp
+.env.sharedhosting
 
 # --- Logs / runtime ---
 npm-debug.log*
