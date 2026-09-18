@@ -14,11 +14,14 @@ class PaymentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            PaymentSchema::ID => $this->resource->{PaymentSchema::ID},
             PaymentSchema::ORDER_ID => $this->resource->{PaymentSchema::ORDER_ID},
             PaymentSchema::TRANSACTION_ID => $this->resource->{PaymentSchema::TRANSACTION_ID},
             PaymentSchema::METHOD => $this->resource->{PaymentSchema::METHOD},
             PaymentSchema::AMOUNT => $this->resource->{PaymentSchema::AMOUNT},
             PaymentSchema::STATUS => $this->resource->{PaymentSchema::STATUS},
+            PaymentSchema::CREATED_AT => $this->resource->{PaymentSchema::CREATED_AT},
+            PaymentSchema::UPDATED_AT => $this->resource->{PaymentSchema::UPDATED_AT},
         ];
     }
 }
