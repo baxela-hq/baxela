@@ -131,6 +131,7 @@ export default async function ProductPage({
       <ProductTabs
         productId={product.id}
         content={product.content}
+        attributes={product.attributes}
         comments={comments}
         commentsTotal={commentsPage?.meta.total ?? 0}
       />

@@ -69,6 +69,16 @@ export interface ApiCategoryRef {
   slug: string | null;
 }
 
+// Product attribute row (specifications) — title and select values arrive
+// localized via Accept-Language; value is the raw scalar for text/number/
+// boolean attributes.
+export interface ApiProductAttribute {
+  id: number;
+  code: string | null;
+  title: string | null;
+  value: string | number | boolean | null;
+}
+
 export interface ApiProductDetail {
   id: number;
   title: string | null;
@@ -80,6 +90,7 @@ export interface ApiProductDetail {
   variants: ApiVariant[];
   images: ApiImage[];
   categories: ApiCategoryRef[];
+  attributes: ApiProductAttribute[];
 }
 
 export interface ApiPublicCategory {
