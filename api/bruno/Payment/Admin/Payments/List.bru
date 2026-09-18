@@ -10,6 +10,15 @@ get {
   auth: bearer
 }
 
+params:query {
+  ~filter[status]: pending
+  ~filter[method]: manual
+  ~filter[order_id]: 1
+  ~filter[transaction_id]: 777
+  ~sort: -id
+  ~per_page: 15
+}
+
 headers {
   Accept: application/json
   Content-Type: application/json
