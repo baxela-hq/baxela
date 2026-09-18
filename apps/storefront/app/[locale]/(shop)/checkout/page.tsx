@@ -431,7 +431,7 @@ export default function CheckoutPage() {
                       </select>
                     </div>
                     <div className="flex items-end">
-                      <Button type="submit" variant="outline" fullWidth={false}>
+                      <Button type="submit" variant="primary" fullWidth={false}>
                         {t("address.actions.save")}
                       </Button>
                     </div>
