@@ -1,12 +1,19 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Catalog\Models\Attribute;
+use Modules\Catalog\Models\AttributeGroup;
+use Modules\Catalog\Models\AttributeTranslation;
+use Modules\Catalog\Models\AttributeValue;
+use Modules\Catalog\Models\AttributeValueTranslation;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Models\ProductTranslation;
+use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Catalog\Tests\Feature\HelperTrait;
+
 use function Modules\Catalog\Tests\Feature\defaultLanguage;
 
 uses(RefreshDatabase::class);
@@ -70,6 +77,57 @@ it('returns 404 for an unknown product', function () {
     $this->getJson($this->baseUrl('/public/products/999999'))
         ->assertStatus(404)
         ->assertJsonPath('code', 'http.404');
+});
+
+it('shows the product attributes ordered by position with localized titles', function () {
+    $languageId = defaultLanguage()->id;
+    $group = AttributeGroup::query()->create();
+
+    $brand = Attribute::query()->create([
+        'group_id' => $group->id,
+        'code' => 'brand',
+        'data_type' => AttributeTypeEnum::SELECT,
+        'position' => 2,
+    ]);
+    AttributeTranslation::query()->create([
+        'attribute_id' => $brand->id,
+        'language_id' => $languageId,
+        'title' => 'Brand',
+    ]);
+    $urbanEdge = AttributeValue::query()->create(['attribute_id' => $brand->id]);
+    AttributeValueTranslation::query()->create([
+        'attribute_value_id' => $urbanEdge->id,
+        'language_id' => $languageId,
+        'title' => 'UrbanEdge',
+    ]);
+
+    $material = Attribute::query()->create([
+        'group_id' => $group->id,
+        'code' => 'material',
+        'data_type' => AttributeTypeEnum::TEXT,
+        'position' => 1,
+    ]);
+    AttributeTranslation::query()->create([
+        'attribute_id' => $material->id,
+        'language_id' => $languageId,
+        'title' => 'Material',
+    ]);
+
+    $product = publicProduct('attributed-product');
+    $product->attributeValues()->createMany([
+        ['attribute_id' => $brand->id, 'attribute_value_id' => $urbanEdge->id],
+        ['attribute_id' => $material->id, 'text_value' => 'Cotton'],
+    ]);
+
+    $this->getJson($this->baseUrl('/public/products/'.$product->id))
+        ->assertOk()
+        ->assertJsonCount(2, 'data.attributes')
+        ->assertJsonPath('data.attributes.0.code', 'material')
+        ->assertJsonPath('data.attributes.0.title', 'Material')
+        ->assertJsonPath('data.attributes.0.value', 'Cotton')
+        ->assertJsonPath('data.attributes.1.code', 'brand')
+        ->assertJsonPath('data.attributes.1.title', 'Brand')
+        ->assertJsonPath('data.attributes.1.value', 'UrbanEdge');
 });
 
 it('lists approved comments with their approved replies for a product', function () {

@@ -3,8 +3,11 @@
 namespace Modules\Catalog\Actions\Public\Product;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Catalog\Schemas\Attribute\AttributeSchema;
+use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
+use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
@@ -27,6 +30,8 @@ class ShowProductAction extends AbstractProductAction
                 ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES.'.'.CategorySchema::RES_TRANSLATIONS,
+                ProductSchema::RES_ATTRIBUTE_VALUES.'.'.PAVSchema::RES_ATTRIBUTE.'.'.AttributeSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_ATTRIBUTE_VALUES.'.'.PAVSchema::RES_ATTRIBUTE_VALUE.'.'.AttributeValueSchema::RES_TRANSLATIONS,
             ]);
 
         if (ctype_digit($idOrSlug)) {

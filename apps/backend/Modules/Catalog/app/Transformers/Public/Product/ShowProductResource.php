@@ -7,12 +7,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\OptionValue;
+use Modules\Catalog\Models\ProductAttributeValue;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\Attribute\AttributeSchema;
+use Modules\Catalog\Schemas\Attribute\AttributeTranslationSchema as ATSchema;
+use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
+use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
+use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
@@ -80,6 +86,25 @@ class ShowProductResource extends JsonResource
                         ?->{CTSchema::SLUG}
                         ?? $category->translations->first()?->{CTSchema::SLUG},
                 ])->all(),
+            'attributes' => $this->resource->attributeValues
+                ->sortBy(fn (ProductAttributeValue $row): int => $row->attribute?->{AttributeSchema::POSITION} ?? 0)
+                ->map(fn (ProductAttributeValue $row): array => [
+                    'id' => $row->{PAVSchema::ID},
+                    'code' => $row->attribute?->{AttributeSchema::CODE},
+                    'title' => $row->attribute?->translations
+                        ->firstWhere(ATSchema::LANGUAGE_ID, $languageId)
+                        ?->{ATSchema::TITLE}
+                        ?? $row->attribute?->translations->first()?->{ATSchema::TITLE},
+                    'value' => match ($row->attribute?->{AttributeSchema::DATA_TYPE}) {
+                        AttributeTypeEnum::SELECT, AttributeTypeEnum::MULTISELECT => $row->attributeValue?->translations
+                            ->firstWhere(AVTSchema::LANGUAGE_ID, $languageId)
+                            ?->{AVTSchema::TITLE}
+                            ?? $row->attributeValue?->translations->first()?->{AVTSchema::TITLE},
+                        AttributeTypeEnum::NUMBER => $row->{PAVSchema::NUMBER_VALUE},
+                        AttributeTypeEnum::BOOLEAN => $row->{PAVSchema::BOOLEAN_VALUE},
+                        default => $row->{PAVSchema::TEXT_VALUE},
+                    },
+                ])->values()->all(),
         ];
     }
 }
