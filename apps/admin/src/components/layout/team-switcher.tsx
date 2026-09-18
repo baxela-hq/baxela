@@ -26,7 +26,8 @@ type TeamSwitcherProps = {
 
 export function TeamSwitcher({ teams }: TeamSwitcherProps) {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = React.useState(teams[0])
+  const [activeTeamIndex, setActiveTeamIndex] = React.useState(0)
+  const activeTeam = teams[activeTeamIndex] ?? teams[0]
 
   return (
     <SidebarMenu>
@@ -61,7 +62,7 @@ export function TeamSwitcher({ teams }: TeamSwitcherProps) {
             {teams.map((team, index) => (
               <DropdownMenuItem
                 key={team.name}
-                onClick={() => setActiveTeam(team)}
+                onClick={() => setActiveTeamIndex(index)}
                 className='gap-2 p-2'
               >
                 <div className='flex size-6 items-center justify-center rounded-sm border'>
