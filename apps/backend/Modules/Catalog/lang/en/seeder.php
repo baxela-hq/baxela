@@ -699,12 +699,14 @@ return [
                 'dimension_unit' => 'cm',
             ],
             'variants' => [
-                ['sku' => 'MHS-GRY-S', 'barcode' => '8901234560042', 'price' => 79.99, 'is_default' => true, 'option_values' => ['color' => 'gray', 'size' => 's']],
-                ['sku' => 'MHS-GRY-M', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'm']],
-                ['sku' => 'MHS-GRY-L', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'l']],
-                ['sku' => 'MHS-GRY-XL', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'xl']],
-                ['sku' => 'MHS-BLK-M', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'm']],
-                ['sku' => 'MHS-BLK-L', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'l']],
+                ['sku' => 'MHS-GRY-S', 'barcode' => '8901234560042', 'price' => 79.99, 'is_default' => true, 'option_values' => ['color' => 'gray', 'size' => 's', 'material' => 'fleece']],
+                ['sku' => 'MHS-GRY-M', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'm', 'material' => 'fleece']],
+                ['sku' => 'MHS-GRY-L', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'l', 'material' => 'fleece']],
+                ['sku' => 'MHS-GRY-XL', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'xl', 'material' => 'fleece']],
+                ['sku' => 'MHS-BLK-M', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'm', 'material' => 'fleece']],
+                ['sku' => 'MHS-BLK-L', 'price' => 79.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'l', 'material' => 'fleece']],
+                ['sku' => 'MHS-GRY-M-WOOL', 'price' => 99.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'm', 'material' => 'wool']],
+                ['sku' => 'MHS-GRY-L-WOOL', 'price' => 99.99, 'is_default' => false, 'option_values' => ['color' => 'gray', 'size' => 'l', 'material' => 'wool']],
             ],
             'translations' => [
                 [
@@ -859,12 +861,15 @@ return [
                 'dimension_unit' => 'cm',
             ],
             'variants' => [
-                ['sku' => 'WAB-BLK-6', 'barcode' => '8901234560080', 'price' => 149.99, 'is_default' => true, 'option_values' => ['color' => 'black', 'size' => 'shoe-6']],
-                ['sku' => 'WAB-BLK-7', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-7']],
-                ['sku' => 'WAB-BLK-8', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-8']],
-                ['sku' => 'WAB-BLK-9', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-9']],
-                ['sku' => 'WAB-TAN-7', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-7']],
-                ['sku' => 'WAB-TAN-8', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-8']],
+                ['sku' => 'WAB-BLK-6', 'barcode' => '8901234560080', 'price' => 149.99, 'is_default' => true, 'option_values' => ['color' => 'black', 'size' => 'shoe-6', 'material' => 'leather']],
+                ['sku' => 'WAB-BLK-7', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-7', 'material' => 'leather']],
+                ['sku' => 'WAB-BLK-8', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-8', 'material' => 'leather']],
+                ['sku' => 'WAB-BLK-9', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-9', 'material' => 'leather']],
+                ['sku' => 'WAB-TAN-7', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-7', 'material' => 'leather']],
+                ['sku' => 'WAB-TAN-8', 'price' => 149.99, 'is_default' => false, 'option_values' => ['color' => 'tan', 'size' => 'shoe-8', 'material' => 'leather']],
+                ['sku' => 'WAB-BLK-7-VL', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-7', 'material' => 'vegan-leather']],
+                ['sku' => 'WAB-BLK-8-VL', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-8', 'material' => 'vegan-leather']],
+                ['sku' => 'WAB-BLK-9-VL', 'price' => 119.99, 'is_default' => false, 'option_values' => ['color' => 'black', 'size' => 'shoe-9', 'material' => 'vegan-leather']],
             ],
             'translations' => [
                 [
