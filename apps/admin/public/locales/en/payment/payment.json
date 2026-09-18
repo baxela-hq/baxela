@@ -1,0 +1,47 @@
+{
+  "form": {
+    "labels": {
+      "payment": "Payment",
+      "payments": "Payments",
+      "id": "ID",
+      "order_id": "Order",
+      "transaction_id": "Transaction",
+      "method": "Method",
+      "amount": "Amount",
+      "status": "Status",
+      "created_at": "Created At"
+    },
+    "help_texts": {
+      "confirm": "Confirming registers the money as received: the payment is marked successful and its order becomes paid and moves to processing. The customer is notified.",
+      "fail": "Failing marks this payment as failed. The order stays unpaid and the customer can pay it again."
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pending",
+        "success": "Success",
+        "failed": "Failed"
+      },
+      "method": {
+        "manual": "Manual",
+        "paypal": "PayPal",
+        "stripe": "Stripe"
+      }
+    },
+    "actions": {
+      "confirm": "Confirm payment",
+      "fail": "Mark as failed"
+    }
+  },
+  "dialog": {
+    "success": {
+      "title": "Confirm payment",
+      "desc": "Mark payment #{{id}} as successful? Its order will be marked paid and move to processing.",
+      "confirm": "Confirm"
+    },
+    "failed": {
+      "title": "Mark payment as failed",
+      "desc": "Mark payment #{{id}} as failed? The order stays unpaid and the customer can pay it again.",
+      "confirm": "Mark as failed"
+    }
+  }
+}

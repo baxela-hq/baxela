@@ -17,6 +17,8 @@
     "order": "Order",
     "orders": "Orders",
     "shipping": "Shipping",
+    "payment": "Payment",
+    "payments": "Payments",
     "methods": "Methods",
     "zones": "Zones",
     "rates": "Rates",

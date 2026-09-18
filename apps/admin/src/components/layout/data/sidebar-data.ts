@@ -22,6 +22,7 @@ import {
   GalleryVerticalEnd,
   Images,
   Truck,
+  CreditCard,
 } from 'lucide-react'
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
@@ -146,6 +147,16 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.orders'),
                 url: '/order/orders',
+              },
+            ],
+          },
+          {
+            title: t('sidebar.payment'),
+            icon: CreditCard,
+            items: [
+              {
+                title: t('sidebar.payments'),
+                url: '/payment/payments',
               },
             ],
           },
