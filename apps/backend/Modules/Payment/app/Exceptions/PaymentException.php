@@ -16,6 +16,11 @@ class PaymentException extends BaseException
         return new self(ErrorCodeEnum::PROCESS_METHOD_NOT_SUPPORTED->value);
     }
 
+    public static function gatewayUnconfigured(): PaymentException
+    {
+        return new self(ErrorCodeEnum::PROCESS_GATEWAY_UNCONFIGURED->value);
+    }
+
     public static function invalidStatusTransition(): PaymentException
     {
         return new self(ErrorCodeEnum::UPDATE_INVALID_STATUS_TRANSITION->value);

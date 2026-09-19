@@ -2,6 +2,7 @@
 
 namespace Modules\Payment\Gateways;
 
+use Modules\Payment\Exceptions\PaymentException;
 use Stripe\Checkout\Session;
 use Stripe\StripeClient;
 
@@ -18,6 +19,13 @@ class StripeCheckout
 
     private function client(): StripeClient
     {
-        return new StripeClient((string) config('payment.stripe.secret'));
+        $secret = (string) config('payment.stripe.secret');
+
+        if ($secret === '') {
+            // Fail as a safe 400 instead of the SDK's opaque 500.
+            throw PaymentException::gatewayUnconfigured();
+        }
+
+        return new StripeClient($secret);
     }
 }

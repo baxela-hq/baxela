@@ -109,7 +109,6 @@ it('creates a stripe payment and returns the hosted checkout url', function () {
         CurrencySchema::DECIMAL_PLACES => 2,
     ]);
     $order = payableOrder($user);
-
     // The session id doubles as the stored transaction_id the webhook matches on.
     $checkout = Mockery::mock(StripeCheckout::class);
     $checkout->shouldReceive('createSession')->once()->andReturn(StripeSession::constructFrom([
@@ -130,4 +129,16 @@ it('creates a stripe payment and returns the hosted checkout url', function () {
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('cs_test_9')
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
         ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::STRIPE);
+});
+
+it('rejects a stripe payment when the gateway is not configured', function () {
+    config(['payment.stripe.secret' => null]);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'stripe',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });
