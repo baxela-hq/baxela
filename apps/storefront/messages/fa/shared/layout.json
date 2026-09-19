@@ -17,7 +17,16 @@
       "login": "ورود",
       "open_menu": "باز کردن منو",
       "close_menu": "بستن منو",
-      "language": "تغییر زبان"
+      "language": "تغییر زبان",
+      "notifications": "اطلاع‌رسانی‌ها"
+    },
+    "notifications": {
+      "texts": {
+        "empty": "اطلاع‌رسانی جدیدی ندارید."
+      },
+      "actions": {
+        "view_all": "مشاهده همه اطلاع‌رسانی‌ها"
+      }
     },
     "cart": {
       "texts": {

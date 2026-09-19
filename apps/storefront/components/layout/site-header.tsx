@@ -7,6 +7,7 @@ import { SearchMenu } from "@/components/search-menu";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { fetchMenu, fetchSettings } from "@/lib/api/site";
 import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
 import { Link } from "@/i18n/navigation";
@@ -73,6 +74,7 @@ export async function SiteHeader() {
               <HeartIcon className="size-5" />
             </Link>
             <CartMenu />
+            <NotificationsMenu />
             <AccountMenu />
             <LanguageSwitcher />
             <MobileMenu links={links} categories={categories} />
