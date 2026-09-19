@@ -1,17 +1,15 @@
 import { getRouteApi } from '@tanstack/react-router'
-import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
-import { ThemeSwitch } from '@/components/theme-switch'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { DataTable } from './components/data-table'
 import { Dialogs } from './components/dialogs'
 import { Provider } from './components/provider'
 import { Locales } from './data/routes'
 import { useProductCommentsList } from './hooks/use-product-comments'
+import { HeaderActions } from '@/components/layout/header-actions'
 
 const route = getRouteApi('/_authenticated/catalog/product-comments/')
 
@@ -31,11 +29,7 @@ export function ProductComments() {
     <Provider>
       <Header fixed>
         <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>

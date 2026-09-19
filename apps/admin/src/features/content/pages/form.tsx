@@ -13,19 +13,17 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search'
 import ImageUploader from '@/components/shared/image-uploader.tsx'
-import { ThemeSwitch } from '@/components/theme-switch'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
 import { FeatureRoutes, Locales } from './data/routes';
 import { BASE_URL, fetchOnePage } from './api/pages.api.ts';
 import { useSavePage } from './hooks/use-page-mutations';
 import { Provider } from './components/provider.tsx';
 import { formSchema, statuses, buildDefaultValues, buildEditValues, type PageForm, type Page } from './data/schema';
+import { HeaderActions } from '@/components/layout/header-actions'
 
 
 export function PageForm() {
@@ -117,11 +115,7 @@ export function PageForm() {
     <Provider>
       <Header fixed>
         <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>

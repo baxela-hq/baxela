@@ -1,11 +1,8 @@
 import { getRouteApi } from '@tanstack/react-router';
-import { ConfigDrawer } from '@/components/config-drawer';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
-import { ThemeSwitch } from '@/components/theme-switch';
 import { Locales } from './data/routes.ts';
 import { Dialogs } from './components/dialogs.tsx';
 import { PrimaryButtons } from './components/primary-buttons.tsx';
@@ -15,6 +12,7 @@ import { useOptionValuesList } from './hooks/use-option-values';
 import { useOneOption } from '../options/hooks/use-options';
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { getDefaultLanguage } from '@/shared/lib/locale.ts';
+import { HeaderActions } from '@/components/layout/header-actions'
 
 const route = getRouteApi('/_authenticated/catalog/option-values/$id/')
 
@@ -42,11 +40,7 @@ export function OptionValues() {
     <Provider>
       <Header fixed>
         <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>

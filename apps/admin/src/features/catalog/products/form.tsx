@@ -18,13 +18,10 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ConfigDrawer } from '@/components/config-drawer';
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
-import { ProfileDropdown } from '@/components/profile-dropdown';
 import { Search } from '@/components/search';
-import { ThemeSwitch } from '@/components/theme-switch';
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor';
 import { cn } from '@/lib/utils';
 import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
@@ -43,6 +40,7 @@ import type { Option } from '@/features/catalog/options/data/schema';
 import { fetchOptionValues } from '@/features/catalog/option-values/api/option-values.api';
 import type { OptionValue } from '@/features/catalog/option-values/data/schema';
 import { generateVariants, type MatrixOption } from './data/variant-matrix';
+import { HeaderActions } from '@/components/layout/header-actions'
 
 
 
@@ -420,11 +418,7 @@ export function ProductForm() {
     <Provider>
       <Header fixed>
         <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
