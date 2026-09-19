@@ -9,8 +9,11 @@ Guidelines for AI agents working in this repository. Read this before making cha
 template/demo code and real Baxela modules coexist — see [Template vs Baxela Modules](#template-vs-Baxela-modules)).
 
 - **SPA** talking to a Laravel backend (`VITE_API_BASE_URL`), currently `http://Baxela-backend.local/api/v1`.
-- UI language defaults to **Farsi (`fa`)**, fallback `en`. Full **RTL support** (direction is a manual UI
-  preference, decoupled from i18n language).
+- UI language defaults to **Farsi (`fa`)**, fallback `en`. **Language-driven direction**: the UI
+  language and layout direction follow the store default language snapshot (`DEFAULT_LANGUAGE` in
+  localStorage, written at sign-in and on settings save) — direction comes from `Language.is_rtl`.
+  The config-drawer LTR/RTL toggle is a cookie-persisted **manual override** that wins over the
+  language-derived direction until Reset (or sign-out) clears it.
 - **Multilingual by design**: `en`/`fa` are simply the locales shipped today — the whole structure
   (i18n namespaces, `public/locales/`, per-entity `translations[]`, the backend-driven language list)
   is built to support more languages later. Never assume only en/fa exist.
@@ -93,7 +96,8 @@ src/
 ├── hooks/                   # useAppTranslation, use-table-url-state, use-dialog-state, use-mobile
 ├── stores/auth-store.ts     # zustand persisted auth
 ├── context/                 # theme / direction / font / layout / search providers
-├── i18n/                    # i18next init (lng 'fa', fallback 'en', http backend)
+├── i18n/                    # i18next init (lng from stored default language snapshot,
+│                            #   fallback 'en', http backend)
 ├── config/fonts.ts
 └── styles/                  # Tailwind v4 CSS (index.css, theme.css)
 public/locales/{lang}/...    # translation JSONs per locale (namespace = folder/file);
@@ -305,10 +309,11 @@ useTableUrlState({
   snake_case (`not_found`). Legacy non-kebab keys (e.g. the `form.help_texts` prefix) are kept
   as-is: do not mass-rename existing keys, but every newly added key must follow this format.
 - Entity name object: `const entityName = { singular: tLabel('product'), plural: tLabel('products') }`.
-- There is currently NO runtime language switching (`i18n.changeLanguage` never called; `lng` is
-  fixed at `fa` in `src/i18n/index.ts`). This is present state, not a design limit — the setup is
-  standard i18next, and a language switcher is expected to come; don't build anything that would
-  block it.
+- **Runtime language switching exists**: the UI language follows the store default language
+  snapshot via `useApplyUiLanguage` (`src/shared/hooks/use-apply-ui-language.ts`) at sign-in,
+  settings save and sign-out, and `src/i18n/index.ts` boots from the same snapshot (fallback `fa`).
+  Direction follows `Language.is_rtl` (`src/shared/lib/ui-language.ts`) — never hardcode a
+  language→direction map.
 
 ### Toast/message keys — reuse shared generics, never invent new message keys
 
@@ -354,7 +359,8 @@ Backend entities carry `translations: Translation[]` (`{ language_id, language (
 - Authenticated layout: `SearchProvider > LayoutProvider > SidebarProvider > AppSidebar + SidebarInset > Outlet`.
 - `Header` and `Main` are rendered **per page** (imported from `@/components/layout/header|main`), not in the layout route.
 - UI preferences persist in **cookies** via providers: `vite-ui-theme` (dark/light/system),
-  `dir` (ltr/rtl), `font`, `layout_variant`/`layout_collapsible`. Access via `useTheme()/useDirection()/useFont()/useLayout()`.
+  `dir` (ltr/rtl — manual override of the language-derived direction, cleared by Reset/sign-out),
+  `font`, `layout_variant`/`layout_collapsible`. Access via `useTheme()/useDirection()/useFont()/useLayout()`.
 - Auth store: zustand + persist, localStorage key `auth-storage`; token additionally mirrored to a
   cookie; `reset()` clears both. Sign-out = `useAuthStore.getState().reset()`.
 
@@ -364,7 +370,9 @@ Backend entities carry `translations: Translation[]` (`{ language_id, language (
   components (`@/components/data-table`, `ConfirmDialog`, `TiptapEditor`, `image-uploader`,
   `skeleton-widget`) before writing new ones.
 - **RTL-aware styling is mandatory**: use logical utilities (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`,
-  `rtl:`/`ltr:` variants), never `ml-/mr-/left-/right-` in feature code. Direction flips Radix popovers too.
+  `rtl:`/`ltr:` variants), never `ml-/mr-/left-/right-` in feature code. Direction is language-driven
+  (see i18n conventions) and flips Radix popovers too — popover `side` must be direction-aware where
+  anchored to an edge (e.g. sidebar tooltip/dropdown use `dir === 'rtl' ? 'left' : 'right'`).
   Future languages may be either direction — logical utilities keep pages direction-agnostic.
 - Icons: `lucide-react`, `size={16}` typical for inline icons. Brand icons from `src/assets/brand-icons`.
 - Status badges: color classes mapped in `features/<entity>/data/data.ts` — extend the map, don't inline.
