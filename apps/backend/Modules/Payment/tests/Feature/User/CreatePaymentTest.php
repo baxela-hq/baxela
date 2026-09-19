@@ -2,15 +2,19 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
+use Modules\Core\Models\Currency;
+use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
+use Stripe\Checkout\Session as StripeSession;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -92,6 +96,38 @@ it('rejects a method with no configured driver', function () {
 
     $this->postJson($this->baseUrl('/user/process'), [
         'order_code' => $order->{OrderSchema::ORDER_CODE},
-        'method' => 'stripe',
+        'method' => 'paypal',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.method_not_supported');
+});
+
+it('creates a stripe payment and returns the hosted checkout url', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'USD',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+
+    // The session id doubles as the stored transaction_id the webhook matches on.
+    $checkout = Mockery::mock(StripeCheckout::class);
+    $checkout->shouldReceive('createSession')->once()->andReturn(StripeSession::constructFrom([
+        'id' => 'cs_test_9',
+        'url' => 'https://checkout.stripe.com/pay/cs_test_9',
+    ]));
+    $this->app->instance(StripeCheckout::class, $checkout);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'stripe',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://checkout.stripe.com/pay/cs_test_9')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('cs_test_9')
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::STRIPE);
 });

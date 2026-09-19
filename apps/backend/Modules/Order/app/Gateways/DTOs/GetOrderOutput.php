@@ -15,6 +15,10 @@ class GetOrderOutput
         $this->payment_status = $fields['payment_status'];
         $this->total_amount = $fields['total_amount'];
         $this->currency_id = $fields['currency_id'] ?? null;
+        $this->currency_code = $fields['currency_code'] ?? null;
+        $this->currency_decimal_places = isset($fields['currency_decimal_places'])
+            ? (int) $fields['currency_decimal_places']
+            : null;
         $this->is_payable = $this->payment_status === OrderPaymentStatusEnum::UNPAID->value;
     }
 
@@ -27,6 +31,11 @@ class GetOrderOutput
     public float $total_amount;
 
     public ?int $currency_id = null;
+
+    /** ISO-4217 code resolved from currency_id — gateways settle in this currency. */
+    public ?string $currency_code = null;
+
+    public ?int $currency_decimal_places = null;
 
     public string $status;
 

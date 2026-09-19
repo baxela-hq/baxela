@@ -22,7 +22,6 @@ it('throws for a method without a configured driver', function (PaymentMethodEnu
 
     expect(fn () => $manager->forMethod($method))->toThrow(PaymentException::class);
 })->with([
-    'stripe' => [PaymentMethodEnum::STRIPE],
     'paypal' => [PaymentMethodEnum::PAYPAL],
 ]);
 

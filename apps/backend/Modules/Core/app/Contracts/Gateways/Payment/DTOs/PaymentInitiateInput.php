@@ -9,5 +9,8 @@ class PaymentInitiateInput
         public readonly int $order_id,
         public readonly float $amount,
         public readonly string $method,
+        public readonly ?string $order_code = null,
+        public readonly ?string $currency = null,
+        public readonly ?int $currency_decimal_places = null,
     ) {}
 }
