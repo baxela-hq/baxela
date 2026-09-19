@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "notification": "Notification",
+      "notifications": "Notifications",
+      "all": "All",
+      "unread": "Unread",
+      "empty": "You're all caught up — no notifications"
+    },
+    "actions": {
+      "mark-all-read": "Mark all as read",
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "menu": {
+    "title": "Notifications",
+    "empty": "No new notifications",
+    "view-all": "View all notifications"
+  }
+}

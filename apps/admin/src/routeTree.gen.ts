@@ -24,6 +24,7 @@ import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-p
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
@@ -135,6 +136,12 @@ const AuthenticatedSettingsIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
+const AuthenticatedNotificationsIndexRoute =
+  AuthenticatedNotificationsIndexRouteImport.update({
+    id: '/notifications/',
+    path: '/notifications/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMediaIndexRoute = AuthenticatedMediaIndexRouteImport.update({
   id: '/media/',
@@ -367,6 +374,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
+  '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
@@ -416,6 +424,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
+  '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
@@ -469,6 +478,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
+  '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
@@ -522,6 +532,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/help-center'
     | '/media'
+    | '/notifications'
     | '/settings/'
     | '/users'
     | '/catalog/attributes/groups'
@@ -571,6 +582,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/help-center'
     | '/media'
+    | '/notifications'
     | '/settings'
     | '/users'
     | '/catalog/attributes/groups'
@@ -623,6 +635,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/help-center/'
     | '/_authenticated/media/'
+    | '/_authenticated/notifications/'
     | '/_authenticated/settings/'
     | '/_authenticated/users/'
     | '/_authenticated/catalog/attributes/groups'
@@ -774,6 +787,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/'
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/notifications/': {
+      id: '/_authenticated/notifications/'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/media/': {
       id: '/_authenticated/media/'
@@ -1077,6 +1097,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedMediaIndexRoute: typeof AuthenticatedMediaIndexRoute
+  AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
@@ -1111,6 +1132,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedMediaIndexRoute: AuthenticatedMediaIndexRoute,
+  AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,

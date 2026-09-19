@@ -13,18 +13,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
-import { ThemeSwitch } from '@/components/theme-switch'
 import { Buttons } from './components/buttons.tsx'
 import { Dialogs } from './components/dialogs.tsx'
 import { Provider } from './components/provider.tsx'
 import { statusTypes, paymentStatusTypes } from './data/data.ts'
 import { Locales } from './data/routes.ts'
+import { HeaderActions } from '@/components/layout/header-actions'
 import {
   useOneOrder,
   useOrderItems,
@@ -56,11 +54,7 @@ export function OrderShow() {
     <Provider>
       <Header fixed>
         <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <ThemeSwitch />
-          <ConfigDrawer />
-          <ProfileDropdown />
-        </div>
+        <HeaderActions />
       </Header>
 
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>

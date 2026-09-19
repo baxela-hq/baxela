@@ -64,6 +64,11 @@ export const useSidebarData = (): SidebarData => {
             url: '/setting/settings',
             icon: Settings,
           },
+          {
+            title: t('sidebar.notifications-inbox'),
+            url: '/notifications',
+            icon: Bell,
+          },
         ],
       },
       {
