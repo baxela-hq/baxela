@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
+import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
 import { StorageUtility } from '@/shared/lib/storage-utility'
 
 interface SignOutDialogProps {
@@ -14,12 +15,17 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
   const { reset } = useAuthStore()
   const location = useLocation()
   const { t } = useAppTranslation('shared/layout')
+  const applyUiLanguage = useApplyUiLanguage()
 
   const handleSignOut = () => {
     reset()
 
     // clear currency & language
     StorageUtility.clear()
+
+    // reset the UI (translations + direction) to the built-in default
+    // (fa/RTL) and drop any manual direction override
+    applyUiLanguage(null)
 
     // Preserve current location for redirect after sign-in
     const currentPath = location.href

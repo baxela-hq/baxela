@@ -64,5 +64,8 @@
   "search": {
     "placeholder": "Search...",
     "command_input": "Type a command or search..."
+  },
+  "config-drawer": {
+    "direction-help": "Overrides the direction derived from the store default language until you reset it."
   }
 }

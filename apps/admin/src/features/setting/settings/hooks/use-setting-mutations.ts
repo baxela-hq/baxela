@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { ApiError } from '@/shared/lib/api-error'
+import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
 import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
 import { parseAndToastError } from '@/shared/lib/utils'
 import type { Currency, Language } from '@/shared/types/locale.types'
@@ -18,6 +19,7 @@ export function useUpdateSettings() {
   const queryClient = useQueryClient()
   const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel } = useAppTranslation(Locales.SETTING)
+  const applyUiLanguage = useApplyUiLanguage()
 
   return useMutation({
     mutationFn: ({
@@ -41,6 +43,11 @@ export function useUpdateSettings() {
         StorageUtility.setItem(StorageKeys.DEFAULT_LANGUAGE, language)
       if (currency)
         StorageUtility.setItem(StorageKeys.DEFAULT_CURRENCY, currency)
+
+      // the whole admin panel follows the newly saved default language:
+      // translations + <html lang> + layout direction (unless the user set a
+      // manual direction override in the config drawer)
+      if (language) applyUiLanguage(language)
 
       await queryClient.invalidateQueries({
         queryKey: [FeatureRoutes.CACHE_KEY],
