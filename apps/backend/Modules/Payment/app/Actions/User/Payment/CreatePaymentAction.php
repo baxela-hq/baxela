@@ -46,6 +46,7 @@ class CreatePaymentAction
             PaymentSchema::METHOD => $method,
             PaymentSchema::STATUS => PaymentStatusEnum::PENDING,
             PaymentSchema::AMOUNT => $order->total_amount,
+            PaymentSchema::CURRENCY_ID => $order->currency_id,
         ]);
 
         // Initiated after the row is committed: a gateway outage must not

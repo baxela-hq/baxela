@@ -28,6 +28,7 @@ class Order extends Model
         OrderSchema::PAYMENT_STATUS,
         OrderSchema::PAID_AT,
         OrderSchema::TOTAL_AMOUNT,
+        OrderSchema::CURRENCY_ID,
         OrderSchema::SHIPPING_METHOD_ID,
         OrderSchema::SHIPPING_METHOD_NAME,
         OrderSchema::SHIPPING_COST,

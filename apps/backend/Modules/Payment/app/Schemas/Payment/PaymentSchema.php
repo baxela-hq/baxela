@@ -25,5 +25,10 @@ class PaymentSchema
 
     public const string AMOUNT = 'amount';
 
+    /**
+     * Currency of the amount, snapshotted from the order at creation.
+     */
+    public const string CURRENCY_ID = 'currency_id';
+
     public const string STATUS = 'status';
 }

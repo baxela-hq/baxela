@@ -20,6 +20,7 @@ class Payment extends Model
         PaymentSchema::TRANSACTION_ID,
         PaymentSchema::METHOD,
         PaymentSchema::AMOUNT,
+        PaymentSchema::CURRENCY_ID,
         PaymentSchema::STATUS,
     ];
 

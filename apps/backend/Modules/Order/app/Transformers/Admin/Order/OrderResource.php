@@ -23,6 +23,7 @@ class OrderResource extends JsonResource
             OrderSchema::PAYMENT_STATUS => $this->resource->{OrderSchema::PAYMENT_STATUS},
             OrderSchema::PAID_AT => $this->resource->{OrderSchema::PAID_AT},
             OrderSchema::TOTAL_AMOUNT => $this->resource->{OrderSchema::TOTAL_AMOUNT},
+            OrderSchema::CURRENCY_ID => $this->resource->{OrderSchema::CURRENCY_ID},
             OrderSchema::SHIPPING_METHOD_ID => $this->resource->{OrderSchema::SHIPPING_METHOD_ID},
             OrderSchema::SHIPPING_METHOD_NAME => $this->resource->{OrderSchema::SHIPPING_METHOD_NAME},
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},

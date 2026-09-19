@@ -18,4 +18,6 @@ class CreateOrderInput
     public ?string $shipping_method_name = null;
 
     public float $shipping_cost = 0.0;
+
+    public ?int $currency_id = null;
 }
