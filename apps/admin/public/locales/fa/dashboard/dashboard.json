@@ -1,0 +1,77 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "داشبورد"
+    }
+  },
+  "actions": {
+    "download": "دانلود"
+  },
+  "top-nav": {
+    "overview": "نمای کلی",
+    "customers": "مشتریان",
+    "products": "محصولات",
+    "settings": "تنظیمات"
+  },
+  "tabs": {
+    "overview": "نمای کلی",
+    "analytics": "تحلیل‌ها",
+    "reports": "گزارش‌ها",
+    "notifications": "اعلان‌ها"
+  },
+  "stat-cards": {
+    "total-revenue": "درآمد کل",
+    "total-revenue-change": "۲۰٫۱٪+ نسبت به ماه گذشته",
+    "subscriptions": "اشتراک‌ها",
+    "subscriptions-change": "۱۸۰٫۱٪+ نسبت به ماه گذشته",
+    "sales": "فروش",
+    "sales-change": "۱۹٪+ نسبت به ماه گذشته",
+    "active-now": "فعال الان",
+    "active-now-change": "۲۰۱+ از ساعت گذشته"
+  },
+  "overview-card": "نمای کلی",
+  "recent-sales": {
+    "title": "فروش‌های اخیر",
+    "description": "این ماه ۲۶۵ فروش انجام دادید."
+  },
+  "analytics": {
+    "traffic-overview": {
+      "title": "بازبینی ترافیک",
+      "description": "کلیک‌ها و بازدیدکنندگان یکتای هفتگی"
+    },
+    "stat-cards": {
+      "total-clicks": "کل کلیک‌ها",
+      "total-clicks-change": "۱۲٫۴٪+ نسبت به هفته گذشته",
+      "unique-visitors": "بازدیدکنندگان یکتا",
+      "unique-visitors-change": "۵٫۸٪+ نسبت به هفته گذشته",
+      "bounce-rate": "نرخ پرش",
+      "bounce-rate-change": "۳٫۲٪- نسبت به هفته گذشته",
+      "average-session": "میانگین جلسه",
+      "average-session-change": "۱۸+ ثانیه نسبت به هفته گذشته"
+    },
+    "referrers": {
+      "title": "ارجاع‌دهنده‌ها",
+      "description": "منابع برتر ترافیک",
+      "direct": "مستقیم",
+      "product-hunt": "Product Hunt",
+      "twitter": "توییتر",
+      "blog": "وبلاگ"
+    },
+    "devices": {
+      "title": "دستگاه‌ها",
+      "description": "کاربران چگونه به برنامه دسترسی دارند",
+      "desktop": "دسکتاپ",
+      "mobile": "موبایل",
+      "tablet": "تبلت"
+    },
+    "chart-days": {
+      "mon": "دوشنبه",
+      "tue": "سه‌شنبه",
+      "wed": "چهارشنبه",
+      "thu": "پنجشنبه",
+      "fri": "جمعه",
+      "sat": "شنبه",
+      "sun": "یکشنبه"
+    }
+  }
+}

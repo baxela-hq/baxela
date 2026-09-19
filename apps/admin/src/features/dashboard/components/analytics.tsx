@@ -5,15 +5,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
+import { Locales } from '../data/routes'
 import { AnalyticsChart } from './analytics-chart'
 
 export function Analytics() {
+  const { t } = useAppTranslation(Locales.DASHBOARD)
+
   return (
     <div className='space-y-4'>
       <Card>
         <CardHeader>
-          <CardTitle>Traffic Overview</CardTitle>
-          <CardDescription>Weekly clicks and unique visitors</CardDescription>
+          <CardTitle>{t('analytics.traffic-overview.title')}</CardTitle>
+          <CardDescription>
+            {t('analytics.traffic-overview.description')}
+          </CardDescription>
         </CardHeader>
         <CardContent className='px-6'>
           <AnalyticsChart />
@@ -22,7 +28,9 @@ export function Analytics() {
       <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Total Clicks</CardTitle>
+            <CardTitle className='text-sm font-medium'>
+              {t('analytics.stat-cards.total-clicks')}
+            </CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
@@ -39,13 +47,15 @@ export function Analytics() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>1,248</div>
-            <p className='text-xs text-muted-foreground'>+12.4% vs last week</p>
+            <p className='text-xs text-muted-foreground'>
+              {t('analytics.stat-cards.total-clicks-change')}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>
-              Unique Visitors
+              {t('analytics.stat-cards.unique-visitors')}
             </CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -63,12 +73,16 @@ export function Analytics() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>832</div>
-            <p className='text-xs text-muted-foreground'>+5.8% vs last week</p>
+            <p className='text-xs text-muted-foreground'>
+              {t('analytics.stat-cards.unique-visitors-change')}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Bounce Rate</CardTitle>
+            <CardTitle className='text-sm font-medium'>
+              {t('analytics.stat-cards.bounce-rate')}
+            </CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
@@ -84,12 +98,16 @@ export function Analytics() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>42%</div>
-            <p className='text-xs text-muted-foreground'>-3.2% vs last week</p>
+            <p className='text-xs text-muted-foreground'>
+              {t('analytics.stat-cards.bounce-rate-change')}
+            </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Avg. Session</CardTitle>
+            <CardTitle className='text-sm font-medium'>
+              {t('analytics.stat-cards.average-session')}
+            </CardTitle>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
@@ -106,23 +124,27 @@ export function Analytics() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-bold'>3m 24s</div>
-            <p className='text-xs text-muted-foreground'>+18s vs last week</p>
+            <p className='text-xs text-muted-foreground'>
+              {t('analytics.stat-cards.average-session-change')}
+            </p>
           </CardContent>
         </Card>
       </div>
       <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
         <Card className='col-span-1 lg:col-span-4'>
           <CardHeader>
-            <CardTitle>Referrers</CardTitle>
-            <CardDescription>Top sources driving traffic</CardDescription>
+            <CardTitle>{t('analytics.referrers.title')}</CardTitle>
+            <CardDescription>
+              {t('analytics.referrers.description')}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <SimpleBarList
               items={[
-                { name: 'Direct', value: 512 },
-                { name: 'Product Hunt', value: 238 },
-                { name: 'Twitter', value: 174 },
-                { name: 'Blog', value: 104 },
+                { name: t('analytics.referrers.direct'), value: 512 },
+                { name: t('analytics.referrers.product-hunt'), value: 238 },
+                { name: t('analytics.referrers.twitter'), value: 174 },
+                { name: t('analytics.referrers.blog'), value: 104 },
               ]}
               barClass='bg-primary'
               valueFormatter={(n) => `${n}`}
@@ -131,15 +153,17 @@ export function Analytics() {
         </Card>
         <Card className='col-span-1 lg:col-span-3'>
           <CardHeader>
-            <CardTitle>Devices</CardTitle>
-            <CardDescription>How users access your app</CardDescription>
+            <CardTitle>{t('analytics.devices.title')}</CardTitle>
+            <CardDescription>
+              {t('analytics.devices.description')}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <SimpleBarList
               items={[
-                { name: 'Desktop', value: 74 },
-                { name: 'Mobile', value: 22 },
-                { name: 'Tablet', value: 4 },
+                { name: t('analytics.devices.desktop'), value: 74 },
+                { name: t('analytics.devices.mobile'), value: 22 },
+                { name: t('analytics.devices.tablet'), value: 4 },
               ]}
               barClass='bg-muted-foreground'
               valueFormatter={(n) => `${n}%`}
