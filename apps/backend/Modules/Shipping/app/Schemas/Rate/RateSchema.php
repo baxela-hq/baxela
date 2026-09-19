@@ -16,4 +16,8 @@ class RateSchema
     public const string ZONE_ID = 'zone_id';
 
     public const string PRICE = 'price';
+
+    public const string RES_METHOD = 'method';
+
+    public const string RES_ZONE = 'zone';
 }
