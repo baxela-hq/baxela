@@ -394,9 +394,9 @@ export function ProductForm() {
             <th className="px-4 py-2 text-start font-medium">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="ml-1 cursor-pointer text-muted-foreground">
+                  <span className="ms-1 cursor-pointer text-muted-foreground">
                     {tLabel('is_default')}
-                    <InfoIcon size={14} className="ml-1 inline-block" />
+                    <InfoIcon size={14} className="ms-1 inline-block" />
                   </span>
                 </TooltipTrigger>
                 <TooltipContent>

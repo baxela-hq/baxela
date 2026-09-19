@@ -3,6 +3,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { VariantProps, cva } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useDirection } from '@/context/direction-provider'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -512,6 +513,8 @@ function SidebarMenuButton({
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button'
   const { isMobile, state } = useSidebar()
+  // the sidebar hugs the start edge, so the tooltip must open away from it
+  const { dir } = useDirection()
 
   const button = (
     <Comp
@@ -538,7 +541,7 @@ function SidebarMenuButton({
     <Tooltip>
       <TooltipTrigger asChild>{button}</TooltipTrigger>
       <TooltipContent
-        side='right'
+        side={dir === 'rtl' ? 'left' : 'right'}
         align='center'
         hidden={state !== 'collapsed' || isMobile}
         {...tooltip}

@@ -152,11 +152,11 @@ export default function ImageUploader({createEndpoint, updateEndpoint, deleteEnd
               onClick={() => handleSetMain(img)}
             />
             {img.is_main && (
-              <div className="absolute top-1 right-1 bg-blue-900 border-2 text-white rounded px-1 text-xs">{tcLabel('main')}</div>
+              <div className="absolute top-1 end-1 bg-blue-900 border-2 text-white rounded px-1 text-xs">{tcLabel('main')}</div>
             )}
             {/* Remove icon */}
             <button
-              className="absolute top-1 left-1"
+              className="absolute top-1 start-1"
               onClick={() => handleRemoveImage(img.id)}
             >
               <XCircleIcon className="w-4 h-4 text-red-500" />
