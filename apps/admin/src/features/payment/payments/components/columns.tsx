@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { type ColumnDef } from '@tanstack/react-table'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
+import { useFormatPrice } from '@/shared/hooks/use-format-price'
 import { cn } from '@/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +15,7 @@ import { DataTableRowActions } from './data-table-row-actions'
 export const Columns = (): ColumnDef<Payment>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.PAYMENT)
   const { formatDateTime } = useFormatDateTime()
+  const formatPrice = useFormatPrice()
 
   return [
     {
@@ -93,7 +95,9 @@ export const Columns = (): ColumnDef<Payment>[] => {
         <DataTableColumnHeader column={column} title={tLabel('amount')} />
       ),
       cell: ({ row }) => (
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('amount')}</div>
+        <div className='w-fit ps-2 text-nowrap'>
+          {formatPrice(row.getValue('amount'), row.original.currency_id)}
+        </div>
       ),
       enableSorting: true,
       enableHiding: true,

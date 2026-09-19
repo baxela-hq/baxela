@@ -6,7 +6,7 @@ export const statuses = [
   'shipped',
   'completed',
   'cancelled',
-] as const;
+] as const
 export type OrderStatus = (typeof statuses)[number]
 
 export const paymentStatuses = ['unpaid', 'paid', 'refunded'] as const
@@ -27,7 +27,10 @@ export const statusTransitions: Record<OrderStatus, OrderStatus[]> = {
 /**
  * Mirrors OrderPaymentStatusEnum::transitions() on the backend.
  */
-export const paymentStatusTransitions: Record<OrderPaymentStatus, OrderPaymentStatus[]> = {
+export const paymentStatusTransitions: Record<
+  OrderPaymentStatus,
+  OrderPaymentStatus[]
+> = {
   unpaid: ['paid'],
   paid: ['refunded'],
   refunded: [],
@@ -37,7 +40,9 @@ export function allowedNextStatuses(current: OrderStatus): OrderStatus[] {
   return [current, ...statusTransitions[current]]
 }
 
-export function allowedNextPaymentStatuses(current: OrderPaymentStatus): OrderPaymentStatus[] {
+export function allowedNextPaymentStatuses(
+  current: OrderPaymentStatus
+): OrderPaymentStatus[] {
   return [current, ...paymentStatusTransitions[current]]
 }
 
@@ -46,6 +51,7 @@ export const orderSchema = z.object({
   order_code: z.string(),
   user_id: z.number(),
   total_amount: z.number(),
+  currency_id: z.number().nullable(),
   description: z.string(),
   status: z.enum(statuses),
   payment_status: z.enum(paymentStatuses),
@@ -73,7 +79,6 @@ export const formSchema = z.object({
   note: z.string().optional(),
 })
 export type OrderForm = z.infer<typeof formSchema>
-
 
 export const defaultValues: OrderForm = {
   status: 'pending',
