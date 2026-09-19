@@ -3,6 +3,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { ApiError } from '@/shared/lib/api-error'
+import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
 import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
 import { signIn } from '../api/sign-in.api'
 import { fetchAdminAccount } from '../api/account.api'
@@ -16,6 +17,7 @@ import { type SignInRequest } from '../types/sign-in'
 export function useSignIn() {
   const navigate = useNavigate()
   const { setUser, setAccessToken, reset } = useAuthStore()
+  const applyUiLanguage = useApplyUiLanguage()
 
   return useMutation({
     mutationFn: ({
@@ -47,6 +49,10 @@ export function useSignIn() {
         StorageKeys.DEFAULT_CURRENCY,
         response.settings.currency
       )
+
+      // the admin UI (translations + direction) follows the store default
+      // language reported at sign-in
+      applyUiLanguage(response.settings.language)
 
       // Set user and access token
       setUser({

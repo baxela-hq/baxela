@@ -12,6 +12,7 @@ import { IconThemeDark } from '@/assets/custom/icon-theme-dark'
 import { IconThemeLight } from '@/assets/custom/icon-theme-light'
 import { IconThemeSystem } from '@/assets/custom/icon-theme-system'
 import { cn } from '@/lib/utils'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { useDirection } from '@/context/direction-provider'
 import { type Collapsible, useLayout } from '@/context/layout-provider'
 import { useTheme } from '@/context/theme-provider'
@@ -312,13 +313,14 @@ function LayoutConfig() {
 }
 
 function DirConfig() {
-  const { defaultDir, dir, setDir } = useDirection()
+  const { defaultDir, dir, setDir, resetDir } = useDirection()
+  const { t } = useAppTranslation('shared/layout')
   return (
     <div>
       <SectionTitle
         title='Direction'
         showReset={defaultDir !== dir}
-        onReset={() => setDir(defaultDir)}
+        onReset={resetDir}
       />
       <Radio
         value={dir}
@@ -346,8 +348,11 @@ function DirConfig() {
           <RadioGroupItem key={item.value} item={item} />
         ))}
       </Radio>
-      <div id='direction-description' className='sr-only'>
-        Choose between left-to-right or right-to-left site direction
+      <div
+        id='direction-description'
+        className='mt-2 text-xs text-muted-foreground'
+      >
+        {t('config-drawer.direction-help')}
       </div>
     </div>
   )
