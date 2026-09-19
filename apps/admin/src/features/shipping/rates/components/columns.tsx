@@ -4,7 +4,7 @@ import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { getDefaultCurrency } from '@/shared/lib/locale'
+import { getDefaultCurrency, pickTranslation } from '@/shared/lib/locale'
 import { Locales } from '../data/routes'
 import { type Rate } from '../data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
@@ -66,22 +66,35 @@ export const Columns = (): ColumnDef<Rate>[] => {
       enableSorting: true,
     },
     {
-      accessorKey: 'method_id',
+      id: 'method',
+      accessorFn: (row) =>
+        pickTranslation(row.method?.translations ?? [])?.name ??
+        row.method?.code ??
+        '',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('method_id')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('method_id')}</div>,
+      cell: ({ row }) => (
+        <LongText className='max-w-36 ps-3'>
+          {pickTranslation(row.original.method?.translations ?? [])?.name ||
+            row.original.method?.code ||
+            '—'}
+        </LongText>
+      ),
       enableSorting: false,
       enableHiding: true,
     },
     {
-      accessorKey: 'zone_id',
+      id: 'zone',
+      accessorFn: (row) => row.zone?.name ?? '',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('zone_id')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('zone_id')}</div>,
+      cell: ({ row }) => (
+        <LongText className='max-w-36 ps-3'>
+          {row.original.zone?.name ?? '—'}
+        </LongText>
+      ),
       enableSorting: false,
       enableHiding: true,
     },
