@@ -4,6 +4,7 @@ namespace Modules\Shipping\Actions\Admin\Rate;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Shipping\Models\Rate;
+use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Rate\RateSchema;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -30,6 +31,10 @@ class ListRateAction
                 RateSchema::PRICE,
                 RateSchema::TABLE.'.'.RateSchema::CREATED_AT,
                 RateSchema::TABLE.'.'.RateSchema::UPDATED_AT,
+            ])
+            ->with([
+                RateSchema::RES_METHOD.'.'.MethodSchema::RES_TRANSLATIONS,
+                RateSchema::RES_ZONE,
             ])
             ->orderBy($id, 'desc')
             ->paginate(intval(request()->input('per_page', 15)));
