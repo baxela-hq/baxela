@@ -26,6 +26,12 @@ class OrderSchema
 
     public const string TOTAL_AMOUNT = 'total_amount';
 
+    /**
+     * Currency the order was placed in; snapshotted at checkout so later
+     * default-currency changes never rewrite history.
+     */
+    public const string CURRENCY_ID = 'currency_id';
+
     public const string SHIPPING_METHOD_ID = 'shipping_method_id';
 
     public const string SHIPPING_METHOD_NAME = 'shipping_method_name';

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
+use Modules\Core\Models\Currency;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
@@ -123,4 +124,24 @@ it('rejects checkout with a shipping method that does not quote for the address 
     ])->assertStatus(400)->assertJsonPath('code', 'cart.checkout.invalid_shipping_method');
 
     expect(Order::count())->toBe(0);
+});
+
+it('snapshots the default currency onto the order at checkout', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $currency = Currency::factory()->create(['is_default' => true]);
+    $variant = $this->variantWithStock(10);
+    $address = $this->addressForUser($user);
+    $cart = userCartWithItem($user, $variant->id);
+
+    $response = $this->postJson($this->baseUrl('/user/checkout'), [
+        'address_id' => $address->id,
+    ])->assertOk();
+
+    $order = Order::query()
+        ->where(OrderSchema::ORDER_CODE, $response->json('data.order_code'))
+        ->first();
+
+    expect($order->{OrderSchema::CURRENCY_ID})->toBe($currency->id);
 });

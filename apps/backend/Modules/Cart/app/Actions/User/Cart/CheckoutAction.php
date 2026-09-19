@@ -15,6 +15,7 @@ use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Cart\Support\VariantDisplayName;
 use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
@@ -69,6 +70,11 @@ class CheckoutAction
         $input = new CreateOrderInput;
         $input->cart_items = $cartItems->toArray();
         $input->address = $address;
+
+        // Snapshot the currency the totals are quoted in, so the order keeps
+        // it even if the shop default changes later
+        $defaultCurrency = app(CoreGatewayInterface::class)->getDefaultCurrency();
+        $input->currency_id = is_null($defaultCurrency) ? null : (int) $defaultCurrency->id;
 
         $shippingMethodId = $request->input('shipping_method_id');
         if (! is_null($shippingMethodId)) {

@@ -14,6 +14,7 @@ class GetOrderOutput
         $this->status = $fields['status'];
         $this->payment_status = $fields['payment_status'];
         $this->total_amount = $fields['total_amount'];
+        $this->currency_id = $fields['currency_id'] ?? null;
         $this->is_payable = $this->payment_status === OrderPaymentStatusEnum::UNPAID->value;
     }
 
@@ -24,6 +25,8 @@ class GetOrderOutput
     public ?int $user_id = null;
 
     public float $total_amount;
+
+    public ?int $currency_id = null;
 
     public string $status;
 

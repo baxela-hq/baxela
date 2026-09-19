@@ -17,6 +17,7 @@ function adminPaymentFor(Order $order, PaymentStatusEnum $status): Payment
         PaymentSchema::ORDER_ID => $order->id,
         PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
         PaymentSchema::STATUS => $status,
+        PaymentSchema::CURRENCY_ID => 2,
     ]);
 }
 
@@ -36,6 +37,7 @@ it('lists payments with ids and timestamps for the admin grid', function () {
     expect($row)->not->toBeNull()
         ->and($row[PaymentSchema::ORDER_ID])->toBe($order->id)
         ->and($row[PaymentSchema::STATUS])->toBe(PaymentStatusEnum::PENDING->value)
+        ->and($row[PaymentSchema::CURRENCY_ID])->toBe(2)
         ->and($row[PaymentSchema::CREATED_AT])->not->toBeNull();
 });
 

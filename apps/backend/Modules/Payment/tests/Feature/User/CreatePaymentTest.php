@@ -23,6 +23,7 @@ function payableOrder(User $user): Order
         OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::UNPAID,
         OrderSchema::EXPIRES_AT => now()->addMinutes(20),
         OrderSchema::TOTAL_AMOUNT => 305,
+        OrderSchema::CURRENCY_ID => 2,
     ]);
 }
 
@@ -44,7 +45,8 @@ it('creates a pending manual payment for a payable order', function () {
         ->and((int) $payment->{PaymentSchema::ORDER_ID})->toBe($order->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
         ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::MANUAL)
-        ->and((float) $payment->{PaymentSchema::AMOUNT})->toBe(305.0);
+        ->and((float) $payment->{PaymentSchema::AMOUNT})->toBe(305.0)
+        ->and($payment->{PaymentSchema::CURRENCY_ID})->toBe(2);
 });
 
 it('rejects paying an already-settled order', function () {

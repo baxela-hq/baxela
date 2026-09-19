@@ -19,6 +19,7 @@ class PaymentResource extends JsonResource
             PaymentSchema::TRANSACTION_ID => $this->resource->{PaymentSchema::TRANSACTION_ID},
             PaymentSchema::METHOD => $this->resource->{PaymentSchema::METHOD},
             PaymentSchema::AMOUNT => $this->resource->{PaymentSchema::AMOUNT},
+            PaymentSchema::CURRENCY_ID => $this->resource->{PaymentSchema::CURRENCY_ID},
             PaymentSchema::STATUS => $this->resource->{PaymentSchema::STATUS},
             PaymentSchema::CREATED_AT => $this->resource->{PaymentSchema::CREATED_AT},
             PaymentSchema::UPDATED_AT => $this->resource->{PaymentSchema::UPDATED_AT},
