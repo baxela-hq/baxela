@@ -1,0 +1,25 @@
+meta {
+  name: Mark All Read
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/notification/admin/notifications/read-all
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
