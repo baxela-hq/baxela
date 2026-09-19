@@ -36,6 +36,37 @@ return [
                 ],
             ],
         ],
+        'order' => [
+            'order' => [
+                'created' => [
+                    'admin' => ['database', 'email'],
+                    'user' => ['database', 'email'],
+                ],
+                'paid' => [
+                    'user' => ['database', 'email'],
+                ],
+                'shipped' => [
+                    'user' => ['database', 'email'],
+                ],
+                'completed' => [
+                    'user' => ['database'],
+                ],
+                'cancelled' => [
+                    'user' => ['database', 'email'],
+                ],
+            ],
+        ],
+        'payment' => [
+            'payment' => [
+                'succeeded' => [
+                    'admin' => ['database'],
+                ],
+                'failed' => [
+                    'user' => ['database'],
+                    'admin' => ['database'],
+                ],
+            ],
+        ],
     ],
 
     // Recipients for audience="admin" email notifications; a comma-separated

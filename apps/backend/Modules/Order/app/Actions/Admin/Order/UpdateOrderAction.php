@@ -8,6 +8,7 @@ use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+use Modules\Core\Utils\Locale;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Http\Requests\Admin\Order\OrderRequest;
 use Modules\Order\Models\Order;
@@ -89,7 +90,9 @@ class UpdateOrderAction extends AbstractOrderAction
         $payload = [
             OrderSchema::ID => $record->{OrderSchema::ID},
             OrderSchema::USER_ID => $record->{OrderSchema::USER_ID},
+            OrderSchema::ORDER_CODE => $record->{OrderSchema::ORDER_CODE},
             OrderSchema::STATUS => $status->value,
+            'locale' => Locale::fromRequest(),
         ];
 
         if ($statusChanged) {
@@ -101,7 +104,9 @@ class UpdateOrderAction extends AbstractOrderAction
             };
 
             if (! is_null($event)) {
-                event($event::fill($payload));
+                event($event::fill($payload + ($status === OrderStatusEnum::CANCELLED
+                    ? ['reason' => 'cancelled_by_admin']
+                    : [])));
             }
         }
 
@@ -115,6 +120,7 @@ class UpdateOrderAction extends AbstractOrderAction
             if (! is_null($event)) {
                 event($event::fill($payload + [
                     OrderSchema::PAYMENT_STATUS => $paymentStatus->value,
+                    OrderSchema::TOTAL_AMOUNT => (float) $record->{OrderSchema::TOTAL_AMOUNT},
                 ]));
             }
         }

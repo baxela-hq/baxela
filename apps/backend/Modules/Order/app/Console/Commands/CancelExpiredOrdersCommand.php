@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
+use Modules\Core\Utils\Locale;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
@@ -33,7 +34,10 @@ class CancelExpiredOrdersCommand extends Command
                 event(OrderCancelledEvent::fill([
                     'id' => $order->{OrderSchema::ID},
                     'user_id' => $order->{OrderSchema::USER_ID},
+                    'order_code' => $order->{OrderSchema::ORDER_CODE},
                     'status' => $order->{OrderSchema::STATUS}->value,
+                    'reason' => 'expired',
+                    'locale' => Locale::fromRequest(),
                 ]));
             });
         }

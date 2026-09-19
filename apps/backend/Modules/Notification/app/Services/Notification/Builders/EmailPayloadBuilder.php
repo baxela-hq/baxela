@@ -15,7 +15,7 @@ class EmailPayloadBuilder implements ChannelPayloadBuilderInterface
     {
         $rendered = $this->templates->get('blade')->render(
             $message->data['email'] ?? [],
-            config('app.locale'),
+            $message->locale ?? config('app.locale'),
             $message->code,
             $message->audience
         );

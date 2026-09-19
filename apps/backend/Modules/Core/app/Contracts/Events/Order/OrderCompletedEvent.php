@@ -10,5 +10,9 @@ class OrderCompletedEvent extends AbstractBaseEvent
 
     public int $user_id;
 
+    public string $order_code;
+
     public string $status;
+
+    public ?string $locale = null;
 }

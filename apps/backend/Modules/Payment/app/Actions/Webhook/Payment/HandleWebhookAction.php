@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Payment\PaymentFailedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Core\Utils\Locale;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Models\Payment;
@@ -76,6 +77,7 @@ class HandleWebhookAction
             PaymentSchema::ORDER_ID => $payment->{PaymentSchema::ORDER_ID},
             PaymentSchema::AMOUNT => $payment->{PaymentSchema::AMOUNT},
             PaymentSchema::STATUS => $status->value,
+            'locale' => Locale::fromRequest(),
         ];
     }
 }
