@@ -1,0 +1,46 @@
+meta {
+  name: Stripe Webhook
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/payment/webhook/stripe
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+  Stripe-Signature: t=1750000000,v1=whsec_placeholder
+}
+
+body:json {
+  {
+    "id": "evt_1",
+    "type": "checkout.session.completed",
+    "data": {
+      "object": {
+        "id": "cs_test_123",
+        "payment_status": "paid"
+      }
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Stripe webhook endpoint. The Stripe-Signature header must carry a valid
+  t=timestamp,v1=hmac signature computed with STRIPE_WEBHOOK_SECRET over the
+  exact request body — a stale or wrong signature returns
+  payment.webhook.invalid. Settled event types: checkout.session.completed
+  (payment_status=paid) and async_payment_succeeded → success;
+  async_payment_failed / expired → failed. The session id (cs_...) matches
+  the payment's transaction_id. For local testing forward real events with
+  `stripe listen --forward-to localhost/api/v1/payment/webhook/stripe`.
+}
