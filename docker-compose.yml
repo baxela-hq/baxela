@@ -30,6 +30,22 @@ services:
             redis:
                 condition: service_healthy
 
+    # Mirrors the production stack's worker so queued notifications (and
+    # anything else on the database queue) process locally too.
+    queue:
+        image: baxela/backend:develop
+        restart: unless-stopped
+        working_dir: /var/www/html
+        command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+        volumes:
+            - ./apps/backend:/var/www/html
+        environment:
+            WWWUSER: ${WWWUSER:-1000}
+            WWWGROUP: ${WWWGROUP:-1000}
+        depends_on:
+            app:
+                condition: service_started
+
     web:
         image: nginx:stable-bookworm
         restart: unless-stopped
