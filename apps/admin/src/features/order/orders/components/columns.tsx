@@ -3,10 +3,9 @@ import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 import { useFormatPrice } from '@/shared/hooks/use-format-price'
 import { cn } from '@/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { Badge } from '@/components/ui/badge.tsx'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { statusTypes, paymentStatusTypes } from '../data/data.ts'
+import { statusIcons, paymentStatusIcons } from '../data/data.ts'
 import { Locales } from '../data/routes'
 import { type Order } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
@@ -65,13 +64,14 @@ export const Columns = (): ColumnDef<Order>[] => {
         <DataTableColumnHeader column={column} title={tLabel('status')} />
       ),
       cell: ({ row }) => {
-        const { status } = row.original
-        const badgeColor = statusTypes.get(status)
+        const status = row.getValue<string>('status')
+        const StatusIcon = statusIcons.get(status)
         return (
-          <div className='flex space-x-2'>
-            <Badge variant='outline' className={cn('capitalize', badgeColor)}>
-              {tStatus(`status.${row.getValue('status')}`)}
-            </Badge>
+          <div className='flex w-fit items-center gap-2 text-nowrap'>
+            {StatusIcon && (
+              <StatusIcon className='size-4 text-muted-foreground' />
+            )}
+            <span>{tStatus(`status.${status}`)}</span>
           </div>
         )
       },
@@ -87,13 +87,14 @@ export const Columns = (): ColumnDef<Order>[] => {
         />
       ),
       cell: ({ row }) => {
-        const { payment_status } = row.original
-        const badgeColor = paymentStatusTypes.get(payment_status)
+        const paymentStatus = row.getValue<string>('payment_status')
+        const StatusIcon = paymentStatusIcons.get(paymentStatus)
         return (
-          <div className='flex space-x-2'>
-            <Badge variant='outline' className={cn('capitalize', badgeColor)}>
-              {tStatus(`payment_status.${row.getValue('payment_status')}`)}
-            </Badge>
+          <div className='flex w-fit items-center gap-2 text-nowrap'>
+            {StatusIcon && (
+              <StatusIcon className='size-4 text-muted-foreground' />
+            )}
+            <span>{tStatus(`payment_status.${paymentStatus}`)}</span>
           </div>
         )
       },

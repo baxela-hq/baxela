@@ -1,3 +1,12 @@
+import {
+  CheckCircle,
+  Circle,
+  CircleOff,
+  RotateCcw,
+  Timer,
+  Truck,
+  type LucideIcon,
+} from 'lucide-react'
 
 export const statusTypes = new Map<string, string>([
   ['pending', 'bg-sky-200/40 text-sky-900 dark:text-sky-100 border-sky-300'],
@@ -11,4 +20,18 @@ export const paymentStatusTypes = new Map<string, string>([
   ['unpaid', 'bg-amber-100/30 text-amber-900 dark:text-amber-200 border-amber-200'],
   ['paid', 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200'],
   ['refunded', 'bg-neutral-300/40 border-neutral-300'],
+])
+
+export const statusIcons = new Map<string, LucideIcon>([
+  ['pending', Circle],
+  ['processing', Timer],
+  ['shipped', Truck],
+  ['completed', CheckCircle],
+  ['cancelled', CircleOff],
+])
+
+export const paymentStatusIcons = new Map<string, LucideIcon>([
+  ['unpaid', Circle],
+  ['paid', CheckCircle],
+  ['refunded', RotateCcw],
 ])
