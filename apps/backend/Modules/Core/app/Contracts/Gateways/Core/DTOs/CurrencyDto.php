@@ -10,11 +10,11 @@ class CurrencyDto
 
     public string $name;
 
-    public string $native_name;
+    public ?string $native_name = null;
 
     public string $decimal_places;
 
-    public string $symbol;
+    public ?string $symbol = null;
 
     public bool $is_default;
 
