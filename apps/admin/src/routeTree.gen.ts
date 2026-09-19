@@ -23,7 +23,6 @@ import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
-import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
@@ -129,11 +128,6 @@ const AuthenticatedSettingsRouteRoute =
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedTasksIndexRoute = AuthenticatedTasksIndexRouteImport.update({
-  id: '/tasks/',
-  path: '/tasks/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSettingsIndexRoute =
@@ -374,7 +368,6 @@ export interface FileRoutesByFullPath {
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
@@ -424,7 +417,6 @@ export interface FileRoutesByTo {
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
@@ -478,7 +470,6 @@ export interface FileRoutesById {
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
@@ -532,7 +523,6 @@ export interface FileRouteTypes {
     | '/help-center'
     | '/media'
     | '/settings/'
-    | '/tasks'
     | '/users'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
@@ -582,7 +572,6 @@ export interface FileRouteTypes {
     | '/help-center'
     | '/media'
     | '/settings'
-    | '/tasks'
     | '/users'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
@@ -635,7 +624,6 @@ export interface FileRouteTypes {
     | '/_authenticated/help-center/'
     | '/_authenticated/media/'
     | '/_authenticated/settings/'
-    | '/_authenticated/tasks/'
     | '/_authenticated/users/'
     | '/_authenticated/catalog/attributes/groups'
     | '/_authenticated/catalog/attributes/templates'
@@ -778,13 +766,6 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/tasks/': {
-      id: '/_authenticated/tasks/'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof AuthenticatedTasksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
@@ -1096,7 +1077,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedMediaIndexRoute: typeof AuthenticatedMediaIndexRoute
-  AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
@@ -1131,7 +1111,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedMediaIndexRoute: AuthenticatedMediaIndexRoute,
-  AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,
