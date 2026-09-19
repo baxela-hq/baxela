@@ -17,6 +17,12 @@ class NotificationMessage implements MessageInterface
         public readonly ?array $channel = null,
         public ?string $subjectOverride = null, // Nullable for channels like SMS
         public ?string $bodyOverride = null,
-        public readonly array $meta = [] // e.g., sender, reply_to for email
+        public readonly array $meta = [], // e.g., sender, reply_to for email
+        /**
+         * Language the templates render in; captured at event-dispatch time
+         * so queued sends keep the recipient's language. Falls back to the
+         * app locale when null.
+         */
+        public readonly ?string $locale = null,
     ) {}
 }

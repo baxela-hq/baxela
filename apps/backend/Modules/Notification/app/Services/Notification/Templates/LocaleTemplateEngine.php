@@ -23,12 +23,20 @@ class LocaleTemplateEngine implements TemplateEngineInterface
         $subjectContent = null;
         $bodyContent = null;
 
+        // Lang files key their entries by target locale, so the lookup must
+        // run against that locale's group — not whatever the app locale
+        // happens to be (e.g. a queued job's default).
+        $previousLocale = app()->getLocale();
+        app()->setLocale($locale);
+
         try {
-            $subjectContent = __($subjectKey);
-            $bodyContent = __($bodyKey);
+            $subjectContent = __($subjectKey, $variables);
+            $bodyContent = __($bodyKey, $variables);
 
         } catch (\Throwable $th) {
             Log::error("Error rendering template {$translationBaseKey}: ".$th->getMessage());
+        } finally {
+            app()->setLocale($previousLocale);
         }
 
         return new RenderedTemplate($subjectContent, $bodyContent);

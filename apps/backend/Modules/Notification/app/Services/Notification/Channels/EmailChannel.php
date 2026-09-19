@@ -19,6 +19,12 @@ class EmailChannel implements NotificationChannelInterface
             throw new \InvalidArgumentException('Invalid message type');
         }
 
+        // Recipient-less sends (e.g. a user without a resolvable email) are
+        // no-ops, not failures worth reporting.
+        if (empty($message->recipients)) {
+            return new SendResult(success: false);
+        }
+
         try {
             Mail::to($message->recipients)->send(new DynamicNotification(
                 subject: $message->subject,

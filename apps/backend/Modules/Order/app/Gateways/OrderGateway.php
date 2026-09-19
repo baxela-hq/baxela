@@ -13,6 +13,7 @@ use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Utils\Auth;
+use Modules\Core\Utils\Locale;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
@@ -74,7 +75,10 @@ class OrderGateway implements OrderGatewayInterface
             $order->{OrderSchema::TOTAL_AMOUNT} = $totalAmount;
             $order->save();
 
-            event(OrderCreatedEvent::fill($order->toArray()));
+            event(OrderCreatedEvent::fill(array_merge(
+                $order->toArray(),
+                ['locale' => Locale::fromRequest()],
+            )));
 
             DB::commit();
 
@@ -168,8 +172,11 @@ class OrderGateway implements OrderGatewayInterface
         event(OrderPaidEvent::fill([
             OrderSchema::ID => $order->{OrderSchema::ID},
             OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
+            OrderSchema::ORDER_CODE => $order->{OrderSchema::ORDER_CODE},
             OrderSchema::STATUS => $order->{OrderSchema::STATUS}->value,
             OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID->value,
+            OrderSchema::TOTAL_AMOUNT => (float) $order->{OrderSchema::TOTAL_AMOUNT},
+            'locale' => Locale::fromRequest(),
         ]));
 
         return true;
@@ -211,7 +218,9 @@ class OrderGateway implements OrderGatewayInterface
         event($event::fill([
             OrderSchema::ID => $order->{OrderSchema::ID},
             OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
+            OrderSchema::ORDER_CODE => $order->{OrderSchema::ORDER_CODE},
             OrderSchema::STATUS => $status->value,
+            'locale' => Locale::fromRequest(),
         ]));
 
         return true;
