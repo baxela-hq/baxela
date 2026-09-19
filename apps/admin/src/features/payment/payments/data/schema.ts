@@ -20,6 +20,7 @@ export const paymentSchema = z.object({
   transaction_id: z.string().nullable(),
   method: z.enum(methods),
   amount: z.number(),
+  currency_id: z.number().nullable(),
   status: z.enum(statuses),
   created_at: z.string(),
   updated_at: z.string(),

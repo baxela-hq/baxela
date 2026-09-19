@@ -1,18 +1,20 @@
-import { type ColumnDef } from '@tanstack/react-table';
-import { cn } from '@/lib/utils';
-import { DataTableColumnHeader } from '@/components/data-table';
-import { LongText } from '@/components/long-text';
-import { type Order } from '../data/schema';
-import { DataTableRowActions } from './data-table-row-actions';
-import { useAppTranslation } from '@/hooks/useAppTranslation';
-import { Locales } from '../data/routes';
-import { statusTypes, paymentStatusTypes } from '../data/data.ts'
-import { Badge } from '@/components/ui/badge.tsx'
+import { type ColumnDef } from '@tanstack/react-table'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
+import { useFormatPrice } from '@/shared/hooks/use-format-price'
+import { cn } from '@/lib/utils'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
+import { Badge } from '@/components/ui/badge.tsx'
+import { DataTableColumnHeader } from '@/components/data-table'
+import { LongText } from '@/components/long-text'
+import { statusTypes, paymentStatusTypes } from '../data/data.ts'
+import { Locales } from '../data/routes'
+import { type Order } from '../data/schema'
+import { DataTableRowActions } from './data-table-row-actions'
 
 export const Columns = (): ColumnDef<Order>[] => {
   const { tLabel, tStatus } = useAppTranslation(Locales.ORDER)
   const { formatDateTime } = useFormatDateTime()
+  const formatPrice = useFormatPrice()
 
   return [
     {
@@ -37,8 +39,11 @@ export const Columns = (): ColumnDef<Order>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('order_code')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('order_code')}</div>,
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>
+          {row.getValue('order_code')}
+        </div>
+      ),
       enableSorting: false,
       enableHiding: true,
     },
@@ -47,11 +52,12 @@ export const Columns = (): ColumnDef<Order>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('user_id')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('user_id')}</div>,
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>{row.getValue('user_id')}</div>
+      ),
       enableSorting: false,
       enableHiding: true,
-      filterFn: "inNumberRange"
+      filterFn: 'inNumberRange',
     },
     {
       accessorKey: 'status',
@@ -75,7 +81,10 @@ export const Columns = (): ColumnDef<Order>[] => {
     {
       accessorKey: 'payment_status',
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={tLabel('payment_status')} />
+        <DataTableColumnHeader
+          column={column}
+          title={tLabel('payment_status')}
+        />
       ),
       cell: ({ row }) => {
         const { payment_status } = row.original
@@ -96,8 +105,11 @@ export const Columns = (): ColumnDef<Order>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('total_amount')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{row.getValue('total_amount')}</div>,
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>
+          {formatPrice(row.getValue('total_amount'), row.original.currency_id)}
+        </div>
+      ),
       enableSorting: true,
       enableHiding: true,
     },
@@ -106,8 +118,11 @@ export const Columns = (): ColumnDef<Order>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('created_at')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('created_at'))}</div>,
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>
+          {formatDateTime(row.getValue('created_at'))}
+        </div>
+      ),
       enableSorting: false,
       enableHiding: true,
     },
@@ -116,8 +131,11 @@ export const Columns = (): ColumnDef<Order>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('updated_at')} />
       ),
-      cell: ({ row }) =>
-        <div className='w-fit ps-2 text-nowrap'>{formatDateTime(row.getValue('updated_at'))}</div>,
+      cell: ({ row }) => (
+        <div className='w-fit ps-2 text-nowrap'>
+          {formatDateTime(row.getValue('updated_at'))}
+        </div>
+      ),
       enableHiding: true,
       enableSorting: false,
     },
@@ -125,5 +143,5 @@ export const Columns = (): ColumnDef<Order>[] => {
       id: 'actions',
       cell: DataTableRowActions,
     },
-  ];
+  ]
 }
