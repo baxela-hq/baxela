@@ -52,8 +52,8 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: false },
     columnFilters: [
-      { columnId: 'method_id', searchKey: 'filter[method_id]', type: 'string' },
-      { columnId: 'zone_id', searchKey: 'filter[zone_id]', type: 'string' },
+      { columnId: 'method', searchKey: 'filter[method_id]', type: 'string' },
+      { columnId: 'zone', searchKey: 'filter[zone_id]', type: 'string' },
     ],
     sorting: { key: 'sort' },
   })
@@ -91,7 +91,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
         tLabel={tLabel}
         table={table}
         searchPlaceholder={tDataTable('toolbar.filter', {name: tLabel('method_id')})}
-        searchKey='method_id'
+        searchKey='method'
         filters={[]}
       />
       <div className='overflow-hidden rounded-md border'>

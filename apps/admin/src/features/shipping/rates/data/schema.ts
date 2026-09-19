@@ -1,10 +1,25 @@
 import { z } from 'zod'
+import { translationSchema } from '../../methods/data/schema'
+
+// relation payload included by the rates list (method name, zone name columns)
+const rateMethodSchema = z.object({
+  id: z.number(),
+  code: z.string(),
+  translations: z.array(translationSchema),
+})
+
+const rateZoneSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
 
 export const rateSchema = z.object({
   id: z.number(),
   method_id: z.number(),
   zone_id: z.number(),
   price: z.string(),
+  method: rateMethodSchema.nullish(),
+  zone: rateZoneSchema.nullish(),
   created_at: z.string(),
   updated_at: z.string(),
 })
