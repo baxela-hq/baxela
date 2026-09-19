@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -42,6 +43,7 @@ function ToggleSidebar({
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { toggleSidebar } = useSidebar()
+  const { t } = useAppTranslation('shared/layout')
 
   return (
     <Button
@@ -58,7 +60,7 @@ function ToggleSidebar({
     >
       <X className='md:hidden' />
       <Menu className='max-md:hidden' />
-      <span className='sr-only'>Toggle Sidebar</span>
+      <span className='sr-only'>{t('sidebar.toggle')}</span>
     </Button>
   )
 }

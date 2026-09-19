@@ -1,53 +1,58 @@
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
+import { Locales } from '../data/routes'
 
 const data = [
   {
-    name: 'Mon',
+    day: 'mon',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Tue',
+    day: 'tue',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Wed',
+    day: 'wed',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Thu',
+    day: 'thu',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Fri',
+    day: 'fri',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Sat',
+    day: 'sat',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
   {
-    name: 'Sun',
+    day: 'sun',
     clicks: Math.floor(Math.random() * 900) + 100,
     uniques: Math.floor(Math.random() * 700) + 80,
   },
 ]
 
 export function AnalyticsChart() {
+  const { t } = useAppTranslation(Locales.DASHBOARD)
+
   return (
     <ResponsiveContainer width='100%' height={300}>
       <AreaChart data={data}>
         <XAxis
-          dataKey='name'
+          dataKey='day'
           stroke='#888888'
           fontSize={12}
           tickLine={false}
           axisLine={false}
+          tickFormatter={(day) => t(`analytics.chart-days.${day}`)}
         />
         <YAxis
           stroke='#888888'

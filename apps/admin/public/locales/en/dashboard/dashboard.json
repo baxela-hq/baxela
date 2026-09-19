@@ -1,0 +1,77 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Dashboard"
+    }
+  },
+  "actions": {
+    "download": "Download"
+  },
+  "top-nav": {
+    "overview": "Overview",
+    "customers": "Customers",
+    "products": "Products",
+    "settings": "Settings"
+  },
+  "tabs": {
+    "overview": "Overview",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "notifications": "Notifications"
+  },
+  "stat-cards": {
+    "total-revenue": "Total Revenue",
+    "total-revenue-change": "+20.1% from last month",
+    "subscriptions": "Subscriptions",
+    "subscriptions-change": "+180.1% from last month",
+    "sales": "Sales",
+    "sales-change": "+19% from last month",
+    "active-now": "Active Now",
+    "active-now-change": "+201 since last hour"
+  },
+  "overview-card": "Overview",
+  "recent-sales": {
+    "title": "Recent Sales",
+    "description": "You made 265 sales this month."
+  },
+  "analytics": {
+    "traffic-overview": {
+      "title": "Traffic Overview",
+      "description": "Weekly clicks and unique visitors"
+    },
+    "stat-cards": {
+      "total-clicks": "Total Clicks",
+      "total-clicks-change": "+12.4% vs last week",
+      "unique-visitors": "Unique Visitors",
+      "unique-visitors-change": "+5.8% vs last week",
+      "bounce-rate": "Bounce Rate",
+      "bounce-rate-change": "-3.2% vs last week",
+      "average-session": "Avg. Session",
+      "average-session-change": "+18s vs last week"
+    },
+    "referrers": {
+      "title": "Referrers",
+      "description": "Top sources driving traffic",
+      "direct": "Direct",
+      "product-hunt": "Product Hunt",
+      "twitter": "Twitter",
+      "blog": "Blog"
+    },
+    "devices": {
+      "title": "Devices",
+      "description": "How users access your app",
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablet"
+    },
+    "chart-days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    }
+  }
+}

@@ -40,7 +40,8 @@
     "forbidden": "Forbidden",
     "not-found": "Not Found",
     "internal-server-error": "Internal Server Error",
-    "maintenance-error": "Maintenance Error"
+    "maintenance-error": "Maintenance Error",
+    "toggle": "Toggle Sidebar"
   },
   "dialog": {
     "sign-out": {
@@ -59,13 +60,53 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
-    }
+    },
+    "toggle-theme": "Toggle theme",
+    "open-theme-settings": "Open theme settings"
   },
   "search": {
     "placeholder": "Search...",
     "command_input": "Type a command or search..."
   },
   "config-drawer": {
-    "direction-help": "Overrides the direction derived from the store default language until you reset it."
+    "direction-help": "Overrides the direction derived from the store default language until you reset it.",
+    "title": "Theme Settings",
+    "description": "Adjust the appearance and layout to suit your preferences.",
+    "reset": "Reset",
+    "reset-all-settings": "Reset all settings to default values",
+    "sections": {
+      "theme": "Theme",
+      "sidebar": "Sidebar",
+      "layout": "Layout",
+      "direction": "Direction"
+    },
+    "options": {
+      "inset": "Inset",
+      "floating": "Floating",
+      "sidebar": "Sidebar",
+      "default": "Default",
+      "compact": "Compact",
+      "full-layout": "Full layout",
+      "ltr": "Left to Right",
+      "rtl": "Right to Left"
+    },
+    "group-aria": {
+      "theme": "Select theme preference",
+      "sidebar": "Select sidebar style",
+      "layout": "Select layout style",
+      "direction": "Select site direction"
+    },
+    "section-descriptions": {
+      "theme": "Choose between system preference, light mode, or dark mode",
+      "sidebar": "Choose between inset, floating, or standard sidebar layout",
+      "layout": "Choose between default expanded, compact icon-only, or full layout mode",
+      "direction": "Choose between left-to-right or right-to-left site direction"
+    },
+    "select-option-aria": "Select {{label}}",
+    "option-preview-aria": "{{label}} option preview"
+  },
+  "command-menu": {
+    "theme-heading": "Theme",
+    "no-results": "No results found."
   }
 }
