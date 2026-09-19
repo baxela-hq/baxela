@@ -18,6 +18,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { Badge } from '../ui/badge'
+import { useDirection } from '@/context/direction-provider'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -134,6 +135,8 @@ function SidebarMenuCollapsedDropdown({
   item: NavCollapsible
   href: string
 }) {
+  // the sidebar hugs the start edge, so the dropdown must open away from it
+  const { dir } = useDirection()
   return (
     <SidebarMenuItem>
       <DropdownMenu>
@@ -148,7 +151,11 @@ function SidebarMenuCollapsedDropdown({
             <ChevronRight className='ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
           </SidebarMenuButton>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side='right' align='start' sideOffset={4}>
+        <DropdownMenuContent
+          side={dir === 'rtl' ? 'left' : 'right'}
+          align='start'
+          sideOffset={4}
+        >
           <DropdownMenuLabel>
             {item.title} {item.badge ? `(${item.badge})` : ''}
           </DropdownMenuLabel>
