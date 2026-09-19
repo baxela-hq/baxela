@@ -9,6 +9,8 @@ import type {
   ApiAddress,
   ApiCartItem,
   ApiCountry,
+  ApiCreatePaymentResponse,
+  ApiPaymentMethodInfo,
   ApiProfile,
   ApiShippingMethod,
 } from "@/lib/api/types";
@@ -28,8 +30,9 @@ const EMPTY_ADDRESS_FORM = {
 
 /**
  * Full checkout: pick or create a shipping address (shipping quotes are
- * country-driven), choose a method, then place the order (idempotent) and
- * start a manual payment — the only implemented backend driver.
+ * country-driven), choose shipping + payment methods, then place the order
+ * (idempotent) and start a payment — manual stays on-site, hosted-checkout
+ * methods (e.g. Stripe) redirect away and finish on /payment/return.
  */
 export default function CheckoutPage() {
   const t = useTranslations("checkout.checkout");
@@ -48,6 +51,10 @@ export default function CheckoutPage() {
   const [addressForm, setAddressForm] = useState({ ...EMPTY_ADDRESS_FORM });
   const [methods, setMethods] = useState<ApiShippingMethod[]>([]);
   const [methodId, setMethodId] = useState<number | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<ApiPaymentMethodInfo[]>(
+    [],
+  );
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [placedOrder, setPlacedOrder] = useState<string | null>(null);
@@ -62,17 +69,23 @@ export default function CheckoutPage() {
     if (status !== "authenticated" || !token) return;
     void (async () => {
       try {
-        const [items, savedAddresses, countryList, profile] = await Promise.all([
-          api.get<ApiCartItem[]>("/cart/user/cart-items", { token }),
-          api.get<ApiAddress[]>("/user/user/addresses", { token }),
-          api.get<ApiCountry[]>("/core/public/countries"),
-          // A missing profile row must not fail checkout; it only pre-fills
-          // the address form's name.
-          api.get<ApiProfile>("/user/user/profile", { token }).catch(() => null),
-        ]);
+        const [items, savedAddresses, countryList, profile, payableMethods] =
+          await Promise.all([
+            api.get<ApiCartItem[]>("/cart/user/cart-items", { token }),
+            api.get<ApiAddress[]>("/user/user/addresses", { token }),
+            api.get<ApiCountry[]>("/core/public/countries"),
+            // A missing profile row must not fail checkout; it only pre-fills
+            // the address form's name.
+            api.get<ApiProfile>("/user/user/profile", { token }).catch(() => null),
+            api.get<ApiPaymentMethodInfo[]>("/payment/user/methods", { token }),
+          ]);
         setCartItems(items);
         setAddresses(savedAddresses);
         setCountries(countryList);
+        setPaymentMethods(payableMethods);
+        setPaymentMethod(
+          payableMethods.length > 0 ? payableMethods[0].method : null,
+        );
         if (profile?.full_name) {
           const name = profile.full_name;
           setAddressForm((form) => ({ ...form, full_name: name }));
@@ -189,11 +202,17 @@ export default function CheckoutPage() {
         { address_id: addressId, shipping_method_id: methodId },
         { token, headers: { "X-Idempotency-Key": idempotencyKey } },
       );
-      await api.post(
+      const payment = await api.post<ApiCreatePaymentResponse>(
         "/payment/user/process",
-        { order_code: orderCode, method: "manual" },
+        { order_code: orderCode, method: paymentMethod ?? "manual" },
         { token },
       );
+      if (payment.payment_url) {
+        // Hosted checkout (e.g. Stripe): settlement happens via the gateway
+        // webhook; the return page takes over after the redirect.
+        window.location.assign(payment.payment_url);
+        return;
+      }
       setPlacedOrder(orderCode);
       // The backend emptied the cart at checkout; sync the shared cart context
       // (header badge, cart page). Best-effort — a failure here must not hide
@@ -485,9 +504,30 @@ export default function CheckoutPage() {
                 <h2 className="text-lg font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
                   {t("payment.texts.title")}
                 </h2>
-                <p className="mt-4 rounded-default border border-border bg-muted px-4 py-4 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                  {t("payment.texts.method_manual")}
-                </p>
+                <div className="mt-4 space-y-3">
+                  {paymentMethods.map((info) => (
+                    <label
+                      key={info.method}
+                      className="flex cursor-pointer items-start gap-3 rounded-default border border-border px-4 py-4 transition-colors hover:bg-muted"
+                    >
+                      <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === info.method}
+                        onChange={() => setPaymentMethod(info.method)}
+                        className="mt-1 size-4 accent-accent"
+                      />
+                      <span className="text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+                        <span className="block font-medium">
+                          {t(`payment.methods.${info.method}.label`)}
+                        </span>
+                        <span className="mt-1 block text-secondary-text">
+                          {t(`payment.methods.${info.method}.description`)}
+                        </span>
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -575,7 +615,12 @@ export default function CheckoutPage() {
                 variant="accent"
                 fullWidth
                 className="mt-6"
-                disabled={pending || addressId === null || methodId === null}
+                disabled={
+                  pending ||
+                  addressId === null ||
+                  methodId === null ||
+                  paymentMethod === null
+                }
                 onClick={onPlaceOrder}
               >
                 {pending

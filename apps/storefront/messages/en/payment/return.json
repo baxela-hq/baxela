@@ -1,0 +1,18 @@
+{
+  "texts": {
+    "title_verifying": "Confirming your payment…",
+    "title_paid": "Payment received!",
+    "title_pending": "We're still confirming your payment",
+    "title_cancelled": "Payment cancelled",
+    "order_number": "Order code: {code}",
+    "description_verifying": "This usually takes a few seconds.",
+    "description_paid": "Your order is confirmed and will be processed shortly.",
+    "description_pending": "Your payment is being processed. Check your orders again in a few minutes.",
+    "description_cancelled": "The payment was not completed. Your order stays pending for a short while; you can place a new order from the shop.",
+    "error_missing_code": "We could not identify the order."
+  },
+  "actions": {
+    "view_orders": "View my orders",
+    "continue_shopping": "Continue shopping"
+  }
+}

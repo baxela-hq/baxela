@@ -36,8 +36,21 @@
   },
   "payment": {
     "texts": {
-      "title": "Payment",
-      "method_manual": "Manual payment — our team will contact you to arrange and confirm it."
+      "title": "Payment"
+    },
+    "methods": {
+      "manual": {
+        "label": "Manual payment",
+        "description": "Our team will contact you to arrange and confirm it."
+      },
+      "stripe": {
+        "label": "Card payment (Stripe)",
+        "description": "Pay securely by card — you will be redirected to Stripe."
+      },
+      "paypal": {
+        "label": "PayPal",
+        "description": "Pay with your PayPal account."
+      }
     }
   },
   "summary": {
