@@ -21,6 +21,7 @@ async function loadMessages(locale: string) {
     auth,
     account,
     contact,
+    paymentReturn,
   ] = await Promise.all([
     import(`../messages/${locale}/shared/common.json`),
     import(`../messages/${locale}/shared/layout.json`),
@@ -32,6 +33,7 @@ async function loadMessages(locale: string) {
     import(`../messages/${locale}/auth/auth.json`),
     import(`../messages/${locale}/account/account.json`),
     import(`../messages/${locale}/contact/contact.json`),
+    import(`../messages/${locale}/payment/return.json`),
   ]);
 
   return {
@@ -49,6 +51,7 @@ async function loadMessages(locale: string) {
     auth: { auth: auth.default },
     account: { account: account.default },
     contact: { contact: contact.default },
+    payment: { return: paymentReturn.default },
   };
 }
 
