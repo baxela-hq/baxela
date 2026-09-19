@@ -113,6 +113,32 @@ it('respects zero-decimal currencies', function () {
     expect($captured['line_items'][0]['price_data']['unit_amount'])->toBe(305);
 });
 
+it('refuses to initiate when the gateway is not configured', function () {
+    config(['payment.stripe.secret' => null]);
+    $driver = new StripePaymentDriver(app(StripeCheckout::class));
+
+    $driver->initiate(new PaymentInitiateInput(
+        payment_id: 9,
+        order_id: 4,
+        amount: 305.0,
+        method: 'stripe',
+        order_code: 'ABCD2345',
+        currency: 'USD',
+        currency_decimal_places: 2,
+    ));
+})->throws(PaymentException::class);
+
+it('refuses webhooks when the signing secret is not configured', function () {
+    config(['payment.stripe.webhook_secret' => null]);
+    $driver = new StripePaymentDriver(app(StripeCheckout::class));
+
+    $driver->handleWebhook(signedStripeEvent([
+        'id' => 'evt_1',
+        'type' => 'checkout.session.completed',
+        'data' => ['object' => ['id' => 'cs_test_123', 'payment_status' => 'paid']],
+    ]));
+})->throws(PaymentException::class);
+
 it('maps a paid completed session webhook to success', function () {
     $driver = new StripePaymentDriver(app(StripeCheckout::class));
 

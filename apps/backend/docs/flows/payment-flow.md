@@ -9,9 +9,14 @@ Checkout and payment are two steps: checkout creates an UNPAID order
 Payment methods are a driver registry, not a table: `PaymentMethodEnum`
 supplies the case, `config('payment.drivers')` maps it to a
 `PaymentDriverInterface` implementation, and `PaymentDriverManager` resolves
-it. A method is offerable only when it has a registered driver —
-`GET /payment/user/methods` returns exactly that intersection and is the
-storefront's source of truth for the checkout picker.
+it. A method is offerable only when it has a registered **and configured**
+driver — credentials present, per `ListPaymentMethodsAction::isConfigured()`
+— so an unconfigured gateway is hidden instead of failing at checkout.
+`GET /payment/user/methods` returns exactly that set and is the storefront's
+source of truth for the checkout picker. Drivers also guard themselves: a
+blank `payment.stripe.secret` (or webhook secret) throws
+`payment.process.gateway_unconfigured` (HTTP 400) rather than surfacing an
+SDK error as a 500.
 
 | Method | Driver | Flow |
 | --- | --- | --- |
@@ -57,6 +62,10 @@ acked as no-ops).
 
 ## Stripe specifics
 
+- Requires `STRIPE_SECRET` and `STRIPE_WEBHOOK_SECRET` in the backend `.env`
+  (see `.env.example`); without the former the method is hidden from
+  `/payment/user/methods`, and direct calls fail with
+  `payment.process.gateway_unconfigured`.
 - `initiate` creates a Checkout Session (`mode=payment`, single `price_data`
   line item in minor units from the order currency's `decimal_places`,
   `metadata.payment_id/order_id`, `{order_code}`-templated success/cancel
@@ -77,7 +86,10 @@ acked as no-ops).
    `Modules/Payment/app/Gateways/Drivers/`; verify the webhook signature
    inside `handleWebhook` and return the stored `transaction_id`.
 3. Register it under its enum value in `Modules/Payment/config/payment.php`
-   plus a config block for its env-driven credentials.
+   plus a config block for its env-driven credentials, and add the method to
+   `ListPaymentMethodsAction::isConfigured()` so it stays hidden until the
+   credentials exist (throw `gatewayUnconfigured()` inside the driver as the
+   backstop).
 4. Point the gateway's webhook at `POST /api/v1/payment/webhook/{driver}` —
    `HandleWebhookAction` handles matching, idempotent settling, order
    `markAsPaid` and events generically.

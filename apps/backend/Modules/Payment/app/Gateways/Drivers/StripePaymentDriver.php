@@ -53,6 +53,12 @@ class StripePaymentDriver implements PaymentDriverInterface
 
     public function handleWebhook(Request $request): WebhookResult
     {
+        if ((string) config('payment.stripe.webhook_secret') === '') {
+            // Without the signing secret every event would fail verification;
+            // say so instead of reporting each one as invalid.
+            throw PaymentException::gatewayUnconfigured();
+        }
+
         try {
             $event = Webhook::constructEvent(
                 $request->getContent(),
