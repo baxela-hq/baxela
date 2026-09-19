@@ -3,7 +3,9 @@
 namespace Modules\Payment\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Payment\Models\Payment;
+use Modules\Payment\Schemas\Payment\PaymentSchema;
 
 class PaymentDatabaseSeeder extends Seeder
 {
@@ -14,6 +16,11 @@ class PaymentDatabaseSeeder extends Seeder
     {
         // $this->call([]);
 
-        Payment::factory()->count(5)->create();
+        // Seed in the shop's default currency, like a real payment would
+        $currencyId = app(CoreGatewayInterface::class)->getDefaultCurrency()?->id;
+
+        Payment::factory()->count(5)->create([
+            PaymentSchema::CURRENCY_ID => $currencyId,
+        ]);
     }
 }
