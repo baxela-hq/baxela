@@ -58,7 +58,7 @@ class UpdateOrderAction extends AbstractOrderAction
         $statusChanged = $record->{OrderSchema::STATUS} !== $status;
         $paymentStatusChanged = $record->{OrderSchema::PAYMENT_STATUS} !== $paymentStatus;
 
-        DB::transaction(function () use ($record, $status, $paymentStatus, $paymentJustSucceeded): void {
+        DB::transaction(function () use ($record, $status, $paymentStatus, $paymentJustSucceeded, $statusChanged, $paymentStatusChanged): void {
             if ($statusChanged) {
                 $record->{OrderSchema::STATUS} = $status;
             }
