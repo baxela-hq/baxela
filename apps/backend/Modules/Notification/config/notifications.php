@@ -42,6 +42,11 @@ return [
     // list of addresses, defaulting to the mail sender address.
     'admin_recipients' => [
         'email' => array_values(array_filter(array_map('trim', explode(',', (string) env('ADMIN_NOTIFICATION_EMAILS', env('MAIL_FROM_ADDRESS', 'hello@example.com')))))),
+
+        // Database notifications fan out to these user ids. Defaults to all
+        // active staff (users holding any role) via the access gateway; set
+        // ADMIN_NOTIFICATION_USER_IDS to restrict delivery to a fixed list.
+        'database' => array_values(array_filter(array_map('trim', explode(',', (string) env('ADMIN_NOTIFICATION_USER_IDS', ''))))),
     ],
 
     'templates' => [
