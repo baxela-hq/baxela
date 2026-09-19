@@ -5,12 +5,17 @@ namespace Modules\Setting\Actions\Admin\Setting;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Setting\Models\Setting;
+use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 
 class UpdateSettingAction
 {
-    public function __construct(protected Setting $model) {}
+    public function __construct(
+        protected Setting $model,
+        protected CoreGatewayInterface $coreGateway,
+    ) {}
 
     public function handle(array $data): Collection
     {
@@ -20,6 +25,17 @@ class UpdateSettingAction
             foreach ($data as $item) {
                 $record = $this->model->where(SettingSchema::NAME, $item[SettingSchema::NAME])->firstOrFail();
                 $record->update([SettingSchema::VALUE => $item[SettingSchema::VALUE]]);
+
+                // The default language/currency settings are the source of
+                // truth; mirror them onto the core flags so flag-based
+                // consumers (sign-in snapshot, gateways) stay in sync.
+                if ($item[SettingSchema::NAME] === SettingNameEnum::LANGUAGE_ID->value) {
+                    $this->coreGateway->markLanguageDefault((int) $item[SettingSchema::VALUE]);
+                }
+
+                if ($item[SettingSchema::NAME] === SettingNameEnum::CURRENCY_ID->value) {
+                    $this->coreGateway->markCurrencyDefault((int) $item[SettingSchema::VALUE]);
+                }
 
                 if (isset($item[SettingSchema::RES_TRANSLATIONS])) {
                     $record->translations()->delete();
