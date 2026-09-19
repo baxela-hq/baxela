@@ -10,9 +10,9 @@ class LanguageDto
 
     public string $name;
 
-    public string $native_name;
+    public ?string $native_name = null;
 
-    public string $code2;
+    public string $code;
 
     public string $code3;
 
@@ -22,7 +22,11 @@ class LanguageDto
 
     public bool $is_default;
 
-    public int $position;
+    public ?int $position = null;
+
+    public ?string $date_format = null;
+
+    public ?string $time_format = null;
 
     public static function fill(array $input): self
     {
