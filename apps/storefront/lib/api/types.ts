@@ -23,6 +23,19 @@ export interface Paginated<T> {
   meta: PaginationMeta;
 }
 
+/** One row of the user's notification feed; title/body arrive pre-localized. */
+export interface ApiNotification {
+  id: number;
+  /** Dot-code, e.g. "order.order.created" — drives the row icon. */
+  code: string;
+  title: string;
+  body: string;
+  /** Deep-link hints; `order_code` points at the customer's order. */
+  meta: { order_code?: string; reason?: string | null } | null;
+  read_at: string | null;
+  created_at: string | null;
+}
+
 export interface ApiProduct {
   id: number;
   title: string | null;
