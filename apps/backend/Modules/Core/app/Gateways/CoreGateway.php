@@ -35,6 +35,18 @@ class CoreGateway implements CoreGatewayInterface
         return CurrencyDto::fill($record->toArray());
     }
 
+    public function markLanguageDefault(int $languageId): void
+    {
+        Language::query()->update([LanguageSchema::IS_DEFAULT => false]);
+        Language::query()->whereKey($languageId)->update([LanguageSchema::IS_DEFAULT => true]);
+    }
+
+    public function markCurrencyDefault(int $currencyId): void
+    {
+        Currency::query()->update([CurrencySchema::IS_DEFAULT => false]);
+        Currency::query()->whereKey($currencyId)->update([CurrencySchema::IS_DEFAULT => true]);
+    }
+
     public function getLanguageIdByCode(string $code): ?int
     {
         $record = Language::query()->where(LanguageSchema::CODE, $code)->first();

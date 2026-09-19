@@ -12,6 +12,14 @@ interface CoreGatewayInterface
 
     public function getDefaultCurrency(): ?CurrencyDto;
 
+    /**
+     * Flip the default flag to the given record, clearing every other row —
+     * keeps flag-based consumers in sync with the admin settings.
+     */
+    public function markLanguageDefault(int $languageId): void;
+
+    public function markCurrencyDefault(int $currencyId): void;
+
     public function getLanguageIdByCode(string $code): ?int;
 
     public function getLanguageIdsByCodes(array $codes): array;
