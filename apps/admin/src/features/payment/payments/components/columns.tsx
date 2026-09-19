@@ -4,10 +4,9 @@ import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 import { useFormatPrice } from '@/shared/hooks/use-format-price'
 import { cn } from '@/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { methodTypes, statusTypes } from '../data/data'
+import { methodIcons, statusIcons } from '../data/data'
 import { Locales } from '../data/routes'
 import { type Payment } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
@@ -75,11 +74,13 @@ export const Columns = (): ColumnDef<Payment>[] => {
       ),
       cell: ({ row }) => {
         const method = row.getValue<string>('method')
+        const MethodIcon = methodIcons.get(method)
         return (
-          <div className='w-fit ps-2'>
-            <Badge variant='outline' className={cn(methodTypes.get(method))}>
-              {tStatus(`method.${method}`)}
-            </Badge>
+          <div className='flex w-fit items-center gap-2 text-nowrap ps-2'>
+            {MethodIcon && (
+              <MethodIcon className='size-4 text-muted-foreground' />
+            )}
+            <span>{tStatus(`method.${method}`)}</span>
           </div>
         )
       },
@@ -109,11 +110,13 @@ export const Columns = (): ColumnDef<Payment>[] => {
       ),
       cell: ({ row }) => {
         const status = row.getValue<string>('status')
+        const StatusIcon = statusIcons.get(status)
         return (
-          <div className='w-fit ps-2'>
-            <Badge variant='outline' className={cn(statusTypes.get(status))}>
-              {tStatus(`status.${status}`)}
-            </Badge>
+          <div className='flex w-fit items-center gap-2 text-nowrap ps-2'>
+            {StatusIcon && (
+              <StatusIcon className='size-4 text-muted-foreground' />
+            )}
+            <span>{tStatus(`status.${status}`)}</span>
           </div>
         )
       },
