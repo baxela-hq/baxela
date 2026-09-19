@@ -7,6 +7,7 @@ use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Shipping\DTOs\ShippingMethodQuoteDto;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Schemas\Country\CountrySchema;
+use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Models\Rate;
 use Modules\Shipping\Models\Zone;
@@ -17,6 +18,8 @@ use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
 class ShippingGateway implements ShippingGatewayInterface
 {
+    use ResolvesPublicLanguage;
+
     public function __construct(protected CoreGatewayInterface $coreGateway) {}
 
     public function getMethodsForCountry(string $countryCode): array
@@ -75,13 +78,15 @@ class ShippingGateway implements ShippingGatewayInterface
             ->unique(RateSchema::METHOD_ID)
             ->values();
 
-        $defaultLanguageId = $this->defaultLanguageId();
+        // Names follow the visitor's Accept-Language (storefront checkout),
+        // falling back to the default language
+        $languageId = $this->resolvePublicLanguageId();
 
         $quotes = [];
         foreach ($rates as $rate) {
             $quotes[] = ShippingMethodQuoteDto::fill([
                 'id' => $rate->{RateSchema::METHOD_ID},
-                'name' => $this->methodName($rate->method, $defaultLanguageId),
+                'name' => $this->methodName($rate->method, $languageId),
                 'price' => (float) $rate->{RateSchema::PRICE},
             ]);
         }
@@ -89,20 +94,14 @@ class ShippingGateway implements ShippingGatewayInterface
         return $quotes;
     }
 
-    private function methodName(Method $method, ?int $defaultLanguageId): string
+
+    private function methodName(Method $method, ?int $languageId): string
     {
         $translations = $method->translations;
 
-        return $translations->firstWhere(MethodTranslationSchema::LANGUAGE_ID, $defaultLanguageId)
+        return $translations->firstWhere(MethodTranslationSchema::LANGUAGE_ID, $languageId)
             ?->{MethodTranslationSchema::NAME}
             ?? $translations->first()?->{MethodTranslationSchema::NAME}
             ?? $method->{MethodSchema::CODE};
-    }
-
-    private function defaultLanguageId(): ?int
-    {
-        $language = $this->coreGateway->getDefaultLanguage();
-
-        return is_null($language) ? null : (int) $language->id;
     }
 }
