@@ -57,6 +57,9 @@ class CreatePaymentAction
             order_id: $orderId,
             amount: $order->total_amount,
             method: $method->value,
+            order_code: $order->order_code,
+            currency: $order->currency_code,
+            currency_decimal_places: $order->currency_decimal_places,
         ));
 
         if (! is_null($result->transaction_id)) {

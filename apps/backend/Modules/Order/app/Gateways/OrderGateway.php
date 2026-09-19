@@ -10,6 +10,7 @@ use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Utils\Auth;
@@ -103,7 +104,7 @@ class OrderGateway implements OrderGatewayInterface
             ->where(OrderSchema::EXPIRES_AT, '>=', now())
             ->first();
 
-        return $order ? new GetOrderOutput($order->toArray()) : null;
+        return $order ? $this->toOutput($order) : null;
     }
 
     public function findOrder(int $orderId): ?GetOrderOutput
@@ -112,7 +113,7 @@ class OrderGateway implements OrderGatewayInterface
             ->where(OrderSchema::ID, $orderId)
             ->first();
 
-        return $order ? new GetOrderOutput($order->toArray()) : null;
+        return $order ? $this->toOutput($order) : null;
     }
 
     public function findOrderByCode(string $code): ?GetOrderOutput
@@ -121,7 +122,25 @@ class OrderGateway implements OrderGatewayInterface
             ->where(OrderSchema::ORDER_CODE, $code)
             ->first();
 
-        return $order ? new GetOrderOutput($order->toArray()) : null;
+        return $order ? $this->toOutput($order) : null;
+    }
+
+    /**
+     * Hydrate the DTO with the order's currency facts, resolved through the
+     * Core gateway so payment drivers can quote gateway-side amounts.
+     */
+    private function toOutput(Order $order): GetOrderOutput
+    {
+        $fields = $order->toArray();
+
+        $currencyId = $fields[OrderSchema::CURRENCY_ID] ?? null;
+        if (! is_null($currencyId)) {
+            $currency = app(CoreGatewayInterface::class)->getCurrencyById((int) $currencyId);
+            $fields['currency_code'] = $currency?->code;
+            $fields['currency_decimal_places'] = $currency?->decimal_places;
+        }
+
+        return new GetOrderOutput($fields);
     }
 
     public function findOrderItems(int $orderId): array
