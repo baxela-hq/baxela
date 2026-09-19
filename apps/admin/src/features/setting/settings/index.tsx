@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { getRouteApi } from '@tanstack/react-router';
-import { LoaderIcon, SaveIcon } from 'lucide-react';
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { getRouteApi } from '@tanstack/react-router'
+import { LoaderIcon, SaveIcon } from 'lucide-react'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,54 +14,58 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea.tsx';
-import { TiptapEditor } from '@/components/tiptap/tiptap-editor';
-import { ConfigDrawer } from '@/components/config-drawer';
-import { Header } from '@/components/layout/header';
-import { Main } from '@/components/layout/main';
-import { ProfileDropdown } from '@/components/profile-dropdown';
-import { Search } from '@/components/search';
-import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx';
-import { ThemeSwitch } from '@/components/theme-switch';
-import { useSettings } from './hooks/use-settings';
-import { useUpdateSettings } from './hooks/use-setting-mutations';
-import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+} from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Textarea } from '@/components/ui/textarea.tsx'
+import { ConfigDrawer } from '@/components/config-drawer'
+import { Header } from '@/components/layout/header'
+import { Main } from '@/components/layout/main'
+import { ProfileDropdown } from '@/components/profile-dropdown'
+import { Search } from '@/components/search'
+import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx'
+import { ThemeSwitch } from '@/components/theme-switch'
+import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
 import { useCurrencies } from '@/features/core/currencies/hooks/use-currencies'
-import { Locales } from './data/routes';
+import { useLanguages } from '@/features/core/languages/hooks/use-languages'
+import { Locales } from './data/routes'
 import {
   formSchema,
   defaultValues,
   buildSettingsValues,
   type SettingsForm,
-} from './data/schema';
+} from './data/schema'
+import { useUpdateSettings } from './hooks/use-setting-mutations'
+import { useSettings } from './hooks/use-settings'
 
 const route = getRouteApi('/_authenticated/setting/settings/')
 
 export function Settings() {
   const search = route.useSearch()
-  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
-  const { tLabel, tStatus, tTooltip, tHelpText } = useAppTranslation(Locales.SETTING)
+  const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(
+    Locales.SHARED_COMMON
+  )
+  const { tLabel, tStatus, tTooltip, tHelpText } = useAppTranslation(
+    Locales.SETTING
+  )
 
   const entityName = {
-    singular: tLabel("setting"),
-    plural: tLabel("settings")
-  };
+    singular: tLabel('setting'),
+    plural: tLabel('settings'),
+  }
 
-  const { data: settings, isLoading: settingsLoading } = useSettings(search);
+  const { data: settings, isLoading: settingsLoading } = useSettings(search)
 
-  const { data: languages, isLoading: languagesLoading } = useLanguages();
+  const { data: languages, isLoading: languagesLoading } = useLanguages()
 
-  const { data: currencies, isLoading: currenciesLoading } = useCurrencies();
+  const { data: currencies, isLoading: currenciesLoading } = useCurrencies()
 
   const updateSettings = useUpdateSettings()
 
@@ -70,24 +74,30 @@ export function Settings() {
   const settingsSafe = settings ?? []
   const isLoading = settingsLoading || languagesLoading || currenciesLoading
 
-  const hasAnnouncementGroup = settingsSafe.some((s) => s.group === 'announcement')
+  const hasAnnouncementGroup = settingsSafe.some(
+    (s) => s.group === 'announcement'
+  )
 
   const form = useForm<SettingsForm>({
     resolver: zodResolver(formSchema),
     defaultValues,
-  });
+  })
 
   useEffect(() => {
     if (!isLoading) {
-      form.reset(buildSettingsValues(languagesSafe, settingsSafe));
+      form.reset(buildSettingsValues(languagesSafe, settingsSafe))
     }
   }, [isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = (values: SettingsForm) => {
-    updateSettings.mutate({ values, languages: languagesSafe })
+    updateSettings.mutate({
+      values,
+      languages: languagesSafe,
+      currencies: currenciesSafe,
+    })
   }
 
-  if (isLoading) return <SkeletonWidget />;
+  if (isLoading) return <SkeletonWidget />
 
   return (
     <>
@@ -104,10 +114,10 @@ export function Settings() {
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>
-              { tPageTitle("index.title", {entity: entityName.plural}) }
+              {tPageTitle('index.title', { entity: entityName.plural })}
             </h2>
             <p className='text-muted-foreground'>
-              {tPageTitle("index.subtitle", {entity: entityName.plural})}
+              {tPageTitle('index.subtitle', { entity: entityName.plural })}
             </p>
           </div>
         </div>
@@ -121,13 +131,18 @@ export function Settings() {
               <TabsList className='w-full'>
                 <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
                 {hasAnnouncementGroup && (
-                  <TabsTrigger value='announcement'>{tLabel('announcement')}</TabsTrigger>
+                  <TabsTrigger value='announcement'>
+                    {tLabel('announcement')}
+                  </TabsTrigger>
                 )}
               </TabsList>
 
               <TabsContent value='general' className='grid gap-4'>
                 {languagesSafe.length > 0 && (
-                  <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                  <Tabs
+                    defaultValue={languagesSafe[0]?.code}
+                    className='w-full'
+                  >
                     <TabsList className='w-full'>
                       {languagesSafe.map((language) => (
                         <TabsTrigger key={language.code} value={language.code}>
@@ -137,13 +152,21 @@ export function Settings() {
                     </TabsList>
 
                     {languagesSafe.map((language, index) => (
-                      <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                      <TabsContent
+                        key={language.code}
+                        value={language.code}
+                        className='space-y-4'
+                      >
                         <FormField
                           control={form.control}
                           name={`website_title.translations.${index}.value`}
                           render={({ field }) => (
                             <FormItem className='grid gap-2'>
-                              <FormLabel htmlFor={`website_title-${language.code}`}>{tStatus('name.website_title')}</FormLabel>
+                              <FormLabel
+                                htmlFor={`website_title-${language.code}`}
+                              >
+                                {tStatus('name.website_title')}
+                              </FormLabel>
                               <FormControl>
                                 <Input
                                   id={`website_title-${language.code}`}
@@ -164,7 +187,11 @@ export function Settings() {
                           name={`website_description.translations.${index}.value`}
                           render={({ field }) => (
                             <FormItem className='grid gap-2'>
-                              <FormLabel htmlFor={`website_description-${language.code}`}>{tStatus('name.website_description')}</FormLabel>
+                              <FormLabel
+                                htmlFor={`website_description-${language.code}`}
+                              >
+                                {tStatus('name.website_description')}
+                              </FormLabel>
                               <FormControl>
                                 <Textarea
                                   id={`website_description-${language.code}`}
@@ -189,9 +216,16 @@ export function Settings() {
                   name='language_id'
                   render={({ field }) => (
                     <FormItem className='grid gap-2'>
-                      <FormLabel htmlFor='language_id'>{tStatus('name.language_id')}</FormLabel>
+                      <FormLabel htmlFor='language_id'>
+                        {tStatus('name.language_id')}
+                      </FormLabel>
                       <Select
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          // Radix emits an empty string from its hidden native
+                          // select before the items register; ignore it so it
+                          // cannot clobber the value set by form.reset().
+                          if (value !== '') field.onChange(value)
+                        }}
                         value={field.value || undefined}
                       >
                         <FormControl>
@@ -201,7 +235,10 @@ export function Settings() {
                         </FormControl>
                         <SelectContent>
                           {languagesSafe.map((language) => (
-                            <SelectItem key={language.id} value={String(language.id)}>
+                            <SelectItem
+                              key={language.id}
+                              value={String(language.id)}
+                            >
                               {language.native_name}
                             </SelectItem>
                           ))}
@@ -220,9 +257,16 @@ export function Settings() {
                   name='currency_id'
                   render={({ field }) => (
                     <FormItem className='grid gap-2'>
-                      <FormLabel htmlFor='currency_id'>{tStatus('name.currency_id')}</FormLabel>
+                      <FormLabel htmlFor='currency_id'>
+                        {tStatus('name.currency_id')}
+                      </FormLabel>
                       <Select
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => {
+                          // Radix emits an empty string from its hidden native
+                          // select before the items register; ignore it so it
+                          // cannot clobber the value set by form.reset().
+                          if (value !== '') field.onChange(value)
+                        }}
                         value={field.value || undefined}
                       >
                         <FormControl>
@@ -232,7 +276,10 @@ export function Settings() {
                         </FormControl>
                         <SelectContent>
                           {currenciesSafe.map((currency) => (
-                            <SelectItem key={currency.id} value={String(currency.id)}>
+                            <SelectItem
+                              key={currency.id}
+                              value={String(currency.id)}
+                            >
                               {currency.native_name}
                             </SelectItem>
                           ))}
@@ -254,7 +301,9 @@ export function Settings() {
                     name='announcement_bar_enabled'
                     render={({ field }) => (
                       <FormItem className='grid gap-2'>
-                        <FormLabel htmlFor='announcement_bar_enabled'>{tStatus('name.announcement_bar_enabled')}</FormLabel>
+                        <FormLabel htmlFor='announcement_bar_enabled'>
+                          {tStatus('name.announcement_bar_enabled')}
+                        </FormLabel>
                         <FormControl>
                           <Switch
                             id='announcement_bar_enabled'
@@ -271,27 +320,43 @@ export function Settings() {
                   />
 
                   {languagesSafe.length > 0 && (
-                    <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                    <Tabs
+                      defaultValue={languagesSafe[0]?.code}
+                      className='w-full'
+                    >
                       <TabsList className='w-full'>
                         {languagesSafe.map((language) => (
-                          <TabsTrigger key={language.code} value={language.code}>
+                          <TabsTrigger
+                            key={language.code}
+                            value={language.code}
+                          >
                             {language.code.toUpperCase()}
                           </TabsTrigger>
                         ))}
                       </TabsList>
 
                       {languagesSafe.map((language, index) => (
-                        <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                        <TabsContent
+                          key={language.code}
+                          value={language.code}
+                          className='space-y-4'
+                        >
                           <FormField
                             control={form.control}
                             name={`announcement_text.translations.${index}.value`}
                             render={({ field }) => (
                               <FormItem className='grid gap-2'>
-                                <FormLabel htmlFor={`announcement_text-${language.code}`}>{tStatus('name.announcement_text')}</FormLabel>
+                                <FormLabel
+                                  htmlFor={`announcement_text-${language.code}`}
+                                >
+                                  {tStatus('name.announcement_text')}
+                                </FormLabel>
                                 <FormControl>
                                   <TiptapEditor
                                     initialContent={field.value}
-                                    onUpdate={({ html }) => field.onChange(html)}
+                                    onUpdate={({ html }) =>
+                                      field.onChange(html)
+                                    }
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -310,8 +375,16 @@ export function Settings() {
             </Tabs>
 
             <div className='flex-col'>
-              <Button type='submit' className='btn' disabled={updateSettings.isPending}>
-                <LoaderIcon className={updateSettings.isPending ? 'animate-spin' : 'hidden'} />
+              <Button
+                type='submit'
+                className='btn'
+                disabled={updateSettings.isPending}
+              >
+                <LoaderIcon
+                  className={
+                    updateSettings.isPending ? 'animate-spin' : 'hidden'
+                  }
+                />
                 <SaveIcon />
                 {tAction('submit')}
               </Button>
@@ -319,7 +392,6 @@ export function Settings() {
           </form>
         </Form>
       </Main>
-
     </>
   )
 }
