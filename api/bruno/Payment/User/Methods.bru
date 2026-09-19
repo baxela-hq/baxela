@@ -1,0 +1,24 @@
+meta {
+  name: Methods
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/v1/payment/user/methods
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Payment methods with a registered backend driver — the storefront's source
+  of truth for the checkout method picker. `stripe` returns a hosted-checkout
+  `payment_url` from Process; `manual` is settled by an admin.
+}
