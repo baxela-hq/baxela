@@ -23,6 +23,7 @@ return new class extends Migration
                 ->default(OrderPaymentStatusEnum::UNPAID->value);
             $table->timestamp(OrderSchema::PAID_AT)->nullable();
             $table->decimal(OrderSchema::TOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->unsignedBigInteger(OrderSchema::CURRENCY_ID)->nullable()->index();
             $table->unsignedBigInteger(OrderSchema::SHIPPING_METHOD_ID)->nullable();
             $table->string(OrderSchema::SHIPPING_METHOD_NAME)->nullable();
             $table->decimal(OrderSchema::SHIPPING_COST, 12, 2)->unsigned()->default(0.00);

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger(PaymentSchema::TRANSACTION_ID)->nullable();
             $table->string(PaymentSchema::METHOD);
             $table->decimal(PaymentSchema::AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->unsignedBigInteger(PaymentSchema::CURRENCY_ID)->nullable()->index();
             $table->enum(PaymentSchema::STATUS, PaymentStatusEnum::cases());
             $table->timestamps();
         });
