@@ -56,6 +56,7 @@ export function useSignIn() {
 
       // Set user and access token
       setUser({
+        id: account.id,
         accountNo: 'ACC001',
         email: account.email,
         role: account.roles.map((role) => role.name),

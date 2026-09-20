@@ -5,6 +5,8 @@ import { setCookie, removeCookie } from '@/lib/cookies'
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
 interface AuthUser {
+  /** Numeric user id — drives the private `user.{id}` Reverb channel. */
+  id?: number
   accountNo: string
   email: string
   role: string[]
