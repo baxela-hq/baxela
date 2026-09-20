@@ -29,6 +29,12 @@ x-backend: &backend
 services:
     backend:
         <<: *backend
+        environment:
+            # Server→Reverb broadcasts stay on the compose network; the
+            # REVERB_HOST in .env.production is the browser-facing host.
+            REVERB_HOST: reverb
+            REVERB_PORT: 8080
+            REVERB_SCHEME: http
 
     backend-nginx:
         image: nginx:stable-bookworm
@@ -53,10 +59,25 @@ services:
     queue:
         <<: *backend
         command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+        environment:
+            REVERB_HOST: reverb
+            REVERB_PORT: 8080
+            REVERB_SCHEME: http
 
     scheduler:
         <<: *backend
         command: php artisan schedule:work
+        environment:
+            REVERB_HOST: reverb
+            REVERB_PORT: 8080
+            REVERB_SCHEME: http
+
+    # Reverb websocket server for realtime notifications. nginx proxies
+    # /app/ (the ws endpoint) to it, so clients ride the backend host
+    # under TLS like every other API route.
+    reverb:
+        <<: *backend
+        command: php artisan reverb:start
 
     admin:
         image: baxela/admin:production
@@ -66,6 +87,10 @@ services:
             args:
                 VITE_API_BASE_URL: ${VITE_API_BASE_URL}
                 VITE_STORE_FRONT_URL: ${VITE_STORE_FRONT_URL}
+                VITE_REVERB_APP_KEY: ${REVERB_APP_KEY}
+                VITE_REVERB_HOST: ${REVERB_HOST:-api.example.com}
+                VITE_REVERB_PORT: ${REVERB_PORT:-443}
+                VITE_REVERB_SCHEME: ${REVERB_SCHEME:-https}
         restart: unless-stopped
         ports:
             - "${ADMIN_PORT:-8081}:80"
@@ -77,6 +102,10 @@ services:
             dockerfile: infrastructure/docker/production/storefront/Dockerfile
             args:
                 NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL}
+                NEXT_PUBLIC_REVERB_APP_KEY: ${REVERB_APP_KEY}
+                NEXT_PUBLIC_REVERB_HOST: ${REVERB_HOST:-api.example.com}
+                NEXT_PUBLIC_REVERB_PORT: ${REVERB_PORT:-443}
+                NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-https}
         restart: unless-stopped
         environment:
             # Browser code uses the build-time NEXT_PUBLIC value; server-side
