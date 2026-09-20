@@ -15,6 +15,7 @@ class AccountResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            UserSchema::ID => $this->resource->{UserSchema::ID},
             UserSchema::EMAIL => $this->resource->{UserSchema::EMAIL},
             UserSchema::ROLES => RoleResource::collection($this->resource->roles),
         ];
