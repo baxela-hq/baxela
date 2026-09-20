@@ -1,0 +1,21 @@
+meta {
+  name: Vapid Public Key
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/notification/webpush/vapid-public-key
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
