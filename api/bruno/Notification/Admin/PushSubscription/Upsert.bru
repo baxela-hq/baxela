@@ -1,0 +1,37 @@
+meta {
+  name: Upsert
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/notification/admin/push-subscriptions
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "endpoint": "https://fcm.googleapis.com/fcm/send/dQw4w9WgXcQ",
+    "keys": {
+      "p256dh": "BIP-12-PASTE-p256dh",
+      "auth": "PASTE-auth"
+    },
+    "user_agent": "Mozilla/5.0",
+    "locale": "en"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
