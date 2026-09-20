@@ -12,6 +12,10 @@ import {
 import { api } from "@/lib/api/client";
 import { clearCartToken, getCartToken } from "@/lib/cart/client";
 import {
+  connectNotificationEcho,
+  disconnectNotificationEcho,
+} from "@/lib/realtime/echo";
+import {
   AUTH_TOKEN_KEY,
   AUTH_USER_KEY,
   clearAuthStorage,
@@ -93,6 +97,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       active = false;
     };
   }, []);
+
+  // One Reverb (websocket) connection per authenticated session; the
+  // notifications menu and any other live views subscribe through it.
+  useEffect(() => {
+    if (token) {
+      connectNotificationEcho(token);
+    } else {
+      disconnectNotificationEcho();
+    }
+  }, [token]);
 
   const signIn = useCallback(async ({ email, password }: SignInInput) => {
     // Send the guest cart token along: the backend folds the guest cart
