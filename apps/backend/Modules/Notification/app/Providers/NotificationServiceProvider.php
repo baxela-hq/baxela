@@ -4,6 +4,7 @@ namespace Modules\Notification\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Notification\Console\Commands\GenerateVapidKeysCommand;
 use Modules\Notification\Schemas\Module;
 use Modules\Notification\Services\Notification\Contracts\BuilderRepositoryInterface;
 use Modules\Notification\Services\Notification\Contracts\ChannelRepositoryInterface;
@@ -100,7 +101,9 @@ class NotificationServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            GenerateVapidKeysCommand::class,
+        ]);
     }
 
     /**

@@ -11,5 +11,6 @@ Route::prefix('v1/'.Module::ROUTE_PREFIX)->name(Module::ROUTE_PREFIX.'.')->group
     Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
     require __DIR__.'/api/admin.php';
+    require __DIR__.'/api/public.php';
     require __DIR__.'/api/user.php';
 });
