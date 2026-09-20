@@ -6,10 +6,19 @@ use Modules\Notification\Http\Controllers\Admin\Notification\GetUnreadNotificati
 use Modules\Notification\Http\Controllers\Admin\Notification\ListNotificationController;
 use Modules\Notification\Http\Controllers\Admin\Notification\MarkAllNotificationsReadController;
 use Modules\Notification\Http\Controllers\Admin\Notification\MarkNotificationReadController;
+use Modules\Notification\Http\Controllers\Admin\PushSubscription\DeletePushSubscriptionController;
+use Modules\Notification\Http\Controllers\Admin\PushSubscription\ListPushSubscriptionsController;
+use Modules\Notification\Http\Controllers\Admin\PushSubscription\UpsertPushSubscriptionController;
 
 Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/notifications', ListNotificationController::class)->name('notifications.list');
     Route::get('/notifications/unread-count', GetUnreadNotificationCountController::class)->name('notifications.unread-count');
-    Route::patch('/notifications/{id}/read', MarkNotificationReadController::class)->name('notifications.read');
+    Route::patch('/notifications/{id}/read', MarkNotificationReadController::class)->whereNumber('id')->name('notifications.read');
     Route::patch('/notifications/read-all', MarkAllNotificationsReadController::class)->name('notifications.read-all');
+
+    // Browser push registrations; keyed by endpoint (delete takes it in
+    // the body — a URL cannot ride safely as a path parameter).
+    Route::get('/push-subscriptions', ListPushSubscriptionsController::class)->name('push-subscriptions.list');
+    Route::post('/push-subscriptions', UpsertPushSubscriptionController::class)->name('push-subscriptions.upsert');
+    Route::delete('/push-subscriptions', DeletePushSubscriptionController::class)->name('push-subscriptions.delete');
 });
