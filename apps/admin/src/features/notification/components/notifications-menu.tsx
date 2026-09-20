@@ -12,7 +12,7 @@ import { useMarkAllNotificationsRead, useMarkNotificationRead } from '../hooks/u
 import { useNotificationsList, useUnreadNotificationsCount } from '../hooks/use-notifications'
 import { NotificationItem } from './notification-item'
 
-/** Header bell: unread badge polled every 30s, recent items on click. */
+/** Header bell: unread badge updated live over Reverb, recent items on click. */
 export function NotificationsMenu() {
   const [open, setOpen] = useState(false)
   const { t } = useAppTranslation(Locales.NOTIFICATION)

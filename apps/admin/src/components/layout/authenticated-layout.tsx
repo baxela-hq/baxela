@@ -6,12 +6,15 @@ import { SearchProvider } from '@/context/search-provider'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { useRealtimeNotifications } from '@/features/notification/hooks/use-realtime-notifications'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
 }
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
+  useRealtimeNotifications()
+
   const defaultOpen = getCookie('sidebar_state') !== 'false'
   return (
     <SearchProvider>

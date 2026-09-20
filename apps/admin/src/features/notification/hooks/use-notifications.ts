@@ -13,11 +13,10 @@ export function useNotificationsList(search: Record<string, unknown> = {}, enabl
   })
 }
 
-/** Unread badge count, polled every 30s while the tab is visible. */
+/** Unread badge count — updated live over Reverb (see use-realtime-notifications). */
 export function useUnreadNotificationsCount() {
   return useQuery({
     queryKey: [FeatureRoutes.CACHE_KEY, 'unread-count'],
     queryFn: () => fetchUnreadNotificationsCount(),
-    refetchInterval: 30_000,
   })
 }

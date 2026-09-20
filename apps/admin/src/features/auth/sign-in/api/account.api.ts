@@ -9,6 +9,8 @@ export interface AdminAccountRole {
 }
 
 export interface AdminAccount {
+  /** Numeric user id — drives the private `user.{id}` Reverb channel. */
+  id: number
   email: string
   roles: AdminAccountRole[]
 }
