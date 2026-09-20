@@ -24,6 +24,11 @@ services:
         environment:
             WWWUSER: ${WWWUSER:-1000}
             WWWGROUP: ${WWWGROUP:-1000}
+            # Server→Reverb broadcasts stay on the compose network; the
+            # REVERB_HOST in apps/backend/.env is the browser-facing host.
+            REVERB_HOST: reverb
+            REVERB_PORT: 8080
+            REVERB_SCHEME: http
         depends_on:
             mysql:
                 condition: service_healthy
@@ -42,6 +47,25 @@ services:
         environment:
             WWWUSER: ${WWWUSER:-1000}
             WWWGROUP: ${WWWGROUP:-1000}
+            REVERB_HOST: reverb
+            REVERB_PORT: 8080
+            REVERB_SCHEME: http
+        depends_on:
+            app:
+                condition: service_started
+
+    # Laravel Reverb websocket server: the backend broadcasts through it
+    # and both SPAs connect to it for realtime notifications. Same image
+    # and bind-mount as the app service, so it reads apps/backend/.env.
+    reverb:
+        image: baxela/backend:develop
+        restart: unless-stopped
+        working_dir: /var/www/html
+        command: php artisan reverb:start --host=0.0.0.0
+        volumes:
+            - ./apps/backend:/var/www/html
+        ports:
+            - "${REVERB_DEV_PORT:-8080}:8080"
         depends_on:
             app:
                 condition: service_started
@@ -87,8 +111,15 @@ services:
             # host-reachable — compose service names don't resolve there.
             VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:${BACKEND_APP_PORT:-8085}/api/v1}
             VITE_STORE_FRONT_URL: ${VITE_STORE_FRONT_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
+            # Reverb websocket (realtime notifications); same host/port the
+            # browser reaches the reverb service on.
+            VITE_REVERB_APP_KEY: ${REVERB_APP_KEY:-baxela-local-key}
+            VITE_REVERB_HOST: ${REVERB_HOST:-localhost}
+            VITE_REVERB_PORT: ${REVERB_DEV_PORT:-8080}
+            VITE_REVERB_SCHEME: ${REVERB_SCHEME:-http}
         depends_on:
             - web
+            - reverb
 
     storefront:
         build:
@@ -115,8 +146,14 @@ services:
             # service directly.
             NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:${BACKEND_APP_PORT:-8085}/api/v1}
             SERVER_API_BASE_URL: ${SERVER_API_BASE_URL:-http://web:80/api/v1}
+            # Reverb websocket (realtime notifications).
+            NEXT_PUBLIC_REVERB_APP_KEY: ${REVERB_APP_KEY:-baxela-local-key}
+            NEXT_PUBLIC_REVERB_HOST: ${REVERB_HOST:-localhost}
+            NEXT_PUBLIC_REVERB_PORT: ${REVERB_DEV_PORT:-8080}
+            NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-http}
         depends_on:
             - web
+            - reverb
 
     mysql:
         image: mysql:8-debian
