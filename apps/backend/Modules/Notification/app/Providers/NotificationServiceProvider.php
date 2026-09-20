@@ -13,6 +13,7 @@ use Modules\Notification\Services\Notification\NotificationService;
 use Modules\Notification\Services\Notification\Repositories\BuilderRepository;
 use Modules\Notification\Services\Notification\Repositories\ChannelRepository;
 use Modules\Notification\Services\Notification\Repositories\TemplateRepository;
+use Modules\Notification\Support\BroadcastChannels;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -30,6 +31,9 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Private per-user notification channel (see NotificationCreated).
+        BroadcastChannels::register();
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
