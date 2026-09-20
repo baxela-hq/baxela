@@ -17,5 +17,22 @@
     "title": "Notifications",
     "empty": "No new notifications",
     "view-all": "View all notifications"
+  },
+  "settings": {
+    "title": "Notifications",
+    "desc": "Configure how you receive notifications."
+  },
+  "push": {
+    "title": "Browser notifications",
+    "description": "Receive OS-level notifications in this browser, even when the tab is closed.",
+    "actions": {
+      "enabling": "Enabling…",
+      "disabling": "Disabling…"
+    },
+    "status": {
+      "unsupported-browser": "Not supported — this browser has no web push support.",
+      "unconfigured": "Unavailable — web push is not configured on the server (VAPID keys missing).",
+      "denied": "Blocked — allow notifications for this site in the browser settings to enable."
+    }
   }
 }

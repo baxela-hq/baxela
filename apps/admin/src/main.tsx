@@ -107,3 +107,11 @@ if (!rootElement.innerHTML) {
     </StrictMode>
   )
 }
+
+// Service worker for web push (OS-level notifications); it only handles
+// push events and notification clicks — no fetch interception.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js')
+  })
+}
