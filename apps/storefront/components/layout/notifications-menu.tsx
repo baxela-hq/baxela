@@ -5,10 +5,15 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { notificationsApi } from "@/lib/api/notifications";
 import type { ApiNotification } from "@/lib/api/types";
+import {
+  connectNotificationEcho,
+  getNotificationEcho,
+} from "@/lib/realtime/echo";
 import { BellIcon, BoxIcon, LockIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
 
-const POLL_INTERVAL_MS = 30_000;
+/** Broadcast payload: a notification row plus the server-computed badge. */
+type RealtimeNotification = ApiNotification & { unread_count: number };
 
 const CODE_ICONS: Record<string, typeof BoxIcon> = {
   order: BoxIcon,
@@ -20,44 +25,32 @@ function rowIcon(code: string) {
 }
 
 /**
- * Header notifications entry: an icon link with an unread badge (polled
- * every 30s while signed in) and a pure-CSS hover preview of the newest
- * rows, mirroring the CartMenu island. Full history lives on the profile
- * notifications page.
+ * Header notifications entry: an icon link with an unread badge and a
+ * pure-CSS hover preview of the newest rows, mirroring the CartMenu
+ * island. The badge and preview load once on sign-in, then update live
+ * over the private Reverb channel (no polling). Full history lives on
+ * the profile notifications page.
  */
 export function NotificationsMenu() {
   const t = useTranslations("shared.layout");
   const format = useFormatter();
-  const { status, token } = useAuth();
+  const { status, user, token } = useAuth();
 
   const [unread, setUnread] = useState<number | null>(null);
   const [items, setItems] = useState<ApiNotification[] | null>(null);
 
+  // Initial fetch of the badge + preview; live updates arrive on the
+  // websocket below.
   useEffect(() => {
     if (!token) return;
     let active = true;
-    const poll = async () => {
+    void (async () => {
       try {
         const { unread_count } = await notificationsApi(token).unreadCount();
         if (active) setUnread(unread_count);
       } catch {
-        // keep the last known count; the next tick retries
+        // keep the last known count; realtime events re-sync the badge
       }
-    };
-    void poll();
-    const interval = setInterval(poll, POLL_INTERVAL_MS);
-    return () => {
-      active = false;
-      clearInterval(interval);
-    };
-  }, [token]);
-
-  useEffect(() => {
-    if (!token) return;
-    let active = true;
-    // Refresh the preview whenever the polled count moves (a new row is the
-    // only way it grows; shrinks are covered by the same refetch).
-    void (async () => {
       try {
         const paginated = await notificationsApi(token).list(1);
         if (active) setItems(paginated.data);
@@ -68,7 +61,34 @@ export function NotificationsMenu() {
     return () => {
       active = false;
     };
-  }, [token, unread]);
+  }, [token]);
+
+  // Live badge + preview: every inserted notification broadcasts on the
+  // signed-in user's private channel with the fresh unread total.
+  useEffect(() => {
+    if (!token || !user?.id) return;
+    // Idempotent connect: the auth context owns the connection, but it
+    // may attach after this effect in the same commit.
+    const echo = connectNotificationEcho(token) ?? getNotificationEcho();
+    if (!echo) return;
+
+    const channel = `user.${user.id}`;
+    echo
+      .private(channel)
+      .listen(".notification.created", (payload: RealtimeNotification) => {
+        setUnread(payload.unread_count);
+        setItems((previous) =>
+          [
+            payload,
+            ...(previous ?? []).filter((row) => row.id !== payload.id),
+          ].slice(0, 20),
+        );
+      });
+
+    return () => {
+      echo.leave(channel);
+    };
+  }, [token, user?.id]);
 
   if (status !== "authenticated") {
     return null;
@@ -86,7 +106,7 @@ export function NotificationsMenu() {
     );
     setUnread((previous) => (previous === null ? null : Math.max(0, previous - 1)));
     void notificationsApi(token).markRead(notification.id).catch(() => {
-      // the next poll re-syncs the badge
+      // the next realtime event re-syncs the badge
     });
   };
 
