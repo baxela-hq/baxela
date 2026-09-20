@@ -29,7 +29,8 @@
     "total": "Total",
     "shipping_address": "Shipping address",
     "shipping_method": "Shipping method",
-    "default_badge": "Default"
+    "default_badge": "Default",
+    "discount": "Discount ({code})"
   },
   "profile": {
     "labels": {
@@ -138,17 +139,18 @@
       "title": "Two-factor Authentication",
       "description": "Keep your account secure by enabling 2FA via mail"
     },
-    "push_notifications": {
-      "title": "Push Notifications",
-      "description": "Receive push notification"
-    },
-    "desktop_notifications": {
-      "title": "Desktop Notification",
-      "description": "Receive push notification in desktop"
-    },
     "email_notifications": {
       "title": "Email Notifications",
       "description": "Receive email notification"
+    },
+    "browser_notifications": {
+      "title": "Browser notifications",
+      "description": "Get order updates on this device, even when the site is closed",
+      "hints": {
+        "blocked": "Blocked — allow notifications for this site in your browser settings to enable",
+        "unsupported": "Not supported in this browser",
+        "unavailable": "Temporarily unavailable — try again later"
+      }
     }
   },
   "notifications": {

@@ -108,6 +108,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [token]);
 
+  // Web push service worker: registered once a session exists so OS-level
+  // notifications work with the tab closed. It only handles push events.
+  useEffect(() => {
+    if (token && "serviceWorker" in navigator) {
+      void navigator.serviceWorker.register("/sw.js");
+    }
+  }, [token]);
+
   const signIn = useCallback(async ({ email, password }: SignInInput) => {
     // Send the guest cart token along: the backend folds the guest cart
     // into the account cart synchronously before responding.
