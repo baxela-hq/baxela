@@ -4,6 +4,22 @@
 import { api, buildQuery } from "./client";
 import type { ApiNotification, Paginated } from "./types";
 
+/** PushSubscription JSON as the browser hands it to us. */
+export interface PushSubscriptionInput {
+  endpoint: string;
+  keys: { p256dh?: string | null; auth?: string | null } | null;
+  user_agent?: string | null;
+  locale?: string | null;
+}
+
+export interface ApiPushSubscription {
+  id: number;
+  endpoint: string;
+  user_agent: string | null;
+  locale: string | null;
+  created_at: string | null;
+}
+
 export function notificationsApi(token: string | null) {
   const options = { token };
 
@@ -31,5 +47,29 @@ export function notificationsApi(token: string | null) {
         undefined,
         options,
       ),
+    /** Registered browsers for this account ({data} envelope is unwrapped). */
+    pushSubscriptions: () =>
+      api.get<ApiPushSubscription[]>(
+        "/notification/user/push-subscriptions",
+        options,
+      ),
+    savePushSubscription: (subscription: PushSubscriptionInput) =>
+      api.post<ApiPushSubscription>(
+        "/notification/user/push-subscriptions",
+        subscription,
+        options,
+      ),
+    deletePushSubscription: (endpoint: string) =>
+      api.delete<void>("/notification/user/push-subscriptions", {
+        token,
+        body: { endpoint },
+      }),
   };
+}
+
+/** VAPID public key browsers need before subscribing. Null = web push off. */
+export function fetchVapidPublicKey() {
+  return api.get<{ public_key: string | null }>(
+    "/notification/webpush/vapid-public-key",
+  );
 }

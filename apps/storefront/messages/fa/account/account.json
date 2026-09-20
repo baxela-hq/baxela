@@ -29,7 +29,8 @@
     "total": "مجموع",
     "shipping_address": "آدرس ارسال",
     "shipping_method": "روش ارسال",
-    "default_badge": "پیش‌فرض"
+    "default_badge": "پیش‌فرض",
+    "discount": "تخفیف ({code})"
   },
   "profile": {
     "labels": {
@@ -138,17 +139,18 @@
       "title": "ورود دو مرحله‌ای",
       "description": "با فعال کردن ورود دو مرحله‌ای از طریق ایمیل، حساب خود را ایمن نگه دارید"
     },
-    "push_notifications": {
-      "title": "اعلان‌های فوری",
-      "description": "دریافت اعلان فوری"
-    },
-    "desktop_notifications": {
-      "title": "اعلان دسکتاپ",
-      "description": "دریافت اعلان در دسکتاپ"
-    },
     "email_notifications": {
       "title": "اعلان‌های ایمیلی",
       "description": "دریافت اعلان ایمیلی"
+    },
+    "browser_notifications": {
+      "title": "اعلان‌های مرورگر",
+      "description": "دریافت به‌روزرسانی سفارش‌ها روی این دستگاه، حتی وقتی سایت بسته است",
+      "hints": {
+        "blocked": "مسدود شده — برای فعال‌سازی، مجوز اعلان‌های این سایت را در تنظیمات مرورگر بدهید",
+        "unsupported": "در این مرورگر پشتیبانی نمی‌شود",
+        "unavailable": "موقتاً در دسترس نیست — بعداً دوباره امتحان کنید"
+      }
     }
   },
   "notifications": {

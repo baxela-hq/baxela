@@ -1,15 +1,21 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import { Switch } from "@/components/ui/switch";
+import { useAuth } from "@/context/auth-context";
+import {
+  fetchVapidPublicKey,
+  notificationsApi,
+} from "@/lib/api/notifications";
 import { usePathname, useRouter } from "@/i18n/navigation";
 
-// Mock preferences — 2FA and the notification toggles await a backend
-// endpoint, so they keep in-memory state only. Two rows are real: Language
-// switches the active next-intl locale, and Appearance lists Light, the
-// only theme the storefront ships.
+// Mock preferences — 2FA and the email toggle await a backend endpoint,
+// so they keep in-memory state only. Three rows are real: Language
+// switches the active next-intl locale, Appearance lists Light (the only
+// theme shipped), and Browser notifications registers this browser for
+// OS-level web push.
 
 interface SettingsSelectProps {
   value: string;
@@ -54,7 +60,7 @@ function SettingsRow({
   children,
 }: {
   title: string;
-  description: string;
+  description: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -72,6 +78,152 @@ function SettingsRow({
   );
 }
 
+type PushState = "checking" | "unsupported" | "unavailable" | "blocked" | "off" | "on" | "busy";
+
+/** VAPID keys are base64url; the subscribe() API wants raw bytes. */
+function urlBase64ToUint8Array(base64Url: string): Uint8Array<ArrayBuffer> {
+  const padding = "=".repeat((4 - (base64Url.length % 4)) % 4);
+  const base64 = (base64Url + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(base64);
+  const buffer = new ArrayBuffer(raw.length);
+  const output = new Uint8Array(buffer);
+  for (let index = 0; index < raw.length; index += 1) {
+    output[index] = raw.charCodeAt(index);
+  }
+  return output;
+}
+
+/**
+ * OS-level web push for this browser: enabled means the browser holds a
+ * push subscription the backend knows about, so deliveries keep coming
+ * with the site closed. The service worker (public/sw.js) shows the
+ * notifications and deep-links order rows.
+ */
+function BrowserNotificationsRow() {
+  const t = useTranslations("account.account");
+  const locale = useLocale();
+  const { token } = useAuth();
+
+  const [state, setState] = useState<PushState>("checking");
+
+  useEffect(() => {
+    if (!token) return;
+    let active = true;
+    void (async () => {
+      const supported =
+        typeof window !== "undefined" &&
+        "serviceWorker" in navigator &&
+        "PushManager" in window &&
+        typeof Notification !== "undefined";
+      if (!supported) {
+        if (active) setState("unsupported");
+        return;
+      }
+      try {
+        const { public_key: publicKey } = await fetchVapidPublicKey();
+        if (!publicKey) {
+          if (active) setState("unavailable");
+          return;
+        }
+        if (Notification.permission === "denied") {
+          if (active) setState("blocked");
+          return;
+        }
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        if (!subscription) {
+          if (active) setState("off");
+          return;
+        }
+        const subscriptions = await notificationsApi(token).pushSubscriptions();
+        if (!active) return;
+        const endpoints = new Set(subscriptions.map((row) => row.endpoint));
+        setState(endpoints.has(subscription.endpoint) ? "on" : "off");
+      } catch {
+        if (active) setState("off");
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [token]);
+
+  const toggle = async (checked: boolean) => {
+    if (!token) return;
+    setState("busy");
+    try {
+      if (checked) {
+        const { public_key: publicKey } = await fetchVapidPublicKey();
+        if (!publicKey) {
+          setState("unavailable");
+          return;
+        }
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          setState("blocked");
+          return;
+        }
+        const registration = await navigator.serviceWorker.register("/sw.js");
+        await navigator.serviceWorker.ready;
+        const subscription =
+          (await registration.pushManager.getSubscription()) ??
+          (await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicKey),
+          }));
+        const json = subscription.toJSON();
+        await notificationsApi(token).savePushSubscription({
+          endpoint: subscription.endpoint,
+          keys: {
+            p256dh: json.keys?.p256dh ?? null,
+            auth: json.keys?.auth ?? null,
+          },
+          user_agent: navigator.userAgent,
+          locale,
+        });
+        setState("on");
+      } else {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          await notificationsApi(token).deletePushSubscription(
+            subscription.endpoint,
+          );
+          await subscription.unsubscribe();
+        }
+        setState("off");
+      }
+    } catch {
+      setState("off");
+    }
+  };
+
+  const hint =
+    state === "blocked"
+      ? t("settings.browser_notifications.hints.blocked")
+      : state === "unsupported"
+        ? t("settings.browser_notifications.hints.unsupported")
+        : state === "unavailable"
+          ? t("settings.browser_notifications.hints.unavailable")
+          : null;
+
+  return (
+    <SettingsRow
+      title={t("settings.browser_notifications.title")}
+      description={
+        hint ?? t("settings.browser_notifications.description")
+      }
+    >
+      <Switch
+        checked={state === "on"}
+        disabled={state === "checking" || state === "busy" || state === "unsupported" || state === "unavailable" || state === "blocked"}
+        onCheckedChange={(checked) => void toggle(checked)}
+        label={t("settings.browser_notifications.title")}
+      />
+    </SettingsRow>
+  );
+}
+
 export function Settings() {
   const t = useTranslations("account.account");
   const locale = useLocale();
@@ -80,8 +232,6 @@ export function Settings() {
 
   const [appearance, setAppearance] = useState("light");
   const [twoFactor, setTwoFactor] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [desktopNotifications, setDesktopNotifications] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
 
   return (
@@ -124,27 +274,7 @@ export function Settings() {
         />
       </SettingsRow>
 
-      <SettingsRow
-        title={t("settings.push_notifications.title")}
-        description={t("settings.push_notifications.description")}
-      >
-        <Switch
-          checked={pushNotifications}
-          onCheckedChange={setPushNotifications}
-          label={t("settings.push_notifications.title")}
-        />
-      </SettingsRow>
-
-      <SettingsRow
-        title={t("settings.desktop_notifications.title")}
-        description={t("settings.desktop_notifications.description")}
-      >
-        <Switch
-          checked={desktopNotifications}
-          onCheckedChange={setDesktopNotifications}
-          label={t("settings.desktop_notifications.title")}
-        />
-      </SettingsRow>
+      <BrowserNotificationsRow />
 
       <SettingsRow
         title={t("settings.email_notifications.title")}
