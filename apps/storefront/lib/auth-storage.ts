@@ -3,6 +3,8 @@
 // credentials: "omit"). Shared by the auth context and the API client's
 // 401 interceptor so both clear the exact same keys.
 
+import { uuidv4 } from "./utils";
+
 export const AUTH_TOKEN_KEY = "baxela_token";
 export const AUTH_USER_KEY = "baxela_user";
 export const AUTH_DEVICE_ID_KEY = "baxela_device_id";
@@ -22,7 +24,7 @@ export function getDeviceId(): string {
 
   let deviceId = window.localStorage.getItem(AUTH_DEVICE_ID_KEY);
   if (!deviceId) {
-    deviceId = crypto.randomUUID();
+    deviceId = uuidv4();
     window.localStorage.setItem(AUTH_DEVICE_ID_KEY, deviceId);
   }
   return deviceId;
