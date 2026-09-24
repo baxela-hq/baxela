@@ -43,7 +43,8 @@ export function MultiDeleteDialog<TData>({
 
   const selectedRows = table.getFilteredSelectedRowModel().rows
 
-  const { t, tMessage } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
   const bulkDeletePages = useBulkDeletePages()
 
