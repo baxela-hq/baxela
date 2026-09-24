@@ -34,7 +34,7 @@ export function MutateDrawer({
 }: MutateDrawerProps) {
   const isUpdate = !!currentRow
   const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
-  const { tLabel, tHelpText, tStatus } = useAppTranslation(Locales.COUPON)
+  const { tLabel, tHelpText, tStatus, tPlaceHolder: tCouponPlaceHolder } = useAppTranslation(Locales.COUPON)
 
   const entityName = {
     singular: tLabel("coupon"),
@@ -105,7 +105,7 @@ export function MutateDrawer({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder={tPlaceHolder('code')}
+                      placeholder={tCouponPlaceHolder('code')}
                       className='font-mono uppercase'
                     />
                   </FormControl>
@@ -127,7 +127,7 @@ export function MutateDrawer({
                     <Input
                       value={field.value ?? ''}
                       onChange={field.onChange}
-                      placeholder={tPlaceHolder('name')}
+                      placeholder={tCouponPlaceHolder('name')}
                     />
                   </FormControl>
                   <FormMessage />
@@ -270,7 +270,7 @@ export function MutateDrawer({
                         onChange={(e) =>
                           field.onChange(e.target.value === '' ? null : Number(e.target.value))
                         }
-                        placeholder={tPlaceHolder('unlimited')}
+                        placeholder={tCouponPlaceHolder('unlimited')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -296,7 +296,7 @@ export function MutateDrawer({
                         onChange={(e) =>
                           field.onChange(e.target.value === '' ? null : Number(e.target.value))
                         }
-                        placeholder={tPlaceHolder('unlimited')}
+                        placeholder={tCouponPlaceHolder('unlimited')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -319,7 +319,7 @@ export function MutateDrawer({
                       <UtcDatePicker
                         selected={field.value ?? undefined}
                         onSelect={field.onChange}
-                        placeholder={tPlaceHolder('date')}
+                        placeholder={tCouponPlaceHolder('date')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -340,7 +340,7 @@ export function MutateDrawer({
                       <UtcDatePicker
                         selected={field.value ?? undefined}
                         onSelect={field.onChange}
-                        placeholder={tPlaceHolder('date')}
+                        placeholder={tCouponPlaceHolder('date')}
                       />
                     </FormControl>
                     <FormMessage />
