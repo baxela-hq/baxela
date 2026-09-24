@@ -1,20 +1,15 @@
 import {
   Construction,
   LayoutDashboard,
-  Monitor,
   Bug,
   FileX,
-  HelpCircle,
   Lock,
   Bell,
   Inbox,
   Menu as MenuIcon,
   Package,
-  Palette,
   ServerOff,
   Settings,
-  Wrench,
-  UserCog,
   UserX,
   Users,
   ShieldCheck,
@@ -252,47 +247,6 @@ export const useSidebarData = (): SidebarData => {
                 icon: Construction,
               },
             ],
-          },
-        ],
-      },
-      {
-        title: t('sidebar.other'),
-        items: [
-          {
-            title: t('sidebar.settings'),
-            icon: Settings,
-            items: [
-              {
-                title: t('sidebar.profile'),
-                url: '/settings',
-                icon: UserCog,
-              },
-              {
-                title: t('sidebar.account'),
-                url: '/settings/account',
-                icon: Wrench,
-              },
-              {
-                title: t('sidebar.appearance'),
-                url: '/settings/appearance',
-                icon: Palette,
-              },
-              {
-                title: t('sidebar.notifications'),
-                url: '/settings/notifications',
-                icon: Bell,
-              },
-              {
-                title: t('sidebar.display'),
-                url: '/settings/display',
-                icon: Monitor,
-              },
-            ],
-          },
-          {
-            title: t('sidebar.help-center'),
-            url: '/help-center',
-            icon: HelpCircle,
           },
         ],
       },
