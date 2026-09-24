@@ -1,0 +1,41 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/discount/admin/coupons/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "SAVE20",
+    "name": "Spring sale",
+    "type": "percent",
+    "value": 20,
+    "max_discount_amount": null,
+    "min_order_amount": null,
+    "starts_at": null,
+    "ends_at": null,
+    "usage_limit": 100,
+    "per_user_limit": 1,
+    "is_active": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
