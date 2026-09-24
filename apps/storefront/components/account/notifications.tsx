@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
+import { useNotifications } from "@/context/notifications-context";
 import { notificationsApi } from "@/lib/api/notifications";
 import { ApiError } from "@/lib/api/client";
 import type { ApiNotification } from "@/lib/api/types";
@@ -35,6 +36,10 @@ export function Notifications({ initials }: { initials: string }) {
   const tCommon = useTranslations("shared.common");
   const format = useFormatter();
   const { token } = useAuth();
+  // Shared writes keep the header badge + hover preview in sync with this
+  // page; the paginated feed itself stays local to the page.
+  const { markRead: markReadShared, markAllRead: markAllReadShared } =
+    useNotifications();
 
   const [rows, setRows] = useState<ApiNotification[] | null>(null);
   const [page, setPage] = useState(1);
@@ -85,16 +90,16 @@ export function Notifications({ initials }: { initials: string }) {
             : row,
         ) ?? previous,
     );
-    void notificationsApi(token).markRead(notification.id).catch(() => {
-      // The badge recount on the next visit covers failures; the row just
-      // stays unread server-side.
-    });
+    // Fires the PATCH and syncs the header badge + preview; on failure it
+    // re-syncs the badge from the server, and the row just stays unread
+    // server-side.
+    markReadShared(notification);
   };
 
   const markAllRead = async () => {
     if (!token) return;
     try {
-      await notificationsApi(token).markAllRead();
+      await markAllReadShared();
       setRows(
         (previous) =>
           previous?.map((row) => ({

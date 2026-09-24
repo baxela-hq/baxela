@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
 import { AuthProvider } from "@/context/auth-context";
 import { CartProvider } from "@/context/cart-context";
+import { NotificationsProvider } from "@/context/notifications-context";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 
@@ -56,7 +57,9 @@ export default async function LocaleLayout({
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider>
           <AuthProvider>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              <NotificationsProvider>{children}</NotificationsProvider>
+            </CartProvider>
           </AuthProvider>
           <Toaster dir={dir} />
         </NextIntlClientProvider>
