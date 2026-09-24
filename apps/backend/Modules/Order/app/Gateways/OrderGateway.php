@@ -11,8 +11,12 @@ use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
+use Modules\Core\Contracts\Gateways\Discount\RedemptionResult;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Core\Exceptions\Discount\RedemptionRefusedException;
+use Modules\Core\Support\Money;
 use Modules\Core\Utils\Auth;
 use Modules\Core\Utils\Locale;
 use Modules\Order\Gateways\DTOs\GetOrderOutput;
@@ -41,10 +45,17 @@ class OrderGateway implements OrderGatewayInterface
                 OrderSchema::SHIPPING_METHOD_ID => $input->shipping_method_id,
                 OrderSchema::SHIPPING_METHOD_NAME => $input->shipping_method_name,
                 OrderSchema::SHIPPING_COST => $input->shipping_cost,
+                OrderSchema::COUPON_ID => $input->coupon_id,
+                OrderSchema::COUPON_CODE => $input->coupon_code,
+                OrderSchema::DISCOUNT_AMOUNT => Money::toDecimal($input->discount_minor),
                 OrderSchema::EXPIRES_AT => now()->addMinutes(30),
             ]);
 
-            $totalAmount = 0;
+            // Totals in integer minor units — no float in domain money math.
+            // shipping_cost arrives as a float from the shipping quote DTO;
+            // number_format bridges it to an exact 2dp decimal string once
+            // at the boundary.
+            $totalAmountMinor = 0;
             foreach ($input->cart_items as $cartItem) {
                 $order->items()->create([
                     OrderItemSchema::VARIANT_ID => $cartItem[OrderItemSchema::VARIANT_ID],
@@ -56,7 +67,8 @@ class OrderGateway implements OrderGatewayInterface
                     OrderItemSchema::QUANTITY => $cartItem[OrderItemSchema::QUANTITY],
                 ]);
 
-                $totalAmount += $cartItem[OrderItemSchema::PRICE_SNAPSHOT] * $cartItem[OrderItemSchema::QUANTITY];
+                $totalAmountMinor += Money::fromDecimal((string) $cartItem[OrderItemSchema::PRICE_SNAPSHOT])
+                    * (int) $cartItem[OrderItemSchema::QUANTITY];
             }
 
             if (! is_null($input->address)) {
@@ -71,9 +83,29 @@ class OrderGateway implements OrderGatewayInterface
                 ]);
             }
 
-            $totalAmount += $input->shipping_cost;
+            if (! is_null($input->coupon_id)) {
+                // Authoritative consumption — the row lock and the final
+                // limit checks live in the gateway. Runs inside this
+                // transaction (a savepoint of checkout's), so the order,
+                // the redemption row and usage_count commit or roll back
+                // together; a refusal aborts the order entirely.
+                $redemption = app(DiscountGatewayInterface::class)->recordRedemption(
+                    (int) $input->coupon_id,
+                    (int) $order->{OrderSchema::ID},
+                    (int) Auth::id(),
+                    $input->discount_minor,
+                );
 
-            $order->{OrderSchema::TOTAL_AMOUNT} = $totalAmount;
+                if ($redemption !== RedemptionResult::REDEEMED) {
+                    throw new RedemptionRefusedException($redemption);
+                }
+
+                $totalAmountMinor -= $input->discount_minor;
+            }
+
+            $totalAmountMinor += Money::fromDecimal(number_format($input->shipping_cost, 2, '.', ''));
+
+            $order->{OrderSchema::TOTAL_AMOUNT} = Money::toDecimal($totalAmountMinor);
             $order->save();
 
             event(OrderCreatedEvent::fill(array_merge(

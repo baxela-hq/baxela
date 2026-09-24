@@ -27,6 +27,8 @@ class OrderResource extends JsonResource
             OrderSchema::SHIPPING_METHOD_ID => $this->resource->{OrderSchema::SHIPPING_METHOD_ID},
             OrderSchema::SHIPPING_METHOD_NAME => $this->resource->{OrderSchema::SHIPPING_METHOD_NAME},
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
+            OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},
+            OrderSchema::DISCOUNT_AMOUNT => $this->resource->{OrderSchema::DISCOUNT_AMOUNT},
             OrderSchema::CREATED_AT => $this->resource->{OrderSchema::CREATED_AT},
             OrderSchema::UPDATED_AT => $this->resource->{OrderSchema::UPDATED_AT},
             OrderSchema::RES_ITEMS => OrderItemResource::collection($this->whenLoaded(OrderSchema::RES_ITEMS)),

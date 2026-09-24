@@ -38,6 +38,17 @@ class OrderSchema
 
     public const string SHIPPING_COST = 'shipping_cost';
 
+    /**
+     * Coupon snapshot of what was redeemed at purchase time — minimal by
+     * design; later coupon edits never rewrite a past order's discount.
+     * coupon_id references discount_coupons loosely (no cross-module FK).
+     */
+    public const string COUPON_ID = 'coupon_id';
+
+    public const string COUPON_CODE = 'coupon_code';
+
+    public const string DISCOUNT_AMOUNT = 'discount_amount';
+
     public const string EXPIRES_AT = 'expires_at';
 
     public const string RES_ITEMS = 'items';
