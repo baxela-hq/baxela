@@ -18,6 +18,8 @@ class SignInRequest extends FormRequest
         return [
             UserSchema::EMAIL => ['required', 'min:5', 'max:255', 'email'],
             UserSchema::PASSWORD => ['required', 'string', 'min:8', 'max:255'],
+            UserSchema::DEVICE_NAME => ['nullable', 'string', 'max:100'],
+            UserSchema::REMEMBER => ['nullable', 'boolean'],
         ];
     }
 }

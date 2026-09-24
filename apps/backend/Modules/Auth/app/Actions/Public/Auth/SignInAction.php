@@ -12,6 +12,7 @@ use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
+use Modules\Auth\Schemas\Token\PersonalAccessTokenSchema;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Random\RandomException;
@@ -27,8 +28,14 @@ class SignInAction extends AbstractAction
     public function handle(SignInRequest $request): object
     {
         $auth = Auth::guard(GuardsEnum::USER_SESSION->value);
-        // Attempt to authenticate the user
-        if (! $auth->attempt($request->validated())) {
+        // Attempt to authenticate the user; only email/password may reach the
+        // guard — extra payload (device_name, remember) would become WHERE clauses.
+        $credentials = [
+            OtpCodeSchema::EMAIL => $request->{OtpCodeSchema::EMAIL},
+            UserSchema::PASSWORD => $request->{UserSchema::PASSWORD},
+        ];
+
+        if (! $auth->attempt($credentials)) {
             throw new InvalidCredentialsException;
         }
 
@@ -38,12 +45,19 @@ class SignInAction extends AbstractAction
         /* @var User $user */
         $user = $auth->user();
 
-        // Delete existing tokens for the user (optional, but good for security)
-        // This ensures only one active token per user, per device/login
-        $user->tokens()->delete();
+        $deviceName = $this->deviceName($request);
 
-        // Generate a new token for the logged-in user
-        $token = $user->createToken(GuardsEnum::USER->value)->plainTextToken;
+        // Replace only this device's previous token; tokens issued to other
+        // devices stay valid so concurrent sessions keep working.
+        $user->tokens()
+            ->where(PersonalAccessTokenSchema::NAME, $deviceName)
+            ->delete();
+
+        $token = $user->createToken(
+            $deviceName,
+            ['*'],
+            now()->addDays($this->tokenTtlDays($request)),
+        )->plainTextToken;
 
         // Guest cart token (X-Cart-Token header) — forwarded only when it is
         // a well-formed UUID so the Cart module can merge the guest cart.
@@ -61,5 +75,29 @@ class SignInAction extends AbstractAction
             'user' => $user,
             'token' => $token,
         ];
+    }
+
+    private function deviceName(SignInRequest $request): string
+    {
+        $deviceName = $request->validated(UserSchema::DEVICE_NAME);
+
+        if (is_string($deviceName) && $deviceName !== '') {
+            return $deviceName;
+        }
+
+        // Clients that do not send a stable device id fall back to the
+        // user agent, collapsed and truncated to fit the name column.
+        $agent = trim((string) preg_replace('/\s+/', ' ', (string) $request->userAgent()));
+
+        return Str::limit($agent, 100, '') ?: 'unknown-device';
+    }
+
+    private function tokenTtlDays(SignInRequest $request): int
+    {
+        // Absent `remember` keeps the long TTL so API clients (admin, Bruno)
+        // behave as before; only an explicit false shortens the session.
+        $remembered = filter_var($request->validated(UserSchema::REMEMBER) ?? true, FILTER_VALIDATE_BOOLEAN);
+
+        return (int) config('auth.token_ttl.'.($remembered ? 'days' : 'short_days'));
     }
 }

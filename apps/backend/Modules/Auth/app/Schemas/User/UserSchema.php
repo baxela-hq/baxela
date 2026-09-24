@@ -30,6 +30,12 @@ class UserSchema
     /** Virtual payload field for assigning roles by id — not a column. */
     public const string ROLE_IDS = 'role_ids';
 
+    /** Virtual sign-in field naming the device a token belongs to — not a column. */
+    public const string DEVICE_NAME = 'device_name';
+
+    /** Virtual sign-in field requesting the long ("remember me") token TTL — not a column. */
+    public const string REMEMBER = 'remember';
+
     /** Serialization key for role objects attached to a user — not a column. */
     public const string ROLES = 'roles';
 }

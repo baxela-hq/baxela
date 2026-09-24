@@ -22,7 +22,11 @@ class RouteSchema
     public const string VERIFY_PASSWORD_RESET = 'reset-password/verify';
 
     // Profile
-    public const string SIGN_OUT = 'sign_out';
+    public const string SIGN_OUT = 'sign-out';
 
     public const string ME = 'me';
+
+    public const string SESSIONS = 'sessions';
+
+    public const string SESSION = 'sessions/{id}';
 }
