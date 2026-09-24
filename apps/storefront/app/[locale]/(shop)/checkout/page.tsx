@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
 import { api, ApiError } from "@/lib/api/client";
 import type {
   ApiAddress,
+  ApiAppliedCoupon,
   ApiCartItem,
   ApiCountry,
   ApiCreatePaymentResponse,
@@ -55,6 +57,10 @@ export default function CheckoutPage() {
     [],
   );
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<ApiAppliedCoupon | null>(null);
+  const [couponInput, setCouponInput] = useState("");
+  const [couponPending, setCouponPending] = useState(false);
+  const [couponError, setCouponError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [placedOrder, setPlacedOrder] = useState<string | null>(null);
@@ -69,7 +75,7 @@ export default function CheckoutPage() {
     if (status !== "authenticated" || !token) return;
     void (async () => {
       try {
-        const [items, savedAddresses, countryList, profile, payableMethods] =
+        const [items, savedAddresses, countryList, profile, payableMethods, coupon] =
           await Promise.all([
             api.get<ApiCartItem[]>("/cart/user/cart-items", { token }),
             api.get<ApiAddress[]>("/user/user/addresses", { token }),
@@ -78,11 +84,15 @@ export default function CheckoutPage() {
             // the address form's name.
             api.get<ApiProfile>("/user/user/profile", { token }).catch(() => null),
             api.get<ApiPaymentMethodInfo[]>("/payment/user/methods", { token }),
+            // Applied coupon + server-computed discount; the backend
+            // self-heals codes invalidated since they were applied
+            api.get<ApiAppliedCoupon>("/cart/user/cart/coupon", { token }).catch(() => null),
           ]);
         setCartItems(items);
         setAddresses(savedAddresses);
         setCountries(countryList);
         setPaymentMethods(payableMethods);
+        setAppliedCoupon(coupon);
         setPaymentMethod(
           payableMethods.length > 0 ? payableMethods[0].method : null,
         );
@@ -185,10 +195,58 @@ export default function CheckoutPage() {
     (sum, item) => sum + Number(item.price_snapshot) * item.quantity,
     0,
   );
+  // Server-authoritative discount (recomputed by the backend on every
+  // read, re-validated again at order placement) — like the shipping quote
+  const discount = appliedCoupon?.coupon ? Number(appliedCoupon.discount_amount) : 0;
   const shippingCost = selectedMethod?.price ?? 0;
-  const total = subtotal + shippingCost;
+  const total = subtotal - discount + shippingCost;
 
   const usd = { style: "currency", currency: "USD" } as const;
+
+  const onApplyCoupon = async () => {
+    const code = couponInput.trim();
+    if (!code || couponPending) return;
+    setCouponPending(true);
+    setCouponError(null);
+    try {
+      const applied = await api.post<ApiAppliedCoupon>(
+        "/cart/user/cart/coupon",
+        { code },
+        { token },
+      );
+      setAppliedCoupon(applied);
+      setCouponInput("");
+      if (applied.coupon) {
+        toast.success(t("coupon.messages.applied", { code: applied.coupon.code }));
+      }
+    } catch (cause) {
+      setCouponError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setCouponPending(false);
+    }
+  };
+
+  const onRemoveCoupon = async () => {
+    if (!appliedCoupon?.coupon || couponPending) return;
+    setCouponPending(true);
+    setCouponError(null);
+    try {
+      await api.delete("/cart/user/cart/coupon", { token });
+      setAppliedCoupon({ coupon: null, discount_amount: "0.00" });
+    } catch (cause) {
+      setCouponError(
+        cause instanceof ApiError
+          ? cause.message
+          : tCommon("messages.error.general"),
+      );
+    } finally {
+      setCouponPending(false);
+    }
+  };
 
   const onPlaceOrder = async () => {
     if (addressId === null || methodId === null) return;
@@ -588,6 +646,65 @@ export default function CheckoutPage() {
                     {format.number(subtotal, usd)}
                   </span>
                 </p>
+
+                {appliedCoupon?.coupon ? (
+                  <div className="flex items-center justify-between gap-2 text-secondary-text rtl:normal-case rtl:tracking-normal">
+                    <span>
+                      {t("summary.labels.discount", {
+                        code: appliedCoupon.coupon.code,
+                      })}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="font-medium text-accent">
+                        −{format.number(discount, usd)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={onRemoveCoupon}
+                        disabled={couponPending}
+                        aria-label={t("coupon.actions.remove")}
+                        className="text-xs text-secondary-text underline transition-colors hover:text-accent disabled:opacity-50"
+                      >
+                        {t("coupon.actions.remove")}
+                      </button>
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(event) => setCouponInput(event.target.value)}
+                        placeholder={t("coupon.placeholders.code")}
+                        aria-label={t("coupon.placeholders.code")}
+                        autoComplete="off"
+                        className="h-10 min-w-0 flex-1 rounded-default border border-border bg-white px-3 text-sm uppercase text-foreground placeholder:normal-case focus:border-primary focus:outline-none"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        fullWidth={false}
+                        className="h-10 px-4 text-sm"
+                        disabled={!couponInput.trim() || couponPending}
+                        onClick={onApplyCoupon}
+                      >
+                        {couponPending
+                          ? tCommon("messages.info.loading")
+                          : t("coupon.actions.apply")}
+                      </Button>
+                    </div>
+                    {couponError ? (
+                      <p
+                        role="alert"
+                        className="mt-2 text-xs text-red-600 rtl:normal-case rtl:tracking-normal"
+                      >
+                        {couponError}
+                      </p>
+                    ) : null}
+                  </div>
+                )}
+
                 <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.shipping")}</span>
                   <span className="font-medium text-foreground">

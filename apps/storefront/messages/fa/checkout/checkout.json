@@ -59,7 +59,8 @@
       "title": "خلاصه سفارش",
       "subtotal": "جمع کل کالاها",
       "shipping": "ارسال",
-      "total": "مجموع"
+      "total": "مجموع",
+      "discount": "تخفیف ({code})"
     },
     "texts": {
       "qty": "تعداد {count}"
@@ -76,6 +77,18 @@
     },
     "actions": {
       "continue_shopping": "ادامه خرید"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "اعمال",
+      "remove": "حذف"
+    },
+    "placeholders": {
+      "code": "کد تخفیف"
+    },
+    "messages": {
+      "applied": "کد {code} اعمال شد"
     }
   }
 }

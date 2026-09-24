@@ -183,6 +183,16 @@ export interface ApiCreatePaymentResponse {
   payment_url: string | null;
 }
 
+/** Coupon applied to the cart (GET/POST /cart/user/cart/coupon). */
+export interface ApiAppliedCoupon {
+  /** null when no coupon is applied — the backend self-heals stale codes. */
+  coupon: {
+    code: string;
+    type: "percent" | "fixed";
+  } | null;
+  discount_amount: string;
+}
+
 export interface ApiOrder {
   /** Opaque customer-facing code; the numeric order id is never exposed. */
   order_code: string;
@@ -192,6 +202,9 @@ export interface ApiOrder {
   total_amount: string;
   shipping_method_name: string | null;
   shipping_cost: string | null;
+  /** Coupon snapshot captured at purchase time (null = no coupon). */
+  coupon_code: string | null;
+  discount_amount: string;
   addresses: ApiOrderAddress[];
 }
 
