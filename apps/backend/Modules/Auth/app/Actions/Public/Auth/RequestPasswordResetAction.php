@@ -12,7 +12,7 @@ use Modules\Auth\Utils\Utility;
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Random\RandomException;
 
-class RequestPasswordResetAuthAction extends AbstractAuthAction
+class RequestPasswordResetAction extends AbstractAction
 {
     /**
      * @throws RandomException

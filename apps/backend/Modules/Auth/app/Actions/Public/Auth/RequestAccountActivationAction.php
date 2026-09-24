@@ -9,7 +9,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Random\RandomException;
 
-class RequestAccountActivationAuthAction extends AbstractAuthAction
+class RequestAccountActivationAction extends AbstractAction
 {
     /**
      * @throws AuthException

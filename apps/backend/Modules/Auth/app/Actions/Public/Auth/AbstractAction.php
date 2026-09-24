@@ -17,7 +17,7 @@ use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserEmailVerifiedEvent;
 use Random\RandomException;
 
-abstract class AbstractAuthAction
+abstract class AbstractAction
 {
     protected const int OTP_LENGTH = 6;
 

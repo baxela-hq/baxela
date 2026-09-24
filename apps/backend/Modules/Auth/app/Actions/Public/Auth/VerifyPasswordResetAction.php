@@ -13,7 +13,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 use Random\RandomException;
 
-class VerifyPasswordResetAuthAction extends AbstractAuthAction
+class VerifyPasswordResetAction extends AbstractAction
 {
     /**
      * @throws AuthException

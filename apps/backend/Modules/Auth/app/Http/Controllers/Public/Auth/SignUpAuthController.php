@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers\Public\Auth;
 
 use App\Http\Controllers\Controller;
-use Modules\Auth\Actions\Public\Auth\SignUpAuthAction;
+use Modules\Auth\Actions\Public\Auth\SignUpAction;
 use Modules\Auth\Exceptions\OtpTooManyRequestsException;
 use Modules\Auth\Http\Requests\Public\Auth\SignUpRequest;
 use Modules\Auth\Transformers\Public\DefaultResource;
@@ -16,7 +16,7 @@ class SignUpAuthController extends Controller
      * @throws RandomException
      * @throws OtpTooManyRequestsException
      */
-    public function __invoke(SignUpRequest $request, SignUpAuthAction $action): Response
+    public function __invoke(SignUpRequest $request, SignUpAction $action): Response
     {
         $action->handle($request);
 
