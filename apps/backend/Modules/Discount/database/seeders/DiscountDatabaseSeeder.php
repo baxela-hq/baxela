@@ -3,130 +3,45 @@
 namespace Modules\Discount\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Lang;
-use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
-use Modules\Core\Schemas\Language\LanguageSchema;
-use Modules\Discount\Models\Method;
-use Modules\Discount\Models\MethodTranslation;
-use Modules\Discount\Models\Rate;
-use Modules\Discount\Models\Zone;
-use Modules\Discount\Schemas\Method\MethodSchema;
-use Modules\Discount\Schemas\Method\MethodTranslationSchema;
-use Modules\Discount\Schemas\Module;
-use Modules\Discount\Schemas\Rate\RateSchema;
-use Modules\Discount\Schemas\Zone\ZoneSchema;
+use Modules\Discount\Models\Coupon;
+use Modules\Discount\Schemas\Coupon\CouponSchema;
+use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 
 class DiscountDatabaseSeeder extends Seeder
 {
-    private CoreGatewayInterface $coreGateway;
-
-    /** @var array<string, int|null> */
-    private array $languageIds = [];
-
-    /** @var array<string, array<string, float>> method code => zone key => price */
-    private array $rates = [
-        'standard' => ['domestic-us' => 5.00, 'rest-of-world' => 15.00],
-        'express' => ['domestic-us' => 15.00, 'rest-of-world' => 35.00],
-    ];
-
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->coreGateway = App::make(CoreGatewayInterface::class);
-        $moduleKey = Module::NAME_LOWER.'::seeder';
+        // $this->call([]);
 
-        $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
-        $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
+        // A representative pair of coupons so the admin list and the
+        // storefront checkout flow have something to exercise right after
+        // seeding. firstOrCreate on the code keeps re-seeding
+        // non-destructive: existing coupons and their redemption history
+        // are never overwritten.
+        Coupon::query()->firstOrCreate(
+            [CouponSchema::CODE => 'WELCOME10'],
+            [
+                CouponSchema::NAME => 'Welcome offer',
+                CouponSchema::TYPE => CouponTypeEnum::PERCENT,
+                CouponSchema::VALUE => 10,
+                CouponSchema::PER_USER_LIMIT => 1,
+                CouponSchema::IS_ACTIVE => true,
+            ],
+        );
 
-        $zones = Lang::get($moduleKey.'.zones', [], $masterLang) ?? [];
-        $methods = Lang::get($moduleKey.'.methods', [], $masterLang) ?? [];
-
-        Rate::query()->delete();
-        MethodTranslation::query()->delete();
-        Method::query()->delete();
-        Zone::query()->delete();
-
-        $zoneIds = $this->seedZones($zones);
-        $this->seedMethods($methods, $zoneIds, $langs);
-    }
-
-    /**
-     * @param  array<string, array{name: string, countries?: array<int, string>}>  $zones
-     * @return array<string, int> zone key => id
-     */
-    private function seedZones(array $zones): array
-    {
-        $zoneIds = [];
-
-        $position = 1;
-        foreach ($zones as $key => $zone) {
-            $record = Zone::query()->create([
-                ZoneSchema::NAME => $zone['name'],
-                ZoneSchema::IS_ACTIVE => true,
-                ZoneSchema::POSITION => $position,
-            ]);
-
-            $record->countries()->sync($zone['countries'] ?? []);
-
-            $zoneIds[$key] = $record->{ZoneSchema::ID};
-            $position++;
-        }
-
-        return $zoneIds;
-    }
-
-    /**
-     * @param  array<string, array{name: string, description?: string}>  $methods
-     * @param  array<string, int>  $zoneIds
-     * @param  array<int, string>  $langs
-     */
-    private function seedMethods(array $methods, array $zoneIds, array $langs): void
-    {
-        $moduleKey = Module::NAME_LOWER.'::seeder.methods';
-
-        $position = 1;
-        foreach ($methods as $code => $method) {
-            $record = Method::query()->create([
-                MethodSchema::CODE => $code,
-                MethodSchema::IS_ACTIVE => true,
-                MethodSchema::POSITION => $position,
-            ]);
-
-            foreach ($langs as $lang) {
-                $translation = Lang::get($moduleKey.'.'.$code, [], $lang) ?? [];
-                MethodTranslation::query()->create([
-                    MethodTranslationSchema::METHOD_ID => $record->{MethodSchema::ID},
-                    MethodTranslationSchema::LANGUAGE_ID => $this->languageId($lang),
-                    MethodTranslationSchema::NAME => $translation['name'] ?? $method['name'],
-                    MethodTranslationSchema::DESCRIPTION => $translation['description'] ?? null,
-                ]);
-            }
-
-            foreach ($this->rates[$code] ?? [] as $zoneKey => $price) {
-                if (! isset($zoneIds[$zoneKey])) {
-                    continue;
-                }
-
-                Rate::query()->create([
-                    RateSchema::METHOD_ID => $record->{MethodSchema::ID},
-                    RateSchema::ZONE_ID => $zoneIds[$zoneKey],
-                    RateSchema::PRICE => $price,
-                ]);
-            }
-
-            $position++;
-        }
-    }
-
-    private function languageId(string $code): ?int
-    {
-        if (! array_key_exists($code, $this->languageIds)) {
-            $this->languageIds[$code] = $this->coreGateway->getLanguageIdByCode($code);
-        }
-
-        return $this->languageIds[$code];
+        Coupon::query()->firstOrCreate(
+            [CouponSchema::CODE => 'SAVE5'],
+            [
+                CouponSchema::NAME => 'Five off orders above twenty',
+                CouponSchema::TYPE => CouponTypeEnum::FIXED,
+                CouponSchema::VALUE => 5,
+                CouponSchema::MIN_ORDER_AMOUNT => 20,
+                CouponSchema::USAGE_LIMIT => 100,
+                CouponSchema::IS_ACTIVE => true,
+            ],
+        );
     }
 }
