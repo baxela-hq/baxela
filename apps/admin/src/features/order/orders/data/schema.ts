@@ -52,6 +52,8 @@ export const orderSchema = z.object({
   user_id: z.number(),
   total_amount: z.number(),
   currency_id: z.number().nullable(),
+  coupon_code: z.string().nullable(),
+  discount_amount: z.number(),
   description: z.string(),
   status: z.enum(statuses),
   payment_status: z.enum(paymentStatuses),
