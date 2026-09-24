@@ -61,6 +61,7 @@
     "actions": {
       "ok": "Ok",
       "confirm": "Confirm",
+      "clear": "Clear",
       "create": "Create",
       "import": "Import",
       "export": "Export",

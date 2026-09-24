@@ -23,6 +23,8 @@
     "zones": "Zones",
     "rates": "Rates",
     "shipments": "Shipments",
+    "discount": "Discount",
+    "coupons": "Coupons",
     "modules": "Modules",
     "users": "Users",
     "roles": "Roles",

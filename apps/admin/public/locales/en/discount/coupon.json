@@ -1,0 +1,50 @@
+{
+  "form": {
+    "labels": {
+      "coupon": "Coupon",
+      "coupons": "Coupons",
+      "id": "ID",
+      "code": "Code",
+      "name": "Internal Name",
+      "type": "Type",
+      "value": "Value",
+      "max_discount_amount": "Max Discount",
+      "min_order_amount": "Min Order Amount",
+      "starts_at": "Starts At (UTC)",
+      "ends_at": "Ends At (UTC)",
+      "usage_limit": "Usage Limit",
+      "per_user_limit": "Per-User Limit",
+      "usage": "Usage",
+      "window": "Validity",
+      "is_active": "Active",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "percent": "Percent",
+      "fixed": "Fixed",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "placeholders": {
+      "code": "SAVE20",
+      "name": "Spring sale",
+      "unlimited": "Unlimited",
+      "date": "Pick a date"
+    },
+    "help_texts": {
+      "code": "Customer-facing code — letters, numbers, dashes and underscores; stored uppercase",
+      "name": "Optional internal label, never shown to customers",
+      "type": "Percent takes a percentage off the subtotal; fixed takes a flat amount off",
+      "value_percent": "Percentage off the order subtotal — 15.00 means 15%",
+      "value_fixed": "Flat amount off the order subtotal",
+      "max_discount_amount": "Optional ceiling for percent coupons — leave empty for no cap",
+      "min_order_amount": "Optional minimum merchandise subtotal required to use the coupon",
+      "usage_limit": "Total redemptions allowed across all customers — empty means unlimited",
+      "per_user_limit": "Redemptions allowed per customer — empty means unlimited",
+      "starts_at": "Coupon becomes usable from this moment (UTC)",
+      "ends_at": "Coupon stops being usable after this moment (UTC)",
+      "is_active": "Inactive coupons fail evaluation immediately, even within their validity window"
+    }
+  }
+}
