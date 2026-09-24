@@ -23,6 +23,7 @@ function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(true);
   const [pending, setPending] = useState(false);
 
   // The API client's 401 interceptor lands here with session_expired=1
@@ -41,7 +42,7 @@ function LoginForm() {
     event.preventDefault();
     setPending(true);
     try {
-      await signIn({ email, password });
+      await signIn({ email, password, remember });
       toast.success(t("login.messages.success.signed_in"));
       const next = searchParams.get("next");
       router.replace(next && next.startsWith("/") ? next : "/profile");
@@ -85,7 +86,11 @@ function LoginForm() {
               onChange={(event) => setPassword(event.target.value)}
             />
             <div className="flex items-center justify-between">
-              <Checkbox label={t("login.labels.remember_me")} />
+              <Checkbox
+                label={t("login.labels.remember_me")}
+                checked={remember}
+                onCheckedChange={setRemember}
+              />
               <Link
                 href="/forgot-password"
                 className="text-sm text-secondary-text underline underline-offset-2 hover:text-foreground rtl:normal-case rtl:tracking-normal"
