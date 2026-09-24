@@ -14,6 +14,8 @@
       "description": "Description",
       "note": "Note",
       "total_amount": "Total Amount",
+      "coupon_code": "Coupon",
+      "discount_amount": "Discount",
       "created_at": "Created At",
       "updated_at": "Updated At",
       "variant_id": "Variant ID",
