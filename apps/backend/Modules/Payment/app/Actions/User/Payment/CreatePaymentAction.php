@@ -11,7 +11,9 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Http\Requests\User\Payment\PaymentRequest;
 use Modules\Payment\Models\Payment;
+use Modules\Payment\Models\PaymentMethod;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
+use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
@@ -38,6 +40,16 @@ class CreatePaymentAction
 
         $method = PaymentMethodEnum::from($request->input(PaymentSchema::METHOD));
         $driver = app(PaymentDriverManager::class)->forMethod($method);
+
+        // The checkout picker only offers active methods, but a stale page
+        // could still submit a method an admin just disabled.
+        $methodRow = PaymentMethod::query()
+            ->where(PaymentMethodSchema::METHOD, $method->value)
+            ->first();
+
+        if (! $methodRow?->{PaymentMethodSchema::IS_ACTIVE}) {
+            throw PaymentException::methodInactive();
+        }
 
         $orderId = $order->id;
 

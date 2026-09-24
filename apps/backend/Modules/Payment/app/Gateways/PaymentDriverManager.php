@@ -29,4 +29,22 @@ class PaymentDriverManager
 
         return app($driver);
     }
+
+    public function isRegistered(PaymentMethodEnum $method): bool
+    {
+        return array_key_exists($method->value, (array) config('payment.drivers'));
+    }
+
+    /**
+     * A registered driver without its credentials cannot serve payments —
+     * hide it rather than offer a method that fails on every attempt.
+     */
+    public function isConfigured(PaymentMethodEnum $method): bool
+    {
+        return match ($method) {
+            PaymentMethodEnum::MANUAL => true,
+            PaymentMethodEnum::STRIPE => (bool) config('payment.stripe.secret'),
+            default => false,
+        };
+    }
 }

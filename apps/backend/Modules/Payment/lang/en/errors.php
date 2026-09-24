@@ -3,6 +3,7 @@
 return [
     'process.invalid_order' => 'The order is invalid, expired, or not payable',
     'process.method_not_supported' => 'This payment method is not supported yet',
+    'process.method_inactive' => 'This payment method is currently unavailable',
     'process.gateway_unconfigured' => 'This payment method is not configured on the store yet',
     'update.invalid_status_transition' => 'The payment status can no longer be changed',
     'webhook.not_supported' => 'This payment driver does not accept webhooks',
