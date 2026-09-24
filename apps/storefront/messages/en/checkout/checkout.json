@@ -36,7 +36,8 @@
   },
   "payment": {
     "texts": {
-      "title": "Payment"
+      "title": "Payment",
+      "empty": "No payment method is currently available. Please try again later or contact us."
     },
     "methods": {
       "manual": {
