@@ -18,6 +18,10 @@ return new class extends Migration
             // exactly one of the two is set (both nullable, both unique).
             $table->unsignedBigInteger(CartSchema::USER_ID)->nullable()->unique();
             $table->string(CartSchema::TOKEN)->nullable()->unique();
+            // Coupon code (not an FK): keeps the cart decoupled from the
+            // Discount module and lets a deactivated coupon be re-checked
+            // at checkout; at most one coupon per cart
+            $table->string(CartSchema::COUPON_CODE)->nullable();
             $table->timestamps();
         });
     }
