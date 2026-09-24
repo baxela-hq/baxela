@@ -1,0 +1,27 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/payment/admin/methods
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  Lists every payment method with its admin-managed state: is_active,
+  sort_order, is_configured (credentials present) and is_registered
+  (driver in the backend registry). Lazily creates a disabled row for
+  each registered driver, so newly added gateways appear here first.
+}
