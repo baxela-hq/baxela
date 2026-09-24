@@ -41,6 +41,7 @@ import { Route as AuthenticatedShippingRatesIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedShippingMethodsIndexRouteImport } from './routes/_authenticated/shipping/methods/index'
 import { Route as AuthenticatedSettingSettingsIndexRouteImport } from './routes/_authenticated/setting/settings/index'
 import { Route as AuthenticatedPaymentPaymentsIndexRouteImport } from './routes/_authenticated/payment/payments/index'
+import { Route as AuthenticatedPaymentMethodsIndexRouteImport } from './routes/_authenticated/payment/methods/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
@@ -239,6 +240,12 @@ const AuthenticatedPaymentPaymentsIndexRoute =
     path: '/payment/payments/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPaymentMethodsIndexRoute =
+  AuthenticatedPaymentMethodsIndexRouteImport.update({
+    id: '/payment/methods/',
+    path: '/payment/methods/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOrderOrdersIndexRoute =
   AuthenticatedOrderOrdersIndexRouteImport.update({
     id: '/order/orders/',
@@ -398,6 +405,7 @@ export interface FileRoutesByFullPath {
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
+  '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
   '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
@@ -449,6 +457,7 @@ export interface FileRoutesByTo {
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
+  '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
   '/shipping/methods': typeof AuthenticatedShippingMethodsIndexRoute
@@ -504,6 +513,7 @@ export interface FileRoutesById {
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
   '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
+  '/_authenticated/payment/methods/': typeof AuthenticatedPaymentMethodsIndexRoute
   '/_authenticated/payment/payments/': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/_authenticated/setting/settings/': typeof AuthenticatedSettingSettingsIndexRoute
   '/_authenticated/shipping/methods/': typeof AuthenticatedShippingMethodsIndexRoute
@@ -559,6 +569,7 @@ export interface FileRouteTypes {
     | '/discount/coupons'
     | '/menu/menus'
     | '/order/orders'
+    | '/payment/methods'
     | '/payment/payments'
     | '/setting/settings'
     | '/shipping/methods'
@@ -610,6 +621,7 @@ export interface FileRouteTypes {
     | '/discount/coupons'
     | '/menu/menus'
     | '/order/orders'
+    | '/payment/methods'
     | '/payment/payments'
     | '/setting/settings'
     | '/shipping/methods'
@@ -664,6 +676,7 @@ export interface FileRouteTypes {
     | '/_authenticated/discount/coupons/'
     | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
+    | '/_authenticated/payment/methods/'
     | '/_authenticated/payment/payments/'
     | '/_authenticated/setting/settings/'
     | '/_authenticated/shipping/methods/'
@@ -920,6 +933,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPaymentPaymentsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/payment/methods/': {
+      id: '/_authenticated/payment/methods/'
+      path: '/payment/methods'
+      fullPath: '/payment/methods'
+      preLoaderRoute: typeof AuthenticatedPaymentMethodsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/order/orders/': {
       id: '/_authenticated/order/orders/'
       path: '/order/orders'
@@ -1130,6 +1150,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
   AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
+  AuthenticatedPaymentMethodsIndexRoute: typeof AuthenticatedPaymentMethodsIndexRoute
   AuthenticatedPaymentPaymentsIndexRoute: typeof AuthenticatedPaymentPaymentsIndexRoute
   AuthenticatedSettingSettingsIndexRoute: typeof AuthenticatedSettingSettingsIndexRoute
   AuthenticatedShippingMethodsIndexRoute: typeof AuthenticatedShippingMethodsIndexRoute
@@ -1172,6 +1193,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedDiscountCouponsIndexRoute,
   AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
+  AuthenticatedPaymentMethodsIndexRoute: AuthenticatedPaymentMethodsIndexRoute,
   AuthenticatedPaymentPaymentsIndexRoute:
     AuthenticatedPaymentPaymentsIndexRoute,
   AuthenticatedSettingSettingsIndexRoute:

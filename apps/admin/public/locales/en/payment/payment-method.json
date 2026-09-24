@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "payment-method": "Payment Method",
+      "payment-methods": "Payment Methods"
+    },
+    "statuses": {
+      "method": {
+        "manual": "Manual",
+        "paypal": "PayPal",
+        "stripe": "Stripe"
+      },
+      "state": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "not-configured": "Not configured",
+        "not-registered": "Driver missing"
+      }
+    },
+    "help_texts": {
+      "active-hint": "Active methods are offered at checkout, ordered by their position in this list.",
+      "not-configured": "Credentials are missing in the backend configuration; this method stays hidden at checkout until configured.",
+      "not-registered": "No driver is registered for this method in the backend, so it can no longer be used."
+    }
+  }
+}

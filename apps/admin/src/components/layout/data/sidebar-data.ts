@@ -158,6 +158,10 @@ export const useSidebarData = (): SidebarData => {
                 title: t('sidebar.payments'),
                 url: '/payment/payments',
               },
+              {
+                title: t('sidebar.payment-methods'),
+                url: '/payment/methods',
+              },
             ],
           },
           {
