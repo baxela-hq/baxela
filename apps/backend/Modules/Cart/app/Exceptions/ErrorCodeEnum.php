@@ -16,4 +16,11 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case ITEM_INSUFFICIENT_STOCK = 'cart.item.insufficient_stock';
     case TOKEN_MISSING = 'cart.token.missing';
     case TOKEN_INVALID = 'cart.token.invalid';
+    case COUPON_NOT_FOUND = 'cart.coupon.not_found';
+    case COUPON_INACTIVE = 'cart.coupon.inactive';
+    case COUPON_NOT_STARTED = 'cart.coupon.not_started';
+    case COUPON_EXPIRED = 'cart.coupon.expired';
+    case COUPON_USAGE_LIMIT = 'cart.coupon.usage_limit';
+    case COUPON_PER_USER_LIMIT = 'cart.coupon.per_user_limit';
+    case COUPON_MIN_ORDER_AMOUNT = 'cart.coupon.min_order_amount';
 }

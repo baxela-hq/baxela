@@ -11,4 +11,11 @@ return [
     'item.insufficient_stock' => 'Only :available left in stock for :name — reduce the quantity',
     'token.missing' => 'The X-Cart-Token header is required',
     'token.invalid' => 'The X-Cart-Token header is not a valid UUID',
+    'coupon.not_found' => 'The coupon code is not valid',
+    'coupon.inactive' => 'This coupon is no longer active',
+    'coupon.not_started' => 'This coupon is not active yet',
+    'coupon.expired' => 'This coupon has expired',
+    'coupon.usage_limit' => 'This coupon has reached its usage limit',
+    'coupon.per_user_limit' => 'You have already used this coupon the maximum number of times',
+    'coupon.min_order_amount' => 'The order does not meet the minimum amount for this coupon',
 ];
