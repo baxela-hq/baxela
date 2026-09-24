@@ -20,7 +20,7 @@ export function Coupons() {
   const { tPageTitle } = useAppTranslation(Locales.SHARED_COMMON)
   const { tLabel } = useAppTranslation(Locales.COUPON)
   const entityName = {
-    singular: tLabel("rate"),
+    singular: tLabel("coupon"),
     plural: tLabel("coupons")
   };
 
