@@ -27,6 +27,13 @@ return new class extends Migration
             $table->unsignedBigInteger(OrderSchema::SHIPPING_METHOD_ID)->nullable();
             $table->string(OrderSchema::SHIPPING_METHOD_NAME)->nullable();
             $table->decimal(OrderSchema::SHIPPING_COST, 12, 2)->unsigned()->default(0.00);
+            // Coupon snapshot: what was redeemed at purchase time. Deliberately
+            // minimal (no type/value/cap copies) — later coupon edits must
+            // never rewrite what a past order received. coupon_id is a plain
+            // reference, not a cross-module FK.
+            $table->unsignedBigInteger(OrderSchema::COUPON_ID)->nullable()->index();
+            $table->string(OrderSchema::COUPON_CODE)->nullable();
+            $table->decimal(OrderSchema::DISCOUNT_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->timestamp(OrderSchema::EXPIRES_AT)->nullable();
             $table->timestamps();
         });

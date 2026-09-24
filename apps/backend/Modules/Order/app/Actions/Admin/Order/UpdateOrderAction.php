@@ -8,6 +8,7 @@ use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
 use Modules\Core\Utils\Locale;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Http\Requests\Admin\Order\OrderRequest;
@@ -73,6 +74,15 @@ class UpdateOrderAction extends AbstractOrderAction
             }
 
             $record->save();
+
+            // Cancelling a still-unpaid order releases the coupon in the
+            // same transaction; cancelling a paid one deliberately keeps
+            // the redemption consumed (the coupon was genuinely redeemed)
+            if ($status === OrderStatusEnum::CANCELLED
+                && $paymentStatus === OrderPaymentStatusEnum::UNPAID
+                && ! is_null($record->{OrderSchema::COUPON_ID})) {
+                app(DiscountGatewayInterface::class)->releaseRedemption((int) $record->{OrderSchema::ID});
+            }
         });
 
         $this->dispatchTransitionEvents($record, $status, $statusChanged, $paymentStatus, $paymentStatusChanged);

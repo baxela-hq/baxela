@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
+use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
 use Modules\Core\Utils\Locale;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
@@ -30,6 +31,13 @@ class CancelExpiredOrdersCommand extends Command
             DB::transaction(function () use ($order): void {
                 $order->{OrderSchema::STATUS} = OrderStatusEnum::CANCELLED;
                 $order->save();
+
+                // The coupon was never truly redeemed (payment never
+                // completed) — release it in the same transaction so a
+                // release failure rolls the cancellation back too
+                if (! is_null($order->{OrderSchema::COUPON_ID})) {
+                    app(DiscountGatewayInterface::class)->releaseRedemption((int) $order->{OrderSchema::ID});
+                }
 
                 event(OrderCancelledEvent::fill([
                     'id' => $order->{OrderSchema::ID},

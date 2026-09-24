@@ -20,4 +20,15 @@ class CreateOrderInput
     public float $shipping_cost = 0.0;
 
     public ?int $currency_id = null;
+
+    /**
+     * Coupon applied at checkout. Server-populated internal values only —
+     * never client input. CheckoutAction is the sole writer, after
+     * re-evaluating the cart's stored coupon code against the live cart.
+     */
+    public ?int $coupon_id = null;
+
+    public ?string $coupon_code = null;
+
+    public int $discount_minor = 0;
 }

@@ -21,6 +21,8 @@ class OrderResource extends JsonResource
             OrderSchema::TOTAL_AMOUNT => $this->resource->{OrderSchema::TOTAL_AMOUNT},
             OrderSchema::SHIPPING_METHOD_NAME => $this->resource->{OrderSchema::SHIPPING_METHOD_NAME},
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
+            OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},
+            OrderSchema::DISCOUNT_AMOUNT => $this->resource->{OrderSchema::DISCOUNT_AMOUNT},
             OrderSchema::RES_ADDRESSES => OrderAddressResource::collection($this->whenLoaded(OrderSchema::RES_ADDRESSES)),
         ];
     }
