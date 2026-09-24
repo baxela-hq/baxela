@@ -99,6 +99,11 @@ services:
         image: baxela/admin:develop
         profiles:
             - frontend
+        # The image runs as a uid-matched `node` user, which keeps host file
+        # ownership correct on a rootful engine. Under rootless Docker that
+        # matching is shifted by the user namespace and the bind mount reads
+        # as root-owned, so run as container root (= the host user there).
+        user: "0:0"
         restart: unless-stopped
         working_dir: /app
         ports:
@@ -131,6 +136,9 @@ services:
         image: baxela/storefront:develop
         profiles:
             - frontend
+        # See the admin service: container root maps to the host user under
+        # rootless Docker, which the image's uid-matched user does not.
+        user: "0:0"
         restart: unless-stopped
         working_dir: /app
         command: ["pnpm", "exec", "next", "dev", "-H", "0.0.0.0"]
