@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useNow, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { useNotifications } from "@/context/notifications-context";
 import { notificationsApi } from "@/lib/api/notifications";
@@ -35,6 +35,9 @@ export function Notifications({ initials }: { initials: string }) {
   const t = useTranslations("account.account");
   const tCommon = useTranslations("shared.common");
   const format = useFormatter();
+  // The feed syncs with the live Reverb channel, so relative times must tick
+  // instead of staying pinned to the request-time `now` from the provider.
+  const now = useNow({ updateInterval: 30_000 });
   const { token } = useAuth();
   // Shared writes keep the header badge + hover preview in sync with this
   // page; the paginated feed itself stays local to the page.
@@ -186,7 +189,7 @@ export function Notifications({ initials }: { initials: string }) {
               </div>
               <p className="shrink-0 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                 {row.created_at
-                  ? format.relativeTime(new Date(row.created_at))
+                  ? format.relativeTime(new Date(row.created_at), { now })
                   : ""}
               </p>
             </>

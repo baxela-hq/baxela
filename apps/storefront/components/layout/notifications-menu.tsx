@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useNow, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { useNotifications } from "@/context/notifications-context";
 import { BellIcon, BoxIcon, LockIcon } from "@/components/ui/icons";
@@ -27,6 +27,9 @@ function rowIcon(code: string) {
 export function NotificationsMenu() {
   const t = useTranslations("shared.layout");
   const format = useFormatter();
+  // Rows arrive live over Reverb, so relative times must tick instead of
+  // staying pinned to the request-time `now` from the provider.
+  const now = useNow({ updateInterval: 30_000 });
   const { status } = useAuth();
   const { unread, preview: items, markRead } = useNotifications();
 
@@ -98,7 +101,9 @@ export function NotificationsMenu() {
                         </span>
                         {item.created_at ? (
                           <span className="mt-0.5 block text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
-                            {format.relativeTime(new Date(item.created_at))}
+                            {format.relativeTime(new Date(item.created_at), {
+                              now,
+                            })}
                           </span>
                         ) : null}
                       </span>

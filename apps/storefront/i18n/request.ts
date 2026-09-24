@@ -70,5 +70,8 @@ export default getRequestConfig(async ({ locale }) => {
   return {
     locale,
     messages: await loadMessages(locale),
+    // Reference time for relative formatting; the bare NextIntlClientProvider
+    // in the [locale] layout inherits it as the global default.
+    now: new Date(),
   };
 });
