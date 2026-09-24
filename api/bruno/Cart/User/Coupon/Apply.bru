@@ -1,0 +1,31 @@
+meta {
+  name: Apply
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/cart/user/cart/coupon
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "SAVE20"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

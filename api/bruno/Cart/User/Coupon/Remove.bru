@@ -1,0 +1,24 @@
+meta {
+  name: Remove
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/cart/user/cart/coupon
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
