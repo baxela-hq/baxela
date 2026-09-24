@@ -43,6 +43,7 @@ import { Route as AuthenticatedSettingSettingsIndexRouteImport } from './routes/
 import { Route as AuthenticatedPaymentPaymentsIndexRouteImport } from './routes/_authenticated/payment/payments/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
+import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
 import { Route as AuthenticatedContactMessagesIndexRouteImport } from './routes/_authenticated/contact/messages/index'
 import { Route as AuthenticatedCatalogProductsIndexRouteImport } from './routes/_authenticated/catalog/products/index'
@@ -250,6 +251,12 @@ const AuthenticatedMenuMenusIndexRoute =
     path: '/menu/menus/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDiscountCouponsIndexRoute =
+  AuthenticatedDiscountCouponsIndexRouteImport.update({
+    id: '/discount/coupons/',
+    path: '/discount/coupons/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesIndexRoute =
   AuthenticatedContentPagesIndexRouteImport.update({
     id: '/content/pages/',
@@ -388,6 +395,7 @@ export interface FileRoutesByFullPath {
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
@@ -438,6 +446,7 @@ export interface FileRoutesByTo {
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
@@ -492,6 +501,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/products/': typeof AuthenticatedCatalogProductsIndexRoute
   '/_authenticated/contact/messages/': typeof AuthenticatedContactMessagesIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
+  '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
   '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
   '/_authenticated/payment/payments/': typeof AuthenticatedPaymentPaymentsIndexRoute
@@ -546,6 +556,7 @@ export interface FileRouteTypes {
     | '/catalog/products'
     | '/contact/messages'
     | '/content/pages'
+    | '/discount/coupons'
     | '/menu/menus'
     | '/order/orders'
     | '/payment/payments'
@@ -596,6 +607,7 @@ export interface FileRouteTypes {
     | '/catalog/products'
     | '/contact/messages'
     | '/content/pages'
+    | '/discount/coupons'
     | '/menu/menus'
     | '/order/orders'
     | '/payment/payments'
@@ -649,6 +661,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/products/'
     | '/_authenticated/contact/messages/'
     | '/_authenticated/content/pages/'
+    | '/_authenticated/discount/coupons/'
     | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
     | '/_authenticated/payment/payments/'
@@ -921,6 +934,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMenuMenusIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/discount/coupons/': {
+      id: '/_authenticated/discount/coupons/'
+      path: '/discount/coupons'
+      fullPath: '/discount/coupons'
+      preLoaderRoute: typeof AuthenticatedDiscountCouponsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/pages/': {
       id: '/_authenticated/content/pages/'
       path: '/content/pages'
@@ -1107,6 +1127,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCatalogProductsIndexRoute: typeof AuthenticatedCatalogProductsIndexRoute
   AuthenticatedContactMessagesIndexRoute: typeof AuthenticatedContactMessagesIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
+  AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
   AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
   AuthenticatedPaymentPaymentsIndexRoute: typeof AuthenticatedPaymentPaymentsIndexRoute
@@ -1147,6 +1168,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContactMessagesIndexRoute:
     AuthenticatedContactMessagesIndexRoute,
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
+  AuthenticatedDiscountCouponsIndexRoute:
+    AuthenticatedDiscountCouponsIndexRoute,
   AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
   AuthenticatedPaymentPaymentsIndexRoute:

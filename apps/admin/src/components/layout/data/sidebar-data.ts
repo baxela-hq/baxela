@@ -22,6 +22,7 @@ import {
   Images,
   Truck,
   CreditCard,
+  TicketPercent,
 } from 'lucide-react'
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
@@ -178,6 +179,16 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.shipments'),
                 url: '/shipping/shipments',
+              },
+            ],
+          },
+          {
+            title: t('sidebar.discount'),
+            icon: TicketPercent,
+            items: [
+              {
+                title: t('sidebar.coupons'),
+                url: '/discount/coupons',
               },
             ],
           },
