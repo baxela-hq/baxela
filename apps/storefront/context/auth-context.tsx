@@ -19,20 +19,24 @@ import {
   AUTH_TOKEN_KEY,
   AUTH_USER_KEY,
   clearAuthStorage,
+  getDeviceId,
 } from "@/lib/auth-storage";
 import type { ApiUser } from "@/lib/api/types";
 
 // Sanctum bearer-token session. The backend signs in via
-// POST /auth/public/auth/signin and returns a plain-text token; there is
-// no signout endpoint (tokens are revoked server-side only), so signing
-// out just drops the local session. Storage keys live in
-// lib/auth-storage, shared with the API client's 401 interceptor.
+// POST /auth/public/auth/signin and returns a plain-text token named after
+// this device (device_name), so other devices keep their own sessions.
+// Signing out revokes the token server-side (POST /auth/user/account/sign-out)
+// before dropping the local session. Storage keys live in lib/auth-storage,
+// shared with the API client's 401 interceptor.
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
 interface SignInInput {
   email: string;
   password: string;
+  /** 30-day token when true (default), 24-hour token when false. */
+  remember?: boolean;
 }
 
 interface AuthContextValue {
@@ -116,31 +120,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [token]);
 
-  const signIn = useCallback(async ({ email, password }: SignInInput) => {
-    // Send the guest cart token along: the backend folds the guest cart
-    // into the account cart synchronously before responding.
-    const { token: nextToken, user: nextUser } = await api.post<
-      { token: string; user: ApiUser }
-    >("/auth/public/auth/signin", { email, password }, {
-      cartToken: getCartToken(),
-    });
+  const signIn = useCallback(
+    async ({ email, password, remember = true }: SignInInput) => {
+      // Send the guest cart token along: the backend folds the guest cart
+      // into the account cart synchronously before responding. device_name
+      // lets the backend replace only this device's previous token.
+      const { token: nextToken, user: nextUser } = await api.post<
+        { token: string; user: ApiUser }
+      >("/auth/public/auth/signin", {
+        email,
+        password,
+        device_name: getDeviceId(),
+        remember,
+      }, {
+        cartToken: getCartToken(),
+      });
 
-    window.localStorage.setItem(AUTH_TOKEN_KEY, nextToken);
-    window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(nextUser));
-    setToken(nextToken);
-    setUser(nextUser);
-    setStatus("authenticated");
+      window.localStorage.setItem(AUTH_TOKEN_KEY, nextToken);
+      window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(nextUser));
+      setToken(nextToken);
+      setUser(nextUser);
+      setStatus("authenticated");
 
-    // Only drop the guest token once sign-in (and the server-side merge)
-    // has succeeded — a failed attempt must leave the guest cart reachable.
-    clearCartToken();
+      // Only drop the guest token once sign-in (and the server-side merge)
+      // has succeeded — a failed attempt must leave the guest cart reachable.
+      clearCartToken();
 
-    return nextUser;
-  }, []);
+      return nextUser;
+    },
+    [],
+  );
+
+  const signOut = useCallback(async () => {
+    // Revoke the token server-side first so the session dies on every
+    // device list, then drop the local session — even if the call fails
+    // (e.g. the token already expired).
+    if (token) {
+      try {
+        await api.post("/auth/user/account/sign-out", undefined, { token });
+      } catch {
+        // Best-effort: the local session drops regardless.
+      }
+    }
+    clearSession();
+  }, [token, clearSession]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, token, signIn, signOut: clearSession }),
-    [status, user, token, signIn, clearSession],
+    () => ({ status, user, token, signIn, signOut }),
+    [status, user, token, signIn, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
