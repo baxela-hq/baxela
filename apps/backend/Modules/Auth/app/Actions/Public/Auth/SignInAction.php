@@ -16,7 +16,7 @@ use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Random\RandomException;
 
-class SignInAuthAction extends AbstractAuthAction
+class SignInAction extends AbstractAction
 {
     /**
      * @throws RandomException

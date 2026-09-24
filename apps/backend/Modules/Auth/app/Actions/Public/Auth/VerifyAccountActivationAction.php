@@ -8,7 +8,7 @@ use Modules\Auth\Schemas\Otp\OtpCodeActionEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 
-class VerifyAccountActivationAuthAction extends AbstractAuthAction
+class VerifyAccountActivationAction extends AbstractAction
 {
     /**
      * @throws InvalidOtpException

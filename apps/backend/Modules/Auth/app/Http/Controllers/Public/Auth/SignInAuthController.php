@@ -3,7 +3,7 @@
 namespace Modules\Auth\Http\Controllers\Public\Auth;
 
 use App\Http\Controllers\Controller;
-use Modules\Auth\Actions\Public\Auth\SignInAuthAction;
+use Modules\Auth\Actions\Public\Auth\SignInAction;
 use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\InvalidCredentialsException;
@@ -19,7 +19,7 @@ class SignInAuthController extends Controller
      * @throws InvalidCredentialsException
      * @throws RandomException
      */
-    public function __invoke(SignInRequest $request, SignInAuthAction $action): SignInResource
+    public function __invoke(SignInRequest $request, SignInAction $action): SignInResource
     {
         return SignInResource::make($action->handle($request));
     }

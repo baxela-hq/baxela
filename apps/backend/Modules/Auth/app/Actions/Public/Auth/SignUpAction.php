@@ -14,7 +14,7 @@ use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedUpEvent;
 use Random\RandomException;
 
-class SignUpAuthAction extends AbstractAuthAction
+class SignUpAction extends AbstractAction
 {
     /**
      * @throws RandomException

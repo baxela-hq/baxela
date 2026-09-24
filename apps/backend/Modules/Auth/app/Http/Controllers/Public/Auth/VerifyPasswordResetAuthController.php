@@ -4,7 +4,7 @@ namespace Modules\Auth\Http\Controllers\Public\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
-use Modules\Auth\Actions\Public\Auth\VerifyPasswordResetAuthAction;
+use Modules\Auth\Actions\Public\Auth\VerifyPasswordResetAction;
 use Modules\Auth\Exceptions\AuthException;
 use Modules\Auth\Http\Requests\Public\Auth\VerifyPasswordResetOtpRequest;
 use Modules\Auth\Transformers\Public\DefaultResource;
@@ -16,7 +16,7 @@ class VerifyPasswordResetAuthController extends Controller
      * @throws AuthException
      * @throws RandomException|ValidationException
      */
-    public function __invoke(VerifyPasswordResetOtpRequest $request, VerifyPasswordResetAuthAction $action): DefaultResource
+    public function __invoke(VerifyPasswordResetOtpRequest $request, VerifyPasswordResetAction $action): DefaultResource
     {
         $action->handle($request);
 
