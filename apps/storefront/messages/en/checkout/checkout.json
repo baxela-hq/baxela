@@ -59,7 +59,8 @@
       "title": "Order summary",
       "subtotal": "Subtotal",
       "shipping": "Shipping",
-      "total": "Total"
+      "total": "Total",
+      "discount": "Discount ({code})"
     },
     "texts": {
       "qty": "Qty {count}"
@@ -76,6 +77,18 @@
     },
     "actions": {
       "continue_shopping": "Continue shopping"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "Apply",
+      "remove": "Remove"
+    },
+    "placeholders": {
+      "code": "Coupon code"
+    },
+    "messages": {
+      "applied": "Coupon {code} applied"
     }
   }
 }
