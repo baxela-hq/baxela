@@ -25,4 +25,6 @@ export interface SignInResponse {
 export interface SignInRequest {
     email: string;
     password: string;
+    /** Device identifier; injected in the sign-in API layer. */
+    device_name?: string;
 }

@@ -4,6 +4,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
 import { StorageUtility } from '@/shared/lib/storage-utility'
+import { postRequest } from '@/shared/lib/api-client'
 
 interface SignOutDialogProps {
   open: boolean
@@ -17,7 +18,16 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
   const { t } = useAppTranslation('shared/layout')
   const applyUiLanguage = useApplyUiLanguage()
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    // Revoke the token server-side (the axios interceptor still attaches
+    // it) before dropping the local session — best-effort, a dead token or
+    // offline network must still sign the panel out locally.
+    try {
+      await postRequest('/auth/user/account/sign-out', {})
+    } catch {
+      // intentional fallthrough
+    }
+
     reset()
 
     // clear currency & language
