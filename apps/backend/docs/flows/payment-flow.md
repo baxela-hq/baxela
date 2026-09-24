@@ -6,15 +6,24 @@ Checkout and payment are two steps: checkout creates an UNPAID order
 
 ## Drivers
 
-Payment methods are a driver registry, not a table: `PaymentMethodEnum`
-supplies the case, `config('payment.drivers')` maps it to a
-`PaymentDriverInterface` implementation, and `PaymentDriverManager` resolves
-it. A method is offerable only when it has a registered **and configured**
-driver — credentials present, per `ListPaymentMethodsAction::isConfigured()`
-— so an unconfigured gateway is hidden instead of failing at checkout.
-`GET /payment/user/methods` returns exactly that set and is the storefront's
-source of truth for the checkout picker. Drivers also guard themselves: a
-blank `payment.stripe.secret` (or webhook secret) throws
+Payment behavior is a driver registry: `PaymentMethodEnum` supplies the
+case, `config('payment.drivers')` maps it to a `PaymentDriverInterface`
+implementation, and `PaymentDriverManager` resolves it (and exposes
+`isRegistered()` / `isConfigured()`).
+
+Which methods customers see is state, not code: the `payment_methods`
+table holds one row per method with `is_active` and `sort_order`, managed
+by admins via `GET/PATCH /payment/admin/methods` (the list lazily creates
+a disabled row for every registered driver, so a new gateway appears in
+the admin without seeding; a method without a row counts as disabled).
+A method is offerable only when its driver is registered **and**
+configured (credentials present) **and** its row is active —
+`GET /payment/user/methods` returns exactly that set, in the admin-set
+order, and is the storefront's source of truth for the checkout picker.
+`CreatePaymentAction` re-checks activation and rejects a disabled method
+with `payment.process.method_inactive`, so a stale checkout page cannot
+pay with a method an admin just turned off. Drivers also guard
+themselves: a blank `payment.stripe.secret` (or webhook secret) throws
 `payment.process.gateway_unconfigured` (HTTP 400) rather than surfacing an
 SDK error as a 500.
 
@@ -35,7 +44,7 @@ sequenceDiagram
     participant EventBus
 
     Storefront->>API: GET /payment/user/methods
-    API-->>Storefront: methods with registered drivers
+    API-->>Storefront: active methods with registered, configured drivers
     Storefront->>API: POST /payment/user/process (order_code, method)
     API->>OrderModule: getOrder(code, user) — payable & unexpired
     API->>API: create PENDING payment (amount/currency snapshotted)
@@ -87,16 +96,20 @@ acked as no-ops).
    inside `handleWebhook` and return the stored `transaction_id`.
 3. Register it under its enum value in `Modules/Payment/config/payment.php`
    plus a config block for its env-driven credentials, and add the method to
-   `ListPaymentMethodsAction::isConfigured()` so it stays hidden until the
+   `PaymentDriverManager::isConfigured()` so it stays hidden until the
    credentials exist (throw `gatewayUnconfigured()` inside the driver as the
    backstop).
 4. Point the gateway's webhook at `POST /api/v1/payment/webhook/{driver}` —
    `HandleWebhookAction` handles matching, idempotent settling, order
    `markAsPaid` and events generically.
-5. Sync the storefront: extend `ApiPaymentMethod` in
+5. Activate it: the new method appears in `GET /payment/admin/methods`
+   (disabled) the first time an admin opens the page; flipping it active
+   and ordering it there is all it takes — no seeding, no storefront
+   deploy.
+6. Sync the storefront: extend `ApiPaymentMethod` in
    `lib/api/types.ts` and add checkout labels under
    `payment.methods.*` in `messages/{en,fa}/checkout/checkout.json`.
-6. Cover the driver with unit tests (signature + event mapping) mirroring
+7. Cover the driver with unit tests (signature + event mapping) mirroring
    `StripePaymentDriverTest`.
 
 Planned drivers follow the same recipe: **PayPal** (Orders v2 REST; capture

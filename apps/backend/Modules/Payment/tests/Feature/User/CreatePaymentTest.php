@@ -10,7 +10,9 @@ use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
+use Modules\Payment\Models\PaymentMethod;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
+use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
@@ -31,7 +33,17 @@ function payableOrder(User $user): Order
     ]);
 }
 
+function activeMethod(PaymentMethodEnum $method): PaymentMethod
+{
+    return PaymentMethod::query()->create([
+        PaymentMethodSchema::METHOD => $method,
+        PaymentMethodSchema::IS_ACTIVE => true,
+        PaymentMethodSchema::SORT_ORDER => 10,
+    ]);
+}
+
 it('creates a pending manual payment for a payable order', function () {
+    activeMethod(PaymentMethodEnum::MANUAL);
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -89,6 +101,24 @@ it('rejects paying another user\'s order', function () {
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.invalid_order');
 });
 
+it('rejects a method an admin deactivated', function () {
+    PaymentMethod::query()->create([
+        PaymentMethodSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentMethodSchema::IS_ACTIVE => false,
+        PaymentMethodSchema::SORT_ORDER => 10,
+    ]);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'manual',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.method_inactive');
+
+    expect(Payment::count())->toBe(0);
+});
+
 it('rejects a method with no configured driver', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
@@ -101,6 +131,7 @@ it('rejects a method with no configured driver', function () {
 });
 
 it('creates a stripe payment and returns the hosted checkout url', function () {
+    activeMethod(PaymentMethodEnum::STRIPE);
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -133,6 +164,7 @@ it('creates a stripe payment and returns the hosted checkout url', function () {
 
 it('rejects a stripe payment when the gateway is not configured', function () {
     config(['payment.stripe.secret' => null]);
+    activeMethod(PaymentMethodEnum::STRIPE);
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);

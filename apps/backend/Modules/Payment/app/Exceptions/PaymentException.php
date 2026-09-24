@@ -16,6 +16,11 @@ class PaymentException extends BaseException
         return new self(ErrorCodeEnum::PROCESS_METHOD_NOT_SUPPORTED->value);
     }
 
+    public static function methodInactive(): PaymentException
+    {
+        return new self(ErrorCodeEnum::PROCESS_METHOD_INACTIVE->value);
+    }
+
     public static function gatewayUnconfigured(): PaymentException
     {
         return new self(ErrorCodeEnum::PROCESS_GATEWAY_UNCONFIGURED->value);
