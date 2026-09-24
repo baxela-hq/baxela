@@ -29,8 +29,8 @@
     "total": "مجموع",
     "shipping_address": "آدرس ارسال",
     "shipping_method": "روش ارسال",
-    "default_badge": "پیش‌فرض",
-    "discount": "تخفیف ({code})"
+    "discount": "تخفیف ({code})",
+    "default_badge": "پیش‌فرض"
   },
   "profile": {
     "labels": {

@@ -377,6 +377,16 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                     <p className="mt-2 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {order.shipping_method_name ?? "—"}
                     </p>
+                    {order.coupon_code ? (
+                      <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        <span>
+                          {t("labels.discount", { code: order.coupon_code })}
+                        </span>
+                        <span className="font-medium text-accent">
+                          −{format.number(Number(order.discount_amount), usd)}
+                        </span>
+                      </p>
+                    ) : null}
                     <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       <span>{t("labels.total")}</span>
                       <span className="text-base font-semibold text-foreground">

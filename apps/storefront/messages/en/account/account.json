@@ -29,8 +29,8 @@
     "total": "Total",
     "shipping_address": "Shipping address",
     "shipping_method": "Shipping method",
-    "default_badge": "Default",
-    "discount": "Discount ({code})"
+    "discount": "Discount ({code})",
+    "default_badge": "Default"
   },
   "profile": {
     "labels": {
