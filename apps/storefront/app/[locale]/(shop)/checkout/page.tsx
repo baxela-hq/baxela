@@ -563,28 +563,34 @@ export default function CheckoutPage() {
                   {t("payment.texts.title")}
                 </h2>
                 <div className="mt-4 space-y-3">
-                  {paymentMethods.map((info) => (
-                    <label
-                      key={info.method}
-                      className="flex cursor-pointer items-start gap-3 rounded-default border border-border px-4 py-4 transition-colors hover:bg-muted"
-                    >
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={paymentMethod === info.method}
-                        onChange={() => setPaymentMethod(info.method)}
-                        className="mt-1 size-4 accent-accent"
-                      />
-                      <span className="text-sm text-foreground rtl:normal-case rtl:tracking-normal">
-                        <span className="block font-medium">
-                          {t(`payment.methods.${info.method}.label`)}
+                  {paymentMethods.length === 0 ? (
+                    <p className="rounded-default border border-border px-4 py-4 text-sm text-secondary-text">
+                      {t("payment.texts.empty")}
+                    </p>
+                  ) : (
+                    paymentMethods.map((info) => (
+                      <label
+                        key={info.method}
+                        className="flex cursor-pointer items-start gap-3 rounded-default border border-border px-4 py-4 transition-colors hover:bg-muted"
+                      >
+                        <input
+                          type="radio"
+                          name="payment"
+                          checked={paymentMethod === info.method}
+                          onChange={() => setPaymentMethod(info.method)}
+                          className="mt-1 size-4 accent-accent"
+                        />
+                        <span className="text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+                          <span className="block font-medium">
+                            {t(`payment.methods.${info.method}.label`)}
+                          </span>
+                          <span className="mt-1 block text-secondary-text">
+                            {t(`payment.methods.${info.method}.description`)}
+                          </span>
                         </span>
-                        <span className="mt-1 block text-secondary-text">
-                          {t(`payment.methods.${info.method}.description`)}
-                        </span>
-                      </span>
-                    </label>
-                  ))}
+                      </label>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
