@@ -177,7 +177,7 @@ export function PageForm() {
 
                 {!languagesIsLoading && languagesSafe.length > 0 && (
                   <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
-                    <TabsList className='w-full'>
+                    <TabsList>
                       {languagesSafe.map((language) => (
                         <TabsTrigger key={language.code} value={language.code}>
                           {language.name}
