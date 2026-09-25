@@ -137,7 +137,7 @@ export function Settings() {
                     defaultValue={languagesSafe[0]?.code}
                     className='w-full'
                   >
-                    <TabsList className='w-full'>
+                    <TabsList>
                       {languagesSafe.map((language) => (
                         <TabsTrigger key={language.code} value={language.code}>
                           {language.code.toUpperCase()}
@@ -318,7 +318,7 @@ export function Settings() {
                       defaultValue={languagesSafe[0]?.code}
                       className='w-full'
                     >
-                      <TabsList className='w-full'>
+                      <TabsList>
                         {languagesSafe.map((language) => (
                           <TabsTrigger
                             key={language.code}
