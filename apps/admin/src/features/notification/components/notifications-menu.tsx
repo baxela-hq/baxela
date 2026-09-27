@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Locales } from '../data/routes'
-import { useMarkAllNotificationsRead, useMarkNotificationRead } from '../hooks/use-notification-mutations'
+import { useMarkAllNotificationsRead } from '../hooks/use-notification-mutations'
 import { useNotificationsList, useUnreadNotificationsCount } from '../hooks/use-notifications'
 import { NotificationItem } from './notification-item'
 
@@ -19,7 +19,6 @@ export function NotificationsMenu() {
 
   const { data: countData } = useUnreadNotificationsCount()
   const { data, isLoading } = useNotificationsList({}, open)
-  const markRead = useMarkNotificationRead()
   const markAll = useMarkAllNotificationsRead()
 
   const unread = countData?.data.unread_count ?? 0
@@ -82,7 +81,7 @@ export function NotificationsMenu() {
                 <NotificationItem
                   key={notification.id}
                   notification={notification}
-                  onRead={(id) => markRead.mutate(id)}
+                  to='/notifications'
                   compact
                 />
               ))}

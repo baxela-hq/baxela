@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+import { type LinkProps, Link } from '@tanstack/react-router'
 import { Bell, CreditCard, Inbox, Package, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
@@ -19,18 +19,23 @@ function codeIcon(code: string) {
 
 interface NotificationItemProps {
   notification: Notification
-  onRead: (id: number) => void
+  onRead?: (id: number) => void
   compact?: boolean
+  /** When set, the whole row links here and clicks never mark it read. */
+  to?: LinkProps['to']
 }
 
 /**
  * One inbox row. Titles/bodies arrive pre-localized from the API; rows
  * carrying an order code deep-link into the orders list filtered by it.
+ * Passing `to` overrides both — the header menu rows link to the
+ * notifications center instead of marking read on click.
  */
 export function NotificationItem({
   notification,
   onRead,
   compact = false,
+  to,
 }: NotificationItemProps) {
   const { formatDateTime } = useFormatDateTime()
   const unread = notification.read_at === null
@@ -75,13 +80,21 @@ export function NotificationItem({
     compact && 'items-center py-2.5'
   )
 
+  if (to) {
+    return (
+      <Link to={to} className={className}>
+        {content}
+      </Link>
+    )
+  }
+
   if (orderCode) {
     return (
       <Link
         to='/order/orders'
         search={{ 'filter[order_code]': orderCode }}
         className={className}
-        onClick={() => unread && onRead(notification.id)}
+        onClick={() => unread && onRead?.(notification.id)}
       >
         {content}
       </Link>
@@ -92,7 +105,7 @@ export function NotificationItem({
     <button
       type='button'
       className={className}
-      onClick={() => unread && onRead(notification.id)}
+      onClick={() => unread && onRead?.(notification.id)}
     >
       {content}
     </button>
