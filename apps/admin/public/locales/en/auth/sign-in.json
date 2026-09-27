@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "Sign in",
+    "description": "Enter your email and password below to log into your account",
+    "or-continue-with": "Or continue with",
+    "footer": "By clicking sign in, you agree to our <termsLink>Terms of Service</termsLink> and <privacyLink>Privacy Policy</privacyLink>."
+  },
+  "form": {
+    "labels": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "name@example.com",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "Sign in",
+      "forgot-password": "Forgot password?"
+    },
+    "validation": {
+      "email-required": "Please enter your email",
+      "password-required": "Please enter your password",
+      "password-min-length": "Password must be at least 7 characters long"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "ورود",
+    "description": "برای ورود به حساب خود، ایمیل و رمز عبور خود را در زیر وارد کنید",
+    "or-continue-with": "یا ادامه با",
+    "footer": "با کلیک روی «ورود»، با <termsLink>شرایط خدمات</termsLink> و <privacyLink>سیاست حفظ حریم خصوصی</privacyLink> ما موافقت می‌کنید."
+  },
+  "form": {
+    "labels": {
+      "email": "ایمیل",
+      "password": "رمز عبور"
+    },
+    "placeholders": {
+      "email": "name@example.com",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "ورود",
+      "forgot-password": "رمز عبور را فراموش کرده‌اید؟"
+    },
+    "validation": {
+      "email-required": "لطفاً ایمیل خود را وارد کنید",
+      "password-required": "لطفاً رمز عبور خود را وارد کنید",
+      "password-min-length": "رمز عبور باید حداقل ۷ کاراکتر باشد"
+    }
+  }
+}

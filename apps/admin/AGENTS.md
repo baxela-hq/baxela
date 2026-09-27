@@ -292,9 +292,10 @@ useTableUrlState({
   `public/locales/` as an **open set** — more languages will be added. Any key change must be applied
   to **every** locale folder; never rely on English/Farsi-specific grammar, text direction, or
   hardcoded language lists in code.
-- Namespaces = file path under `public/locales/{lang}/`: `shared/common`, `shared/data-table`,
-  `shared/layout`, `catalog/product`, `catalog/category`, `catalog/option`, `catalog/option-value`,
-  `content/page`, `media/media`, `order/order`, `setting/setting`, `user/user`.
+- Namespaces = file path under `public/locales/{lang}/`: `auth/sign-in`, `shared/common`,
+  `shared/data-table`, `shared/layout`, `catalog/product`, `catalog/category`, `catalog/option`,
+  `catalog/option-value`, `content/page`, `media/media`, `order/order`, `setting/setting`,
+  `user/user`.
 - **Every user-facing string must be translated.** Use `useAppTranslation(namespace)` — never raw `useTranslation`:
 
   `tLabel('title')` → `form.labels.title` · `tAction` → `form.actions.*` · `tPlaceHolder` → `form.placeholders.*` ·

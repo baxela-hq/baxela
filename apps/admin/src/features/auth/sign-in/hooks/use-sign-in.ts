@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
 import { ApiError } from '@/shared/lib/api-error'
 import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
@@ -7,6 +8,7 @@ import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { fetchAdminAccount } from '../api/account.api'
 import { signIn } from '../api/sign-in.api'
+import { Locales } from '../data/routes'
 import { type SignInRequest } from '../types/sign-in'
 
 /**
@@ -18,6 +20,7 @@ export function useSignIn() {
   const navigate = useNavigate()
   const { setUser, setAccessToken, reset } = useAuthStore()
   const applyUiLanguage = useApplyUiLanguage()
+  const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
   return useMutation({
     mutationFn: ({
@@ -35,12 +38,12 @@ export function useSignIn() {
         account = await fetchAdminAccount()
       } catch {
         reset()
-        toast.error("You're not allowed to see this page")
+        toast.error(tMessage('error.forbidden'))
         return
       }
 
       try {
-        toast.success('You logged in successfully')
+        toast.success(tMessage('success.sign-in'))
 
         StorageUtility.setItem(
           StorageKeys.DEFAULT_LANGUAGE,
@@ -73,8 +76,8 @@ export function useSignIn() {
         reset()
         toast.error(
           err instanceof Error
-            ? `Sign-in could not be completed: ${err.message}`
-            : 'Sign-in could not be completed'
+            ? tMessage('error.sign-in-failed', { message: err.message })
+            : tMessage('error.general')
         )
       }
     },
@@ -85,9 +88,7 @@ export function useSignIn() {
       }
       // Non-API failures (e.g. a crashed client-side step such as device-id
       // generation) must not die in silence — they look like a dead button.
-      toast.error(
-        err instanceof Error ? err.message : 'Sign-in failed. Please try again.'
-      )
+      toast.error(tMessage('error.general'))
     },
   })
 }

@@ -23,7 +23,8 @@
         "deleted": "The {{name}} was deleted successfully.",
         "deleted_general": "The Item was deleted successfully."
       },
-      "upload_general": "the file was uploaded successfully"
+      "upload_general": "the file was uploaded successfully",
+      "sign-in": "You logged in successfully."
     },
     "error": {
       "default": "An error occurred during the {{action}} operation.",
@@ -31,6 +32,8 @@
       "api": "Failed to fetch data. Please check your connection.",
       "validation": "Please check the provided information for errors.",
       "invalid_name": "The name contains characters that are not allowed.",
+      "forbidden": "You're not allowed to see this page.",
+      "sign-in-failed": "Sign-in could not be completed: {{message}}",
       "record": {
         "not_found": "The requested record was not found.",
         "already_exists": "A record with this identifier already exists."

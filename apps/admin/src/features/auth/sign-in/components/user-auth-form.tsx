@@ -1,10 +1,10 @@
-import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from '@tanstack/react-router'
 import { Loader2, LogIn } from 'lucide-react'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
 import { cn } from '@/lib/utils'
+import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,17 +16,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { Locales } from '../data/routes'
+import {
+  buildSignInFormSchema,
+  type SignInForm,
+} from '../data/schema'
 import { useSignIn } from '../hooks/use-sign-in'
-
-const formSchema = z.object({
-  email: z.email({
-    error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
-  }),
-  password: z
-    .string()
-    .min(1, 'Please enter your password')
-    .min(7, 'Password must be at least 7 characters long'),
-})
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
@@ -38,16 +33,25 @@ export function UserAuthForm({
   ...props
 }: UserAuthFormProps) {
   const signIn = useSignIn()
+  const { t, tLabel, tPlaceHolder, tAction } = useAppTranslation(
+    Locales.SIGN_IN
+  )
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignInForm>({
+    resolver: zodResolver(
+      buildSignInFormSchema({
+        emailRequired: t('form.validation.email-required'),
+        passwordRequired: t('form.validation.password-required'),
+        passwordMinLength: t('form.validation.password-min-length'),
+      })
+    ),
     defaultValues: {
       email: '',
       password: '',
     },
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: SignInForm) => {
     signIn.mutate({ ...data, redirectTo })
   }
 
@@ -63,9 +67,9 @@ export function UserAuthForm({
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{tLabel('email')}</FormLabel>
               <FormControl>
-                <Input placeholder='name@example.com' {...field} />
+                <Input placeholder={tPlaceHolder('email')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,23 +80,23 @@ export function UserAuthForm({
           name='password'
           render={({ field }) => (
             <FormItem className='relative'>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{tLabel('password')}</FormLabel>
               <FormControl>
-                <PasswordInput placeholder='********' {...field} />
+                <PasswordInput placeholder={tPlaceHolder('password')} {...field} />
               </FormControl>
               <FormMessage />
               <Link
                 to='/forgot-password'
                 className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
               >
-                Forgot password?
+                {tAction('forgot-password')}
               </Link>
             </FormItem>
           )}
         />
         <Button className='mt-2' disabled={signIn.isPending}>
           {signIn.isPending ? <Loader2 className='animate-spin' /> : <LogIn />}
-          Sign in
+          {tAction('sign-in')}
         </Button>
 
         <div className='relative my-2'>
@@ -101,7 +105,7 @@ export function UserAuthForm({
           </div>
           <div className='relative flex justify-center text-xs uppercase'>
             <span className='bg-background px-2 text-muted-foreground'>
-              Or continue with
+              {t('card.or-continue-with')}
             </span>
           </div>
         </div>
