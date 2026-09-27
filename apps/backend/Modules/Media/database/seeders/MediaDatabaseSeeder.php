@@ -17,7 +17,7 @@ class MediaDatabaseSeeder extends Seeder
         // can't guard parent_id IS NULL in MySQL, so plain creates would
         // duplicate the root folders on every re-run.
         $tree = [
-            'Catalog' => ['Product'],
+            'Catalog' => ['Product', 'Category'],
             'Content' => [],
             'Settings' => [],
         ];
