@@ -22,4 +22,10 @@ fi
 
 php artisan migrate --force --no-interaction
 
+# public/storage must be a *relative* symlink: artisan storage:link writes
+# an absolute path that only resolves where it ran (host or container), so a
+# link created on the host dangles inside the bind mount and nginx returns
+# 403 for every /storage file. ../storage/app/public resolves in both.
+ln -sfn ../storage/app/public public/storage
+
 exec "$@"
