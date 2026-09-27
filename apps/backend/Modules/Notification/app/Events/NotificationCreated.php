@@ -12,9 +12,11 @@ use Illuminate\Queue\SerializesModels;
 /**
  * Realtime mirror of a freshly inserted database notification.
  *
- * Broadcast per recipient on their private channel so the admin and
- * storefront bells update without polling. The payload matches the
- * NotificationResource API shape plus the recipient's unread_count
+ * Broadcast per recipient on the audience-scoped private channel
+ * (`notification.admin.{id}` / `notification.user.{id}`) so the admin and
+ * storefront bells each track only their own audience's rows — one user
+ * id can hold rows in both. The payload matches the NotificationResource
+ * API shape plus the recipient's unread_count within that audience
  * (computed after the insert), so clients refresh the badge from the
  * event alone.
  */
@@ -23,10 +25,12 @@ class NotificationCreated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
+     * @param  string  $audience  NotificationAudienceEnum value ('admin'|'user')
      * @param  array<string, mixed>  $payload  NotificationResource-shaped row
      */
     public function __construct(
         public readonly int $notifiableId,
+        public readonly string $audience,
         public readonly array $payload,
         public readonly int $unreadCount,
     ) {}
@@ -37,7 +41,7 @@ class NotificationCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('user.'.$this->notifiableId),
+            new PrivateChannel('notification.'.$this->audience.'.'.$this->notifiableId),
         ];
     }
 

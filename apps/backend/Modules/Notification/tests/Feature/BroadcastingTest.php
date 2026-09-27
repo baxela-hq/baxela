@@ -18,11 +18,11 @@ use Modules\Notification\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-function dispatchDatabaseNotification(int $recipientId): void
+function dispatchDatabaseNotification(int $recipientId, string $audience = 'user'): void
 {
     app(NotificationDispatcherInterface::class)->dispatch(new NotificationMessage(
         code: NotificationCodeEnum::ORDER_ORDER_CREATED->value,
-        audience: 'user',
+        audience: $audience,
         recipients: ['database' => [$recipientId]],
         data: ['database' => ['order_code' => 'ORD-1001', 'amount' => '120.00']],
         channel: ['database'],
@@ -48,9 +48,10 @@ it('queues a broadcast for every created notification on the recipient private c
         $payload = $event->broadcastWith();
 
         return $event->notifiableId === $user->id
+            && $event->audience === 'user'
             && $event->broadcastAs() === 'notification.created'
             && count($channels) === 1
-            && $channels[0]->name === "private-user.{$user->id}"
+            && $channels[0]->name === "private-notification.user.{$user->id}"
             && $payload['code'] === NotificationCodeEnum::ORDER_ORDER_CREATED->value
             && $payload['meta'] === ['order_code' => 'ORD-1001']
             && $payload['read_at'] === null
@@ -80,6 +81,36 @@ it('counts the unread total including the new row in the broadcast payload', fun
     });
 });
 
+it('scopes the broadcast unread count and channel to the notification audience', function () {
+    Queue::fake();
+
+    $user = User::factory()->create();
+
+    // Staff who shop hold rows in both audiences under one user id;
+    // each app's badge must count only its own audience (the unscoped
+    // count made the admin bell disagree with the admin inbox).
+    foreach (['admin', 'user'] as $audience) {
+        Notification::query()->create([
+            NotificationSchema::USER_ID => $user->id,
+            NotificationSchema::CODE => NotificationCodeEnum::ORDER_ORDER_COMPLETED->value,
+            NotificationSchema::AUDIENCE => $audience,
+            NotificationSchema::TITLE => "Order completed ({$audience})",
+            NotificationSchema::BODY => 'Order ORD-1000 has been delivered.',
+        ]);
+    }
+
+    dispatchDatabaseNotification($user->id, 'admin');
+
+    Queue::assertPushed(BroadcastEvent::class, function (BroadcastEvent $job) use ($user): bool {
+        $event = $job->event;
+
+        return $event instanceof NotificationCreated
+            && $event->audience === 'admin'
+            && $event->broadcastOn()[0]->name === "private-notification.admin.{$user->id}"
+            && $event->broadcastWith()['unread_count'] === 2;
+    });
+});
+
 it('authorizes the private channel only for its owner', function () {
     // The suite's null broadcaster accepts every channel; re-bind the
     // module channels to a real pusher-compatible connection so the
@@ -101,19 +132,26 @@ it('authorizes the private channel only for its owner', function () {
     $other = User::factory()->create();
 
     $this->postJson($this->baseUrl('/broadcasting/auth'), [
-        'channel_name' => "private-user.{$owner->id}",
+        'channel_name' => "private-notification.user.{$owner->id}",
     ])->assertUnauthorized();
 
     $this->actingAs($owner, 'sanctum')
         ->postJson($this->baseUrl('/broadcasting/auth'), [
-            'channel_name' => "private-user.{$owner->id}",
+            'channel_name' => "private-notification.user.{$owner->id}",
+            'socket_id' => '1.1',
+        ])
+        ->assertOk();
+
+    $this->actingAs($owner, 'sanctum')
+        ->postJson($this->baseUrl('/broadcasting/auth'), [
+            'channel_name' => "private-notification.admin.{$owner->id}",
             'socket_id' => '1.1',
         ])
         ->assertOk();
 
     $this->actingAs($other, 'sanctum')
         ->postJson($this->baseUrl('/broadcasting/auth'), [
-            'channel_name' => "private-user.{$owner->id}",
+            'channel_name' => "private-notification.user.{$owner->id}",
             'socket_id' => '1.1',
         ])
         ->assertForbidden();

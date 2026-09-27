@@ -32,7 +32,7 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Private per-user notification channel (see NotificationCreated).
+        // Audience-scoped private notification channels (see NotificationCreated).
         BroadcastChannels::register();
 
         $this->registerCommands();

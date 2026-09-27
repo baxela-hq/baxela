@@ -11,10 +11,12 @@ interface RealtimeNotification extends Notification {
 }
 
 /**
- * Live unread badge + inbox refresh over the user's private channel —
- * replaces the old 30s polling. Mounted once in the authenticated
- * layout; the connection opens with the session token and closes on
- * unmount (sign-out navigates away from the authenticated shell).
+ * Live unread badge + inbox refresh over the admin audience's private
+ * channel — replaces the old 30s polling. Mounted once in the
+ * authenticated layout; the connection opens with the session token and
+ * closes on unmount (sign-out navigates away from the authenticated
+ * shell). The channel is audience-scoped so storefront (user-audience)
+ * rows for the same account never touch the admin badge.
  */
 export function useRealtimeNotifications() {
   const queryClient = useQueryClient()
@@ -48,7 +50,7 @@ export function useRealtimeNotifications() {
     if (!echo) return
 
     echo
-      .private(`user.${user.id}`)
+      .private(`notification.admin.${user.id}`)
       .listen('.notification.created', (payload: RealtimeNotification) => {
         queryClient.setQueryData([FeatureRoutes.CACHE_KEY, 'unread-count'], {
           data: { unread_count: payload.unread_count },

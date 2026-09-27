@@ -31,7 +31,7 @@ class DatabaseChannel implements NotificationChannelInterface
             ]);
             $ids[] = $record->{NotificationSchema::ID};
 
-            $this->broadcastCreated((int) $recipient, $record);
+            $this->broadcastCreated((int) $recipient, $message->audience, $record);
         }
 
         Log::info('Notification sent '.__CLASS__, $message->toArray());
@@ -40,17 +40,21 @@ class DatabaseChannel implements NotificationChannelInterface
     }
 
     /**
-     * Push the new row to the recipient's private channel, in the same
-     * shape the list endpoints return. The broadcast is queued like any
-     * other ShouldBroadcast event, so a down websocket server never
-     * blocks the insert.
+     * Push the new row to the recipient's audience-scoped private
+     * channel, in the same shape the list endpoints return. The badge
+     * count must match those endpoints, so it filters by the row's
+     * audience — a user id can hold both admin and storefront rows, and
+     * only the event's own audience belongs on that app's bell. The
+     * broadcast is queued like any other ShouldBroadcast event, so a
+     * down websocket server never blocks the insert.
      */
-    private function broadcastCreated(int $recipientId, Notification $record): void
+    private function broadcastCreated(int $recipientId, string $audience, Notification $record): void
     {
         $code = $record->{NotificationSchema::CODE};
 
         NotificationCreated::dispatch(
             notifiableId: $recipientId,
+            audience: $audience,
             payload: [
                 NotificationSchema::ID => $record->{NotificationSchema::ID},
                 NotificationSchema::CODE => $code instanceof \BackedEnum ? $code->value : $code,
@@ -62,6 +66,7 @@ class DatabaseChannel implements NotificationChannelInterface
             ],
             unreadCount: Notification::query()
                 ->where(NotificationSchema::USER_ID, $recipientId)
+                ->where(NotificationSchema::AUDIENCE, $audience)
                 ->whereNull(NotificationSchema::READ_AT)
                 ->count(),
         );

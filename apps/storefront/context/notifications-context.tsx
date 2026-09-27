@@ -98,7 +98,8 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   // Live badge + preview: every inserted notification broadcasts on the
-  // signed-in user's private channel with the fresh unread total.
+  // signed-in user's private channel for the storefront (user) audience
+  // with the fresh unread total for that audience alone.
   useEffect(() => {
     if (!token || !user?.id) return;
     // Idempotent connect: the auth context owns the connection, but it
@@ -106,7 +107,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     const echo = connectNotificationEcho(token) ?? getNotificationEcho();
     if (!echo) return;
 
-    const channel = `user.${user.id}`;
+    const channel = `notification.user.${user.id}`;
     echo
       .private(channel)
       .listen(".notification.created", (payload: RealtimeNotification) => {

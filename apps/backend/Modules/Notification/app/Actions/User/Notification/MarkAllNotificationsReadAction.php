@@ -4,6 +4,7 @@ namespace Modules\Notification\Actions\User\Notification;
 
 use Modules\Core\Utils\Auth;
 use Modules\Notification\Models\Notification;
+use Modules\Notification\Schemas\Notification\NotificationAudienceEnum;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
 
 class MarkAllNotificationsReadAction
@@ -15,11 +16,13 @@ class MarkAllNotificationsReadAction
     {
         Notification::query()
             ->where(NotificationSchema::USER_ID, Auth::id())
+            ->where(NotificationSchema::AUDIENCE, NotificationAudienceEnum::USER->value)
             ->whereNull(NotificationSchema::READ_AT)
             ->update([NotificationSchema::READ_AT => now()]);
 
         return Notification::query()
             ->where(NotificationSchema::USER_ID, Auth::id())
+            ->where(NotificationSchema::AUDIENCE, NotificationAudienceEnum::USER->value)
             ->whereNull(NotificationSchema::READ_AT)
             ->count();
     }

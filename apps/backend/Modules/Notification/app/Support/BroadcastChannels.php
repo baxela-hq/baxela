@@ -14,15 +14,17 @@ use Illuminate\Support\Facades\Broadcast;
 class BroadcastChannels
 {
     /**
-     * Admin staff and customers are all users, so one private channel
-     * shape serves both apps; the id is checked against the
-     * sanctum-authenticated user.
+     * Admin staff and customers are all users, so both audience-scoped
+     * channel shapes authorize the same way: the id is checked against
+     * the sanctum-authenticated user. The audience segment keeps each
+     * app's realtime stream limited to its own rows — one user id can
+     * hold both admin and storefront notifications.
      */
     public static function register(): void
     {
-        Broadcast::channel(
-            'user.{id}',
-            fn ($user, string|int $id) => (int) $user->id === (int) $id
-        );
+        $owner = fn ($user, string|int $id) => (int) $user->id === (int) $id;
+
+        Broadcast::channel('notification.admin.{id}', $owner);
+        Broadcast::channel('notification.user.{id}', $owner);
     }
 }
