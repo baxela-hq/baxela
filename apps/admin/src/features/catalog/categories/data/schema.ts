@@ -15,6 +15,9 @@ export const categorySchema = z.object({
   parent_id: z.number().nullable(),
   translations: z.array(translationSchema),
   position: z.string(),
+  image_media_id: z.number().nullable(),
+  image_url: z.string().nullable(),
+  is_featured: z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -27,6 +30,9 @@ export type CategoryNode = Category & { title: string; depth: number }
 export const formSchema = z.object({
   parent_id: z.number().nullable(),
   position: z.string().max(255),
+  image_media_id: z.number().nullable(),
+  image_url: z.string().nullable(),
+  is_featured: z.boolean(),
   translations: z.array(translationSchema),
 })
 export type CategoryForm = z.infer<typeof formSchema>
@@ -34,6 +40,9 @@ export type CategoryForm = z.infer<typeof formSchema>
 export const defaultValues = {
   parent_id: null,
   position: '1',
+  image_media_id: null,
+  image_url: null,
+  is_featured: false,
   translations: [] as TranslationForm[],
 }
 
@@ -41,6 +50,9 @@ export function buildDefaultValues(languages: Language[]): CategoryForm {
   return {
     parent_id: null,
     position: '1',
+    image_media_id: null,
+    image_url: null,
+    is_featured: false,
     translations: languages.map((language, index) => ({
       language_id: index,
       language: language.code,
@@ -65,6 +77,9 @@ export function buildEditValues(
   return {
     parent_id: currentRow.parent_id,
     position: currentRow.position.toString(),
+    image_media_id: currentRow.image_media_id,
+    image_url: currentRow.image_url,
+    is_featured: currentRow.is_featured,
     translations: base.translations.map((baseTranslation, index) => {
       const existing = translationsMap.get(baseTranslation.language)
       return existing

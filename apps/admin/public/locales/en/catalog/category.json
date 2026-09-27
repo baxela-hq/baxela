@@ -9,13 +9,18 @@
       "title": "Title",
       "slug": "Slug",
       "position": "Position",
+      "image": "Image",
+      "add_image": "Add image",
+      "is_featured": "Featured",
       "description": "Description",
       "created_at": "Created At",
       "updated_at": "Updated At"
     },
     "help_texts": {
       "position": "Enter your item position",
-      "parent_id": "Select a parent category to nest this one under it, or choose None for a top-level category."
+      "parent_id": "Select a parent category to nest this one under it, or choose None for a top-level category.",
+      "image": "Optional image shown alongside the category on the storefront.",
+      "is_featured": "Show this category in the storefront home page 'Shop by category' section."
     }
   }
 }

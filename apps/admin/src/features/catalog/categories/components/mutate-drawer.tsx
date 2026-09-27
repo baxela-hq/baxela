@@ -1,14 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ImagePlusIcon, XIcon } from 'lucide-react';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
+import { type MediaItem, getMediaUrl } from '@/features/media/data/schema';
 import { Locales } from '../data/routes'
 import {
   formSchema,
@@ -60,6 +64,18 @@ export function MutateDrawer({
   }, [languages, currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const saveCategory = useSaveCategory()
+
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
+
+  const handleSelectImage = (item: MediaItem) => {
+    form.setValue('image_media_id', item.id, { shouldDirty: true })
+    form.setValue('image_url', getMediaUrl(item), { shouldDirty: true })
+  }
+
+  const handleRemoveImage = () => {
+    form.setValue('image_media_id', null, { shouldDirty: true })
+    form.setValue('image_url', null, { shouldDirty: true })
+  }
 
   const onSubmit = (data: CategoryForm) => {
     saveCategory.mutate(
@@ -153,6 +169,77 @@ export function MutateDrawer({
               )}
             />
 
+            <FormField
+              control={form.control}
+              name='image_url'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{tLabel('image')}</FormLabel>
+                  <div className='flex flex-wrap items-start gap-4'>
+                    <button
+                      type='button'
+                      onClick={() => setMediaPickerOpen(true)}
+                      className='flex h-32 w-32 flex-col items-center justify-center gap-2 rounded-md border border-dashed text-muted-foreground transition-colors hover:border-primary hover:bg-muted/50 hover:text-foreground'
+                    >
+                      <ImagePlusIcon size={24} />
+                      <span className='px-2 text-center text-xs font-medium'>
+                        {tLabel('add_image')}
+                      </span>
+                    </button>
+                    {field.value && (
+                      <div className='space-y-1.5'>
+                        <div className='h-32 w-32 overflow-hidden rounded-md border'>
+                          <img
+                            src={field.value}
+                            alt={field.value.split('/').pop() ?? ''}
+                            className='h-full w-full object-cover'
+                          />
+                        </div>
+                        <div className='flex items-center justify-center'>
+                          <Button
+                            type='button'
+                            variant='outline'
+                            size='icon'
+                            className='h-7 w-7 text-destructive hover:text-destructive'
+                            onClick={handleRemoveImage}
+                            title={tAction('remove')}
+                            aria-label={tAction('remove')}
+                          >
+                            <XIcon size={14} />
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <FormDescription>
+                    {tHelpText('image')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='is_featured'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-3'>
+                  <div className='space-y-0.5'>
+                    <FormLabel>{tLabel('is_featured')}</FormLabel>
+                    <FormDescription>
+                      {tHelpText('is_featured')}
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
             {languagesIsLoading && (
               <div className='py-8 text-center text-sm text-muted-foreground'>
                 Loading languages...
@@ -216,6 +303,12 @@ export function MutateDrawer({
             )}
           </form>
         </Form>
+        <MediaPickerDialog
+          open={mediaPickerOpen}
+          onOpenChange={setMediaPickerOpen}
+          accept='image/*'
+          onSelect={handleSelectImage}
+        />
         <SheetFooter className='gap-2'>
           <Button form='categories-form' type='submit'>
             {tAction(isUpdate ? 'save' : 'submit')}
