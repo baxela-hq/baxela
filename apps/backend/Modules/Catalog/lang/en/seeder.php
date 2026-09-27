@@ -106,6 +106,7 @@ return [
             'translations' => [
                 ['title' => 'Shoes', 'slug' => 'shoes'],
             ],
+            'featured' => true,
             'children' => [
                 'sneakers' => [
                     'translations' => [['title' => 'Sneakers', 'slug' => 'sneakers']],
@@ -139,6 +140,7 @@ return [
             'translations' => [
                 ['title' => 'Bags & Luggage', 'slug' => 'bags-luggage'],
             ],
+            'featured' => true,
             'children' => [
                 'backpacks' => [
                     'translations' => [['title' => 'Backpacks', 'slug' => 'backpacks']],
@@ -169,6 +171,7 @@ return [
             'translations' => [
                 ['title' => 'Accessories', 'slug' => 'accessories'],
             ],
+            'featured' => true,
             'children' => [
                 'watches' => [
                     'translations' => [['title' => 'Watches', 'slug' => 'watches']],
@@ -256,6 +259,7 @@ return [
             'translations' => [
                 ['title' => 'Electronics', 'slug' => 'electronics'],
             ],
+            'featured' => true,
             'children' => [
                 'smartphones' => [
                     'translations' => [['title' => 'Smartphones', 'slug' => 'smartphones']],

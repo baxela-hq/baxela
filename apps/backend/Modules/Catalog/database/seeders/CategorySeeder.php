@@ -11,11 +11,16 @@ use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
 class CategorySeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
+
+    private MediaGatewayInterface $mediaGateway;
+
+    private int $categoryFolderId;
 
     /** @var array<string, int|null> */
     private array $languageIds = [];
@@ -26,7 +31,17 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
+        $this->mediaGateway = App::make(MediaGatewayInterface::class);
         $moduleKey = Module::NAME_LOWER.'::seeder.categories';
+
+        $categoryFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Category');
+        if ($categoryFolderId === null) {
+            $this->command->error('Folder Catalog/Category not found.');
+            $this->command->error('Run this seeder after running the media seeder.');
+
+            return;
+        }
+        $this->categoryFolderId = $categoryFolderId;
 
         $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
 
@@ -69,7 +84,7 @@ class CategorySeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array{translations: array, children?: array}>  $nodes
+     * @param  array<string, array{translations: array, children?: array, featured?: bool}>  $nodes
      * @param  array<string, array<string, array{translations: array, children?: array}>>  $data
      * @param  array<int, string>  $langs
      */
@@ -78,9 +93,14 @@ class CategorySeeder extends Seeder
         $i = 1;
 
         foreach ($nodes as $slug => $node) {
+            $image = $this->imageFor((string) $slug);
+
             $category = Category::query()->create([
                 CategorySchema::PARENT_ID => $parentId,
                 CategorySchema::POSITION => $i,
+                CategorySchema::IMAGE_MEDIA_ID => $image?->id,
+                CategorySchema::IMAGE_URL => $image?->url,
+                CategorySchema::IS_FEATURED => (bool) ($node['featured'] ?? false),
             ]);
             $categoryId = $category->{CategorySchema::ID};
 
@@ -101,6 +121,26 @@ class CategorySeeder extends Seeder
             }
             $i++;
         }
+    }
+
+    /**
+     * Publish the category's seeded cover photo on the public disk and
+     * return its media record. Photos live next to this seeder, keyed by
+     * category slug — so seeding stays reproducible without network access.
+     */
+    private function imageFor(string $slug): ?object
+    {
+        $source = __DIR__.'/media/categories/'.$slug.'.jpg';
+
+        if (! file_exists($source)) {
+            return null;
+        }
+
+        return $this->mediaGateway->upsertLocal(
+            $source,
+            'catalog/categories/'.basename($source),
+            $this->categoryFolderId,
+        );
     }
 
     private function languageId(string $code): ?int
