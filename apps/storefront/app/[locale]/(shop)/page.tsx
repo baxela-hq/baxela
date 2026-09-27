@@ -72,7 +72,7 @@ export default async function HomePage() {
               {categories.map((category) => (
                 <Link
                   key={category.id}
-                  href={`/products?category=${category.id}`}
+                  href={`/products?category=${category.slug ?? category.id}`}
                   className="group flex flex-col items-center rounded-default border border-border-light p-8 transition-colors hover:border-primary"
                 >
                   <div className="flex aspect-square w-full max-w-40 items-center justify-center overflow-hidden rounded-default bg-muted transition-colors group-hover:bg-border-light">
