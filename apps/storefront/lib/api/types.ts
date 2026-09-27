@@ -110,6 +110,7 @@ export interface ApiPublicCategory {
   id: number;
   parent_id: number | null;
   position: number | null;
+  image_url: string | null;
   title: string | null;
   slug: string | null;
 }

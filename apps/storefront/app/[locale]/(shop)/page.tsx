@@ -11,8 +11,9 @@ export default async function HomePage() {
   // The backend has no "featured" concept yet — the newest products stand
   // in until a curated endpoint exists.
   const [categoriesPage, productsPage] = await Promise.all([
-    serverApiGet<Paginated<ApiPublicCategory>>("/catalog/public/categories")
-      .catch(() => null),
+    serverApiGet<Paginated<ApiPublicCategory>>(
+      "/catalog/public/categories?featured=true&per_page=4"
+    ).catch(() => null),
     serverApiGet<Paginated<ApiProduct>>("/catalog/public/products?per_page=4")
       .catch(() => null),
   ]);
@@ -74,10 +75,22 @@ export default async function HomePage() {
                   href={`/products?category=${category.id}`}
                   className="group flex flex-col items-center rounded-default border border-border-light p-8 transition-colors hover:border-primary"
                 >
-                  <div className="flex aspect-square w-full max-w-40 items-center justify-center rounded-default bg-muted transition-colors group-hover:bg-border-light">
-                    <span className="px-4 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                      {category.title}
-                    </span>
+                  <div className="flex aspect-square w-full max-w-40 items-center justify-center overflow-hidden rounded-default bg-muted transition-colors group-hover:bg-border-light">
+                    {category.image_url ? (
+                      // Backend-served images from arbitrary hosts — next/image would
+                      // need remotePatterns for every storage host, so use a plain img.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={category.image_url}
+                        alt={category.title ?? ""}
+                        className="size-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span className="px-4 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        {category.title}
+                      </span>
+                    )}
                   </div>
                   <h3 className="mt-4 text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                     {category.title}
