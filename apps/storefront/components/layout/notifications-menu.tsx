@@ -21,8 +21,9 @@ function rowIcon(code: string) {
  * island. State lives in the notifications context, shared with the
  * profile notifications page: the badge + preview load once on sign-in,
  * update live over the private Reverb channel (no polling), and stay in
- * sync when rows are read from any surface. Full history lives on the
- * profile notifications page.
+ * sync when rows are read from any surface. Clicking a row, like the bell
+ * itself, opens the profile notifications page; full history and
+ * mark-as-read live there.
  */
 export function NotificationsMenu() {
   const t = useTranslations("shared.layout");
@@ -31,7 +32,7 @@ export function NotificationsMenu() {
   // staying pinned to the request-time `now` from the provider.
   const now = useNow({ updateInterval: 30_000 });
   const { status } = useAuth();
-  const { unread, preview: items, markRead } = useNotifications();
+  const { unread, preview: items } = useNotifications();
 
   if (status !== "authenticated") {
     return null;
@@ -68,17 +69,11 @@ export function NotificationsMenu() {
             <ul className="max-h-72 divide-y divide-border-light overflow-y-auto">
               {items.slice(0, 5).map((item) => {
                 const Icon = rowIcon(item.code);
-                const orderCode = item.meta?.order_code;
 
                 return (
                   <li key={item.id}>
                     <Link
-                      href={
-                        orderCode
-                          ? `/profile/orders?q=${encodeURIComponent(orderCode)}`
-                          : "/profile/notifications"
-                      }
-                      onClick={() => markRead(item)}
+                      href="/profile/notifications"
                       className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-muted"
                     >
                       <span
