@@ -1,6 +1,7 @@
 "use client";
 
 import Echo from "laravel-echo";
+import Pusher from "pusher-js";
 
 // Realtime notifications over Laravel Reverb. One Echo connection per
 // authenticated session: the auth-context connects it once the Sanctum
@@ -28,6 +29,11 @@ export function connectNotificationEcho(token: string): Echo<"reverb"> | null {
 
   echo = new Echo({
     broadcaster: "reverb",
+    // The Reverb connector needs the pusher-js constructor to build its
+    // websocket client — without it (and without a window.Pusher global)
+    // it throws "Pusher client not found" and crashes the authenticated
+    // shell on connect.
+    Pusher,
     key: APP_KEY,
     wsHost: HOST,
     wsPort: FORCE_TLS ? 443 : PORT,
