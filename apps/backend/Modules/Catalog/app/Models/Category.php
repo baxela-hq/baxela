@@ -25,7 +25,20 @@ class Category extends Model
     protected $fillable = [
         CategorySchema::PARENT_ID,
         CategorySchema::POSITION,
+        CategorySchema::IMAGE_MEDIA_ID,
+        CategorySchema::IMAGE_URL,
+        CategorySchema::IS_FEATURED,
     ];
+
+    /**
+     * The attributes that should be cast.
+     */
+    protected function casts(): array
+    {
+        return [
+            CategorySchema::IS_FEATURED => 'boolean',
+        ];
+    }
 
     protected static function newFactory(): CategoryFactory
     {

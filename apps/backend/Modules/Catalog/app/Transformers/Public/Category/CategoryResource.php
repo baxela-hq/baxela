@@ -25,6 +25,7 @@ class CategoryResource extends JsonResource
             'id' => $this->resource->{CategorySchema::ID},
             'parent_id' => $this->resource->{CategorySchema::PARENT_ID},
             'position' => $this->resource->{CategorySchema::POSITION},
+            'image_url' => $this->resource->{CategorySchema::IMAGE_URL},
             'title' => $translation?->{CTSchema::TITLE},
             'slug' => $translation?->{CTSchema::SLUG},
         ];

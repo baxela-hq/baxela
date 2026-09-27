@@ -19,6 +19,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger(CategorySchema::PARENT_ID)->nullable();
             $table->unsignedSmallInteger(CategorySchema::POSITION)->nullable();
+            $table->unsignedBigInteger(CategorySchema::IMAGE_MEDIA_ID)->nullable();
+            $table->string(CategorySchema::IMAGE_URL, 500)->nullable();
+            $table->boolean(CategorySchema::IS_FEATURED)->default(false);
             $table->timestamps();
         });
 
