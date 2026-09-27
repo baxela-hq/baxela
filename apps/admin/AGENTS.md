@@ -9,7 +9,8 @@ Guidelines for AI agents working in this repository. Read this before making cha
 template/demo code and real Baxela modules coexist — see [Template vs Baxela Modules](#template-vs-Baxela-modules)).
 
 - **SPA** talking to a Laravel backend (`VITE_API_BASE_URL`), currently `http://Baxela-backend.local/api/v1`.
-- UI language defaults to **Farsi (`fa`)**, fallback `en`. **Language-driven direction**: the UI
+- UI language built-in default is **English (`en`/LTR)** — it matches the English-first pre-auth
+  pages; after sign-in the store default language takes over. **Language-driven direction**: the UI
   language and layout direction follow the store default language snapshot (`DEFAULT_LANGUAGE` in
   localStorage, written at sign-in and on settings save) — direction comes from `Language.is_rtl`.
   The config-drawer LTR/RTL toggle is a cookie-persisted **manual override** that wins over the
@@ -311,7 +312,7 @@ useTableUrlState({
 - Entity name object: `const entityName = { singular: tLabel('product'), plural: tLabel('products') }`.
 - **Runtime language switching exists**: the UI language follows the store default language
   snapshot via `useApplyUiLanguage` (`src/shared/hooks/use-apply-ui-language.ts`) at sign-in,
-  settings save and sign-out, and `src/i18n/index.ts` boots from the same snapshot (fallback `fa`).
+  settings save and sign-out, and `src/i18n/index.ts` boots from the same snapshot (fallback `en`).
   Direction follows `Language.is_rtl` (`src/shared/lib/ui-language.ts`) — never hardcode a
   language→direction map.
 

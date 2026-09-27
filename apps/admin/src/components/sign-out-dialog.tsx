@@ -34,7 +34,7 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
     StorageUtility.clear()
 
     // reset the UI (translations + direction) to the built-in default
-    // (fa/RTL) and drop any manual direction override
+    // (en/LTR) and drop any manual direction override
     applyUiLanguage(null)
 
     // Preserve current location for redirect after sign-in

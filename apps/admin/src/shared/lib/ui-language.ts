@@ -6,9 +6,10 @@ import { type Language } from '@/shared/types/locale.types'
 /**
  * UI language of the admin panel. Written to storage at sign-in and on
  * settings save, read at boot — the source of truth for translations and
- * (via `is_rtl`) for the layout direction.
+ * (via `is_rtl`) for the layout direction. The built-in default is en/LTR
+ * because the pre-auth pages (sign-in etc.) are English-only.
  */
-const DEFAULT_UI_LANGUAGE_CODE = 'fa'
+const DEFAULT_UI_LANGUAGE_CODE = 'en'
 
 export function getDefaultLanguageSnapshot(): Language | null {
   return StorageUtility.getItem<Language>(StorageKeys.DEFAULT_LANGUAGE)
@@ -16,10 +17,10 @@ export function getDefaultLanguageSnapshot(): Language | null {
 
 /**
  * Direction implied by a language's `is_rtl` flag. No snapshot → the
- * built-in default language (fa) → rtl.
+ * built-in default language (en) → ltr.
  */
 export function directionForLanguage(language: Language | null): Direction {
-  if (!language) return 'rtl'
+  if (!language) return 'ltr'
   return language.is_rtl ? 'rtl' : 'ltr'
 }
 
