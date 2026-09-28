@@ -140,7 +140,7 @@ export function Settings() {
                     <TabsList>
                       {languagesSafe.map((language) => (
                         <TabsTrigger key={language.code} value={language.code}>
-                          {language.code.toUpperCase()}
+                          {language.name}
                         </TabsTrigger>
                       ))}
                     </TabsList>
@@ -324,7 +324,7 @@ export function Settings() {
                             key={language.code}
                             value={language.code}
                           >
-                            {language.code.toUpperCase()}
+                            {language.name}
                           </TabsTrigger>
                         ))}
                       </TabsList>
