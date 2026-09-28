@@ -2,6 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Backend from 'i18next-http-backend';
 import {
+  applyLanguageFont,
   DEFAULT_UI_LANGUAGE_CODE,
   getDefaultLanguageSnapshot,
 } from '@/shared/lib/ui-language';
@@ -39,8 +40,9 @@ i18n
     },
   });
 
-// keep <html lang> in sync with the boot language (applyUiLanguage maintains
-// it after runtime switches)
+// keep <html lang> and the language font in sync with the boot language
+// (applyUiLanguage maintains both after runtime switches)
 document.documentElement.lang = uiLanguageCode;
+applyLanguageFont(uiLanguageCode);
 
 export default i18n;

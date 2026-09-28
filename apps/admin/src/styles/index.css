@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import './theme.css';
+@import './fonts.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,4 +85,20 @@
   to {
     height: 0;
   }
+}
+
+/*
+ * Per-language UI fonts. applyLanguageFont() ('@/shared/lib/ui-language') sets
+ * data-language-font on <html> from the map in '@/config/language-fonts'.
+ * Unlayered on purpose so the swap beats the .font-* utility FontProvider puts
+ * on <html>; removing the attribute restores the user's selected base font.
+ */
+html[data-language-font='vazirmatn'] {
+  font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* TipTap pins its own stack (tiptap-editor.css) — keep edited content in the
+ * language font too */
+html[data-language-font='vazirmatn'] .tiptap-editor {
+  font-family: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
 }

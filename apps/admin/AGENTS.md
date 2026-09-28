@@ -316,6 +316,14 @@ useTableUrlState({
   settings save and sign-out, and `src/i18n/index.ts` boots from the same snapshot (fallback `en`).
   Direction follows `Language.is_rtl` (`src/shared/lib/ui-language.ts`) — never hardcode a
   language→direction map.
+- **Per-language UI fonts**: languages whose script the base fonts (Inter/Manrope, latin-only)
+  cannot render get a dedicated family mapped in `src/config/language-fonts.ts` (`fa` →
+  `vazirmatn`, mirroring the storefront). `applyLanguageFont()` (`src/shared/lib/ui-language.ts`)
+  sets `data-language-font` on `<html>`; the font swap itself is CSS in `src/styles/index.css`,
+  and self-hosted `@font-face` files live in `src/styles/fonts.css` + `public/fonts/<family>/`
+  (browsers only download the face actually rendered, so unused language fonts cost nothing).
+  Fonts are shared per script, not per language — one Arabic family serves fa/ar/ur. The
+  add-a-font recipe is documented in the header of `src/config/language-fonts.ts`.
 
 ### Toast/message keys — reuse shared generics, never invent new message keys
 
