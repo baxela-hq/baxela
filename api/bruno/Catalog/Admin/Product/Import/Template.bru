@@ -1,0 +1,24 @@
+meta {
+  name: Template
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/products/import/template
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

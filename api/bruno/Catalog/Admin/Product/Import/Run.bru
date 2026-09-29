@@ -1,0 +1,52 @@
+meta {
+  name: Run
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/admin/products/import
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "media_id": 1,
+    "mapping": {
+      "variant.sku": "variant.sku",
+      "variant.price": "variant.price",
+      "variant.compare_price": "variant.compare_price",
+      "variant.cost_price": "variant.cost_price",
+      "variant.quantity": "variant.quantity",
+      "variant.barcode": "variant.barcode",
+      "status": "status",
+      "is_published": "is_published",
+      "title.fa": "title.fa",
+      "slug.fa": "slug.fa",
+      "description.fa": "description.fa",
+      "content.fa": "content.fa",
+      "title.en": "title.en",
+      "slug.en": "slug.en",
+      "description.en": "description.en",
+      "content.en": "content.en",
+      "categories": "categories"
+    },
+    "on_duplicate": "update",
+    "dry_run": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
