@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Storage;
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaInput;
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaOutput;
+use Modules\Core\Contracts\Gateways\Media\DTOs\MediaDto;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Media\Actions\Admin\Media\CreateMediaAction;
 use Modules\Media\Actions\Admin\Media\DeleteMediaAction;
@@ -44,6 +45,26 @@ class MediaGateway implements MediaGatewayInterface
         $action = app(DeleteMediaAction::class);
 
         return $action->handle($id);
+    }
+
+    public function findById(int|string $id): ?MediaDto
+    {
+        $media = Media::query()->find($id);
+
+        if (! $media) {
+            return null;
+        }
+
+        // The disk column casts to the Media module's enum; the Core-side
+        // DTO speaks plain storage names only.
+        return MediaDto::fill([
+            'id' => (int) $media->getKey(),
+            'disk' => $media->{MediaSchema::DISK}->value,
+            'path' => $media->{MediaSchema::PATH},
+            'name' => $media->{MediaSchema::NAME},
+            'extension' => $media->{MediaSchema::EXTENSION},
+            'mime_type' => $media->{MediaSchema::MIME_TYPE}?->value,
+        ]);
     }
 
     public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null): ?CreateMediaOutput

@@ -4,12 +4,20 @@ namespace Modules\Core\Contracts\Gateways\Media;
 
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaInput;
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaOutput;
+use Modules\Core\Contracts\Gateways\Media\DTOs\MediaDto;
 
 interface MediaGatewayInterface
 {
     public function create(CreateMediaInput $input): ?CreateMediaOutput;
 
     public function delete(string $id): bool;
+
+    /**
+     * Resolve a media record by id. Returns its storage coordinates
+     * (disk, path) plus name, extension and mime type, or null when
+     * no media exists for the given id.
+     */
+    public function findById(int|string $id): ?MediaDto;
 
     /**
      * Register a file already on the local filesystem in the media
