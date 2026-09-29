@@ -26,6 +26,14 @@
         "cm": "Centimeter (cm)",
         "m": "Meter (m)",
         "in": "Inch (in)"
+      },
+      "import_status": {
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "import_strategy": {
+        "update": "Update existing products",
+        "skip": "Skip existing products"
       }
     },
     "labels": {
@@ -87,7 +95,46 @@
       "meta_title": "Meta Title",
       "meta_description": "Meta Description",
       "open_graph_title": "Open Graph Title",
-      "open_graph_description": "Open Graph Description"
+      "open_graph_description": "Open Graph Description",
+      "import_products": "Import Products",
+      "import_description": "Upload a CSV file, map its columns, and import your products.",
+      "import_tab_run": "New Import",
+      "import_step_file": "File",
+      "import_step_mapping": "Mapping",
+      "import_step_options": "Options",
+      "import_choose_file": "Choose CSV file",
+      "import_change_file": "Change file",
+      "import_download_template": "Download example CSV",
+      "import_file_column": "File column",
+      "import_sample_value": "Sample value",
+      "import_field": "Mapped field",
+      "import_ignore": "Ignore",
+      "import_group_variant": "Variant",
+      "import_group_base": "Product",
+      "import_rows": "Rows",
+      "import_duplicate_strategy": "Existing products with the same SKU",
+      "import_dry_run": "Validate only (dry run)",
+      "import_run_dry_run": "Validate",
+      "import_run_import": "Import",
+      "import_created": "Created",
+      "import_updated": "Updated",
+      "import_skipped": "Skipped",
+      "import_failed": "Failed",
+      "import_total_rows": "Total rows",
+      "import_duration": "Duration",
+      "import_row": "Row",
+      "import_messages": "Messages",
+      "import_no_errors": "No row errors.",
+      "import_history": "History",
+      "import_new_import": "New import",
+      "import_filename": "File",
+      "import_run_at": "Date",
+      "import_view_errors": "View errors",
+      "import_hide_errors": "Hide errors",
+      "import_no_history": "No imports yet.",
+      "import_back": "Back",
+      "import_next": "Next",
+      "import_row_cap_exceeded": "The file exceeds the {{cap}}-row limit."
     },
     "tooltips": {
       "is_published": {
@@ -113,7 +160,9 @@
       "is_default": "When enabled, this variant will be selected as the default option on the website.",
       "images": "The first image is the featured photo. Use the arrows to change the order.",
       "attributes": "Load attributes from a template, add them manually, or mix both — then remove what you don't need. Attributes left without a value are not saved.",
-      "shipping": "Set the package weight and dimensions used to calculate shipping costs. Each value needs its unit; leave everything empty when not needed."
+      "shipping": "Set the package weight and dimensions used to calculate shipping costs. Each value needs its unit; leave everything empty when not needed.",
+      "import": "Download the example CSV, fill in your products, upload it via the file picker, then map the columns and validate with a dry run before importing.",
+      "import_dry_run": "Validates the whole file and writes nothing; the result shows what the real import would do."
     }
   }
 }

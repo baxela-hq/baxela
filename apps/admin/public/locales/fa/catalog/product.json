@@ -26,6 +26,14 @@
         "cm": "سانتی‌متر (cm)",
         "m": "متر (m)",
         "in": "اینچ (in)"
+      },
+      "import_status": {
+        "completed": "تکمیل‌شده",
+        "failed": "ناموفق"
+      },
+      "import_strategy": {
+        "update": "به‌روزرسانی محصولات موجود",
+        "skip": "ردکردن محصولات موجود"
       }
     },
     "labels": {
@@ -87,7 +95,46 @@
       "meta_title": "عنوان متا",
       "meta_description": "توضیحات متا",
       "open_graph_title": "عنوان Open Graph",
-      "open_graph_description": "توضیحات Open Graph"
+      "open_graph_description": "توضیحات Open Graph",
+      "import_products": "وارد کردن محصولات",
+      "import_description": "یک فایل CSV بارگذاری کنید، ستون‌های آن را نگاشت کنید و محصولات را وارد کنید.",
+      "import_tab_run": "وارد کردن جدید",
+      "import_step_file": "فایل",
+      "import_step_mapping": "نگاشت ستون‌ها",
+      "import_step_options": "گزینه‌ها",
+      "import_choose_file": "انتخاب فایل CSV",
+      "import_change_file": "تغییر فایل",
+      "import_download_template": "دانلود فایل نمونه CSV",
+      "import_file_column": "ستون فایل",
+      "import_sample_value": "نمونه مقدار",
+      "import_field": "فیلد نگاشت‌شده",
+      "import_ignore": "نادیده گرفتن",
+      "import_group_variant": "موجودی",
+      "import_group_base": "محصول",
+      "import_rows": "تعداد ردیف",
+      "import_duplicate_strategy": "محصولات موجود با SKU یکسان",
+      "import_dry_run": "فقط اعتبارسنجی (اجرای آزمایشی)",
+      "import_run_dry_run": "اعتبارسنجی",
+      "import_run_import": "وارد کردن",
+      "import_created": "ایجادشده",
+      "import_updated": "به‌روزرسانی‌شده",
+      "import_skipped": "ردشده",
+      "import_failed": "ناموفق",
+      "import_total_rows": "کل ردیف‌ها",
+      "import_duration": "مدت اجرا",
+      "import_row": "ردیف",
+      "import_messages": "پیام‌ها",
+      "import_no_errors": "خطای ردیفی وجود ندارد.",
+      "import_history": "تاریخچه",
+      "import_new_import": "وارد کردن جدید",
+      "import_filename": "فایل",
+      "import_run_at": "تاریخ",
+      "import_view_errors": "مشاهده خطاها",
+      "import_hide_errors": "بستن خطاها",
+      "import_no_history": "هنوز واردکردی ثبت نشده است.",
+      "import_back": "بازگشت",
+      "import_next": "بعدی",
+      "import_row_cap_exceeded": "فایل از سقف {{cap}} ردیف بیشتر است."
     },
     "tooltips": {
       "is_published": {
@@ -113,7 +160,9 @@
       "is_default": "وقتی فعال باشد، این تنوع به عنوان گزینه پیش‌فرض در وب‌سایت انتخاب می‌شود.",
       "images": "اولین تصویر، تصویر اصلی محصول است. برای تغییر ترتیب از فلش‌ها استفاده کنید.",
       "attributes": "ویژگی‌ها را از یک قالب بارگذاری کنید، به‌صورت دستی اضافه کنید یا هر دو را ترکیب کنید — سپس موارد اضافه را حذف کنید. ویژگی‌هایی که مقداری ندارند ذخیره نمی‌شوند.",
-      "shipping": "وزن و ابعاد بسته‌بندی را برای محاسبه هزینه ارسال وارد کنید. هر مقدار به واحد خود نیاز دارد؛ در صورت نیاز نبودن همه را خالی بگذارید."
+      "shipping": "وزن و ابعاد بسته‌بندی را برای محاسبه هزینه ارسال وارد کنید. هر مقدار به واحد خود نیاز دارد؛ در صورت نیاز نبودن همه را خالی بگذارید.",
+      "import": "فایل نمونه CSV را دانلود کنید و محصولات خود را در آن وارد کنید، سپس آن را از طریق انتخابگر فایل بارگذاری کنید، ستون‌ها را نگاشت کنید و پیش از وارد کردن، با اجرای آزمایشی اعتبارسنجی کنید.",
+      "import_dry_run": "کل فایل را اعتبارسنجی می‌کند و چیزی نوشته نمی‌شود؛ نتیجه نشان می‌دهد وارد کردن واقعی چه اثری خواهد داشت."
     }
   }
 }
