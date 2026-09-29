@@ -12,4 +12,9 @@ enum MediaMimeTypeEnum: string
     case IMAGE_JPG = 'image/jpg';
     case IMAGE_PNG = 'image/png';
     case IMAGE_GIF = 'image/gif';
+
+    // Legacy mime some browsers historically send for .csv uploads; the
+    // extension is re-verified by the CSV importer before parsing.
+    case TEXT_CSV = 'text/csv';
+    case APPLICATION_CSV_LEGACY = 'application/vnd.ms-excel';
 }

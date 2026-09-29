@@ -204,6 +204,43 @@ it('uploads media to root without a folder_id', function () {
     ]);
 });
 
+it('uploads a csv file', function () {
+
+    $user = $this->adminUser();
+    $this->actingAs($user);
+
+    $response = $this->withHeaders(['Accept' => 'application/json'])->post($this->baseUrl('/media'), [
+        MediaSchema::REQ_FILE => UploadedFile::fake()->createWithContent(
+            'products.csv',
+            "variant.sku,variant.price\nBX-1,100\n",
+        ),
+    ]);
+
+    $response->assertCreated();
+    $this->assertDatabaseHas(MediaSchema::TABLE, [
+        MediaSchema::USER_ID => $user->id,
+        MediaSchema::EXTENSION => 'csv',
+    ]);
+});
+
+it('still rejects unsupported file types', function () {
+
+    $user = $this->adminUser();
+    $this->actingAs($user);
+
+    $response = $this->withHeaders(['Accept' => 'application/json'])->post($this->baseUrl('/media'), [
+        MediaSchema::REQ_FILE => UploadedFile::fake()->createWithContent(
+            'products.txt',
+            'plain text',
+        ),
+    ]);
+
+    $response->assertStatus(422)->assertJsonPath('code', 'http.422');
+    $this->assertDatabaseMissing(MediaSchema::TABLE, [
+        MediaSchema::EXTENSION => 'txt',
+    ]);
+});
+
 it('uploads media into an owned folder', function () {
 
     Storage::fake('public');
