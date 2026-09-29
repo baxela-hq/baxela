@@ -38,7 +38,12 @@ use Modules\Catalog\Http\Controllers\Admin\OptionValue\ShowOptionValueController
 use Modules\Catalog\Http\Controllers\Admin\OptionValue\UpdateOptionValueController;
 use Modules\Catalog\Http\Controllers\Admin\Product\CreateProductController;
 use Modules\Catalog\Http\Controllers\Admin\Product\DeleteProductController;
+use Modules\Catalog\Http\Controllers\Admin\Product\DownloadProductImportTemplateController;
+use Modules\Catalog\Http\Controllers\Admin\Product\ImportProductIndexController;
+use Modules\Catalog\Http\Controllers\Admin\Product\ImportProductsController;
+use Modules\Catalog\Http\Controllers\Admin\Product\ImportProductShowController;
 use Modules\Catalog\Http\Controllers\Admin\Product\ListProductController;
+use Modules\Catalog\Http\Controllers\Admin\Product\PreviewProductImportController;
 use Modules\Catalog\Http\Controllers\Admin\Product\ShowProductController;
 use Modules\Catalog\Http\Controllers\Admin\Product\UpdateProductController;
 use Modules\Catalog\Http\Controllers\Admin\ProductComment\CreateProductCommentController;
@@ -49,6 +54,13 @@ use Modules\Catalog\Http\Controllers\Admin\ProductComment\UpdateProductCommentCo
 use Modules\Core\Http\Middleware\PermissionMiddleware;
 
 Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+    // Registered before /products/{id} so "import" is never treated as an id.
+    Route::post('/products/import/preview', PreviewProductImportController::class)->name('products.import.preview');
+    Route::post('/products/import', ImportProductsController::class)->name('products.import');
+    Route::get('/products/import/template', DownloadProductImportTemplateController::class)->name('products.import.template');
+    Route::get('/products/import', ImportProductIndexController::class)->name('products.import.index');
+    Route::get('/products/import/{id}', ImportProductShowController::class)->name('products.import.show');
+
     Route::get('/products', ListProductController::class)->name('products.list');
     Route::post('/products', CreateProductController::class)->name('products.create');
     Route::get('/products/{id}', ShowProductController::class)->name('products.show');

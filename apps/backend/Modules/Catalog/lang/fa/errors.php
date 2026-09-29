@@ -3,6 +3,7 @@
 return [
     'product' => [
         'creation_failed' => 'ایجاد محصول ناموفق بود',
+        'import_failed' => 'وارد کردن محصولات ناموفق بود',
     ],
     'product_comment' => [
         'creation_failed' => 'ایجاد دیدگاه محصول ناموفق بود',

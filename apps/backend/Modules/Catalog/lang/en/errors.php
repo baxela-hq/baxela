@@ -3,6 +3,7 @@
 return [
     'product' => [
         'creation_failed' => 'Product creation failed',
+        'import_failed' => 'Product import failed',
     ],
     'product_comment' => [
         'creation_failed' => 'Product comment creation failed',

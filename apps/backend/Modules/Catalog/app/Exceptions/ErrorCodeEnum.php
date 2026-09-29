@@ -8,6 +8,8 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
 {
     case PRODUCT_CREATION_FAILED = 'catalog.product.creation_failed';
 
+    case PRODUCT_IMPORT_FAILED = 'catalog.product.import_failed';
+
     case PRODUCT_COMMENT_CREATION_FAILED = 'catalog.product_comment.creation_failed';
 
     case PRODUCT_COMMENT_INVALID_PARENT = 'catalog.product_comment.invalid_parent';
