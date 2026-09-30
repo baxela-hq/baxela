@@ -20,7 +20,7 @@ class ListOrderAction
                 AllowedFilter::exact(OrderSchema::STATUS),
                 AllowedFilter::exact(OrderSchema::PAYMENT_STATUS),
                 AllowedFilter::exact(OrderSchema::USER_ID),
-                AllowedFilter::exact(OrderSchema::ORDER_CODE),
+                AllowedFilter::partial(OrderSchema::ORDER_CODE),
             )
             ->allowedSorts(
                 OrderSchema::ID,
