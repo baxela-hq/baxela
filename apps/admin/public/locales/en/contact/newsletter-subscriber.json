@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "subscriber": "Newsletter Subscriber",
+      "subscribers": "Newsletter Subscribers",
+      "id": "ID",
+      "email": "Email",
+      "locale": "Locale",
+      "status": "Status",
+      "created_at": "Subscribed At",
+      "subscribed": "Mark as subscribed",
+      "unsubscribed": "Mark as unsubscribed"
+    },
+    "statuses": {
+      "status": {
+        "subscribed": "Subscribed",
+        "unsubscribed": "Unsubscribed"
+      }
+    }
+  }
+}

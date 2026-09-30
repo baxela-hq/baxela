@@ -113,9 +113,18 @@ export const useSidebarData = (): SidebarData => {
             icon: MenuIcon,
           },
           {
-            title: t('sidebar.contactMessages'),
-            url: '/contact/messages',
+            title: t('sidebar.contact'),
             icon: Inbox,
+            items: [
+              {
+                title: t('sidebar.contactMessages'),
+                url: '/contact/messages',
+              },
+              {
+                title: t('sidebar.newsletter-subscribers'),
+                url: '/contact/newsletter-subscribers',
+              },
+            ],
           },
           {
             title: t('sidebar.users'),

@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "subscriber": "مشترک خبرنامه",
+      "subscribers": "مشترکان خبرنامه",
+      "id": "شناسه",
+      "email": "ایمیل",
+      "locale": "زبان",
+      "status": "وضعیت",
+      "created_at": "تاریخ عضویت",
+      "subscribed": "علامت‌گذاری به‌عنوان مشترک",
+      "unsubscribed": "علامت‌گذاری به‌عنوان لغو اشتراک"
+    },
+    "statuses": {
+      "status": {
+        "subscribed": "مشترک",
+        "unsubscribed": "لغو اشتراک"
+      }
+    }
+  }
+}

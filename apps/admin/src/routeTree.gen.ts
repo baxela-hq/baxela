@@ -46,6 +46,7 @@ import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
+import { Route as AuthenticatedContactNewsletterSubscribersIndexRouteImport } from './routes/_authenticated/contact/newsletter-subscribers/index'
 import { Route as AuthenticatedContactMessagesIndexRouteImport } from './routes/_authenticated/contact/messages/index'
 import { Route as AuthenticatedCatalogProductsIndexRouteImport } from './routes/_authenticated/catalog/products/index'
 import { Route as AuthenticatedCatalogProductCommentsIndexRouteImport } from './routes/_authenticated/catalog/product-comments/index'
@@ -270,6 +271,12 @@ const AuthenticatedContentPagesIndexRoute =
     path: '/content/pages/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContactNewsletterSubscribersIndexRoute =
+  AuthenticatedContactNewsletterSubscribersIndexRouteImport.update({
+    id: '/contact/newsletter-subscribers/',
+    path: '/contact/newsletter-subscribers/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContactMessagesIndexRoute =
   AuthenticatedContactMessagesIndexRouteImport.update({
     id: '/contact/messages/',
@@ -400,6 +407,7 @@ export interface FileRoutesByFullPath {
   '/catalog/product-comments': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
+  '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -452,6 +460,7 @@ export interface FileRoutesByTo {
   '/catalog/product-comments': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
+  '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -508,6 +517,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/product-comments/': typeof AuthenticatedCatalogProductCommentsIndexRoute
   '/_authenticated/catalog/products/': typeof AuthenticatedCatalogProductsIndexRoute
   '/_authenticated/contact/messages/': typeof AuthenticatedContactMessagesIndexRoute
+  '/_authenticated/contact/newsletter-subscribers/': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
   '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -564,6 +574,7 @@ export interface FileRouteTypes {
     | '/catalog/product-comments'
     | '/catalog/products'
     | '/contact/messages'
+    | '/contact/newsletter-subscribers'
     | '/content/pages'
     | '/discount/coupons'
     | '/inventory/inventory-stocks'
@@ -616,6 +627,7 @@ export interface FileRouteTypes {
     | '/catalog/product-comments'
     | '/catalog/products'
     | '/contact/messages'
+    | '/contact/newsletter-subscribers'
     | '/content/pages'
     | '/discount/coupons'
     | '/inventory/inventory-stocks'
@@ -671,6 +683,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/product-comments/'
     | '/_authenticated/catalog/products/'
     | '/_authenticated/contact/messages/'
+    | '/_authenticated/contact/newsletter-subscribers/'
     | '/_authenticated/content/pages/'
     | '/_authenticated/discount/coupons/'
     | '/_authenticated/inventory/inventory-stocks/'
@@ -968,6 +981,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContentPagesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/contact/newsletter-subscribers/': {
+      id: '/_authenticated/contact/newsletter-subscribers/'
+      path: '/contact/newsletter-subscribers'
+      fullPath: '/contact/newsletter-subscribers'
+      preLoaderRoute: typeof AuthenticatedContactNewsletterSubscribersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/contact/messages/': {
       id: '/_authenticated/contact/messages/'
       path: '/contact/messages'
@@ -1145,6 +1165,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCatalogProductCommentsIndexRoute: typeof AuthenticatedCatalogProductCommentsIndexRoute
   AuthenticatedCatalogProductsIndexRoute: typeof AuthenticatedCatalogProductsIndexRoute
   AuthenticatedContactMessagesIndexRoute: typeof AuthenticatedContactMessagesIndexRoute
+  AuthenticatedContactNewsletterSubscribersIndexRoute: typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
   AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -1187,6 +1208,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedCatalogProductsIndexRoute,
   AuthenticatedContactMessagesIndexRoute:
     AuthenticatedContactMessagesIndexRoute,
+  AuthenticatedContactNewsletterSubscribersIndexRoute:
+    AuthenticatedContactNewsletterSubscribersIndexRoute,
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
   AuthenticatedDiscountCouponsIndexRoute:
     AuthenticatedDiscountCouponsIndexRoute,
