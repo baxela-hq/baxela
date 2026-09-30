@@ -1025,6 +1025,38 @@ export function ProductForm() {
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name='is_featured'
+                  render={({ field }) => (
+                    <FormItem className='mb-5'>
+                      <FormLabel>{tLabel('is_featured')}</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(value === "true")}
+                        defaultValue={String(field.value)}
+                      >
+                        <FormControl className='w-full'>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={tPlaceHolder('select')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem key="true" value="true">
+                            {tStatus(`is_featured.true`)}
+                          </SelectItem>
+                          <SelectItem key="false" value="false">
+                            {tStatus(`is_featured.false`)}
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                        <FormDescription>
+                          {tTooltip(`is_featured.${field.value ? 'active' : 'inactive'}`)}
+                        </FormDescription>
+                    </FormItem>
+                  )}
+                />
+
                 {/* Status Name Field */}
                 <FormField
                   control={form.control}

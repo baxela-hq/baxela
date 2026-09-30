@@ -15,6 +15,10 @@
         "false": "No",
         "true": "Yes"
       },
+      "is_featured": {
+        "true": "Featured",
+        "false": "Not featured"
+      },
       "weight_unit": {
         "kg": "Kilogram (kg)",
         "g": "Gram (g)",
@@ -49,6 +53,7 @@
       "type": "Type",
       "status": "Status",
       "is_published": "Is Published",
+      "is_featured": "Featured",
       "categories": "Categories",
       "variants": "Variants",
       "price": "Price",
@@ -140,6 +145,10 @@
       "is_published": {
         "active": "When enabled, the product will be visible on the website.",
         "inactive": "When disabled, the product will only be visible in the admin panel."
+      },
+      "is_featured": {
+        "active": "Featured products appear on the storefront home page.",
+        "inactive": "Regular product — shown only in catalogs and search."
       },
       "requires_shipping": {
         "active": "When enabled, the product is a physical item and the weight and dimensions below are used for shipping.",

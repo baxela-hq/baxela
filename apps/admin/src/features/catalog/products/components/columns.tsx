@@ -132,6 +132,27 @@ export const Columns = (): ColumnDef<Product>[] => {
       enableSorting: false,
     },
     {
+      accessorKey: 'is_featured',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('is_featured')} />
+      ),
+      cell: ({ row }) => {
+        const { is_featured } = row.original
+        return (
+          <div className='flex space-x-2'>
+            <Badge variant={is_featured ? 'default' : 'outline'}>
+              {row.getValue('is_featured') ? tcLabel('yes') : tcLabel('no')}
+            </Badge>
+          </div>
+        )
+      },
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id))
+      },
+      enableHiding: true,
+      enableSorting: false,
+    },
+    {
       accessorKey: 'status',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={tLabel('status')} />
