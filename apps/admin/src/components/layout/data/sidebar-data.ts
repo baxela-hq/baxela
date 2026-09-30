@@ -1,4 +1,5 @@
 import {
+  Boxes,
   Construction,
   LayoutDashboard,
   Bug,
@@ -144,6 +145,11 @@ export const useSidebarData = (): SidebarData => {
                 url: '/order/orders',
               },
             ],
+          },
+          {
+            title: t('sidebar.inventory-stocks'),
+            url: '/inventory/inventory-stocks',
+            icon: Boxes,
           },
           {
             title: t('sidebar.payment'),

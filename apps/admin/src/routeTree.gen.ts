@@ -43,6 +43,7 @@ import { Route as AuthenticatedPaymentPaymentsIndexRouteImport } from './routes/
 import { Route as AuthenticatedPaymentMethodsIndexRouteImport } from './routes/_authenticated/payment/methods/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
+import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
 import { Route as AuthenticatedContactMessagesIndexRouteImport } from './routes/_authenticated/contact/messages/index'
@@ -251,6 +252,12 @@ const AuthenticatedMenuMenusIndexRoute =
     path: '/menu/menus/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedInventoryInventoryStocksIndexRoute =
+  AuthenticatedInventoryInventoryStocksIndexRouteImport.update({
+    id: '/inventory/inventory-stocks/',
+    path: '/inventory/inventory-stocks/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDiscountCouponsIndexRoute =
   AuthenticatedDiscountCouponsIndexRouteImport.update({
     id: '/discount/coupons/',
@@ -395,6 +402,7 @@ export interface FileRoutesByFullPath {
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
@@ -446,6 +454,7 @@ export interface FileRoutesByTo {
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
   '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
@@ -501,6 +510,7 @@ export interface FileRoutesById {
   '/_authenticated/contact/messages/': typeof AuthenticatedContactMessagesIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
   '/_authenticated/payment/methods/': typeof AuthenticatedPaymentMethodsIndexRoute
@@ -556,6 +566,7 @@ export interface FileRouteTypes {
     | '/contact/messages'
     | '/content/pages'
     | '/discount/coupons'
+    | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
     | '/payment/methods'
@@ -607,6 +618,7 @@ export interface FileRouteTypes {
     | '/contact/messages'
     | '/content/pages'
     | '/discount/coupons'
+    | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
     | '/payment/methods'
@@ -661,6 +673,7 @@ export interface FileRouteTypes {
     | '/_authenticated/contact/messages/'
     | '/_authenticated/content/pages/'
     | '/_authenticated/discount/coupons/'
+    | '/_authenticated/inventory/inventory-stocks/'
     | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
     | '/_authenticated/payment/methods/'
@@ -934,6 +947,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMenuMenusIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/inventory/inventory-stocks/': {
+      id: '/_authenticated/inventory/inventory-stocks/'
+      path: '/inventory/inventory-stocks'
+      fullPath: '/inventory/inventory-stocks'
+      preLoaderRoute: typeof AuthenticatedInventoryInventoryStocksIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/discount/coupons/': {
       id: '/_authenticated/discount/coupons/'
       path: '/discount/coupons'
@@ -1127,6 +1147,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactMessagesIndexRoute: typeof AuthenticatedContactMessagesIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
+  AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
   AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
   AuthenticatedPaymentMethodsIndexRoute: typeof AuthenticatedPaymentMethodsIndexRoute
@@ -1169,6 +1190,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
   AuthenticatedDiscountCouponsIndexRoute:
     AuthenticatedDiscountCouponsIndexRoute,
+  AuthenticatedInventoryInventoryStocksIndexRoute:
+    AuthenticatedInventoryInventoryStocksIndexRoute,
   AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
   AuthenticatedPaymentMethodsIndexRoute: AuthenticatedPaymentMethodsIndexRoute,

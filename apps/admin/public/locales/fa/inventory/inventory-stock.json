@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "موجودی انبار",
+      "inventory-stocks": "موجودی‌های انبار",
+      "id": "شناسه",
+      "product": "محصول",
+      "variant": "گونه",
+      "quantity": "تعداد",
+      "low_stock": "موجودی کم",
+      "sku": "کد SKU",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی"
+    },
+    "statuses": {
+      "low_stock": "موجودی کم"
+    },
+    "help_texts": {
+      "product": "محصولی که می‌خواهید گونه آن را انبار کنید را انتخاب کنید",
+      "variant": "گونه محصول انتخاب‌شده را انتخاب کنید",
+      "quantity": "تعداد موجود برای این گونه — برای هر گونه یک ردیف موجودی"
+    },
+    "placeholders": {
+      "select_product_first": "ابتدا یک محصول انتخاب کنید"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "Inventory Stock",
+      "inventory-stocks": "Inventory Stocks",
+      "id": "ID",
+      "product": "Product",
+      "variant": "Variant",
+      "quantity": "Quantity",
+      "low_stock": "Low stock",
+      "sku": "SKU",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "low_stock": "low stock"
+    },
+    "help_texts": {
+      "product": "Pick the product whose variant you want to stock",
+      "variant": "Pick the variant of the selected product",
+      "quantity": "Units available for this variant — one stock row per variant"
+    },
+    "placeholders": {
+      "select_product_first": "Select a product first"
+    }
+  }
+}
