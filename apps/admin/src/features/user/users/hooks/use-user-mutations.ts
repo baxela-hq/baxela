@@ -57,14 +57,25 @@ export function useDeleteUser() {
 }
 
 /**
- * Fake bulk delete — only simulates the delay today. The consuming
- * component wraps mutateAsync in its own toast.promise.
+ * Sequentially delete many users. The consuming component wraps
+ * mutateAsync in its own toast.promise for loading/success/error feedback.
  */
 export function useBulkDeleteUsers() {
+  const queryClient = useQueryClient()
+
   return useMutation({
-    mutationFn: async (_users: User[]) => {
-      // TODO: real bulk delete (sequential deleteUser calls) once wired to the API
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+    mutationFn: async (users: User[]) => {
+      for (const user of users) {
+        await deleteUser(user.id.toString())
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [FeatureRoutes.CACHE_KEY],
+      })
+    },
+    onError: () => {
+      // feedback handled by the toast.promise wrapper in the consuming component
     },
   })
 }

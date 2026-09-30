@@ -11,6 +11,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
 import { useBulkDeleteUsers } from '../hooks/use-user-mutations'
+import { type User } from '../data/schema'
 
 type UserMultiDeleteDialogProps<TData> = {
   open: boolean
@@ -30,6 +31,7 @@ export function MultiDeleteDialog<TData>({
   const selectedRows = table.getFilteredSelectedRowModel().rows
 
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
+  const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
   const bulkDeleteUsers = useBulkDeleteUsers()
 
@@ -41,18 +43,22 @@ export function MultiDeleteDialog<TData>({
 
     onOpenChange(false)
 
-    toast.promise(bulkDeleteUsers.mutateAsync([]), {
-      loading: t('dialog.bulk_delete.deleting-items'),
-      success: () => {
-        setValue('')
-        table.resetRowSelection()
-        return t('dialog.bulk_delete.deleted_items_x', {
-          n: selectedRows.length,
-          name: selectedRows.length > 1 ? t('shared.items') : t('shared.item')
-        })
-      },
-      error: 'Error',
-    })
+    toast.promise(
+      bulkDeleteUsers.mutateAsync(
+        selectedRows.map((row) => row.original as User)
+      ),
+      {
+        loading: t('dialog.bulk_delete.deleting-items'),
+        success: () => {
+          setValue('')
+          table.resetRowSelection()
+          return t('dialog.bulk_delete.deleted_items_x', {
+            n: selectedRows.length,
+            name: selectedRows.length > 1 ? t('shared.items') : t('shared.item')
+          })
+        },
+        error: tMessage('error.general'),
+      })
   }
 
   return (
