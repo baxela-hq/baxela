@@ -8,6 +8,8 @@ class ShowInventoryStockAction extends AbstractInventoryStockAction
 {
     public function handle(string $id): Model
     {
-        return $this->model->findOrFail($id);
+        return $this->model
+            ->with([self::WITH_VARIANT_PRODUCT])
+            ->findOrFail($id);
     }
 }

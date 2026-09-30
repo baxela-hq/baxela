@@ -9,7 +9,7 @@ class CreateInventoryStockAction extends AbstractInventoryStockAction
     public function handle(InventoryStockRequest $request)
     {
         $record = $this->model->create($request->validated());
-        $record = $record->fresh();
+        $record = $record->fresh([self::WITH_VARIANT_PRODUCT]);
 
         return $record;
     }

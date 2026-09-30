@@ -14,4 +14,6 @@ class InventoryStockSchema
     public const string VARIANT_ID = 'variant_id';
 
     public const string QUANTITY = 'quantity';
+
+    public const string RES_VARIANT = 'variant';
 }

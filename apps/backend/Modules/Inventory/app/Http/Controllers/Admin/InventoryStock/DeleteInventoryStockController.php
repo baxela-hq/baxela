@@ -15,6 +15,6 @@ class DeleteInventoryStockController extends Controller
     {
         $this->action->handle($id);
 
-        return response()->noInventory(Response::HTTP_NO_CONTENT);
+        return response()->noContent(Response::HTTP_NO_CONTENT);
     }
 }

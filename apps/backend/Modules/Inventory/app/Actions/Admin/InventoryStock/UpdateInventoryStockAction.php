@@ -12,6 +12,6 @@ class UpdateInventoryStockAction extends AbstractInventoryStockAction
         $record = $this->model->findOrFail($id);
         $record->update($request->validated());
 
-        return $record;
+        return $record->fresh([self::WITH_VARIANT_PRODUCT]);
     }
 }
