@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/product-card";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { serverApiGet } from "@/lib/api/server";
 import type { ApiProduct, ApiPublicCategory, Paginated } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
@@ -8,18 +9,26 @@ import { Link } from "@/i18n/navigation";
 export default async function HomePage() {
   const t = await getTranslations("home.home");
 
-  // The backend has no "featured" concept yet — the newest products stand
-  // in until a curated endpoint exists.
-  const [categoriesPage, productsPage] = await Promise.all([
+  // Curated featured products; a fresh store with nothing curated yet
+  // falls back to the newest products so the section never sits empty.
+  const [categoriesPage, featuredPage] = await Promise.all([
     serverApiGet<Paginated<ApiPublicCategory>>(
       "/catalog/public/categories?featured=true&per_page=4"
     ).catch(() => null),
-    serverApiGet<Paginated<ApiProduct>>("/catalog/public/products?per_page=4")
-      .catch(() => null),
+    serverApiGet<Paginated<ApiProduct>>(
+      "/catalog/public/products?filter[is_featured]=true&per_page=4"
+    ).catch(() => null),
   ]);
 
   const categories = (categoriesPage?.data ?? []).slice(0, 4);
-  const featured = productsPage?.data ?? [];
+  let featured = featuredPage?.data ?? [];
+
+  if (featured.length === 0) {
+    const newestPage = await serverApiGet<Paginated<ApiProduct>>(
+      "/catalog/public/products?per_page=4"
+    ).catch(() => null);
+    featured = newestPage?.data ?? [];
+  }
 
   return (
     <>
@@ -154,19 +163,7 @@ export default async function HomePage() {
             <p className="mt-3 text-base text-secondary-text rtl:normal-case rtl:tracking-normal">
               {t("newsletter.texts.description")}
             </p>
-            <form className="mt-8 flex gap-3" action="/newsletter" method="post">
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder={t("newsletter.placeholders.email")}
-                aria-label={t("newsletter.labels.email")}
-                className="h-14 min-w-0 flex-1 rounded-default border border-border bg-white px-4 text-base outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
-              />
-              <Button type="submit" fullWidth={false} className="shrink-0 px-8">
-                {t("newsletter.actions.subscribe")}
-              </Button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
       </section>

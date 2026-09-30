@@ -49,6 +49,10 @@
     },
     "actions": {
       "subscribe": "Subscribe"
+    },
+    "messages": {
+      "success": "You're on the list — check your inbox for a welcome note.",
+      "error_general": "Could not subscribe right now. Please try again later."
     }
   }
 }
