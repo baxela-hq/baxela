@@ -19,6 +19,8 @@ class ProductSchema
 
     public const string IS_PUBLISHED = 'is_published';
 
+    public const string IS_FEATURED = 'is_featured';
+
     public const string RES_SHIPPING = 'shipping';
 
     public const string RES_OPTIONS = 'options';

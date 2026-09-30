@@ -49,6 +49,7 @@ class PublicProductQuery implements QueryInterface
                     });
                 }),
                 AllowedFilter::exact(ProductSchema::RES_CATEGORIES.'.'.CategorySchema::ID),
+                AllowedFilter::exact(ProductSchema::IS_FEATURED),
                 AllowedFilter::callback('option_value_id', function (Builder $query, $value): void {
                     // Values of different options narrow the result
                     // (S AND Red); values of the same option widen it

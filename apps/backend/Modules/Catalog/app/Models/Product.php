@@ -28,6 +28,7 @@ class Product extends Model
         ProductSchema::TYPE,
         ProductSchema::STATUS,
         ProductSchema::IS_PUBLISHED,
+        ProductSchema::IS_FEATURED,
     ];
 
     protected function casts(): array
@@ -36,6 +37,7 @@ class Product extends Model
             ProductSchema::TYPE => ProductTypeEnum::class,
             ProductSchema::STATUS => ProductStatusEnum::class,
             ProductSchema::IS_PUBLISHED => 'boolean',
+            ProductSchema::IS_FEATURED => 'boolean',
         ];
     }
 

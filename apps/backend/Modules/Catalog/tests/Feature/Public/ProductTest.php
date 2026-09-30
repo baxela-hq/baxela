@@ -158,3 +158,15 @@ it('lists approved comments with their approved replies for a product', function
         ->and($comment['replies'])->toHaveCount(1)
         ->and($comment['replies'][0]['body'])->toBe('Approved reply');
 });
+
+it('filters the storefront list to featured products', function () {
+    $featured = publicProduct('featured-product');
+    Product::query()->whereKey($featured->id)->update(['is_featured' => true]);
+    publicProduct('regular-product');
+
+    $ids = collect(
+        $this->getJson($this->baseUrl('/public/products?filter[is_featured]=true'))->json('data')
+    )->pluck('id');
+
+    expect($ids)->toContain($featured->id)->toHaveCount(1);
+});

@@ -108,3 +108,33 @@ it('soft-deletes a product', function () {
     expect(Product::query()->find($productId))->toBeNull()
         ->and(Product::withTrashed()->find($productId))->not->toBeNull();
 });
+
+it('marks a product as featured and filters the admin list by the flag', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $featuredId = $this->postJson($this->baseUrl('/admin/products'), productPayload(['is_featured' => true]))
+        ->assertCreated()
+        ->assertJsonPath('data.is_featured', true)
+        ->json('data.id');
+
+    $plainId = $this->postJson($this->baseUrl('/admin/products'), productPayload([
+        'translations' => [[
+            'language' => 'en',
+            'title' => 'Plain Product',
+            'slug' => 'plain-product',
+            'content' => 'Long-form content',
+            'description' => null,
+        ]],
+    ]))
+        ->assertCreated()
+        ->assertJsonPath('data.is_featured', false)
+        ->json('data.id');
+
+    expect(Product::query()->find($featuredId)->{ProductSchema::IS_FEATURED})->toBeTrue();
+
+    $ids = collect(
+        $this->getJson($this->baseUrl('/admin/products?filter[is_featured]=true'))->json('data')
+    )->pluck('id');
+
+    expect($ids)->toContain($featuredId)->not->toContain($plainId);
+});
