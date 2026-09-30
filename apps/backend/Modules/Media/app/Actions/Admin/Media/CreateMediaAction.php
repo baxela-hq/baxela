@@ -9,6 +9,7 @@ use Modules\Core\Utils\Auth;
 use Modules\Media\Dtos\Admin\CreateMediaInput;
 use Modules\Media\Exceptions\Admin\Media\CreationFailedException;
 use Modules\Media\Models\Folder;
+use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaSchema;
 
 class CreateMediaAction extends AbstractMediaAction
@@ -21,7 +22,10 @@ class CreateMediaAction extends AbstractMediaAction
         $folderId = $input->{MediaSchema::FOLDER_ID};
 
         if ($folderId !== null) {
-            Folder::query()->findOrFail((int) $folderId);
+            // uploads land only in folders owned by the uploader
+            Folder::query()
+                ->where(FolderSchema::USER_ID, Auth::id())
+                ->findOrFail((int) $folderId);
         }
 
         try {

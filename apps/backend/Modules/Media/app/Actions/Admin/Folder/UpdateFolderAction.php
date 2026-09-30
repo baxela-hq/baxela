@@ -3,6 +3,7 @@
 namespace Modules\Media\Actions\Admin\Folder;
 
 use Illuminate\Support\Collection;
+use Modules\Core\Utils\Auth;
 use Modules\Media\Exceptions\Admin\Folder\CircularMoveException;
 use Modules\Media\Models\Folder;
 use Modules\Media\Schemas\Folder\FolderSchema;
@@ -14,7 +15,9 @@ class UpdateFolderAction
      */
     public function handle(string $id, array $data): Folder
     {
-        $folder = Folder::query()->findOrFail($id);
+        $folder = Folder::query()
+            ->where(FolderSchema::USER_ID, Auth::id())
+            ->findOrFail($id);
 
         if (array_key_exists(FolderSchema::PARENT_ID, $data)) {
             $parentId = $data[FolderSchema::PARENT_ID];
@@ -34,7 +37,9 @@ class UpdateFolderAction
      */
     protected function ensureValidMove(Folder $folder, int $parentId): void
     {
+        // the move target must belong to the same owner as the folder
         $target = Folder::query()
+            ->where(FolderSchema::USER_ID, Auth::id())
             ->findOrFail($parentId);
 
         if ($target->getKey() === $folder->getKey()) {

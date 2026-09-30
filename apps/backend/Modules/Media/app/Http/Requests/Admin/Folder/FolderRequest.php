@@ -18,7 +18,9 @@ class FolderRequest extends FormRequest
 
         return [
             FolderSchema::PARENT_ID => ['nullable', 'numeric', Rule::exists(FolderSchema::TABLE, FolderSchema::ID)],
-            FolderSchema::NAME => ['required', 'string', 'max:255', 'regex:/^[\p{L}\p{N}](?:[\p{L}\p{N} _.\-()]*[\p{L}\p{N}_\-()])?$/u',
+            // Partial updates (e.g. moving a folder) must not require the
+            // name to be resent; it is only mandatory when creating.
+            FolderSchema::NAME => [$id ? 'sometimes' : 'required', 'string', 'max:255', 'regex:/^[\p{L}\p{N}](?:[\p{L}\p{N} _.\-()]*[\p{L}\p{N}_\-()])?$/u',
                 new UniquePair(FolderSchema::TABLE, [
                     FolderSchema::NAME => $this->input(FolderSchema::NAME),
                     FolderSchema::PARENT_ID => $this->input(FolderSchema::PARENT_ID),

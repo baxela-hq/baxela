@@ -14,7 +14,9 @@ class UpdateMediaAction extends AbstractMediaAction
     {
         $userId = Auth::id();
 
-        $media = $this->model->query()->findOrFail($id);
+        $media = $this->model->query()
+            ->where(MediaSchema::USER_ID, $userId)
+            ->findOrFail($id);
 
         if (array_key_exists(MediaSchema::FOLDER_ID, $data)) {
             $folderId = $data[MediaSchema::FOLDER_ID];
