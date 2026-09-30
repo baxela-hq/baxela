@@ -1,0 +1,27 @@
+meta {
+  name: Subscribe
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/contact/public/newsletter-subscribers
+  body: json
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "reader@example.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

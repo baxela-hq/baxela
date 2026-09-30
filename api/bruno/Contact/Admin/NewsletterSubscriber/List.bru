@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/contact/admin/newsletter-subscribers
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+  ~sort: -id
+  ~filter[status]: subscribed
+  ~filter[email]: example.com
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
