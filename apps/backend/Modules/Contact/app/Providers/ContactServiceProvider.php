@@ -47,6 +47,8 @@ class ContactServiceProvider extends ModuleServiceProvider
     protected function registerRateLimiters(): void
     {
         RateLimiter::for('contact-submit', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.submit'))->by($request->ip()));
+
+        RateLimiter::for('contact-subscribe', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.subscribe'))->by($request->ip()));
     }
 
     /**
