@@ -14,6 +14,8 @@
     "media": "Media",
     "menus": "Menus",
     "contactMessages": "Contact Messages",
+    "contact": "Contact",
+    "newsletter-subscribers": "Newsletter Subscribers",
     "order": "Order",
     "orders": "Orders",
     "inventory-stocks": "Inventory Stocks",
@@ -106,6 +108,9 @@
   },
   "command-menu": {
     "theme-heading": "Theme",
-    "no-results": "No results found."
+    "no-results": "No results found.",
+    "records-heading": "Records",
+    "products-heading": "Product",
+    "orders-heading": "Order"
   }
 }
