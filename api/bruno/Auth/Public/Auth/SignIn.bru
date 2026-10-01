@@ -22,14 +22,10 @@ auth:bearer {
 body:json {
   {
     "email": "admin@baxela.com",
-    "password": "12345678",
+    "password": "{{password}}",
     "device_name": "bruno",
     "remember": true
   }
-}
-
-vars:pre-request {
-  baseUrl: http://baxela-backend.local
 }
 
 script:post-response {
