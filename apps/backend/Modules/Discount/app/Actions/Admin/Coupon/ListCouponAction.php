@@ -3,6 +3,7 @@
 namespace Modules\Discount\Actions\Admin\Coupon;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Discount\Models\Coupon;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -44,6 +45,6 @@ class ListCouponAction
                 CouponSchema::TABLE.'.'.CouponSchema::UPDATED_AT,
             ])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

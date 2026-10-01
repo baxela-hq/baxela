@@ -4,6 +4,7 @@ namespace Modules\Menu\Actions\Admin\MenuLink;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Modules\Menu\Filters\NullableExactFilter;
 use Modules\Menu\Models\MenuLink;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
@@ -43,6 +44,6 @@ class ListMenuLinkAction extends AbstractMenuLinkAction
             ->where(MenuLinkSchema::MENU_ID, $menuId)
             ->orderBy(MenuLinkSchema::POSITION, 'asc')
             ->orderBy($id, 'asc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

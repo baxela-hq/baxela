@@ -6,6 +6,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Models\Option;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema as OTSchema;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -35,6 +36,6 @@ class ListOptionAction
             )
             ->withCount(OptionSchema::RES_VALUES)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

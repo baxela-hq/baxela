@@ -3,6 +3,7 @@
 namespace Modules\Shipping\Actions\Admin\Method;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -36,6 +37,6 @@ class ListMethodAction
                 MethodSchema::RES_TRANSLATIONS,
             )
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

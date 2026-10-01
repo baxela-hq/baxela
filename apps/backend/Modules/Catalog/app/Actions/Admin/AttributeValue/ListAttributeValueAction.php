@@ -7,6 +7,7 @@ use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -37,6 +38,6 @@ class ListAttributeValueAction
             ->where(AttributeValueSchema::ATTRIBUTE_ID, $attributeId)
             ->orderBy(AttributeValueSchema::POSITION)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

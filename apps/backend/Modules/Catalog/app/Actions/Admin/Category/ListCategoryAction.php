@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Category;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -36,6 +37,6 @@ class ListCategoryAction extends AbstractCategoryAction
                 CategorySchema::RES_TRANSLATIONS,
             )
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

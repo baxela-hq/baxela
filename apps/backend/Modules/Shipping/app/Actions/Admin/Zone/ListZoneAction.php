@@ -3,6 +3,7 @@
 namespace Modules\Shipping\Actions\Admin\Zone;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Shipping\Models\Zone;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -36,6 +37,6 @@ class ListZoneAction
                 ZoneSchema::RES_COUNTRIES,
             )
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

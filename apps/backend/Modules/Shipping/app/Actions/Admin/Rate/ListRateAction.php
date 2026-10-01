@@ -3,6 +3,7 @@
 namespace Modules\Shipping\Actions\Admin\Rate;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Shipping\Models\Rate;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Rate\RateSchema;
@@ -37,6 +38,6 @@ class ListRateAction
                 RateSchema::RES_ZONE,
             ])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

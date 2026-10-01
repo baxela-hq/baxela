@@ -6,6 +6,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -34,7 +35,7 @@ class ListProductCommentAction extends AbstractProductCommentAction
             ])
             ->with(Schema::RES_PRODUCT.'.'.ProductSchema::RES_TRANSLATIONS)
             ->orderBy(Schema::TABLE.'.'.Schema::ID, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
 
         $this->enrichWithUserNames($comments->getCollection());
 

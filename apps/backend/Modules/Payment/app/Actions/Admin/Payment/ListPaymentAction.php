@@ -3,6 +3,7 @@
 namespace Modules\Payment\Actions\Admin\Payment;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -25,6 +26,6 @@ class ListPaymentAction
                 PaymentSchema::CREATED_AT,
             )
             ->defaultSort('-'.PaymentSchema::ID)
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

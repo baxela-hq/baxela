@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Attribute;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTranslationSchema as ATSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -43,6 +44,6 @@ class ListAttributeAction
             )
             ->withCount(AttributeSchema::RES_VALUES)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

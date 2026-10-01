@@ -4,6 +4,7 @@ namespace Modules\Inventory\Actions\Admin\InventoryStock;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Utils\Pagination;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -56,6 +57,6 @@ class ListInventoryStockAction extends AbstractInventoryStockAction
             ])
             ->with([self::WITH_VARIANT_PRODUCT])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

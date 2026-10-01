@@ -7,6 +7,7 @@ use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema as AGTSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -35,6 +36,6 @@ class ListAttributeGroupAction
             )
             ->withCount(AttributeGroupSchema::RES_ATTRIBUTES)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

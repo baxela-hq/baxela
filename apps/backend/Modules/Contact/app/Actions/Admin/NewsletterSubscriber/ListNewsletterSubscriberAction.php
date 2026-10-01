@@ -5,6 +5,7 @@ namespace Modules\Contact\Actions\Admin\NewsletterSubscriber;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Contact\Models\NewsletterSubscriber;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -32,6 +33,6 @@ class ListNewsletterSubscriberAction extends AbstractNewsletterSubscriberAction
                 NewsletterSubscriberSchema::TABLE.'.'.NewsletterSubscriberSchema::UPDATED_AT,
             ])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

@@ -8,6 +8,7 @@ use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
+use Modules\Core\Utils\Pagination;
 
 class ListProductCommentsAction
 {
@@ -24,7 +25,7 @@ class ListProductCommentsAction
                     Schema::STATUS, ProductCommentStatusEnum::APPROVED),
             ])
             ->orderBy(Schema::ID, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
 
         $this->enrichWithUserNames($comments->getCollection());
 

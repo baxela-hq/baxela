@@ -7,6 +7,7 @@ use Modules\Content\Models\Page;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PTSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -34,6 +35,6 @@ class ListPageAction extends AbstractPageAction
                 PageSchema::RES_TRANSLATIONS,
             )
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

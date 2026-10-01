@@ -7,6 +7,7 @@ use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -37,6 +38,6 @@ class ListOptionValueAction
             ->withCount(OptionValueSchema::RES_VARIANTS)
             ->where(OptionValueSchema::OPTION_ID, $optionId)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

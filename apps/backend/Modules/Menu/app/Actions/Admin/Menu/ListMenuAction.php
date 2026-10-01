@@ -4,6 +4,7 @@ namespace Modules\Menu\Actions\Admin\Menu;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Repositories\Filter\TranslationTitleFilter;
+use Modules\Core\Utils\Pagination;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as MTSchema;
@@ -39,6 +40,6 @@ class ListMenuAction extends AbstractMenuAction
                 MenuSchema::RES_TRANSLATIONS,
             )
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

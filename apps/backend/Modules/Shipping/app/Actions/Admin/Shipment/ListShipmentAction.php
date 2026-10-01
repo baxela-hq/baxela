@@ -3,6 +3,7 @@
 namespace Modules\Shipping\Actions\Admin\Shipment;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\Utils\Pagination;
 use Modules\Shipping\Models\Shipment;
 use Modules\Shipping\Schemas\Shipment\ShipmentSchema;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -38,6 +39,6 @@ class ListShipmentAction
                 ShipmentSchema::TABLE.'.'.ShipmentSchema::UPDATED_AT,
             ])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

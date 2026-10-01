@@ -5,6 +5,7 @@ namespace Modules\Contact\Actions\Admin\ContactMessage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Contact\Models\ContactMessage;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -39,6 +40,6 @@ class ListContactMessageAction extends AbstractContactMessageAction
                 ContactMessageSchema::TABLE.'.'.ContactMessageSchema::UPDATED_AT,
             ])
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }

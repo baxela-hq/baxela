@@ -5,6 +5,7 @@ namespace Modules\Catalog\Actions\Admin\AttributeTemplate;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Models\AttributeTemplate;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
+use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -35,6 +36,6 @@ class ListAttributeTemplateAction
             ])
             ->withCount(AttributeTemplateSchema::RES_GROUPS)
             ->orderBy($id, 'desc')
-            ->paginate(intval(request()->input('per_page', 15)));
+            ->paginate(Pagination::perPage());
     }
 }
