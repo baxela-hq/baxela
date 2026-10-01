@@ -172,7 +172,9 @@ services:
             MYSQL_PASSWORD: ${DEV_DB_PASSWORD:-password}
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
         ports:
-            - "${BACKEND_MYSQL_PORT:-3308}:3306"
+            # Loopback only: an unauthenticated dev Redis / weak-password dev
+            # MySQL must not be reachable from the network.
+            - "127.0.0.1:${BACKEND_MYSQL_PORT:-3308}:3306"
         volumes:
             - mysql-data:/var/lib/mysql
         healthcheck:
@@ -185,7 +187,7 @@ services:
         image: redis:7-bookworm
         restart: unless-stopped
         ports:
-            - "${BACKEND_REDIS_PORT:-6378}:6379"
+            - "127.0.0.1:${BACKEND_REDIS_PORT:-6378}:6379"
         volumes:
             - redis-data:/data
         healthcheck:

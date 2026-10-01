@@ -65,7 +65,22 @@ gunzip -c backup-2026-09-01.sql.gz | docker compose exec -T mysql sh -c 'exec my
 
 - **TLS is not terminated here.** Put a reverse proxy (Caddy, Traefik, nginx,
   cloud LB) in front of the published `BACKEND_PORT`/`ADMIN_PORT` for HTTPS.
+  The proxy **must**:
+  - terminate TLS for the API, admin, and storefront hostnames and redirect
+    plain HTTP to HTTPS — the compose stack itself listens on plain HTTP, and
+    bearer tokens cross the wire unencrypted without it;
+  - set `Strict-Transport-Security` for the API and admin hostnames (the
+    storefront already sends HSTS itself via `next.config.ts` headers);
+  - forward the original protocol via `X-Forwarded-Proto` so the backend can
+    generate correct absolute URLs.
   A future gateway may replace this layer.
+- **Security-relevant env vars** (see `.env.production.example`):
+  - `CORS_ALLOWED_ORIGINS` — the exact browser origins (storefront + admin)
+    allowed to call the API. No wildcard fallback exists; setting this is
+    mandatory.
+  - `ADMIN_USER_PASSWORD` — password for the staff accounts created by the
+    Auth seeder. Required on first deploy; change it in-app afterwards.
+  - `SESSION_SECURE_COOKIE=true` — cookies only over TLS.
 - MySQL has **no published host port** by default; reach it through the
   compose network or add an explicit `ports:` entry if needed.
 - The admin SPA's `VITE_*` values and the storefront's `NEXT_PUBLIC_*` values

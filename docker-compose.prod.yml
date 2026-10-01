@@ -18,6 +18,8 @@ x-backend: &backend
         dockerfile: infrastructure/docker/production/backend/Dockerfile
     env_file: .env.production
     restart: unless-stopped
+    security_opt:
+        - no-new-privileges:true
     depends_on:
         mysql:
             condition: service_healthy
@@ -39,6 +41,8 @@ services:
     backend-nginx:
         image: nginx:stable-bookworm
         restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
         ports:
             - "${BACKEND_PORT:-8080}:80"
         volumes:
@@ -92,6 +96,8 @@ services:
                 VITE_REVERB_PORT: ${REVERB_PORT:-443}
                 VITE_REVERB_SCHEME: ${REVERB_SCHEME:-https}
         restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
         ports:
             - "${ADMIN_PORT:-8081}:80"
 
@@ -111,12 +117,16 @@ services:
             # Browser code uses the build-time NEXT_PUBLIC value; server-side
             # fetches run on the compose network and reach nginx directly.
             SERVER_API_BASE_URL: ${SERVER_API_BASE_URL:-http://backend-nginx/api/v1}
+        security_opt:
+            - no-new-privileges:true
         ports:
             - "${STOREFRONT_PORT:-8082}:3000"
 
     mysql:
         image: mysql:8-debian
         restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
         environment:
             MYSQL_DATABASE: ${DB_DATABASE:?set DB_DATABASE in .env.production}
             MYSQL_USER: ${DB_USERNAME:?set DB_USERNAME in .env.production}
@@ -136,6 +146,8 @@ services:
         image: redis:7-bookworm
         restart: unless-stopped
         command: ["redis-server", "--appendonly", "yes"]
+        security_opt:
+            - no-new-privileges:true
         volumes:
             - redis-data:/data
         healthcheck:
