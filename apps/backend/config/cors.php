@@ -19,7 +19,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    /*
+    | Comma-separated allow-list of browser origins (storefront, admin panel).
+    | Defaults to the local dev servers; never fall back to "*" in production —
+    | set CORS_ALLOWED_ORIGINS explicitly in .env.production.
+    */
+    'allowed_origins' => array_filter(array_map(
+        trim(...),
+        explode(',', (string) env('CORS_ALLOWED_ORIGINS', env('FRONTEND_URL', 'http://localhost:3000,http://localhost:5173')))
+    )),
 
     'allowed_origins_patterns' => [],
 
