@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { fetchMenu } from "@/lib/api/site";
+import { safeCmsHref } from "@/lib/url-safety";
 import { Logo } from "@/components/ui/logo";
 import { Link } from "@/i18n/navigation";
 
@@ -26,7 +27,7 @@ export async function SiteFooter() {
               {column.children.map((child) => (
                 <li key={child.id}>
                   <Link
-                    href={child.url}
+                    href={safeCmsHref(child.url)}
                     className="transition-colors hover:text-foreground"
                   >
                     {child.title}

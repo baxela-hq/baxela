@@ -19,6 +19,7 @@ import type {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useRouter } from "@/i18n/navigation";
+import { isSafeExternalUrl } from "@/lib/url-safety";
 import { uuidv4 } from "@/lib/utils";
 
 const EMPTY_ADDRESS_FORM = {
@@ -267,7 +268,13 @@ export default function CheckoutPage() {
       );
       if (payment.payment_url) {
         // Hosted checkout (e.g. Stripe): settlement happens via the gateway
-        // webhook; the return page takes over after the redirect.
+        // webhook; the return page takes over after the redirect. Only https
+        // (or localhost gateways in dev) — a misconfigured payment driver
+        // must not silently send customers to an attacker host.
+        if (!isSafeExternalUrl(payment.payment_url)) {
+          setError(tCommon("messages.error.general"));
+          return;
+        }
         window.location.assign(payment.payment_url);
         return;
       }

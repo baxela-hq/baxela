@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { api, ApiError } from "@/lib/api/client";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { ApiProductAttribute, ApiProductComment } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -157,8 +158,9 @@ export function ProductTabs({
         {tab === "description" ? (
           <div className="max-w-3xl space-y-4 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
             {content ? (
-              // Backend-authored rich content (admin CMS / translations)
-              <div dangerouslySetInnerHTML={{ __html: content }} />
+              // Backend-authored rich content (admin CMS / translations),
+              // sanitized before rendering to prevent stored XSS.
+              <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />
             ) : (
               <p>{t("tabs.texts.no_description")}</p>
             )}

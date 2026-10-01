@@ -1,4 +1,5 @@
 import type { ApiMenuLink } from "@/lib/api/types";
+import { safeCmsHref } from "@/lib/url-safety";
 
 // Menu-shaped UI data derived from the public Menu API. Pure module (no
 // server-only imports) so both Server Components and client components can
@@ -15,7 +16,7 @@ export interface MegaMenuColumn {
 }
 
 export function navItems(links: ApiMenuLink[]): NavItem[] {
-  return links.map((link) => ({ href: link.url, label: link.title }));
+  return links.map((link) => ({ href: safeCmsHref(link.url), label: link.title }));
 }
 
 // A top-level nav link with children renders as a mega-menu trigger; each
@@ -24,7 +25,7 @@ export function megaMenuColumns(link: ApiMenuLink): MegaMenuColumn[] {
   return (link.children ?? []).map((child) => ({
     title: child.title,
     links: (child.children ?? []).map((leaf) => ({
-      href: leaf.url,
+      href: safeCmsHref(leaf.url),
       label: leaf.title,
     })),
   }));
@@ -34,7 +35,7 @@ export function megaMenuColumns(link: ApiMenuLink): MegaMenuColumn[] {
 // drawer and the search panel's popular-categories list.
 export function categoryItems(links: ApiMenuLink[]): NavItem[] {
   return links.flatMap((link) => link.children ?? []).map((child) => ({
-    href: child.url,
+    href: safeCmsHref(child.url),
     label: child.title,
   }));
 }

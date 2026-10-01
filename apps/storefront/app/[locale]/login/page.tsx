@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { ApiError } from "@/lib/api/client";
+import { isSafeInternalPath } from "@/lib/url-safety";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -45,7 +46,9 @@ function LoginForm() {
       await signIn({ email, password, remember });
       toast.success(t("login.messages.success.signed_in"));
       const next = searchParams.get("next");
-      router.replace(next && next.startsWith("/") ? next : "/profile");
+      router.replace(
+        next && isSafeInternalPath(next) ? next : "/profile",
+      );
     } catch (cause) {
       toast.error(
         cause instanceof ApiError

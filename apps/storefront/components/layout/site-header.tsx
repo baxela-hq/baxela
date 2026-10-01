@@ -9,6 +9,8 @@ import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { fetchMenu, fetchSettings } from "@/lib/api/site";
+import { sanitizeHtml } from "@/lib/sanitize-html";
+import { safeCmsHref } from "@/lib/url-safety";
 import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
 import { Link } from "@/i18n/navigation";
 
@@ -32,7 +34,7 @@ export async function SiteHeader() {
       {announcementEnabled && announcementText && (
         <div
           className="bg-primary py-2.5 text-center text-sm text-primary-foreground rtl:normal-case rtl:tracking-normal"
-          dangerouslySetInnerHTML={{ __html: announcementText }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(announcementText) }}
         />
       )}
 
@@ -49,14 +51,14 @@ export async function SiteHeader() {
                 <MegaMenuNavItem
                   key={link.id}
                   label={link.title ?? ""}
-                  href={link.url}
+                  href={safeCmsHref(link.url)}
                   columns={megaMenuColumns(link)}
                   className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                 />
               ) : (
                 <Link
                   key={link.id}
-                  href={link.url}
+                  href={safeCmsHref(link.url)}
                   className="text-sm font-medium text-foreground transition-colors hover:text-accent"
                 >
                   {link.title}
