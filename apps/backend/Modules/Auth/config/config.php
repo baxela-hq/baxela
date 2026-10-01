@@ -13,9 +13,11 @@ return [
 
     // Sanctum personal access token lifetimes, in days. `days` applies when
     // remember-me is requested (or the field is omitted); `short_days` when a
-    // client explicitly signs in without remembering the device.
+    // client explicitly signs in without remembering the device. Tokens are
+    // stored client-side (localStorage) and cannot be revoked remotely, so
+    // the remembered lifetime bounds how long a stolen token stays useful.
     'token_ttl' => [
-        'days' => env('AUTH_TOKEN_TTL_DAYS', 30),
+        'days' => env('AUTH_TOKEN_TTL_DAYS', 7),
         'short_days' => env('AUTH_TOKEN_SHORT_TTL_DAYS', 1),
     ],
 ];

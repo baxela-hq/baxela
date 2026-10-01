@@ -31,5 +31,9 @@ class VerifyPasswordResetAction extends AbstractAction
 
         $user = User::query()->where(OtpCodeTypeEnum::EMAIL->value, $request->{OtpCodeSchema::EMAIL})->firstOrFail();
         $user->update([UserSchema::PASSWORD => $request->{UserSchema::PASSWORD}]);
+
+        // A completed password reset invalidates every existing session, so a
+        // previously stolen token cannot outlive the reset that follows it.
+        $user->tokens()->delete();
     }
 }

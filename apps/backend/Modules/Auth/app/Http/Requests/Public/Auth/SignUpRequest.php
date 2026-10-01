@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Requests\Public\Auth;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Schemas\User\UserSchema;
 
 class SignUpRequest extends FormRequest
@@ -16,7 +17,7 @@ class SignUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            UserSchema::PASSWORD => ['required', 'min:8', 'confirmed'],
+            UserSchema::PASSWORD => ['required', Password::default(), 'confirmed'],
             UserSchema::EMAIL => ['required', 'email', 'unique:'.UserSchema::TABLE],
         ];
     }

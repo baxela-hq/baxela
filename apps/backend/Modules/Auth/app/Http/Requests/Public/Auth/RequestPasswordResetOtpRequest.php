@@ -16,7 +16,7 @@ class RequestPasswordResetOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            UserSchema::EMAIL => ['required', 'email', 'exists:'.UserSchema::TABLE],
+            UserSchema::EMAIL => ['required', 'email'],
         ];
     }
 }

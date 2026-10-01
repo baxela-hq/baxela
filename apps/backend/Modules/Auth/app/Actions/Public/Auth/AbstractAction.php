@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Actions\Public\Auth;
 
-use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
+use Illuminate\Support\Facades\Hash;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\InvalidOtpException;
 use Modules\Auth\Exceptions\OtpTooManyRequestsException;
@@ -23,12 +23,22 @@ abstract class AbstractAction
 
     /**
      * @throws RandomException
-     * @throws AccountAlreadyActivatedException
      * @throws OtpTooManyRequestsException
      */
     protected function requestOtp(OtpCodeTypeEnum $type, string $value, OtpCodeActionEnum $action): void
     {
-        $this->errorIfUserAlreadyVerified($type, $value);
+        // Anti-enumeration: unknown and already-verified addresses get the
+        // same generic success as everyone else — an OTP is only minted for
+        // a real, not-yet-verified account. The meaningful errors stay with
+        // the authenticated flows (sign-in) where the user is known.
+        $verifiedAt = $type === OtpCodeTypeEnum::MOBILE ? UserSchema::MOBILE_VERIFIED_AT :
+            UserSchema::EMAIL_VERIFIED_AT;
+
+        $user = User::query()->where($type->value, $value)->first();
+
+        if ($user === null || ! is_null($user->{$verifiedAt})) {
+            return;
+        }
 
         $this->errorIfOtpAlreadyActive($type, $value, $action);
 
@@ -108,32 +118,25 @@ abstract class AbstractAction
     }
 
     /**
-     * @throws AccountAlreadyActivatedException
-     */
-    protected function errorIfUserAlreadyVerified(OtpCodeTypeEnum $type, string $fieldValue): void
-    {
-        $user = User::query()->where($type->value, $fieldValue)->firstOrFail();
-        $verifiedAt = $type === OtpCodeTypeEnum::MOBILE ? UserSchema::MOBILE_VERIFIED_AT :
-            UserSchema::EMAIL_VERIFIED_AT;
-
-        if (! is_null($user->{$verifiedAt})) {
-            throw new AccountAlreadyActivatedException;
-        }
-    }
-
-    /**
      * @throws InvalidOtpException
      */
     protected function errorIfOtpNotValidated(OtpCodeTypeEnum $type, string $fieldValue, string $otpCode, OtpCodeActionEnum $action): void
     {
+        // Codes are hashed at rest, so the record is located by identity and
+        // only the latest active OTP (there is at most one — storeOtp
+        // invalidates older ones) is verified against the submitted code.
         $otpRecord = OtpCode::query()->where($type->value, $fieldValue)
-            ->where(OtpCodeSchema::CODE, $otpCode)
             ->where(OtpCodeSchema::ACTION, $action)
             ->where(OtpCodeSchema::IS_USED, false)
             ->where(OtpCodeSchema::EXPIRES_AT, '>', now())
+            ->where(OtpCodeSchema::ATTEMPTS, '<', OtpCodeSchema::MAX_ATTEMPTS)
+            ->latest()
             ->first();
 
-        if (! $otpRecord) {
+        if (! $otpRecord || ! Hash::check($otpCode, $otpRecord->{OtpCodeSchema::CODE})) {
+            // Count the wrong attempt; after MAX_ATTEMPTS failures the code
+            // is invalidated and a new one must be requested.
+            $otpRecord?->recordFailedAttempt();
             throw new InvalidOtpException;
         }
         // Mark OTP as used to prevent replay attacks

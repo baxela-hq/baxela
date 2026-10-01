@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Console\Commands\SyncPermissionsCommand;
 use Modules\Auth\Gateways\AccessGateway;
 use Modules\Auth\Models\Role;
@@ -39,6 +40,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user instanceof User && $user->hasRole(Role::SUPER_ADMIN) ? true : null;
         });
 
+        $this->registerPasswordDefaults();
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerRateLimiters();
@@ -46,6 +49,26 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+    }
+
+    /**
+     * Password policy for every request that sets a password (sign-up,
+     * reset, admin user management — requests opt in via Password::default()).
+     * Local/test keeps the historical min:8 so seeds and fixtures stay valid;
+     * production additionally requires letters + numbers and rejects codes
+     * known to have appeared in data leaks.
+     */
+    protected function registerPasswordDefaults(): void
+    {
+        Password::defaults(function () {
+            $rule = Password::min(8);
+
+            if ($this->app->isProduction()) {
+                $rule = $rule->letters()->numbers()->uncompromised();
+            }
+
+            return $rule;
+        });
     }
 
     /**

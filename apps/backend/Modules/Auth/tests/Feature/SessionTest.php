@@ -81,11 +81,11 @@ it('falls back to the user agent when no device name is sent', function () {
     expect($user->tokens()->pluck('name')->first())->toStartWith('Mozilla/5.0 (Linux; Android 14)');
 });
 
-it('keeps remembered tokens valid for thirty days', function () {
+it('keeps remembered tokens valid for seven days', function () {
     $user = activeUser();
     $token = signInToken($user, ['device_name' => 'laptop']);
 
-    $this->travel(29)->days();
+    $this->travel(6)->days();
     jsonAs($token, 'get', '/user/account/me')->assertOk();
 
     $this->travel(2)->days();

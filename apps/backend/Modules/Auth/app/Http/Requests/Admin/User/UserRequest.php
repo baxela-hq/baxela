@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Schemas\User\UserSchema;
 
@@ -15,7 +16,7 @@ class UserRequest extends FormRequest
         $unique = Rule::unique(UserSchema::TABLE, UserSchema::EMAIL);
 
         return [
-            UserSchema::PASSWORD => [$id ? 'nullable' : 'required', 'min:8', 'max:40'],
+            UserSchema::PASSWORD => [$id ? 'nullable' : 'required', Password::default(), 'max:40'],
             UserSchema::EMAIL => ['required', 'email', 'max:255',
                 $id ? $unique->ignore($id) : $unique],
             UserSchema::IS_ACTIVE => ['required', 'boolean'],

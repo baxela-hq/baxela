@@ -24,4 +24,9 @@ class OtpCodeSchema
     public const string EXPIRES_AT = 'expires_at';
 
     public const string IS_USED = 'is_used';
+
+    public const string ATTEMPTS = 'attempts';
+
+    /** Wrong codes tolerated before an OTP is invalidated. */
+    public const int MAX_ATTEMPTS = 5;
 }

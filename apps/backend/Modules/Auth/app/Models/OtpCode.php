@@ -19,6 +19,7 @@ class OtpCode extends Model
         OtpCodeSchema::ACTION,
         OtpCodeSchema::EXPIRES_AT,
         OtpCodeSchema::IS_USED,
+        OtpCodeSchema::ATTEMPTS,
     ];
 
     /**
@@ -33,12 +34,18 @@ class OtpCode extends Model
             OtpCodeSchema::TYPE => OtpCodeTypeEnum::class,
             OtpCodeSchema::ACTION => OtpCodeActionEnum::class,
             OtpCodeSchema::IS_USED => 'boolean',
+            OtpCodeSchema::ATTEMPTS => 'integer',
+            // Codes are stored as bcrypt hashes: a database (or log) leak must
+            // not expose usable one-time codes. Verify with Hash::check().
+            OtpCodeSchema::CODE => 'hashed',
         ];
     }
 
     public function isValid(): bool
     {
-        return ! $this->{OtpCodeSchema::IS_USED} && $this->{OtpCodeSchema::EXPIRES_AT}->isFuture();
+        return ! $this->{OtpCodeSchema::IS_USED}
+            && $this->{OtpCodeSchema::EXPIRES_AT}->isFuture()
+            && $this->{OtpCodeSchema::ATTEMPTS} < OtpCodeSchema::MAX_ATTEMPTS;
     }
 
     public function markAsUsed(): bool
@@ -46,6 +53,13 @@ class OtpCode extends Model
         // 'now()' creates a Carbon timestamp for the current time
         return $this->forceFill([
             OtpCodeSchema::IS_USED => true,
+        ])->save();
+    }
+
+    public function recordFailedAttempt(): bool
+    {
+        return $this->forceFill([
+            OtpCodeSchema::ATTEMPTS => $this->{OtpCodeSchema::ATTEMPTS} + 1,
         ])->save();
     }
 }

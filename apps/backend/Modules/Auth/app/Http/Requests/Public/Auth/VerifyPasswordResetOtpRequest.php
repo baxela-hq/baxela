@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Requests\Public\Auth;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\User\UserSchema;
 
@@ -19,7 +20,7 @@ class VerifyPasswordResetOtpRequest extends FormRequest
         return [
             UserSchema::EMAIL => ['required', 'email', 'exists:'.UserSchema::TABLE],
             OtpCodeSchema::CODE => ['required', 'string', 'size:6'],
-            UserSchema::PASSWORD => ['required', 'min:8', 'confirmed'],
+            UserSchema::PASSWORD => ['required', Password::default(), 'confirmed'],
         ];
     }
 }
