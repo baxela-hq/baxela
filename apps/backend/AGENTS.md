@@ -126,7 +126,7 @@ Localizable entities (products, categories, options, option values) use a `*_tra
   - `public.php` — no auth
   - `webhook.php` — no auth, machine-to-machine callbacks (payment gateways, carriers). Each driver verifies the payload signature itself; never add `auth:sanctum` here. Per-module opt-in via `require` from `routes/api.php`.
   - `user.php` — `auth:sanctum` (any authenticated user)
-  - `admin.php` — `auth:sanctum` + `Modules\Core\Http\Middleware\AdminMiddleware`
+  - `admin.php` — `auth:sanctum` + `Modules\Core\Http\Middleware\PermissionMiddleware` (derives the required spatie permission from the route name `api.{module}.admin.{resource}.{action}`, fails closed on unnamed/malformed routes; super-admins bypass via `Gate::before`)
 - Auth uses `RouteSchema` constants for paths; other modules use inline strings. Route names: `{module}.{area}.{entity}.{action}`.
 - Token auth: `Auth::guard(...)->attempt()`, then `$user->createToken(...)->plainTextToken`.
 
