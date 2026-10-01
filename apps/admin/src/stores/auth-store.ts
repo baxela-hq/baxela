@@ -1,8 +1,5 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { setCookie, removeCookie } from '@/lib/cookies'
-
-const ACCESS_TOKEN = 'thisisjustarandomstring'
 
 interface AuthUser {
   /** Numeric user id — drives the private `user.{id}` Reverb channel. */
@@ -30,19 +27,9 @@ export const useAuthStore = create<AuthState>()(
 
       setUser: (user) => set({ user }),
 
-      setAccessToken: (token) => {
-        if (token)
-          setCookie(ACCESS_TOKEN, token)
-        else
-          removeCookie(ACCESS_TOKEN)
+      setAccessToken: (token) => set({ accessToken: token }),
 
-        set({ accessToken: token })
-      },
-
-      reset: () => {
-        removeCookie(ACCESS_TOKEN)
-        set({ user: null, accessToken: null })
-      },
+      reset: () => set({ user: null, accessToken: null }),
     }),
 
     {
