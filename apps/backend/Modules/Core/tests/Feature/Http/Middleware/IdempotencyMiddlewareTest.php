@@ -5,17 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Modules\Auth\Models\User;
 use Modules\Core\Http\Middleware\IdempotencyMiddleware;
 use Modules\Core\Models\IdempotencyKey;
+use Modules\Core\Tests\Feature\Http\Middleware\IdempotencySideEffectCounter;
 
 uses(RefreshDatabase::class);
-
-/**
- * A throwaway write endpoint wearing the middleware, so the behaviour is
- * exercised over HTTP without coupling this test to another module's routes.
- */
-class IdempotencySideEffectCounter
-{
-    public static int $executions = 0;
-}
 
 beforeEach(function () {
     IdempotencySideEffectCounter::$executions = 0;
