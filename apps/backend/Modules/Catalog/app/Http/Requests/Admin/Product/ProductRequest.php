@@ -41,6 +41,35 @@ class ProductRequest extends FormRequest
     {
         $id = $this->route('id');
 
+        // Shape rules are shared with the module data importer; the
+        // request-only rules below are bound to live DB rows.
+        $rules = self::rulesFor($this->languageMap, $this->isTypeVariable());
+
+        $rules[Schema::RES_CATEGORIES.'.*'][] =
+            Rule::exists(CategorySchema::TABLE, CategorySchema::ID);
+        $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =
+            Rule::unique(VSchema::TABLE, VSchema::SKU)->ignore($id, VSchema::PRODUCT_ID);
+        $rules[Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
+            new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id);
+        $rules[PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_ID][] =
+            Rule::exists(AttributeSchema::TABLE, AttributeSchema::ID);
+        $rules[PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_VALUE_ID][] =
+            Rule::exists(AttributeValueSchema::TABLE, AttributeValueSchema::ID);
+
+        return $rules;
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer, which has to
+     * validate plain arrays (and resolve references itself) instead of
+     * an HTTP request.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string|Enum>>
+     */
+    public static function rulesFor(array $languageMap, bool $isVariable = false): array
+    {
         return [
             // base
             Schema::TYPE => ['required', new Enum(ProductTypeEnum::class)],
@@ -66,8 +95,7 @@ class ProductRequest extends FormRequest
 
             // categories
             Schema::RES_CATEGORIES => ['required', 'array', 'max:5'],
-            Schema::RES_CATEGORIES.'.*' => ['required', 'integer',
-                Rule::exists(CategorySchema::TABLE, CategorySchema::ID)],
+            Schema::RES_CATEGORIES.'.*' => ['required', 'integer'],
 
             // images
             Schema::RES_IMAGES.'.*' => ['nullable', 'array', 'min:1'],
@@ -78,26 +106,21 @@ class ProductRequest extends FormRequest
 
             // variants
             Schema::RES_VARIANTS.'.*' => ['required', 'array', 'min:1'],
-            Schema::RES_VARIANTS.'.*.'.VSchema::SKU => [
-                'required',
-                'string',
-                Rule::unique(VSchema::TABLE, VSchema::SKU)->ignore($id, VSchema::PRODUCT_ID),
-                'max:255',
-            ],
-            Schema::RES_VARIANTS.'.*.'.VSchema::BARCODE => ['sometimes', 'string'],
+            Schema::RES_VARIANTS.'.*.'.VSchema::SKU => ['required', 'string', 'max:255'],
+            Schema::RES_VARIANTS.'.*.'.VSchema::BARCODE => ['nullable', 'string', 'max:255'],
             Schema::RES_VARIANTS.'.*.'.VSchema::PRICE => ['required', 'string', 'regex:/^\d{1,12}(\.\d{1,2})?$/'],
             Schema::RES_VARIANTS.'.*.'.VSchema::QUANTITY => ['required', 'integer'],
             Schema::RES_VARIANTS.'.*.'.VSchema::IS_DEFAULT => ['required', 'boolean'],
-            Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS => [Rule::requiredIf($this->isTypeVariable()), 'array', Rule::when($this->isTypeVariable(), ['min:1'])],
-            Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS.'*' => [Rule::requiredIf($this->isTypeVariable()), Rule::when($this->isTypeVariable(), ['integer'])],
+            Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS => [
+                Rule::requiredIf($isVariable), 'array', Rule::when($isVariable, ['min:1'])],
+            Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS.'*' => [
+                Rule::requiredIf($isVariable), Rule::when($isVariable, ['integer'])],
 
             // attribute values
             PAVSchema::REQ_ATTRIBUTE_VALUES => ['nullable', 'array'],
             PAVSchema::REQ_ATTRIBUTE_VALUES.'.*' => ['required', 'array'],
-            PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_ID => ['required', 'integer',
-                Rule::exists(AttributeSchema::TABLE, AttributeSchema::ID)],
-            PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_VALUE_ID => ['nullable', 'integer',
-                Rule::exists(AttributeValueSchema::TABLE, AttributeValueSchema::ID)],
+            PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_ID => ['required', 'integer'],
+            PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_VALUE_ID => ['nullable', 'integer'],
             PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::TEXT_VALUE => ['nullable', 'string', 'max:255'],
             PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::NUMBER_VALUE => ['nullable',
                 'regex:/^\d{1,12}(\.\d{1,2})?$/'],
@@ -106,18 +129,17 @@ class ProductRequest extends FormRequest
             // translations
             Schema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             Schema::RES_TRANSLATIONS.'.*.'.PTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             Schema::RES_TRANSLATIONS.'.*.'.PTSchema::LANGUAGE_ID => ['required', 'integer'],
             Schema::RES_TRANSLATIONS.'.*.'.PTSchema::TITLE => ['required', 'string', 'max:255'],
-            Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG => ['required', 'string', 'max:255',
-                new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id)],
+            Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG => ['required', 'string', 'max:255'],
             Schema::RES_TRANSLATIONS.'.*.'.PTSchema::CONTENT => ['required', 'string'],
             Schema::RES_TRANSLATIONS.'.*.'.PTSchema::DESCRIPTION => ['nullable', 'string', 'max:255'],
 
             // seo (language_id is resolved from the language code in prepareForValidation)
             Schema::RES_SEO => ['nullable', 'array'],
             Schema::RES_SEO.'.*.'.PSTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             Schema::RES_SEO.'.*.'.PSTSchema::LANGUAGE_ID => ['required', 'integer'],
             Schema::RES_SEO.'.*.'.PSTSchema::META_TITLE => ['nullable', 'string', 'max:255'],
             Schema::RES_SEO.'.*.'.PSTSchema::META_DESCRIPTION => ['nullable', 'string', 'max:255'],

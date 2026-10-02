@@ -6,18 +6,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum as EnumRule;
 use Modules\Catalog\Exceptions\Product\ImportFailedException;
+use Modules\Catalog\Models\CatalogImport;
 use Modules\Catalog\Models\CategoryTranslation;
-use Modules\Catalog\Models\ProductImport;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
-use Modules\Catalog\Schemas\ProductImport\ProductImportSchema;
-use Modules\Catalog\Schemas\ProductImport\ProductImportStatusEnum;
-use Modules\Catalog\Schemas\ProductImport\ProductImportStrategyEnum;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\ProductImport\ProductImportCsv;
 use Modules\Catalog\Support\ProductImport\ProductImportFields;
@@ -57,7 +58,7 @@ class ImportProductsAction
     {
         $startedAt = microtime(true);
 
-        $media = $this->resolveCsv((int) $data[ProductImportSchema::REQ_MEDIA_ID]);
+        $media = $this->resolveCsv((int) $data[CatalogImportSchema::REQ_MEDIA_ID]);
         [$languageCodes, $defaultCode] = [$this->languageCodes(), $this->defaultLanguageCode()];
 
         try {
@@ -78,9 +79,9 @@ class ImportProductsAction
             throw new ImportFailedException(meta: ['reason' => 'row_cap_exceeded']);
         }
 
-        $mapping = $data[ProductImportSchema::REQ_MAPPING];
-        $strategy = ProductImportStrategyEnum::from($data[ProductImportSchema::REQ_ON_DUPLICATE]);
-        $dryRun = (bool) $data[ProductImportSchema::REQ_DRY_RUN];
+        $mapping = $data[CatalogImportSchema::REQ_MAPPING];
+        $strategy = CatalogImportStrategyEnum::from($data[CatalogImportSchema::REQ_ON_DUPLICATE]);
+        $dryRun = (bool) $data[CatalogImportSchema::REQ_DRY_RUN];
 
         // Position => mapped field key; unmapped positions stay null.
         $positionFields = [];
@@ -162,7 +163,7 @@ class ImportProductsAction
                 continue;
             }
 
-            if ($existingProductId !== null && $strategy === ProductImportStrategyEnum::SKIP) {
+            if ($existingProductId !== null && $strategy === CatalogImportStrategyEnum::SKIP) {
                 $skipped++;
 
                 continue;
@@ -224,27 +225,28 @@ class ImportProductsAction
 
         $durationMs = (int) round((microtime(true) - $startedAt) * 1000);
 
-        $record = ProductImport::query()->create([
-            ProductImportSchema::USER_ID => Auth::id(),
-            ProductImportSchema::MEDIA_ID => $media->id,
-            ProductImportSchema::FILENAME => $media->name.($media->extension ? '.'.$media->extension : ''),
-            ProductImportSchema::STATUS => ($failed > 0 && $created + $updated + $skipped === 0)
-                ? ProductImportStatusEnum::FAILED->value
-                : ProductImportStatusEnum::COMPLETED->value,
-            ProductImportSchema::STRATEGY => $strategy->value,
-            ProductImportSchema::DRY_RUN => $dryRun,
-            ProductImportSchema::TOTAL_ROWS => count($rows),
-            ProductImportSchema::CREATED_COUNT => $created,
-            ProductImportSchema::UPDATED_COUNT => $updated,
-            ProductImportSchema::SKIPPED_COUNT => $skipped,
-            ProductImportSchema::FAILED_COUNT => $failed,
-            ProductImportSchema::DURATION_MS => $durationMs,
-            ProductImportSchema::ERRORS => array_slice($errors, 0, self::ERROR_CAP),
+        $record = CatalogImport::query()->create([
+            CatalogImportSchema::USER_ID => Auth::id(),
+            CatalogImportSchema::MEDIA_ID => $media->id,
+            CatalogImportSchema::FILENAME => $media->name.($media->extension ? '.'.$media->extension : ''),
+            CatalogImportSchema::ENTITY => CatalogImportEntityEnum::PRODUCT->value,
+            CatalogImportSchema::STATUS => ($failed > 0 && $created + $updated + $skipped === 0)
+                ? CatalogImportStatusEnum::FAILED->value
+                : CatalogImportStatusEnum::COMPLETED->value,
+            CatalogImportSchema::STRATEGY => $strategy->value,
+            CatalogImportSchema::DRY_RUN => $dryRun,
+            CatalogImportSchema::TOTAL_ROWS => count($rows),
+            CatalogImportSchema::CREATED_COUNT => $created,
+            CatalogImportSchema::UPDATED_COUNT => $updated,
+            CatalogImportSchema::SKIPPED_COUNT => $skipped,
+            CatalogImportSchema::FAILED_COUNT => $failed,
+            CatalogImportSchema::DURATION_MS => $durationMs,
+            CatalogImportSchema::ERRORS => array_slice($errors, 0, self::ERROR_CAP),
         ]);
 
         return [
             'id' => $record->getKey(),
-            'status' => $record->{ProductImportSchema::STATUS}->value,
+            'status' => $record->{CatalogImportSchema::STATUS}->value,
             'strategy' => $strategy->value,
             'dry_run' => $dryRun,
             'total_rows' => count($rows),

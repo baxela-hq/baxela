@@ -3,21 +3,24 @@
 namespace Modules\Catalog\Actions\Admin\Product;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Modules\Catalog\Models\ProductImport;
-use Modules\Catalog\Schemas\ProductImport\ProductImportSchema;
+use Modules\Catalog\Models\CatalogImport;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListProductImportAction
 {
     /**
-     * Import history, latest first.
+     * Product CSV import history, latest first — the shared audit table
+     * also holds whole-module JSON runs.
      */
     public function handle(): LengthAwarePaginator
     {
-        return QueryBuilder::for(ProductImport::class)
-            ->allowedSorts(ProductImportSchema::ID)
-            ->defaultSort('-'.ProductImportSchema::ID)
+        return QueryBuilder::for(CatalogImport::class)
+            ->where(CatalogImportSchema::ENTITY, CatalogImportEntityEnum::PRODUCT->value)
+            ->allowedSorts(CatalogImportSchema::ID)
+            ->defaultSort('-'.CatalogImportSchema::ID)
             ->paginate(Pagination::perPage());
     }
 }

@@ -19,12 +19,24 @@ class AttributeValueRequest extends FormRequest
 
     public function rules(): array
     {
+        return self::rulesFor($this->languageMap);
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string>>
+     */
+    public static function rulesFor(array $languageMap): array
+    {
         return [
             AttributeValueSchema::POSITION => ['nullable', 'numeric', 'max:255'],
 
             AttributeValueSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             AttributeValueSchema::RES_TRANSLATIONS.'.*.'.AVTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             AttributeValueSchema::RES_TRANSLATIONS.'.*.'.AVTSchema::LANGUAGE_ID => ['required', 'integer'],
             AttributeValueSchema::RES_TRANSLATIONS.'.*.'.AVTSchema::TITLE => ['required', 'string', 'max:255'],
         ];

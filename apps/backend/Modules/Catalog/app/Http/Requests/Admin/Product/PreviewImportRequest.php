@@ -3,7 +3,7 @@
 namespace Modules\Catalog\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Catalog\Schemas\ProductImport\ProductImportSchema;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 
 class PreviewImportRequest extends FormRequest
 {
@@ -12,7 +12,7 @@ class PreviewImportRequest extends FormRequest
         return [
             // Existence and csv-ness are resolved through the media
             // gateway by the action — Catalog never reads media tables.
-            ProductImportSchema::REQ_MEDIA_ID => ['required', 'integer'],
+            CatalogImportSchema::REQ_MEDIA_ID => ['required', 'integer'],
         ];
     }
 

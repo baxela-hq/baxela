@@ -22,16 +22,31 @@ class OptionValueRequest extends FormRequest
     {
         $id = $this->route('valueId');
 
+        $rules = self::rulesFor($this->languageMap);
+        $rules[OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::SLUG][] =
+            new LanguageUniquePair(OVTSchema::TABLE, OVTSchema::SLUG, $this->languageMap, $id);
+
+        return $rules;
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string>>
+     */
+    public static function rulesFor(array $languageMap): array
+    {
         return [
             OVSchema::POSITION => ['nullable', 'numeric', 'max:255'],
 
             OVSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::LANGUAGE_ID => ['required', 'integer'],
             OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::TITLE => ['required', 'string', 'max:255'],
-            OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::SLUG => ['required', 'string', 'max:255',
-                new LanguageUniquePair(OVTSchema::TABLE, OVTSchema::SLUG, $this->languageMap, $id)],
+            OVSchema::RES_TRANSLATIONS.'.*.'.OVTSchema::SLUG => ['required', 'string', 'max:255'],
         ];
     }
 

@@ -3,12 +3,12 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Modules\Auth\Models\User;
+use Modules\Catalog\Models\CatalogImport;
 use Modules\Catalog\Models\Product;
-use Modules\Catalog\Models\ProductImport;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
-use Modules\Catalog\Schemas\ProductImport\ProductImportSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Tests\Feature\HelperTrait;
 use Modules\Core\Models\Language;
@@ -213,10 +213,10 @@ it('imports products with fa and en translations', function () {
     expect($variant->{VariantSchema::SKU})->toBe('BX-TEE-001')
         ->and((int) $variant->{VariantSchema::PRICE})->toBe(450000);
 
-    $this->assertDatabaseHas(ProductImportSchema::TABLE, [
-        ProductImportSchema::MEDIA_ID => $media->id,
-        ProductImportSchema::CREATED_COUNT => 1,
-        ProductImportSchema::STATUS => 'completed',
+    $this->assertDatabaseHas(CatalogImportSchema::TABLE, [
+        CatalogImportSchema::MEDIA_ID => $media->id,
+        CatalogImportSchema::CREATED_COUNT => 1,
+        CatalogImportSchema::STATUS => 'completed',
     ]);
 });
 
@@ -297,9 +297,9 @@ it('collects row-numbered errors on partial success', function () {
         ->and($response->json('data.failed_count'))->toBe(1)
         ->and($response->json('data.errors.0.row'))->toBe(3);
 
-    $this->assertDatabaseHas(ProductImportSchema::TABLE, [
-        ProductImportSchema::FAILED_COUNT => 1,
-        ProductImportSchema::STATUS => 'completed',
+    $this->assertDatabaseHas(CatalogImportSchema::TABLE, [
+        CatalogImportSchema::FAILED_COUNT => 1,
+        CatalogImportSchema::STATUS => 'completed',
     ]);
 });
 
@@ -321,9 +321,9 @@ it('dry runs without writing products and records history', function () {
         ->and($response->json('data.created_count'))->toBe(1)
         ->and(Product::query()->count())->toBe(0);
 
-    $this->assertDatabaseHas(ProductImportSchema::TABLE, [
-        ProductImportSchema::DRY_RUN => true,
-        ProductImportSchema::CREATED_COUNT => 1,
+    $this->assertDatabaseHas(CatalogImportSchema::TABLE, [
+        CatalogImportSchema::DRY_RUN => true,
+        CatalogImportSchema::CREATED_COUNT => 1,
     ]);
 });
 
@@ -391,8 +391,8 @@ it('lists import history latest first', function () {
 
     $this->actingAs($this->superAdminUser());
 
-    $older = ProductImport::factory()->create();
-    $newer = ProductImport::factory()->create();
+    $older = CatalogImport::factory()->create();
+    $newer = CatalogImport::factory()->create();
 
     $response = $this->getJson($this->baseUrl('/admin/products/import'));
 
@@ -407,8 +407,8 @@ it('shows a single import run', function () {
 
     $this->actingAs($this->superAdminUser());
 
-    $import = ProductImport::factory()->create([
-        ProductImportSchema::FILENAME => 'products.csv',
+    $import = CatalogImport::factory()->create([
+        CatalogImportSchema::FILENAME => 'products.csv',
     ]);
 
     $this->getJson($this->baseUrl('/admin/products/import/'.$import->id))

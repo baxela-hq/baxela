@@ -19,12 +19,24 @@ class AttributeGroupRequest extends FormRequest
 
     public function rules(): array
     {
+        return self::rulesFor($this->languageMap);
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string>>
+     */
+    public static function rulesFor(array $languageMap): array
+    {
         return [
             AttributeGroupSchema::POSITION => ['nullable', 'numeric', 'max:255'],
 
             AttributeGroupSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             AttributeGroupSchema::RES_TRANSLATIONS.'.*.'.AGTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             AttributeGroupSchema::RES_TRANSLATIONS.'.*.'.AGTSchema::LANGUAGE_ID => ['required', 'integer'],
             AttributeGroupSchema::RES_TRANSLATIONS.'.*.'.AGTSchema::TITLE => ['required', 'string', 'max:255'],
         ];

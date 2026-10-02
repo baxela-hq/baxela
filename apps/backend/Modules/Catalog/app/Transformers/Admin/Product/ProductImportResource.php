@@ -4,35 +4,35 @@ namespace Modules\Catalog\Transformers\Admin\Product;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Catalog\Models\ProductImport;
-use Modules\Catalog\Schemas\ProductImport\ProductImportSchema;
+use Modules\Catalog\Models\CatalogImport;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 
-/** @mixin ProductImport */
+/** @mixin CatalogImport */
 class ProductImportResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  ProductImport  $this->resource
+     * @param  CatalogImport  $this->resource
      */
     public function toArray(Request $request): array
     {
         return [
-            ProductImportSchema::ID => $this->resource->{ProductImportSchema::ID},
-            ProductImportSchema::USER_ID => $this->resource->{ProductImportSchema::USER_ID},
-            ProductImportSchema::MEDIA_ID => $this->resource->{ProductImportSchema::MEDIA_ID},
-            ProductImportSchema::FILENAME => $this->resource->{ProductImportSchema::FILENAME},
-            ProductImportSchema::STATUS => $this->resource->{ProductImportSchema::STATUS},
-            ProductImportSchema::STRATEGY => $this->resource->{ProductImportSchema::STRATEGY},
-            ProductImportSchema::DRY_RUN => $this->resource->{ProductImportSchema::DRY_RUN},
-            ProductImportSchema::TOTAL_ROWS => $this->resource->{ProductImportSchema::TOTAL_ROWS},
-            ProductImportSchema::CREATED_COUNT => $this->resource->{ProductImportSchema::CREATED_COUNT},
-            ProductImportSchema::UPDATED_COUNT => $this->resource->{ProductImportSchema::UPDATED_COUNT},
-            ProductImportSchema::SKIPPED_COUNT => $this->resource->{ProductImportSchema::SKIPPED_COUNT},
-            ProductImportSchema::FAILED_COUNT => $this->resource->{ProductImportSchema::FAILED_COUNT},
-            ProductImportSchema::DURATION_MS => $this->resource->{ProductImportSchema::DURATION_MS},
-            ProductImportSchema::ERRORS => $this->resource->{ProductImportSchema::ERRORS},
-            ProductImportSchema::CREATED_AT => $this->resource->{ProductImportSchema::CREATED_AT}?->toIso8601String(),
+            CatalogImportSchema::ID => $this->resource->{CatalogImportSchema::ID},
+            CatalogImportSchema::USER_ID => $this->resource->{CatalogImportSchema::USER_ID},
+            CatalogImportSchema::MEDIA_ID => $this->resource->{CatalogImportSchema::MEDIA_ID},
+            CatalogImportSchema::FILENAME => $this->resource->{CatalogImportSchema::FILENAME},
+            CatalogImportSchema::STATUS => $this->resource->{CatalogImportSchema::STATUS},
+            CatalogImportSchema::STRATEGY => $this->resource->{CatalogImportSchema::STRATEGY},
+            CatalogImportSchema::DRY_RUN => $this->resource->{CatalogImportSchema::DRY_RUN},
+            CatalogImportSchema::TOTAL_ROWS => $this->resource->{CatalogImportSchema::TOTAL_ROWS},
+            CatalogImportSchema::CREATED_COUNT => $this->resource->{CatalogImportSchema::CREATED_COUNT},
+            CatalogImportSchema::UPDATED_COUNT => $this->resource->{CatalogImportSchema::UPDATED_COUNT},
+            CatalogImportSchema::SKIPPED_COUNT => $this->resource->{CatalogImportSchema::SKIPPED_COUNT},
+            CatalogImportSchema::FAILED_COUNT => $this->resource->{CatalogImportSchema::FAILED_COUNT},
+            CatalogImportSchema::DURATION_MS => $this->resource->{CatalogImportSchema::DURATION_MS},
+            CatalogImportSchema::ERRORS => $this->resource->{CatalogImportSchema::ERRORS},
+            CatalogImportSchema::CREATED_AT => $this->resource->{CatalogImportSchema::CREATED_AT}?->toIso8601String(),
         ];
     }
 }

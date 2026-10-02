@@ -24,18 +24,35 @@ class AttributeRequest extends FormRequest
     {
         $id = $this->route('id');
 
+        $rules = self::rulesFor($this->languageMap);
+
+        $rules[AttributeSchema::GROUP_ID][] =
+            Rule::exists(AttributeGroupSchema::TABLE, AttributeGroupSchema::ID);
+        $rules[AttributeSchema::CODE][] =
+            Rule::unique(AttributeSchema::TABLE, AttributeSchema::CODE)->ignore($id);
+
+        return $rules;
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string|Enum>>
+     */
+    public static function rulesFor(array $languageMap): array
+    {
         return [
-            AttributeSchema::GROUP_ID => ['required', 'integer',
-                Rule::exists(AttributeGroupSchema::TABLE, AttributeGroupSchema::ID)],
-            AttributeSchema::CODE => ['required', 'string', 'max:255',
-                Rule::unique(AttributeSchema::TABLE, AttributeSchema::CODE)->ignore($id)],
+            AttributeSchema::GROUP_ID => ['required', 'integer'],
+            AttributeSchema::CODE => ['required', 'string', 'max:255'],
             AttributeSchema::DATA_TYPE => ['required', new Enum(AttributeTypeEnum::class)],
             AttributeSchema::IS_FILTERABLE => ['required', 'boolean'],
             AttributeSchema::POSITION => ['nullable', 'numeric', 'max:255'],
 
             AttributeSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             AttributeSchema::RES_TRANSLATIONS.'.*.'.ATSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             AttributeSchema::RES_TRANSLATIONS.'.*.'.ATSchema::LANGUAGE_ID => ['required', 'integer'],
             AttributeSchema::RES_TRANSLATIONS.'.*.'.ATSchema::TITLE => ['required', 'string', 'max:255'],
         ];

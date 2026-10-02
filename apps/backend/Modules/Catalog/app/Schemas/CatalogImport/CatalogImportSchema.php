@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Catalog\Schemas\ProductImport;
+namespace Modules\Catalog\Schemas\CatalogImport;
 
 use Modules\Catalog\Schemas\Module;
 use Modules\Core\Schemas\Shared\PkAndTimestampsTrait;
 
-class ProductImportSchema
+class CatalogImportSchema
 {
     use PkAndTimestampsTrait;
 
@@ -16,6 +16,8 @@ class ProductImportSchema
     public const string MEDIA_ID = 'media_id';
 
     public const string FILENAME = 'filename';
+
+    public const string ENTITY = 'entity';
 
     public const string STATUS = 'status';
 
@@ -36,6 +38,8 @@ class ProductImportSchema
     public const string DURATION_MS = 'duration_ms';
 
     public const string ERRORS = 'errors';
+
+    public const string SUMMARY = 'summary';
 
     public const string RES_USER = 'user';
 

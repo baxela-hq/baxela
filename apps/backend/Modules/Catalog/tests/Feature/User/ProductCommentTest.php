@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Catalog\Tests\Feature\HelperTrait;
+
 use function Modules\Catalog\Tests\Feature\defaultLanguage;
-use Modules\Core\Models\Language;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -33,7 +34,7 @@ function commentableProduct(string $slug = 'commentable-product'): Product
 }
 
 it('lets an authenticated customer comment, stored as pending', function () {
-    $user = \Modules\Auth\Models\User::factory()->create();
+    $user = User::factory()->create();
     $this->actingAs($user);
     $product = commentableProduct();
 
@@ -61,7 +62,7 @@ it('rejects guest comments with 401', function () {
 });
 
 it('rejects an invalid comment payload', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create());
+    $this->actingAs(User::factory()->create());
     $product = commentableProduct();
 
     $this->postJson($this->baseUrl('/user/products/'.$product->id.'/comments'), [
@@ -73,7 +74,7 @@ it('rejects an invalid comment payload', function () {
 });
 
 it('rejects a parent comment from another product', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create());
+    $this->actingAs(User::factory()->create());
 
     $product = commentableProduct();
     $otherProduct = commentableProduct('other-product');

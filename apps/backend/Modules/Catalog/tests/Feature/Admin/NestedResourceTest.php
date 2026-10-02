@@ -4,6 +4,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Tests\Feature\HelperTrait;
+
 use function Modules\Catalog\Tests\Feature\defaultLanguage;
 
 uses(RefreshDatabase::class);

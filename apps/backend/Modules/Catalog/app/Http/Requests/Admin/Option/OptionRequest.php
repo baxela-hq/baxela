@@ -22,16 +22,31 @@ class OptionRequest extends FormRequest
     {
         $id = $this->route('id');
 
+        $rules = self::rulesFor($this->languageMap);
+        $rules[OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::SLUG][] =
+            new LanguageUniquePair(OTSchema::TABLE, OTSchema::SLUG, $this->languageMap, $id);
+
+        return $rules;
+    }
+
+    /**
+     * Payload shape rules, free of request context and DB-row checks —
+     * reused verbatim by the catalog module data importer.
+     *
+     * @param  array<string, int>  $languageMap  code => id of the active languages
+     * @return array<string, array<int, string>>
+     */
+    public static function rulesFor(array $languageMap): array
+    {
         return [
             OptionSchema::POSITION => ['nullable', 'numeric', 'max:255'],
 
             OptionSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',
-                Rule::in(array_keys($this->languageMap))],
+                Rule::in(array_keys($languageMap))],
             OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::LANGUAGE_ID => ['required', 'integer'],
             OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::TITLE => ['required', 'string', 'max:255'],
-            OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::SLUG => ['required', 'string', 'max:255',
-                new LanguageUniquePair(OTSchema::TABLE, OTSchema::SLUG, $this->languageMap, $id)],
+            OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::SLUG => ['required', 'string', 'max:255'],
         ];
     }
 

@@ -6,8 +6,9 @@ use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Tests\Feature\HelperTrait;
-use function Modules\Catalog\Tests\Feature\defaultLanguage;
 use Modules\Inventory\Models\InventoryStock;
+
+use function Modules\Catalog\Tests\Feature\defaultLanguage;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
