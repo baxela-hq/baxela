@@ -50,6 +50,19 @@ it('lists the featured sections ordered by position', function () {
     $first = featuredProduct('first-product');
     featuredCategory('solo-category');
 
+    $first->images()->create([
+        'media_id' => 424242,
+        'url' => 'https://cdn.test/first.jpg',
+        'position' => 2,
+        'collection' => 'photos',
+    ]);
+    $first->images()->create([
+        'media_id' => 424242,
+        'url' => 'https://cdn.test/cover.jpg',
+        'position' => 1,
+        'collection' => 'photos',
+    ]);
+
     FeaturedItem::query()->create([
         FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_PRODUCT,
         FeaturedItemSchema::FEATUREDABLE_ID => $second->id,
@@ -68,6 +81,8 @@ it('lists the featured sections ordered by position', function () {
 
     expect(collect($response->json('data.product'))->pluck('id')->all())->toBe([$first->id, $second->id])
         ->and($response->json('data.product.0.translations'))->toBeArray()
+        ->and($response->json('data.product.0.images'))->toHaveCount(2)
+        ->and(collect($response->json('data.product.1.images'))->count())->toBe(0)
         ->and(collect($response->json('data.category'))->pluck('id')->all())->toBeArray();
 });
 

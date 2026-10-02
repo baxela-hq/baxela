@@ -25,6 +25,7 @@ class ListFeaturedAction
                 ->with([
                     ProductSchema::RES_TRANSLATIONS,
                     ProductSchema::RES_VARIANTS,
+                    ProductSchema::RES_IMAGES,
                 ])
                 ->orderBy($this->positionSubquery(
                     FeaturedItemSchema::TYPE_PRODUCT,

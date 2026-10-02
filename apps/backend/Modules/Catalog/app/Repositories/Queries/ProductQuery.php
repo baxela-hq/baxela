@@ -23,7 +23,8 @@ class ProductQuery implements QueryInterface
             ->allowedIncludes(
                 ProductSchema::RES_VARIANTS,
                 ProductSchema::RES_OPTIONS,
-                ProductSchema::RES_CATEGORIES
+                ProductSchema::RES_CATEGORIES,
+                ProductSchema::RES_IMAGES
             )
             ->allowedFilters(
                 AllowedFilter::custom(PTSchema::TITLE, new TranslationTitleFilter),
