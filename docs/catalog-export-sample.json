@@ -1,0 +1,187 @@
+{
+  "format": "baxela.module-export",
+  "module": "catalog",
+  "version": 1,
+  "exported_at": "2026-10-02T12:00:00+00:00",
+  "sections": [
+    {
+      "entity": "attribute-groups",
+      "rows": [
+        {
+          "source_id": 1,
+          "payload": {
+            "position": 1,
+            "translations": [
+              { "language": "en", "title": "General" },
+              { "language": "fa", "title": "عمومی" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "attributes",
+      "rows": [
+        {
+          "source_id": 1,
+          "payload": {
+            "group_id": 1,
+            "code": "color",
+            "data_type": "select",
+            "is_filterable": true,
+            "position": 1,
+            "translations": [
+              { "language": "en", "title": "Color" },
+              { "language": "fa", "title": "رنگ" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "attribute-values",
+      "rows": [
+        {
+          "source_id": 1,
+          "owner": 1,
+          "payload": {
+            "position": 1,
+            "translations": [
+              { "language": "en", "title": "Navy" },
+              { "language": "fa", "title": "سرمه‌ای" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "options",
+      "rows": [
+        {
+          "source_id": 1,
+          "payload": {
+            "position": 1,
+            "translations": [
+              { "language": "en", "title": "Size", "slug": "size" },
+              { "language": "fa", "title": "سایز", "slug": "سایز" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "option-values",
+      "rows": [
+        {
+          "source_id": 1,
+          "owner": 1,
+          "payload": {
+            "position": 1,
+            "translations": [
+              { "language": "en", "title": "Large", "slug": "large" },
+              { "language": "fa", "title": "بزرگ", "slug": "بزرگ" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "categories",
+      "rows": [
+        {
+          "source_id": 1,
+          "payload": {
+            "parent_id": null,
+            "position": 1,
+            "image_media_id": null,
+            "image_url": null,
+            "is_featured": true,
+            "attribute_ids": [1],
+            "translations": [
+              { "language": "en", "title": "Men", "slug": "men", "description": null },
+              { "language": "fa", "title": "مردانه", "slug": "مردانه", "description": null }
+            ]
+          }
+        },
+        {
+          "source_id": 2,
+          "payload": {
+            "parent_id": 1,
+            "position": 2,
+            "image_media_id": null,
+            "image_url": null,
+            "is_featured": false,
+            "attribute_ids": [],
+            "translations": [
+              { "language": "en", "title": "T-Shirts", "slug": "t-shirts", "description": null },
+              { "language": "fa", "title": "تی‌شرت", "slug": "تیشرت", "description": null }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": "products",
+      "rows": [
+        {
+          "source_id": 1,
+          "payload": {
+            "type": "simple",
+            "status": "in_stock",
+            "is_published": true,
+            "is_featured": false,
+            "categories": [1, 2],
+            "shipping": {
+              "requires_shipping": true,
+              "weight": "0.25",
+              "weight_unit": "kg",
+              "package_length": "30",
+              "package_width": "25",
+              "package_height": "3",
+              "dimension_unit": "cm"
+            },
+            "variants": [
+              {
+                "sku": "BX-TEE-001",
+                "price": "450000",
+                "quantity": 25,
+                "is_default": true,
+                "barcode": "6260101234501",
+                "compare_price": "520000",
+                "cost_price": "320000"
+              }
+            ],
+            "attribute_values": [
+              { "attribute_id": 1, "attribute_value_id": 1 }
+            ],
+            "translations": [
+              {
+                "language": "en",
+                "title": "Men's Classic T-Shirt",
+                "slug": "mens-classic-t-shirt",
+                "content": "<p>100% cotton crew-neck tee.</p>",
+                "description": "100% cotton crew-neck tee"
+              },
+              {
+                "language": "fa",
+                "title": "تی‌شرت کلاسیک مردانه",
+                "slug": "تیشرت-کلاسیک-مردانه",
+                "content": "<p>تی‌شرت نخی پنبه ۱۰۰٪ با دوخت تقویت‌شده.</p>",
+                "description": "تی‌شرت نخی پنبه ۱۰۰٪"
+              }
+            ],
+            "seo": [
+              {
+                "language": "en",
+                "meta_title": "Men's Classic T-Shirt",
+                "meta_description": "100% cotton crew-neck tee",
+                "open_graph_title": null,
+                "open_graph_description": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
