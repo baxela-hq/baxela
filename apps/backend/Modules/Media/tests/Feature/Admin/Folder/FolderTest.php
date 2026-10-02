@@ -176,7 +176,24 @@ it('prevents moving a folder into one of its descendants', function () {
     expect($root->fresh()->parent_id)->toBeNull();
 });
 
-it('scopes folders to the authenticated user', function () {
+it('lists folders created by other admins', function () {
+
+    $owner = $this->adminUser();
+
+    $folder = Folder::factory()->create([
+        FolderSchema::USER_ID => $owner->id,
+        FolderSchema::PARENT_ID => null,
+        FolderSchema::NAME => 'Owner Folder',
+    ]);
+
+    $this->actingAs($this->adminUser());
+
+    $list = $this->getJson($this->baseUrl('/folders?filter[parent_id]=null'));
+    $list->assertOk();
+    expect(collect($list->json('data'))->pluck('id'))->toContain($folder->id);
+});
+
+it('keeps folder mutations scoped to the owner', function () {
 
     $owner = $this->adminUser();
     $intruder = $this->adminUser();
@@ -188,10 +205,6 @@ it('scopes folders to the authenticated user', function () {
     ]);
 
     $this->actingAs($intruder);
-
-    $list = $this->getJson($this->baseUrl('/folders?filter[parent_id]=null'));
-    $list->assertOk();
-    expect(collect($list->json('data'))->pluck('id'))->not->toContain($folder->id);
 
     $this->patchJson($this->baseUrl('/folders/'.$folder->id), [FolderSchema::NAME => 'Hijacked'])
         ->assertStatus(404);

@@ -135,7 +135,23 @@ it('moves a media to root via PATCH with folder_id=null', function () {
     expect($media->fresh()->folder_id)->toBeNull();
 });
 
-it('scopes media to the authenticated user', function () {
+it('lists media uploaded by other admins', function () {
+
+    $owner = $this->adminUser();
+
+    $media = Media::factory()->create([
+        MediaSchema::USER_ID => $owner->id,
+        MediaSchema::FOLDER_ID => null,
+    ]);
+
+    $this->actingAs($this->adminUser());
+
+    $list = $this->getJson($this->baseUrl('/media?filter[folder_id]=null'));
+    $list->assertOk();
+    expect(collect($list->json('data'))->pluck('id'))->toContain($media->id);
+});
+
+it('keeps media mutations scoped to the owner', function () {
 
     $owner = $this->adminUser();
     $intruder = $this->adminUser();
@@ -146,10 +162,6 @@ it('scopes media to the authenticated user', function () {
     ]);
 
     $this->actingAs($intruder);
-
-    $list = $this->getJson($this->baseUrl('/media?filter[folder_id]=null'));
-    $list->assertOk();
-    expect(collect($list->json('data'))->pluck('id'))->not->toContain($media->id);
 
     $this->patchJson($this->baseUrl('/media/'.$media->id), [MediaSchema::NAME => 'hijacked'])
         ->assertStatus(404);

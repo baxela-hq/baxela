@@ -3,7 +3,6 @@
 namespace Modules\Media\Actions\Admin\Folder;
 
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\Utils\Auth;
 use Modules\Media\Filters\NullableExactFilter;
 use Modules\Media\Models\Folder;
 use Modules\Media\Schemas\Folder\FolderSchema;
@@ -15,7 +14,6 @@ class ListFolderAction
     public function handle(): Collection
     {
         return QueryBuilder::for(Folder::class)
-            ->where(FolderSchema::USER_ID, Auth::id())
             ->allowedFilters(
                 AllowedFilter::custom(FolderSchema::PARENT_ID, new NullableExactFilter(FolderSchema::PARENT_ID))
                     ->nullable(true),
