@@ -16,7 +16,7 @@ export default async function HomePage() {
       "/catalog/public/categories?featured=true&per_page=4"
     ).catch(() => null),
     serverApiGet<Paginated<ApiProduct>>(
-      "/catalog/public/products?filter[is_featured]=true&per_page=4"
+      "/catalog/public/products?featured=true&per_page=4"
     ).catch(() => null),
   ]);
 
