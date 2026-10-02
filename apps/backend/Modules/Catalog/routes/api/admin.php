@@ -26,6 +26,7 @@ use Modules\Catalog\Http\Controllers\Admin\Category\DeleteCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\ListCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\ShowCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\UpdateCategoryController;
+use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ExportCatalogDataController;
 use Modules\Catalog\Http\Controllers\Admin\Option\CreateOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\DeleteOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\ListOptionController;
@@ -54,6 +55,10 @@ use Modules\Catalog\Http\Controllers\Admin\ProductComment\UpdateProductCommentCo
 use Modules\Core\Http\Middleware\PermissionMiddleware;
 
 Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+    // Whole-module JSON data transfer lives under its own /data prefix,
+    // clear of every {id} route.
+    Route::get('/data/export', ExportCatalogDataController::class)->name('data.export');
+
     // Registered before /products/{id} so "import" is never treated as an id.
     Route::post('/products/import/preview', PreviewProductImportController::class)->name('products.import.preview');
     Route::post('/products/import', ImportProductsController::class)->name('products.import');
