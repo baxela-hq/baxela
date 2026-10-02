@@ -110,15 +110,14 @@ it('soft-deletes a product', function () {
         ->and(Product::withTrashed()->find($productId))->not->toBeNull();
 });
 
-it('marks a product as featured and filters the admin list by the flag', function () {
+it('creates two products and lists them newest-first', function () {
     $this->actingAs($this->superAdminUser());
 
-    $featuredId = $this->postJson($this->baseUrl('/admin/products'), productPayload(['is_featured' => true]))
+    $firstId = $this->postJson($this->baseUrl('/admin/products'), productPayload())
         ->assertCreated()
-        ->assertJsonPath('data.is_featured', true)
         ->json('data.id');
 
-    $plainId = $this->postJson($this->baseUrl('/admin/products'), productPayload([
+    $secondId = $this->postJson($this->baseUrl('/admin/products'), productPayload([
         'translations' => [[
             'language' => 'en',
             'title' => 'Plain Product',
@@ -128,14 +127,12 @@ it('marks a product as featured and filters the admin list by the flag', functio
         ]],
     ]))
         ->assertCreated()
-        ->assertJsonPath('data.is_featured', false)
         ->json('data.id');
 
-    expect(Product::query()->find($featuredId)->{ProductSchema::IS_FEATURED})->toBeTrue();
-
     $ids = collect(
-        $this->getJson($this->baseUrl('/admin/products?filter[is_featured]=true'))->json('data')
+        $this->getJson($this->baseUrl('/admin/products'))->json('data')
     )->pluck('id');
 
-    expect($ids)->toContain($featuredId)->not->toContain($plainId);
+    expect($ids)->toContain($firstId)->toContain($secondId)
+        ->and($ids->first())->toBe($secondId);
 });

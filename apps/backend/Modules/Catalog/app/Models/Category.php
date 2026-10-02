@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Catalog\Database\Factories\CategoryFactory;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
@@ -27,7 +28,6 @@ class Category extends Model
         CategorySchema::POSITION,
         CategorySchema::IMAGE_MEDIA_ID,
         CategorySchema::IMAGE_URL,
-        CategorySchema::IS_FEATURED,
     ];
 
     /**
@@ -35,9 +35,7 @@ class Category extends Model
      */
     protected function casts(): array
     {
-        return [
-            CategorySchema::IS_FEATURED => 'boolean',
-        ];
+        return [];
     }
 
     protected static function newFactory(): CategoryFactory
@@ -62,5 +60,10 @@ class Category extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(CategoryTranslation::class);
+    }
+
+    public function featuredItem(): MorphOne
+    {
+        return $this->morphOne(FeaturedItem::class, 'featuredable');
     }
 }

@@ -12,6 +12,7 @@ use Modules\Catalog\Actions\Admin\AttributeValue\CreateAttributeValueAction;
 use Modules\Catalog\Actions\Admin\AttributeValue\UpdateAttributeValueAction;
 use Modules\Catalog\Actions\Admin\Category\CreateCategoryAction;
 use Modules\Catalog\Actions\Admin\Category\UpdateCategoryAction;
+use Modules\Catalog\Actions\Admin\Featured\UpdateFeaturedAction;
 use Modules\Catalog\Actions\Admin\Option\CreateOptionAction;
 use Modules\Catalog\Actions\Admin\Option\UpdateOptionAction;
 use Modules\Catalog\Actions\Admin\OptionValue\CreateOptionValueAction;
@@ -44,6 +45,7 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema;
@@ -130,6 +132,7 @@ class ImportCatalogDataAction
         protected UpdateCategoryAction $updateCategory,
         protected CreateProductAction $createProduct,
         protected UpdateProductAction $updateProduct,
+        protected UpdateFeaturedAction $updateFeatured,
     ) {}
 
     /**
@@ -354,8 +357,34 @@ class ImportCatalogDataAction
                 $row, $messages),
             CatalogTransferFormat::SECTION_CATEGORIES => $this->prepareCategory($payload, $messages),
             CatalogTransferFormat::SECTION_PRODUCTS => $this->prepareProduct($payload, $messages),
+            CatalogTransferFormat::SECTION_FEATURED_ITEMS => $this->prepareFeatured($payload, $messages),
             default => $payload,
         };
+    }
+
+    /**
+     * Remap the full-sync featured payload's source ids to local ids.
+     *
+     * @param  array<string, mixed>  $payload
+     * @param  array<int, string>  $messages
+     * @return array<string, mixed>
+     */
+    protected function prepareFeatured(array $payload, array &$messages): array
+    {
+        $payload[FeaturedItemSchema::REQ_PRODUCT_IDS] = $this->localIds(
+            CatalogTransferFormat::SECTION_PRODUCTS,
+            (array) ($payload[FeaturedItemSchema::REQ_PRODUCT_IDS] ?? []),
+            'product',
+            $messages
+        );
+        $payload[FeaturedItemSchema::REQ_CATEGORY_IDS] = $this->localIds(
+            CatalogTransferFormat::SECTION_CATEGORIES,
+            (array) ($payload[FeaturedItemSchema::REQ_CATEGORY_IDS] ?? []),
+            'category',
+            $messages
+        );
+
+        return $payload;
     }
 
     /**
@@ -421,7 +450,6 @@ class ImportCatalogDataAction
         $payload[CategorySchema::POSITION] ??= null;
         $payload[CategorySchema::IMAGE_MEDIA_ID] = $this->existingMediaId($payload[CategorySchema::IMAGE_MEDIA_ID] ?? null);
         $payload[CategorySchema::IMAGE_URL] ??= null;
-        $payload[CategorySchema::IS_FEATURED] = (bool) ($payload[CategorySchema::IS_FEATURED] ?? false);
         $payload[CategoryAttributeSchema::REQ_ATTRIBUTE_IDS] = $this->localIds(
             CatalogTransferFormat::SECTION_ATTRIBUTES,
             (array) ($payload[CategoryAttributeSchema::REQ_ATTRIBUTE_IDS] ?? []),
@@ -439,7 +467,6 @@ class ImportCatalogDataAction
      */
     protected function prepareProduct(array $payload, array &$messages): array
     {
-        $payload[ProductSchema::IS_FEATURED] = $payload[ProductSchema::IS_FEATURED] ?? null;
         $payload[ProductSchema::RES_CATEGORIES] = $this->localIds(
             CatalogTransferFormat::SECTION_CATEGORIES,
             (array) ($payload[ProductSchema::RES_CATEGORIES] ?? []),
@@ -882,6 +909,13 @@ class ImportCatalogDataAction
             CatalogTransferFormat::SECTION_PRODUCTS => (int) ($existingId !== null
                 ? $this->updateProduct->handle((string) $existingId, $data)->getKey()
                 : $this->createProduct->handle($data)->getKey()),
+            // Full-sync section: one row replaces the whole featured
+            // table, mirroring the admin endpoint. Returns a placeholder
+            // id — no later section references featured rows.
+            CatalogTransferFormat::SECTION_FEATURED_ITEMS => $this->updateFeatured->handle(
+                array_map('intval', (array) ($data[FeaturedItemSchema::REQ_PRODUCT_IDS] ?? [])),
+                array_map('intval', (array) ($data[FeaturedItemSchema::REQ_CATEGORY_IDS] ?? [])),
+            ) ? 1 : 0,
             default => 0,
         };
     }

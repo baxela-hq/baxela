@@ -19,8 +19,6 @@ class CategorySchema
 
     public const string IMAGE_URL = 'image_url';
 
-    public const string IS_FEATURED = 'is_featured';
-
     public const string RES_TRANSLATIONS = 'translations';
 
     public const string RES_ATTRIBUTES = 'attributes';

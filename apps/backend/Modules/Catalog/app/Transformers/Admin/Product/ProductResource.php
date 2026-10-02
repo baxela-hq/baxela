@@ -23,7 +23,6 @@ class ProductResource extends JsonResource
             ProductSchema::TYPE => $this->resource->{ProductSchema::TYPE},
             ProductSchema::STATUS => $this->resource->{ProductSchema::STATUS},
             ProductSchema::IS_PUBLISHED => $this->resource->{ProductSchema::IS_PUBLISHED},
-            ProductSchema::IS_FEATURED => $this->resource->{ProductSchema::IS_FEATURED},
             ProductSchema::RES_SHIPPING => new ProductShippingResource($this->whenLoaded(ProductSchema::RES_SHIPPING)),
             ProductSchema::CREATED_AT => $this->resource->{ProductSchema::CREATED_AT},
             ProductSchema::UPDATED_AT => $this->resource->{ProductSchema::UPDATED_AT},

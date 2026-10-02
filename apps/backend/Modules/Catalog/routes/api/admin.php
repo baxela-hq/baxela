@@ -31,6 +31,8 @@ use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogController;
 use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogIndexController;
 use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogShowController;
 use Modules\Catalog\Http\Controllers\Admin\DataTransfer\PreviewCatalogImportController;
+use Modules\Catalog\Http\Controllers\Admin\Featured\ListFeaturedController;
+use Modules\Catalog\Http\Controllers\Admin\Featured\UpdateFeaturedController;
 use Modules\Catalog\Http\Controllers\Admin\Option\CreateOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\DeleteOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\ListOptionController;
@@ -91,6 +93,9 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/categories/{id}', ShowCategoryController::class)->name('categories.show');
     Route::patch('/categories/{id}', UpdateCategoryController::class)->name('categories.update');
     Route::delete('/categories/{id}', DeleteCategoryController::class)->name('categories.delete');
+
+    Route::get('/featured', ListFeaturedController::class)->name('featured.list');
+    Route::put('/featured', UpdateFeaturedController::class)->name('featured.update');
 
     Route::get('/options', ListOptionController::class)->name('options.list');
     Route::post('/options', CreateOptionController::class)->name('options.create');

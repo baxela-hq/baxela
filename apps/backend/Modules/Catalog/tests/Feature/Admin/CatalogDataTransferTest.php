@@ -10,6 +10,7 @@ use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Models\CatalogImport;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\CategoryTranslation;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\OptionValue;
@@ -21,6 +22,7 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Catalog\Support\DataTransfer\CatalogTransferFormat;
 use Modules\Catalog\Tests\Feature\HelperTrait;
@@ -82,7 +84,7 @@ function seedTransferCatalog(): array
     $optionValue = OptionValue::query()->create(['option_id' => $option->id, 'position' => 1]);
     $optionValue->translations()->create(['language_id' => $en->id, 'title' => 'Large', 'slug' => 'large']);
 
-    $parent = Category::query()->create(['parent_id' => null, 'position' => 1, 'is_featured' => true]);
+    $parent = Category::query()->create(['parent_id' => null, 'position' => 1]);
     $parent->translations()->create(['language_id' => $en->id, 'title' => 'Men', 'slug' => 'men']);
     $parent->attributes()->attach([$attribute->id]);
 
@@ -90,7 +92,7 @@ function seedTransferCatalog(): array
     $child->translations()->create(['language_id' => $en->id, 'title' => 'T-Shirts', 'slug' => 't-shirts']);
 
     $product = Product::query()->create([
-        'type' => 'simple', 'status' => 'in_stock', 'is_published' => true, 'is_featured' => false,
+        'type' => 'simple', 'status' => 'in_stock', 'is_published' => true,
     ]);
     $product->translations()->create([
         'language_id' => $en->id, 'title' => 'Classic Tee', 'slug' => 'classic-tee',
@@ -104,6 +106,17 @@ function seedTransferCatalog(): array
     $product->variants()->create(['sku' => 'BX-TEE-002', 'price' => '460000.5', 'quantity' => 3, 'is_default' => false, 'barcode' => '123']);
     $product->attributeValues()->create(['attribute_id' => $attribute->id, 'attribute_value_id' => $attributeValue->id]);
 
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_CATEGORY,
+        FeaturedItemSchema::FEATUREDABLE_ID => $parent->id,
+        FeaturedItemSchema::POSITION => 1,
+    ]);
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_PRODUCT,
+        FeaturedItemSchema::FEATUREDABLE_ID => $product->id,
+        FeaturedItemSchema::POSITION => 1,
+    ]);
+
     return [
         'group' => $group, 'attribute' => $attribute, 'attributeValue' => $attributeValue,
         'option' => $option, 'optionValue' => $optionValue,
@@ -113,6 +126,7 @@ function seedTransferCatalog(): array
 
 function wipeCatalogTables(): void
 {
+    FeaturedItem::query()->delete();
     Variant::query()->delete();
     Image::query()->delete();
     ProductAttributeValue::query()->delete();
@@ -204,6 +218,11 @@ it('exports the catalog module in dependency order with request-shaped rows', fu
         ->toBe($sections['options'][0]['source_id'])
         ->and($sections['categories'][1]['payload']['parent_id'])
         ->toBe($sections['categories'][0]['source_id']);
+
+    // The featured selections replay as one full-sync row of source ids.
+    $featuredRow = $sections['featured-items'][0];
+    expect($featuredRow['payload']['category_ids'])->toBe([$sections['categories'][0]['source_id']])
+        ->and($featuredRow['payload']['product_ids'])->toBe([$sections['products'][0]['source_id']]);
 });
 
 it('downloads the export as a json attachment', function () {
@@ -233,7 +252,7 @@ it('round-trips: wipes the catalog and re-imports the export', function () {
     $response->assertOk();
     expect($response->json('data.errors'))->toBe([])
         ->and($response->json('data.failed_count'))->toBe(0)
-        ->and($response->json('data.created_count'))->toBe(8)
+        ->and($response->json('data.created_count'))->toBe(9)
         ->and($response->json('data.sections.products.created'))->toBe(1);
 
     $product = Product::query()->first();
@@ -259,6 +278,17 @@ it('round-trips: wipes the catalog and re-imports the export', function () {
         ->and(Attribute::query()->where('code', 'color')->count())->toBe(1)
         ->and(Option::query()->count())->toBe(1)
         ->and($product->variants()->first()->optionValues()->count())->toBe(0);
+
+    // Featured items survived with remapped ids.
+    $featuredProduct = FeaturedItem::query()
+        ->where(FeaturedItemSchema::FEATUREDABLE_TYPE, FeaturedItemSchema::TYPE_PRODUCT)
+        ->first();
+    $featuredCategory = FeaturedItem::query()
+        ->where(FeaturedItemSchema::FEATUREDABLE_TYPE, FeaturedItemSchema::TYPE_CATEGORY)
+        ->first();
+    expect($featuredProduct->{FeaturedItemSchema::FEATUREDABLE_ID})->toBe($product->id)
+        ->and($featuredCategory->{FeaturedItemSchema::FEATUREDABLE_ID})->toBe($parent->id)
+        ->and(FeaturedItem::query()->count())->toBe(2);
 });
 
 it('re-imports idempotently with the update strategy', function () {
@@ -276,13 +306,16 @@ it('re-imports idempotently with the update strategy', function () {
         transferImportPayload(transferMedia($export))
     );
 
+    // The featured sync row replays as a fresh apply on every run; the
+    // eight entity rows match their records and update in place.
     $response->assertOk();
-    expect($response->json('data.created_count'))->toBe(0)
+    expect($response->json('data.created_count'))->toBe(1)
         ->and($response->json('data.updated_count'))->toBe(8)
         ->and($response->json('data.failed_count'))->toBe(0)
         ->and(Product::query()->count())->toBe(1)
         ->and(Category::query()->count())->toBe(2)
-        ->and(Variant::query()->count())->toBe(2);
+        ->and(Variant::query()->count())->toBe(2)
+        ->and(FeaturedItem::query()->count())->toBe(2);
 });
 
 it('skips existing rows with the skip strategy', function () {
@@ -300,9 +333,11 @@ it('skips existing rows with the skip strategy', function () {
         transferImportPayload(transferMedia($export), ['on_duplicate' => 'skip'])
     );
 
+    // Featured is a full-sync section: it mirrors the source store even
+    // under the skip strategy.
     $response->assertOk();
     expect($response->json('data.skipped_count'))->toBe(8)
-        ->and($response->json('data.created_count'))->toBe(0)
+        ->and($response->json('data.created_count'))->toBe(1)
         ->and(Product::query()->count())->toBe(1);
 });
 
@@ -320,7 +355,7 @@ it('dry runs without writing anything', function () {
 
     $response->assertOk();
     expect($response->json('data.dry_run'))->toBeTrue()
-        ->and($response->json('data.created_count'))->toBe(8)
+        ->and($response->json('data.created_count'))->toBe(9)
         ->and(Product::query()->count())->toBe(0)
         ->and(Category::query()->count())->toBe(0)
         ->and(AttributeGroup::query()->count())->toBe(0);
@@ -338,7 +373,7 @@ it('fails product rows referencing unknown category source ids', function () {
                 'source_id' => 1,
                 'payload' => [
                     'parent_id' => null, 'position' => null, 'image_media_id' => null,
-                    'image_url' => null, 'is_featured' => false, 'attribute_ids' => [],
+                    'image_url' => null, 'attribute_ids' => [],
                     'translations' => [['language' => 'en', 'title' => 'Men', 'slug' => 'men', 'description' => null]],
                 ],
             ]]],
@@ -371,6 +406,36 @@ it('fails product rows referencing unknown category source ids', function () {
         ->and(Category::query()->count())->toBe(1);
 });
 
+it('fails the featured sync row referencing unknown product source ids', function () {
+    defaultLanguage();
+    $this->actingAs($this->superAdminUser());
+
+    $file = [
+        'format' => 'baxela.module-export', 'module' => 'catalog', 'version' => 1,
+        'exported_at' => now()->toIso8601String(),
+        'sections' => [
+            ['entity' => 'featured-items', 'rows' => [[
+                'source_id' => 1,
+                'payload' => [
+                    'product_ids' => [999],
+                    'category_ids' => [],
+                ],
+            ]]],
+        ],
+    ];
+
+    $response = $this->postJson(
+        $this->baseUrl('/admin/data/import'),
+        transferImportPayload(transferMedia(json_encode($file)))
+    );
+
+    $response->assertOk();
+    expect($response->json('data.failed_count'))->toBe(1)
+        ->and($response->json('data.errors.0.section'))->toBe('featured-items')
+        ->and($response->json('data.errors.0.messages.0'))->toContain('Unknown product source id: 999')
+        ->and(FeaturedItem::query()->count())->toBe(0);
+});
+
 it('reports unknown language codes as row errors and preview warnings', function () {
     defaultLanguage();
     $this->actingAs($this->superAdminUser());
@@ -383,7 +448,7 @@ it('reports unknown language codes as row errors and preview warnings', function
                 'source_id' => 1,
                 'payload' => [
                     'parent_id' => null, 'position' => null, 'image_media_id' => null,
-                    'image_url' => null, 'is_featured' => false, 'attribute_ids' => [],
+                    'image_url' => null, 'attribute_ids' => [],
                     'translations' => [['language' => 'de', 'title' => 'Herren', 'slug' => 'herren', 'description' => null]],
                 ],
             ]]],
@@ -405,7 +470,7 @@ it('drops images whose media is missing and records a warning', function () {
     defaultLanguage();
     $this->actingAs($this->superAdminUser());
 
-    $category = Category::query()->create(['parent_id' => null, 'position' => 1, 'is_featured' => false]);
+    $category = Category::query()->create(['parent_id' => null, 'position' => 1]);
     $category->translations()->create([
         'language_id' => defaultLanguage()->id, 'title' => 'Featured', 'slug' => 'featured',
     ]);
@@ -472,7 +537,7 @@ it('previews section counts and totals', function () {
 
     $response->assertOk();
     expect($response->json('data.filename'))->toBe('catalog.json')
-        ->and($response->json('data.total_rows'))->toBe(8)
+        ->and($response->json('data.total_rows'))->toBe(9)
         ->and($response->json('data.row_cap'))->toBe(5000)
         ->and($response->json('data.warnings'))->toBe([])
         ->and(collect($response->json('data.sections'))->where('entity', 'products')->first()['rows'])->toBe(1)

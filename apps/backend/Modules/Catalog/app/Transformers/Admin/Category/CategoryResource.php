@@ -20,7 +20,6 @@ class CategoryResource extends JsonResource
             CategorySchema::POSITION => $this->{CategorySchema::POSITION},
             CategorySchema::IMAGE_MEDIA_ID => $this->{CategorySchema::IMAGE_MEDIA_ID},
             CategorySchema::IMAGE_URL => $this->{CategorySchema::IMAGE_URL},
-            CategorySchema::IS_FEATURED => $this->{CategorySchema::IS_FEATURED},
             CategorySchema::CREATED_AT => $this->{CategorySchema::CREATED_AT},
             CategorySchema::UPDATED_AT => $this->{CategorySchema::UPDATED_AT},
             CategorySchema::RES_TRANSLATIONS => CategoryTranslationResource::collection($this->whenLoaded(CategorySchema::RES_TRANSLATIONS)),

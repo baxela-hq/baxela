@@ -30,7 +30,6 @@ class ProductQuery implements QueryInterface
                 AllowedFilter::exact(ProductSchema::ID),
                 AllowedFilter::exact(ProductSchema::STATUS),
                 AllowedFilter::exact(ProductSchema::IS_PUBLISHED),
-                AllowedFilter::exact(ProductSchema::IS_FEATURED),
                 AllowedFilter::exact(ProductSchema::TYPE),
                 AllowedFilter::exact(ProductSchema::RES_CATEGORIES.'.'.CategorySchema::ID),
                 AllowedFilter::exact(ProductSchema::RES_VARIANTS.'.'.VariantSchema::SKU),

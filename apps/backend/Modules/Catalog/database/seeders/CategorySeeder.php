@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\CategoryTranslation;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
@@ -24,6 +26,9 @@ class CategorySeeder extends Seeder
 
     /** @var array<string, int|null> */
     private array $languageIds = [];
+
+    /** @var list<int> featured category ids in seeding order */
+    private array $featuredIds = [];
 
     /**
      * Run the database seeds.
@@ -58,8 +63,33 @@ class CategorySeeder extends Seeder
 
         CategoryTranslation::query()->delete();
         Category::query()->delete();
+        FeaturedItem::query()
+            ->where(FeaturedItemSchema::FEATUREDABLE_TYPE, FeaturedItemSchema::TYPE_CATEGORY)
+            ->delete();
 
+        $this->featuredIds = [];
         $this->generate($categories, $data, $langs, null);
+        $this->seedFeaturedItems();
+    }
+
+    /**
+     * Turn the collected featured ids into positioned featured items.
+     */
+    private function seedFeaturedItems(): void
+    {
+        $now = now();
+
+        $rows = collect($this->featuredIds)->values()->map(fn ($id, $index) => [
+            FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_CATEGORY,
+            FeaturedItemSchema::FEATUREDABLE_ID => $id,
+            FeaturedItemSchema::POSITION => $index + 1,
+            FeaturedItemSchema::CREATED_AT => $now,
+            FeaturedItemSchema::UPDATED_AT => $now,
+        ])->all();
+
+        if ($rows !== []) {
+            FeaturedItem::query()->insert($rows);
+        }
     }
 
     /**
@@ -100,9 +130,12 @@ class CategorySeeder extends Seeder
                 CategorySchema::POSITION => $i,
                 CategorySchema::IMAGE_MEDIA_ID => $image?->id,
                 CategorySchema::IMAGE_URL => $image?->url,
-                CategorySchema::IS_FEATURED => (bool) ($node['featured'] ?? false),
             ]);
             $categoryId = $category->{CategorySchema::ID};
+
+            if ($node['featured'] ?? false) {
+                $this->featuredIds[] = $categoryId;
+            }
 
             foreach ($langs as $lang) {
                 foreach ($data[$lang][$slug]['translations'] ?? [] as $translation) {

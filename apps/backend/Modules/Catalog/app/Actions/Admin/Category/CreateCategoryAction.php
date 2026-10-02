@@ -15,7 +15,6 @@ class CreateCategoryAction
             CategorySchema::POSITION => $data[CategorySchema::POSITION],
             CategorySchema::IMAGE_MEDIA_ID => $data[CategorySchema::IMAGE_MEDIA_ID] ?? null,
             CategorySchema::IMAGE_URL => $data[CategorySchema::IMAGE_URL] ?? null,
-            CategorySchema::IS_FEATURED => (bool) ($data[CategorySchema::IS_FEATURED] ?? false),
         ];
         $record = Category::query()->create($body);
 

@@ -75,7 +75,6 @@ class ProductRequest extends FormRequest
             Schema::TYPE => ['required', new Enum(ProductTypeEnum::class)],
             Schema::STATUS => ['required', new Enum(ProductStatusEnum::class)],
             Schema::IS_PUBLISHED => ['required', 'boolean'],
-            Schema::IS_FEATURED => ['nullable', 'boolean'],
 
             // shipping (value and unit must be filled as a pair, or both left null)
             Schema::RES_SHIPPING => ['nullable', 'array'],

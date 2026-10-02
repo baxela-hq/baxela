@@ -6,10 +6,12 @@ use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Models\AttributeTranslation;
 use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Models\AttributeValueTranslation;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Catalog\Tests\Feature\HelperTrait;
@@ -159,14 +161,23 @@ it('lists approved comments with their approved replies for a product', function
         ->and($comment['replies'][0]['body'])->toBe('Approved reply');
 });
 
-it('filters the storefront list to featured products', function () {
-    $featured = publicProduct('featured-product');
-    Product::query()->whereKey($featured->id)->update(['is_featured' => true]);
+it('filters the storefront list to featured products in admin-set order', function () {
+    $second = publicProduct('second-product');
+    $first = publicProduct('first-product');
     publicProduct('regular-product');
 
+    foreach ([$second, $first] as $index => $product) {
+        FeaturedItem::query()->create([
+            FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_PRODUCT,
+            FeaturedItemSchema::FEATUREDABLE_ID => $product->id,
+            FeaturedItemSchema::POSITION => $index + 1,
+        ]);
+    }
+
     $ids = collect(
-        $this->getJson($this->baseUrl('/public/products?filter[is_featured]=true'))->json('data')
+        $this->getJson($this->baseUrl('/public/products?featured=true'))->json('data')
     )->pluck('id');
 
-    expect($ids)->toContain($featured->id)->toHaveCount(1);
+    // $second carries position 1, $first position 2.
+    expect($ids->all())->toBe([$second->id, $first->id]);
 });

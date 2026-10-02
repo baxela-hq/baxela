@@ -2,7 +2,9 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Schemas\Category\CategorySchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Tests\Feature\HelperTrait;
 
 use function Modules\Catalog\Tests\Feature\defaultLanguage;
@@ -23,17 +25,26 @@ function publicCategory(string $slug, array $attributes = []): Category
     return $category;
 }
 
-it('lists only featured categories ordered by position when filtered', function () {
-    publicCategory('second', [
-        CategorySchema::IS_FEATURED => true,
-        CategorySchema::POSITION => 2,
-        CategorySchema::IMAGE_URL => '/storage/categories/second.png',
+function featureCategory(Category $category, int $position): Category
+{
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_CATEGORY,
+        FeaturedItemSchema::FEATUREDABLE_ID => $category->{CategorySchema::ID},
+        FeaturedItemSchema::POSITION => $position,
     ]);
-    publicCategory('first', [
-        CategorySchema::IS_FEATURED => true,
+
+    return $category;
+}
+
+it('lists only featured categories ordered by featured position when filtered', function () {
+    featureCategory(publicCategory('second', [
         CategorySchema::POSITION => 1,
-    ]);
-    publicCategory('hidden', [CategorySchema::IS_FEATURED => false]);
+        CategorySchema::IMAGE_URL => '/storage/categories/second.png',
+    ]), position: 2);
+    featureCategory(publicCategory('first', [
+        CategorySchema::POSITION => 2,
+    ]), position: 1);
+    publicCategory('hidden');
 
     $response = $this->getJson($this->baseUrl('/public/categories').'?featured=true')
         ->assertOk();
@@ -44,9 +55,9 @@ it('lists only featured categories ordered by position when filtered', function 
         ->and($categories->last()['image_url'])->toBe('/storage/categories/second.png');
 });
 
-it('lists every category regardless of the featured flag when unfiltered', function () {
-    publicCategory('featured', [CategorySchema::IS_FEATURED => true]);
-    publicCategory('regular', [CategorySchema::IS_FEATURED => false]);
+it('lists every category regardless of featured items when unfiltered', function () {
+    featureCategory(publicCategory('featured'), position: 1);
+    publicCategory('regular');
 
     $response = $this->getJson($this->baseUrl('/public/categories'))
         ->assertOk();

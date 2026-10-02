@@ -3,10 +3,12 @@
 namespace Modules\Catalog\Repositories\Queries;
 
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Category\CategorySchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
@@ -26,6 +28,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *     &filter[categories.id]=3
  *     &filter[option_value_id]=5|6   (repeats allowed)
  *     &filter[price_min]=10&filter[price_max]=50
+ *     &featured=true                (admin-managed featured list)
  *     &sort=-price|price|created_at|id
  *     &per_page=1..50
  */
@@ -33,7 +36,10 @@ class PublicProductQuery implements QueryInterface
 {
     use QueryTrait;
 
-    public function __construct(private readonly ?int $languageId = null) {}
+    public function __construct(
+        private readonly ?int $languageId = null,
+        private readonly bool $featured = false,
+    ) {}
 
     public function build(): QueryBuilder
     {
@@ -49,7 +55,6 @@ class PublicProductQuery implements QueryInterface
                     });
                 }),
                 AllowedFilter::exact(ProductSchema::RES_CATEGORIES.'.'.CategorySchema::ID),
-                AllowedFilter::exact(ProductSchema::IS_FEATURED),
                 AllowedFilter::callback('option_value_id', function (Builder $query, $value): void {
                     // Values of different options narrow the result
                     // (S AND Red); values of the same option widen it
@@ -102,7 +107,22 @@ class PublicProductQuery implements QueryInterface
                     );
                 }),
             )
-            ->defaultSort('-'.ProductSchema::ID)
+            ->defaultSort($this->featured
+                // Featured listings follow the admin-managed position;
+                // an explicit ?sort still wins over this default.
+                ? AllowedSort::callback(FeaturedItemSchema::POSITION, function (Builder $query): void {
+                    $query->orderBy(
+                        FeaturedItem::query()
+                            ->select(FeaturedItemSchema::POSITION)
+                            ->where(FeaturedItemSchema::FEATUREDABLE_TYPE, FeaturedItemSchema::TYPE_PRODUCT)
+                            ->whereColumn(
+                                FeaturedItemSchema::FEATUREDABLE_ID,
+                                ProductSchema::TABLE.'.'.ProductSchema::ID
+                            )
+                    );
+                })
+                : '-'.ProductSchema::ID)
+            ->when($this->featured, fn (Builder $query) => $query->whereHas('featuredItem'))
             ->where(ProductSchema::STATUS, ProductStatusEnum::IN_STOCK)
             ->where(ProductSchema::IS_PUBLISHED, true)
             ->with([

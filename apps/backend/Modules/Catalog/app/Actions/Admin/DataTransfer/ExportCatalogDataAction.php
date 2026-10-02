@@ -6,6 +6,7 @@ use Modules\Catalog\Models\Attribute;
 use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\Product;
@@ -18,6 +19,7 @@ use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema;
@@ -64,6 +66,7 @@ class ExportCatalogDataAction
                 $this->section(CatalogTransferFormat::SECTION_OPTION_VALUES, $this->optionValueRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_CATEGORIES, $this->categoryRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_PRODUCTS, $this->productRows($codeByLanguageId)),
+                $this->section(CatalogTransferFormat::SECTION_FEATURED_ITEMS, $this->featuredItemRows()),
             ],
         ];
     }
@@ -260,7 +263,6 @@ class ExportCatalogDataAction
                         CategorySchema::POSITION => $category->{CategorySchema::POSITION},
                         CategorySchema::IMAGE_MEDIA_ID => $category->{CategorySchema::IMAGE_MEDIA_ID},
                         CategorySchema::IMAGE_URL => $category->{CategorySchema::IMAGE_URL},
-                        CategorySchema::IS_FEATURED => (bool) $category->{CategorySchema::IS_FEATURED},
                         // Source-store attribute ids, in pivot position order.
                         CategoryAttributeSchema::REQ_ATTRIBUTE_IDS => $category->{CategorySchema::RES_ATTRIBUTES}
                             ->pluck(AttributeSchema::ID)
@@ -305,9 +307,6 @@ class ExportCatalogDataAction
                         ProductSchema::TYPE => $product->{ProductSchema::TYPE}->value,
                         ProductSchema::STATUS => $product->{ProductSchema::STATUS}->value,
                         ProductSchema::IS_PUBLISHED => (bool) $product->{ProductSchema::IS_PUBLISHED},
-                        ProductSchema::IS_FEATURED => $product->{ProductSchema::IS_FEATURED} !== null
-                            ? (bool) $product->{ProductSchema::IS_FEATURED}
-                            : null,
                         ProductSchema::RES_CATEGORIES => $product->{ProductSchema::RES_CATEGORIES}
                             ->pluck(CategorySchema::ID)
                             ->map(fn ($id) => (int) $id)
@@ -374,6 +373,40 @@ class ExportCatalogDataAction
             });
 
         return $rows;
+    }
+
+    /**
+     * The featured selections replay as a single full-sync row shaped
+     * like the admin update endpoint's payload; source ids of the
+     * featured products/categories, array order = position.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function featuredItemRows(): array
+    {
+        $idsOf = fn (string $type) => FeaturedItem::query()
+            ->where(FeaturedItemSchema::FEATUREDABLE_TYPE, $type)
+            ->orderBy(FeaturedItemSchema::POSITION)
+            ->pluck(FeaturedItemSchema::FEATUREDABLE_ID)
+            ->map(fn ($id) => (int) $id)
+            ->all();
+
+        $productIds = $idsOf(FeaturedItemSchema::TYPE_PRODUCT);
+        $categoryIds = $idsOf(FeaturedItemSchema::TYPE_CATEGORY);
+
+        if ($productIds === [] && $categoryIds === []) {
+            return [];
+        }
+
+        return [
+            [
+                CatalogTransferFormat::KEY_SOURCE_ID => 1,
+                CatalogTransferFormat::KEY_PAYLOAD => [
+                    FeaturedItemSchema::REQ_PRODUCT_IDS => $productIds,
+                    FeaturedItemSchema::REQ_CATEGORY_IDS => $categoryIds,
+                ],
+            ],
+        ];
     }
 
     /**

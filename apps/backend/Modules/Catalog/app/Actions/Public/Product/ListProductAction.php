@@ -16,6 +16,7 @@ class ListProductAction extends AbstractProductAction
 
         return app(PublicProductQuery::class, [
             'languageId' => $this->resolvePublicLanguageId($request),
+            'featured' => $request->boolean('featured'),
         ])->paginate($perPage);
     }
 }

@@ -56,6 +56,8 @@ final class CatalogTransferFormat
 
     public const string SECTION_PRODUCTS = 'products';
 
+    public const string SECTION_FEATURED_ITEMS = 'featured-items';
+
     /**
      * Import order: reference data before the entities referencing it.
      * Parent-child sections keep their producer order (attributes before
@@ -73,6 +75,7 @@ final class CatalogTransferFormat
             self::SECTION_OPTION_VALUES,
             self::SECTION_CATEGORIES,
             self::SECTION_PRODUCTS,
+            self::SECTION_FEATURED_ITEMS,
         ];
     }
 }

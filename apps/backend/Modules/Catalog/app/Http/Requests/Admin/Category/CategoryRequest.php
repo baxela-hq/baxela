@@ -49,7 +49,6 @@ class CategoryRequest extends FormRequest
             CSchema::POSITION => ['nullable', 'numeric', 'max:255'],
             CSchema::IMAGE_MEDIA_ID => ['nullable', 'integer'],
             CSchema::IMAGE_URL => ['nullable', 'string', 'max:500'],
-            CSchema::IS_FEATURED => ['nullable', 'boolean'],
 
             CategoryAttributeSchema::REQ_ATTRIBUTE_IDS => ['nullable', 'array'],
             CategoryAttributeSchema::REQ_ATTRIBUTE_IDS.'.*' => ['integer'],

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Catalog\Database\Factories\ProductFactory;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
@@ -28,7 +29,6 @@ class Product extends Model
         ProductSchema::TYPE,
         ProductSchema::STATUS,
         ProductSchema::IS_PUBLISHED,
-        ProductSchema::IS_FEATURED,
     ];
 
     protected function casts(): array
@@ -37,7 +37,6 @@ class Product extends Model
             ProductSchema::TYPE => ProductTypeEnum::class,
             ProductSchema::STATUS => ProductStatusEnum::class,
             ProductSchema::IS_PUBLISHED => 'boolean',
-            ProductSchema::IS_FEATURED => 'boolean',
         ];
     }
 
@@ -50,6 +49,11 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, CategoryProductSchema::TABLE,
             CategoryProductSchema::PRODUCT_ID, CategoryProductSchema::CATEGORY_ID);
+    }
+
+    public function featuredItem(): MorphOne
+    {
+        return $this->morphOne(FeaturedItem::class, 'featuredable');
     }
 
     public function options(): HasMany

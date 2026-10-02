@@ -19,7 +19,6 @@ function categoryPayload(array $overrides = []): array
         'position' => null,
         'image_media_id' => null,
         'image_url' => null,
-        'is_featured' => false,
         'translations' => [[
             'language' => 'en',
             'title' => 'Shoes',
@@ -42,26 +41,23 @@ it('creates a category with translations', function () {
         ->and($category->translations()->first()->title)->toBe('Shoes');
 });
 
-it('creates a featured category with an image', function () {
+it('creates a category with an image', function () {
     $this->actingAs($this->superAdminUser());
 
     $response = $this->postJson($this->baseUrl('/admin/categories'), categoryPayload([
         'image_media_id' => 3,
         'image_url' => '/storage/categories/shoes.png',
-        'is_featured' => true,
     ]))->assertCreated()
-        ->assertJsonPath('data.is_featured', true)
         ->assertJsonPath('data.image_url', '/storage/categories/shoes.png')
         ->assertJsonPath('data.image_media_id', 3);
 
     $category = Category::query()->find($response->json('data.id'));
 
-    expect($category->{CategorySchema::IS_FEATURED})->toBeTrue()
-        ->and($category->{CategorySchema::IMAGE_URL})->toBe('/storage/categories/shoes.png')
+    expect($category->{CategorySchema::IMAGE_URL})->toBe('/storage/categories/shoes.png')
         ->and($category->{CategorySchema::IMAGE_MEDIA_ID})->toBe(3);
 });
 
-it('updates the featured flag and image', function () {
+it('updates the image', function () {
     $this->actingAs($this->superAdminUser());
 
     $id = $this->postJson($this->baseUrl('/admin/categories'), categoryPayload())
@@ -69,14 +65,11 @@ it('updates the featured flag and image', function () {
 
     $this->patchJson($this->baseUrl("/admin/categories/{$id}"), categoryPayload([
         'image_url' => '/storage/categories/shoes-2.png',
-        'is_featured' => true,
-    ]))->assertOk()
-        ->assertJsonPath('data.is_featured', true);
+    ]))->assertOk();
 
     $category = Category::query()->find($id);
 
-    expect($category->{CategorySchema::IS_FEATURED})->toBeTrue()
-        ->and($category->{CategorySchema::IMAGE_URL})->toBe('/storage/categories/shoes-2.png');
+    expect($category->{CategorySchema::IMAGE_URL})->toBe('/storage/categories/shoes-2.png');
 });
 
 it('rejects a slug already taken in the same language', function () {

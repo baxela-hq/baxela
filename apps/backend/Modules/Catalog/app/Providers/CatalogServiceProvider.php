@@ -2,9 +2,13 @@
 
 namespace Modules\Catalog\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Gateways\CatalogGateway;
+use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -27,6 +31,11 @@ class CatalogServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Relation::morphMap([
+            FeaturedItemSchema::TYPE_PRODUCT => Product::class,
+            FeaturedItemSchema::TYPE_CATEGORY => Category::class,
+        ]);
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
