@@ -1,0 +1,32 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/v1/catalog/admin/featured
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "product_ids": [1, 2, 3],
+    "category_ids": [4, 5]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
