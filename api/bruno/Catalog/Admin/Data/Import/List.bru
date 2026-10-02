@@ -1,0 +1,30 @@
+meta {
+  name: List
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/data/import
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+params:query {
+  ~page: 1
+  ~per_page: 15
+  ~sort: -id
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

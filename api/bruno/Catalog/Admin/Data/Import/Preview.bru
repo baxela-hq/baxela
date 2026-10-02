@@ -1,0 +1,31 @@
+meta {
+  name: Preview
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/admin/data/import/preview
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "media_id": 1
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
