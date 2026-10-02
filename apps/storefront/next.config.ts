@@ -29,13 +29,19 @@ const imgSources = isProduction
   ? ["'self'", "data:", "https:", API_ORIGIN]
   : ["'self'", "data:", "http:", "https:"];
 
+// React dev mode and Next dev tooling require eval(); production builds never
+// use it, so 'unsafe-eval' stays dev-only.
+const scriptSources = isProduction
+  ? "'self' 'unsafe-inline'"
+  : "'self' 'unsafe-inline' 'unsafe-eval'";
+
 // Pragmatic first-step CSP: scripts keep 'unsafe-inline' because Next.js
 // bootstraps with inline scripts unless nonce-based CSP is wired through
 // middleware; tightening that is a tracked follow-up. The CSP's real value
 // today is constraining connect/img/frame targets under a stolen token.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'`,
+  `script-src ${scriptSources}`,
   `style-src 'self' 'unsafe-inline'`,
   `img-src ${imgSources.join(" ")}`,
   "font-src 'self' data:",
