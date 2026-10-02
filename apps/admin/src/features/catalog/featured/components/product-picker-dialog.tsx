@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { fetchProducts } from '@/features/catalog/products/api/products.api'
 import { type Product } from '../../products/data/schema'
 import { Locales } from '../data/routes'
+import { firstProductImageUrl } from '../data/schema'
 
 const MIN_QUERY_LENGTH = 2
 const RESULT_LIMIT = 20
@@ -64,7 +65,12 @@ export function ProductPickerDialog({
   const results = useQuery({
     queryKey: ['featured', 'product-picker', trimmed],
     queryFn: () =>
-      fetchProducts({ 'filter[title]': trimmed, per_page: RESULT_LIMIT }),
+      // include=images pulls the thumbnails the result rows display.
+      fetchProducts({
+        'filter[title]': trimmed,
+        per_page: RESULT_LIMIT,
+        include: 'images',
+      }),
     enabled,
   })
 
@@ -147,9 +153,9 @@ export function ProductPickerDialog({
                       }
                     />
                     <span className='flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted text-xs text-muted-foreground'>
-                      {product.images?.[0]?.url ? (
+                      {firstProductImageUrl(product) ? (
                         <img
-                          src={product.images[0].url}
+                          src={firstProductImageUrl(product)}
                           alt={labelOf(product)}
                           className='size-full object-cover'
                           loading='lazy'

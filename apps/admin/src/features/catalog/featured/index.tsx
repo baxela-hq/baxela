@@ -14,6 +14,7 @@ import { CategoryPickerDialog } from './components/category-picker-dialog'
 import { ProductPickerDialog } from './components/product-picker-dialog'
 import { SectionCard } from './components/section-card'
 import { Locales } from './data/routes'
+import { firstProductImageUrl } from './data/schema'
 import { useFeatured } from './hooks/use-featured'
 import { useUpdateFeatured } from './hooks/use-featured-mutations'
 
@@ -90,7 +91,7 @@ export function Featured() {
       pickTranslation(product.translations)?.title ?? `#${product.id}`
     const price = product.variants?.[0]?.price
 
-    return { title, imageUrl: product.images?.[0]?.url, meta: price }
+    return { title, imageUrl: firstProductImageUrl(product), meta: price }
   }
 
   const categoryLabel = (category: Category) => ({
