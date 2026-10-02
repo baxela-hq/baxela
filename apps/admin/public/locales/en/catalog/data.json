@@ -1,0 +1,61 @@
+{
+  "page_titles": {
+    "title": "Catalog Data",
+    "subtitle": "Back up, restore and transfer the whole catalog module as a single JSON file."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Import",
+      "import_description": "Restore or transfer catalog data from a module export file.",
+      "export_title": "Export",
+      "choose_file": "Choose JSON file",
+      "change_file": "Change file",
+      "section": "Section",
+      "rows": "Rows",
+      "total_rows": "Total rows",
+      "exported_at": "Exported",
+      "duplicate_strategy": "Existing records with the same key (code, slug or SKU)",
+      "dry_run": "Validate only (dry run)",
+      "run_dry_run": "Validate",
+      "created": "Created",
+      "updated": "Updated",
+      "skipped": "Skipped",
+      "failed": "Failed",
+      "duration": "Duration",
+      "messages": "Messages",
+      "no_errors": "No row errors.",
+      "row_cap_exceeded": "The file exceeds the {{cap}} row limit.",
+      "history": "History",
+      "history_description": "Past module import runs, latest first.",
+      "no_history": "No imports yet.",
+      "filename": "File",
+      "status": "Status",
+      "run_at": "Run at",
+      "new_import": "New import"
+    },
+    "help_texts": {
+      "import": "Pick a JSON file produced by the export on this or another store. Sections are imported in dependency order; rows matching existing records follow the duplicate strategy.",
+      "export": "Downloads every product, category, attribute and option with all translations as a lossless JSON backup you can re-import on any store.",
+      "dry_run": "Validates every row and reports the outcome without writing anything."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "strategy": {
+        "update": "Update existing records",
+        "skip": "Skip existing records"
+      },
+      "section": {
+        "attribute-groups": "Attribute groups",
+        "attributes": "Attributes",
+        "attribute-values": "Attribute values",
+        "options": "Options",
+        "option-values": "Option values",
+        "categories": "Categories",
+        "products": "Products"
+      }
+    }
+  }
+}

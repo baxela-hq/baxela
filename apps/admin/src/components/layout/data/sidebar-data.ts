@@ -95,6 +95,10 @@ export const useSidebarData = (): SidebarData => {
                 title: t('sidebar.productComments'),
                 url: '/catalog/product-comments',
               },
+              {
+                title: t('sidebar.catalog-data'),
+                url: '/catalog/data',
+              },
             ],
           },
           {
