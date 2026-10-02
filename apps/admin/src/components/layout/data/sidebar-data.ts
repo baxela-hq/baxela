@@ -84,6 +84,10 @@ export const useSidebarData = (): SidebarData => {
                 url: '/catalog/categories',
               },
               {
+                title: t('sidebar.featured'),
+                url: '/catalog/featured',
+              },
+              {
                 title: t('sidebar.options'),
                 url: '/catalog/options',
               },

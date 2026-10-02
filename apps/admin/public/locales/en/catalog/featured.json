@@ -1,0 +1,33 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Featured",
+      "subtitle": "Curate the products and categories shown on the storefront home page"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "featured selection",
+      "products-section": "Featured products",
+      "categories-section": "Featured categories",
+      "add-products": "Add products",
+      "add-categories": "Add categories"
+    },
+    "actions": {},
+    "help_texts": {
+      "products-section": "Shown in the storefront featured products section, in this order.",
+      "categories-section": "Shown in the storefront shop-by-category section, in this order.",
+      "empty-products": "No products selected yet.",
+      "empty-categories": "No categories selected yet."
+    },
+    "placeholders": {
+      "search-products": "Search products by title..."
+    },
+    "statuses": {
+      "picker-search-hint": "Search products by title in any language and pick the ones to feature.",
+      "picker-tree-hint": "Pick the categories to feature.",
+      "type-to-search": "Type at least 2 characters to search.",
+      "no-results": "Nothing found."
+    }
+  }
+}

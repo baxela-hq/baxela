@@ -43,7 +43,8 @@
     "not-found": "Not Found",
     "internal-server-error": "Internal Server Error",
     "maintenance-error": "Maintenance Error",
-    "toggle": "Toggle Sidebar"
+    "toggle": "Toggle Sidebar",
+    "featured": "Featured"
   },
   "dialog": {
     "sign-out": {

@@ -1,7 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
@@ -14,7 +13,6 @@ import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<Category>[] => {
   const { tLabel } = useAppTranslation(Locales.CATEGORY)
-  const { tLabel: tcLabel } = useAppTranslation(Locales.SHARED_COMMON)
   const { t } = useAppTranslation(Locales.SHARED_DATA_TABLE)
   const { formatDateTime } = useFormatDateTime()
 
@@ -100,24 +98,6 @@ export const Columns = (): ColumnDef<Category>[] => {
       ),
       cell: ({ row }) =>
         <div className='w-fit ps-2 text-nowrap'>{row.getValue('position')}</div>,
-      enableSorting: true,
-      enableHiding: true,
-    },
-    {
-      accessorKey: 'is_featured',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={tLabel('is_featured')} />
-      ),
-      cell: ({ row }) => {
-        const { is_featured } = row.original
-        return (
-          <div className='flex space-x-2'>
-            <Badge variant={is_featured ? 'default' : 'outline'}>
-              {is_featured ? tcLabel('yes') : tcLabel('no')}
-            </Badge>
-          </div>
-        )
-      },
       enableSorting: true,
       enableHiding: true,
     },

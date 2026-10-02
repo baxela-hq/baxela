@@ -43,7 +43,8 @@
     "not-found": "ناپیدا",
     "internal-server-error": "خطای سرور داخلی",
     "maintenance-error": "خطای تعمیر و نگهداری",
-    "toggle": "نمایش/مخفی کردن نوار کناری"
+    "toggle": "نمایش/مخفی کردن نوار کناری",
+    "featured": "ویژه"
   },
   "dialog": {
     "sign-out": {

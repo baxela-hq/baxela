@@ -61,7 +61,6 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
       { columnId: 'title', searchKey: 'filter[title]', type: 'string' },
       { columnId: 'status', searchKey: 'filter[status]', type: 'array' },
       { columnId: 'is_published', searchKey: 'filter[is_published]', type: 'array' },
-      { columnId: 'is_featured', searchKey: 'filter[is_featured]', type: 'array' },
     ],
     sorting: { key: 'sort' },
   })
@@ -118,14 +117,6 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
           {
             columnId: 'is_published',
             title: tLabel('is_published'),
-            options: [
-              { label: tcLabel('yes'), value: 'true' },
-              { label: tcLabel('no'), value: 'false' },
-            ],
-          },
-          {
-            columnId: 'is_featured',
-            title: tLabel('is_featured'),
             options: [
               { label: tcLabel('yes'), value: 'true' },
               { label: tcLabel('no'), value: 'false' },

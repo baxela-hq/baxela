@@ -111,7 +111,6 @@ const _productSchema = z.object({
   type: z.string(),
   status: z.string(),
   is_published: z.boolean(),
-  is_featured: z.boolean().nullish(),
   categories: z.array(categorySchema),
   variants: z.array(variantSchema),
   images: z.array(productImageSchema).optional(),
@@ -162,7 +161,6 @@ export const formSchema = z.object({
   type: z.enum(TYPES),
   status: z.enum(STATUSES),
   is_published: z.boolean(),
-  is_featured: z.boolean(),
   categories: z.array(z.number()).refine((value: number[]) => value.some((item: number) => item), {
     message: "You have to select at least one item.",
   }),
@@ -381,7 +379,6 @@ export const defaultValues: ProductForm = {
   type: 'simple',
   status: '',
   is_published: false,
-  is_featured: false,
   categories: [],
   variants: [{
     sku: "", price: "", is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [],
@@ -398,7 +395,6 @@ export function buildDefaultValues(languages: Language[]): ProductForm {
     type: 'simple',
     status: '',
     is_published: false,
-    is_featured: false,
     categories: [],
     variants: [{
       sku: '', price: '', is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [],
@@ -449,7 +445,6 @@ export function buildEditValues(
     type: currentRow.type,
     status: currentRow.status,
     is_published: currentRow.is_published,
-    is_featured: currentRow.is_featured ?? false,
     categories: currentRow.categories.map((cat) => cat.id),
     variants: currentRow.variants.map((va) => ({
       sku: va.sku,
