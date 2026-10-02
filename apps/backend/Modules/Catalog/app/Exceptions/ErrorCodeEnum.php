@@ -33,4 +33,6 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case ATTRIBUTE_TEMPLATE_CREATION_FAILED = 'catalog.attribute_template.creation_failed';
 
     case ATTRIBUTE_TEMPLATE_UPDATE_FAILED = 'catalog.attribute_template.update_failed';
+
+    case DATA_IMPORT_FAILED = 'catalog.data.import_failed';
 }

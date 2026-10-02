@@ -1,0 +1,34 @@
+<?php
+
+namespace Modules\Catalog\Transformers\Admin\DataTransfer;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+/** @mixin array<string, mixed> */
+class CatalogImportResultResource extends JsonResource
+{
+    /**
+     * The summary returned by ImportCatalogDataAction.
+     *
+     * @param  array<string, mixed>  $this->resource
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->resource['id'],
+            'status' => $this->resource['status'],
+            'strategy' => $this->resource['strategy'],
+            'dry_run' => $this->resource['dry_run'],
+            'total_rows' => $this->resource['total_rows'],
+            'created_count' => $this->resource['created_count'],
+            'updated_count' => $this->resource['updated_count'],
+            'skipped_count' => $this->resource['skipped_count'],
+            'failed_count' => $this->resource['failed_count'],
+            'duration_ms' => $this->resource['duration_ms'],
+            'sections' => (object) $this->resource['sections'],
+            'warnings' => $this->resource['warnings'],
+            'errors' => $this->resource['errors'],
+        ];
+    }
+}

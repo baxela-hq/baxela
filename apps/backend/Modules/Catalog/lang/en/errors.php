@@ -5,6 +5,9 @@ return [
         'creation_failed' => 'Product creation failed',
         'import_failed' => 'Product import failed',
     ],
+    'data' => [
+        'import_failed' => 'Catalog data import failed',
+    ],
     'product_comment' => [
         'creation_failed' => 'Product comment creation failed',
         'invalid_parent' => 'The comment being replied to is invalid',

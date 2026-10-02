@@ -17,4 +17,7 @@ enum MediaMimeTypeEnum: string
     // extension is re-verified by the CSV importer before parsing.
     case TEXT_CSV = 'text/csv';
     case APPLICATION_CSV_LEGACY = 'application/vnd.ms-excel';
+
+    // Module data transfer files (e.g. the catalog JSON export).
+    case APPLICATION_JSON = 'application/json';
 }

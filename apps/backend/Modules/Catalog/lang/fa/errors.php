@@ -5,6 +5,9 @@ return [
         'creation_failed' => 'ایجاد محصول ناموفق بود',
         'import_failed' => 'وارد کردن محصولات ناموفق بود',
     ],
+    'data' => [
+        'import_failed' => 'وارد کردن داده‌های کاتالوگ ناموفق بود',
+    ],
     'product_comment' => [
         'creation_failed' => 'ایجاد دیدگاه محصول ناموفق بود',
         'invalid_parent' => 'دیدگاه انتخاب‌شده برای پاسخ نامعتبر است',

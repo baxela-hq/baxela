@@ -27,6 +27,10 @@ use Modules\Catalog\Http\Controllers\Admin\Category\ListCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\ShowCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\UpdateCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ExportCatalogDataController;
+use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogController;
+use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogIndexController;
+use Modules\Catalog\Http\Controllers\Admin\DataTransfer\ImportCatalogShowController;
+use Modules\Catalog\Http\Controllers\Admin\DataTransfer\PreviewCatalogImportController;
 use Modules\Catalog\Http\Controllers\Admin\Option\CreateOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\DeleteOptionController;
 use Modules\Catalog\Http\Controllers\Admin\Option\ListOptionController;
@@ -58,6 +62,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     // Whole-module JSON data transfer lives under its own /data prefix,
     // clear of every {id} route.
     Route::get('/data/export', ExportCatalogDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewCatalogImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportCatalogController::class)->name('data.import');
+    Route::get('/data/import', ImportCatalogIndexController::class)->name('data.import.index');
+    Route::get('/data/import/{id}', ImportCatalogShowController::class)->name('data.import.show');
 
     // Registered before /products/{id} so "import" is never treated as an id.
     Route::post('/products/import/preview', PreviewProductImportController::class)->name('products.import.preview');
