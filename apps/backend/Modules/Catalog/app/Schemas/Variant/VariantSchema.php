@@ -29,6 +29,10 @@ class VariantSchema
 
     public const string RES_OPTION_VALUES = 'optionValues';
 
+    public const string RES_IMAGES = 'images';
+
+    public const string RES_IMAGE = 'image';
+
     public const string RES_PRODUCT = 'product';
 
     public const string RES_OPTION_VALUE_IDS = 'option_value_ids';

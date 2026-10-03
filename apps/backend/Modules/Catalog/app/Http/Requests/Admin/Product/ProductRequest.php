@@ -114,6 +114,12 @@ class ProductRequest extends FormRequest
                 Rule::requiredIf($isVariable), 'array', Rule::when($isVariable, ['min:1'])],
             Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS.'*' => [
                 Rule::requiredIf($isVariable), Rule::when($isVariable, ['integer'])],
+            // variant photo (nullable object, like shipping above)
+            Schema::RES_VARIANTS.'.*.'.VSchema::RES_IMAGE => ['nullable', 'array'],
+            Schema::RES_VARIANTS.'.*.'.VSchema::RES_IMAGE.'.'.ImageSchema::MEDIA_ID => ['required_with:'
+                .Schema::RES_VARIANTS.'.*.'.VSchema::RES_IMAGE, 'integer'],
+            Schema::RES_VARIANTS.'.*.'.VSchema::RES_IMAGE.'.'.ImageSchema::URL => ['required_with:'
+                .Schema::RES_VARIANTS.'.*.'.VSchema::RES_IMAGE, 'string'],
 
             // attribute values
             PAVSchema::REQ_ATTRIBUTE_VALUES => ['nullable', 'array'],

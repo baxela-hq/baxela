@@ -81,6 +81,33 @@ it('returns 404 for an unknown product', function () {
         ->assertJsonPath('code', 'http.404');
 });
 
+it('serves each variant photo on the public product show', function () {
+    $product = publicProduct('variant-photo-product');
+    $product->images()->create([
+        'media_id' => 55,
+        'url' => 'https://example.com/gallery.jpg',
+        'collection' => 'photos',
+    ]);
+    $variant = $product->variants()->create([
+        'sku' => 'PHOTO-SKU',
+        'price' => 10,
+        'quantity' => 5,
+        'is_default' => true,
+    ]);
+    $variant->images()->create([
+        'product_id' => $product->id,
+        'media_id' => 77,
+        'url' => 'https://example.com/variant.jpg',
+        'collection' => 'photos',
+    ]);
+
+    $this->getJson($this->baseUrl('/public/products/'.$product->id))
+        ->assertOk()
+        ->assertJsonPath('data.variants.0.image_url', 'https://example.com/variant.jpg')
+        // the variant photo stays out of the shared gallery
+        ->assertJsonCount(1, 'data.images');
+});
+
 it('shows the product attributes ordered by position with localized titles', function () {
     $languageId = defaultLanguage()->id;
     $group = AttributeGroup::query()->create();

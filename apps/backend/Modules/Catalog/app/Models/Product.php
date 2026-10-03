@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Catalog\Database\Factories\ProductFactory;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
@@ -74,7 +75,9 @@ class Product extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(Image::class);
+        // Variant photos live in the same table carrying a variant_id; the
+        // product gallery holds only the shared, variant-less rows.
+        return $this->hasMany(Image::class)->whereNull(ImageSchema::VARIANT_ID);
     }
 
     public function attributeValues(): HasMany

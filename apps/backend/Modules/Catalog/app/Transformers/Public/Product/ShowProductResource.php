@@ -58,6 +58,7 @@ class ShowProductResource extends JsonResource
                     'price' => $variant->{VariantSchema::PRICE},
                     'compare_price' => $variant->{VariantSchema::COMPARE_PRICE},
                     'is_default' => $variant->{VariantSchema::IS_DEFAULT},
+                    'image_url' => $variant->{VariantSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
                     'option_values' => $variant->optionValues
                         ->map(fn (OptionValue $optionValue): array => [
                             'id' => $optionValue->{OptionValueSchema::ID},

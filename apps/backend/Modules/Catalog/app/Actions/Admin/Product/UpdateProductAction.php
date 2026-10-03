@@ -4,6 +4,8 @@ namespace Modules\Catalog\Actions\Admin\Product;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
@@ -49,6 +51,20 @@ class UpdateProductAction
                 $variantRecord->optionValues()->attach(array_values($variant[VSchema::REQ_OPTION_VALUE_IDS]));
             }
 
+            // One optional photo per variant: a catalog_images row tied to
+            // both the product and the fresh variant id. Variants are deleted
+            // and recreated above, so the old rows are already cascade-gone —
+            // sending image: null simply leaves the new variant without one.
+            $image = $variant[VSchema::RES_IMAGE] ?? null;
+            if (! empty($image)) {
+                $variantRecord->images()->create([
+                    ImageSchema::PRODUCT_ID => $record->{ProductSchema::ID},
+                    ImageSchema::MEDIA_ID => $image[ImageSchema::MEDIA_ID],
+                    ImageSchema::URL => $image[ImageSchema::URL],
+                    ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
+                ]);
+            }
+
             // The variant quantity is the stock level the admin manages;
             // mirror it into the inventory ledger the shop sells from.
             app(InventoryGatewayInterface::class)->upsertStock(
@@ -74,6 +90,7 @@ class UpdateProductAction
                 ProductSchema::RES_SEO,
                 ProductSchema::RES_SHIPPING,
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
+                ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.ProductAttributeValueSchema::RES_ATTRIBUTE,

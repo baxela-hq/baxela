@@ -297,6 +297,7 @@ class ExportCatalogDataAction
                 ProductSchema::RES_SEO,
                 ProductSchema::RES_SHIPPING,
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
+                ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_ATTRIBUTE_VALUES,
@@ -441,6 +442,14 @@ class ExportCatalogDataAction
                     ->all();
                 if ($optionValueIds !== []) {
                     $payload[VSchema::REQ_OPTION_VALUE_IDS] = $optionValueIds;
+                }
+
+                $image = $variant->{VSchema::RES_IMAGES}->first();
+                if ($image !== null) {
+                    $payload[VSchema::RES_IMAGE] = [
+                        ImageSchema::MEDIA_ID => (int) $image->{ImageSchema::MEDIA_ID},
+                        ImageSchema::URL => $image->{ImageSchema::URL},
+                    ];
                 }
 
                 return $payload;

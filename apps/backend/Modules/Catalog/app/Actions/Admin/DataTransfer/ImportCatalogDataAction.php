@@ -500,6 +500,18 @@ class ImportCatalogDataAction
                     $messages
                 );
             }
+
+            // Variant photos reference module-external media like gallery
+            // images do — missing media drops the photo, not the variant.
+            if (isset($variant[VSchema::RES_IMAGE])) {
+                $mediaId = $variant[VSchema::RES_IMAGE][ImageSchema::MEDIA_ID] ?? null;
+                if ($this->existingMediaId($mediaId) === null) {
+                    unset($variant[VSchema::RES_IMAGE]);
+                } else {
+                    $variant[VSchema::RES_IMAGE][ImageSchema::MEDIA_ID] = (int) $mediaId;
+                }
+            }
+
             $payload[ProductSchema::RES_VARIANTS][$index] = $variant;
         }
 

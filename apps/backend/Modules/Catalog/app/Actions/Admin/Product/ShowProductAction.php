@@ -5,6 +5,7 @@ namespace Modules\Catalog\Actions\Admin\Product;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
 
 class ShowProductAction extends AbstractProductAction
 {
@@ -18,6 +19,7 @@ class ShowProductAction extends AbstractProductAction
                 ProductSchema::RES_SEO,
                 ProductSchema::RES_SHIPPING,
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
+                ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.ProductAttributeValueSchema::RES_ATTRIBUTE,
             ])
             ->findOrFail($id);

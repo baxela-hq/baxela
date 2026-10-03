@@ -5,7 +5,6 @@ namespace Modules\Catalog\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\Product;
-use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 
@@ -23,7 +22,9 @@ class ImageFactory extends Factory
     {
         return [
             ImageSchema::PRODUCT_ID => $params[ImageSchema::PRODUCT_ID] ?? Product::query()->inRandomOrder()->first(),
-            ImageSchema::VARIANT_ID => $params[ImageSchema::VARIANT_ID] ?? Variant::query()->inRandomOrder()->first(),
+            // null keeps seeded rows in the product gallery; variant photos
+            // are created through the Variant::images() relation instead.
+            ImageSchema::VARIANT_ID => $params[ImageSchema::VARIANT_ID] ?? null,
             ImageSchema::MEDIA_ID => $params[ImageSchema::MEDIA_ID] ?? $this->faker->randomDigitNotZero(),
             ImageSchema::COLLECTION => $params[ImageSchema::COLLECTION] ?? $this->faker->randomElement(ImageCollectionEnum::cases()),
             ImageSchema::URL => $params[ImageSchema::URL] ?? $this->faker->imageUrl,

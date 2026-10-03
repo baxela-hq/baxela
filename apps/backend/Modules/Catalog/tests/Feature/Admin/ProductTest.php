@@ -2,7 +2,9 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Tests\Feature\HelperTrait;
@@ -108,6 +110,76 @@ it('soft-deletes a product', function () {
 
     expect(Product::query()->find($productId))->toBeNull()
         ->and(Product::withTrashed()->find($productId))->not->toBeNull();
+});
+
+it('attaches one photo per variant on create', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $response = $this->postJson($this->baseUrl('/admin/products'), productPayload([
+        'images' => [[
+            'media_id' => 55,
+            'url' => 'https://example.com/gallery.jpg',
+            'collection' => 'photos',
+            'position' => 1,
+        ]],
+        'variants' => [[
+            'sku' => 'SKU-'.uniqid(),
+            'price' => '150',
+            'quantity' => 5,
+            'is_default' => true,
+            'image' => ['media_id' => 77, 'url' => 'https://example.com/variant.jpg'],
+        ]],
+    ]))->assertCreated();
+
+    $product = Product::query()->find($response->json('data.id'));
+    $variant = $product->variants()->first();
+
+    $image = Image::query()->where(ImageSchema::VARIANT_ID, $variant->id)->first();
+
+    expect($image)->not->toBeNull()
+        ->and($image->{ImageSchema::MEDIA_ID})->toBe(77)
+        ->and($image->{ImageSchema::PRODUCT_ID})->toBe($product->id)
+        // the variant photo stays out of the product gallery
+        ->and($product->images()->pluck(ImageSchema::MEDIA_ID)->all())->toBe([55]);
+
+    $this->getJson($this->baseUrl('/admin/products/'.$product->id))
+        ->assertOk()
+        ->assertJsonPath('data.variants.0.image.media_id', 77)
+        ->assertJsonPath('data.variants.0.image.variant_id', $variant->id)
+        ->assertJsonCount(1, 'data.images');
+});
+
+it('re-attaches variant photos to the recreated variants on update', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $sku = 'SKU-'.uniqid();
+    $variant = ['sku' => $sku, 'price' => '150', 'quantity' => 5, 'is_default' => true];
+
+    $productId = $this->postJson($this->baseUrl('/admin/products'), productPayload([
+        'variants' => [$variant + ['image' => ['media_id' => 77, 'url' => 'https://example.com/variant.jpg']]],
+    ]))->assertCreated()->json('data.id');
+
+    $oldVariantId = Product::query()->find($productId)->variants()->first()->id;
+
+    // Variants are deleted and recreated on every save — the photo must
+    // follow the fresh variant id.
+    $this->patchJson($this->baseUrl('/admin/products/'.$productId), productPayload([
+        'variants' => [$variant + ['image' => ['media_id' => 77, 'url' => 'https://example.com/variant.jpg']]],
+    ]))->assertOk();
+
+    $newVariant = Product::query()->find($productId)->variants()->first();
+    expect($newVariant->id)->not->toBe($oldVariantId)
+        ->and($newVariant->images()->pluck(ImageSchema::MEDIA_ID)->all())->toBe([77]);
+
+    // image: null leaves the recreated variant without a photo
+    $this->patchJson($this->baseUrl('/admin/products/'.$productId), productPayload([
+        'variants' => [$variant + ['image' => null]],
+    ]))->assertOk();
+
+    expect(Image::query()
+        ->where(ImageSchema::PRODUCT_ID, $productId)
+        ->whereNotNull(ImageSchema::VARIANT_ID)
+        ->count())->toBe(0);
 });
 
 it('creates two products and lists them newest-first', function () {

@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Database\Factories\VariantFactory;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 
@@ -48,6 +50,11 @@ class Variant extends Model
     {
         return $this->belongsToMany(OptionValue::class, VariantOptionValueSchema::TABLE,
             VariantOptionValueSchema::VARIANT_ID, VariantOptionValueSchema::OPTION_VALUE_ID);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(Image::class, ImageSchema::VARIANT_ID);
     }
 
     public function product(): BelongsTo

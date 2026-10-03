@@ -28,6 +28,7 @@ class ShowProductAction extends AbstractProductAction
             ->with([
                 ProductSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_IMAGES,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES.'.'.CategorySchema::RES_TRANSLATIONS,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.PAVSchema::RES_ATTRIBUTE.'.'.AttributeSchema::RES_TRANSLATIONS,

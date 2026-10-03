@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Modules\Catalog\Exceptions\Product\CreationFailedException;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
+use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
@@ -51,6 +53,18 @@ class CreateProductAction
                     $variant->optionValues()->attach(array_values($variantInput[VSchema::REQ_OPTION_VALUE_IDS]));
                 }
 
+                // One optional photo per variant: a catalog_images row tied
+                // to both the product and the fresh variant id.
+                $image = $variantInput[VSchema::RES_IMAGE] ?? null;
+                if (! empty($image)) {
+                    $variant->images()->create([
+                        ImageSchema::PRODUCT_ID => $record->{ProductSchema::ID},
+                        ImageSchema::MEDIA_ID => $image[ImageSchema::MEDIA_ID],
+                        ImageSchema::URL => $image[ImageSchema::URL],
+                        ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
+                    ]);
+                }
+
                 // The variant quantity is the stock level the admin manages;
                 // mirror it into the inventory ledger the shop sells from.
                 app(InventoryGatewayInterface::class)->upsertStock(
@@ -79,6 +93,7 @@ class CreateProductAction
                 ProductSchema::RES_SEO,
                 ProductSchema::RES_SHIPPING,
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
+                ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.ProductAttributeValueSchema::RES_ATTRIBUTE,

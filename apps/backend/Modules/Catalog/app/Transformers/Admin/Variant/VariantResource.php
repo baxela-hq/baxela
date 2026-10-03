@@ -5,6 +5,7 @@ namespace Modules\Catalog\Transformers\Admin\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Catalog\Transformers\Admin\Image\ImageResource;
 
 class VariantResource extends JsonResource
 {
@@ -27,6 +28,12 @@ class VariantResource extends JsonResource
             ),
             VariantSchema::RES_OPTION_VALUES => $this->whenLoaded(
                 VariantSchema::RES_OPTION_VALUES,
+            ),
+            VariantSchema::RES_IMAGE => $this->whenLoaded(
+                VariantSchema::RES_IMAGES,
+                fn () => ($image = $this->resource->{VariantSchema::RES_IMAGES}->first())
+                    ? ImageResource::make($image)
+                    : null
             ),
         ];
     }
