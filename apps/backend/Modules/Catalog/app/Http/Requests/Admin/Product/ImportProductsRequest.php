@@ -21,11 +21,13 @@ class ImportProductsRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         // Fixed payload shape (no `sometimes`): defaults are merged so
-        // the action always sees all four keys.
+        // the action always sees all five keys.
         $this->merge([
             CatalogImportSchema::REQ_ON_DUPLICATE => $this->input(CatalogImportSchema::REQ_ON_DUPLICATE)
                 ?? CatalogImportStrategyEnum::UPDATE->value,
             CatalogImportSchema::REQ_DRY_RUN => (bool) $this->input(CatalogImportSchema::REQ_DRY_RUN, false),
+            CatalogImportSchema::REQ_CREATE_MISSING_OPTIONS => (bool) $this->input(
+                CatalogImportSchema::REQ_CREATE_MISSING_OPTIONS, true),
         ]);
     }
 
@@ -40,6 +42,7 @@ class ImportProductsRequest extends FormRequest
                 CatalogImportStrategyEnum::SKIP->value,
             ])],
             CatalogImportSchema::REQ_DRY_RUN => ['required', 'boolean'],
+            CatalogImportSchema::REQ_CREATE_MISSING_OPTIONS => ['required', 'boolean'],
         ];
     }
 

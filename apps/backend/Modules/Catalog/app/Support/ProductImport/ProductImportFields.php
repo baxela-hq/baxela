@@ -32,6 +32,14 @@ final class ProductImportFields
 
     public const string FIELD_CATEGORIES = 'categories';
 
+    public const string FIELD_HANDLE = 'handle';
+
+    public const int OPTION_SLOTS = 3;
+
+    public const string OPTION_NAME_FORMAT = 'option%d.name';
+
+    public const string OPTION_VALUE_FORMAT = 'option%d.value';
+
     public const string TITLE_PREFIX = 'title.';
 
     public const string SLUG_PREFIX = 'slug.';
@@ -67,6 +75,33 @@ final class ProductImportFields
         ];
     }
 
+    public static function optionNameField(int $slot): string
+    {
+        return sprintf(self::OPTION_NAME_FORMAT, $slot);
+    }
+
+    public static function optionValueField(int $slot): string
+    {
+        return sprintf(self::OPTION_VALUE_FORMAT, $slot);
+    }
+
+    /**
+     * The multi-variant fields: the handle rows of one product share,
+     * plus the name/value pairs addressing the global options catalog.
+     *
+     * @return array<int, string>
+     */
+    public static function optionFields(): array
+    {
+        $fields = [self::FIELD_HANDLE];
+        for ($slot = 1; $slot <= self::OPTION_SLOTS; $slot++) {
+            $fields[] = self::optionNameField($slot);
+            $fields[] = self::optionValueField($slot);
+        }
+
+        return $fields;
+    }
+
     /**
      * @param  array<int, string>  $languageCodes
      * @return array<int, string>
@@ -96,6 +131,7 @@ final class ProductImportFields
     {
         return array_merge(
             self::variantFields(),
+            self::optionFields(),
             self::baseFields(),
             self::translationFields($languageCodes),
         );
@@ -127,6 +163,7 @@ final class ProductImportFields
     {
         $groups = [
             'variant' => self::variantFields(),
+            'options' => self::optionFields(),
             'base' => self::baseFields(),
         ];
 
@@ -189,7 +226,7 @@ final class ProductImportFields
     {
         $priceRegex = '/^\d{1,12}(\.\d{1,2})?$/';
 
-        return [
+        $rules = [
             self::FIELD_SKU => ['required', 'string', 'max:255'],
             self::FIELD_PRICE => ['required', 'regex:'.$priceRegex],
             self::FIELD_COMPARE_PRICE => ['nullable', 'regex:'.$priceRegex],
@@ -198,6 +235,12 @@ final class ProductImportFields
             self::FIELD_BARCODE => ['nullable', 'string', 'max:255'],
             self::FIELD_STATUS => ['nullable', new Enum(ProductStatusEnum::class)],
         ];
+
+        foreach (self::optionFields() as $field) {
+            $rules[$field] = ['nullable', 'string', 'max:255'];
+        }
+
+        return $rules;
     }
 
     /**

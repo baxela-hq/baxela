@@ -15,9 +15,10 @@ class DownloadImportTemplateAction
 
     /**
      * Build the example CSV (UTF-8 + BOM so Excel re-opens Persian
-     * content correctly). Headers are language-aware; the three example
-     * rows — full, required-only and optional-fields — keep the file
-     * itself importable, so admins can dry-run it to learn the flow.
+     * content correctly). Headers are language-aware; the example rows
+     * — multi-variant, required-only and optional-fields — keep the
+     * file itself importable, so admins can dry-run it to learn the
+     * flow.
      */
     public function handle(): string
     {
@@ -29,6 +30,7 @@ class DownloadImportTemplateAction
 
         $columns = array_merge(
             ProductImportFields::variantFields(),
+            ProductImportFields::optionFields(),
             [ProductImportFields::FIELD_STATUS, ProductImportFields::FIELD_IS_PUBLISHED],
             ProductImportFields::translationFields($languageCodes),
             [ProductImportFields::FIELD_CATEGORIES],
@@ -71,27 +73,57 @@ class DownloadImportTemplateAction
             'fa' => 'تیشرت-کلاسیک-مردانه',
             'en' => 'mens-classic-t-shirt',
         ];
+        $optionNames = [
+            'fa' => ['رنگ', 'سایز'],
+            'en' => ['Color', 'Size'],
+        ];
+        $optionValues = [
+            'fa' => ['قرمز', 'آبی'],
+            'en' => ['Red', 'Blue'],
+        ];
 
         $title = fn (string $code) => $titles[$code] ?? "Sample Product ({$code})";
         $slug = fn (string $code) => $slugs[$code] ?? "sample-product-{$code}";
+        $optionName = fn (int $index) => $optionNames[$defaultCode][$index]
+            ?? $optionNames['en'][$index];
+        $optionValue = fn (int $index) => $optionValues[$defaultCode][$index]
+            ?? $optionValues['en'][$index];
 
-        $full = [
-            ProductImportFields::FIELD_SKU => 'BX-TEE-001',
+        // A multi-variant product: three rows share one handle, and
+        // only the first row carries the product-level cells.
+        $groupedFirst = [
+            ProductImportFields::FIELD_SKU => 'BX-TEE-001-RED-M',
             ProductImportFields::FIELD_PRICE => '450000',
             ProductImportFields::FIELD_COMPARE_PRICE => '520000',
             ProductImportFields::FIELD_COST_PRICE => '320000',
-            ProductImportFields::FIELD_QUANTITY => '25',
+            ProductImportFields::FIELD_QUANTITY => '10',
             ProductImportFields::FIELD_BARCODE => '6260101234501',
+            ProductImportFields::FIELD_HANDLE => 'mens-classic-tshirt',
+            ProductImportFields::optionNameField(1) => $optionName(0),
+            ProductImportFields::optionValueField(1) => $optionValue(0),
+            ProductImportFields::optionNameField(2) => $optionName(1),
+            ProductImportFields::optionValueField(2) => 'M',
             ProductImportFields::FIELD_STATUS => 'in_stock',
             ProductImportFields::FIELD_IS_PUBLISHED => 'yes',
             ProductImportFields::FIELD_CATEGORIES => 'mens-fashion|mens-t-shirts-tanks',
         ];
         foreach ($languageCodes as $code) {
-            $full[ProductImportFields::TITLE_PREFIX.$code] = $title($code);
-            $full[ProductImportFields::SLUG_PREFIX.$code] = $slug($code);
-            $full[ProductImportFields::DESCRIPTION_PREFIX.$code] = $descriptions[$code] ?? "Short description ({$code})";
-            $full[ProductImportFields::CONTENT_PREFIX.$code] = $contents[$code] ?? "<p>Full description ({$code}).</p>";
+            $groupedFirst[ProductImportFields::TITLE_PREFIX.$code] = $title($code);
+            $groupedFirst[ProductImportFields::SLUG_PREFIX.$code] = $slug($code);
+            $groupedFirst[ProductImportFields::DESCRIPTION_PREFIX.$code] = $descriptions[$code] ?? "Short description ({$code})";
+            $groupedFirst[ProductImportFields::CONTENT_PREFIX.$code] = $contents[$code] ?? "<p>Full description ({$code}).</p>";
         }
+
+        $groupedRow = fn (string $sku, string $colorIndex, string $size) => [
+            ProductImportFields::FIELD_SKU => $sku,
+            ProductImportFields::FIELD_PRICE => '450000',
+            ProductImportFields::FIELD_QUANTITY => '8',
+            ProductImportFields::FIELD_HANDLE => 'mens-classic-tshirt',
+            ProductImportFields::optionNameField(1) => $optionName(0),
+            ProductImportFields::optionValueField(1) => $optionValue($colorIndex),
+            ProductImportFields::optionNameField(2) => $optionName(1),
+            ProductImportFields::optionValueField(2) => $size,
+        ];
 
         $minimal = [
             ProductImportFields::FIELD_SKU => 'BX-CAP-002',
@@ -119,7 +151,13 @@ class DownloadImportTemplateAction
                 : ($descriptions[$code] ?? "Short description ({$code})");
         }
 
-        return [$full, $minimal, $optional];
+        return [
+            $groupedFirst,
+            $groupedRow('BX-TEE-001-RED-L', 0, 'L'),
+            $groupedRow('BX-TEE-001-BLU-M', 1, 'M'),
+            $minimal,
+            $optional,
+        ];
     }
 
     private function defaultLanguageCode(): string

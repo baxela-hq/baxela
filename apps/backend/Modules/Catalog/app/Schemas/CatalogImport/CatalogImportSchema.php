@@ -50,4 +50,6 @@ class CatalogImportSchema
     public const string REQ_ON_DUPLICATE = 'on_duplicate';
 
     public const string REQ_DRY_RUN = 'dry_run';
+
+    public const string REQ_CREATE_MISSING_OPTIONS = 'create_missing_options';
 }

@@ -22,6 +22,8 @@ use Modules\Catalog\Schemas\Product\ProductTypeEnum;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\ProductImport\ProductImportCsv;
 use Modules\Catalog\Support\ProductImport\ProductImportFields;
+use Modules\Catalog\Support\ProductImport\ProductImportOptionResolutionException;
+use Modules\Catalog\Support\ProductImport\ProductImportOptionResolver;
 use Modules\Catalog\Support\ProductImport\ProductImportSlug;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\DTOs\MediaDto;
@@ -44,12 +46,14 @@ class ImportProductsAction
     ) {}
 
     /**
-     * Import (or dry-run) the mapped CSV. Every row runs through the
-     * same actions the product form uses, in its own transaction, so
-     * valid rows commit while failures are collected with their file
-     * line numbers. The run is always recorded in catalog_imports.
+     * Import (or dry-run) the mapped CSV. Rows sharing a handle become
+     * the variants of one product; handle-less rows stand alone. Every
+     * product runs through the same actions the product form uses, in
+     * its own transaction, so valid products commit while failures are
+     * collected with their file line numbers. The run is always
+     * recorded in catalog_imports.
      *
-     * @param  array<string, mixed>  $data  media_id, mapping, on_duplicate, dry_run
+     * @param  array<string, mixed>  $data  media_id, mapping, on_duplicate, dry_run, create_missing_options
      * @return array<string, mixed> summary
      *
      * @throws ImportFailedException
@@ -109,12 +113,17 @@ class ImportProductsAction
             ->all();
 
         $rules = $this->rowRules($languageCodes, $defaultCode);
+        // Product cells of a group come from its first row, so later
+        // rows may leave the default language's title empty.
+        $laterRowRules = $rules;
+        $laterRowRules[ProductImportFields::TITLE_PREFIX.$defaultCode] = ['nullable', 'string', 'max:255'];
+        $createMissing = (bool) $data[CatalogImportSchema::REQ_CREATE_MISSING_OPTIONS];
 
-        $errors = [];
+        // Pass 1: map cells to field values and collect the row-local
+        // messages (published vocabulary, in-file SKUs). Shape rules
+        // run per group, where a row's position is known.
+        $rowData = [];
         $seenSkus = [];
-        $usedSlugsByCode = [];
-        $created = $updated = $skipped = $failed = 0;
-
         foreach (array_values($rows) as $rowIndex => $cells) {
             $line = $rowIndex + 2; // +1 for the header, +1 for 1-based lines
             $messages = [];
@@ -130,11 +139,6 @@ class ImportProductsAction
                 $values[$field] = $values[$field] ?? '';
             }
 
-            $validator = $this->validateRow($values, $rules);
-            if ($validator->fails()) {
-                $messages = array_values($validator->errors()->all());
-            }
-
             $published = (string) ($values[ProductImportFields::FIELD_IS_PUBLISHED] ?? '');
             if ($published !== ''
                 && ! in_array(mb_strtolower($published), ProductImportFields::publishedVocabulary(), true)) {
@@ -148,20 +152,113 @@ class ImportProductsAction
                 $seenSkus[$sku] = $line;
             }
 
-            $existingProductId = $sku !== '' ? ($existingProductBySku[$sku] ?? null) : null;
+            $rowData[] = ['line' => $line, 'values' => $values, 'messages' => $messages];
+        }
 
-            [$categoryIds, $categoryMessages] = $this->resolveCategories(
-                (string) ($values[ProductImportFields::FIELD_CATEGORIES] ?? ''),
-                $categoryIdBySlug,
-            );
-            $messages = array_merge($messages, $categoryMessages);
+        // Pass 2: rows sharing a handle are the variants of one product;
+        // handle-less rows stand alone exactly like the single-variant
+        // import always did.
+        $groups = [];
+        foreach ($rowData as $row) {
+            $handle = trim((string) ($row['values'][ProductImportFields::FIELD_HANDLE] ?? ''));
+            $key = $handle !== '' ? 'h:'.$handle : 'r:'.$row['line'];
+            $groups[$key]['rows'][] = $row;
+        }
 
-            if ($messages !== []) {
+        $errors = [];
+        $usedSlugsByCode = [];
+        $resolver = null;
+        $created = $updated = $skipped = $failed = 0;
+
+        foreach ($groups as $group) {
+            $groupRows = $group['rows'];
+            $first = $groupRows[0];
+
+            // Option cells: each slot is a name/value pair that must be
+            // filled together, and slots are used in order.
+            $pairsByRow = [];
+            foreach ($groupRows as $i => $row) {
+                $validator = $this->validateRow($row['values'], $i === 0 ? $rules : $laterRowRules);
+                if ($validator->fails()) {
+                    $groupRows[$i]['messages'] = array_merge(
+                        array_values($validator->errors()->all()),
+                        $row['messages'],
+                    );
+                }
+
+                $pairs = [];
+                for ($slot = 1; $slot <= ProductImportFields::OPTION_SLOTS; $slot++) {
+                    $name = (string) ($row['values'][ProductImportFields::optionNameField($slot)] ?? '');
+                    $value = (string) ($row['values'][ProductImportFields::optionValueField($slot)] ?? '');
+
+                    if ($name === '' && $value === '') {
+                        continue;
+                    }
+
+                    if ($value === '') {
+                        $groupRows[$i]['messages'][] = sprintf(
+                            'The option%d value must be filled when option%d name is set.', $slot, $slot);
+
+                        continue;
+                    }
+                    if ($name === '') {
+                        $groupRows[$i]['messages'][] = sprintf(
+                            'The option%d name must be filled when option%d value is set.', $slot, $slot);
+
+                        continue;
+                    }
+                    if ($slot > 1 && $pairs === []) {
+                        $groupRows[$i]['messages'][] = sprintf(
+                            'The option%d fields cannot be used before option1 is filled.', $slot);
+
+                        continue;
+                    }
+
+                    $pairs[] = [$name, $value];
+                }
+                $pairsByRow[] = $pairs;
+            }
+
+            $isVariable = array_filter($pairsByRow) !== [];
+            if ($isVariable) {
+                foreach ($groupRows as $i => $row) {
+                    if ($pairsByRow[$i] === []) {
+                        $groupRows[$i]['messages'][] =
+                            'Every variant row of a multi-variant product needs at least one option value.';
+                    }
+                }
+            }
+
+            // A product is all-or-nothing: any invalid row fails the
+            // whole group, every offending row listed with its line.
+            $invalidRows = array_filter($groupRows, fn (array $row) => $row['messages'] !== []);
+            if ($invalidRows !== []) {
                 $failed++;
-                $errors[] = ['row' => $line, 'messages' => $messages];
+                foreach ($invalidRows as $row) {
+                    $errors[] = ['row' => $row['line'], 'messages' => $row['messages']];
+                }
 
                 continue;
             }
+
+            // Match existing products by any of the group's SKUs; SKUs
+            // spanning several products cannot be merged into one.
+            $existingProductIds = [];
+            foreach ($groupRows as $row) {
+                $sku = (string) $row['values'][ProductImportFields::FIELD_SKU];
+                if ($sku !== '' && isset($existingProductBySku[$sku])) {
+                    $existingProductIds[(int) $existingProductBySku[$sku]] = true;
+                }
+            }
+            if (count($existingProductIds) > 1) {
+                $failed++;
+                $errors[] = ['row' => $first['line'], 'messages' => [
+                    'The rows of this product reference SKUs that belong to different products.',
+                ]];
+
+                continue;
+            }
+            $existingProductId = $existingProductIds === [] ? null : array_key_first($existingProductIds);
 
             if ($existingProductId !== null && $strategy === CatalogImportStrategyEnum::SKIP) {
                 $skipped++;
@@ -169,52 +266,105 @@ class ImportProductsAction
                 continue;
             }
 
+            [$categoryIds, $categoryMessages] = $this->resolveCategories(
+                (string) ($first['values'][ProductImportFields::FIELD_CATEGORIES] ?? ''),
+                $categoryIdBySlug,
+            );
+            if ($categoryMessages !== []) {
+                $failed++;
+                $errors[] = ['row' => $first['line'], 'messages' => $categoryMessages];
+
+                continue;
+            }
+
+            // Product-level cells come from the first row of the group.
+            $published = (string) ($first['values'][ProductImportFields::FIELD_IS_PUBLISHED] ?? '');
             $translations = $this->buildTranslations(
-                $values,
-                $sku,
+                $first['values'],
+                (string) $first['values'][ProductImportFields::FIELD_SKU],
                 $languageCodes,
                 $languageIdByCode,
-                $existingProductId !== null ? (int) $existingProductId : null,
+                $existingProductId,
                 $usedSlugsByCode,
             );
-            $variant = [
-                VariantSchema::SKU => $sku,
-                VariantSchema::PRICE => $values[ProductImportFields::FIELD_PRICE],
-                VariantSchema::QUANTITY => (int) (($values[ProductImportFields::FIELD_QUANTITY] ?? '') ?: 0),
-                VariantSchema::IS_DEFAULT => true,
-            ];
-            foreach ([
-                VariantSchema::BARCODE => ProductImportFields::FIELD_BARCODE,
-                VariantSchema::COMPARE_PRICE => ProductImportFields::FIELD_COMPARE_PRICE,
-                VariantSchema::COST_PRICE => ProductImportFields::FIELD_COST_PRICE,
-            ] as $column => $field) {
-                if (($values[$field] ?? '') !== '') {
-                    $variant[$column] = $values[$field];
+
+            $variants = [];
+            foreach ($groupRows as $i => $row) {
+                $variant = [
+                    VariantSchema::SKU => (string) $row['values'][ProductImportFields::FIELD_SKU],
+                    VariantSchema::PRICE => $row['values'][ProductImportFields::FIELD_PRICE],
+                    VariantSchema::QUANTITY => (int) (($row['values'][ProductImportFields::FIELD_QUANTITY] ?? '') ?: 0),
+                    VariantSchema::IS_DEFAULT => $i === 0,
+                ];
+                foreach ([
+                    VariantSchema::BARCODE => ProductImportFields::FIELD_BARCODE,
+                    VariantSchema::COMPARE_PRICE => ProductImportFields::FIELD_COMPARE_PRICE,
+                    VariantSchema::COST_PRICE => ProductImportFields::FIELD_COST_PRICE,
+                ] as $column => $field) {
+                    if (($row['values'][$field] ?? '') !== '') {
+                        $variant[$column] = $row['values'][$field];
+                    }
+                }
+
+                $variants[] = $variant;
+            }
+
+            // Strict runs resolve (and report) unknown options in dry
+            // runs too; auto-creating runs only resolve while writing,
+            // since a dry run must not create anything.
+            $resolveStrictly = $isVariable && ! $createMissing;
+            $resolveOnWrite = $isVariable && $createMissing && ! $dryRun;
+
+            if ($resolveStrictly) {
+                $resolver ??= new ProductImportOptionResolver(false, (int) $languageIdByCode[$defaultCode]);
+                $resolutionErrors = $this->attachOptionValueIds($groupRows, $pairsByRow, $variants, $resolver);
+                if ($resolutionErrors !== []) {
+                    $failed++;
+                    $errors = array_merge($errors, $resolutionErrors);
+
+                    continue;
                 }
             }
 
-            $payload = [
-                ProductSchema::TYPE => ProductTypeEnum::SIMPLE->value,
-                ProductSchema::STATUS => ($values[ProductImportFields::FIELD_STATUS] ?? '') ?: ProductStatusEnum::IN_STOCK->value,
-                ProductSchema::IS_PUBLISHED => ProductImportFields::truthy($published),
-                ProductSchema::RES_CATEGORIES => $categoryIds,
-                ProductSchema::RES_TRANSLATIONS => $translations,
-                ProductSchema::RES_VARIANTS => [$variant],
-            ];
-
             if (! $dryRun) {
+                if ($resolveOnWrite) {
+                    $resolver ??= new ProductImportOptionResolver(true, (int) $languageIdByCode[$defaultCode]);
+                    $resolver->mark();
+                }
+
                 try {
-                    DB::transaction(function () use ($existingProductId, $payload): void {
+                    DB::transaction(function () use (
+                        $resolveOnWrite, $resolver, $groupRows, $pairsByRow, $variants,
+                        $isVariable, $published, $categoryIds, $translations, $existingProductId, $first,
+                    ): void {
+                        if ($resolveOnWrite) {
+                            $resolutionErrors = $this->attachOptionValueIds($groupRows, $pairsByRow, $variants, $resolver);
+                            if ($resolutionErrors !== []) {
+                                throw new ProductImportOptionResolutionException($resolutionErrors);
+                            }
+                        }
+
+                        $payload = $this->buildPayload($isVariable, $first['values'], $published, $categoryIds, $translations, $variants);
+
                         if ($existingProductId !== null) {
                             $this->updateAction->handle((string) $existingProductId, $payload);
                         } else {
                             $this->createAction->handle($payload);
                         }
                     });
+                } catch (ProductImportOptionResolutionException $e) {
+                    $resolver->forget();
+                    $failed++;
+                    $errors = array_merge($errors, $e->errors);
+
+                    continue;
                 } catch (Throwable $e) {
+                    if ($resolveOnWrite) {
+                        $resolver->forget();
+                    }
                     report($e);
                     $failed++;
-                    $errors[] = ['row' => $line, 'messages' => ['The row could not be imported.']];
+                    $errors[] = ['row' => $first['line'], 'messages' => ['The row could not be imported.']];
 
                     continue;
                 }
@@ -346,6 +496,78 @@ class ImportProductsAction
         $validator->setAttributeNames($attributeNames);
 
         return $validator;
+    }
+
+    /**
+     * Attach the resolved option value ids of each row to its variant.
+     * Returns row-numbered errors (empty means every pair resolved).
+     *
+     * @param  array<int, array{line: int, values: array<string, string>, messages: array<int, string>}>  $groupRows
+     * @param  array<int, array<int, array{0: string, 1: string}>>  $pairsByRow
+     * @param  array<int, array<string, mixed>>  $variants
+     * @return array<int, array{row: int, messages: array<int, string>}>
+     */
+    private function attachOptionValueIds(
+        array $groupRows,
+        array $pairsByRow,
+        array &$variants,
+        ProductImportOptionResolver $resolver,
+    ): array {
+        $messagesByLine = [];
+        foreach ($groupRows as $i => $row) {
+            $ids = [];
+            foreach ($pairsByRow[$i] as [$name, $value]) {
+                [$id, $message] = $resolver->resolve($name, $value);
+                if ($message !== null) {
+                    $messagesByLine[$row['line']][] = $message;
+
+                    continue;
+                }
+
+                $ids[] = $id;
+            }
+
+            if ($ids !== []) {
+                $variants[$i][VariantSchema::REQ_OPTION_VALUE_IDS] = array_values(array_unique($ids));
+            }
+        }
+
+        $errors = [];
+        foreach ($messagesByLine as $line => $messages) {
+            $errors[] = ['row' => $line, 'messages' => $messages];
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Assemble the Create/UpdateProductAction payload of one product
+     * group; the type follows from whether any row carried options.
+     *
+     * @param  array<string, string>  $firstValues
+     * @param  array<int, int>  $categoryIds
+     * @param  array<int, array<string, mixed>>  $translations
+     * @param  array<int, array<string, mixed>>  $variants
+     * @return array<string, mixed>
+     */
+    private function buildPayload(
+        bool $isVariable,
+        array $firstValues,
+        string $published,
+        array $categoryIds,
+        array $translations,
+        array $variants,
+    ): array {
+        return [
+            ProductSchema::TYPE => $isVariable
+                ? ProductTypeEnum::VARIABLE->value
+                : ProductTypeEnum::SIMPLE->value,
+            ProductSchema::STATUS => ($firstValues[ProductImportFields::FIELD_STATUS] ?? '') ?: ProductStatusEnum::IN_STOCK->value,
+            ProductSchema::IS_PUBLISHED => ProductImportFields::truthy($published),
+            ProductSchema::RES_CATEGORIES => $categoryIds,
+            ProductSchema::RES_TRANSLATIONS => $translations,
+            ProductSchema::RES_VARIANTS => $variants,
+        ];
     }
 
     /**
