@@ -66,6 +66,7 @@ export function Import({ open, onOpenChange }: ImportProps) {
   const [preview, setPreview] = useState<ProductImportPreview | null>(null)
   const [mapping, setMapping] = useState<Record<string, string | null>>({})
   const [onDuplicate, setOnDuplicate] = useState<'update' | 'skip'>('update')
+  const [createMissingOptions, setCreateMissingOptions] = useState(true)
   const [dryRun, setDryRun] = useState(true)
   const [result, setResult] = useState<ProductImportResult | null>(null)
   const [pickerOpen, setPickerOpen] = useState(false)
@@ -83,6 +84,7 @@ export function Import({ open, onOpenChange }: ImportProps) {
       setPreview(null)
       setMapping({})
       setOnDuplicate('update')
+      setCreateMissingOptions(true)
       setDryRun(true)
       setResult(null)
       setExpandedErrorId(null)
@@ -134,6 +136,7 @@ export function Import({ open, onOpenChange }: ImportProps) {
         mapping,
         on_duplicate: onDuplicate,
         dry_run: dryRun,
+        create_missing_options: createMissingOptions,
       },
       {
         onSuccess: (data) => {
@@ -146,6 +149,7 @@ export function Import({ open, onOpenChange }: ImportProps) {
 
   const groupLabel = (key: string) => {
     if (key === 'variant') return tLabel('import_group_variant')
+    if (key === 'options') return tLabel('import_group_options')
     if (key === 'base') return tLabel('import_group_base')
     return key.toUpperCase()
   }
@@ -344,6 +348,22 @@ export function Import({ open, onOpenChange }: ImportProps) {
                         </Label>
                       </div>
                     </RadioGroup>
+                  </div>
+
+                  <div className='flex items-start gap-2'>
+                    <Checkbox
+                      id='create-missing-options'
+                      checked={createMissingOptions}
+                      onCheckedChange={(checked) => setCreateMissingOptions(checked === true)}
+                    />
+                    <div className='flex flex-col gap-1'>
+                      <Label htmlFor='create-missing-options'>
+                        {tLabel('import_create_missing_options')}
+                      </Label>
+                      <p className='text-sm text-muted-foreground'>
+                        {tHelpText('import_create_missing_options')}
+                      </p>
+                    </div>
                   </div>
 
                   <div className='flex items-start gap-2'>

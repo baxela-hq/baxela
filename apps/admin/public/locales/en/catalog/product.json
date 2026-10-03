@@ -114,9 +114,11 @@
       "import_field": "Mapped field",
       "import_ignore": "Ignore",
       "import_group_variant": "Variant",
+      "import_group_options": "Multi-variant",
       "import_group_base": "Product",
       "import_rows": "Rows",
       "import_duplicate_strategy": "Existing products with the same SKU",
+      "import_create_missing_options": "Create missing options and values",
       "import_dry_run": "Validate only (dry run)",
       "import_run_dry_run": "Validate",
       "import_run_import": "Import",
@@ -165,8 +167,9 @@
       "images": "The first image is the featured photo. Use the arrows to change the order.",
       "attributes": "Load attributes from a template, add them manually, or mix both — then remove what you don't need. Attributes left without a value are not saved.",
       "shipping": "Set the package weight and dimensions used to calculate shipping costs. Each value needs its unit; leave everything empty when not needed.",
-      "import": "Download the example CSV, fill in your products, upload it via the file picker, then map the columns and validate with a dry run before importing.",
-      "import_dry_run": "Validates the whole file and writes nothing; the result shows what the real import would do."
+      "import": "Download the example CSV, fill in your products, upload it via the file picker, then map the columns and validate with a dry run before importing. Rows sharing a handle become the variants of one product.",
+      "import_dry_run": "Validates the whole file and writes nothing; the result shows what the real import would do.",
+      "import_create_missing_options": "Variant option names and values (e.g. Color / Red) that are missing from the options catalog are created in the store's default language; uncheck it to fail rows that reference unknown options instead."
     }
   }
 }

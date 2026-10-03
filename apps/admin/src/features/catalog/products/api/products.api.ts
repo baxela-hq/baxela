@@ -80,6 +80,7 @@ export type ProductImportPayload = {
   mapping: Record<string, string | null>;
   on_duplicate: "update" | "skip";
   dry_run: boolean;
+  create_missing_options: boolean;
 };
 
 export async function previewProductImport(mediaId: number): Promise<ProductImportPreview> {
