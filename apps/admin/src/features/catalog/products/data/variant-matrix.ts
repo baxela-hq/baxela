@@ -28,6 +28,7 @@ export type GeneratedVariant = {
   is_default: boolean
   currency_id: number | null
   option_value_ids: number[]
+  image: null
 }
 
 /**
@@ -70,6 +71,7 @@ export function generateVariants(
       is_default: index === 0,
       currency_id: currencyId,
       option_value_ids: combo.map((c) => c.id),
+      image: null,
     }
   })
 }

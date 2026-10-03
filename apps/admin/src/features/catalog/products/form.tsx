@@ -6,7 +6,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useLanguages } from '@/features/core/languages/hooks/use-languages'
 import { parseAndToastError } from '@/shared/lib/utils';
 import { type ApiError } from '@/shared/lib/api-error';
-import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon, XIcon, InfoIcon, ImagePlusIcon, ChevronLeftIcon, ChevronRightIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
+import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon, XIcon, InfoIcon, ImagePlusIcon, ImageIcon, ChevronLeftIcon, ChevronRightIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
@@ -71,6 +71,8 @@ export function ProductForm() {
 
   const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+  // Index of the variant row whose photo picker is open; null = closed
+  const [variantPickerIndex, setVariantPickerIndex] = useState<number | null>(null)
 
   const form = useForm<z.input<typeof formSchema>, undefined, z.output<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -230,7 +232,7 @@ export function ProductForm() {
 
   const handleTypeChange = (value: string) => {
     if (value === 'simple') {
-      replace([{ sku: '', price: '', quantity: 0, is_default: true, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [] }]);
+      replace([{ sku: '', price: '', quantity: 0, is_default: true, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [], image: null }]);
     }
   };
 
@@ -289,6 +291,52 @@ export function ProductForm() {
 
   const renderVariantEditor = (key: string, index: number, single: boolean) => (
     <tr key={key} className="border-b last:border-0">
+      <td className="px-4 py-3 align-middle">
+        <FormField
+          control={form.control}
+          name={`variants.${index}.image`}
+          render={({ field }) => (
+            <FormItem className="m-0">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setVariantPickerIndex(index)}
+                  title={field.value ? tLabel('change_photo') : tLabel('add_photo')}
+                  aria-label={field.value ? tLabel('change_photo') : tLabel('add_photo')}
+                  className={cn(
+                    'flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border transition-colors',
+                    field.value
+                      ? 'border-border hover:border-primary/50'
+                      : 'border-dashed text-muted-foreground hover:border-primary hover:text-foreground'
+                  )}
+                >
+                  {field.value ? (
+                    <img
+                      src={field.value.url}
+                      alt={field.value.url.split('/').pop() ?? ''}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <ImageIcon size={16} />
+                  )}
+                </button>
+                {field.value && (
+                  <button
+                    type="button"
+                    onClick={() => form.setValue(`variants.${index}.image`, null, { shouldDirty: true })}
+                    title={tAction('remove')}
+                    aria-label={tAction('remove')}
+                    className="absolute -end-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-white hover:bg-destructive/90"
+                  >
+                    <XIcon size={12} />
+                  </button>
+                )}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </td>
       <td className="px-4 py-3 align-middle">
         <FormField
           control={form.control}
@@ -388,6 +436,7 @@ export function ProductForm() {
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-muted/50 text-muted-foreground">
+            <th className="w-14 px-4 py-2 text-start font-medium">{tLabel('photo')}</th>
             <th className="px-4 py-2 text-start font-medium">{tLabel('sku')}</th>
             <th className="px-4 py-2 text-start font-medium">{tLabel('price')}</th>
             <th className="px-4 py-2 text-start font-medium">{tLabel('quantity')}</th>
@@ -705,6 +754,23 @@ export function ProductForm() {
                     </>
                   )}
                 </div>
+
+                <MediaPickerDialog
+                  open={variantPickerIndex !== null}
+                  onOpenChange={(open) => {
+                    if (!open) setVariantPickerIndex(null)
+                  }}
+                  accept="image/*"
+                  title={tLabel('variant_photo')}
+                  onSelect={(item) => {
+                    if (variantPickerIndex === null) return
+                    form.setValue(`variants.${variantPickerIndex}.image`, {
+                      media_id: item.id,
+                      url: getMediaUrl(item) ?? '',
+                    })
+                    setVariantPickerIndex(null)
+                  }}
+                />
               </TabsContent>
               <TabsContent value="images" className="pt-5 pb-5">
                 <FormField

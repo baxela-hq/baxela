@@ -37,9 +37,17 @@ export const variantOptionRefSchema = z.object({
   option_id: z.number(),
 });
 
+// One optional photo per variant — the API stores it as a catalog_images row
+// keyed by the variant, sent as {media_id, url} or null.
+export const variantImageSchema = z.object({
+  media_id: z.number(),
+  url: z.string(),
+});
+export type VariantImage = z.infer<typeof variantImageSchema>
+
 const variantSchema = z.object({
   sku: z.string().min(1, "SKU cannot be empty"),
-  quantity: z.number().min(0, "Quantity cannot be negative"), 
+  quantity: z.number().min(0, "Quantity cannot be negative"),
   price: z.string().refine((value) => /^\d+\.\d{2}$/.test(value), {
     message: 'The format must include two decimal numbers like 100.99',
   }),
@@ -47,6 +55,9 @@ const variantSchema = z.object({
   currency_id: z.coerce.number().nullish(),
   option_value_ids: z.array(z.number()).optional(),
   optionValues: z.array(variantOptionRefSchema).optional(),
+  // nullish: absent on list rows (only the show endpoint eager-loads it),
+  // null when the variant has no photo
+  image: variantImageSchema.nullish(),
 });
 export type VariantForm = z.infer<typeof variantSchema>
 
@@ -381,7 +392,7 @@ export const defaultValues: ProductForm = {
   is_published: false,
   categories: [],
   variants: [{
-    sku: "", price: "", is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [],
+    sku: "", price: "", is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [], image: null,
   }],
   images: [] as ProductImage[],
   attribute_values: [] as ProductAttributeValueEntry[],
@@ -397,7 +408,7 @@ export function buildDefaultValues(languages: Language[]): ProductForm {
     is_published: false,
     categories: [],
     variants: [{
-      sku: '', price: '', is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [],
+      sku: '', price: '', is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [], image: null,
     }],
     images: [],
     attribute_values: [],
@@ -453,6 +464,7 @@ export function buildEditValues(
       quantity: va.quantity,
       currency_id: getDefaultCurrency()?.id ?? null,
       option_value_ids: va.option_value_ids || [],
+      image: va.image ? { media_id: va.image.media_id, url: va.image.url } : null,
     })),
     images: [...(currentRow.images ?? [])]
       .sort((a, b) => a.position - b.position)
