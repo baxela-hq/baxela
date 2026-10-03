@@ -1,0 +1,42 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/content/admin/posts/13
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "draft",
+    "is_featured": true,
+    "categories": [1, 2],
+    "translations": [
+      {
+        "language": "en",
+        "title": "Welcome to the Baxela blog v2",
+        "slug": "welcome-to-baxela-v2",
+        "content": "<p>Updated content.</p>",
+        "description": "A short hello from the team."
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -13,6 +13,8 @@ class ContentDatabaseSeeder extends Seeder
     {
         $this->call([
             PageSeeder::class,
+            PostCategorySeeder::class,
+            PostSeeder::class,
         ]);
     }
 }

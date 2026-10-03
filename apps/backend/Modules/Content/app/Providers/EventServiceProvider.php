@@ -5,6 +5,7 @@ namespace Modules\Content\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Core\Contracts\Events\Content\PagePublishedEvent;
 use Modules\Core\Contracts\Events\Content\PageUnpublishedEvent;
+use Modules\Core\Contracts\Events\Content\PostCommentCreatedEvent;
 use Modules\Core\Listeners\LogAllEvents;
 
 class EventServiceProvider extends ServiceProvider
@@ -17,6 +18,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         PagePublishedEvent::class => [LogAllEvents::class],
         PageUnpublishedEvent::class => [LogAllEvents::class],
+        PostCommentCreatedEvent::class => [LogAllEvents::class],
     ];
 
     /**

@@ -1,0 +1,20 @@
+meta {
+  name: Show
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/content/public/posts/welcome-to-baxela
+  body: none
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

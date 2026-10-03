@@ -1,0 +1,40 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/content/admin/post-categories/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "parent_id": null,
+    "position": 2,
+    "translations": [
+      {
+        "language": "en",
+        "title": "Guides",
+        "slug": "guides",
+        "description": "Buying guides and how-tos."
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

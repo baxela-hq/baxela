@@ -1,0 +1,46 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/content/admin/post-categories
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "parent_id": null,
+    "position": 1,
+    "translations": [
+      {
+        "language": "en",
+        "title": "News",
+        "slug": "news",
+        "description": "Announcements and updates."
+      },
+      {
+        "language": "fa",
+        "title": "اخبار",
+        "slug": "news",
+        "description": "اطلاعیه‌ها و تازه‌ها."
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

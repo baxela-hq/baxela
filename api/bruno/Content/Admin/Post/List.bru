@@ -1,0 +1,34 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/content/admin/posts
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[title]: hello
+  ~filter[status]: published
+  ~filter[categories.id]: 1
+  ~page: 1
+  ~per_page: 15
+  ~sort: -id
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

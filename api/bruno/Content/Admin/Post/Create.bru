@@ -1,0 +1,49 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/content/admin/posts
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "published",
+    "is_featured": false,
+    "categories": [1],
+    "translations": [
+      {
+        "language": "en",
+        "title": "Welcome to the Baxela blog",
+        "slug": "welcome-to-baxela",
+        "content": "<p>This is our first post.</p>",
+        "description": "A short hello from the team."
+      },
+      {
+        "language": "fa",
+        "title": "به وبلاگ بکسلا خوش آمدید",
+        "slug": "welcome-to-baxela",
+        "content": "<p>این نخستین نوشته ماست.</p>",
+        "description": "سلامی کوتاه از تیم ما."
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

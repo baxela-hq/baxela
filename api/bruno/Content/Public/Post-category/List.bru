@@ -1,0 +1,25 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/content/public/post-categories
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~page: 1
+  ~per_page: 15
+}
+
+headers {
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

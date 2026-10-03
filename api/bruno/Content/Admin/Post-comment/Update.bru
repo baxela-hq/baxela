@@ -1,0 +1,34 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/content/admin/post-comments/3
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "post_id": 13,
+    "parent_id": null,
+    "body": "Edited by the moderation team.",
+    "status": "approved"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

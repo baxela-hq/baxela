@@ -216,4 +216,62 @@ TXT,
             ],
         ],
     ],
+
+    'post_categories' => [
+        // News
+        'news' => [
+            'translations' => [
+                [
+                    'title' => 'News',
+                    'slug' => 'news',
+                    'description' => 'Announcements, releases, and everything new at Baxela.',
+                ],
+            ],
+        ],
+
+        // Guides
+        'guides' => [
+            'translations' => [
+                [
+                    'title' => 'Guides',
+                    'slug' => 'guides',
+                    'description' => 'Buying guides and how-tos to help you shop with confidence.',
+                ],
+            ],
+        ],
+    ],
+
+    'posts' => [
+        // Welcome post
+        'welcome-to-baxela' => [
+            'is_featured' => true,
+            'categories' => ['news'],
+            'translations' => [
+                [
+                    'title' => 'Welcome to the Baxela blog',
+                    'slug' => 'welcome-to-baxela',
+                    'description' => 'A short hello from the team and what this blog will cover.',
+                    'content' => <<<'TXT'
+Welcome! This is where we share product stories, behind-the-scenes updates, and practical guides for getting the most out of your orders. We publish something new every couple of weeks, so check back soon.
+TXT,
+                ],
+            ],
+        ],
+
+        // Sizing guide post
+        'how-to-find-your-size' => [
+            'is_featured' => false,
+            'categories' => ['guides'],
+            'translations' => [
+                [
+                    'title' => 'How to find your size',
+                    'slug' => 'how-to-find-your-size',
+                    'description' => 'A few quick tips for measuring at home before you order.',
+                    'content' => <<<'TXT'
+Sizes vary between brands, so always start with a tape measure. For tops, measure across the chest at the widest point; for bottoms, measure your waist where you naturally wear your trousers. Compare your numbers with the size chart on each product page — every item lists its own measurements.
+TXT,
+                ],
+            ],
+        ],
+    ],
 ];

@@ -1,0 +1,32 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/content/admin/post-categories
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[title]: news
+  ~page: 1
+  ~per_page: 15
+  ~sort: position
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
