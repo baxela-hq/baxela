@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
+use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
+use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
@@ -10,22 +12,45 @@ use Modules\Payment\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-it('resolves the manual driver by method and by name', function () {
-    $manager = app(PaymentDriverManager::class);
-
-    expect($manager->forMethod(PaymentMethodEnum::MANUAL))->toBeInstanceOf(ManualPaymentDriver::class)
-        ->and($manager->forName('manual'))->toBeInstanceOf(ManualPaymentDriver::class);
+beforeEach(function () {
+    config([
+        'payment.stripe.secret' => null,
+        'payment.paypal.client_id' => null,
+        'payment.paypal.client_secret' => null,
+    ]);
 });
 
-it('throws for a method without a configured driver', function (PaymentMethodEnum $method) {
+it('resolves every registered driver by method and by name', function (PaymentMethodEnum $method, string $driver) {
     $manager = app(PaymentDriverManager::class);
 
-    expect(fn () => $manager->forMethod($method))->toThrow(PaymentException::class);
+    expect($manager->forMethod($method))->toBeInstanceOf($driver)
+        ->and($manager->forName($method->value))->toBeInstanceOf($driver);
 })->with([
-    'paypal' => [PaymentMethodEnum::PAYPAL],
+    'manual' => [PaymentMethodEnum::MANUAL, ManualPaymentDriver::class],
+    'stripe' => [PaymentMethodEnum::STRIPE, StripePaymentDriver::class],
+    'paypal' => [PaymentMethodEnum::PAYPAL, PaypalPaymentDriver::class],
 ]);
 
 it('throws for an unknown driver name', function () {
     expect(fn () => app(PaymentDriverManager::class)->forName('crypto'))
         ->toThrow(PaymentException::class);
+});
+
+it('reports a driver configured only when its credentials are set', function () {
+    $manager = app(PaymentDriverManager::class);
+
+    expect($manager->isConfigured(PaymentMethodEnum::MANUAL))->toBeTrue()
+        ->and($manager->isConfigured(PaymentMethodEnum::STRIPE))->toBeFalse()
+        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse();
+
+    config(['payment.stripe.secret' => 'sk_test_x']);
+    config(['payment.paypal.client_id' => 'cid_test']);
+
+    expect($manager->isConfigured(PaymentMethodEnum::STRIPE))->toBeTrue()
+        // paypal needs both halves of its credential pair
+        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse();
+
+    config(['payment.paypal.client_secret' => 'secret_test']);
+
+    expect($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeTrue();
 });

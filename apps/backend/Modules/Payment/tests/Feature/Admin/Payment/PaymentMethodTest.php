@@ -14,15 +14,19 @@ it('denies a guest with 401', function () {
 });
 
 it('lazily creates disabled rows for every registered driver', function () {
-    config(['payment.stripe.secret' => 'sk_test_x']);
+    config([
+        'payment.stripe.secret' => 'sk_test_x',
+        'payment.paypal.client_id' => null,
+        'payment.paypal.client_secret' => null,
+    ]);
     $this->actingAs($this->superAdminUser());
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
     $rows = collect($response->json('data'));
 
-    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe'])
-        ->and(PaymentMethod::count())->toBe(2);
+    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal'])
+        ->and(PaymentMethod::count())->toBe(3);
 
     $stripe = $rows->firstWhere('method', 'stripe');
     expect($stripe[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
@@ -31,9 +35,19 @@ it('lazily creates disabled rows for every registered driver', function () {
 
     $manual = $rows->firstWhere('method', 'manual');
     expect($manual[PaymentMethodSchema::IS_CONFIGURED])->toBeTrue();
+
+    // Registered but missing its credential pair: offered to no one until
+    // the env credentials exist.
+    $paypal = $rows->firstWhere('method', 'paypal');
+    expect($paypal[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
+        ->and($paypal[PaymentMethodSchema::IS_CONFIGURED])->toBeFalse()
+        ->and($paypal[PaymentMethodSchema::IS_REGISTERED])->toBeTrue();
 });
 
 it('does not create rows for drivers without an implementation', function () {
+    // paypal is registered by default; drop it from the registry to cover
+    // the enum-case-without-driver gap.
+    config(['payment.drivers' => collect(config('payment.drivers'))->except('paypal')->all()]);
     $this->actingAs($this->superAdminUser());
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
@@ -75,6 +89,7 @@ it('activates a method and moves its checkout position', function () {
 });
 
 it('refuses updating a method whose driver is no longer registered', function () {
+    config(['payment.drivers' => collect(config('payment.drivers'))->except('paypal')->all()]);
     $this->actingAs($this->superAdminUser());
     $method = PaymentMethod::query()->create([
         PaymentMethodSchema::METHOD => PaymentMethodEnum::PAYPAL,

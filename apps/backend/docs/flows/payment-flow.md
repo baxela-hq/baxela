@@ -31,6 +31,7 @@ SDK error as a 500.
 | --- | --- | --- |
 | `manual` | `ManualPaymentDriver` | No hosted checkout; an admin settles it (`PATCH /admin/payments/{id}`). |
 | `stripe` | `StripePaymentDriver` | Hosted Checkout redirect; settled by signed webhook. |
+| `paypal` | `PaypalPaymentDriver` | Orders v2 hosted redirect; approved orders are captured on the webhook. |
 
 ## Sequence
 
@@ -88,6 +89,43 @@ acked as no-ops).
 - SDK access is wrapped in `StripeCheckout` so tests mock one class instead
   of the SDK's fluent service chain.
 
+## PayPal specifics
+
+- Requires `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` (plus
+  `PAYPAL_MODE` — `sandbox` by default — and `PAYPAL_WEBHOOK_ID`) in the
+  backend `.env` (see `.env.example`); without the credential pair the
+  method is hidden from `/payment/user/methods`, and direct calls fail
+  with `payment.process.gateway_unconfigured`.
+- REST access is wrapped in the SDK-less `PaypalClient` (PayPal's PHP
+  SDKs are deprecated): OAuth2 client-credentials token with cache on
+  top of the Orders v2 API, so tests mock one class. PayPal order ids
+  (`5O190…`) are alphanumeric — `payments.transaction_id` is a string.
+- `initiate` creates an order (`intent=CAPTURE`, single purchase unit
+  with `reference_id` = order code, `custom_id` = payment id, and a
+  decimal-string `amount.value` built from the order currency's
+  `decimal_places`; `{order_code}`-templated return/cancel URLs). The
+  order id is stored as `transaction_id`, and the customer is sent to
+  the response's `approve` link.
+- `handleWebhook` first verifies the delivery through PayPal's
+  `verify-webhook-signature` API (certificate-based over the `PAYPAL-*`
+  transmission headers — unlike Stripe's HMAC there is no local check)
+  and rejects anything the API does not confirm. Point the webhook at
+  `POST /api/v1/payment/webhook/paypal` for `CHECKOUT.ORDER.APPROVED`,
+  `PAYMENT.CAPTURE.COMPLETED`, `PAYMENT.CAPTURE.DENIED` and
+  `CHECKOUT.PAYMENT-APPROVAL.REVERSED`.
+- Redirect flows never auto-capture, so `CHECKOUT.ORDER.APPROVED` drives
+  the capture: COMPLETED → success, DENIED/DECLINED → failed. The other
+  terminal events map directly (capture events carry the stored order id
+  at `resource.supplementary_data.related_ids.order_id`). PayPal retries
+  non-2xx deliveries up to 25 times over 3 days, which is the guaranteed
+  trigger: unexpected capture failures rethrow as 5xx so PayPal retries
+  the whole webhook, while a replayed approval after settlement is acked
+  via PayPal's `ORDER_ALREADY_CAPTURED` 422 instead of erroring until the
+  retry cap.
+- Local dev note: PayPal has no `stripe listen` equivalent — expose the
+  backend through a tunnel (ngrok/cloudflared) and register that URL in
+  the developer dashboard, or use the webhook simulator.
+
 ## Adding a payment driver
 
 1. Add the case to `PaymentMethodEnum` (values are public API).
@@ -112,9 +150,7 @@ acked as no-ops).
 7. Cover the driver with unit tests (signature + event mapping) mirroring
    `StripePaymentDriverTest`.
 
-Planned drivers follow the same recipe: **PayPal** (Orders v2 REST; capture
-on the `CHECKOUT.ORDER.APPROVED` webhook so settlement stays webhook-driven)
-and **Adyen** (hosted Payment Links; the link id doubles as
-`transaction_id`, matched on the `AUTHORISATION` webhook's `pspReference`).
-A Drop-in/Components integration would additionally need return-handling on
-the driver contract.
+Planned drivers follow the same recipe: **Adyen** (hosted Payment Links;
+the link id doubles as `transaction_id`, matched on the `AUTHORISATION`
+webhook's `pspReference`). A Drop-in/Components integration would
+additionally need return-handling on the driver contract.

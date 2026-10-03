@@ -8,6 +8,7 @@ use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
@@ -120,6 +121,9 @@ it('rejects a method an admin deactivated', function () {
 });
 
 it('rejects a method with no configured driver', function () {
+    // paypal is registered by default; drop it from the registry to cover
+    // the enum-case-without-driver gap.
+    config(['payment.drivers' => collect(config('payment.drivers'))->except('paypal')->all()]);
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -173,4 +177,44 @@ it('rejects a stripe payment when the gateway is not configured', function () {
         'order_code' => $order->{OrderSchema::ORDER_CODE},
         'method' => 'stripe',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
+});
+
+it('creates a paypal payment and returns the hosted approval url', function () {
+    config([
+        'payment.paypal.client_id' => 'cid_test',
+        'payment.paypal.client_secret' => 'secret_test',
+    ]);
+    activeMethod(PaymentMethodEnum::PAYPAL);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'USD',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The PayPal order id doubles as the stored transaction_id the webhook
+    // matches on.
+    $client = Mockery::mock(PaypalClient::class);
+    $client->shouldReceive('createOrder')->once()->andReturn((object) [
+        'id' => '5O190127TN3647153',
+        'links' => [
+            (object) ['rel' => 'self', 'href' => 'https://api-m.sandbox.paypal.com/v2/checkout/orders/5O190127TN3647153'],
+            (object) ['rel' => 'approve', 'href' => 'https://www.sandbox.paypal.com/checkoutnow?token=5O190127TN3647153'],
+        ],
+    ]);
+    $this->app->instance(PaypalClient::class, $client);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'paypal',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://www.sandbox.paypal.com/checkoutnow?token=5O190127TN3647153')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('5O190127TN3647153')
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::PAYPAL);
 });

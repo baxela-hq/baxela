@@ -44,6 +44,8 @@ class PaymentDriverManager
         return match ($method) {
             PaymentMethodEnum::MANUAL => true,
             PaymentMethodEnum::STRIPE => (bool) config('payment.stripe.secret'),
+            PaymentMethodEnum::PAYPAL => (bool) config('payment.paypal.client_id')
+                && (bool) config('payment.paypal.client_secret'),
             default => false,
         };
     }
