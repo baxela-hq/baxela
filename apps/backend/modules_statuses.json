@@ -14,5 +14,6 @@
     "Shipping": true,
     "Menu": true,
     "Contact": true,
-    "Discount": true
+    "Discount": true,
+    "Support": true
 }

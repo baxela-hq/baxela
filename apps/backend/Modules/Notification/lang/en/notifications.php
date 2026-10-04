@@ -68,5 +68,27 @@ return [
                 ],
             ],
         ],
+        'support' => [
+            'admin' => [
+                'ticket' => [
+                    'created' => [
+                        'subject' => 'New support ticket: :subject',
+                        'body' => 'A new support ticket ":subject" was opened.',
+                    ],
+                    'replied' => [
+                        'subject' => 'Customer replied to ticket: :subject',
+                        'body' => 'A customer replied to the support ticket ":subject".',
+                    ],
+                ],
+            ],
+            'user' => [
+                'ticket' => [
+                    'answered' => [
+                        'subject' => 'Reply to your ticket: :subject',
+                        'body' => 'Our support team replied to your ticket ":subject".',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

@@ -71,6 +71,19 @@ return [
                 ],
             ],
         ],
+        'support' => [
+            'ticket' => [
+                'created' => [
+                    'admin' => ['database', 'email'],
+                ],
+                'replied' => [
+                    'admin' => ['database', 'email'],
+                ],
+                'answered' => [
+                    'user' => ['database', 'email', 'webpush'],
+                ],
+            ],
+        ],
     ],
 
     // Recipients for audience="admin" email notifications; a comma-separated

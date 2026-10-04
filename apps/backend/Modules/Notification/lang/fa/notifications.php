@@ -68,5 +68,27 @@ return [
                 ],
             ],
         ],
+        'support' => [
+            'admin' => [
+                'ticket' => [
+                    'created' => [
+                        'subject' => 'تیکت پشتیبانی جدید: :subject',
+                        'body' => 'یک تیکت پشتیبانی جدید با عنوان «:subject» ثبت شد.',
+                    ],
+                    'replied' => [
+                        'subject' => 'پاسخ مشتری به تیکت: :subject',
+                        'body' => 'مشتری به تیکت پشتیبانی «:subject» پاسخ داد.',
+                    ],
+                ],
+            ],
+            'user' => [
+                'ticket' => [
+                    'answered' => [
+                        'subject' => 'پاسخ به تیکت شما: :subject',
+                        'body' => 'تیم پشتیبانی به تیکت «:subject» شما پاسخ داد.',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];

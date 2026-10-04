@@ -13,6 +13,8 @@ use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentFailedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
+use Modules\Core\Contracts\Events\Support\TicketCreatedEvent;
+use Modules\Core\Contracts\Events\Support\TicketMessageCreatedEvent;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Auth\UserSignedIn\SendNewLoginAlertToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
@@ -25,6 +27,9 @@ use Modules\Notification\Listeners\Order\OrderShipped\SendOrderShippedNotificati
 use Modules\Notification\Listeners\Payment\PaymentFailed\NotifyAdminPaymentFailedListener;
 use Modules\Notification\Listeners\Payment\PaymentFailed\SendPaymentFailedNotificationToUserListener;
 use Modules\Notification\Listeners\Payment\PaymentSucceeded\NotifyAdminPaymentSucceededListener;
+use Modules\Notification\Listeners\Support\TicketCreated\NotifyAdminSupportTicketCreatedListener;
+use Modules\Notification\Listeners\Support\TicketMessageCreated\NotifyAdminSupportTicketRepliedListener;
+use Modules\Notification\Listeners\Support\TicketMessageCreated\SendTicketAnsweredNotificationToUserListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -65,6 +70,13 @@ class EventServiceProvider extends ServiceProvider
         PaymentFailedEvent::class => [
             SendPaymentFailedNotificationToUserListener::class,
             NotifyAdminPaymentFailedListener::class,
+        ],
+        TicketCreatedEvent::class => [
+            NotifyAdminSupportTicketCreatedListener::class,
+        ],
+        TicketMessageCreatedEvent::class => [
+            NotifyAdminSupportTicketRepliedListener::class,
+            SendTicketAnsweredNotificationToUserListener::class,
         ],
     ];
 

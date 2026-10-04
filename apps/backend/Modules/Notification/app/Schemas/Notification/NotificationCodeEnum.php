@@ -48,6 +48,11 @@ enum NotificationCodeEnum: string
     // Setting
     case SETTING_SETTING_UPDATED = 'setting.setting.updated';
 
+    // Support
+    case SUPPORT_TICKET_CREATED = 'support.ticket.created';
+    case SUPPORT_TICKET_REPLIED = 'support.ticket.replied';
+    case SUPPORT_TICKET_ANSWERED = 'support.ticket.answered';
+
     // User
     case USER_PROFILE_UPDATED = 'user.profile.updated';
 }
