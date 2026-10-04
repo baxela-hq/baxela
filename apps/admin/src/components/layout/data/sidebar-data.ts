@@ -11,6 +11,7 @@ import {
   Package,
   ServerOff,
   Settings,
+  Ticket as TicketIcon,
   UserX,
   Users,
   ShieldCheck,
@@ -131,6 +132,16 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.newsletter-subscribers'),
                 url: '/contact/newsletter-subscribers',
+              },
+            ],
+          },
+          {
+            title: t('sidebar.support'),
+            icon: TicketIcon,
+            items: [
+              {
+                title: t('sidebar.tickets'),
+                url: '/support/tickets',
               },
             ],
           },

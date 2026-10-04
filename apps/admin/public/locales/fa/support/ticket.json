@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "ticket": "تیکت",
+      "tickets": "تیکت‌ها",
+      "id": "شناسه",
+      "subject": "موضوع",
+      "customer": "مشتری",
+      "customer_email": "ایمیل مشتری",
+      "order_code": "کد سفارش",
+      "status": "وضعیت",
+      "last_message_at": "آخرین فعالیت",
+      "created_at": "تاریخ ایجاد",
+      "updated_at": "تاریخ به‌روزرسانی",
+      "view": "مشاهده",
+      "open": "بازگشایی",
+      "closed": "بستن",
+      "replied": "پاسخ داده شده",
+      "reply": "پاسخ",
+      "sender": {
+        "customer": "مشتری",
+        "admin": "پشتیبانی"
+      }
+    },
+    "statuses": {
+      "status": {
+        "open": "باز",
+        "answered": "پاسخ داده شده",
+        "closed": "بسته"
+      }
+    }
+  }
+}
