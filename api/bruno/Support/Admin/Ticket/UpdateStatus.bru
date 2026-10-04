@@ -1,0 +1,31 @@
+meta {
+  name: UpdateStatus
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/support/admin/tickets/1/status
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "closed"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

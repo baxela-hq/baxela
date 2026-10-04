@@ -1,0 +1,35 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/support/admin/tickets
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~per_page: 15
+  ~page: 1
+  ~sort: -id
+  ~filter[status]: open
+  ~filter[subject]: order
+  ~filter[order_code]: ORD-123
+  ~filter[user_id]: 1
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

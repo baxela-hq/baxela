@@ -1,0 +1,33 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/support/user/tickets
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "subject": "Question about my order",
+    "body": "Where is my order?",
+    "order_code": "ORD-123"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

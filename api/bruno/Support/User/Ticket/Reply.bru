@@ -1,0 +1,31 @@
+meta {
+  name: Reply
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/v1/support/user/tickets/1/messages
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "body": "It happened again after the fix."
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
