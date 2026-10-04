@@ -30,8 +30,13 @@ export interface ApiNotification {
   code: string;
   title: string;
   body: string;
-  /** Deep-link hints; `order_code` points at the customer's order. */
-  meta: { order_code?: string; reason?: string | null } | null;
+  /** Deep-link hints; `order_code` points at the customer's order and
+   * `ticket_id` at their support ticket thread. */
+  meta: {
+    order_code?: string;
+    ticket_id?: number;
+    reason?: string | null;
+  } | null;
   read_at: string | null;
   created_at: string | null;
 }
@@ -311,4 +316,31 @@ export interface ApiSetting {
   type: string | null;
   name: string;
   value: string | null;
+}
+
+// Support tickets (Support module). A ticket is a customer-owned
+// conversation: the first message plus any replies, with staff answers
+// marked by the "answered" status.
+export type ApiTicketStatus = "open" | "answered" | "closed";
+
+export type ApiTicketSender = "customer" | "admin";
+
+export interface ApiTicketMessage {
+  id: number;
+  sender: ApiTicketSender;
+  body: string;
+  created_at: string | null;
+}
+
+export interface ApiTicket {
+  id: number;
+  subject: string;
+  status: ApiTicketStatus;
+  /** Optional reference to one of the customer's orders. */
+  order_code: string | null;
+  last_message_at: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  /** Present on the show endpoint; absent from list rows. */
+  messages?: ApiTicketMessage[];
 }

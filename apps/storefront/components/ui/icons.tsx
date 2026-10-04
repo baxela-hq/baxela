@@ -28,6 +28,24 @@ export function MailIcon(props: IconProps) {
   );
 }
 
+export function TicketIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h11A2.5 2.5 0 0 1 20 8.5v7a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 15.5v-3.25c1.25 0 1.25 1 2.5 1s1.25-1 2.5-1 1.25 1 2.5 1 1.25-1 2.5-1 1.25 1 2.5 1 1.25-1 2.5-1" />
+      <path d="M4 11.25v-2.75" />
+    </Svg>
+  );
+}
+
+export function MessageIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M21 12a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-2.92-.39-4.15-1.06L3 21l1.56-5.35A8.5 8.5 0 1 1 21 12Z" />
+      <path d="M8.5 10.5h7M8.5 14h4" />
+    </Svg>
+  );
+}
+
 export function LockIcon(props: IconProps) {
   return (
     <Svg {...props}>

@@ -7,7 +7,7 @@ import { useNotifications } from "@/context/notifications-context";
 import { notificationsApi } from "@/lib/api/notifications";
 import { ApiError } from "@/lib/api/client";
 import type { ApiNotification } from "@/lib/api/types";
-import { BellIcon, BoxIcon, LockIcon } from "@/components/ui/icons";
+import { BellIcon, BoxIcon, LockIcon, MessageIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
 
 // Rows arrive from the notification API pre-localized; the icon follows the
@@ -15,6 +15,7 @@ import { Link } from "@/i18n/navigation";
 const CODE_ICONS: Record<string, typeof BoxIcon> = {
   order: BoxIcon,
   payment: LockIcon,
+  support: MessageIcon,
 };
 
 function rowIcon(code: string) {
@@ -24,6 +25,11 @@ function rowIcon(code: string) {
 function orderHref(notification: ApiNotification): string | null {
   const code = notification.meta?.order_code;
   return code ? `/profile/orders?q=${encodeURIComponent(code)}` : null;
+}
+
+function ticketHref(notification: ApiNotification): string | null {
+  const id = notification.meta?.ticket_id;
+  return typeof id === "number" ? `/profile/tickets/${id}` : null;
 }
 
 /**
@@ -159,7 +165,7 @@ export function Notifications({ initials }: { initials: string }) {
         {rows.map((row) => {
           const Icon = rowIcon(row.code);
           const personal = row.code.startsWith("auth.");
-          const href = orderHref(row);
+          const href = orderHref(row) ?? ticketHref(row);
 
           const content = (
             <>

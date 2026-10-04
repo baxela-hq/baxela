@@ -20,6 +20,7 @@ async function loadMessages(locale: string) {
     cart,
     auth,
     account,
+    tickets,
     contact,
     paymentReturn,
   ] = await Promise.all([
@@ -32,6 +33,7 @@ async function loadMessages(locale: string) {
     import(`../messages/${locale}/cart/cart.json`),
     import(`../messages/${locale}/auth/auth.json`),
     import(`../messages/${locale}/account/account.json`),
+    import(`../messages/${locale}/account/tickets.json`),
     import(`../messages/${locale}/contact/contact.json`),
     import(`../messages/${locale}/payment/return.json`),
   ]);
@@ -49,7 +51,10 @@ async function loadMessages(locale: string) {
     checkout: { checkout: checkout.default },
     cart: { cart: cart.default },
     auth: { auth: auth.default },
-    account: { account: account.default },
+    account: {
+      account: account.default,
+      tickets: tickets.default,
+    },
     contact: { contact: contact.default },
     payment: { return: paymentReturn.default },
   };

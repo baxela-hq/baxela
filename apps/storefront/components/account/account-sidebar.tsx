@@ -10,6 +10,7 @@ import {
   HeartIcon,
   LogoutIcon,
   MapPinIcon,
+  MessageIcon,
   SettingsIcon,
   UserIcon,
 } from "@/components/ui/icons";
@@ -22,6 +23,7 @@ export type AccountTab =
   | "manage_addresses"
   | "saved_cards"
   | "notifications"
+  | "support_tickets"
   | "settings";
 
 const TABS: { key: AccountTab; href: string; icon: ReactNode }[] = [
@@ -50,6 +52,11 @@ const TABS: { key: AccountTab; href: string; icon: ReactNode }[] = [
     key: "notifications",
     href: "/profile/notifications",
     icon: <BellIcon className="size-5" />,
+  },
+  {
+    key: "support_tickets",
+    href: "/profile/tickets",
+    icon: <MessageIcon className="size-5" />,
   },
   {
     key: "settings",

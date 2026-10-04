@@ -1,0 +1,64 @@
+{
+  "texts": {
+    "empty": "You have no support tickets.",
+    "empty_hint": "Open a ticket and our team will get back to you.",
+    "new_title": "Open a Support Ticket",
+    "reopen_hint": "This ticket is closed. Sending a reply will reopen it."
+  },
+  "labels": {
+    "title": "Support Tickets",
+    "you": "You",
+    "support_team": "Support",
+    "created_at": "{date}",
+    "last_activity": "Last activity {date}",
+    "order_reference": "Order #{code}"
+  },
+  "actions": {
+    "new_ticket": "New Ticket",
+    "submit": "Submit Ticket",
+    "send": "Send Reply",
+    "close": "Close Ticket",
+    "reopen": "Reopen",
+    "back_to_tickets": "Back to tickets",
+    "prev_page": "Previous page",
+    "next_page": "Next page"
+  },
+  "filters": {
+    "all": "All",
+    "open": "Open",
+    "answered": "Answered",
+    "closed": "Closed"
+  },
+  "status": {
+    "open": "Open",
+    "answered": "Answered",
+    "closed": "Closed"
+  },
+  "form": {
+    "labels": {
+      "subject": "Subject",
+      "order": "Related order (optional)",
+      "message": "Message",
+      "reply": "Your reply"
+    },
+    "placeholders": {
+      "subject": "Briefly, what is this about?",
+      "message": "Describe your question or problem",
+      "reply": "Write your reply…"
+    }
+  },
+  "messages": {
+    "success": {
+      "created": "Your ticket has been submitted.",
+      "replied": "Your reply has been sent.",
+      "closed": "The ticket has been closed.",
+      "reopened": "The ticket has been reopened."
+    },
+    "error": {
+      "load_failed": "Loading tickets failed.",
+      "create_failed": "Submitting the ticket failed.",
+      "reply_failed": "Sending your reply failed.",
+      "status_failed": "Updating the ticket failed."
+    }
+  }
+}
