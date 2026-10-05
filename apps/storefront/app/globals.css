@@ -1,6 +1,26 @@
 @import "tailwindcss";
 
+/* dark: follows the applied <html data-mode> attribute (set pre-paint from
+   the theme-mode cookie — see lib/theme.ts), not prefers-color-scheme, so it
+   stays in sync with the shopper's explicit toggle. */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+/*
+ * Theming model — two axes set as attributes on <html>:
+ *
+ *  - data-theme: the brand palette, chosen by the admin (storefront_theme
+ *    setting) and resolved server-side in app/[locale]/layout.tsx. Only
+ *    "default" exists today; a future palette is an html[data-theme="x"]
+ *    block here plus an entry in lib/theme.ts SITE_THEMES.
+ *  - data-mode: light/dark, the shopper's preference (theme-mode cookie,
+ *    applied pre-paint by the inline script in the root layout).
+ *
+ * Both axes only override the CSS variables below — the @theme inline bridge
+ * stays fixed, so every utility (bg-background, text-accent, …) follows.
+ */
+
 :root {
+  color-scheme: light;
   /* Baxela palette — extracted from Figma UI kit (design/tokens-notes.md) */
   --background: #ffffff;
   --foreground: #171717;
@@ -13,6 +33,23 @@
   --accent: #e84393;
   --accent-foreground: #ffffff;
   --radius: 8px;
+}
+
+html[data-mode="dark"] {
+  color-scheme: dark;
+  /* Dark variant of the default palette — zinc scale to match the light
+     neutrals, accent lifted to pink-400 for contrast on dark surfaces
+     (design/tokens-notes.md). */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --secondary-text: #a1a1aa;
+  --muted: #18181b;
+  --border: #3f3f46;
+  --border-light: #27272a;
+  --accent: #f472b6;
+  --accent-foreground: #260a17;
 }
 
 @theme inline {

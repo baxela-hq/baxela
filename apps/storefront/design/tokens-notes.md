@@ -7,6 +7,24 @@
 - Input borders: light gray (~#d1d5db / #e5e7eb), radius ~8px
 - Accent (success/links/prominent CTAs): pink (#e84393) — superseded the green ~#16a34a on 2026-09
 
+## Dark mode (2026-10, added — not from Figma)
+Shopper-selectable dark variant of the default palette, defined as
+`html[data-mode="dark"]` token overrides in `app/globals.css` (zinc scale to
+match the light neutrals; accent lifted to pink-400 for contrast on dark):
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| background | #ffffff | #09090b |
+| foreground | #171717 | #fafafa |
+| primary / primary-foreground | #171717 / #ffffff | #fafafa / #18181b |
+| secondary-text | #6b7280 | #a1a1aa |
+| muted | #f4f4f5 | #18181b |
+| border / border-light | #d1d5db / #e5e7eb | #3f3f46 / #27272a |
+| accent / accent-foreground | #e84393 / #ffffff | #f472b6 / #260a17 |
+
+The Figma kit has no dark screens — values above are an engineering first
+pass pending a design review.
+
 ## Auth screens (01–05)
 - Layout: split-screen, left full-bleed photo panel (845×1024 of 1440×1024), white Logo (143×58) @(60,60) over photo; right column starts x≈895, content width 445px.
   - DEV NOTE (2026-09): login/signup intentionally deviate from the Figma split-screen spec (01/02). The photo panel was removed by product decision; ALL auth screens now use the centered single-column family of 03/04 (dark Logo top-center, 445px column, `AuthShell` in `components/auth/auth-shell.tsx`). Do not restore the photo panel from this spec.
