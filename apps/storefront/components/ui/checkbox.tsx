@@ -43,12 +43,12 @@ export function Checkbox({
         aria-hidden="true"
         className={cn(
           "grid size-5 shrink-0 place-items-center rounded border transition-colors",
-          value ? "border-primary bg-primary" : "border-border bg-white",
+          value ? "border-primary bg-primary" : "border-border bg-background",
         )}
       >
         <CheckIcon
           className={cn(
-            "size-3.5 text-white transition-opacity",
+            "size-3.5 text-primary-foreground transition-opacity",
             value ? "opacity-100" : "opacity-0",
           )}
         />

@@ -301,7 +301,7 @@ export default function ProductFilters({
               id="sort"
               value={sortValue}
               onChange={(event) => changeSort(event.target.value)}
-              className="h-11 rounded-default border border-border bg-white px-4 text-sm text-foreground focus:border-primary focus:outline-none"
+              className="h-11 rounded-default border border-border bg-background px-4 text-sm text-foreground focus:border-primary focus:outline-none"
             >
               {sortOptions.map((option) => (
                 <option key={option.value} value={option.value}>

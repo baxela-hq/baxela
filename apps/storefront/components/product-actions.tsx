@@ -232,7 +232,7 @@ export function ProductActions({
             </div>
             <Link
               href="/cart"
-              className="flex h-14 flex-1 items-center justify-center rounded-default border border-border bg-white px-6 text-base font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+              className="flex h-14 flex-1 items-center justify-center rounded-default border border-border bg-background px-6 text-base font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
             >
               {t("actions.view_cart")}
             </Link>

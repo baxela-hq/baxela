@@ -156,7 +156,7 @@ export function TicketList({ statusFilter }: TicketListProps) {
             type="button"
             disabled={page <= 1}
             onClick={() => setPage((value) => Math.max(1, value - 1))}
-            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
           >
             {t("actions.prev_page")}
           </button>
@@ -167,7 +167,7 @@ export function TicketList({ statusFilter }: TicketListProps) {
             type="button"
             disabled={page >= lastPage}
             onClick={() => setPage((value) => Math.min(lastPage, value + 1))}
-            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
           >
             {t("actions.next_page")}
           </button>

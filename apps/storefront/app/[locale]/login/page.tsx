@@ -64,7 +64,7 @@ function LoginForm() {
     <AuthShell>
       <div className="flex flex-col items-center">
         <Logo />
-        <div className="mt-6 w-full rounded-default border border-border-light bg-white p-6 shadow-sm">
+        <div className="mt-6 w-full rounded-default border border-border-light bg-background p-6 shadow-sm">
           <h1 className="text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
             {t("login.texts.title")}
           </h1>

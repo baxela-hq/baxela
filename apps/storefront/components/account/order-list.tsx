@@ -313,7 +313,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                       <button
                         type="button"
                         onClick={() => setConfirmingCancelCode(null)}
-                        className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+                        className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
                       >
                         {t("orders.actions.keep_order")}
                       </button>
@@ -326,7 +326,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                           setExpandedCode(expanded ? null : order.order_code)
                         }
                         aria-expanded={expanded}
-                        className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+                        className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
                       >
                         {expanded
                           ? t("orders.actions.hide_order")
@@ -410,7 +410,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
             type="button"
             disabled={page <= 1}
             onClick={() => setPage((value) => Math.max(1, value - 1))}
-            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
           >
             {t("orders.actions.prev_page")}
           </button>
@@ -421,7 +421,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
             type="button"
             disabled={page >= lastPage}
             onClick={() => setPage((value) => Math.min(lastPage, value + 1))}
-            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
           >
             {t("orders.actions.next_page")}
           </button>

@@ -155,7 +155,7 @@ export function Notifications({ initials }: { initials: string }) {
           type="button"
           disabled={!hasUnread}
           onClick={markAllRead}
-          className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+          className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
         >
           {t("notifications.actions.mark_all_read")}
         </button>
@@ -230,7 +230,7 @@ export function Notifications({ initials }: { initials: string }) {
           <button
             type="button"
             onClick={() => void load(page + 1, "append")}
-            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-white px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+            className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
           >
             {t("notifications.actions.load_more")}
           </button>

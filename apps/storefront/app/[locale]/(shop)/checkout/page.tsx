@@ -502,7 +502,7 @@ export default function CheckoutPage() {
                             country_code: event.target.value,
                           }))
                         }
-                        className="h-14 w-full rounded-default border border-border bg-white px-4 text-base text-foreground focus:border-primary focus:outline-none"
+                        className="h-14 w-full rounded-default border border-border bg-background px-4 text-base text-foreground focus:border-primary focus:outline-none"
                       >
                         <option value="">
                           {tCommon("form.placeholders.select")}
@@ -692,7 +692,7 @@ export default function CheckoutPage() {
                         placeholder={t("coupon.placeholders.code")}
                         aria-label={t("coupon.placeholders.code")}
                         autoComplete="off"
-                        className="h-10 min-w-0 flex-1 rounded-default border border-border bg-white px-3 text-sm uppercase text-foreground placeholder:normal-case focus:border-primary focus:outline-none"
+                        className="h-10 min-w-0 flex-1 rounded-default border border-border bg-background px-3 text-sm uppercase text-foreground placeholder:normal-case focus:border-primary focus:outline-none"
                       />
                       <Button
                         type="button"

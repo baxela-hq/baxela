@@ -100,7 +100,7 @@ export function WishlistGrid() {
         />
       ) : null}
       {items.length === 0 ? (
-        <div className="rounded-default border border-border-light bg-white px-6 py-24 text-center">
+        <div className="rounded-default border border-border-light bg-background px-6 py-24 text-center">
           <span className="grid size-14 place-items-center rounded-full bg-muted text-secondary-text mx-auto">
             <HeartIcon className="size-6" />
           </span>

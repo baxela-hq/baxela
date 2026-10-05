@@ -102,7 +102,7 @@ export function PersonalInfo({
   };
 
   return (
-    <div className="rounded-default border border-border-light bg-white p-6 sm:p-8">
+    <div className="rounded-default border border-border-light bg-background p-6 sm:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         {profile.avatar ? (
           // The avatar column holds a plain URL; next/image would need the
@@ -179,7 +179,7 @@ export function PersonalInfo({
                 gender: event.target.value as ApiGender | "",
               }))
             }
-            className="h-14 w-full rounded-default border border-border bg-white px-4 text-base text-foreground focus:border-primary focus:outline-none disabled:opacity-60"
+            className="h-14 w-full rounded-default border border-border bg-background px-4 text-base text-foreground focus:border-primary focus:outline-none disabled:opacity-60"
           >
             <option value="">{tCommon("form.placeholders.select")}</option>
             {GENDERS.map((gender) => (
@@ -218,7 +218,7 @@ export function PersonalInfo({
             onChange={(event) =>
               setForm((current) => ({ ...current, bio: event.target.value }))
             }
-            className="w-full rounded-default border border-border bg-white px-4 py-3 text-base text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary disabled:opacity-60"
+            className="w-full rounded-default border border-border bg-background px-4 py-3 text-base text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary disabled:opacity-60"
           />
         </div>
         <div className="sm:col-span-2">
@@ -249,7 +249,7 @@ export function PersonalInfo({
                 setEditing(false);
                 resetForm();
               }}
-              className="inline-flex h-12 items-center justify-center rounded-default border border-border bg-white px-6 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+              className="inline-flex h-12 items-center justify-center rounded-default border border-border bg-background px-6 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
             >
               {t("profile.actions.cancel_edit")}
             </button>

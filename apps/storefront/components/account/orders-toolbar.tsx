@@ -44,7 +44,7 @@ export function OrdersToolbar({
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder={t("orders.placeholders.search")}
           aria-label={t("orders.placeholders.search")}
-          className="h-12 w-full rounded-default border border-border bg-white pe-4 ps-11 text-sm text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
+          className="h-12 w-full rounded-default border border-border bg-background pe-4 ps-11 text-sm text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
         />
       </div>
       <div className="relative">

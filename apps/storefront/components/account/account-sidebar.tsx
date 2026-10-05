@@ -91,7 +91,7 @@ export function AccountSidebar({ displayName, initials }: AccountSidebarProps) {
   };
 
   return (
-    <aside className="h-fit rounded-default border border-border-light bg-white">
+    <aside className="h-fit rounded-default border border-border-light bg-background">
       <div className="flex items-center gap-4 border-b border-border-light p-6">
         <span
           aria-hidden="true"

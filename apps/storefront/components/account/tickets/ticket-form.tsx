@@ -84,7 +84,7 @@ export function TicketForm() {
 
   return (
     <form
-      className="flex flex-col gap-6 rounded-default border border-border-light bg-white p-6 md:p-8"
+      className="flex flex-col gap-6 rounded-default border border-border-light bg-background p-6 md:p-8"
       onSubmit={onSubmit}
     >
       <h2 className="text-xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">

@@ -17,7 +17,7 @@ export function ComingSoonPanel({
   const t = useTranslations("account.account");
 
   return (
-    <div className="grid place-items-center rounded-default border border-border-light bg-white px-6 py-24 text-center">
+    <div className="grid place-items-center rounded-default border border-border-light bg-background px-6 py-24 text-center">
       <span className="grid size-14 place-items-center rounded-full bg-muted text-secondary-text [&>svg]:size-6">
         {icon}
       </span>

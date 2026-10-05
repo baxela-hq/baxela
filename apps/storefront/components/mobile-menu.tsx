@@ -79,7 +79,7 @@ export function MobileMenu({
       <div
         id="mobile-menu"
         inert={!open}
-        className={`fixed inset-y-0 start-0 z-50 flex w-80 max-w-[85vw] flex-col border-e border-border-light bg-white transition-transform duration-200 ${
+        className={`fixed inset-y-0 start-0 z-50 flex w-80 max-w-[85vw] flex-col border-e border-border-light bg-background transition-transform duration-200 ${
           open ? "translate-x-0" : "ltr:-translate-x-full rtl:translate-x-full"
         }`}
       >

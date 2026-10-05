@@ -40,7 +40,7 @@ export function NewsletterForm() {
         onChange={(event) => setEmail(event.target.value)}
         placeholder={t("placeholders.email")}
         aria-label={t("labels.email")}
-        className="h-14 min-w-0 flex-1 rounded-default border border-border bg-white px-4 text-base outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
+        className="h-14 min-w-0 flex-1 rounded-default border border-border bg-background px-4 text-base outline-none transition-colors placeholder:text-secondary-text focus:border-primary"
       />
       <Button type="submit" disabled={pending} fullWidth={false} className="shrink-0 px-8">
         {t("actions.subscribe")}

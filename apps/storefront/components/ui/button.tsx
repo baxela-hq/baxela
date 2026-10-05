@@ -9,7 +9,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary: "bg-primary text-primary-foreground hover:bg-primary/90",
   accent: "bg-accent text-accent-foreground hover:bg-accent/90",
-  outline: "border border-border bg-white text-foreground hover:bg-muted",
+  outline: "border border-border bg-background text-foreground hover:bg-muted",
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

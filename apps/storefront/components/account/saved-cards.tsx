@@ -183,7 +183,7 @@ export function SavedCards() {
                   <button
                     type="button"
                     onClick={() => setConfirmingDeleteId(null)}
-                    className="inline-flex h-9 items-center justify-center rounded-default border border-border bg-white px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+                    className="inline-flex h-9 items-center justify-center rounded-default border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
                   >
                     {t("cards.actions.keep")}
                   </button>
@@ -216,7 +216,7 @@ export function SavedCards() {
             className="fixed inset-0 bg-foreground/40"
           />
           <div className="flex min-h-full items-center justify-center p-4">
-            <div className="relative w-full max-w-md rounded-default bg-white p-6 sm:p-8">
+            <div className="relative w-full max-w-md rounded-default bg-background p-6 sm:p-8">
               <h2 className="text-xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
                 {t("cards.texts.add_title")}
               </h2>

@@ -232,7 +232,7 @@ export function ProductTabs({
                       onChange={(event) => setBody(event.target.value)}
                       placeholder={t("reviews.form.placeholders.review")}
                       aria-label={t("reviews.form.labels.review")}
-                      className="mt-4 w-full rounded-default border border-border bg-white px-4 py-3 text-sm text-foreground placeholder:text-secondary-text focus:border-primary focus:outline-none"
+                      className="mt-4 w-full rounded-default border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-secondary-text focus:border-primary focus:outline-none"
                     />
                     <Button type="submit" className="mt-6" disabled={pending}>
                       {pending

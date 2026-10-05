@@ -35,7 +35,7 @@ export function Switch({
     >
       <span
         aria-hidden="true"
-        className="size-5 rounded-full bg-white shadow-sm"
+        className="size-5 rounded-full bg-background shadow-sm"
       />
     </button>
   );

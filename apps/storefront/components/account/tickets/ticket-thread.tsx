@@ -125,7 +125,7 @@ export function TicketThread() {
         ← {t("actions.back_to_tickets")}
       </button>
 
-      <div className="mt-4 rounded-default border border-border-light bg-white p-6">
+      <div className="mt-4 rounded-default border border-border-light bg-background p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">

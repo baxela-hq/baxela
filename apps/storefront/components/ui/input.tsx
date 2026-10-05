@@ -46,7 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           id={inputId}
           type={resolvedType}
           className={cn(
-            "h-14 w-full rounded-default border border-border bg-white text-base text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary",
+            "h-14 w-full rounded-default border border-border bg-background text-base text-foreground outline-none transition-colors placeholder:text-secondary-text focus:border-primary",
             icon ? "ps-12" : "ps-4",
             isPassword ? "pe-16" : "pe-4",
             className,

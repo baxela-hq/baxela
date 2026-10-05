@@ -23,7 +23,7 @@ export function MegaMenu({
   return (
     <div
       className={cn(
-        "bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]",
+        "bg-background shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]",
         className,
       )}
     >

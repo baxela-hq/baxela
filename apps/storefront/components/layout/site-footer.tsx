@@ -10,7 +10,7 @@ export async function SiteFooter() {
   const columns = (footerMenu?.links ?? []).filter((link) => link.title);
 
   return (
-    <footer className="border-t border-border-light bg-white">
+    <footer className="border-t border-border-light bg-background">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-4">
         <div>
           <Logo />

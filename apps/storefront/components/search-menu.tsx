@@ -81,7 +81,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
         aria-modal="true"
         aria-label={t("search.labels.dialog")}
         inert={!open}
-        className={`fixed left-1/2 top-24 z-50 w-[min(92vw,40rem)] -translate-x-1/2 rounded-default border border-border-light bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)] transition duration-200 ${
+        className={`fixed left-1/2 top-24 z-50 w-[min(92vw,40rem)] -translate-x-1/2 rounded-default border border-border-light bg-background shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)] transition duration-200 ${
           open
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-2 opacity-0"

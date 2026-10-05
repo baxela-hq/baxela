@@ -187,7 +187,7 @@ export function SearchableSelect({
               }}
               onKeyDown={onSearchKeyDown}
               className={cn(
-                "h-14 w-full rounded-default border bg-white ps-12 pe-4 text-base text-foreground outline-none transition-colors placeholder:text-secondary-text",
+                "h-14 w-full rounded-default border bg-background ps-12 pe-4 text-base text-foreground outline-none transition-colors placeholder:text-secondary-text",
                 error
                   ? "border-red-500"
                   : "border-border focus:border-primary",
@@ -204,7 +204,7 @@ export function SearchableSelect({
             aria-expanded="false"
             onClick={openList}
             className={cn(
-              "flex h-14 w-full items-center justify-between gap-2 rounded-default border bg-white px-4 text-start text-base outline-none transition-colors",
+              "flex h-14 w-full items-center justify-between gap-2 rounded-default border bg-background px-4 text-start text-base outline-none transition-colors",
               error
                 ? "border-red-500"
                 : "border-border focus:border-primary",
@@ -230,7 +230,7 @@ export function SearchableSelect({
             role="listbox"
             id={listId}
             aria-label={label}
-            className="absolute inset-x-0 top-full z-10 mt-2 max-h-60 overflow-y-auto rounded-default border border-border bg-white py-2 shadow-lg"
+            className="absolute inset-x-0 top-full z-10 mt-2 max-h-60 overflow-y-auto rounded-default border border-border bg-background py-2 shadow-lg"
           >
             {filtered.length === 0 ? (
               <li className="px-4 py-2 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">

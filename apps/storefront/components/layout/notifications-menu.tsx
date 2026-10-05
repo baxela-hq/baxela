@@ -56,7 +56,7 @@ export function NotificationsMenu() {
       </Link>
 
       <div className="invisible absolute end-0 top-full z-50 w-80 pt-4 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <div className="rounded-default border border-border-light bg-white shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]">
+        <div className="rounded-default border border-border-light bg-background shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]">
           {items === null ? (
             <p className="px-5 py-8 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
               {t("header.notifications.texts.empty")}
@@ -111,7 +111,7 @@ export function NotificationsMenu() {
           <div className="border-t border-border-light p-4">
             <Link
               href="/profile/notifications"
-              className="flex h-10 items-center justify-center rounded-default border border-border bg-white text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+              className="flex h-10 items-center justify-center rounded-default border border-border bg-background text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
             >
               {t("header.notifications.actions.view_all")}
             </Link>
