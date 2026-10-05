@@ -18,6 +18,7 @@ class ListSettingAction
             SettingNameEnum::WEBSITE_DESCRIPTION,
             SettingNameEnum::ANNOUNCEMENT_TEXT,
             SettingNameEnum::ANNOUNCEMENT_BAR_ENABLED,
+            SettingNameEnum::STOREFRONT_THEME,
         ];
 
         return $this->model

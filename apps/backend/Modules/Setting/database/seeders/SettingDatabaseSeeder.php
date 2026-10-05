@@ -67,6 +67,15 @@ class SettingDatabaseSeeder extends Seeder
                 SettingSchema::IS_TRANSLATABLE => false,
                 SettingSchema::VALUE => '1',
             ],
+            // Storefront theme key — the storefront owns the theme registry
+            // and falls back to its default for unknown values.
+            [
+                SettingSchema::GROUP => SettingGroupEnum::THEME,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::STOREFRONT_THEME,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => 'default',
+            ],
         ];
         foreach ($records as $record) {
             $setting = Setting::query()->create($record);

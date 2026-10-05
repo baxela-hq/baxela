@@ -24,6 +24,19 @@ it('exposes only the public settings publicly', function () {
         ->not->toContain('language_id');
 });
 
+it('exposes the storefront theme setting publicly', function () {
+    Setting::factory()->create(['name' => 'storefront_theme', 'value' => 'default']);
+
+    $response = $this->getJson($this->baseUrl('/public/settings'))
+        ->assertOk();
+
+    $theme = collect($response->json('data'))
+        ->firstWhere('name', 'storefront_theme');
+
+    expect($theme)->not->toBeNull()
+        ->and($theme['value'])->toBe('default');
+});
+
 it('persists admin setting updates', function () {
     $this->actingAs($this->superAdminUser());
     Setting::factory()->create(['name' => 'website_title', 'value' => 'Old Title']);
@@ -33,6 +46,17 @@ it('persists admin setting updates', function () {
     ])->assertOk();
 
     expect(Setting::query()->where('name', 'website_title')->first()->value)->toBe('New Title');
+});
+
+it('persists the storefront theme setting', function () {
+    $this->actingAs($this->superAdminUser());
+    Setting::factory()->create(['name' => 'storefront_theme', 'value' => 'default']);
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'storefront_theme', 'value' => 'midnight', 'translations' => null],
+    ])->assertOk();
+
+    expect(Setting::query()->where('name', 'storefront_theme')->first()->value)->toBe('midnight');
 });
 
 it('syncs the default language and currency flags onto the core records', function () {
