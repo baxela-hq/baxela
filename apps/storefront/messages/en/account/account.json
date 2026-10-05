@@ -130,7 +130,9 @@
     "appearance": {
       "title": "Appearance",
       "description": "Customize how your theme looks on your device",
-      "theme_light": "Light"
+      "theme_light": "Light",
+      "theme_dark": "Dark",
+      "theme_system": "System"
     },
     "language": {
       "title": "Language",

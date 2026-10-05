@@ -8,6 +8,7 @@ import { AccountMenu } from "@/components/layout/account-menu";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { fetchMenu, fetchSettings } from "@/lib/api/site";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import { safeCmsHref } from "@/lib/url-safety";
@@ -39,7 +40,7 @@ export async function SiteHeader() {
       )}
 
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border-light bg-white">
+      <header className="sticky top-0 z-40 border-b border-border-light bg-background">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Logo />
           <nav
@@ -78,6 +79,7 @@ export async function SiteHeader() {
             <CartMenu />
             <NotificationsMenu />
             <AccountMenu />
+            <ThemeToggle />
             <LanguageSwitcher />
             <MobileMenu links={links} categories={categories} />
           </div>

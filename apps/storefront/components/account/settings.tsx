@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/context/auth-context";
+import { useThemeMode } from "@/context/theme-mode-context";
 import {
   fetchVapidPublicKey,
   notificationsApi,
@@ -13,29 +14,33 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 
 // Mock preferences — 2FA and the email toggle await a backend endpoint,
 // so they keep in-memory state only. Three rows are real: Language
-// switches the active next-intl locale, Appearance lists Light (the only
-// theme shipped), and Browser notifications registers this browser for
-// OS-level web push.
+// switches the active next-intl locale, Appearance switches the display
+// mode (theme-mode cookie via the theme context), and Browser
+// notifications registers this browser for OS-level web push.
 
-interface SettingsSelectProps {
-  value: string;
-  onChange: (value: string) => void;
+interface SettingsSelectProps<T extends string> {
+  value: T;
+  onChange: (value: T) => void;
   label: string;
-  options: { value: string; label: string }[];
+  options: { value: T; label: string }[];
 }
 
-function SettingsSelect({
+function SettingsSelect<T extends string>({
   value,
   onChange,
   label,
   options,
-}: SettingsSelectProps) {
+}: SettingsSelectProps<T>) {
   return (
     <div className="relative">
       <select
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        // Option values are the only strings the select can emit.
+        onChange={(event) => onChange(event.target.value as T)}
         aria-label={label}
+        // The appearance select starts from the pre-paint cookie value, which
+        // the server-rendered markup cannot know — let the client value win.
+        suppressHydrationWarning
         className="h-10 w-28 appearance-none rounded-default bg-muted ps-4 pe-9 text-sm font-medium text-foreground outline-none"
       >
         {options.map((option) => (
@@ -229,8 +234,9 @@ export function Settings() {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const { preference: appearance, setPreference: setAppearance } =
+    useThemeMode();
 
-  const [appearance, setAppearance] = useState("light");
   const [twoFactor, setTwoFactor] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
 
@@ -244,7 +250,11 @@ export function Settings() {
           value={appearance}
           onChange={setAppearance}
           label={t("settings.appearance.title")}
-          options={[{ value: "light", label: t("settings.appearance.theme_light") }]}
+          options={[
+            { value: "light", label: t("settings.appearance.theme_light") },
+            { value: "dark", label: t("settings.appearance.theme_dark") },
+            { value: "system", label: t("settings.appearance.theme_system") },
+          ]}
         />
       </SettingsRow>
 

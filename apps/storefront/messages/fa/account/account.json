@@ -130,7 +130,9 @@
     "appearance": {
       "title": "ظاهر",
       "description": "نمای قالب را در دستگاه خود تنظیم کنید",
-      "theme_light": "روشن"
+      "theme_light": "روشن",
+      "theme_dark": "تاریک",
+      "theme_system": "سیستم"
     },
     "language": {
       "title": "زبان",
