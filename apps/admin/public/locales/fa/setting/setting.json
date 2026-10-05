@@ -7,7 +7,11 @@
       "name": "نام",
       "value": "مقدار",
       "general": "عمومی",
-      "announcement": "اعلان"
+      "announcement": "اعلان",
+      "theme": "پوسته",
+      "themes": {
+        "default": "پوسته پیش‌فرض (باکسلا)"
+      }
     },
     "statuses": {
       "name": {
@@ -16,7 +20,8 @@
         "language_id": "زبان پیش‌فرض",
         "currency_id": "ارز پیش‌فرض",
         "announcement_text": "متن اعلان",
-        "announcement_bar_enabled": "نمایش نوار اعلان"
+        "announcement_bar_enabled": "نمایش نوار اعلان",
+        "storefront-theme": "پوسته فروشگاه"
       }
     },
     "tooltips": {
@@ -25,7 +30,8 @@
         "website_description": "توضیحات صفحه اصلی که در سئو کاربرد دارد",
         "language_id": "زبانی که برای نمایش فروشگاه استفاده می‌شود",
         "currency_id": "ارزی که برای قیمت‌گذاری استفاده می‌شود",
-        "announcement_bar_enabled": "نمایش نوار اعلان در فروشگاه"
+        "announcement_bar_enabled": "نمایش نوار اعلان در فروشگاه",
+        "storefront-theme": "پالت رنگی اعمال‌شده روی فروشگاه؛ مقادیر ناشناخته به پوسته پیش‌فرض برمی‌گردند"
       }
     },
     "help_texts": {

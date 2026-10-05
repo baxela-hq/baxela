@@ -37,6 +37,7 @@ import {
   formSchema,
   defaultValues,
   buildSettingsValues,
+  STOREFRONT_THEMES,
   type SettingsForm,
 } from './data/schema'
 import { useUpdateSettings } from './hooks/use-setting-mutations'
@@ -75,6 +76,8 @@ export function Settings() {
   const hasAnnouncementGroup = settingsSafe.some(
     (s) => s.group === 'announcement'
   )
+
+  const hasThemeGroup = settingsSafe.some((s) => s.group === 'theme')
 
   const form = useForm<SettingsForm>({
     resolver: zodResolver(formSchema),
@@ -124,6 +127,9 @@ export function Settings() {
             <Tabs defaultValue='general' className='w-full'>
               <TabsList className='w-full'>
                 <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
+                {hasThemeGroup && (
+                  <TabsTrigger value='theme'>{tLabel('theme')}</TabsTrigger>
+                )}
                 {hasAnnouncementGroup && (
                   <TabsTrigger value='announcement'>
                     {tLabel('announcement')}
@@ -287,6 +293,53 @@ export function Settings() {
                   )}
                 />
               </TabsContent>
+
+              {hasThemeGroup && (
+                <TabsContent value='theme' className='grid gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='storefront_theme'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='storefront_theme'>
+                          {tStatus('name.storefront-theme')}
+                        </FormLabel>
+                        <Select
+                          onValueChange={(value) => {
+                            // Radix emits an empty string from its hidden native
+                            // select before the items register; ignore it so it
+                            // cannot clobber the value set by form.reset().
+                            if (value !== '') field.onChange(value)
+                          }}
+                          value={field.value || undefined}
+                        >
+                          <FormControl>
+                            <SelectTrigger
+                              id='storefront_theme'
+                              className='w-full'
+                            >
+                              <SelectValue
+                                placeholder={tPlaceHolder('select')}
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {STOREFRONT_THEMES.map((theme) => (
+                              <SelectItem key={theme} value={theme}>
+                                {tLabel(`themes.${theme}`)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                        <FormDescription>
+                          {tTooltip('name.storefront-theme')}
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+              )}
 
               {hasAnnouncementGroup && (
                 <TabsContent value='announcement' className='grid gap-4'>

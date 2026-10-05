@@ -30,6 +30,13 @@ export const translatableSettingSchema = z.object({
 })
 export type TranslatableSettingForm = z.infer<typeof translatableSettingSchema>
 
+// Storefront theme registry — must stay in sync with the storefront's
+// SITE_THEMES (apps/storefront/lib/theme.ts); the storefront falls back to
+// its default theme for unknown values.
+export const STOREFRONT_THEMES = ['default'] as const
+export const DEFAULT_STOREFRONT_THEME: (typeof STOREFRONT_THEMES)[number] =
+  'default'
+
 export const formSchema = z.object({
   website_title: translatableSettingSchema,
   website_description: translatableSettingSchema,
@@ -37,6 +44,7 @@ export const formSchema = z.object({
   currency_id: z.string(),
   announcement_bar_enabled: z.boolean(),
   announcement_text: translatableSettingSchema,
+  storefront_theme: z.enum(STOREFRONT_THEMES),
 })
 export type SettingsForm = z.infer<typeof formSchema>
 
@@ -54,6 +62,7 @@ export const defaultValues: SettingsForm = {
   currency_id: '',
   announcement_bar_enabled: false,
   announcement_text: { value: '', translations: [] },
+  storefront_theme: DEFAULT_STOREFRONT_THEME,
 }
 
 function buildTranslatableValues(
@@ -92,6 +101,11 @@ export function buildSettingsValues(
       languages,
       byName.get('announcement_text')
     ),
+    storefront_theme: (STOREFRONT_THEMES as readonly string[]).includes(
+      byName.get('storefront_theme')?.value ?? ''
+    )
+      ? (byName.get('storefront_theme')?.value as SettingsForm['storefront_theme'])
+      : DEFAULT_STOREFRONT_THEME,
   }
 }
 
@@ -117,5 +131,6 @@ export function buildSettingsRequest(
     { name: 'currency_id', value: values.currency_id },
     { name: 'announcement_bar_enabled', value: values.announcement_bar_enabled ? '1' : '0' },
     { name: 'announcement_text', ...resolve(values.announcement_text) },
+    { name: 'storefront_theme', value: values.storefront_theme },
   ]
 }

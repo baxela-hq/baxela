@@ -7,7 +7,11 @@
       "name": "Name",
       "value": "Value",
       "general": "General",
-      "announcement": "Announcement"
+      "announcement": "Announcement",
+      "theme": "Theme",
+      "themes": {
+        "default": "Default (Baxela)"
+      }
     },
     "statuses": {
       "name": {
@@ -16,7 +20,8 @@
         "language_id": "Default Language",
         "currency_id": "Default Currency",
         "announcement_text": "Announcement Text",
-        "announcement_bar_enabled": "Show Announcement Bar"
+        "announcement_bar_enabled": "Show Announcement Bar",
+        "storefront-theme": "Storefront Theme"
       }
     },
     "tooltips": {
@@ -25,7 +30,8 @@
         "website_description": "Description of your home page which is used for SEO",
         "language_id": "Language used to display the storefront",
         "currency_id": "Currency used for pricing",
-        "announcement_bar_enabled": "Display the announcement bar on the storefront"
+        "announcement_bar_enabled": "Display the announcement bar on the storefront",
+        "storefront-theme": "Palette applied to the storefront; unknown values fall back to the storefront default"
       }
     },
     "help_texts": {
