@@ -51,6 +51,10 @@
       "paypal": {
         "label": "PayPal",
         "description": "با حساب PayPal خود پرداخت کنید."
+      },
+      "adyen": {
+        "label": "پرداخت با کارت (Adyen)",
+        "description": "با روش دلخواه خود امن پرداخت کنید — به درگاه Adyen منتقل می‌شوید."
       }
     }
   },

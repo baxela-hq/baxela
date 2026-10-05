@@ -51,6 +51,10 @@
       "paypal": {
         "label": "PayPal",
         "description": "Pay with your PayPal account."
+      },
+      "adyen": {
+        "label": "Card payment (Adyen)",
+        "description": "Pay securely with your preferred method — you will be redirected to Adyen."
       }
     }
   },
