@@ -8,7 +8,8 @@
       "method": {
         "manual": "دستی",
         "paypal": "پی‌پال",
-        "stripe": "استرایپ"
+        "stripe": "استرایپ",
+        "adyen": "ادین"
       },
       "state": {
         "active": "فعال",

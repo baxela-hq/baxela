@@ -5,7 +5,7 @@ import { z } from 'zod'
  * comes from the admin API (which reflects the backend driver registry),
  * so unknown keys of future gateways are preserved rather than rejected.
  */
-export const methodKeys = ['manual', 'paypal', 'stripe'] as const
+export const methodKeys = ['manual', 'paypal', 'stripe', 'adyen'] as const
 export type MethodKey = (typeof methodKeys)[number]
 
 export const paymentMethodSchema = z.object({

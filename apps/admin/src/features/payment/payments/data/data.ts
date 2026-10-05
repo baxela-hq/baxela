@@ -4,6 +4,7 @@ import {
   Circle,
   CircleOff,
   CreditCard,
+  Globe,
   Wallet,
   type LucideIcon,
 } from 'lucide-react'
@@ -18,4 +19,5 @@ export const methodIcons = new Map<string, LucideIcon>([
   ['manual', Banknote],
   ['paypal', Wallet],
   ['stripe', CreditCard],
+  ['adyen', Globe],
 ])

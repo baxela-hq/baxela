@@ -24,7 +24,8 @@
       "method": {
         "manual": "Manual",
         "paypal": "PayPal",
-        "stripe": "Stripe"
+        "stripe": "Stripe",
+        "adyen": "Adyen"
       }
     },
     "actions": {

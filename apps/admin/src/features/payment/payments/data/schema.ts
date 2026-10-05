@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const methods = ['manual', 'paypal', 'stripe'] as const
+export const methods = ['manual', 'paypal', 'stripe', 'adyen'] as const
 export type PaymentMethod = (typeof methods)[number]
 
 export const statuses = ['pending', 'success', 'failed'] as const
