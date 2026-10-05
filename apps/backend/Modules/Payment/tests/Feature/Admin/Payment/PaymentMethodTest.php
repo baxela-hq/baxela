@@ -18,6 +18,8 @@ it('lazily creates disabled rows for every registered driver', function () {
         'payment.stripe.secret' => 'sk_test_x',
         'payment.paypal.client_id' => null,
         'payment.paypal.client_secret' => null,
+        'payment.adyen.api_key' => null,
+        'payment.adyen.merchant_account' => null,
     ]);
     $this->actingAs($this->superAdminUser());
 
@@ -25,8 +27,8 @@ it('lazily creates disabled rows for every registered driver', function () {
 
     $rows = collect($response->json('data'));
 
-    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal'])
-        ->and(PaymentMethod::count())->toBe(3);
+    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen'])
+        ->and(PaymentMethod::count())->toBe(4);
 
     $stripe = $rows->firstWhere('method', 'stripe');
     expect($stripe[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
@@ -54,7 +56,7 @@ it('does not create rows for drivers without an implementation', function () {
 
     expect(collect($response->json('data'))->pluck('method')->all())
         ->not->toContain(PaymentMethodEnum::PAYPAL->value)
-        ->and(PaymentMethod::count())->toBe(2);
+        ->and(PaymentMethod::count())->toBe(3);
 });
 
 it('flags a gateway whose credentials are missing', function () {

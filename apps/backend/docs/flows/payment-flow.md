@@ -32,6 +32,7 @@ SDK error as a 500.
 | `manual` | `ManualPaymentDriver` | No hosted checkout; an admin settles it (`PATCH /admin/payments/{id}`). |
 | `stripe` | `StripePaymentDriver` | Hosted Checkout redirect; settled by signed webhook. |
 | `paypal` | `PaypalPaymentDriver` | Orders v2 hosted redirect; approved orders are captured on the webhook. |
+| `adyen` | `AdyenPaymentDriver` | Pay by Link hosted redirect; settled by the HMAC-signed `AUTHORISATION` webhook. |
 
 ## Sequence
 
@@ -126,6 +127,42 @@ acked as no-ops).
   backend through a tunnel (ngrok/cloudflared) and register that URL in
   the developer dashboard, or use the webhook simulator.
 
+## Adyen specifics
+
+- Requires `ADYEN_API_KEY` and `ADYEN_MERCHANT_ACCOUNT` (plus
+  `ADYEN_ENV` — `test` by default — `ADYEN_HMAC_KEY` and
+  `ADYEN_RETURN_URL`) in the backend `.env` (see `.env.example`); without
+  the credential pair the method is hidden from `/payment/user/methods`,
+  and direct calls fail with `payment.process.gateway_unconfigured`.
+- Automatic-capture merchant accounts only: on a manual-capture account
+  an authorised payment is not captured money and this driver would
+  settle orders prematurely. Configure the account for auto capture or
+  leave the method disabled.
+- REST access is wrapped in the SDK-less `AdyenCheckout` (Checkout API
+  v69, `x-api-key` auth). `initiate` creates a Payment Link with
+  `reference` = payment id, an integer minor-units `amount`, and a
+  `{order_code}`-templated `returnUrl`; the link `url` is the redirect.
+  Adyen webhooks never carry the link id — the `AUTHORISATION`
+  notification matches back via `merchantReference` — so the
+  merchant-chosen reference (our payment id, not a gateway id) is what
+  doubles as the stored `transaction_id`. The link id and pspReference
+  are not persisted; find them in the Customer Area by merchantReference.
+- `handleWebhook` verifies the standard-webhook HMAC locally (canonical
+  string `pspReference:originalReference:merchantAccountCode:
+  merchantReference:success`, `\` and `:` escaped, key base64-decoded —
+  no API call, unlike PayPal) and maps `AUTHORISATION` success →
+  success, failure → failed. Subscribe the webhook to `AUTHORISATION`
+  only, at `POST /api/v1/payment/webhook/adyen`, and ack with 200.
+- Single-item deliveries only: `WebhookResult` settles exactly one
+  payment per request, so multi-item batches are rejected rather than
+  half-processed — an architectural boundary of the driver contract, not
+  input validation; do not "fix" it into a loop. A rejected batch is
+  retried by Adyen (increasing intervals, no published count) and stays
+  manually resendable in the Customer Area for 14 days.
+- Local dev note: like PayPal there is no CLI forwarder — tunnel the
+  backend (ngrok/cloudflared) and register the URL, or use the Customer
+  Area webhook simulator.
+
 ## Adding a payment driver
 
 1. Add the case to `PaymentMethodEnum` (values are public API).
@@ -150,7 +187,7 @@ acked as no-ops).
 7. Cover the driver with unit tests (signature + event mapping) mirroring
    `StripePaymentDriverTest`.
 
-Planned drivers follow the same recipe: **Adyen** (hosted Payment Links;
-the link id doubles as `transaction_id`, matched on the `AUTHORISATION`
-webhook's `pspReference`). A Drop-in/Components integration would
+Adyen was implemented following the same recipe — note that matching runs
+on the webhook's `merchantReference` (see above), not its `pspReference`
+as this note originally assumed. A Drop-in/Components integration would
 additionally need return-handling on the driver contract.

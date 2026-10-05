@@ -46,6 +46,8 @@ class PaymentDriverManager
             PaymentMethodEnum::STRIPE => (bool) config('payment.stripe.secret'),
             PaymentMethodEnum::PAYPAL => (bool) config('payment.paypal.client_id')
                 && (bool) config('payment.paypal.client_secret'),
+            PaymentMethodEnum::ADYEN => (bool) config('payment.adyen.api_key')
+                && (bool) config('payment.adyen.merchant_account'),
             default => false,
         };
     }

@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
@@ -11,6 +12,7 @@ return [
         'manual' => ManualPaymentDriver::class,
         'stripe' => StripePaymentDriver::class,
         'paypal' => PaypalPaymentDriver::class,
+        'adyen' => AdyenPaymentDriver::class,
     ],
 
     'stripe' => [
@@ -32,6 +34,21 @@ return [
         // public code.
         'return_url' => env('PAYPAL_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
         'cancel_url' => env('PAYPAL_CANCEL_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}&status=cancel'),
+    ],
+
+    // Automatic-capture merchant accounts only: with manual capture an
+    // AUTHORISATION success is authorised-but-uncaptured and the driver
+    // would settle orders prematurely.
+    'adyen' => [
+        // test|live — picks the Checkout API base URL.
+        'env' => env('ADYEN_ENV', 'test'),
+        'api_key' => env('ADYEN_API_KEY'),
+        'merchant_account' => env('ADYEN_MERCHANT_ACCOUNT'),
+        // Standard-webhook HMAC key from the Customer Area (base64).
+        'hmac_key' => env('ADYEN_HMAC_KEY'),
+        // Storefront return page; {order_code} is replaced with the order's
+        // public code.
+        'return_url' => env('ADYEN_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
     ],
 
     // Per-IP attempts per minute on the machine-to-machine webhook endpoints.

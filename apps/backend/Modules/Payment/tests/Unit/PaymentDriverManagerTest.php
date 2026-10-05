@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
@@ -17,6 +18,8 @@ beforeEach(function () {
         'payment.stripe.secret' => null,
         'payment.paypal.client_id' => null,
         'payment.paypal.client_secret' => null,
+        'payment.adyen.api_key' => null,
+        'payment.adyen.merchant_account' => null,
     ]);
 });
 
@@ -29,6 +32,7 @@ it('resolves every registered driver by method and by name', function (PaymentMe
     'manual' => [PaymentMethodEnum::MANUAL, ManualPaymentDriver::class],
     'stripe' => [PaymentMethodEnum::STRIPE, StripePaymentDriver::class],
     'paypal' => [PaymentMethodEnum::PAYPAL, PaypalPaymentDriver::class],
+    'adyen' => [PaymentMethodEnum::ADYEN, AdyenPaymentDriver::class],
 ]);
 
 it('throws for an unknown driver name', function () {
@@ -41,16 +45,21 @@ it('reports a driver configured only when its credentials are set', function () 
 
     expect($manager->isConfigured(PaymentMethodEnum::MANUAL))->toBeTrue()
         ->and($manager->isConfigured(PaymentMethodEnum::STRIPE))->toBeFalse()
-        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse();
+        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse()
+        ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeFalse();
 
     config(['payment.stripe.secret' => 'sk_test_x']);
     config(['payment.paypal.client_id' => 'cid_test']);
+    config(['payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA']);
 
     expect($manager->isConfigured(PaymentMethodEnum::STRIPE))->toBeTrue()
-        // paypal needs both halves of its credential pair
-        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse();
+        // paypal and adyen need both halves of their credential pairs
+        ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse()
+        ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeFalse();
 
     config(['payment.paypal.client_secret' => 'secret_test']);
+    config(['payment.adyen.merchant_account' => 'BaxelaECOM']);
 
-    expect($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeTrue();
+    expect($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeTrue()
+        ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeTrue();
 });

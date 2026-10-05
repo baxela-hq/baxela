@@ -8,6 +8,7 @@ use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
@@ -217,4 +218,59 @@ it('creates a paypal payment and returns the hosted approval url', function () {
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('5O190127TN3647153')
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
         ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::PAYPAL);
+});
+
+it('creates an adyen payment and returns the hosted payment link url', function () {
+    config([
+        'payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA',
+        'payment.adyen.merchant_account' => 'BaxelaECOM',
+        'payment.adyen.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+    ]);
+    activeMethod(PaymentMethodEnum::ADYEN);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'USD',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The merchant reference (our payment id) doubles as the stored
+    // transaction_id the webhook matches on.
+    $checkout = Mockery::mock(AdyenCheckout::class);
+    $checkout->shouldReceive('createPaymentLink')->once()->andReturn((object) [
+        'id' => 'PLFF741A32D9E3F5B',
+        'url' => 'https://checkout-test.adyen.com/link/PLFF741A32D9E3F5B',
+        'status' => 'active',
+    ]);
+    $this->app->instance(AdyenCheckout::class, $checkout);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'adyen',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://checkout-test.adyen.com/link/PLFF741A32D9E3F5B')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::ADYEN);
+});
+
+it('rejects an adyen payment when the gateway is not configured', function () {
+    config([
+        'payment.adyen.api_key' => null,
+        'payment.adyen.merchant_account' => null,
+    ]);
+    activeMethod(PaymentMethodEnum::ADYEN);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'adyen',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });
