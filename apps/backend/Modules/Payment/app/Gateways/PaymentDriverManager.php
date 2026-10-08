@@ -50,6 +50,8 @@ class PaymentDriverManager
                 && (bool) config('payment.adyen.merchant_account'),
             PaymentMethodEnum::NOWPAYMENTS => (bool) config('payment.nowpayments.api_key')
                 && (bool) config('payment.nowpayments.ipn_secret'),
+            PaymentMethodEnum::MERCADOPAGO => (bool) config('payment.mercadopago.access_token')
+                && (bool) config('payment.mercadopago.webhook_secret'),
             default => false,
         };
     }

@@ -9,6 +9,7 @@ use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Gateways\AdyenCheckout;
+use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Gateways\StripeCheckout;
@@ -329,5 +330,62 @@ it('rejects a nowpayments payment when the gateway is not configured', function 
     $this->postJson($this->baseUrl('/user/process'), [
         'order_code' => $order->{OrderSchema::ORDER_CODE},
         'method' => 'nowpayments',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
+});
+
+it('creates a mercadopago payment and returns the hosted preference url', function () {
+    config([
+        'payment.mercadopago.access_token' => 'MP-ACCESS-TOKEN',
+        'payment.mercadopago.webhook_secret' => 'mp-webhook-test',
+        'payment.mercadopago.success_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+        'payment.mercadopago.pending_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+        'payment.mercadopago.failure_url' => 'https://shop.test/en/payment/return?order_code={order_code}&status=cancel',
+    ]);
+    activeMethod(PaymentMethodEnum::MERCADOPAGO);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'BRL',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The external reference (our payment id) doubles as the stored
+    // transaction_id the webhook matches on.
+    $client = Mockery::mock(MercadopagoClient::class);
+    $client->shouldReceive('createPreference')->once()->andReturn((object) [
+        'id' => 'pref_1',
+        'init_point' => 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref_1',
+        'sandbox_init_point' => 'https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=pref_1',
+    ]);
+    $this->app->instance(MercadopagoClient::class, $client);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'mercadopago',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://sandbox.mercadopago.com.br/checkout/v1/redirect?pref_id=pref_1')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::MERCADOPAGO);
+});
+
+it('rejects a mercadopago payment when the gateway is not configured', function () {
+    config([
+        'payment.mercadopago.access_token' => null,
+        'payment.mercadopago.webhook_secret' => null,
+    ]);
+    activeMethod(PaymentMethodEnum::MERCADOPAGO);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'mercadopago',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

@@ -34,6 +34,7 @@ SDK error as a 500.
 | `paypal` | `PaypalPaymentDriver` | Orders v2 hosted redirect; approved orders are captured on the webhook. |
 | `adyen` | `AdyenPaymentDriver` | Pay by Link hosted redirect; settled by the HMAC-signed `AUTHORISATION` webhook. |
 | `nowpayments` | `NowpaymentsPaymentDriver` | Crypto invoice hosted redirect; settled by the HMAC-signed `finished` IPN. |
+| `mercadopago` | `MercadopagoPaymentDriver` | Checkout Pro hosted redirect; the shadow webhook triggers a payment fetch that settles on `approved`. |
 
 ## Sequence
 
@@ -196,6 +197,44 @@ acked as no-ops).
   account-level setting in the NowPayments cabinet applies.
 - Local dev note: same as PayPal/Adyen — tunnel the backend and
   register the URL, or trigger test IPNs from the cabinet.
+
+## Mercado Pago specifics
+
+- Requires `MERCADOPAGO_ACCESS_TOKEN` and `MERCADOPAGO_WEBHOOK_SECRET`
+  (plus `MERCADOPAGO_SANDBOX` — `true` by default, redirecting via
+  `sandbox_init_point` — and the back/notification URLs) in the backend
+  `.env` (see `.env.example`); without the pair the method is hidden
+  from `/payment/user/methods`, and direct calls fail with
+  `payment.process.gateway_unconfigured`. The webhook secret key is
+  configured separately in the developer dashboard — it is not the
+  access token.
+- REST access is wrapped in the SDK-less `MercadopagoClient`
+  (`https://api.mercadopago.com`; the token decides test vs production).
+  `initiate` creates a Checkout Pro preference (`external_reference` =
+  payment id — the echoed reference the payment resource carries back,
+  which is why it doubles as the stored `transaction_id`; a decimal
+  `unit_price` line item; `{order_code}`-templated success/pending/
+  failure `back_urls`; optional per-preference `notification_url`).
+  Mercado Pago acquires in the account's country currency (BRL/ARS/MXN/
+  …) — an order in another currency fails at preference creation and
+  the payment stays PENDING by design.
+- Notifications are **shadows**: the delivery only says which payment
+  changed (`data.id`; the older style sends it as a `data.id` query
+  parameter, which arrives as `data_id` because dots in query keys are
+  mangled to underscores). `handleWebhook` verifies the `x-signature`
+  header locally (manifest `id:{data.id};request-id:{x-request-id};
+  ts:{ts};`, hex HMAC-SHA256 with the webhook secret) and then fetches
+  `GET /v1/payments/{id}` for the outcome — the same
+  API-call-in-the-webhook shape as PayPal's capture. Fetch failures
+  bubble so Mercado Pago retries the delivery.
+- Only `approved` settles (money in the account); `rejected`/`cancelled`
+  → failed. Pix vouchers and Boleto slips sit in `pending`/`in_process`
+  for hours — non-terminal statuses are rejected so the payment stays
+  PENDING until the terminal notification (the deferred-payment pattern
+  shared with Stripe/NowPayments).
+- Local dev note: same as the others — tunnel the backend and register
+  the URL in the dashboard webhook config, or use the sandbox test
+  cards.
 
 ## Adding a payment driver
 

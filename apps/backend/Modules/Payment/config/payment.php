@@ -2,6 +2,7 @@
 
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
+use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
@@ -15,6 +16,7 @@ return [
         'paypal' => PaypalPaymentDriver::class,
         'adyen' => AdyenPaymentDriver::class,
         'nowpayments' => NowpaymentsPaymentDriver::class,
+        'mercadopago' => MercadopagoPaymentDriver::class,
     ],
 
     'stripe' => [
@@ -67,6 +69,25 @@ return [
         // public code.
         'success_url' => env('NOWPAYMENTS_SUCCESS_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
         'cancel_url' => env('NOWPAYMENTS_CANCEL_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}&status=cancel'),
+    ],
+
+    'mercadopago' => [
+        // Sandbox preferences redirect via sandbox_init_point; the access
+        // token itself decides test vs production API access.
+        'sandbox' => env('MERCADOPAGO_SANDBOX', true),
+        'access_token' => env('MERCADOPAGO_ACCESS_TOKEN'),
+        // Webhook secret key from the dashboard (not the access token);
+        // verifies the x-signature header on
+        // POST /api/v1/payment/webhook/mercadopago
+        'webhook_secret' => env('MERCADOPAGO_WEBHOOK_SECRET'),
+        // Optional per-preference notification URL; when empty the
+        // account-level webhook config applies.
+        'notification_url' => env('MERCADOPAGO_NOTIFICATION_URL'),
+        // Storefront return pages; {order_code} is replaced with the order's
+        // public code.
+        'success_url' => env('MERCADOPAGO_SUCCESS_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
+        'pending_url' => env('MERCADOPAGO_PENDING_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
+        'failure_url' => env('MERCADOPAGO_FAILURE_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}&status=cancel'),
     ],
 
     // Per-IP attempts per minute on the machine-to-machine webhook endpoints.
