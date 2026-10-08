@@ -55,6 +55,10 @@
       "adyen": {
         "label": "Card payment (Adyen)",
         "description": "Pay securely with your preferred method — you will be redirected to Adyen."
+      },
+      "nowpayments": {
+        "label": "Crypto payment (NowPayments)",
+        "description": "Pay with your preferred cryptocurrency — you will be redirected to NowPayments."
       }
     }
   },

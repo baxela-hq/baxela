@@ -176,7 +176,12 @@ export type ApiOrderStatus =
 export type ApiOrderPaymentStatus = "unpaid" | "paid" | "refunded";
 
 /** Payment methods the backend can serve (values of PaymentMethodEnum). */
-export type ApiPaymentMethod = "manual" | "stripe" | "paypal" | "adyen";
+export type ApiPaymentMethod =
+  | "manual"
+  | "stripe"
+  | "paypal"
+  | "adyen"
+  | "nowpayments";
 
 /** Entry of GET /payment/user/methods — only registered drivers are listed. */
 export interface ApiPaymentMethodInfo {
