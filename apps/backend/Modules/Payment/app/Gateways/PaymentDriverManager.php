@@ -54,6 +54,9 @@ class PaymentDriverManager
                 && (bool) config('payment.mercadopago.webhook_secret'),
             PaymentMethodEnum::CHECKOUTCOM => (bool) config('payment.checkoutcom.secret_key')
                 && (bool) config('payment.checkoutcom.webhook_secret'),
+            PaymentMethodEnum::RAZORPAY => (bool) config('payment.razorpay.key_id')
+                && (bool) config('payment.razorpay.key_secret')
+                && (bool) config('payment.razorpay.webhook_secret'),
             default => false,
         };
     }

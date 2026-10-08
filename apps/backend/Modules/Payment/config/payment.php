@@ -6,6 +6,7 @@ use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
 use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
+use Modules\Payment\Gateways\Drivers\RazorpayPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 
 return [
@@ -19,6 +20,7 @@ return [
         'nowpayments' => NowpaymentsPaymentDriver::class,
         'mercadopago' => MercadopagoPaymentDriver::class,
         'checkoutcom' => CheckoutcomPaymentDriver::class,
+        'razorpay' => RazorpayPaymentDriver::class,
     ],
 
     'stripe' => [
@@ -107,6 +109,20 @@ return [
         // Storefront return page; {order_code} is replaced with the order's
         // public code.
         'return_url' => env('CHECKOUTCOM_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
+    ],
+
+    'razorpay' => [
+        // Key pair from the dashboard (rzp_test_... / rzp_live_...) — the
+        // pair itself decides test vs production, the API base is global.
+        'key_id' => env('RAZORPAY_KEY_ID'),
+        'key_secret' => env('RAZORPAY_KEY_SECRET'),
+        // Webhook secret of the endpoint pointing at
+        // POST /api/v1/payment/webhook/razorpay; verifies
+        // x-razorpay-signature.
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+        // Storefront return page; {order_code} is replaced with the order's
+        // public code.
+        'return_url' => env('RAZORPAY_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
     ],
 
     // Per-IP attempts per minute on the machine-to-machine webhook endpoints.

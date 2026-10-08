@@ -13,6 +13,7 @@ use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Gateways\PaypalClient;
+use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
@@ -444,5 +445,61 @@ it('rejects a checkoutcom payment when the gateway is not configured', function 
     $this->postJson($this->baseUrl('/user/process'), [
         'order_code' => $order->{OrderSchema::ORDER_CODE},
         'method' => 'checkoutcom',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
+});
+
+it('creates a razorpay payment and returns the hosted link url', function () {
+    config([
+        'payment.razorpay.key_id' => 'rzp_test_x',
+        'payment.razorpay.key_secret' => 'rzp_secret_test',
+        'payment.razorpay.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+    ]);
+    activeMethod(PaymentMethodEnum::RAZORPAY);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'INR',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The echoed reference (our payment id) doubles as the stored
+    // transaction_id the webhook matches on.
+    $client = Mockery::mock(RazorpayClient::class);
+    $client->shouldReceive('createPaymentLink')->once()->andReturn((object) [
+        'id' => 'plink_KfskYmqDPG9hXY',
+        'short_url' => 'https://rzp.io/i/abc123',
+        'status' => 'created',
+    ]);
+    $this->app->instance(RazorpayClient::class, $client);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'razorpay',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://rzp.io/i/abc123')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::RAZORPAY);
+});
+
+it('rejects a razorpay payment when the gateway is not configured', function () {
+    config([
+        'payment.razorpay.key_id' => null,
+        'payment.razorpay.key_secret' => null,
+        'payment.razorpay.webhook_secret' => null,
+    ]);
+    activeMethod(PaymentMethodEnum::RAZORPAY);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'razorpay',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

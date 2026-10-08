@@ -36,6 +36,7 @@ SDK error as a 500.
 | `nowpayments` | `NowpaymentsPaymentDriver` | Crypto invoice hosted redirect; settled by the HMAC-signed `finished` IPN. |
 | `mercadopago` | `MercadopagoPaymentDriver` | Checkout Pro hosted redirect; the shadow webhook triggers a payment fetch that settles on `approved`. |
 | `checkoutcom` | `CheckoutcomPaymentDriver` | Payment Links hosted redirect; settled by the raw-body-signed `payment_captured` webhook. |
+| `razorpay` | `RazorpayPaymentDriver` | Payment Links hosted redirect; settled by the raw-body-signed `payment_link.paid` webhook. |
 
 ## Sequence
 
@@ -272,6 +273,38 @@ acked as no-ops).
   `POST /api/v1/payment/webhook/checkoutcom`.
 - Local dev note: same as the others — tunnel the backend and register
   the URL as the webhook endpoint in the Hub sandbox.
+
+## Razorpay specifics
+
+- Requires `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET` and
+  `RAZORPAY_WEBHOOK_SECRET` (plus `RAZORPAY_RETURN_URL`) in the backend
+  `.env` (see `.env.example`); the method is hidden from
+  `/payment/user/methods` until all three exist — a link can be created
+  with just the key pair, but without the webhook secret nothing can
+  ever settle, which is worse than failing. The key pair itself decides
+  test vs production (`rzp_test_…` / `rzp_live_…`); the API base URL is
+  global.
+- REST access is wrapped in the SDK-less `RazorpayClient` (Basic auth
+  with the key pair). `initiate` creates a Payment Link
+  (`reference_id` = payment id — echoed back on the webhook's
+  `payment_link.entity`, which is why it doubles as the stored
+  `transaction_id`; integer minor-units `amount` in paise; a
+  `{order_code}`-templated `callback_url` return page). The `short_url`
+  is the redirect; its absence fails loudly. The `plink_…` id is not
+  persisted; find it in the dashboard by reference.
+- `handleWebhook` verifies `x-razorpay-signature` — hex HMAC-SHA256 over
+  the **exact raw request bytes** with the dashboard webhook secret —
+  locally before decoding (re-serialization breaks verification, the
+  same discipline as Stripe/Checkout.com).
+- Only the link-level events are terminal: `payment_link.paid` → success
+  (the amount is fully paid) and `payment_link.cancelled` → failed.
+  Failed payment attempts (`payment.failed`) leave the link payable and
+  the payment PENDING until a terminal event (the deferred-payment
+  pattern). Subscribe the webhook to exactly `payment_link.paid` and
+  `payment_link.cancelled` at
+  `POST /api/v1/payment/webhook/razorpay`.
+- Local dev note: same as the others — tunnel the backend and register
+  the URL under Settings → Webhooks in the dashboard.
 
 ## Adding a payment driver
 

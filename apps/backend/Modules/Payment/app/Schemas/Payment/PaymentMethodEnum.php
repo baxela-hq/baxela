@@ -10,5 +10,6 @@ enum PaymentMethodEnum: string
     case NOWPAYMENTS = 'nowpayments';
     case MERCADOPAGO = 'mercadopago';
     case CHECKOUTCOM = 'checkoutcom';
+    case RAZORPAY = 'razorpay';
     case MANUAL = 'manual';
 }
