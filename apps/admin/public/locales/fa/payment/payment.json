@@ -27,7 +27,8 @@
         "stripe": "استرایپ",
         "adyen": "ادین",
         "nowpayments": "ناوپیمنتس",
-        "mercadopago": "مرکادوپاگو"
+        "mercadopago": "مرکادوپاگو",
+        "checkoutcom": "چک‌اوت‌کام"
       }
     },
     "actions": {

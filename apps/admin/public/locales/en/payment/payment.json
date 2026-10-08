@@ -27,7 +27,8 @@
         "stripe": "Stripe",
         "adyen": "Adyen",
         "nowpayments": "NowPayments",
-        "mercadopago": "Mercado Pago"
+        "mercadopago": "Mercado Pago",
+        "checkoutcom": "Checkout.com"
       }
     },
     "actions": {
