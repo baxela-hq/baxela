@@ -28,7 +28,8 @@
         "adyen": "ادین",
         "nowpayments": "ناوپیمنتس",
         "mercadopago": "مرکادوپاگو",
-        "checkoutcom": "چک‌اوت‌کام"
+        "checkoutcom": "چک‌اوت‌کام",
+        "razorpay": "ریزپی"
       }
     },
     "actions": {

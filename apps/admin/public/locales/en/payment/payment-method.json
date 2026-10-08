@@ -12,7 +12,8 @@
         "adyen": "Adyen",
         "nowpayments": "NowPayments",
         "mercadopago": "Mercado Pago",
-        "checkoutcom": "Checkout.com"
+        "checkoutcom": "Checkout.com",
+        "razorpay": "Razorpay"
       },
       "state": {
         "active": "Active",

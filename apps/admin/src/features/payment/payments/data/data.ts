@@ -7,6 +7,7 @@ import {
   CreditCard,
   Globe,
   HandCoins,
+  IndianRupee,
   ShieldCheck,
   Wallet,
   type LucideIcon,
@@ -26,4 +27,5 @@ export const methodIcons = new Map<string, LucideIcon>([
   ['nowpayments', Coins],
   ['mercadopago', HandCoins],
   ['checkoutcom', ShieldCheck],
+  ['razorpay', IndianRupee],
 ])
