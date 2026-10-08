@@ -24,6 +24,8 @@ it('lazily creates disabled rows for every registered driver', function () {
         'payment.nowpayments.ipn_secret' => null,
         'payment.mercadopago.access_token' => null,
         'payment.mercadopago.webhook_secret' => null,
+        'payment.checkoutcom.secret_key' => null,
+        'payment.checkoutcom.webhook_secret' => null,
     ]);
     $this->actingAs($this->superAdminUser());
 
@@ -31,8 +33,8 @@ it('lazily creates disabled rows for every registered driver', function () {
 
     $rows = collect($response->json('data'));
 
-    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen', 'nowpayments', 'mercadopago'])
-        ->and(PaymentMethod::count())->toBe(6);
+    expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen', 'nowpayments', 'mercadopago', 'checkoutcom'])
+        ->and(PaymentMethod::count())->toBe(7);
 
     $stripe = $rows->firstWhere('method', 'stripe');
     expect($stripe[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
@@ -60,7 +62,7 @@ it('does not create rows for drivers without an implementation', function () {
 
     expect(collect($response->json('data'))->pluck('method')->all())
         ->not->toContain(PaymentMethodEnum::PAYPAL->value)
-        ->and(PaymentMethod::count())->toBe(5);
+        ->and(PaymentMethod::count())->toBe(6);
 });
 
 it('flags a gateway whose credentials are missing', function () {

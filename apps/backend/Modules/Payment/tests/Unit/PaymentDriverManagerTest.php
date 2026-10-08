@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
+use Modules\Payment\Gateways\Drivers\CheckoutcomPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
 use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
@@ -26,6 +27,8 @@ beforeEach(function () {
         'payment.nowpayments.ipn_secret' => null,
         'payment.mercadopago.access_token' => null,
         'payment.mercadopago.webhook_secret' => null,
+        'payment.checkoutcom.secret_key' => null,
+        'payment.checkoutcom.webhook_secret' => null,
     ]);
 });
 
@@ -41,6 +44,7 @@ it('resolves every registered driver by method and by name', function (PaymentMe
     'adyen' => [PaymentMethodEnum::ADYEN, AdyenPaymentDriver::class],
     'nowpayments' => [PaymentMethodEnum::NOWPAYMENTS, NowpaymentsPaymentDriver::class],
     'mercadopago' => [PaymentMethodEnum::MERCADOPAGO, MercadopagoPaymentDriver::class],
+    'checkoutcom' => [PaymentMethodEnum::CHECKOUTCOM, CheckoutcomPaymentDriver::class],
 ]);
 
 it('throws for an unknown driver name', function () {
@@ -56,28 +60,33 @@ it('reports a driver configured only when its credentials are set', function () 
         ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse()
         ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeFalse()
         ->and($manager->isConfigured(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse()
-        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeFalse();
+        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeFalse()
+        ->and($manager->isConfigured(PaymentMethodEnum::CHECKOUTCOM))->toBeFalse();
 
     config(['payment.stripe.secret' => 'sk_test_x']);
     config(['payment.paypal.client_id' => 'cid_test']);
     config(['payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA']);
     config(['payment.nowpayments.api_key' => 'NP-API-KEY']);
     config(['payment.mercadopago.access_token' => 'MP-ACCESS-TOKEN']);
+    config(['payment.checkoutcom.secret_key' => 'sk_test_cko']);
 
     expect($manager->isConfigured(PaymentMethodEnum::STRIPE))->toBeTrue()
-        // paypal, adyen, nowpayments and mercadopago need both halves of their credential pairs
+        // the paired-credential drivers need both halves
         ->and($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeFalse()
         ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeFalse()
         ->and($manager->isConfigured(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse()
-        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeFalse();
+        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeFalse()
+        ->and($manager->isConfigured(PaymentMethodEnum::CHECKOUTCOM))->toBeFalse();
 
     config(['payment.paypal.client_secret' => 'secret_test']);
     config(['payment.adyen.merchant_account' => 'BaxelaECOM']);
     config(['payment.nowpayments.ipn_secret' => 'np-ipn-test']);
     config(['payment.mercadopago.webhook_secret' => 'mp-webhook-test']);
+    config(['payment.checkoutcom.webhook_secret' => 'cko-webhook-test']);
 
     expect($manager->isConfigured(PaymentMethodEnum::PAYPAL))->toBeTrue()
         ->and($manager->isConfigured(PaymentMethodEnum::ADYEN))->toBeTrue()
         ->and($manager->isConfigured(PaymentMethodEnum::NOWPAYMENTS))->toBeTrue()
-        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeTrue();
+        ->and($manager->isConfigured(PaymentMethodEnum::MERCADOPAGO))->toBeTrue()
+        ->and($manager->isConfigured(PaymentMethodEnum::CHECKOUTCOM))->toBeTrue();
 });

@@ -9,5 +9,6 @@ enum PaymentMethodEnum: string
     case ADYEN = 'adyen';
     case NOWPAYMENTS = 'nowpayments';
     case MERCADOPAGO = 'mercadopago';
+    case CHECKOUTCOM = 'checkoutcom';
     case MANUAL = 'manual';
 }

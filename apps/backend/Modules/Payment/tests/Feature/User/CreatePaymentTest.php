@@ -9,6 +9,7 @@ use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Gateways\AdyenCheckout;
+use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Gateways\PaypalClient;
@@ -387,5 +388,61 @@ it('rejects a mercadopago payment when the gateway is not configured', function 
     $this->postJson($this->baseUrl('/user/process'), [
         'order_code' => $order->{OrderSchema::ORDER_CODE},
         'method' => 'mercadopago',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
+});
+
+it('creates a checkoutcom payment and returns the hosted link url', function () {
+    config([
+        'payment.checkoutcom.secret_key' => 'sk_test_cko',
+        'payment.checkoutcom.webhook_secret' => 'cko-webhook-test',
+        'payment.checkoutcom.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+    ]);
+    activeMethod(PaymentMethodEnum::CHECKOUTCOM);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'USD',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The echoed reference (our payment id) doubles as the stored
+    // transaction_id the webhook matches on.
+    $client = Mockery::mock(CheckoutcomClient::class);
+    $client->shouldReceive('createPaymentLink')->once()->andReturn((object) [
+        'id' => 'plink_w2ujbp3y4sbu5gqwn5ja2y5xtu',
+        '_links' => (object) [
+            'payment-link' => (object) ['href' => 'https://pay.checkout.com/link/plink_w2ujbp3y4sbu5gqwn5ja2y5xtu'],
+        ],
+    ]);
+    $this->app->instance(CheckoutcomClient::class, $client);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'checkoutcom',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://pay.checkout.com/link/plink_w2ujbp3y4sbu5gqwn5ja2y5xtu')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::CHECKOUTCOM);
+});
+
+it('rejects a checkoutcom payment when the gateway is not configured', function () {
+    config([
+        'payment.checkoutcom.secret_key' => null,
+        'payment.checkoutcom.webhook_secret' => null,
+    ]);
+    activeMethod(PaymentMethodEnum::CHECKOUTCOM);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'checkoutcom',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

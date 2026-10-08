@@ -35,6 +35,7 @@ SDK error as a 500.
 | `adyen` | `AdyenPaymentDriver` | Pay by Link hosted redirect; settled by the HMAC-signed `AUTHORISATION` webhook. |
 | `nowpayments` | `NowpaymentsPaymentDriver` | Crypto invoice hosted redirect; settled by the HMAC-signed `finished` IPN. |
 | `mercadopago` | `MercadopagoPaymentDriver` | Checkout Pro hosted redirect; the shadow webhook triggers a payment fetch that settles on `approved`. |
+| `checkoutcom` | `CheckoutcomPaymentDriver` | Payment Links hosted redirect; settled by the raw-body-signed `payment_captured` webhook. |
 
 ## Sequence
 
@@ -235,6 +236,42 @@ acked as no-ops).
 - Local dev note: same as the others — tunnel the backend and register
   the URL in the dashboard webhook config, or use the sandbox test
   cards.
+
+## Checkout.com specifics
+
+- Requires `CHECKOUTCOM_SECRET_KEY` (API key, `sk_…`) and
+  `CHECKOUTCOM_WEBHOOK_SECRET` (plus `CHECKOUTCOM_ENV` — `sandbox` by
+  default — and `CHECKOUTCOM_RETURN_URL`) in the backend `.env` (see
+  `.env.example`); without the pair the method is hidden from
+  `/payment/user/methods`, and direct calls fail with
+  `payment.process.gateway_unconfigured`. The webhook signing secret is
+  a **separate secret** shown on the webhook endpoint's page in the Hub —
+  it is not the API key, and mixing them up is the most common
+  verification failure.
+- REST access is wrapped in the SDK-less `CheckoutcomClient`
+  (`Authorization` header carries the raw key, no Bearer prefix).
+  `initiate` creates a Payment Link (`reference` = payment id — echoed
+  back by every event at `data.reference`, which is why it doubles as
+  the stored `transaction_id`; integer minor-units `amount`; a
+  `{order_code}`-templated `return_url`). The hosted URL is read from
+  the response `_links` map (`payment-link` relation); its absence fails
+  loudly. The link id and `pay_…` id are not persisted; find them in the
+  Hub by reference.
+- `handleWebhook` verifies `cko-signature` — HMAC-SHA256 over the
+  **exact raw request bytes** (hex or base64 encoded, both accepted) —
+  locally, like Stripe's raw-body HMAC. Hashing a re-serialized payload
+  instead of the delivered bytes is Checkout.com's most documented
+  verification pitfall, which is why the driver verifies before decoding.
+- Automatic-capture accounts only: `payment_captured` is the sole
+  settling event — `payment_approved` means authorised-but-uncaptured
+  and must not settle the order (same constraint as Adyen).
+  `payment_declined`/`payment_capture_declined`/`payment_canceled`/
+  `payment_expired` → failed; everything else stays PENDING until the
+  terminal event (the deferred-payment pattern). Subscribe the webhook
+  to exactly that event set at
+  `POST /api/v1/payment/webhook/checkoutcom`.
+- Local dev note: same as the others — tunnel the backend and register
+  the URL as the webhook endpoint in the Hub sandbox.
 
 ## Adding a payment driver
 

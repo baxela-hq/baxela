@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
+use Modules\Payment\Gateways\Drivers\CheckoutcomPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
 use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
@@ -17,6 +18,7 @@ return [
         'adyen' => AdyenPaymentDriver::class,
         'nowpayments' => NowpaymentsPaymentDriver::class,
         'mercadopago' => MercadopagoPaymentDriver::class,
+        'checkoutcom' => CheckoutcomPaymentDriver::class,
     ],
 
     'stripe' => [
@@ -88,6 +90,23 @@ return [
         'success_url' => env('MERCADOPAGO_SUCCESS_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
         'pending_url' => env('MERCADOPAGO_PENDING_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
         'failure_url' => env('MERCADOPAGO_FAILURE_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}&status=cancel'),
+    ],
+
+    // Automatic-capture accounts only: with manual capture a
+    // payment_approved event is authorised-but-uncaptured and the driver
+    // would settle orders prematurely.
+    'checkoutcom' => [
+        // sandbox|live — picks the Payment Links API base URL.
+        'env' => env('CHECKOUTCOM_ENV', 'sandbox'),
+        // API secret key from the Hub (sk_...).
+        'secret_key' => env('CHECKOUTCOM_SECRET_KEY'),
+        // Webhook signing secret of the endpoint pointing at
+        // POST /api/v1/payment/webhook/checkoutcom — separate from the
+        // API key; verifies the cko-signature header.
+        'webhook_secret' => env('CHECKOUTCOM_WEBHOOK_SECRET'),
+        // Storefront return page; {order_code} is replaced with the order's
+        // public code.
+        'return_url' => env('CHECKOUTCOM_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
     ],
 
     // Per-IP attempts per minute on the machine-to-machine webhook endpoints.

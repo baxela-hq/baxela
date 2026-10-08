@@ -52,6 +52,8 @@ class PaymentDriverManager
                 && (bool) config('payment.nowpayments.ipn_secret'),
             PaymentMethodEnum::MERCADOPAGO => (bool) config('payment.mercadopago.access_token')
                 && (bool) config('payment.mercadopago.webhook_secret'),
+            PaymentMethodEnum::CHECKOUTCOM => (bool) config('payment.checkoutcom.secret_key')
+                && (bool) config('payment.checkoutcom.webhook_secret'),
             default => false,
         };
     }
