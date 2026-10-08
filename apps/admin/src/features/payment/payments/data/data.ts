@@ -3,6 +3,7 @@ import {
   CheckCircle,
   Circle,
   CircleOff,
+  Coins,
   CreditCard,
   Globe,
   Wallet,
@@ -20,4 +21,5 @@ export const methodIcons = new Map<string, LucideIcon>([
   ['paypal', Wallet],
   ['stripe', CreditCard],
   ['adyen', Globe],
+  ['nowpayments', Coins],
 ])

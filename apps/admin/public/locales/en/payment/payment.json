@@ -25,7 +25,8 @@
         "manual": "Manual",
         "paypal": "PayPal",
         "stripe": "Stripe",
-        "adyen": "Adyen"
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments"
       }
     },
     "actions": {

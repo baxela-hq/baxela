@@ -25,7 +25,8 @@
         "manual": "دستی",
         "paypal": "پی‌پال",
         "stripe": "استرایپ",
-        "adyen": "ادین"
+        "adyen": "ادین",
+        "nowpayments": "ناوپیمنتس"
       }
     },
     "actions": {

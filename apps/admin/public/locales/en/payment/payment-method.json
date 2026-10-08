@@ -9,7 +9,8 @@
         "manual": "Manual",
         "paypal": "PayPal",
         "stripe": "Stripe",
-        "adyen": "Adyen"
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments"
       },
       "state": {
         "active": "Active",
