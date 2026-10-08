@@ -59,6 +59,10 @@
       "nowpayments": {
         "label": "پرداخت با ارز دیجیتال (NowPayments)",
         "description": "با ارز دیجیتال دلخواه خود پرداخت کنید — به درگاه NowPayments منتقل می‌شوید."
+      },
+      "mercadopago": {
+        "label": "پرداخت محلی (Mercado Pago)",
+        "description": "با پیکس، بولتو یا کارت‌های محلی پرداخت کنید — به درگاه Mercado Pago منتقل می‌شوید."
       }
     }
   },

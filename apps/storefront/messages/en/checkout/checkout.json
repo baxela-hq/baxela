@@ -59,6 +59,10 @@
       "nowpayments": {
         "label": "Crypto payment (NowPayments)",
         "description": "Pay with your preferred cryptocurrency — you will be redirected to NowPayments."
+      },
+      "mercadopago": {
+        "label": "Local payment (Mercado Pago)",
+        "description": "Pay with Pix, Boleto or local cards — you will be redirected to Mercado Pago."
       }
     }
   },

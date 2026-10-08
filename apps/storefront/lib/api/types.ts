@@ -181,7 +181,8 @@ export type ApiPaymentMethod =
   | "stripe"
   | "paypal"
   | "adyen"
-  | "nowpayments";
+  | "nowpayments"
+  | "mercadopago";
 
 /** Entry of GET /payment/user/methods — only registered drivers are listed. */
 export interface ApiPaymentMethodInfo {
