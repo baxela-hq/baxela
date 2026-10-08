@@ -33,6 +33,7 @@ SDK error as a 500.
 | `stripe` | `StripePaymentDriver` | Hosted Checkout redirect; settled by signed webhook. |
 | `paypal` | `PaypalPaymentDriver` | Orders v2 hosted redirect; approved orders are captured on the webhook. |
 | `adyen` | `AdyenPaymentDriver` | Pay by Link hosted redirect; settled by the HMAC-signed `AUTHORISATION` webhook. |
+| `nowpayments` | `NowpaymentsPaymentDriver` | Crypto invoice hosted redirect; settled by the HMAC-signed `finished` IPN. |
 
 ## Sequence
 
@@ -162,6 +163,39 @@ acked as no-ops).
 - Local dev note: like PayPal there is no CLI forwarder — tunnel the
   backend (ngrok/cloudflared) and register the URL, or use the Customer
   Area webhook simulator.
+
+## NowPayments specifics
+
+- Requires `NOWPAYMENTS_API_KEY` and `NOWPAYMENTS_IPN_SECRET` (plus
+  `NOWPAYMENTS_ENV` — `sandbox` by default — and the return/callback
+  URLs) in the backend `.env` (see `.env.example`); without the pair the
+  method is hidden from `/payment/user/methods`, and direct calls fail
+  with `payment.process.gateway_unconfigured`. Settlement needs the IPN
+  secret, so an API key alone never counts as configured.
+- REST access is wrapped in the SDK-less `NowpaymentsClient` (invoice
+  API, `x-api-key` auth). `initiate` creates an invoice (`order_id` =
+  payment id — the echoed reference every IPN carries back, which is why
+  it doubles as the stored `transaction_id` — a decimal `price_amount`
+  in the order currency, and `{order_code}`-templated success/cancel
+  URLs; the crypto amount is derived on NowPayments' side). The invoice
+  id and payment id are not persisted; find them in the NowPayments
+  cabinet by order reference.
+- `handleWebhook` verifies the `x-nowpayments-sig` header locally:
+  HMAC-SHA512 (hex) over the IPN body re-serialized with keys sorted
+  alphabetically (recursively) and **without** escaping slashes or
+  unicode, to match NowPayments' serializer. Only `finished` settles —
+  the state where funds have reached the account wallet; `confirmed`
+  (on-chain only) deliberately does not. `failed`/`expired` → failed.
+  Crypto payments crawl through `waiting`/`confirming`/`sending`/
+  `partially_paid` for minutes to hours; non-terminal IPNs are rejected
+  so the payment stays PENDING until the terminal IPN arrives (same
+  pattern as Stripe's deferred payment methods).
+- The IPN callback is passed per invoice when
+  `NOWPAYMENTS_IPN_CALLBACK_URL` is set (point it at
+  `POST /api/v1/payment/webhook/nowpayments`); when empty the
+  account-level setting in the NowPayments cabinet applies.
+- Local dev note: same as PayPal/Adyen — tunnel the backend and
+  register the URL, or trigger test IPNs from the cabinet.
 
 ## Adding a payment driver
 

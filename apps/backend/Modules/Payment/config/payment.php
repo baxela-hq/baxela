@@ -2,6 +2,7 @@
 
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Gateways\Drivers\ManualPaymentDriver;
+use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 
@@ -13,6 +14,7 @@ return [
         'stripe' => StripePaymentDriver::class,
         'paypal' => PaypalPaymentDriver::class,
         'adyen' => AdyenPaymentDriver::class,
+        'nowpayments' => NowpaymentsPaymentDriver::class,
     ],
 
     'stripe' => [
@@ -49,6 +51,22 @@ return [
         // Storefront return page; {order_code} is replaced with the order's
         // public code.
         'return_url' => env('ADYEN_RETURN_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
+    ],
+
+    'nowpayments' => [
+        // sandbox|live — picks the NowPayments API base URL.
+        'env' => env('NOWPAYMENTS_ENV', 'sandbox'),
+        'api_key' => env('NOWPAYMENTS_API_KEY'),
+        // IPN secret from account settings; verifies x-nowpayments-sig.
+        'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET'),
+        // Optional per-invoice IPN callback pointing at
+        // POST /api/v1/payment/webhook/nowpayments; when empty the
+        // account-level setting is used.
+        'ipn_callback_url' => env('NOWPAYMENTS_IPN_CALLBACK_URL'),
+        // Storefront return pages; {order_code} is replaced with the order's
+        // public code.
+        'success_url' => env('NOWPAYMENTS_SUCCESS_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}'),
+        'cancel_url' => env('NOWPAYMENTS_CANCEL_URL', 'http://localhost:3000/en/payment/return?order_code={order_code}&status=cancel'),
     ],
 
     // Per-IP attempts per minute on the machine-to-machine webhook endpoints.

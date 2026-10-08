@@ -9,6 +9,7 @@ use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Gateways\AdyenCheckout;
+use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
@@ -272,5 +273,61 @@ it('rejects an adyen payment when the gateway is not configured', function () {
     $this->postJson($this->baseUrl('/user/process'), [
         'order_code' => $order->{OrderSchema::ORDER_CODE},
         'method' => 'adyen',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
+});
+
+it('creates a nowpayments payment and returns the hosted invoice url', function () {
+    config([
+        'payment.nowpayments.api_key' => 'NP-API-KEY',
+        'payment.nowpayments.ipn_secret' => 'np-ipn-test',
+        'payment.nowpayments.success_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
+        'payment.nowpayments.cancel_url' => 'https://shop.test/en/payment/return?order_code={order_code}&status=cancel',
+    ]);
+    activeMethod(PaymentMethodEnum::NOWPAYMENTS);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Currency::factory()->create([
+        'id' => 2,
+        CurrencySchema::CODE => 'USD',
+        CurrencySchema::DECIMAL_PLACES => 2,
+    ]);
+    $order = payableOrder($user);
+    // The echoed order reference (our payment id) doubles as the stored
+    // transaction_id the webhook matches on.
+    $client = Mockery::mock(NowpaymentsClient::class);
+    $client->shouldReceive('createInvoice')->once()->andReturn((object) [
+        'id' => 4607606111,
+        'invoice_url' => 'https://nowpayments.io/pay/i4607606111',
+        'status' => 'waiting',
+    ]);
+    $this->app->instance(NowpaymentsClient::class, $client);
+
+    $response = $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'nowpayments',
+    ])->assertOk();
+
+    $payment = Payment::query()->find($response->json('data.payment_id'));
+
+    expect($response->json('data.payment_url'))->toBe('https://nowpayments.io/pay/i4607606111')
+        ->and($payment)->not->toBeNull()
+        ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
+        ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
+        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::NOWPAYMENTS);
+});
+
+it('rejects a nowpayments payment when the gateway is not configured', function () {
+    config([
+        'payment.nowpayments.api_key' => null,
+        'payment.nowpayments.ipn_secret' => null,
+    ]);
+    activeMethod(PaymentMethodEnum::NOWPAYMENTS);
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'nowpayments',
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

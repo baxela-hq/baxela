@@ -48,6 +48,8 @@ class PaymentDriverManager
                 && (bool) config('payment.paypal.client_secret'),
             PaymentMethodEnum::ADYEN => (bool) config('payment.adyen.api_key')
                 && (bool) config('payment.adyen.merchant_account'),
+            PaymentMethodEnum::NOWPAYMENTS => (bool) config('payment.nowpayments.api_key')
+                && (bool) config('payment.nowpayments.ipn_secret'),
             default => false,
         };
     }
