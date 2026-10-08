@@ -10,7 +10,8 @@
         "paypal": "پی‌پال",
         "stripe": "استرایپ",
         "adyen": "ادین",
-        "nowpayments": "ناوپیمنتس"
+        "nowpayments": "ناوپیمنتس",
+        "mercadopago": "مرکادوپاگو"
       },
       "state": {
         "active": "فعال",

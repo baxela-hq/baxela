@@ -6,6 +6,7 @@ import {
   Coins,
   CreditCard,
   Globe,
+  HandCoins,
   Wallet,
   type LucideIcon,
 } from 'lucide-react'
@@ -22,4 +23,5 @@ export const methodIcons = new Map<string, LucideIcon>([
   ['stripe', CreditCard],
   ['adyen', Globe],
   ['nowpayments', Coins],
+  ['mercadopago', HandCoins],
 ])

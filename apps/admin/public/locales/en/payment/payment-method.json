@@ -10,7 +10,8 @@
         "paypal": "PayPal",
         "stripe": "Stripe",
         "adyen": "Adyen",
-        "nowpayments": "NowPayments"
+        "nowpayments": "NowPayments",
+        "mercadopago": "Mercado Pago"
       },
       "state": {
         "active": "Active",
