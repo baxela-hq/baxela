@@ -183,7 +183,8 @@ export type ApiPaymentMethod =
   | "adyen"
   | "nowpayments"
   | "mercadopago"
-  | "checkoutcom";
+  | "checkoutcom"
+  | "razorpay";
 
 /** Entry of GET /payment/user/methods — only registered drivers are listed. */
 export interface ApiPaymentMethodInfo {

@@ -67,6 +67,10 @@
       "checkoutcom": {
         "label": "Card payment (Checkout.com)",
         "description": "Pay securely with your preferred method — you will be redirected to Checkout.com."
+      },
+      "razorpay": {
+        "label": "UPI / card payment (Razorpay)",
+        "description": "Pay with UPI, cards or netbanking — you will be redirected to Razorpay."
       }
     }
   },

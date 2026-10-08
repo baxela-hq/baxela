@@ -67,6 +67,10 @@
       "checkoutcom": {
         "label": "پرداخت با کارت (Checkout.com)",
         "description": "با روش دلخواه خود امن پرداخت کنید — به درگاه Checkout.com منتقل می‌شوید."
+      },
+      "razorpay": {
+        "label": "پرداخت محلی (Razorpay)",
+        "description": "با UPI، کارت یا انتقال بانکی پرداخت کنید — به درگاه Razorpay منتقل می‌شوید."
       }
     }
   },
