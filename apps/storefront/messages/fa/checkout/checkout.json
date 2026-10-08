@@ -63,6 +63,10 @@
       "mercadopago": {
         "label": "پرداخت محلی (Mercado Pago)",
         "description": "با پیکس، بولتو یا کارت‌های محلی پرداخت کنید — به درگاه Mercado Pago منتقل می‌شوید."
+      },
+      "checkoutcom": {
+        "label": "پرداخت با کارت (Checkout.com)",
+        "description": "با روش دلخواه خود امن پرداخت کنید — به درگاه Checkout.com منتقل می‌شوید."
       }
     }
   },

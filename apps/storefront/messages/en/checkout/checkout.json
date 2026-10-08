@@ -63,6 +63,10 @@
       "mercadopago": {
         "label": "Local payment (Mercado Pago)",
         "description": "Pay with Pix, Boleto or local cards — you will be redirected to Mercado Pago."
+      },
+      "checkoutcom": {
+        "label": "Card payment (Checkout.com)",
+        "description": "Pay securely with your preferred method — you will be redirected to Checkout.com."
       }
     }
   },
