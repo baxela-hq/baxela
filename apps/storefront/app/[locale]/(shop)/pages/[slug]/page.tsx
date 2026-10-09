@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { serverApiGet } from "@/lib/api/server";
+import NotFoundContent from "@/components/not-found-content";
 import type { ApiPage } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
 
@@ -15,6 +15,9 @@ export async function generateMetadata({
   return {
     title: page?.title || "Pages — Baxela Storefront",
     description: page?.description ?? undefined,
+    // The missing-page body renders inline (HTTP 200) — keep it out of
+    // the index.
+    ...(page ? {} : { robots: { index: false } }),
   };
 }
 
@@ -26,8 +29,10 @@ export default async function CmsPage({
   const page = await serverApiGet<ApiPage>(`/content/public/pages/${slug}`).catch(
     () => null,
   );
+  // Unknown CMS slugs render the 404 body inline — notFound() itself
+  // renders blank under the app/[locale] root layout.
   if (!page) {
-    notFound();
+    return <NotFoundContent />;
   }
 
   const paragraphs = (page.content ?? "")

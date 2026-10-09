@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import NotFoundContent from "@/components/not-found-content";
 import { PostComments } from "@/components/blog/post-comments";
 import { serverApiGet } from "@/lib/api/server";
 import { sanitizeHtml } from "@/lib/sanitize-html";
@@ -17,6 +17,9 @@ export async function generateMetadata({
   return {
     title: post?.title ? `${post.title} — Blog` : "Blog — Baxela Storefront",
     description: post?.description ?? undefined,
+    // The missing-post body renders inline (HTTP 200) — keep it out of
+    // the index.
+    ...(post ? {} : { robots: { index: false } }),
     openGraph: post
       ? {
           title: post.title ?? undefined,
@@ -42,8 +45,10 @@ export default async function BlogPostPage({
   const post = await serverApiGet<ApiPost>(`/content/public/posts/${slug}`).catch(
     () => null,
   );
+  // Scheduled/draft/unknown slugs 404 at the API; notFound() itself
+  // renders blank here, so the 404 body is rendered inline instead.
   if (!post) {
-    notFound();
+    return <NotFoundContent />;
   }
 
   const commentsPage = await serverApiGet<Paginated<ApiPostComment>>(

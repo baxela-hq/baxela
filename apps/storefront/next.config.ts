@@ -74,6 +74,13 @@ const nextConfig: NextConfig = {
   // (infrastructure/docker/production/storefront/Dockerfile runs server.js).
   output: "standalone",
 
+  // The root layout lives on the top-level dynamic segment app/[locale],
+  // so a consistent 404 needs the routing-level app/global-not-found.tsx
+  // (blank page otherwise — see Next's not-found file-convention docs).
+  experimental: {
+    globalNotFound: true,
+  },
+
   // Any host on the LAN subnet, so phones/other machines can load dev assets
   // from the dev server (Next blocks cross-origin dev resources by default).
   // Wildcards match one dot-segment each, so this survives DHCP IP changes.
