@@ -156,6 +156,7 @@ export function TicketThread() {
             <Button
               type="button"
               variant="outline"
+              size="sm"
               disabled={statusPending}
               onClick={onToggleStatus}
             >

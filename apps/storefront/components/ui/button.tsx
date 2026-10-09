@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "accent" | "outline";
+  size?: "default" | "sm";
   fullWidth?: boolean;
 }
 
@@ -12,9 +13,21 @@ const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   outline: "border border-border bg-background text-foreground hover:bg-muted",
 };
 
+const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
+  default: "h-14 px-6 text-base",
+  sm: "h-10 px-5 text-sm",
+};
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   function Button(
-    { variant = "primary", fullWidth = true, className, type = "button", ...props },
+    {
+      variant = "primary",
+      size = "default",
+      fullWidth = true,
+      className,
+      type = "button",
+      ...props
+    },
     ref,
   ) {
     return (
@@ -22,7 +35,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={cn(
-          "inline-flex h-14 items-center justify-center rounded-default px-6 text-base font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-60",
+          "inline-flex items-center justify-center rounded-default font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-60",
+          sizeClasses[size],
           fullWidth && "w-full",
           variantClasses[variant],
           className,
