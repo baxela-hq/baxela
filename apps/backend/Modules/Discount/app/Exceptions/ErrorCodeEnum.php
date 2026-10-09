@@ -13,4 +13,8 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case COUPON_UPDATE_FAILED = 'discount.coupon.update_failed';
 
     case COUPON_HAS_REDEMPTIONS = 'discount.coupon.has_redemptions';
+
+    case PROMOTION_CREATION_FAILED = 'discount.promotion.creation_failed';
+
+    case PROMOTION_UPDATE_FAILED = 'discount.promotion.update_failed';
 }

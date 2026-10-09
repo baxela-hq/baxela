@@ -40,4 +40,10 @@ class ProductSchema
     public const string RES_ATTRIBUTE_VALUES = 'attributeValues';
 
     public const string RES_COMMENTS = 'comments';
+
+    /**
+     * Runtime-only attribute: the ProductPromotion DTO attached by
+     * AppliesProductPromotions (never stored — see VariantSchema's twin).
+     */
+    public const string ATTR_PROMOTION = 'appliedPromotion';
 }

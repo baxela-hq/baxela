@@ -20,6 +20,10 @@ class OrderItemResource extends JsonResource
             OrderItemSchema::PRODUCT_NAME_SNAPSHOT => $this->resource->{OrderItemSchema::PRODUCT_NAME_SNAPSHOT},
             OrderItemSchema::PRODUCT_SLUG_SNAPSHOT => $this->resource->{OrderItemSchema::PRODUCT_SLUG_SNAPSHOT},
             OrderItemSchema::PRICE_SNAPSHOT => $this->resource->{OrderItemSchema::PRICE_SNAPSHOT},
+            // Promotion history snapshot — null on non-promoted lines
+            OrderItemSchema::BASE_PRICE => $this->resource->{OrderItemSchema::BASE_PRICE},
+            OrderItemSchema::PROMOTION_DISCOUNT => $this->resource->{OrderItemSchema::PROMOTION_DISCOUNT},
+            OrderItemSchema::PROMOTION_ID => $this->resource->{OrderItemSchema::PROMOTION_ID},
             OrderItemSchema::QUANTITY => $this->resource->{OrderItemSchema::QUANTITY},
             // Current product image resolved through the Catalog gateway;
             // null when the variant no longer resolves — the name snapshot

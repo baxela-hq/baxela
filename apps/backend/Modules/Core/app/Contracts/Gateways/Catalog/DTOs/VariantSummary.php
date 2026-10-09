@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Contracts\Gateways\Catalog\DTOs;
 
+use Modules\Core\Contracts\Gateways\Discount\DTOs\ProductPromotion;
+
 /**
  * The compact representation of a product variant: its pricing plus the
  * language-resolved display fields a cart/order line needs (product title
@@ -21,5 +23,6 @@ final readonly class VariantSummary
         public ?string $product_slug,
         public ?string $image_url,
         public ?string $variant_label,
+        public ?ProductPromotion $promotion = null,
     ) {}
 }

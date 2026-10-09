@@ -2,10 +2,23 @@
 
 namespace Modules\Cart\Actions\Public\CartItem;
 
+use Modules\Cart\Models\Cart;
+use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Cart\Support\RefreshesCartPrices;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 
 class ListCartItemAction extends AbstractCartItemAction
 {
+    public function __construct(
+        Cart $cart,
+        CartItem $cartItem,
+        CatalogGatewayInterface $catalogGateway,
+        protected RefreshesCartPrices $refreshesCartPrices,
+    ) {
+        parent::__construct($cart, $cartItem, $catalogGateway);
+    }
+
     /**
      * A guest without a cart simply has an empty cart — no row is created
      * just by viewing it.
@@ -21,15 +34,9 @@ class ListCartItemAction extends AbstractCartItemAction
             ->where(CartItemSchema::CART_ID, $cartId)
             ->get();
 
-        // Variant display data (label, product link fields) is resolved in
-        // one batched gateway call and attached for the resource.
-        $summaries = $this->catalogGateway->getVariantSummaries(
-            $items->pluck(CartItemSchema::VARIANT_ID)->all()
-        );
-        $items->each(fn ($item) => $item->setAttribute(
-            CartItemSchema::ATTR_VARIANT_SUMMARY,
-            $summaries->get($item->{CartItemSchema::VARIANT_ID}),
-        ));
+        // Same live price policy as authenticated carts: guest lines also
+        // track the current effective (promotion-aware) price
+        $this->refreshesCartPrices->refresh($items);
 
         return $items;
     }

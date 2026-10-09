@@ -5,7 +5,9 @@ namespace Modules\Discount\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
+use Modules\Core\Contracts\Gateways\Discount\PromotionGatewayInterface;
 use Modules\Discount\Gateways\DiscountGateway;
+use Modules\Discount\Gateways\PromotionGateway;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -20,6 +22,7 @@ class DiscountServiceProvider extends ServiceProvider
 
     public array $bindings = [
         DiscountGatewayInterface::class => DiscountGateway::class,
+        PromotionGatewayInterface::class => PromotionGateway::class,
     ];
 
     /**

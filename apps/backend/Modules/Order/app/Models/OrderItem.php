@@ -25,6 +25,9 @@ class OrderItem extends Model
         OrderItemSchema::PRODUCT_SLUG_SNAPSHOT,
         OrderItemSchema::PRICE_SNAPSHOT,
         OrderItemSchema::QUANTITY,
+        OrderItemSchema::BASE_PRICE,
+        OrderItemSchema::PROMOTION_DISCOUNT,
+        OrderItemSchema::PROMOTION_ID,
     ];
 
     public static function boot(): void

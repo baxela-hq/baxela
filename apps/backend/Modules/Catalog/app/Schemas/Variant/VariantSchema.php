@@ -38,4 +38,11 @@ class VariantSchema
     public const string RES_OPTION_VALUE_IDS = 'option_value_ids';
 
     public const string REQ_OPTION_VALUE_IDS = 'option_value_ids';
+
+    /**
+     * Runtime-only attribute: the ProductPromotion DTO attached by
+     * AppliesProductPromotions while promoting prices in memory (never
+     * stored — promotions are resolved live through the Discount gateway).
+     */
+    public const string ATTR_PROMOTION = 'appliedPromotion';
 }

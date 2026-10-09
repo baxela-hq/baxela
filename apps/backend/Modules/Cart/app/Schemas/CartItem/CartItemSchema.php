@@ -29,6 +29,13 @@ class CartItemSchema
 
     public const string IMAGE_URL = 'image_url';
 
+    /**
+     * Computed from the attached VariantSummary — the promotion currently
+     * applied to the item's product, for cart-line badges. Null when the
+     * line is not promoted.
+     */
+    public const string PROMOTION = 'promotion';
+
     public const string RES_VARIANT = 'variant';
 
     /**

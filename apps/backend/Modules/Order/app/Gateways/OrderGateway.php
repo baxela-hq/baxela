@@ -57,6 +57,11 @@ class OrderGateway implements OrderGatewayInterface
             // at the boundary.
             $totalAmountMinor = 0;
             foreach ($input->cart_items as $cartItem) {
+                // Promotion facts come from checkout's single in-transaction
+                // pricing resolution — an absent entry is simply a
+                // non-promoted line
+                $promotion = $input->item_promotions[(int) $cartItem[OrderItemSchema::VARIANT_ID]] ?? null;
+
                 $order->items()->create([
                     OrderItemSchema::VARIANT_ID => $cartItem[OrderItemSchema::VARIANT_ID],
                     OrderItemSchema::PRICE_SNAPSHOT => $cartItem[OrderItemSchema::PRICE_SNAPSHOT],
@@ -64,6 +69,9 @@ class OrderGateway implements OrderGatewayInterface
                     OrderItemSchema::PRODUCT_SLUG_SNAPSHOT => app(CatalogGatewayInterface::class)->getProductSlugForVariant(
                         (int) $cartItem[OrderItemSchema::VARIANT_ID]
                     ),
+                    OrderItemSchema::BASE_PRICE => $promotion?->base_price,
+                    OrderItemSchema::PROMOTION_DISCOUNT => $promotion?->promotion_discount,
+                    OrderItemSchema::PROMOTION_ID => $promotion?->promotion_id,
                     OrderItemSchema::QUANTITY => $cartItem[OrderItemSchema::QUANTITY],
                 ]);
 

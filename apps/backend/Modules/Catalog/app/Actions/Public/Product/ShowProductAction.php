@@ -3,6 +3,7 @@
 namespace Modules\Catalog\Actions\Public\Product;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
@@ -12,9 +13,14 @@ use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Catalog\Support\AppliesProductPromotions;
 
 class ShowProductAction extends AbstractProductAction
 {
+    public function __construct(Product $model, protected AppliesProductPromotions $appliesProductPromotions)
+    {
+        parent::__construct($model);
+    }
     /**
      * Resolves the product by numeric id or by translation slug — the
      * storefront links products by slug. Numeric ids keep working for API
@@ -36,14 +42,20 @@ class ShowProductAction extends AbstractProductAction
             ]);
 
         if (ctype_digit($idOrSlug)) {
-            return $query->findOrFail($idOrSlug);
+            $product = $query->findOrFail($idOrSlug);
+        } else {
+            $product = $query
+                ->whereHas(
+                    ProductSchema::RES_TRANSLATIONS,
+                    fn ($translation) => $translation->where(PTSchema::SLUG, $idOrSlug)
+                )
+                ->firstOrFail();
         }
 
-        return $query
-            ->whereHas(
-                ProductSchema::RES_TRANSLATIONS,
-                fn ($translation) => $translation->where(PTSchema::SLUG, $idOrSlug)
-            )
-            ->firstOrFail();
+        // Promoted in memory (categories are already eager-loaded above, so
+        // the resolver's scope matching needs no extra query)
+        $this->appliesProductPromotions->apply(collect([$product]));
+
+        return $product;
     }
 }

@@ -5,4 +5,6 @@ return [
     'coupon.creation_failed' => 'Coupon creation failed',
     'coupon.update_failed' => 'Coupon update failed',
     'coupon.has_redemptions' => 'The coupon has redemption history and cannot be deleted — deactivate it instead',
+    'promotion.creation_failed' => 'Promotion creation failed',
+    'promotion.update_failed' => 'Promotion update failed',
 ];

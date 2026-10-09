@@ -5,6 +5,7 @@ namespace Modules\Cart\Tests\Feature;
 use Illuminate\Support\Str;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Models\MethodTranslation;
@@ -26,12 +27,20 @@ trait HelperTrait
 
     /**
      * A variant with an inventory stock row so the cart stock gates have a
-     * quantity to check against.
+     * quantity to check against. Checkout re-resolves the live variant
+     * price, so tests asserting totals pass an explicit deterministic
+     * price instead of the factory's random one.
      */
-    public function variantWithStock(int $quantity): Variant
+    public function variantWithStock(int $quantity, ?int $price = null): Variant
     {
         $product = Product::factory()->create();
-        $variant = Variant::factory()->ofProduct($product)->create();
+
+        $attributes = [];
+        if ($price !== null) {
+            $attributes[VariantSchema::PRICE] = $price;
+        }
+
+        $variant = Variant::factory()->ofProduct($product)->create($attributes);
         InventoryStock::factory()->ofVariant($variant, $quantity)->create();
 
         return $variant;

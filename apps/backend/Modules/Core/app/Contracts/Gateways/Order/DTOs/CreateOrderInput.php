@@ -11,6 +11,17 @@ class CreateOrderInput
      */
     public array $cart_items = [];
 
+    /**
+     * Promotion facts per order item, keyed by variant id (a cart holds at
+     * most one line per variant). Server-populated by CheckoutAction from
+     * the same in-transaction pricing resolution that refreshed the
+     * cart-item snapshots — never client input. Absent entry = the item
+     * was not promoted.
+     *
+     * @var array<int, OrderItemPromotion>
+     */
+    public array $item_promotions = [];
+
     public ?AddressDto $address = null;
 
     public ?int $shipping_method_id = null;

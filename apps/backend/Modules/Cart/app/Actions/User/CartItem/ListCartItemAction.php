@@ -2,25 +2,33 @@
 
 namespace Modules\Cart\Actions\User\CartItem;
 
+use Modules\Cart\Models\Cart;
+use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Cart\Support\RefreshesCartPrices;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 
 class ListCartItemAction extends AbstractCartItemAction
 {
+    public function __construct(
+        Cart $cart,
+        CartItem $cartItem,
+        CatalogGatewayInterface $catalogGateway,
+        protected RefreshesCartPrices $refreshesCartPrices,
+    ) {
+        parent::__construct($cart, $cartItem, $catalogGateway);
+    }
+
     public function handle()
     {
         $items = $this->cartItem
             ->where(CartItemSchema::CART_ID, $this->getCartId())
             ->get();
 
-        // Variant display data (label, product link fields) is resolved in
-        // one batched gateway call and attached for the resource.
-        $summaries = $this->catalogGateway->getVariantSummaries(
-            $items->pluck(CartItemSchema::VARIANT_ID)->all()
-        );
-        $items->each(fn ($item) => $item->setAttribute(
-            CartItemSchema::ATTR_VARIANT_SUMMARY,
-            $summaries->get($item->{CartItemSchema::VARIANT_ID}),
-        ));
+        // Prices are re-resolved live (promotions included): snapshots are
+        // refreshed to the current effective price and the summary is
+        // attached for the resource in the same pass
+        $this->refreshesCartPrices->refresh($items);
 
         return $items;
     }

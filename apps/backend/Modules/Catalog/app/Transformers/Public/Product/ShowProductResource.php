@@ -22,6 +22,7 @@ use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 
 class ShowProductResource extends JsonResource
@@ -51,12 +52,15 @@ class ShowProductResource extends JsonResource
             'content' => $translation?->{PTSchema::CONTENT},
             'price' => $variant?->{VariantSchema::PRICE},
             'compare_price' => $variant?->{VariantSchema::COMPARE_PRICE},
+            // Attached by AppliesProductPromotions when a promotion is live
+            'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
             'variants' => $this->resource->variants
                 ->map(fn (Variant $variant): array => [
                     'id' => $variant->{VariantSchema::ID},
                     'sku' => $variant->{VariantSchema::SKU},
                     'price' => $variant->{VariantSchema::PRICE},
                     'compare_price' => $variant->{VariantSchema::COMPARE_PRICE},
+                    'promotion' => PromotionPayload::from($variant->getAttribute(VariantSchema::ATTR_PROMOTION)),
                     'is_default' => $variant->{VariantSchema::IS_DEFAULT},
                     'image_url' => $variant->{VariantSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
                     'option_values' => $variant->optionValues

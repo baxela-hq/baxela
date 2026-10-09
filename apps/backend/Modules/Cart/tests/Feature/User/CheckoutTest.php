@@ -36,7 +36,7 @@ it('checks out a cart: order created, stock taken, cart torn down, shipping quot
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 150);
     $address = $this->addressForUser($user);
     $method = $this->shippingMethodForCountry(price: 5.0);
     $cart = userCartWithItem($user, $variant->id);

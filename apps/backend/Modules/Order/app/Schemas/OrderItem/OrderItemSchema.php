@@ -21,6 +21,20 @@ class OrderItemSchema
 
     public const string PRICE_SNAPSHOT = 'price_snapshot';
 
+    /**
+     * Promotion history — filled only for promoted lines so the invoice
+     * stays self-contained even after the promotion row is deleted:
+     * base_price is the unit price before the promotion, promotion_discount
+     * the ACTUAL per-unit amount taken off, promotion_id a convenience
+     * pointer. price_snapshot remains the charged unit price; the
+     * invariant base_price − promotion_discount == price_snapshot holds.
+     */
+    public const string BASE_PRICE = 'base_price';
+
+    public const string PROMOTION_DISCOUNT = 'promotion_discount';
+
+    public const string PROMOTION_ID = 'promotion_id';
+
     public const string QUANTITY = 'quantity';
 
     public const string IMAGE_URL = 'image_url';

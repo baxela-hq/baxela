@@ -39,6 +39,12 @@ interface CatalogGatewayInterface
     public function variantExists(int $variantId): bool;
 
     /**
+     * Whether the category can be referenced (exists). Parallels
+     * productExists — used by other modules to validate scope selections.
+     */
+    public function categoryExists(int $categoryId): bool;
+
+    /**
      * The product slug that identifies the ordered product at purchase
      * time — the default-language translation's slug, falling back to any
      * slug — so order-item snapshots keep working as product links even

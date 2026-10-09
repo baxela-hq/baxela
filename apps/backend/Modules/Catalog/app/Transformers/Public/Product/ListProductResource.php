@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 
 class ListProductResource extends JsonResource
@@ -34,6 +35,8 @@ class ListProductResource extends JsonResource
             'description' => $translation?->{PTSchema::DESCRIPTION},
             'price' => $variant?->{VariantSchema::PRICE},
             'compare_price' => $variant?->{VariantSchema::COMPARE_PRICE},
+            // Attached by AppliesProductPromotions when a promotion is live
+            'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
             'image_url' => $this->resource->images->first()?->{ImageSchema::URL},
             'created_at' => $this->resource->{ProductSchema::CREATED_AT}?->toIso8601String(),
         ];

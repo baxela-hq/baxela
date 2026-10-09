@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Contracts\Gateways\Catalog\DTOs;
 
+use Modules\Core\Contracts\Gateways\Discount\DTOs\ProductPromotion;
+
 /**
  * The compact, card-level representation of a product: exactly what a
  * product card renders (image, localized title/slug, default-variant
@@ -17,5 +19,6 @@ final readonly class ProductSummary
         public ?string $price,
         public ?string $compare_price,
         public ?string $image_url,
+        public ?ProductPromotion $promotion = null,
     ) {}
 }

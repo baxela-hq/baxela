@@ -18,6 +18,9 @@ class OrderItemResource extends JsonResource
             OrderItemSchema::VARIANT_ID => $this->resource->{OrderItemSchema::VARIANT_ID},
             OrderItemSchema::PRODUCT_NAME_SNAPSHOT => $this->resource->{OrderItemSchema::PRODUCT_NAME_SNAPSHOT},
             OrderItemSchema::PRICE_SNAPSHOT => $this->resource->{OrderItemSchema::PRICE_SNAPSHOT},
+            OrderItemSchema::BASE_PRICE => $this->resource->{OrderItemSchema::BASE_PRICE},
+            OrderItemSchema::PROMOTION_DISCOUNT => $this->resource->{OrderItemSchema::PROMOTION_DISCOUNT},
+            OrderItemSchema::PROMOTION_ID => $this->resource->{OrderItemSchema::PROMOTION_ID},
             OrderItemSchema::QUANTITY => $this->resource->{OrderItemSchema::QUANTITY},
         ];
     }

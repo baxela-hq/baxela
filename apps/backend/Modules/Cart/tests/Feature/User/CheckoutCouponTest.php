@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
+use Modules\Catalog\Models\Variant;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
@@ -18,7 +19,7 @@ use Modules\Order\Schemas\Order\OrderSchema;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-function couponCart(User $user, int $price = 150, int $quantity = 2): Cart
+function couponCart(User $user, Variant $variant, int $quantity = 2): Cart
 {
     $cart = Cart::query()->firstOrCreate(
         [CartSchema::USER_ID => $user->id],
@@ -27,9 +28,9 @@ function couponCart(User $user, int $price = 150, int $quantity = 2): Cart
 
     CartItem::query()->create([
         CartItemSchema::CART_ID => $cart->id,
-        CartItemSchema::VARIANT_ID => 1,
+        CartItemSchema::VARIANT_ID => $variant->id,
         CartItemSchema::QUANTITY => $quantity,
-        CartItemSchema::PRICE_SNAPSHOT => $price,
+        CartItemSchema::PRICE_SNAPSHOT => $variant->price,
         CartItemSchema::PRODUCT_NAME_SNAPSHOT => 'Test Product',
     ]);
 
@@ -54,10 +55,10 @@ it('checks out with a coupon: discounted total, snapshots, redemption recorded',
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 150);
     $address = $this->addressForUser($user);
     $method = $this->shippingMethodForCountry(price: 5.0);
-    $cart = couponCart($user); // subtotal 150 × 2 = 300
+    $cart = couponCart($user, $variant); // subtotal 150 × 2 = 300
     $coupon = applyCouponToCart($user, $cart); // fixed 30 off
 
     $response = $this->postJson($this->baseUrl('/user/checkout'), [
@@ -92,9 +93,9 @@ it('recalculates the discount when the cart grows between apply and checkout', f
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 100);
     $address = $this->addressForUser($user);
-    $cart = couponCart($user, price: 100, quantity: 1); // subtotal 100
+    $cart = couponCart($user, $variant, quantity: 1); // subtotal 100
     applyCouponToCart($user, $cart, [ // 15% off
         CouponSchema::CODE => 'PCT15',
         CouponSchema::TYPE => 'percent',
@@ -122,9 +123,9 @@ it('rejects checkout when the coupon was invalidated after being applied', funct
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 150);
     $address = $this->addressForUser($user);
-    $cart = couponCart($user);
+    $cart = couponCart($user, $variant);
     $coupon = applyCouponToCart($user, $cart, [CouponSchema::MIN_ORDER_AMOUNT => 100]);
 
     $invalidate($coupon, $cart);
@@ -151,9 +152,9 @@ it('rejects checkout when the cart drops below the coupon minimum after apply', 
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 150);
     $address = $this->addressForUser($user);
-    $cart = couponCart($user); // subtotal 300
+    $cart = couponCart($user, $variant); // subtotal 300
     applyCouponToCart($user, $cart, [CouponSchema::MIN_ORDER_AMOUNT => 200]);
 
     // cart shrinks to 150 → below the 200 minimum
@@ -172,9 +173,9 @@ it('rolls the order and redemption back when a later checkout step fails', funct
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    $variant = $this->variantWithStock(10);
+    $variant = $this->variantWithStock(10, price: 150);
     $address = $this->addressForUser($user);
-    $cart = couponCart($user);
+    $cart = couponCart($user, $variant);
     $coupon = applyCouponToCart($user, $cart);
 
     // Pre-check sees stock, the actual decrement fails — simulating a

@@ -33,6 +33,12 @@ class CartItemResource extends JsonResource
             CartItemSchema::PRODUCT_ID => $summary?->product_id,
             CartItemSchema::PRODUCT_SLUG => $summary?->product_slug,
             CartItemSchema::IMAGE_URL => $summary?->image_url,
+            CartItemSchema::PROMOTION => $summary?->promotion === null ? null : [
+                'id' => $summary->promotion->promotion_id,
+                'type' => $summary->promotion->type,
+                'value' => $summary->promotion->value,
+                'ends_at' => $summary->promotion->ends_at,
+            ],
             CartItemSchema::QUANTITY => $this->resource->{CartItemSchema::QUANTITY},
             CartItemSchema::CREATED_AT => $this->resource->{CartItemSchema::CREATED_AT},
             CartItemSchema::UPDATED_AT => $this->resource->{CartItemSchema::UPDATED_AT},
