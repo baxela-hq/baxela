@@ -1,0 +1,40 @@
+meta {
+  name: Update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/discount/admin/promotions/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Winter sale — extended",
+    "scope": "all",
+    "type": "percent",
+    "value": 25,
+    "starts_at": null,
+    "ends_at": null,
+    "priority": 0,
+    "is_active": true,
+    "product_ids": [],
+    "category_ids": []
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

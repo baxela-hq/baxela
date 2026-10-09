@@ -1,0 +1,40 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/discount/admin/promotions
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Winter sale",
+    "scope": "specific",
+    "type": "percent",
+    "value": 20,
+    "starts_at": null,
+    "ends_at": null,
+    "priority": 0,
+    "is_active": true,
+    "product_ids": [1, 2],
+    "category_ids": [3]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
