@@ -37,7 +37,7 @@ export function PostForm() {
   const [currentRow, setCurrentRow] = useState<Post | null>(null)
   const [activeTab, setActiveTab] = useState('general')
   const { tAction,tPageTitle, tPlaceHolder, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
-  const { tLabel, tStatus, tHelpText } = useAppTranslation(Locales.POST)
+  const { tLabel, tStatus, tHelpText, tPlaceHolder: tPostPlaceHolder } = useAppTranslation(Locales.POST)
 
   const entityName = {
     singular: tLabel("post"),
@@ -340,7 +340,7 @@ export function PostForm() {
                           selectedIds={field.value ?? []}
                           onChange={field.onChange}
                           label={tLabel('products')}
-                          placeholder={tPlaceHolder('search_products')}
+                          placeholder={tPostPlaceHolder('search_products')}
                           noResults={tLabel('no_products_found')}
                         />
                       </FormControl>
