@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Transformers\User\OrderAddress\OrderAddressResource;
+use Modules\Order\Transformers\User\OrderItem\OrderItemResource;
 
 class OrderResource extends JsonResource
 {
@@ -23,7 +24,9 @@ class OrderResource extends JsonResource
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
             OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},
             OrderSchema::DISCOUNT_AMOUNT => $this->resource->{OrderSchema::DISCOUNT_AMOUNT},
+            OrderSchema::CREATED_AT => $this->resource->{OrderSchema::CREATED_AT},
             OrderSchema::RES_ADDRESSES => OrderAddressResource::collection($this->whenLoaded(OrderSchema::RES_ADDRESSES)),
+            OrderSchema::RES_ITEMS => OrderItemResource::collection($this->whenLoaded(OrderSchema::RES_ITEMS)),
         ];
     }
 }
