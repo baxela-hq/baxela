@@ -25,6 +25,9 @@ export const ticketSchema = z.object({
         user_id: z.number().optional(),
         sender: ticketSenderSchema,
         body: z.string(),
+        // resolved author identity (name preferred, email fallback)
+        author_name: z.string().nullable().optional(),
+        author_email: z.string().nullable().optional(),
         created_at: z.string(),
       })
     )

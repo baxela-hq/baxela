@@ -168,7 +168,7 @@ export function TicketShow() {
                           className={cn(
                             'max-w-[85%] rounded-md border p-4 text-sm',
                             staff
-                              ? 'ms-auto bg-muted/40'
+                              ? 'border-muted bg-muted/40'
                               : 'bg-background'
                           )}
                         >
@@ -176,6 +176,13 @@ export function TicketShow() {
                             <Badge variant='outline'>
                               {tLabel(`sender.${message.sender}`)}
                             </Badge>
+                            {staff ? (
+                              <span className='font-medium text-foreground'>
+                                {message.author_name ??
+                                  message.author_email ??
+                                  `#${message.user_id}`}
+                              </span>
+                            ) : null}
                             <span>
                               {formatDateTime(message.created_at)}
                             </span>
