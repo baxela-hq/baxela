@@ -1,0 +1,33 @@
+{
+  "texts": {
+    "anonymous": "Anonymous",
+    "comments_count": "{count, plural, one {# comment} other {# comments}}",
+    "empty_comments": "No comments yet. Be the first to share your thoughts."
+  },
+  "comments": {
+    "title": "Comments",
+    "form": {
+      "texts": {
+        "title": "Leave a comment"
+      },
+      "labels": {
+        "comment": "Comment"
+      },
+      "placeholders": {
+        "comment": "Write your comment…"
+      },
+      "actions": {
+        "submit": "Submit comment"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Your comment was submitted and will appear after approval."
+        },
+        "info": {
+          "login_required": "Please sign in to write a comment.",
+          "login_link": "Sign in"
+        }
+      }
+    }
+  }
+}

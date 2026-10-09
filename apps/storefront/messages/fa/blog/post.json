@@ -1,0 +1,33 @@
+{
+  "texts": {
+    "anonymous": "ناشناس",
+    "comments_count": "{count, plural, one {# دیدگاه} other {# دیدگاه}}",
+    "empty_comments": "هنوز دیدگاهی نیست. اولین نفر باشید."
+  },
+  "comments": {
+    "title": "دیدگاه‌ها",
+    "form": {
+      "texts": {
+        "title": "دیدگاه خود را بنویسید"
+      },
+      "labels": {
+        "comment": "دیدگاه"
+      },
+      "placeholders": {
+        "comment": "دیدگاه خود را بنویسید…"
+      },
+      "actions": {
+        "submit": "ارسال دیدگاه"
+      },
+      "messages": {
+        "success": {
+          "submitted": "دیدگاه شما ثبت شد و پس از تایید نمایش داده می‌شود."
+        },
+        "info": {
+          "login_required": "برای نوشتن دیدگاه وارد حساب خود شوید.",
+          "login_link": "ورود"
+        }
+      }
+    }
+  }
+}

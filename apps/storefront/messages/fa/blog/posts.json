@@ -1,0 +1,23 @@
+{
+  "texts": {
+    "title": "وبلاگ",
+    "subtitle": "اخبار، راهنماها و داستان‌های تیم بکسلا.",
+    "results_count": "نمایش {from} تا {to} از {total} نوشته",
+    "category_title": "نوشته‌های «{category}»",
+    "empty": "هنوز نوشته‌ای نیست. به زودی سر بزنید.",
+    "empty_category": "هنوز نوشته‌ای در این دسته‌بندی نیست."
+  },
+  "labels": {
+    "all_categories": "همه نوشته‌ها",
+    "categories": "دسته‌بندی‌ها"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "صفحه‌بندی وبلاگ"
+    },
+    "actions": {
+      "previous": "قبلی",
+      "next": "بعدی"
+    }
+  }
+}

@@ -104,6 +104,55 @@ export interface ApiCategoryRef {
   slug: string | null;
 }
 
+// Blog post category — public endpoint shape; title/slug arrive localized
+// via Accept-Language.
+export interface ApiPostCategory {
+  id: number;
+  parent_id: number | null;
+  position: number | null;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
+}
+
+// Gallery row attached to a post; position orders the gallery (first = cover).
+export interface ApiPostImage {
+  id: number;
+  media_id: number;
+  url: string;
+  collection: string | null;
+  position: number | null;
+}
+
+export interface ApiPost {
+  id: number;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
+  content: string | null;
+  // null means the post went live immediately; future dates never reach
+  // the public endpoints (scheduled publishing gates server-side).
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  categories?: ApiPostCategory[] | null;
+  images?: ApiPostImage[] | null;
+}
+
+// Approved comments with approved replies (one level deep).
+export interface ApiPostCommentUser {
+  id: number;
+  name: string | null;
+}
+
+export interface ApiPostComment {
+  id: number;
+  body: string;
+  created_at: string;
+  user: ApiPostCommentUser | null;
+  replies: ApiPostComment[];
+}
+
 // Product attribute row (specifications) — title and select values arrive
 // localized via Accept-Language; value is the raw scalar for text/number/
 // boolean attributes.

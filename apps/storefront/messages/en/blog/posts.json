@@ -1,0 +1,23 @@
+{
+  "texts": {
+    "title": "Blog",
+    "subtitle": "News, guides and stories from the Baxela team.",
+    "results_count": "Showing {from}–{to} of {total} posts",
+    "category_title": "Posts in “{category}”",
+    "empty": "No posts yet. Check back soon.",
+    "empty_category": "No posts in this category yet."
+  },
+  "labels": {
+    "all_categories": "All posts",
+    "categories": "Categories"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "Blog pagination"
+    },
+    "actions": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  }
+}
