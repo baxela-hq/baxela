@@ -4,9 +4,6 @@
       "title": "Dashboard"
     }
   },
-  "actions": {
-    "download": "Download"
-  },
   "top-nav": {
     "overview": "Overview",
     "customers": "Customers",
@@ -21,57 +18,46 @@
   },
   "stat-cards": {
     "total-revenue": "Total Revenue",
-    "total-revenue-change": "+20.1% from last month",
-    "subscriptions": "Subscriptions",
-    "subscriptions-change": "+180.1% from last month",
-    "sales": "Sales",
-    "sales-change": "+19% from last month",
-    "active-now": "Active Now",
-    "active-now-change": "+201 since last hour"
+    "total-revenue-change": "{{value}} vs last month",
+    "orders": "Orders",
+    "orders-change": "{{value}} vs last month",
+    "customers": "Customers",
+    "customers-change": "{{value}} vs last month",
+    "pending-orders": "Pending Orders",
+    "pending-orders-change": "Awaiting processing",
+    "no-change-data": "No data for last month"
   },
   "overview-card": "Overview",
-  "recent-sales": {
-    "title": "Recent Sales",
-    "description": "You made 265 sales this month."
+  "no-data": "No data available",
+  "recent-orders": {
+    "title": "Recent Orders",
+    "description": "The latest orders placed in your store",
+    "empty": "No orders yet"
   },
   "analytics": {
-    "traffic-overview": {
-      "title": "Traffic Overview",
-      "description": "Weekly clicks and unique visitors"
+    "orders-overview": {
+      "title": "Orders Overview",
+      "description": "Orders placed over the last 30 days"
     },
     "stat-cards": {
-      "total-clicks": "Total Clicks",
-      "total-clicks-change": "+12.4% vs last week",
-      "unique-visitors": "Unique Visitors",
-      "unique-visitors-change": "+5.8% vs last week",
-      "bounce-rate": "Bounce Rate",
-      "bounce-rate-change": "-3.2% vs last week",
-      "average-session": "Avg. Session",
-      "average-session-change": "+18s vs last week"
+      "avg-order-value": "Avg. Order Value",
+      "avg-order-value-caption": "Across paid orders",
+      "paid-orders": "Paid Orders",
+      "paid-orders-caption": "Across all orders",
+      "cancelled-orders": "Cancelled Orders",
+      "cancelled-orders-caption": "Across all orders",
+      "new-customers": "New Customers",
+      "new-customers-caption": "Joined this month"
     },
-    "referrers": {
-      "title": "Referrers",
-      "description": "Top sources driving traffic",
-      "direct": "Direct",
-      "product-hunt": "Product Hunt",
-      "twitter": "Twitter",
-      "blog": "Blog"
+    "orders-by-status": {
+      "title": "Orders by Status",
+      "description": "All orders grouped by status",
+      "empty": "No orders yet"
     },
-    "devices": {
-      "title": "Devices",
-      "description": "How users access your app",
-      "desktop": "Desktop",
-      "mobile": "Mobile",
-      "tablet": "Tablet"
-    },
-    "chart-days": {
-      "mon": "Mon",
-      "tue": "Tue",
-      "wed": "Wed",
-      "thu": "Thu",
-      "fri": "Fri",
-      "sat": "Sat",
-      "sun": "Sun"
+    "top-products": {
+      "title": "Top Products",
+      "description": "Best sellers by units sold",
+      "empty": "No sales yet"
     }
   }
 }
