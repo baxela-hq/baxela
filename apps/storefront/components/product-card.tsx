@@ -3,6 +3,7 @@ import { useFormatter } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import type { ApiProduct } from "@/lib/api/types";
+import SaleBadge from "@/components/sale-badge";
 
 export interface ProductCardProps {
   product: ApiProduct;
@@ -38,7 +39,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         <h3 className="text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
           {product.title}
         </h3>
-        <div className="mt-1 flex items-center justify-between">
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="text-sm font-semibold text-foreground">
             {product.price !== null
               ? format.number(Number(product.price), {
@@ -55,6 +56,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
               })}
             </span>
           ) : null}
+          <SaleBadge price={product.price} comparePrice={product.compare_price} />
         </div>
       </div>
     </Link>

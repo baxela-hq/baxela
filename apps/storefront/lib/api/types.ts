@@ -48,6 +48,8 @@ export interface ApiProduct {
   description: string | null;
   price: string | null;
   compare_price: string | null;
+  /** Present while an automatic promotion is applied to the product. */
+  promotion?: ApiPromotion | null;
   image_url: string | null;
   created_at: string;
 }
@@ -65,11 +67,26 @@ export interface ApiOptionValueRef {
   title: string | null;
 }
 
+/**
+ * An automatic promotion currently applied to a product: while present,
+ * price is the promoted price and compare_price the pre-sale base. Value
+ * semantics follow the backend: percent 20.00 == 20%, fixed is a
+ * major-unit amount per unit. Compute savings from the prices themselves
+ * (compare_price − price) so clamped fixed discounts never mislead.
+ */
+export interface ApiPromotion {
+  id: number;
+  type: "percent" | "fixed";
+  value: string;
+  ends_at: string | null;
+}
+
 export interface ApiVariant {
   id: number;
   sku: string;
   price: string;
   compare_price: string | null;
+  promotion?: ApiPromotion | null;
   is_default: boolean;
   option_values: ApiOptionValueRef[];
 }
@@ -105,6 +122,7 @@ export interface ApiProductDetail {
   content: string | null;
   price: string | null;
   compare_price: string | null;
+  promotion?: ApiPromotion | null;
   variants: ApiVariant[];
   images: ApiImage[];
   categories: ApiCategoryRef[];

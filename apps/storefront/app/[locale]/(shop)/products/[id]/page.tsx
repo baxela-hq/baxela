@@ -6,6 +6,7 @@ import { ProductActions } from "@/components/product-actions";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductTabs } from "@/components/product-tabs";
 import { StarSolidIcon } from "@/components/ui/icons";
+import SaleBadge from "@/components/sale-badge";
 import { serverApiGet } from "@/lib/api/server";
 import type {
   ApiProduct,
@@ -105,14 +106,28 @@ export default async function ProductPage({
                 })}
               </span>
             </div>
-            <p className="mt-4 text-2xl font-semibold text-foreground">
-              {product.price !== null
-                ? format.number(Number(product.price), {
+            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p className="text-2xl font-semibold text-foreground">
+                {product.price !== null
+                  ? format.number(Number(product.price), {
+                      style: "currency",
+                      currency: "USD",
+                    })
+                  : null}
+              </p>
+              {product.compare_price !== null ? (
+                <p className="text-lg text-secondary-text line-through rtl:normal-case rtl:tracking-normal">
+                  {format.number(Number(product.compare_price), {
                     style: "currency",
                     currency: "USD",
-                  })
-                : null}
-            </p>
+                  })}
+                </p>
+              ) : null}
+              <SaleBadge
+                price={product.price}
+                comparePrice={product.compare_price}
+              />
+            </div>
             {product.description ? (
               <p className="mt-4 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
                 {product.description}
