@@ -52,6 +52,11 @@ class Post extends Model
         return $this->hasMany(PostImage::class);
     }
 
+    public function seo(): HasMany
+    {
+        return $this->hasMany(PostSeoTranslation::class);
+    }
+
     public function comments(): HasMany
     {
         return $this->hasMany(PostComment::class);

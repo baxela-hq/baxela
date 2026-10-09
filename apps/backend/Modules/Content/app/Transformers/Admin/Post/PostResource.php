@@ -22,6 +22,7 @@ class PostResource extends JsonResource
             PostSchema::RES_TRANSLATIONS => PostTranslationResource::collection($this->whenLoaded(PostSchema::RES_TRANSLATIONS)),
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),
             PostSchema::RES_IMAGES => PostImageResource::collection($this->whenLoaded(PostSchema::RES_IMAGES)),
+            PostSchema::RES_SEO => PostSeoTranslationResource::collection($this->whenLoaded(PostSchema::RES_SEO)),
         ];
     }
 }

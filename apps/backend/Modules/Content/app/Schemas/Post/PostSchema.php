@@ -19,5 +19,7 @@ class PostSchema
 
     public const string RES_IMAGES = 'images';
 
+    public const string RES_SEO = 'seo';
+
     public const string RES_COMMENTS = 'comments';
 }

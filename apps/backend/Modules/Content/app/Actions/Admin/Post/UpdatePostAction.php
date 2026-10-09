@@ -10,6 +10,8 @@ use Throwable;
 
 class UpdatePostAction
 {
+    use FiltersPostSeoTrait;
+
     /**
      * @throws UpdateFailedException|Throwable
      */
@@ -30,6 +32,11 @@ class UpdatePostAction
                 $record->images()->create($image);
             }
 
+            $record->seo()->delete();
+            foreach ($this->filterPostSeo($data[PostSchema::RES_SEO] ?? []) as $seo) {
+                $record->seo()->create($seo);
+            }
+
             $record->translations()->delete();
             foreach ($data[PostSchema::RES_TRANSLATIONS] as $translation) {
                 $record->translations()->create($translation);
@@ -42,6 +49,6 @@ class UpdatePostAction
             throw new UpdateFailedException;
         }
 
-        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES);
+        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES, PostSchema::RES_SEO);
     }
 }

@@ -10,6 +10,8 @@ use Throwable;
 
 class CreatePostAction
 {
+    use FiltersPostSeoTrait;
+
     /**
      * @throws CreationFailedException|Throwable
      */
@@ -31,6 +33,10 @@ class CreatePostAction
                 $record->images()->create($image);
             }
 
+            foreach ($this->filterPostSeo($data[PostSchema::RES_SEO] ?? []) as $seo) {
+                $record->seo()->create($seo);
+            }
+
             DB::commit();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -40,6 +46,6 @@ class CreatePostAction
 
         $record = $record->refresh();
 
-        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES);
+        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES, PostSchema::RES_SEO);
     }
 }

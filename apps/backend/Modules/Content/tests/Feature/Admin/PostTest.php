@@ -5,6 +5,7 @@ use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
 use Modules\Content\Schemas\Post\PostImageSchema;
 use Modules\Content\Schemas\Post\PostSchema;
+use Modules\Content\Schemas\Post\PostSeoTranslationSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Tests\Feature\HelperTrait;
 use Tests\TestCase;
@@ -93,6 +94,27 @@ it('attaches images to a post and replaces them on update', function () {
 
     expect($post->images()->count())->toBe(1)
         ->and($post->images()->first()->{PostImageSchema::MEDIA_ID})->toBe(13);
+});
+
+it('stores seo per language, normalizing empty fields to null', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'seo' => [
+            ['language' => 'en', 'meta_title' => 'Welcome', 'meta_description' => '', 'open_graph_title' => null, 'open_graph_description' => null],
+        ],
+    ]))
+        ->assertCreated()
+        ->assertJsonCount(1, 'data.seo')
+        ->assertJsonPath('data.seo.0.meta_title', 'Welcome')
+        ->assertJsonPath('data.seo.0.meta_description', null)
+        ->json('data.id');
+
+    $post = Post::query()->find($postId);
+
+    expect($post->seo()->count())->toBe(1)
+        ->and($post->seo()->first()->{PostSeoTranslationSchema::META_TITLE})->toBe('Welcome')
+        ->and($post->seo()->first()->{PostSeoTranslationSchema::META_DESCRIPTION})->toBeNull();
 });
 
 it('updates a post and syncs its categories', function () {
