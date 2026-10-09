@@ -7,15 +7,21 @@ use Modules\Content\Schemas\Post\PostSchema;
 
 class ShowPostAction extends AbstractPostAction
 {
+    use EnrichesPostProductsTrait;
+
     public function handle(string $id): Model
     {
-        return $this->model
+        $record = $this->model
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES,
-                PostSchema::RES_IMAGES,
                 PostSchema::RES_SEO,
+                PostSchema::RES_PRODUCTS,
             ])
             ->findOrFail($id);
+
+        $this->enrichWithProductSummaries($record);
+
+        return $record;
     }
 }

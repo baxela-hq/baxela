@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Catalog\Models\Product;
 use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
-use Modules\Content\Schemas\Post\PostImageSchema;
+use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
@@ -33,7 +34,6 @@ function postPayload(array $overrides = []): array
     return array_merge([
         'status' => 'published',
         'categories' => null,
-        'images' => null,
         'translations' => [[
             'language' => 'en',
             'title' => 'Hello World',
@@ -59,41 +59,6 @@ it('creates a post with translations and categories as an admin', function () {
     expect($post)->not->toBeNull()
         ->and($post->translations()->count())->toBe(1)
         ->and($post->categories()->pluck(PostCategorySchema::ID)->all())->toBe([$category->id]);
-});
-
-it('attaches images to a post and replaces them on update', function () {
-    $this->actingAs($this->superAdminUser());
-
-    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
-        'images' => [
-            ['media_id' => 11, 'url' => 'https://cdn.test/cover.jpg', 'collection' => 'photos', 'position' => 1],
-            ['media_id' => 12, 'url' => 'https://cdn.test/gallery.jpg', 'collection' => 'photos', 'position' => 2],
-        ],
-    ]))
-        ->assertCreated()
-        ->assertJsonCount(2, 'data.images')
-        ->json('data.id');
-
-    $post = Post::query()->find($postId);
-
-    expect($post->images()->count())->toBe(2)
-        ->and($post->images()->pluck(PostImageSchema::MEDIA_ID)->all())->toBe([11, 12]);
-
-    $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
-        'images' => [
-            ['media_id' => 13, 'url' => 'https://cdn.test/new-cover.jpg', 'collection' => 'photos', 'position' => 1],
-        ],
-        'translations' => [[
-            'language' => 'en',
-            'title' => 'Hello World v2',
-            'slug' => 'hello-world-v2',
-            'content' => 'Rewritten content',
-            'description' => null,
-        ]],
-    ]))->assertOk()->assertJsonCount(1, 'data.images');
-
-    expect($post->images()->count())->toBe(1)
-        ->and($post->images()->first()->{PostImageSchema::MEDIA_ID})->toBe(13);
 });
 
 it('stores seo per language, normalizing empty fields to null', function () {
@@ -191,6 +156,50 @@ it('schedules a post by storing and clearing a publish date', function () {
     ]))->assertOk();
 
     expect($post->fresh()->{PostSchema::PUBLISHED_AT})->toBeNull();
+});
+
+it('attaches related products to a post and syncs them on update', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $first = Product::factory()->create();
+    $second = Product::factory()->create();
+    $third = Product::factory()->create();
+
+    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'products' => [$first->id, $second->id],
+    ]))
+        ->assertCreated()
+        ->assertJsonCount(2, 'data.products')
+        ->json('data.id');
+
+    $post = Post::query()->find($postId);
+
+    expect($post->products()->pluck(PostProductSchema::PRODUCT_ID)->all())
+        ->toBe([$first->id, $second->id]);
+
+    // slug must change on update: same-slug re-saves trip the per-language
+    // unique guard, so refreshes always carry a new slug
+    $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
+        'products' => [$third->id],
+        'translations' => [[
+            'language' => 'en',
+            'title' => 'Hello World v2',
+            'slug' => 'hello-world-v2',
+            'content' => 'Rewritten content',
+            'description' => null,
+        ]],
+    ]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data.products')
+        ->assertJsonPath('data.products.0.id', $third->id);
+
+    expect($post->products()->pluck(PostProductSchema::PRODUCT_ID)->all())
+        ->toBe([$third->id]);
+
+    // product ids are validated through the Catalog gateway
+    $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'products' => [999999],
+    ]))->assertStatus(422)->assertJsonPath('code', 'http.422');
 });
 
 it('deletes a post', function () {

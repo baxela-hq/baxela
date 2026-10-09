@@ -2,16 +2,16 @@
 
 namespace Modules\Content\Http\Requests\Admin\Post;
 
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Modules\Content\Schemas\Post\PostImageCollectionEnum;
-use Modules\Content\Schemas\Post\PostImageSchema as PISchema;
 use Modules\Content\Schemas\Post\PostSchema as PSchema;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema as PSTSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema as PCSchema;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
 
@@ -40,12 +40,14 @@ class PostRequest extends FormRequest
             PSchema::RES_CATEGORIES => ['nullable', 'array'],
             PSchema::RES_CATEGORIES.'.*' => ['integer'],
 
-            // images
-            PSchema::RES_IMAGES => ['nullable', 'array', 'min:1'],
-            PSchema::RES_IMAGES.'.*.'.PISchema::POSITION => ['nullable', 'numeric', 'max:255'],
-            PSchema::RES_IMAGES.'.*.'.PISchema::COLLECTION => ['nullable', new Enum(PostImageCollectionEnum::class)],
-            PSchema::RES_IMAGES.'.*.'.PISchema::MEDIA_ID => ['required', 'integer'],
-            PSchema::RES_IMAGES.'.*.'.PISchema::URL => ['required', 'string'],
+            // related products: referenceability is checked through the
+            // Catalog gateway so this module never touches Catalog's tables
+            PSchema::RES_PRODUCTS => ['nullable', 'array'],
+            PSchema::RES_PRODUCTS.'.*' => ['integer', function (string $attribute, mixed $value, Closure $fail) {
+                if (! app(CatalogGatewayInterface::class)->productExists((int) $value)) {
+                    $fail('The product does not exist.');
+                }
+            }],
 
             // seo
             PSchema::RES_SEO => ['nullable', 'array'],

@@ -49,9 +49,9 @@ class Post extends Model
             PostCategoryPostSchema::POST_ID, PostCategoryPostSchema::POST_CATEGORY_ID);
     }
 
-    public function images(): HasMany
+    public function products(): HasMany
     {
-        return $this->hasMany(PostImage::class);
+        return $this->hasMany(PostProduct::class);
     }
 
     public function seo(): HasMany

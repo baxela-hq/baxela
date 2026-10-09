@@ -19,7 +19,7 @@ class PostSchema
 
     public const string RES_CATEGORIES = 'categories';
 
-    public const string RES_IMAGES = 'images';
+    public const string RES_PRODUCTS = 'products';
 
     public const string RES_SEO = 'seo';
 

@@ -5,11 +5,13 @@ namespace Modules\Content\Actions\Admin\Post;
 use Illuminate\Support\Facades\DB;
 use Modules\Content\Exceptions\Post\CreationFailedException;
 use Modules\Content\Models\Post;
+use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Throwable;
 
 class CreatePostAction
 {
+    use EnrichesPostProductsTrait;
     use FiltersPostSeoTrait;
 
     /**
@@ -30,12 +32,12 @@ class CreatePostAction
                 $record->translations()->create($translation);
             }
 
-            foreach ($data[PostSchema::RES_IMAGES] ?? [] as $image) {
-                $record->images()->create($image);
-            }
-
             foreach ($this->filterPostSeo($data[PostSchema::RES_SEO] ?? []) as $seo) {
                 $record->seo()->create($seo);
+            }
+
+            foreach ($data[PostSchema::RES_PRODUCTS] ?? [] as $productId) {
+                $record->products()->create([PostProductSchema::PRODUCT_ID => $productId]);
             }
 
             DB::commit();
@@ -47,6 +49,9 @@ class CreatePostAction
 
         $record = $record->refresh();
 
-        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES, PostSchema::RES_SEO);
+        $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_SEO, PostSchema::RES_PRODUCTS);
+        $this->enrichWithProductSummaries($record);
+
+        return $record;
     }
 }

@@ -33,7 +33,6 @@ class PostResource extends JsonResource
             PostSchema::CREATED_AT => $this->resource->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->resource->{PostSchema::UPDATED_AT},
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),
-            PostSchema::RES_IMAGES => PostImageResource::collection($this->whenLoaded(PostSchema::RES_IMAGES)),
         ];
     }
 }
