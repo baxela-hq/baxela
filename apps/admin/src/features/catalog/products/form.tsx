@@ -23,6 +23,7 @@ import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
 import { Search } from '@/components/search';
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor';
+import { SerpPreview } from '@/components/serp-preview';
 import { cn } from '@/lib/utils';
 import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
 import { type MediaItem, getMediaUrl } from '@/features/media/data/schema';
@@ -975,6 +976,23 @@ export function ProductForm() {
 
                     {languagesSafe.map((language, index) => (
                       <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                        <div className='space-y-2'>
+                          <p className='text-sm font-medium text-muted-foreground'>
+                            {tLabel('serp_preview')}
+                          </p>
+                          <SerpPreview
+                            title={
+                              form.watch(`seo.${index}.meta_title`) ||
+                              form.watch(`translations.${index}.title`)
+                            }
+                            description={
+                              form.watch(`seo.${index}.meta_description`) ||
+                              form.watch(`translations.${index}.description`)
+                            }
+                            url={`${import.meta.env.VITE_STORE_FRONT_URL}/product/${language.code}/${form.watch(`translations.${index}.slug`) || ''}`}
+                          />
+                        </div>
+
                         <FormField
                           control={form.control}
                           name={`seo.${index}.meta_title`}
