@@ -28,6 +28,7 @@ use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Exceptions\Discount\RedemptionRefusedException;
 use Modules\Core\Utils\Auth;
+use RuntimeException;
 
 class CheckoutAction
 {
@@ -160,6 +161,10 @@ class CheckoutAction
         }
 
         if (! $orderCode) {
+            // createFromCart refused without throwing and nothing else
+            // records why — report before the safe envelope swallows it.
+            report(new RuntimeException('order gateway returned no order code'));
+
             throw new OrderFailedException;
         }
 

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Modules\Core\Exceptions\BaseException;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -18,6 +19,14 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Domain exceptions are expected client outcomes (invalid OTP,
+        // invalid credentials, ...) already rendered as a safe envelope;
+        // reporting them only floods the log with stack traces. 5xx domain
+        // failures and unexpected exceptions still report.
+        $exceptions->dontReportWhen(function (Throwable $e): bool {
+            return $e instanceof BaseException && $e->httpStatus < 500;
+        });
+
         $exceptions->render(function (Throwable $e, $request) {
 
             if (! $request->expectsJson()) {

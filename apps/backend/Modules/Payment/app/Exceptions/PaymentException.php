@@ -3,6 +3,7 @@
 namespace Modules\Payment\Exceptions;
 
 use Modules\Core\Exceptions\BaseException;
+use RuntimeException;
 
 class PaymentException extends BaseException
 {
@@ -23,6 +24,12 @@ class PaymentException extends BaseException
 
     public static function gatewayUnconfigured(): PaymentException
     {
+        // A gateway without credentials is a server-side configuration
+        // problem, not a client error — the 400 envelope this returns is
+        // exempt from reporting, so surface the misconfiguration here; the
+        // trace names the gateway client that hit it.
+        report(new RuntimeException('payment gateway is not configured'));
+
         return new self(ErrorCodeEnum::PROCESS_GATEWAY_UNCONFIGURED->value);
     }
 
