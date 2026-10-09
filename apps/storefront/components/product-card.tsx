@@ -5,8 +5,15 @@ import { Link } from "@/i18n/navigation";
 import type { ApiProduct } from "@/lib/api/types";
 import SaleBadge from "@/components/sale-badge";
 
+// Only the card-relevant fields are required so lighter product shapes
+// (e.g. gateway summaries on blog posts) can render through this card too.
+export type ProductCardProduct = Pick<
+  ApiProduct,
+  "id" | "title" | "slug" | "price" | "compare_price" | "image_url"
+>;
+
 export interface ProductCardProps {
-  product: ApiProduct;
+  product: ProductCardProduct;
   className?: string;
 }
 

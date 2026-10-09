@@ -4,6 +4,9 @@
     "comments_count": "{count, plural, one {# comment} other {# comments}}",
     "empty_comments": "No comments yet. Be the first to share your thoughts."
   },
+  "related_products": {
+    "title": "Related Products"
+  },
   "comments": {
     "title": "Comments",
     "form": {

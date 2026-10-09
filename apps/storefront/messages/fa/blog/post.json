@@ -4,6 +4,9 @@
     "comments_count": "{count, plural, one {# دیدگاه} other {# دیدگاه}}",
     "empty_comments": "هنوز دیدگاهی نیست. اولین نفر باشید."
   },
+  "related_products": {
+    "title": "محصولات مرتبط"
+  },
   "comments": {
     "title": "دیدگاه‌ها",
     "form": {

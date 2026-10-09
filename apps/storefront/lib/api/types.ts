@@ -115,13 +115,15 @@ export interface ApiPostCategory {
   description: string | null;
 }
 
-// Gallery row attached to a post; position orders the gallery (first = cover).
-export interface ApiPostImage {
+// Related product attached to a post; comes from the Catalog gateway
+// (published products only), shaped like a card-ready ApiProduct subset.
+export interface ApiRelatedProduct {
   id: number;
-  media_id: number;
-  url: string;
-  collection: string | null;
-  position: number | null;
+  title: string | null;
+  slug: string | null;
+  price: string | null;
+  compare_price: string | null;
+  image_url: string | null;
 }
 
 export interface ApiPost {
@@ -136,7 +138,7 @@ export interface ApiPost {
   created_at: string;
   updated_at: string;
   categories?: ApiPostCategory[] | null;
-  images?: ApiPostImage[] | null;
+  products?: ApiRelatedProduct[] | null;
 }
 
 // Approved comments with approved replies (one level deep).

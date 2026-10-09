@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
 import NotFoundContent from "@/components/not-found-content";
 import { PostComments } from "@/components/blog/post-comments";
+import ProductCard from "@/components/product-card";
 import { serverApiGet } from "@/lib/api/server";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { ApiPost, ApiPostComment, Paginated } from "@/lib/api/types";
@@ -24,10 +25,6 @@ export async function generateMetadata({
       ? {
           title: post.title ?? undefined,
           description: post.description ?? undefined,
-          images: [...(post.images ?? [])]
-            .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-            .slice(0, 1)
-            .map((image) => ({ url: image.url })),
         }
       : undefined,
   };
@@ -37,8 +34,9 @@ export default async function BlogPostPage({
   params,
 }: PageProps<"/[locale]/blog/[slug]">) {
   const { slug } = await params;
-  const [tLayout, format] = await Promise.all([
+  const [tLayout, tRelated, format] = await Promise.all([
     getTranslations("shared.layout"),
+    getTranslations("blog.post.related_products"),
     getFormatter(),
   ]);
 
@@ -57,9 +55,6 @@ export default async function BlogPostPage({
 
   const comments = commentsPage?.data ?? [];
   const commentsTotal = commentsPage?.meta.total ?? 0;
-  const cover = [...(post.images ?? [])]
-    .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
-    .at(0);
   const date = post.published_at ?? post.created_at;
   const postPath = `/blog/${post.slug ?? post.id}`;
 
@@ -122,19 +117,6 @@ export default async function BlogPostPage({
           </p>
         </header>
 
-        {cover ? (
-          <div className="mt-8 overflow-hidden rounded-default border border-border-light">
-            {/* Backend-served images from arbitrary hosts — next/image would
-                need remotePatterns for every storage host, so use a plain img. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cover.url}
-              alt={post.title ?? ""}
-              className="aspect-video w-full object-cover"
-            />
-          </div>
-        ) : null}
-
         {post.content ? (
           // Backend-authored rich content (admin Tiptap editor / translations),
           // sanitized before rendering to prevent stored XSS.
@@ -144,6 +126,19 @@ export default async function BlogPostPage({
           />
         ) : null}
       </article>
+
+      {post.products && post.products.length > 0 ? (
+        <section className="mx-auto max-w-3xl px-6 pb-4">
+          <h2 className="text-2xl font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
+            {tRelated("title")}
+          </h2>
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
+            {post.products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <PostComments
         postId={post.id}
