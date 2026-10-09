@@ -2,11 +2,10 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 import { cn } from '@/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { statusBadgeVariants } from '../data/data'
+import { statusIcons } from '../data/data'
 import { Locales } from '../data/routes'
 import { type Ticket, type TicketStatus } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
@@ -105,13 +104,14 @@ export const Columns = (): ColumnDef<Ticket>[] => {
         <DataTableColumnHeader column={column} title={tLabel('status')} />
       ),
       cell: ({ row }) => {
-        const { status } = row.original
-        const badgeColor = statusBadgeVariants.get(status as TicketStatus)
+        const status = row.getValue<string>('status')
+        const StatusIcon = statusIcons.get(status as TicketStatus)
         return (
-          <div className='flex space-x-2'>
-            <Badge variant='outline' className={cn(badgeColor)}>
-              {tStatus(`status.${row.getValue('status')}`)}
-            </Badge>
+          <div className='flex w-fit items-center gap-2 text-nowrap'>
+            {StatusIcon && (
+              <StatusIcon className='size-4 text-muted-foreground' />
+            )}
+            <span>{tStatus(`status.${status}`)}</span>
           </div>
         )
       },
