@@ -32,8 +32,17 @@ return new class extends Migration
             $table->string(PostCategoryTranslationSchema::DESCRIPTION)->nullable();
             $table->timestamps();
 
-            $table->unique([PostCategoryTranslationSchema::POST_CATEGORY_ID, PostCategoryTranslationSchema::LANGUAGE_ID]);
-            $table->unique([PostCategoryTranslationSchema::LANGUAGE_ID, PostCategoryTranslationSchema::SLUG]);
+            // Laravel's generated index name exceeds MySQL's 64-char
+            // identifier limit on this table, so both uniques are named
+            // explicitly.
+            $table->unique(
+                [PostCategoryTranslationSchema::POST_CATEGORY_ID, PostCategoryTranslationSchema::LANGUAGE_ID],
+                'content_post_cat_trans_cat_lang_unique'
+            );
+            $table->unique(
+                [PostCategoryTranslationSchema::LANGUAGE_ID, PostCategoryTranslationSchema::SLUG],
+                'content_post_cat_trans_lang_slug_unique'
+            );
         });
 
         Schema::create(PostCategoryPostSchema::TABLE, function (Blueprint $table) {
