@@ -18,4 +18,9 @@ class TicketMessageSchema
     public const string SENDER = 'sender';
 
     public const string BODY = 'body';
+
+    /** Response-only: author display name / email, resolved through gateways. */
+    public const string RES_AUTHOR_NAME = 'author_name';
+
+    public const string RES_AUTHOR_EMAIL = 'author_email';
 }

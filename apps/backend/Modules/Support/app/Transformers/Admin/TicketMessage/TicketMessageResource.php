@@ -19,6 +19,10 @@ class TicketMessageResource extends JsonResource
             TicketMessageSchema::USER_ID => $this->{TicketMessageSchema::USER_ID},
             TicketMessageSchema::SENDER => $this->{TicketMessageSchema::SENDER},
             TicketMessageSchema::BODY => $this->{TicketMessageSchema::BODY},
+            // Runtime-only attributes attached by the show action; null when
+            // the author no longer resolves.
+            TicketMessageSchema::RES_AUTHOR_NAME => $this->resource->getAttribute(TicketMessageSchema::RES_AUTHOR_NAME),
+            TicketMessageSchema::RES_AUTHOR_EMAIL => $this->resource->getAttribute(TicketMessageSchema::RES_AUTHOR_EMAIL),
             TicketMessageSchema::CREATED_AT => $this->{TicketMessageSchema::CREATED_AT},
         ];
     }
