@@ -2,6 +2,7 @@ import { type LinkProps, Link } from '@tanstack/react-router'
 import { Bell, CreditCard, Inbox, Package, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
+import { resolveNotificationTarget } from '../data/notification-targets'
 import { type Notification } from '../data/schema'
 
 const CODE_ICONS = {
@@ -27,9 +28,10 @@ interface NotificationItemProps {
 
 /**
  * One inbox row. Titles/bodies arrive pre-localized from the API; rows
- * carrying an order code deep-link into the orders list filtered by it.
- * Passing `to` overrides both — the header menu rows link to the
- * notifications center instead of marking read on click.
+ * whose meta resolves to an entity (ticket, order) deep-link to its
+ * admin page and are marked read on click. Passing `to` overrides
+ * both — the header menu rows link to the notifications center, where
+ * the admin reads the full message before following the link.
  */
 export function NotificationItem({
   notification,
@@ -39,7 +41,7 @@ export function NotificationItem({
 }: NotificationItemProps) {
   const { formatDateTime } = useFormatDateTime()
   const unread = notification.read_at === null
-  const orderCode = notification.meta?.order_code
+  const target = resolveNotificationTarget(notification)
 
   const content = (
     <>
@@ -88,11 +90,12 @@ export function NotificationItem({
     )
   }
 
-  if (orderCode) {
+  if (target) {
     return (
       <Link
-        to='/order/orders'
-        search={{ 'filter[order_code]': orderCode }}
+        to={target.to}
+        params={'params' in target ? target.params : undefined}
+        search={'search' in target ? target.search : undefined}
         className={className}
         onClick={() => unread && onRead?.(notification.id)}
       >

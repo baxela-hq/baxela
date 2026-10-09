@@ -8,6 +8,8 @@ export const notificationSchema = z.object({
   meta: z
     .object({
       order_code: z.string().optional(),
+      order_id: z.number().nullish(),
+      ticket_id: z.number().nullish(),
       reason: z.string().nullish(),
     })
     .nullish(),
