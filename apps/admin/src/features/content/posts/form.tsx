@@ -104,6 +104,7 @@ export function PostForm() {
 
   const tabForField = (field: string): string => {
     if (field === 'images' || field.startsWith('images')) return 'images';
+    if (field === 'seo' || field.startsWith('seo')) return 'seo';
     if (field === 'status') return 'publish';
     if (field === 'categories') return 'categories';
     return 'general';
@@ -203,6 +204,7 @@ export function PostForm() {
                 <TabsTrigger value="general">{tLabel('general')}</TabsTrigger>
                 <TabsTrigger value="images">{tLabel('images')}</TabsTrigger>
                 <TabsTrigger value="categories">{tLabel('categories')}</TabsTrigger>
+                <TabsTrigger value="seo">{tLabel('seo')}</TabsTrigger>
                 <TabsTrigger value="publish">{tLabel('publish')}</TabsTrigger>
               </TabsList>
               <TabsContent value="general" className="pt-5 pb-5">
@@ -490,6 +492,107 @@ export function PostForm() {
                     </FormItem>
                   )}
                 />
+              </TabsContent>
+              <TabsContent value="seo" className="pt-5 pb-5">
+                {languagesIsLoading && (
+                  <div className='py-8 text-center text-sm text-muted-foreground'>
+                    {tMessage('info.loading')}
+                  </div>
+                )}
+
+                {!languagesIsLoading && languagesSafe.length > 0 && (
+                  <Tabs defaultValue={languagesSafe[0]?.code} className='w-full'>
+                    <TabsList>
+                      {languagesSafe.map((language) => (
+                        <TabsTrigger key={language.code} value={language.code}>
+                          {language.name}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+
+                    {languagesSafe.map((language, index) => (
+                      <TabsContent key={language.code} value={language.code} className='space-y-4'>
+                        <FormField
+                          control={form.control}
+                          name={`seo.${index}.meta_title`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2 mb-5'>
+                              <FormLabel htmlFor={`meta-title-${language.code}`}>{tLabel('meta_title')}</FormLabel>
+                              <FormControl>
+                                <Input
+                                  id={`meta-title-${language.code}`}
+                                  placeholder={tPlaceHolder('input')}
+                                  {...field}
+                                  value={field.value ?? ''}
+                                  maxLength={255}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name={`seo.${index}.meta_description`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2 mb-5'>
+                              <FormLabel htmlFor={`meta-description-${language.code}`}>{tLabel('meta_description')}</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  id={`meta-description-${language.code}`}
+                                  placeholder={tPlaceHolder('textarea')}
+                                  {...field}
+                                  value={field.value ?? ''}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name={`seo.${index}.open_graph_title`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2 mb-5'>
+                              <FormLabel htmlFor={`open-graph-title-${language.code}`}>{tLabel('open_graph_title')}</FormLabel>
+                              <FormControl>
+                                <Input
+                                  id={`open-graph-title-${language.code}`}
+                                  placeholder={tPlaceHolder('input')}
+                                  {...field}
+                                  value={field.value ?? ''}
+                                  maxLength={255}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name={`seo.${index}.open_graph_description`}
+                          render={({ field }) => (
+                            <FormItem className='grid gap-2 mb-5'>
+                              <FormLabel htmlFor={`open-graph-description-${language.code}`}>{tLabel('open_graph_description')}</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  id={`open-graph-description-${language.code}`}
+                                  placeholder={tPlaceHolder('textarea')}
+                                  {...field}
+                                  value={field.value ?? ''}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
+                    ))}
+                  </Tabs>
+                )}
               </TabsContent>
               <TabsContent value="publish" className="pt-5 pb-5">
 
