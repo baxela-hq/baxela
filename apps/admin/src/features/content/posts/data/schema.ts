@@ -53,6 +53,7 @@ export const postSchema = z.object({
   id: z.number(),
   translations: z.array(translationSchema),
   status: z.string(),
+  published_at: z.string().nullable(),
   categories: z.array(postCategoryRefSchema).optional(),
   // absent on list rows (only the show endpoint eager-loads it)
   images: z.array(postImageSchema).optional(),
@@ -65,6 +66,8 @@ export type Post = z.infer<typeof postSchema>
 
 export const formSchema = z.object({
   status: _postStatusSchema,
+  // Date in the form, ISO string over the wire (see PostPayload)
+  published_at: z.date().nullable(),
   categories: z.array(z.number()),
   images: z.array(postImageSchema),
   seo: z.array(postSeoTranslationSchema),
@@ -72,9 +75,14 @@ export const formSchema = z.object({
 })
 export type PostForm = z.infer<typeof formSchema>
 
+export type PostPayload = Omit<PostForm, 'published_at'> & {
+  published_at: string | null
+}
+
 export function buildDefaultValues(languages: Language[]): PostForm {
   return {
     status: '',
+    published_at: null,
     categories: [],
     images: [],
     seo: languages.map((language, index) => ({
@@ -117,6 +125,7 @@ export function buildEditValues(
 
   return {
     status: currentRow.status,
+    published_at: currentRow.published_at ? new Date(currentRow.published_at) : null,
     categories: currentRow.categories?.map((category) => category.id) ?? [],
     images: [...(currentRow.images ?? [])],
     seo: base.seo.map((baseSeo, index) => {

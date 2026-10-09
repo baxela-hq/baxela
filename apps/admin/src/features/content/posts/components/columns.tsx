@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/data-table';
 import { LongText } from '@/components/long-text';
 import { statusBadgeVariants } from '../data/data';
-import { type Post, type PostStatus, type TranslationForm } from '../data/schema';
+import { type Post, type TranslationForm } from '../data/schema';
 import { DataTableRowActions } from './data-table-row-actions';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Locales } from '../data/routes';
@@ -99,12 +99,18 @@ export const Columns = (): ColumnDef<Post>[] => {
         <DataTableColumnHeader column={column} title={tLabel('status')} />
       ),
       cell: ({ row }) => {
-        const { status } = row.original
-        const badgeColor = statusBadgeVariants.get(status as PostStatus)
+        const { status, published_at } = row.original
+        // derived display state: a published post with a future publish
+        // date is still hidden publicly — show it as scheduled
+        const isScheduled =
+          status === 'published' &&
+          published_at !== null &&
+          new Date(published_at) > new Date()
+        const badgeColor = statusBadgeVariants.get(isScheduled ? 'scheduled' : status)
         return (
           <div className='flex space-x-2'>
             <Badge variant='outline' className={cn(badgeColor)}>
-              {tStatus(`status.${row.getValue('status')}`)}
+              {isScheduled ? tStatus('status.scheduled') : tStatus(`status.${status}`)}
             </Badge>
           </div>
         )
@@ -114,6 +120,22 @@ export const Columns = (): ColumnDef<Post>[] => {
       },
       enableHiding: false,
       enableSorting: false,
+    },
+    {
+      accessorKey: 'published_at',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('publish_date')} />
+      ),
+      cell: ({ row }) => {
+        const value = row.getValue<string | null>('published_at')
+        return (
+          <div className='w-fit ps-2 text-nowrap'>
+            {value ? formatDateTime(value) : '—'}
+          </div>
+        )
+      },
+      enableSorting: false,
+      enableHiding: true,
     },
     {
       accessorKey: 'created_at',

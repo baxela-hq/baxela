@@ -10,7 +10,7 @@ import {
   updatePost,
 } from '../api/posts.api'
 import { FeatureRoutes, Locales } from '../data/routes'
-import { type Post, type PostForm } from '../data/schema'
+import { type Post, type PostPayload } from '../data/schema'
 
 /**
  * Create or update a post (full-page form). Returns the saved post so the
@@ -22,7 +22,7 @@ export function useSavePost() {
   const { tLabel } = useAppTranslation(Locales.POST)
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number | null; data: PostForm }) =>
+    mutationFn: ({ id, data }: { id: number | null; data: PostPayload }) =>
       id ? updatePost(id.toString(), data) : createPost(data),
     onSuccess: (post, { id }) => {
       toast.success(

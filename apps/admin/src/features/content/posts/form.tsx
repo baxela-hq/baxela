@@ -28,7 +28,8 @@ import { fetchOnePost } from './api/posts.api.ts';
 import { useSavePost } from './hooks/use-post-mutations';
 import { usePostCategoryTree } from '@/features/content/post-categories/hooks/use-post-categories'
 import { Provider } from './components/provider.tsx';
-import { formSchema, statuses, IMAGE_COLLECTION, buildDefaultValues, buildEditValues, type PostForm, type Post } from './data/schema';
+import { formSchema, statuses, IMAGE_COLLECTION, buildDefaultValues, buildEditValues, type Post } from './data/schema';
+import { UtcDatePicker } from '@/features/discount/coupons/components/utc-date-picker';
 import { HeaderActions } from '@/components/layout/header-actions'
 
 
@@ -104,7 +105,7 @@ export function PostForm() {
   const tabForField = (field: string): string => {
     if (field === 'images' || field.startsWith('images')) return 'images';
     if (field === 'seo' || field.startsWith('seo')) return 'seo';
-    if (field === 'status') return 'publish';
+    if (field === 'status' || field === 'published_at') return 'publish';
     if (field === 'categories') return 'categories';
     return 'general';
   }
@@ -130,7 +131,11 @@ export function PostForm() {
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    const postRequest: PostForm = values
+    // the form holds a Date; the API takes an ISO instant or null
+    const postRequest = {
+      ...values,
+      published_at: values.published_at ? values.published_at.toISOString() : null,
+    }
     savePost.mutate(
       { id, data: postRequest },
       {
@@ -637,6 +642,28 @@ export function PostForm() {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Publish Date Field */}
+                <FormField
+                  control={form.control}
+                  name='published_at'
+                  render={({ field }) => (
+                    <FormItem className='mt-6'>
+                      <FormLabel>{tLabel('publish_date')}</FormLabel>
+                      <FormControl>
+                        <UtcDatePicker
+                          selected={field.value ?? undefined}
+                          onSelect={(date) => field.onChange(date ?? null)}
+                          placeholder={tLabel('publish_date')}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {tHelpText('publish_date')}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
