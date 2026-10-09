@@ -15,15 +15,6 @@ function truncate(value: string, limit: number): string {
   return `${value.slice(0, limit).trimEnd()}…`
 }
 
-function parseUrl(url: string | null | undefined, fallbackHost: string) {
-  try {
-    const parsed = new URL(url ?? '')
-    return { host: parsed.hostname, path: parsed.pathname }
-  } catch {
-    return { host: fallbackHost, path: '' }
-  }
-}
-
 /**
  * Read-only Google search-result preview: renders how the page's title,
  * url and meta description would appear in the search results, honoring
@@ -31,14 +22,14 @@ function parseUrl(url: string | null | undefined, fallbackHost: string) {
  */
 export function SerpPreview({ title, description, url, siteName }: SerpPreviewProps) {
   const storeUrl: string = import.meta.env.VITE_STORE_FRONT_URL ?? ''
-  let fallbackHost = storeUrl
+  let host = storeUrl
   try {
-    fallbackHost = new URL(storeUrl).hostname
+    host = new URL(storeUrl).hostname
   } catch {
-    fallbackHost = storeUrl
+    host = storeUrl
   }
 
-  const { host, path } = parseUrl(url, fallbackHost)
+  const displayUrl = (url ?? '').trim() || storeUrl
 
   const trimmedTitle = (title ?? '').trim()
   const trimmedDescription = (description ?? '').trim()
@@ -53,10 +44,10 @@ export function SerpPreview({ title, description, url, siteName }: SerpPreviewPr
           {siteName ?? host}
         </span>
       </div>
-      {/* urls are always LTR, even when the admin UI is RTL */}
-      <div dir='ltr' className='truncate text-xs leading-4 text-[#4d5156] dark:text-[#bdc1c6]'>
-        {host}
-        {path ? ` › ${path}` : ''}
+      {/* the full post url, green like Google's result links; urls are
+          always LTR, even when the admin UI is RTL */}
+      <div dir='ltr' className='truncate text-xs leading-5 text-[#006621] dark:text-[#57c978]'>
+        {displayUrl}
       </div>
       <p className='text-base leading-6 text-[#1a0dab] dark:text-[#8ab4f8]'>
         {trimmedTitle ? truncate(trimmedTitle, TITLE_LIMIT) : '—'}
