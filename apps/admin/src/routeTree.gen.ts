@@ -45,6 +45,7 @@ import { Route as AuthenticatedPaymentMethodsIndexRouteImport } from './routes/_
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
 import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
+import { Route as AuthenticatedDiscountPromotionsIndexRouteImport } from './routes/_authenticated/discount/promotions/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
 import { Route as AuthenticatedContactNewsletterSubscribersIndexRouteImport } from './routes/_authenticated/contact/newsletter-subscribers/index'
@@ -56,6 +57,7 @@ import { Route as AuthenticatedCatalogFeaturedIndexRouteImport } from './routes/
 import { Route as AuthenticatedCatalogDataIndexRouteImport } from './routes/_authenticated/catalog/data/index'
 import { Route as AuthenticatedCatalogCategoriesIndexRouteImport } from './routes/_authenticated/catalog/categories/index'
 import { Route as AuthenticatedCatalogAttributesIndexRouteImport } from './routes/_authenticated/catalog/attributes/index'
+import { Route as AuthenticatedDiscountPromotionsCreateRouteImport } from './routes/_authenticated/discount/promotions/create'
 import { Route as AuthenticatedContentPagesCreateRouteImport } from './routes/_authenticated/content/pages/create'
 import { Route as AuthenticatedCatalogProductsCreateRouteImport } from './routes/_authenticated/catalog/products/create'
 import { Route as AuthenticatedCatalogAttributesTemplatesRouteImport } from './routes/_authenticated/catalog/attributes/templates'
@@ -64,6 +66,7 @@ import { Route as AuthenticatedMenuMenuLinksIdIndexRouteImport } from './routes/
 import { Route as AuthenticatedCatalogOptionValuesIdIndexRouteImport } from './routes/_authenticated/catalog/option-values/$id/index'
 import { Route as AuthenticatedSupportTicketsIdShowRouteImport } from './routes/_authenticated/support/tickets/$id/show'
 import { Route as AuthenticatedOrderOrdersIdShowRouteImport } from './routes/_authenticated/order/orders/$id/show'
+import { Route as AuthenticatedDiscountPromotionsIdEditRouteImport } from './routes/_authenticated/discount/promotions/$id/edit'
 import { Route as AuthenticatedContentPagesIdEditRouteImport } from './routes/_authenticated/content/pages/$id/edit'
 import { Route as AuthenticatedCatalogProductsIdEditRouteImport } from './routes/_authenticated/catalog/products/$id/edit'
 import { Route as AuthenticatedCatalogAttributesValuesIdIndexRouteImport } from './routes/_authenticated/catalog/attributes/values/$id/index'
@@ -269,6 +272,12 @@ const AuthenticatedInventoryInventoryStocksIndexRoute =
     path: '/inventory/inventory-stocks/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDiscountPromotionsIndexRoute =
+  AuthenticatedDiscountPromotionsIndexRouteImport.update({
+    id: '/discount/promotions/',
+    path: '/discount/promotions/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedDiscountCouponsIndexRoute =
   AuthenticatedDiscountCouponsIndexRouteImport.update({
     id: '/discount/coupons/',
@@ -335,6 +344,12 @@ const AuthenticatedCatalogAttributesIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedCatalogAttributesRouteRoute,
   } as any)
+const AuthenticatedDiscountPromotionsCreateRoute =
+  AuthenticatedDiscountPromotionsCreateRouteImport.update({
+    id: '/discount/promotions/create',
+    path: '/discount/promotions/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesCreateRoute =
   AuthenticatedContentPagesCreateRouteImport.update({
     id: '/content/pages/create',
@@ -383,6 +398,12 @@ const AuthenticatedOrderOrdersIdShowRoute =
     path: '/order/orders/$id/show',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDiscountPromotionsIdEditRoute =
+  AuthenticatedDiscountPromotionsIdEditRouteImport.update({
+    id: '/discount/promotions/$id/edit',
+    path: '/discount/promotions/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesIdEditRoute =
   AuthenticatedContentPagesIdEditRouteImport.update({
     id: '/content/pages/$id/edit',
@@ -429,6 +450,7 @@ export interface FileRoutesByFullPath {
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/catalog/data': typeof AuthenticatedCatalogDataIndexRoute
@@ -440,6 +462,7 @@ export interface FileRoutesByFullPath {
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
@@ -455,6 +478,7 @@ export interface FileRoutesByFullPath {
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
   '/catalog/option-values/$id': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
@@ -486,6 +510,7 @@ export interface FileRoutesByTo {
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes': typeof AuthenticatedCatalogAttributesIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/catalog/data': typeof AuthenticatedCatalogDataIndexRoute
@@ -497,6 +522,7 @@ export interface FileRoutesByTo {
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
@@ -512,6 +538,7 @@ export interface FileRoutesByTo {
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
   '/catalog/option-values/$id': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
@@ -547,6 +574,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/_authenticated/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/_authenticated/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/_authenticated/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/_authenticated/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
   '/_authenticated/catalog/categories/': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/_authenticated/catalog/data/': typeof AuthenticatedCatalogDataIndexRoute
@@ -558,6 +586,7 @@ export interface FileRoutesById {
   '/_authenticated/contact/newsletter-subscribers/': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
+  '/_authenticated/discount/promotions/': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
@@ -573,6 +602,7 @@ export interface FileRoutesById {
   '/_authenticated/user/users/': typeof AuthenticatedUserUsersIndexRoute
   '/_authenticated/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/_authenticated/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/_authenticated/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/_authenticated/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/_authenticated/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
   '/_authenticated/catalog/option-values/$id/': typeof AuthenticatedCatalogOptionValuesIdIndexRoute
@@ -608,6 +638,7 @@ export interface FileRouteTypes {
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
     | '/content/pages/create'
+    | '/discount/promotions/create'
     | '/catalog/attributes/'
     | '/catalog/categories'
     | '/catalog/data'
@@ -619,6 +650,7 @@ export interface FileRouteTypes {
     | '/contact/newsletter-subscribers'
     | '/content/pages'
     | '/discount/coupons'
+    | '/discount/promotions'
     | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
@@ -634,6 +666,7 @@ export interface FileRouteTypes {
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
+    | '/discount/promotions/$id/edit'
     | '/order/orders/$id/show'
     | '/support/tickets/$id/show'
     | '/catalog/option-values/$id'
@@ -665,6 +698,7 @@ export interface FileRouteTypes {
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
     | '/content/pages/create'
+    | '/discount/promotions/create'
     | '/catalog/attributes'
     | '/catalog/categories'
     | '/catalog/data'
@@ -676,6 +710,7 @@ export interface FileRouteTypes {
     | '/contact/newsletter-subscribers'
     | '/content/pages'
     | '/discount/coupons'
+    | '/discount/promotions'
     | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
@@ -691,6 +726,7 @@ export interface FileRouteTypes {
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
+    | '/discount/promotions/$id/edit'
     | '/order/orders/$id/show'
     | '/support/tickets/$id/show'
     | '/catalog/option-values/$id'
@@ -725,6 +761,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/attributes/templates'
     | '/_authenticated/catalog/products/create'
     | '/_authenticated/content/pages/create'
+    | '/_authenticated/discount/promotions/create'
     | '/_authenticated/catalog/attributes/'
     | '/_authenticated/catalog/categories/'
     | '/_authenticated/catalog/data/'
@@ -736,6 +773,7 @@ export interface FileRouteTypes {
     | '/_authenticated/contact/newsletter-subscribers/'
     | '/_authenticated/content/pages/'
     | '/_authenticated/discount/coupons/'
+    | '/_authenticated/discount/promotions/'
     | '/_authenticated/inventory/inventory-stocks/'
     | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
@@ -751,6 +789,7 @@ export interface FileRouteTypes {
     | '/_authenticated/user/users/'
     | '/_authenticated/catalog/products/$id/edit'
     | '/_authenticated/content/pages/$id/edit'
+    | '/_authenticated/discount/promotions/$id/edit'
     | '/_authenticated/order/orders/$id/show'
     | '/_authenticated/support/tickets/$id/show'
     | '/_authenticated/catalog/option-values/$id/'
@@ -1026,6 +1065,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInventoryInventoryStocksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/discount/promotions/': {
+      id: '/_authenticated/discount/promotions/'
+      path: '/discount/promotions'
+      fullPath: '/discount/promotions'
+      preLoaderRoute: typeof AuthenticatedDiscountPromotionsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/discount/coupons/': {
       id: '/_authenticated/discount/coupons/'
       path: '/discount/coupons'
@@ -1103,6 +1149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCatalogAttributesIndexRouteImport
       parentRoute: typeof AuthenticatedCatalogAttributesRouteRoute
     }
+    '/_authenticated/discount/promotions/create': {
+      id: '/_authenticated/discount/promotions/create'
+      path: '/discount/promotions/create'
+      fullPath: '/discount/promotions/create'
+      preLoaderRoute: typeof AuthenticatedDiscountPromotionsCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/pages/create': {
       id: '/_authenticated/content/pages/create'
       path: '/content/pages/create'
@@ -1157,6 +1210,13 @@ declare module '@tanstack/react-router' {
       path: '/order/orders/$id/show'
       fullPath: '/order/orders/$id/show'
       preLoaderRoute: typeof AuthenticatedOrderOrdersIdShowRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/discount/promotions/$id/edit': {
+      id: '/_authenticated/discount/promotions/$id/edit'
+      path: '/discount/promotions/$id/edit'
+      fullPath: '/discount/promotions/$id/edit'
+      preLoaderRoute: typeof AuthenticatedDiscountPromotionsIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/content/pages/$id/edit': {
@@ -1240,6 +1300,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
+  AuthenticatedDiscountPromotionsCreateRoute: typeof AuthenticatedDiscountPromotionsCreateRoute
   AuthenticatedCatalogCategoriesIndexRoute: typeof AuthenticatedCatalogCategoriesIndexRoute
   AuthenticatedCatalogDataIndexRoute: typeof AuthenticatedCatalogDataIndexRoute
   AuthenticatedCatalogFeaturedIndexRoute: typeof AuthenticatedCatalogFeaturedIndexRoute
@@ -1250,6 +1311,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactNewsletterSubscribersIndexRoute: typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
+  AuthenticatedDiscountPromotionsIndexRoute: typeof AuthenticatedDiscountPromotionsIndexRoute
   AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
   AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
@@ -1265,6 +1327,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedUserUsersIndexRoute: typeof AuthenticatedUserUsersIndexRoute
   AuthenticatedCatalogProductsIdEditRoute: typeof AuthenticatedCatalogProductsIdEditRoute
   AuthenticatedContentPagesIdEditRoute: typeof AuthenticatedContentPagesIdEditRoute
+  AuthenticatedDiscountPromotionsIdEditRoute: typeof AuthenticatedDiscountPromotionsIdEditRoute
   AuthenticatedOrderOrdersIdShowRoute: typeof AuthenticatedOrderOrdersIdShowRoute
   AuthenticatedSupportTicketsIdShowRoute: typeof AuthenticatedSupportTicketsIdShowRoute
   AuthenticatedCatalogOptionValuesIdIndexRoute: typeof AuthenticatedCatalogOptionValuesIdIndexRoute
@@ -1283,6 +1346,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,
   AuthenticatedContentPagesCreateRoute: AuthenticatedContentPagesCreateRoute,
+  AuthenticatedDiscountPromotionsCreateRoute:
+    AuthenticatedDiscountPromotionsCreateRoute,
   AuthenticatedCatalogCategoriesIndexRoute:
     AuthenticatedCatalogCategoriesIndexRoute,
   AuthenticatedCatalogDataIndexRoute: AuthenticatedCatalogDataIndexRoute,
@@ -1300,6 +1365,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
   AuthenticatedDiscountCouponsIndexRoute:
     AuthenticatedDiscountCouponsIndexRoute,
+  AuthenticatedDiscountPromotionsIndexRoute:
+    AuthenticatedDiscountPromotionsIndexRoute,
   AuthenticatedInventoryInventoryStocksIndexRoute:
     AuthenticatedInventoryInventoryStocksIndexRoute,
   AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
@@ -1321,6 +1388,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogProductsIdEditRoute:
     AuthenticatedCatalogProductsIdEditRoute,
   AuthenticatedContentPagesIdEditRoute: AuthenticatedContentPagesIdEditRoute,
+  AuthenticatedDiscountPromotionsIdEditRoute:
+    AuthenticatedDiscountPromotionsIdEditRoute,
   AuthenticatedOrderOrdersIdShowRoute: AuthenticatedOrderOrdersIdShowRoute,
   AuthenticatedSupportTicketsIdShowRoute:
     AuthenticatedSupportTicketsIdShowRoute,

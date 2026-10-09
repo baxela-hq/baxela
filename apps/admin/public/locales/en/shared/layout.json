@@ -46,7 +46,8 @@
     "internal-server-error": "Internal Server Error",
     "maintenance-error": "Maintenance Error",
     "toggle": "Toggle Sidebar",
-    "featured": "Featured"
+    "featured": "Featured",
+    "promotions": "Promotions"
   },
   "dialog": {
     "sign-out": {

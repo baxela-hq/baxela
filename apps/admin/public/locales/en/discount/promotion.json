@@ -1,0 +1,59 @@
+{
+  "form": {
+    "labels": {
+      "promotion": "Promotion",
+      "promotions": "Promotions",
+      "id": "ID",
+      "name": "Name",
+      "scope": "Scope",
+      "type": "Type",
+      "value": "Value",
+      "priority": "Priority",
+      "starts_at": "Starts At (UTC)",
+      "ends_at": "Ends At (UTC)",
+      "window": "Validity",
+      "is_active": "Active",
+      "category_ids": "Categories",
+      "product_ids": "Products",
+      "preview": "Price preview",
+      "confirm_all_title": "Activate a store-wide promotion?",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "statuses": {
+      "percent": "Percent",
+      "fixed": "Fixed",
+      "all": "All",
+      "specific": "Specific",
+      "scope_all": "All products (store-wide)",
+      "scope_specific": "Selected products and categories",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "placeholders": {
+      "name": "Winter sale",
+      "date": "Pick a date",
+      "product_search": "Search products by title…"
+    },
+    "help_texts": {
+      "name": "Internal label for this sale, never shown to customers",
+      "type_percent": "Percentage off each unit's base price",
+      "type_fixed": "Flat amount off each unit's base price",
+      "value_percent": "Percentage off — 20.00 means 20%",
+      "value_fixed": "Flat amount off every unit, in the shop currency",
+      "priority": "Tie-breaker when several promotions match a product with the same scope level — higher wins",
+      "starts_at": "Prices change from this moment (UTC); empty means immediately",
+      "ends_at": "Prices revert after this moment (UTC); empty means until deactivated",
+      "is_active": "Inactive promotions stop applying immediately, even within their window",
+      "scope": "All products, or an explicit selection — an empty selection can never become store-wide",
+      "category_ids": "Products in the ticked categories are promoted (exact categories, not their children)",
+      "product_ids": "Additional individual products, on top of the categories above",
+      "no_categories": "No categories exist yet",
+      "no_products": "No products found",
+      "preview_note": "Example on a {{base}} product — the same clamping rules the storefront applies",
+      "precedence": "When several active promotions cover one product, exactly one wins: a product-level match beats a category match, which beats store-wide; ties inside a level go to higher priority, then the older promotion. Promotions never stack with each other; coupon codes still apply on top of promoted prices.",
+      "confirm_all_title": "Activate a store-wide promotion?",
+      "confirm_all": "This promotion will immediately change the price of EVERY product in the store while it is active. Double-check the value and the validity window before confirming."
+    }
+  }
+}

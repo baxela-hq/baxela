@@ -223,6 +223,10 @@ export const useSidebarData = (): SidebarData => {
                 title: t('sidebar.coupons'),
                 url: '/discount/coupons',
               },
+              {
+                title: t('sidebar.promotions'),
+                url: '/discount/promotions',
+              },
             ],
           },
           {
