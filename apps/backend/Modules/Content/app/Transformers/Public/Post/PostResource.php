@@ -4,9 +4,11 @@ namespace Modules\Content\Transformers\Public\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Transformers\Public\PostCategory\PostCategoryResource;
+use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
 use Modules\Core\Support\ResolvesPublicLanguage;
 
 class PostResource extends JsonResource
@@ -33,6 +35,29 @@ class PostResource extends JsonResource
             PostSchema::CREATED_AT => $this->resource->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->resource->{PostSchema::UPDATED_AT},
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),
+            // related products attached in the admin; summaries come from
+            // the Catalog gateway (published products only)
+            PostSchema::RES_PRODUCTS => $this->whenLoaded(PostSchema::RES_PRODUCTS, function () {
+                $products = collect();
+
+                foreach ($this->resource->getRelation(PostSchema::RES_PRODUCTS) as $product) {
+                    $summary = $product->getAttribute(PostProductSchema::ATTR_PRODUCT_SUMMARY);
+                    if (! $summary instanceof ProductSummary) {
+                        continue;
+                    }
+
+                    $products->push([
+                        'id' => $summary->id,
+                        'title' => $summary->title,
+                        'slug' => $summary->slug,
+                        'price' => $summary->price,
+                        'compare_price' => $summary->compare_price,
+                        'image_url' => $summary->image_url,
+                    ]);
+                }
+
+                return $products;
+            }),
         ];
     }
 }

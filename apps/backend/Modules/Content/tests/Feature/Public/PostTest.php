@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Catalog\Models\Product;
 use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
+use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
@@ -129,6 +131,27 @@ it('shows a published post by slug or id', function () {
     $this->getJson($this->baseUrl('/public/posts/'.$post->id))
         ->assertOk()
         ->assertJsonPath('data.id', $post->id);
+});
+
+it('lists the related products of a published post', function () {
+    TestCase::defaultLanguage();
+
+    $product = Product::factory()->create();
+    $product->translations()->create([
+        'language_id' => TestCase::defaultLanguage()->id,
+        'title' => 'Sneaker',
+        'slug' => 'sneaker',
+        'content' => 'Soft',
+    ]);
+
+    $post = publishedPost('post-with-products');
+    $post->products()->create([PostProductSchema::PRODUCT_ID => $product->id]);
+
+    $this->getJson($this->baseUrl('/public/posts/post-with-products'))
+        ->assertOk()
+        ->assertJsonCount(1, 'data.products')
+        ->assertJsonPath('data.products.0.id', $product->id)
+        ->assertJsonPath('data.products.0.title', 'Sneaker');
 });
 
 it('returns 404 for an unknown or draft slug', function () {

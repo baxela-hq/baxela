@@ -3,6 +3,7 @@
 namespace Modules\Content\Actions\Public\Post;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Content\Actions\Admin\Post\EnrichesPostProductsTrait;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
@@ -10,6 +11,8 @@ use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 
 class ShowPostAction extends AbstractPostAction
 {
+    use EnrichesPostProductsTrait;
+
     /**
      * Resolves the post by numeric id or by translation slug — the
      * storefront links posts by slug. Numeric ids keep working for API
@@ -17,7 +20,7 @@ class ShowPostAction extends AbstractPostAction
      */
     public function handle(string $idOrSlug): Model
     {
-        $query = $this->model
+        $record = $this->model
             ->where(PostSchema::STATUS, PostStatusEnum::PUBLISHED)
             // scheduled publishing: slug and id lookups must not leak
             // posts whose publish date is still in the future
@@ -29,17 +32,24 @@ class ShowPostAction extends AbstractPostAction
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,
+                PostSchema::RES_PRODUCTS,
             ]);
 
         if (ctype_digit($idOrSlug)) {
-            return $query->findOrFail($idOrSlug);
+            $record = $record->findOrFail($idOrSlug);
+        } else {
+            $record = $record
+                ->whereHas(
+                    PostSchema::RES_TRANSLATIONS,
+                    fn ($translation) => $translation->where(PTSchema::SLUG, $idOrSlug)
+                )
+                ->firstOrFail();
         }
 
-        return $query
-            ->whereHas(
-                PostSchema::RES_TRANSLATIONS,
-                fn ($translation) => $translation->where(PTSchema::SLUG, $idOrSlug)
-            )
-            ->firstOrFail();
+        // gateway summaries only resolve published products — exactly the
+        // set the storefront may display
+        $this->enrichWithProductSummaries($record);
+
+        return $record;
     }
 }
