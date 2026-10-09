@@ -19,6 +19,12 @@ import {
 export interface SearchableSelectOption {
   value: string;
   label: string;
+  /**
+   * Secondary line shown under the label in the dropdown (e.g. an order's
+   * date and item names). Absent on plain options. Also matched as a
+   * substring when filtering, so typing a product name finds its order.
+   */
+  hint?: string;
 }
 
 export interface SearchableSelectProps {
@@ -70,7 +76,8 @@ export function SearchableSelect({
     return options.filter(
       (option) =>
         option.label.toLowerCase().startsWith(term) ||
-        option.value.toLowerCase().startsWith(term),
+        option.value.toLowerCase().startsWith(term) ||
+        (option.hint?.toLowerCase().includes(term) ?? false),
     );
   }, [options, query]);
 
@@ -259,7 +266,14 @@ export function SearchableSelect({
                         : "text-secondary-text",
                     )}
                   >
-                    <span className="truncate">{option.label}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate">{option.label}</span>
+                      {option.hint ? (
+                        <span className="mt-0.5 block truncate text-xs text-secondary-text">
+                          {option.hint}
+                        </span>
+                      ) : null}
+                    </span>
                     {isSelected ? (
                       <CheckIcon className="size-4 shrink-0 text-accent" />
                     ) : null}

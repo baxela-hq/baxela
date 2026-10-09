@@ -1,7 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { useTranslations } from "next-intl";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
@@ -21,32 +27,26 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 export function TicketForm() {
   const t = useTranslations("account.tickets");
   const tCommon = useTranslations("shared.common");
+  const format = useFormatter();
   const router = useRouter();
   const { token } = useAuth();
 
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [orderCode, setOrderCode] = useState("");
-  const [orderOptions, setOrderOptions] = useState<
-    { value: string; label: string }[]
-  >([]);
+  const [orders, setOrders] = useState<ApiOrder[] | null>(null);
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
     if (!token) return;
-    // The order picker only needs the most recent orders; the label shows
-    // the opaque code the customer knows from "My Orders".
+    // The order picker only needs the most recent orders; the list payload
+    // carries their placement date and item name snapshots for the hint
+    // line, so one request is enough.
     let cancelled = false;
     api
       .get<Paginated<ApiOrder>>("/order/user/orders?page=1", { token })
       .then((paginated) => {
-        if (cancelled) return;
-        setOrderOptions(
-          paginated.data.map((order) => ({
-            value: order.order_code,
-            label: `#${order.order_code}`,
-          })),
-        );
+        if (!cancelled) setOrders(paginated.data);
       })
       .catch(() => {
         // the ticket form stays usable without the order list
@@ -55,6 +55,28 @@ export function TicketForm() {
       cancelled = true;
     };
   }, [token]);
+
+  // The trigger keeps the short "#code" label the customer knows from
+  // "My Orders"; the dropdown adds a hint line with the date and items so
+  // orders are told apart by more than their opaque code.
+  const orderOptions = useMemo(() => {
+    return (orders ?? []).map((order) => {
+      const date = order.created_at
+        ? format.dateTime(new Date(order.created_at), { dateStyle: "medium" })
+        : null;
+      const items = (order.items ?? [])
+        .map((item) => `${item.product_name_snapshot} ×${item.quantity}`)
+        .join(", ");
+      const hint = [date, items || null]
+        .filter((part): part is string => part !== null)
+        .join(" · ");
+      return {
+        value: order.order_code,
+        label: `#${order.order_code}`,
+        hint: hint || undefined,
+      };
+    });
+  }, [orders, format]);
 
   const onSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {

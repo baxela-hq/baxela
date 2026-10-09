@@ -237,6 +237,10 @@ export interface ApiOrder {
   /** Coupon snapshot captured at purchase time (null = no coupon). */
   coupon_code: string | null;
   discount_amount: string;
+  /** Order placement timestamp. */
+  created_at: string | null;
+  /** Line items with name snapshots; only endpoints that load them return it. */
+  items?: ApiOrderItem[];
   addresses: ApiOrderAddress[];
 }
 
