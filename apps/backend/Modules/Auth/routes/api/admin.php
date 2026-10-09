@@ -7,6 +7,7 @@ use Modules\Auth\Http\Controllers\Admin\Role\CreateRoleController;
 use Modules\Auth\Http\Controllers\Admin\Role\DeleteRoleController;
 use Modules\Auth\Http\Controllers\Admin\Role\ListRolesController;
 use Modules\Auth\Http\Controllers\Admin\Role\UpdateRoleController;
+use Modules\Auth\Http\Controllers\Admin\Stats\ShowStatsController;
 use Modules\Auth\Http\Controllers\Admin\User\CreateUserController;
 use Modules\Auth\Http\Controllers\Admin\User\DeleteUserController;
 use Modules\Auth\Http\Controllers\Admin\User\ListUserController;
@@ -15,6 +16,8 @@ use Modules\Auth\Http\Controllers\Admin\User\UpdateUserController;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
 
 Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/stats', ShowStatsController::class)->name('stats.show');
 
     Route::get('/account', ShowAccountController::class)->name('account.show');
 
