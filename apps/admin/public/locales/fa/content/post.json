@@ -1,0 +1,32 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "پیش نویس",
+        "published": "منتشر شده"
+      }
+    },
+    "labels": {
+      "post": "نوشته",
+      "posts": "نوشته ها",
+      "id": "شناسه",
+      "title": "عنوان",
+      "slug": "نامک",
+      "content": "محتوا",
+      "description": "توضیحات",
+      "status": "وضعیت",
+      "is_featured": "ویژه",
+      "featured": "ویژه",
+      "general": "عمومی",
+      "categories": "دسته بندی ها",
+      "publish": "انتشار",
+      "comments": "دیدگاه‌ها",
+      "created_at": "زمان ساخت",
+      "updated_at": "زمان بروزرسانی"
+    },
+    "help_texts": {
+      "categories": "دسته‌بندی‌هایی که این نوشته به آن‌ها تعلق دارد را انتخاب کنید.",
+      "is_featured": "نوشته‌های ویژه در فروشگاه برجسته نمایش داده می‌شوند."
+    }
+  }
+}

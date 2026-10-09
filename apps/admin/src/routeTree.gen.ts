@@ -47,6 +47,9 @@ import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
 import { Route as AuthenticatedDiscountPromotionsIndexRouteImport } from './routes/_authenticated/discount/promotions/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
+import { Route as AuthenticatedContentPostsIndexRouteImport } from './routes/_authenticated/content/posts/index'
+import { Route as AuthenticatedContentPostCommentsIndexRouteImport } from './routes/_authenticated/content/post-comments/index'
+import { Route as AuthenticatedContentPostCategoriesIndexRouteImport } from './routes/_authenticated/content/post-categories/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
 import { Route as AuthenticatedContactNewsletterSubscribersIndexRouteImport } from './routes/_authenticated/contact/newsletter-subscribers/index'
 import { Route as AuthenticatedContactMessagesIndexRouteImport } from './routes/_authenticated/contact/messages/index'
@@ -58,6 +61,7 @@ import { Route as AuthenticatedCatalogDataIndexRouteImport } from './routes/_aut
 import { Route as AuthenticatedCatalogCategoriesIndexRouteImport } from './routes/_authenticated/catalog/categories/index'
 import { Route as AuthenticatedCatalogAttributesIndexRouteImport } from './routes/_authenticated/catalog/attributes/index'
 import { Route as AuthenticatedDiscountPromotionsCreateRouteImport } from './routes/_authenticated/discount/promotions/create'
+import { Route as AuthenticatedContentPostsCreateRouteImport } from './routes/_authenticated/content/posts/create'
 import { Route as AuthenticatedContentPagesCreateRouteImport } from './routes/_authenticated/content/pages/create'
 import { Route as AuthenticatedCatalogProductsCreateRouteImport } from './routes/_authenticated/catalog/products/create'
 import { Route as AuthenticatedCatalogAttributesTemplatesRouteImport } from './routes/_authenticated/catalog/attributes/templates'
@@ -67,6 +71,7 @@ import { Route as AuthenticatedCatalogOptionValuesIdIndexRouteImport } from './r
 import { Route as AuthenticatedSupportTicketsIdShowRouteImport } from './routes/_authenticated/support/tickets/$id/show'
 import { Route as AuthenticatedOrderOrdersIdShowRouteImport } from './routes/_authenticated/order/orders/$id/show'
 import { Route as AuthenticatedDiscountPromotionsIdEditRouteImport } from './routes/_authenticated/discount/promotions/$id/edit'
+import { Route as AuthenticatedContentPostsIdEditRouteImport } from './routes/_authenticated/content/posts/$id/edit'
 import { Route as AuthenticatedContentPagesIdEditRouteImport } from './routes/_authenticated/content/pages/$id/edit'
 import { Route as AuthenticatedCatalogProductsIdEditRouteImport } from './routes/_authenticated/catalog/products/$id/edit'
 import { Route as AuthenticatedCatalogAttributesValuesIdIndexRouteImport } from './routes/_authenticated/catalog/attributes/values/$id/index'
@@ -284,6 +289,24 @@ const AuthenticatedDiscountCouponsIndexRoute =
     path: '/discount/coupons/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContentPostsIndexRoute =
+  AuthenticatedContentPostsIndexRouteImport.update({
+    id: '/content/posts/',
+    path: '/content/posts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedContentPostCommentsIndexRoute =
+  AuthenticatedContentPostCommentsIndexRouteImport.update({
+    id: '/content/post-comments/',
+    path: '/content/post-comments/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedContentPostCategoriesIndexRoute =
+  AuthenticatedContentPostCategoriesIndexRouteImport.update({
+    id: '/content/post-categories/',
+    path: '/content/post-categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesIndexRoute =
   AuthenticatedContentPagesIndexRouteImport.update({
     id: '/content/pages/',
@@ -350,6 +373,12 @@ const AuthenticatedDiscountPromotionsCreateRoute =
     path: '/discount/promotions/create',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContentPostsCreateRoute =
+  AuthenticatedContentPostsCreateRouteImport.update({
+    id: '/content/posts/create',
+    path: '/content/posts/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesCreateRoute =
   AuthenticatedContentPagesCreateRouteImport.update({
     id: '/content/pages/create',
@@ -404,6 +433,12 @@ const AuthenticatedDiscountPromotionsIdEditRoute =
     path: '/discount/promotions/$id/edit',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContentPostsIdEditRoute =
+  AuthenticatedContentPostsIdEditRouteImport.update({
+    id: '/content/posts/$id/edit',
+    path: '/content/posts/$id/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPagesIdEditRoute =
   AuthenticatedContentPagesIdEditRouteImport.update({
     id: '/content/pages/$id/edit',
@@ -450,6 +485,7 @@ export interface FileRoutesByFullPath {
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
@@ -461,6 +497,9 @@ export interface FileRoutesByFullPath {
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
+  '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
+  '/content/posts': typeof AuthenticatedContentPostsIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -478,6 +517,7 @@ export interface FileRoutesByFullPath {
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/content/posts/$id/edit': typeof AuthenticatedContentPostsIdEditRoute
   '/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
@@ -510,6 +550,7 @@ export interface FileRoutesByTo {
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes': typeof AuthenticatedCatalogAttributesIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
@@ -521,6 +562,9 @@ export interface FileRoutesByTo {
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
+  '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
+  '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
+  '/content/posts': typeof AuthenticatedContentPostsIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -538,6 +582,7 @@ export interface FileRoutesByTo {
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/content/posts/$id/edit': typeof AuthenticatedContentPostsIdEditRoute
   '/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
@@ -574,6 +619,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/_authenticated/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
   '/_authenticated/content/pages/create': typeof AuthenticatedContentPagesCreateRoute
+  '/_authenticated/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/_authenticated/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/_authenticated/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
   '/_authenticated/catalog/categories/': typeof AuthenticatedCatalogCategoriesIndexRoute
@@ -585,6 +631,9 @@ export interface FileRoutesById {
   '/_authenticated/contact/messages/': typeof AuthenticatedContactMessagesIndexRoute
   '/_authenticated/contact/newsletter-subscribers/': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
+  '/_authenticated/content/post-categories/': typeof AuthenticatedContentPostCategoriesIndexRoute
+  '/_authenticated/content/post-comments/': typeof AuthenticatedContentPostCommentsIndexRoute
+  '/_authenticated/content/posts/': typeof AuthenticatedContentPostsIndexRoute
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
   '/_authenticated/discount/promotions/': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -602,6 +651,7 @@ export interface FileRoutesById {
   '/_authenticated/user/users/': typeof AuthenticatedUserUsersIndexRoute
   '/_authenticated/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
   '/_authenticated/content/pages/$id/edit': typeof AuthenticatedContentPagesIdEditRoute
+  '/_authenticated/content/posts/$id/edit': typeof AuthenticatedContentPostsIdEditRoute
   '/_authenticated/discount/promotions/$id/edit': typeof AuthenticatedDiscountPromotionsIdEditRoute
   '/_authenticated/order/orders/$id/show': typeof AuthenticatedOrderOrdersIdShowRoute
   '/_authenticated/support/tickets/$id/show': typeof AuthenticatedSupportTicketsIdShowRoute
@@ -638,6 +688,7 @@ export interface FileRouteTypes {
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
     | '/content/pages/create'
+    | '/content/posts/create'
     | '/discount/promotions/create'
     | '/catalog/attributes/'
     | '/catalog/categories'
@@ -649,6 +700,9 @@ export interface FileRouteTypes {
     | '/contact/messages'
     | '/contact/newsletter-subscribers'
     | '/content/pages'
+    | '/content/post-categories'
+    | '/content/post-comments'
+    | '/content/posts'
     | '/discount/coupons'
     | '/discount/promotions'
     | '/inventory/inventory-stocks'
@@ -666,6 +720,7 @@ export interface FileRouteTypes {
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
+    | '/content/posts/$id/edit'
     | '/discount/promotions/$id/edit'
     | '/order/orders/$id/show'
     | '/support/tickets/$id/show'
@@ -698,6 +753,7 @@ export interface FileRouteTypes {
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
     | '/content/pages/create'
+    | '/content/posts/create'
     | '/discount/promotions/create'
     | '/catalog/attributes'
     | '/catalog/categories'
@@ -709,6 +765,9 @@ export interface FileRouteTypes {
     | '/contact/messages'
     | '/contact/newsletter-subscribers'
     | '/content/pages'
+    | '/content/post-categories'
+    | '/content/post-comments'
+    | '/content/posts'
     | '/discount/coupons'
     | '/discount/promotions'
     | '/inventory/inventory-stocks'
@@ -726,6 +785,7 @@ export interface FileRouteTypes {
     | '/user/users'
     | '/catalog/products/$id/edit'
     | '/content/pages/$id/edit'
+    | '/content/posts/$id/edit'
     | '/discount/promotions/$id/edit'
     | '/order/orders/$id/show'
     | '/support/tickets/$id/show'
@@ -761,6 +821,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/attributes/templates'
     | '/_authenticated/catalog/products/create'
     | '/_authenticated/content/pages/create'
+    | '/_authenticated/content/posts/create'
     | '/_authenticated/discount/promotions/create'
     | '/_authenticated/catalog/attributes/'
     | '/_authenticated/catalog/categories/'
@@ -772,6 +833,9 @@ export interface FileRouteTypes {
     | '/_authenticated/contact/messages/'
     | '/_authenticated/contact/newsletter-subscribers/'
     | '/_authenticated/content/pages/'
+    | '/_authenticated/content/post-categories/'
+    | '/_authenticated/content/post-comments/'
+    | '/_authenticated/content/posts/'
     | '/_authenticated/discount/coupons/'
     | '/_authenticated/discount/promotions/'
     | '/_authenticated/inventory/inventory-stocks/'
@@ -789,6 +853,7 @@ export interface FileRouteTypes {
     | '/_authenticated/user/users/'
     | '/_authenticated/catalog/products/$id/edit'
     | '/_authenticated/content/pages/$id/edit'
+    | '/_authenticated/content/posts/$id/edit'
     | '/_authenticated/discount/promotions/$id/edit'
     | '/_authenticated/order/orders/$id/show'
     | '/_authenticated/support/tickets/$id/show'
@@ -1079,6 +1144,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDiscountCouponsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/content/posts/': {
+      id: '/_authenticated/content/posts/'
+      path: '/content/posts'
+      fullPath: '/content/posts'
+      preLoaderRoute: typeof AuthenticatedContentPostsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/content/post-comments/': {
+      id: '/_authenticated/content/post-comments/'
+      path: '/content/post-comments'
+      fullPath: '/content/post-comments'
+      preLoaderRoute: typeof AuthenticatedContentPostCommentsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/content/post-categories/': {
+      id: '/_authenticated/content/post-categories/'
+      path: '/content/post-categories'
+      fullPath: '/content/post-categories'
+      preLoaderRoute: typeof AuthenticatedContentPostCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/pages/': {
       id: '/_authenticated/content/pages/'
       path: '/content/pages'
@@ -1156,6 +1242,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDiscountPromotionsCreateRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/content/posts/create': {
+      id: '/_authenticated/content/posts/create'
+      path: '/content/posts/create'
+      fullPath: '/content/posts/create'
+      preLoaderRoute: typeof AuthenticatedContentPostsCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/pages/create': {
       id: '/_authenticated/content/pages/create'
       path: '/content/pages/create'
@@ -1217,6 +1310,13 @@ declare module '@tanstack/react-router' {
       path: '/discount/promotions/$id/edit'
       fullPath: '/discount/promotions/$id/edit'
       preLoaderRoute: typeof AuthenticatedDiscountPromotionsIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/content/posts/$id/edit': {
+      id: '/_authenticated/content/posts/$id/edit'
+      path: '/content/posts/$id/edit'
+      fullPath: '/content/posts/$id/edit'
+      preLoaderRoute: typeof AuthenticatedContentPostsIdEditRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/content/pages/$id/edit': {
@@ -1300,6 +1400,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
+  AuthenticatedContentPostsCreateRoute: typeof AuthenticatedContentPostsCreateRoute
   AuthenticatedDiscountPromotionsCreateRoute: typeof AuthenticatedDiscountPromotionsCreateRoute
   AuthenticatedCatalogCategoriesIndexRoute: typeof AuthenticatedCatalogCategoriesIndexRoute
   AuthenticatedCatalogDataIndexRoute: typeof AuthenticatedCatalogDataIndexRoute
@@ -1310,6 +1411,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContactMessagesIndexRoute: typeof AuthenticatedContactMessagesIndexRoute
   AuthenticatedContactNewsletterSubscribersIndexRoute: typeof AuthenticatedContactNewsletterSubscribersIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
+  AuthenticatedContentPostCategoriesIndexRoute: typeof AuthenticatedContentPostCategoriesIndexRoute
+  AuthenticatedContentPostCommentsIndexRoute: typeof AuthenticatedContentPostCommentsIndexRoute
+  AuthenticatedContentPostsIndexRoute: typeof AuthenticatedContentPostsIndexRoute
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
   AuthenticatedDiscountPromotionsIndexRoute: typeof AuthenticatedDiscountPromotionsIndexRoute
   AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -1327,6 +1431,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedUserUsersIndexRoute: typeof AuthenticatedUserUsersIndexRoute
   AuthenticatedCatalogProductsIdEditRoute: typeof AuthenticatedCatalogProductsIdEditRoute
   AuthenticatedContentPagesIdEditRoute: typeof AuthenticatedContentPagesIdEditRoute
+  AuthenticatedContentPostsIdEditRoute: typeof AuthenticatedContentPostsIdEditRoute
   AuthenticatedDiscountPromotionsIdEditRoute: typeof AuthenticatedDiscountPromotionsIdEditRoute
   AuthenticatedOrderOrdersIdShowRoute: typeof AuthenticatedOrderOrdersIdShowRoute
   AuthenticatedSupportTicketsIdShowRoute: typeof AuthenticatedSupportTicketsIdShowRoute
@@ -1346,6 +1451,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,
   AuthenticatedContentPagesCreateRoute: AuthenticatedContentPagesCreateRoute,
+  AuthenticatedContentPostsCreateRoute: AuthenticatedContentPostsCreateRoute,
   AuthenticatedDiscountPromotionsCreateRoute:
     AuthenticatedDiscountPromotionsCreateRoute,
   AuthenticatedCatalogCategoriesIndexRoute:
@@ -1363,6 +1469,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContactNewsletterSubscribersIndexRoute:
     AuthenticatedContactNewsletterSubscribersIndexRoute,
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
+  AuthenticatedContentPostCategoriesIndexRoute:
+    AuthenticatedContentPostCategoriesIndexRoute,
+  AuthenticatedContentPostCommentsIndexRoute:
+    AuthenticatedContentPostCommentsIndexRoute,
+  AuthenticatedContentPostsIndexRoute: AuthenticatedContentPostsIndexRoute,
   AuthenticatedDiscountCouponsIndexRoute:
     AuthenticatedDiscountCouponsIndexRoute,
   AuthenticatedDiscountPromotionsIndexRoute:
@@ -1388,6 +1499,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogProductsIdEditRoute:
     AuthenticatedCatalogProductsIdEditRoute,
   AuthenticatedContentPagesIdEditRoute: AuthenticatedContentPagesIdEditRoute,
+  AuthenticatedContentPostsIdEditRoute: AuthenticatedContentPostsIdEditRoute,
   AuthenticatedDiscountPromotionsIdEditRoute:
     AuthenticatedDiscountPromotionsIdEditRoute,
   AuthenticatedOrderOrdersIdShowRoute: AuthenticatedOrderOrdersIdShowRoute,

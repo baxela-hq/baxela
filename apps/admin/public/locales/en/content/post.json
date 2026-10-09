@@ -1,0 +1,32 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Draft",
+        "published": "Published"
+      }
+    },
+    "labels": {
+      "post": "Post",
+      "posts": "Posts",
+      "id": "ID",
+      "title": "Title",
+      "slug": "Slug",
+      "content": "Content",
+      "description": "Description",
+      "status": "Status",
+      "is_featured": "Featured",
+      "featured": "Featured",
+      "general": "General",
+      "categories": "Categories",
+      "publish": "Publish",
+      "comments": "Comments",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "categories": "Select the categories this post belongs to.",
+      "is_featured": "Featured posts are highlighted on the storefront."
+    }
+  }
+}

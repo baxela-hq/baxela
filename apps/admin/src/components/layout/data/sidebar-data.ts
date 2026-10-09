@@ -111,6 +111,18 @@ export const useSidebarData = (): SidebarData => {
             icon: Package,
             items: [
               {
+                title: t('sidebar.posts'),
+                url: '/content/posts',
+              },
+              {
+                title: t('sidebar.postCategories'),
+                url: '/content/post-categories',
+              },
+              {
+                title: t('sidebar.postComments'),
+                url: '/content/post-comments',
+              },
+              {
                 title: t('sidebar.pages'),
                 url: '/content/pages',
               },
