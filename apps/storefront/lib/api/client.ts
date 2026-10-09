@@ -27,6 +27,12 @@ export class ApiError extends Error {
   }
 }
 
+// Every request gets a deadline so a hung backend call can never leave a
+// page in "loading" forever (e.g. the profile auth check); the abort
+// rejects the fetch and flows into existing catch blocks. Generous enough
+// for cold dev compiles; callers can override via RequestInit.signal.
+const DEFAULT_TIMEOUT_MS = 15_000;
+
 export interface ApiRequestOptions extends Omit<RequestInit, "body"> {
   /** Sanctum bearer token (authenticated calls). */
   token?: string | null;
@@ -88,6 +94,7 @@ export async function apiFetch<T>(
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
     credentials: "omit",
+    signal: rest.signal ?? AbortSignal.timeout(DEFAULT_TIMEOUT_MS),
     headers: {
       Accept: "application/json",
       "Accept-Language": resolveLocale(locale),

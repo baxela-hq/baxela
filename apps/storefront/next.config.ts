@@ -81,10 +81,12 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
 
-  // Any host on the LAN subnet, so phones/other machines can load dev assets
-  // from the dev server (Next blocks cross-origin dev resources by default).
-  // Wildcards match one dot-segment each, so this survives DHCP IP changes.
-  allowedDevOrigins: ["192.168.*.*"],
+  // Loopback (127.0.0.1 — localhost is allowed by default) and any host on
+  // the LAN subnet, so phones/other machines can load dev assets from the
+  // dev server (Next blocks cross-origin dev resources by default; the dev
+  // server runs in Docker, so 127.0.0.1 is foreign to it). Wildcards match
+  // one dot-segment each, so this survives DHCP IP changes.
+  allowedDevOrigins: ["127.0.0.1", "192.168.*.*"],
 
   async headers() {
     return [
