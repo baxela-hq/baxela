@@ -71,7 +71,7 @@ export const Columns = (): ColumnDef<Post>[] => {
       cell: ({ row }) => {
         const translations : TranslationForm[] = row.getValue('title');
         const title = pickTranslation(translations)?.title || '';
-        return <LongText className='max-w-36 ps-3'>{title}</LongText>;
+        return <LongText className='max-w-[32rem] ps-3'>{title}</LongText>;
       },
       meta: {
         className: cn(
