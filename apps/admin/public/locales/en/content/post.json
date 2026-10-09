@@ -18,14 +18,9 @@
       "status": "Status",
       "publish_date": "Publish Date",
       "general": "General",
-      "images": "Images",
-      "add_images": "Add Images",
-      "featured_image": "Featured",
-      "move_left": "Move Left",
-      "move_right": "Move Right",
-      "image_preview": "Image Preview",
-      "open_original": "Open original",
       "categories": "Categories",
+      "no_products_found": "No products found.",
+      "products": "Related Products",
       "seo": "SEO",
       "serp_preview": "Google SERP preview",
       "meta_title": "Meta Title",
@@ -38,8 +33,11 @@
       "updated_at": "Updated At"
     },
     "help_texts": {
-      "images": "The first image is the featured photo. Use the arrows to change the order.",
+      "products": "Search and attach products to feature alongside this post.",
       "publish_date": "Leave empty to publish immediately. A future date keeps the post hidden until that day."
+    },
+    "placeholders": {
+      "search_products": "Search products by title…"
     }
   }
 }

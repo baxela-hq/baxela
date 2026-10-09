@@ -10,16 +10,6 @@ const _postStatusSchema = z.enum(statuses);
 
 export type PostStatus = z.infer<typeof _postStatusSchema>
 
-export const IMAGE_COLLECTION = 'photos';
-
-export const postImageSchema = z.object({
-  position: z.number().min(1),
-  collection: z.string(),
-  media_id: z.number(),
-  url: z.string(),
-});
-export type PostImage = z.infer<typeof postImageSchema>
-
 export const translationSchema = z.object({
   language_id: z.number(),
   language: z.string(),
@@ -49,14 +39,21 @@ const postCategoryRefSchema = z.object({
   updated_at: z.string(),
 })
 
+// related products nested on a post: only ids come back (titles resolve
+// through the picker's own product queries)
+const postProductRefSchema = z.object({
+  id: z.number(),
+  title: z.string().nullable().optional(),
+  image_url: z.string().nullable().optional(),
+})
+
 export const postSchema = z.object({
   id: z.number(),
   translations: z.array(translationSchema),
   status: z.string(),
   published_at: z.string().nullable(),
   categories: z.array(postCategoryRefSchema).optional(),
-  // absent on list rows (only the show endpoint eager-loads it)
-  images: z.array(postImageSchema).optional(),
+  products: z.array(postProductRefSchema).optional(),
   seo: z.array(postSeoTranslationSchema).optional(),
   created_at: z.string(),
   updated_at: z.string(),
@@ -69,7 +66,7 @@ export const formSchema = z.object({
   // Date in the form, ISO string over the wire (see PostPayload)
   published_at: z.date().nullable(),
   categories: z.array(z.number()),
-  images: z.array(postImageSchema),
+  products: z.array(z.number()),
   seo: z.array(postSeoTranslationSchema),
   translations: z.array(translationSchema),
 })
@@ -84,7 +81,7 @@ export function buildDefaultValues(languages: Language[]): PostForm {
     status: '',
     published_at: null,
     categories: [],
-    images: [],
+    products: [],
     seo: languages.map((language, index) => ({
       language_id: index,
       language: language.code,
@@ -127,7 +124,7 @@ export function buildEditValues(
     status: currentRow.status,
     published_at: currentRow.published_at ? new Date(currentRow.published_at) : null,
     categories: currentRow.categories?.map((category) => category.id) ?? [],
-    images: [...(currentRow.images ?? [])],
+    products: currentRow.products?.map((product) => product.id) ?? [],
     seo: base.seo.map((baseSeo, index) => {
       const existing = seoMap.get(baseSeo.language)
       return existing
