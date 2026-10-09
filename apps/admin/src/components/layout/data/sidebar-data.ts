@@ -8,6 +8,7 @@ import {
   Bell,
   Inbox,
   Menu as MenuIcon,
+  Newspaper,
   Package,
   ServerOff,
   Settings,
@@ -108,7 +109,7 @@ export const useSidebarData = (): SidebarData => {
           },
           {
             title: t('sidebar.content'),
-            icon: Package,
+            icon: Newspaper,
             items: [
               {
                 title: t('sidebar.posts'),
