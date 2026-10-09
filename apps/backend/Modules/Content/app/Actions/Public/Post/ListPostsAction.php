@@ -16,8 +16,6 @@ class ListPostsAction extends AbstractPostAction
 
         return $this->model
             ->where(PostSchema::STATUS, PostStatusEnum::PUBLISHED)
-            ->when($request->boolean('featured'), fn ($query) => $query
-                ->where(PostSchema::IS_FEATURED, true))
             ->when($request->input('category'), fn ($query, $categorySlug) => $query
                 ->whereHas(
                     PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,
@@ -26,6 +24,7 @@ class ListPostsAction extends AbstractPostAction
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,
+                PostSchema::RES_IMAGES,
             ])
             ->orderBy(PostSchema::TABLE.'.'.PostSchema::ID, 'desc')
             ->paginate($perPage)

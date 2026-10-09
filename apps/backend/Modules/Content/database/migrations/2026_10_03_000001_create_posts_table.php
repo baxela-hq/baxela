@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create(PostSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->enum(PostSchema::STATUS, PostStatusEnum::cases());
-            $table->boolean(PostSchema::IS_FEATURED)->default(false);
             $table->timestamps();
         });
 

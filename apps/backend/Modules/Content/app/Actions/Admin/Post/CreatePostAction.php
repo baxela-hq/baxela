@@ -20,12 +20,15 @@ class CreatePostAction
 
             $record = Post::query()->create([
                 PostSchema::STATUS => $data[PostSchema::STATUS],
-                PostSchema::IS_FEATURED => $data[PostSchema::IS_FEATURED],
             ]);
             $record->categories()->attach($data[PostSchema::RES_CATEGORIES] ?? []);
 
             foreach ($data[PostSchema::RES_TRANSLATIONS] as $translation) {
                 $record->translations()->create($translation);
+            }
+
+            foreach ($data[PostSchema::RES_IMAGES] ?? [] as $image) {
+                $record->images()->create($image);
             }
 
             DB::commit();
@@ -37,6 +40,6 @@ class CreatePostAction
 
         $record = $record->refresh();
 
-        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES);
+        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES);
     }
 }

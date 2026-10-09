@@ -244,7 +244,6 @@ TXT,
     'posts' => [
         // Welcome post
         'welcome-to-baxela' => [
-            'is_featured' => true,
             'categories' => ['news'],
             'translations' => [
                 [
@@ -260,7 +259,6 @@ TXT,
 
         // Sizing guide post
         'how-to-find-your-size' => [
-            'is_featured' => false,
             'categories' => ['guides'],
             'translations' => [
                 [

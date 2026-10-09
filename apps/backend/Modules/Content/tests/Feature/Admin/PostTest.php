@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
+use Modules\Content\Schemas\Post\PostImageSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Tests\Feature\HelperTrait;
@@ -30,8 +31,8 @@ function postPayload(array $overrides = []): array
 
     return array_merge([
         'status' => 'published',
-        'is_featured' => false,
         'categories' => null,
+        'images' => null,
         'translations' => [[
             'language' => 'en',
             'title' => 'Hello World',
@@ -56,8 +57,42 @@ it('creates a post with translations and categories as an admin', function () {
 
     expect($post)->not->toBeNull()
         ->and($post->translations()->count())->toBe(1)
-        ->and($post->categories()->pluck(PostCategorySchema::ID)->all())->toBe([$category->id])
-        ->and($post->{PostSchema::IS_FEATURED})->toBeFalse();
+        ->and($post->categories()->pluck(PostCategorySchema::ID)->all())->toBe([$category->id]);
+});
+
+it('attaches images to a post and replaces them on update', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'images' => [
+            ['media_id' => 11, 'url' => 'https://cdn.test/cover.jpg', 'collection' => 'photos', 'position' => 1],
+            ['media_id' => 12, 'url' => 'https://cdn.test/gallery.jpg', 'collection' => 'photos', 'position' => 2],
+        ],
+    ]))
+        ->assertCreated()
+        ->assertJsonCount(2, 'data.images')
+        ->json('data.id');
+
+    $post = Post::query()->find($postId);
+
+    expect($post->images()->count())->toBe(2)
+        ->and($post->images()->pluck(PostImageSchema::MEDIA_ID)->all())->toBe([11, 12]);
+
+    $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
+        'images' => [
+            ['media_id' => 13, 'url' => 'https://cdn.test/new-cover.jpg', 'collection' => 'photos', 'position' => 1],
+        ],
+        'translations' => [[
+            'language' => 'en',
+            'title' => 'Hello World v2',
+            'slug' => 'hello-world-v2',
+            'content' => 'Rewritten content',
+            'description' => null,
+        ]],
+    ]))->assertOk()->assertJsonCount(1, 'data.images');
+
+    expect($post->images()->count())->toBe(1)
+        ->and($post->images()->first()->{PostImageSchema::MEDIA_ID})->toBe(13);
 });
 
 it('updates a post and syncs its categories', function () {
@@ -73,7 +108,6 @@ it('updates a post and syncs its categories', function () {
     // unique guard, so refreshes always carry a new slug
     $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
         'status' => 'draft',
-        'is_featured' => true,
         'categories' => [$otherCategory->id],
         'translations' => [[
             'language' => 'en',
@@ -88,7 +122,6 @@ it('updates a post and syncs its categories', function () {
 
     expect($post->categories()->pluck(PostCategorySchema::ID)->all())->toBe([$otherCategory->id])
         ->and($post->{PostSchema::STATUS}->value)->toBe('draft')
-        ->and($post->{PostSchema::IS_FEATURED})->toBeTrue()
         ->and($post->translations()->first()->title)->toBe('Hello World v2');
 });
 

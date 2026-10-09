@@ -69,7 +69,6 @@ class PostSeeder extends Seeder
 
             app(CreatePostAction::class)->handle([
                 PostSchema::STATUS => PostStatusEnum::PUBLISHED,
-                PostSchema::IS_FEATURED => $post['is_featured'] ?? false,
                 PostSchema::RES_CATEGORIES => $this->categoryIds($post['categories'] ?? []),
                 PostSchema::RES_TRANSLATIONS => $translations,
             ]);

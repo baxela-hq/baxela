@@ -13,6 +13,7 @@ class ShowPostAction extends AbstractPostAction
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES,
+                PostSchema::RES_IMAGES,
             ])
             ->findOrFail($id);
     }

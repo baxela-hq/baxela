@@ -17,11 +17,11 @@ class PostResource extends JsonResource
         return [
             PostSchema::ID => $this->{PostSchema::ID},
             PostSchema::STATUS => $this->{PostSchema::STATUS},
-            PostSchema::IS_FEATURED => $this->{PostSchema::IS_FEATURED},
             PostSchema::CREATED_AT => $this->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->{PostSchema::UPDATED_AT},
             PostSchema::RES_TRANSLATIONS => PostTranslationResource::collection($this->whenLoaded(PostSchema::RES_TRANSLATIONS)),
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),
+            PostSchema::RES_IMAGES => PostImageResource::collection($this->whenLoaded(PostSchema::RES_IMAGES)),
         ];
     }
 }

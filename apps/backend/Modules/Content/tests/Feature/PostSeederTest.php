@@ -6,6 +6,7 @@ use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
+use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Tests\Feature\HelperTrait;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
 
@@ -23,11 +24,13 @@ it('seeds posts and post categories with translations', function () {
     expect($posts)->toHaveCount(2)
         ->and($categories)->toHaveCount(2);
 
-    $featured = $posts->firstWhere(PostSchema::IS_FEATURED, true);
-    expect($featured)->not->toBeNull()
-        ->and($featured->{PostSchema::STATUS})->toBe(PostStatusEnum::PUBLISHED)
+    $welcome = $posts->first(
+        fn (Post $post) => $post->translations->pluck(PTSchema::SLUG)->contains('welcome-to-baxela')
+    );
+    expect($welcome)->not->toBeNull()
+        ->and($welcome->{PostSchema::STATUS})->toBe(PostStatusEnum::PUBLISHED)
         // posts seed with a translation per active language (en + fa)
-        ->and($featured->translations)->toHaveCount(2)
+        ->and($welcome->translations)->toHaveCount(2)
         // the welcome post is attached to the news category
-        ->and($featured->categories()->count())->toBe(1);
+        ->and($welcome->categories()->count())->toBe(1);
 });

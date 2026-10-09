@@ -22,9 +22,13 @@ class UpdatePostAction
 
             $record->update([
                 PostSchema::STATUS => $data[PostSchema::STATUS],
-                PostSchema::IS_FEATURED => $data[PostSchema::IS_FEATURED],
             ]);
             $record->categories()->sync($data[PostSchema::RES_CATEGORIES] ?? []);
+
+            $record->images()->delete();
+            foreach ($data[PostSchema::RES_IMAGES] ?? [] as $image) {
+                $record->images()->create($image);
+            }
 
             $record->translations()->delete();
             foreach ($data[PostSchema::RES_TRANSLATIONS] as $translation) {
@@ -38,6 +42,6 @@ class UpdatePostAction
             throw new UpdateFailedException;
         }
 
-        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES);
+        return $record->load(PostSchema::RES_TRANSLATIONS, PostSchema::RES_CATEGORIES, PostSchema::RES_IMAGES);
     }
 }

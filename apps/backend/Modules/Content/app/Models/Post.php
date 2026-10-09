@@ -22,14 +22,12 @@ class Post extends Model
      */
     protected $fillable = [
         PostSchema::STATUS,
-        PostSchema::IS_FEATURED,
     ];
 
     protected function casts(): array
     {
         return [
             PostSchema::STATUS => PostStatusEnum::class,
-            PostSchema::IS_FEATURED => 'boolean',
         ];
     }
 
@@ -47,6 +45,11 @@ class Post extends Model
     {
         return $this->belongsToMany(PostCategory::class, PostCategoryPostSchema::TABLE,
             PostCategoryPostSchema::POST_ID, PostCategoryPostSchema::POST_CATEGORY_ID);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(PostImage::class);
     }
 
     public function comments(): HasMany

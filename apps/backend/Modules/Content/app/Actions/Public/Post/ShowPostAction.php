@@ -22,6 +22,7 @@ class ShowPostAction extends AbstractPostAction
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,
+                PostSchema::RES_IMAGES,
             ]);
 
         if (ctype_digit($idOrSlug)) {

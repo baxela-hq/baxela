@@ -58,26 +58,6 @@ it('filters public posts by category slug', function () {
         ->assertJsonPath('data.0.slug', 'categorized-post');
 });
 
-it('filters public posts by the featured flag', function () {
-    TestCase::defaultLanguage();
-
-    Post::factory()->create([
-        PostSchema::STATUS => PostStatusEnum::PUBLISHED,
-        PostSchema::IS_FEATURED => true,
-    ])->translations()->create([
-        PTSchema::LANGUAGE_ID => TestCase::defaultLanguage()->id,
-        PTSchema::TITLE => 'Featured',
-        PTSchema::SLUG => 'featured-post',
-        PTSchema::CONTENT => 'Content',
-    ]);
-    publishedPost('regular-post');
-
-    $this->getJson($this->baseUrl('/public/posts').'?featured=true')
-        ->assertOk()
-        ->assertJsonCount(1, 'data')
-        ->assertJsonPath('data.0.slug', 'featured-post');
-});
-
 it('shows a published post by slug or id', function () {
     $post = publishedPost('published-post');
 

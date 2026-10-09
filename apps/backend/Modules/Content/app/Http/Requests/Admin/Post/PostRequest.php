@@ -5,6 +5,8 @@ namespace Modules\Content\Http\Requests\Admin\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Modules\Content\Schemas\Post\PostImageCollectionEnum;
+use Modules\Content\Schemas\Post\PostImageSchema as PISchema;
 use Modules\Content\Schemas\Post\PostSchema as PSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
@@ -31,10 +33,16 @@ class PostRequest extends FormRequest
 
         $rules = [
             PSchema::STATUS => ['required', new Enum(PostStatusEnum::class)],
-            PSchema::IS_FEATURED => ['required', 'boolean'],
 
             PSchema::RES_CATEGORIES => ['nullable', 'array'],
             PSchema::RES_CATEGORIES.'.*' => ['integer'],
+
+            // images
+            PSchema::RES_IMAGES => ['nullable', 'array', 'min:1'],
+            PSchema::RES_IMAGES.'.*.'.PISchema::POSITION => ['nullable', 'numeric', 'max:255'],
+            PSchema::RES_IMAGES.'.*.'.PISchema::COLLECTION => ['nullable', new Enum(PostImageCollectionEnum::class)],
+            PSchema::RES_IMAGES.'.*.'.PISchema::MEDIA_ID => ['required', 'integer'],
+            PSchema::RES_IMAGES.'.*.'.PISchema::URL => ['required', 'string'],
 
             PSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::REQ_LANGUAGE => ['required', 'string', 'distinct', 'size:2',

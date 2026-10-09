@@ -22,7 +22,6 @@ class PostFactory extends Factory
     {
         return [
             PostSchema::STATUS => $this->faker->randomElement(PostStatusEnum::cases()),
-            PostSchema::IS_FEATURED => false,
         ];
     }
 
