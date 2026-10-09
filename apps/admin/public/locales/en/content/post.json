@@ -15,9 +15,14 @@
       "content": "Content",
       "description": "Description",
       "status": "Status",
-      "is_featured": "Featured",
-      "featured": "Featured",
       "general": "General",
+      "images": "Images",
+      "add_images": "Add Images",
+      "featured_image": "Featured",
+      "move_left": "Move Left",
+      "move_right": "Move Right",
+      "image_preview": "Image Preview",
+      "open_original": "Open original",
       "categories": "Categories",
       "publish": "Publish",
       "comments": "Comments",
@@ -25,8 +30,7 @@
       "updated_at": "Updated At"
     },
     "help_texts": {
-      "categories": "Select the categories this post belongs to.",
-      "is_featured": "Featured posts are highlighted on the storefront."
+      "images": "The first image is the featured photo. Use the arrows to change the order."
     }
   }
 }

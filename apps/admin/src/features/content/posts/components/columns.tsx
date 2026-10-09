@@ -1,5 +1,4 @@
 import { type ColumnDef } from '@tanstack/react-table';
-import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -115,25 +114,6 @@ export const Columns = (): ColumnDef<Post>[] => {
       },
       enableHiding: false,
       enableSorting: false,
-    },
-    {
-      accessorKey: 'is_featured',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title={tLabel('is_featured')} />
-      ),
-      cell: ({ row }) => (
-        <Star
-          aria-label={row.original.is_featured ? tLabel('featured') : tLabel('is_featured')}
-          className={cn(
-            'size-4',
-            row.original.is_featured
-              ? 'fill-amber-400 text-amber-400'
-              : 'text-muted-foreground'
-          )}
-        />
-      ),
-      enableSorting: false,
-      enableHiding: true,
     },
     {
       accessorKey: 'created_at',

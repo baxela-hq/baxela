@@ -1,30 +1,33 @@
 import { useEffect, useState } from 'react';
 import { type z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
 import { useLanguages } from '@/features/core/languages/hooks/use-languages'
-import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon } from 'lucide-react';
+import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon, XIcon, ImagePlusIcon, ChevronLeftIcon, ChevronRightIcon, StarIcon, ExternalLinkIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Header } from '@/components/layout/header';
 import { Main } from '@/components/layout/main';
 import { Search } from '@/components/search'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
+import { cn } from '@/lib/utils';
+import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
+import { type MediaItem, getMediaUrl } from '@/features/media/data/schema';
 import { FeatureRoutes, Locales } from './data/routes';
 import { fetchOnePost } from './api/posts.api.ts';
 import { useSavePost } from './hooks/use-post-mutations';
 import { usePostCategoryTree } from '@/features/content/post-categories/hooks/use-post-categories'
 import { Provider } from './components/provider.tsx';
-import { formSchema, statuses, buildDefaultValues, buildEditValues, type PostForm, type Post } from './data/schema';
+import { formSchema, statuses, IMAGE_COLLECTION, buildDefaultValues, buildEditValues, type PostForm, type Post } from './data/schema';
 import { HeaderActions } from '@/components/layout/header-actions'
 
 
@@ -52,9 +55,22 @@ export function PostForm() {
 
   const categoryTree = usePostCategoryTree()
 
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: buildDefaultValues(languagesSafe),
+  });
+
+  const {
+    fields: imageFields,
+    append: appendImages,
+    remove: removeImage,
+    move: moveImage,
+  } = useFieldArray({
+    control: form.control,
+    name: 'images',
   });
 
   useEffect(() => {
@@ -87,10 +103,31 @@ export function PostForm() {
   }, [])
 
   const tabForField = (field: string): string => {
-    if (field === 'status' || field === 'is_featured') return 'publish';
+    if (field === 'images' || field.startsWith('images')) return 'images';
+    if (field === 'status') return 'publish';
     if (field === 'categories') return 'categories';
     return 'general';
   }
+
+  const handleSelectImages = (items: MediaItem[]) => {
+    const existingIds = new Set(form.getValues('images').map((image) => image.media_id));
+    const nextPosition = form.getValues('images').length;
+    const additions = items
+      .filter((item) => !existingIds.has(item.id))
+      .map((item, index) => ({
+        position: nextPosition + index + 1,
+        collection: IMAGE_COLLECTION,
+        media_id: item.id,
+        url: getMediaUrl(item) ?? '',
+      }));
+    if (additions.length > 0) appendImages(additions);
+  };
+
+  const handleMoveImage = (index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= imageFields.length) return;
+    moveImage(index, target);
+  };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     const postRequest: PostForm = values
@@ -164,6 +201,7 @@ export function PostForm() {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList>
                 <TabsTrigger value="general">{tLabel('general')}</TabsTrigger>
+                <TabsTrigger value="images">{tLabel('images')}</TabsTrigger>
                 <TabsTrigger value="categories">{tLabel('categories')}</TabsTrigger>
                 <TabsTrigger value="publish">{tLabel('publish')}</TabsTrigger>
               </TabsList>
@@ -273,14 +311,148 @@ export function PostForm() {
                 )}
 
               </TabsContent>
+              <TabsContent value="images" className="pt-5 pb-5">
+                <FormField
+                  control={form.control}
+                  name="images"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>{tLabel('images')}</FormLabel>
+                      <div className="flex flex-wrap items-start gap-4">
+                        <button
+                          type="button"
+                          onClick={() => setMediaPickerOpen(true)}
+                          className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded-md border border-dashed text-muted-foreground transition-colors hover:border-primary hover:bg-muted/50 hover:text-foreground"
+                        >
+                          <ImagePlusIcon size={24} />
+                          <span className="px-2 text-center text-xs font-medium">
+                            {tLabel('add_images')}
+                          </span>
+                        </button>
+
+                        {imageFields.map((image, index) => (
+                          <div key={image.id} className="space-y-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setPreviewImage(form.getValues(`images.${index}.url`))}
+                              title={tLabel('image_preview')}
+                              aria-label={tLabel('image_preview')}
+                              className={cn(
+                                'relative h-32 w-32 cursor-zoom-in overflow-hidden rounded-md border',
+                                index === 0
+                                  ? 'border-2 border-primary dark:border-amber-400'
+                                  : 'border-border hover:border-primary/50'
+                              )}
+                            >
+                              <img
+                                src={form.getValues(`images.${index}.url`)}
+                                alt={(form.getValues(`images.${index}.url`) ?? '').split('/').pop() ?? ''}
+                                className="h-full w-full object-cover"
+                              />
+                              {index === 0 && (
+                                <div className='absolute inset-x-0 bottom-0 flex items-center justify-center gap-1.5 bg-primary/95 py-1 text-primary-foreground'>
+                                  <StarIcon size={12} className='fill-current shrink-0' />
+                                  <span className='text-xs font-semibold'>
+                                    {tLabel('featured_image')}
+                                  </span>
+                                </div>
+                              )}
+                            </button>
+                            <div className="flex items-center justify-center gap-1">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="h-7 w-7"
+                                disabled={index === 0}
+                                onClick={() => handleMoveImage(index, -1)}
+                                title={tLabel('move_left')}
+                                aria-label={tLabel('move_left')}
+                              >
+                                <ChevronLeftIcon size={14} className="rtl:rotate-180" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="h-7 w-7 text-destructive hover:text-destructive"
+                                onClick={() => removeImage(index)}
+                                title={tAction('remove')}
+                                aria-label={tAction('remove')}
+                              >
+                                <XIcon size={14} />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="h-7 w-7"
+                                disabled={index === imageFields.length - 1}
+                                onClick={() => handleMoveImage(index, 1)}
+                                title={tLabel('move_right')}
+                                aria-label={tLabel('move_right')}
+                              >
+                                <ChevronRightIcon size={14} className="rtl:rotate-180" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <FormDescription>
+                        {tHelpText('images')}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <MediaPickerDialog
+                  open={mediaPickerOpen}
+                  onOpenChange={setMediaPickerOpen}
+                  multiple
+                  accept="image/*"
+                  onSelect={handleSelectImages}
+                />
+
+                <Dialog
+                  open={previewImage !== null}
+                  onOpenChange={(open) => {
+                    if (!open) setPreviewImage(null)
+                  }}
+                >
+                  <DialogContent className="max-w-fit">
+                    <DialogHeader className="text-start">
+                      <DialogTitle>{tLabel('image_preview')}</DialogTitle>
+                    </DialogHeader>
+                    <img
+                      src={previewImage ?? ''}
+                      alt={tLabel('image_preview')}
+                      className="max-h-[70vh] w-auto max-w-full object-contain"
+                    />
+                    <DialogFooter>
+                      <Button variant="outline" asChild>
+                        <a
+                          href={previewImage ?? '#'}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ExternalLinkIcon size={16} />
+                          {tLabel('open_original')}
+                        </a>
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </TabsContent>
               <TabsContent value="categories" className="pt-5 pb-5">
+                {/* Categories Field */}
                 <FormField
                   control={form.control}
                   name='categories'
                   render={() => (
                     <FormItem>
                       <FormLabel>{tLabel('categories')}</FormLabel>
-                      <div className='grid gap-2 sm:grid-cols-2 lg:grid-cols-3'>
+                      <div className='max-h-64 space-y-2 overflow-y-auto rounded-md border p-3'>
                         {categoryTree.map((category) => (
                           <FormField
                             key={category.id}
@@ -289,8 +461,8 @@ export function PostForm() {
                             render={({ field }) => (
                               <FormItem
                                 key={category.id}
-                                className='flex flex-row items-center gap-2 space-y-0 rounded-md border p-3'
-                                style={{ marginInlineStart: `${category.depth * 1.25}rem` }}
+                                className='flex flex-row items-center gap-2'
+                                style={{ paddingInlineStart: `${category.depth * 1.25}rem` }}
                               >
                                 <FormControl>
                                   <Checkbox
@@ -314,9 +486,6 @@ export function PostForm() {
                           />
                         ))}
                       </div>
-                      <FormDescription>
-                        {tHelpText('categories')}
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -350,28 +519,6 @@ export function PostForm() {
                         </SelectContent>
                       </Select>
                       <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Featured Field */}
-                <FormField
-                  control={form.control}
-                  name='is_featured'
-                  render={({ field }) => (
-                    <FormItem className='mt-6 flex flex-row items-center justify-between rounded-md border p-4'>
-                      <div className='space-y-0.5'>
-                        <FormLabel>{tLabel('is_featured')}</FormLabel>
-                        <FormDescription>
-                          {tHelpText('is_featured')}
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
                     </FormItem>
                   )}
                 />
