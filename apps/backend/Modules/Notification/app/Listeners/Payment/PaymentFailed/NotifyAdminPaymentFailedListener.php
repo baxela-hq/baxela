@@ -46,7 +46,7 @@ class NotifyAdminPaymentFailedListener implements ShouldQueue
                     'amount' => number_format((float) $event->amount, 2),
                 ],
             ],
-            meta: ['order_code' => $order->order_code],
+            meta: ['order_code' => $order->order_code, 'order_id' => (int) $order->id],
         );
 
         $this->notificationDispatcher->dispatch($message);

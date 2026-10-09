@@ -43,7 +43,7 @@ class NotifyAdminNewOrderListener implements ShouldQueue
                     'amount' => $amount,
                 ],
             ],
-            meta: ['order_code' => $event->order_code],
+            meta: ['order_code' => $event->order_code, 'order_id' => $event->id],
         );
 
         $this->notificationDispatcher->dispatch($message);

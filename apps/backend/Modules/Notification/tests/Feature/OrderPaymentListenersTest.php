@@ -47,6 +47,7 @@ it('notifies staff and the customer when an order is created', function () {
             ->where('code', NotificationCodeEnum::ORDER_ORDER_CREATED->value)
             ->where('audience', 'admin')
             ->where('meta->order_code', 'ORD-1234')
+            ->where('meta->order_id', 1)
             ->count()
     )->toBe(1)->and(
         Notification::query()
@@ -188,6 +189,7 @@ it('notifies staff when a payment succeeds', function () {
             ->where('user_id', $admin->id)
             ->where('code', NotificationCodeEnum::PAYMENT_PAYMENT_SUCCEEDED->value)
             ->where('meta->order_code', 'ORD-1234')
+            ->where('meta->order_id', $order->id)
             ->count()
     )->toBe(1)->and(
         Notification::query()
@@ -228,6 +230,7 @@ it('notifies the customer and staff when a payment fails', function () {
         Notification::query()
             ->where('user_id', $admin->id)
             ->where('code', NotificationCodeEnum::PAYMENT_PAYMENT_FAILED->value)
+            ->where('meta->order_id', $order->id)
             ->exists()
     )->toBeTrue();
 });
