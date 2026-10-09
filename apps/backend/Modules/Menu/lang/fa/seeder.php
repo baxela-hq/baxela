@@ -88,6 +88,11 @@ return [
                     ],
                 ],
             ],
+            'blog' => [
+                'url' => '/blog',
+                'translations' => [['title' => 'وبلاگ']],
+                'children' => [],
+            ],
             'about' => [
                 'url' => '/pages/about-us',
                 'translations' => [['title' => 'درباره ما']],
