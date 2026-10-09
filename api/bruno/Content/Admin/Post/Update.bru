@@ -22,8 +22,15 @@ auth:bearer {
 body:json {
   {
     "status": "draft",
-    "is_featured": true,
     "categories": [1, 2],
+    "images": [
+      {
+        "media_id": 1,
+        "url": "https://cdn.baxela.test/posts/welcome-cover-v2.jpg",
+        "collection": "photos",
+        "position": 1
+      }
+    ],
     "translations": [
       {
         "language": "en",
