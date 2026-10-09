@@ -22,12 +22,14 @@ class Post extends Model
      */
     protected $fillable = [
         PostSchema::STATUS,
+        PostSchema::PUBLISHED_AT,
     ];
 
     protected function casts(): array
     {
         return [
             PostSchema::STATUS => PostStatusEnum::class,
+            PostSchema::PUBLISHED_AT => 'datetime',
         ];
     }
 

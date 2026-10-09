@@ -19,6 +19,13 @@ class ShowPostAction extends AbstractPostAction
     {
         $query = $this->model
             ->where(PostSchema::STATUS, PostStatusEnum::PUBLISHED)
+            // scheduled publishing: slug and id lookups must not leak
+            // posts whose publish date is still in the future
+            ->where(function ($query) {
+                $query
+                    ->whereNull(PostSchema::PUBLISHED_AT)
+                    ->orWhere(PostSchema::PUBLISHED_AT, '<=', now());
+            })
             ->with([
                 PostSchema::RES_TRANSLATIONS,
                 PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,

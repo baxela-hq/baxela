@@ -30,6 +30,7 @@ class ListPostAction extends AbstractPostAction
             ->select([
                 $id,
                 PostSchema::STATUS,
+                PostSchema::PUBLISHED_AT,
                 PostSchema::TABLE.'.'.PostSchema::CREATED_AT,
                 PostSchema::TABLE.'.'.PostSchema::UPDATED_AT,
             ])

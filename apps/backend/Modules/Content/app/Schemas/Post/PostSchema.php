@@ -13,6 +13,8 @@ class PostSchema
 
     public const string STATUS = 'status';
 
+    public const string PUBLISHED_AT = 'published_at';
+
     public const string RES_TRANSLATIONS = 'translations';
 
     public const string RES_CATEGORIES = 'categories';

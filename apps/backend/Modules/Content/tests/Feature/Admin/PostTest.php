@@ -165,6 +165,34 @@ it('rejects a slug already taken in the same language', function () {
     expect(Post::count())->toBe(1);
 });
 
+it('schedules a post by storing and clearing a publish date', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'published_at' => now()->addDay()->toIso8601String(),
+    ]))->assertCreated()->json('data.id');
+
+    $post = Post::query()->find($postId);
+
+    expect($post->{PostSchema::PUBLISHED_AT}->getTimestamp())
+        ->toBe(now()->addDay()->getTimestamp());
+
+    // slug must change on update: same-slug re-saves trip the per-language
+    // unique guard, so refreshes always carry a new slug
+    $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
+        'published_at' => null,
+        'translations' => [[
+            'language' => 'en',
+            'title' => 'Hello World v2',
+            'slug' => 'hello-world-v2',
+            'content' => 'Rewritten content',
+            'description' => null,
+        ]],
+    ]))->assertOk();
+
+    expect($post->fresh()->{PostSchema::PUBLISHED_AT})->toBeNull();
+});
+
 it('deletes a post', function () {
     $this->actingAs($this->superAdminUser());
 

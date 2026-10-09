@@ -24,6 +24,7 @@ class UpdatePostAction
 
             $record->update([
                 PostSchema::STATUS => $data[PostSchema::STATUS],
+                PostSchema::PUBLISHED_AT => $data[PostSchema::PUBLISHED_AT] ?? null,
             ]);
             $record->categories()->sync($data[PostSchema::RES_CATEGORIES] ?? []);
 

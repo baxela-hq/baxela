@@ -29,6 +29,7 @@ class PostResource extends JsonResource
             PTSchema::SLUG => $translation?->{PTSchema::SLUG},
             PTSchema::DESCRIPTION => $translation?->{PTSchema::DESCRIPTION},
             PTSchema::CONTENT => $translation?->{PTSchema::CONTENT},
+            PostSchema::PUBLISHED_AT => $this->resource->{PostSchema::PUBLISHED_AT},
             PostSchema::CREATED_AT => $this->resource->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->resource->{PostSchema::UPDATED_AT},
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),

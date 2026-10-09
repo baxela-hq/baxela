@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create(PostSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->enum(PostSchema::STATUS, PostStatusEnum::cases());
+            $table->timestamp(PostSchema::PUBLISHED_AT)->nullable();
             $table->timestamps();
         });
 

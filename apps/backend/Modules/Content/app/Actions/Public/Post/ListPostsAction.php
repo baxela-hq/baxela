@@ -16,6 +16,13 @@ class ListPostsAction extends AbstractPostAction
 
         return $this->model
             ->where(PostSchema::STATUS, PostStatusEnum::PUBLISHED)
+            // scheduled publishing: a future publish date keeps the post
+            // hidden until the moment passes — no scheduler involved
+            ->where(function ($query) {
+                $query
+                    ->whereNull(PostSchema::PUBLISHED_AT)
+                    ->orWhere(PostSchema::PUBLISHED_AT, '<=', now());
+            })
             ->when($request->input('category'), fn ($query, $categorySlug) => $query
                 ->whereHas(
                     PostSchema::RES_CATEGORIES.'.'.PostCategorySchema::RES_TRANSLATIONS,

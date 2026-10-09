@@ -35,6 +35,7 @@ class PostRequest extends FormRequest
 
         $rules = [
             PSchema::STATUS => ['required', new Enum(PostStatusEnum::class)],
+            PSchema::PUBLISHED_AT => ['nullable', 'date'],
 
             PSchema::RES_CATEGORIES => ['nullable', 'array'],
             PSchema::RES_CATEGORIES.'.*' => ['integer'],
