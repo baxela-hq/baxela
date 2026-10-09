@@ -42,12 +42,6 @@
     "account": "اکانت",
     "notifications": "نوتیفیکیشن ها",
     "notifications-inbox": "نوتیفیکیشن ها",
-    "errors": "خطاها",
-    "unauthorized": "غیرمجاز",
-    "forbidden": "ممنوعه",
-    "not-found": "ناپیدا",
-    "internal-server-error": "خطای سرور داخلی",
-    "maintenance-error": "خطای تعمیر و نگهداری",
     "toggle": "نمایش/مخفی کردن نوار کناری",
     "featured": "ویژه",
     "promotions": "تخفیف‌ها"
@@ -71,7 +65,8 @@
       "system": "سیستمی"
     },
     "toggle-theme": "تغییر پوسته",
-    "open-theme-settings": "باز کردن تنظیمات پوسته"
+    "open-theme-settings": "باز کردن تنظیمات پوسته",
+    "view-website": "مشاهده سایت"
   },
   "search": {
     "placeholder": "جستجو...",

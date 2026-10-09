@@ -42,12 +42,6 @@
     "account": "Account",
     "notifications": "Notifications",
     "notifications-inbox": "Notifications",
-    "errors": "Errors",
-    "unauthorized": "Unauthorized",
-    "forbidden": "Forbidden",
-    "not-found": "Not Found",
-    "internal-server-error": "Internal Server Error",
-    "maintenance-error": "Maintenance Error",
     "toggle": "Toggle Sidebar",
     "featured": "Featured",
     "promotions": "Promotions"
@@ -71,7 +65,8 @@
       "system": "System"
     },
     "toggle-theme": "Toggle theme",
-    "open-theme-settings": "Open theme settings"
+    "open-theme-settings": "Open theme settings",
+    "view-website": "View website"
   },
   "search": {
     "placeholder": "Search...",

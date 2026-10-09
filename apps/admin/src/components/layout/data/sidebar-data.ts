@@ -1,21 +1,14 @@
 import {
   Boxes,
-  Construction,
   LayoutDashboard,
-  Bug,
-  FileX,
-  Lock,
   Bell,
   Inbox,
   Menu as MenuIcon,
   Newspaper,
   Package,
-  ServerOff,
   Settings,
   Ticket as TicketIcon,
-  UserX,
   Users,
-  ShieldCheck,
   GalleryVerticalEnd,
   Images,
   Truck,
@@ -239,63 +232,6 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.promotions'),
                 url: '/discount/promotions',
-              },
-            ],
-          },
-          {
-            title: 'Auth',
-            icon: ShieldCheck,
-            items: [
-              {
-                title: 'Sign In',
-                url: '/sign-in',
-              },
-              {
-                title: 'Sign In (2 Col)',
-                url: '/sign-in-2',
-              },
-              {
-                title: 'Sign Up',
-                url: '/sign-up',
-              },
-              {
-                title: 'Forgot Password',
-                url: '/forgot-password',
-              },
-              {
-                title: 'OTP',
-                url: '/otp',
-              },
-            ],
-          },
-          {
-            title: t('sidebar.errors'),
-            icon: Bug,
-            items: [
-              {
-                title: t('sidebar.unauthorized'),
-                url: '/errors/unauthorized',
-                icon: Lock,
-              },
-              {
-                title: t('sidebar.forbidden'),
-                url: '/errors/forbidden',
-                icon: UserX,
-              },
-              {
-                title: t('sidebar.not-found'),
-                url: '/errors/not-found',
-                icon: FileX,
-              },
-              {
-                title: t('sidebar.internal-server-error'),
-                url: '/errors/internal-server-error',
-                icon: ServerOff,
-              },
-              {
-                title: t('sidebar.maintenance-error'),
-                url: '/errors/maintenance-error',
-                icon: Construction,
               },
             ],
           },
