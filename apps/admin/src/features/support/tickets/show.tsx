@@ -1,8 +1,10 @@
-import { getRouteApi } from '@tanstack/react-router'
+import { getRouteApi, useNavigate } from '@tanstack/react-router'
+import { ArrowLeftIcon, ListCheckIcon } from 'lucide-react'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 import { cn } from '@/lib/utils'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import {
   Select,
@@ -17,7 +19,7 @@ import { Search } from '@/components/search'
 import { SkeletonWidget as SkeletonWidgetFromFile } from '@/components/shared/skeleton-widget'
 import { HeaderActions } from '@/components/layout/header-actions'
 import { statusBadgeVariants } from './data/data'
-import { Locales } from './data/routes'
+import { FeatureRoutes, Locales } from './data/routes'
 import { type TicketStatus } from './data/schema'
 import { useOneTicket } from './hooks/use-tickets'
 import { useUpdateTicketStatus } from './hooks/use-ticket-mutations'
@@ -27,6 +29,7 @@ const route = getRouteApi('/_authenticated/support/tickets/$id/show')
 
 export function TicketShow() {
   const { id } = route.useParams()
+  const navigate = useNavigate()
   const { tPageTitle, tLabel: tcLabel } = useAppTranslation(
     Locales.SHARED_COMMON
   )
@@ -57,6 +60,17 @@ export function TicketShow() {
               })}
             </h2>
             <p className='text-muted-foreground'>{tPageTitle('show.subtitle')}</p>
+          </div>
+          <div className='flex gap-2'>
+            <Button
+              variant='outline'
+              className='space-x-1'
+              onClick={() => navigate({ to: FeatureRoutes.LIST })}
+            >
+              <ArrowLeftIcon size={16} />
+              <span>{entityName.plural}</span>
+              <ListCheckIcon size={18} />
+            </Button>
           </div>
         </div>
 
