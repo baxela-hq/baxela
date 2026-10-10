@@ -32,10 +32,17 @@ function ticketHref(notification: ApiNotification): string | null {
   return typeof id === "number" ? `/profile/tickets/${id}` : null;
 }
 
+function postHref(notification: ApiNotification): string | null {
+  const id = notification.meta?.post_id;
+  return typeof id === "number" ? `/blog/${id}` : null;
+}
+
 /**
  * The "Notifications" tab: a flat feed of rows — icon tile, bold title,
  * description and the time on the side. Clicking a row marks it read and,
- * for order events, jumps to that order (searched by its opaque code).
+ * where the meta carries a target, jumps to the related page: the order
+ * (searched by its opaque code), the ticket thread, or the blog post an
+ * approved comment lives on.
  */
 export function Notifications({ initials }: { initials: string }) {
   const t = useTranslations("account.account");
@@ -165,7 +172,7 @@ export function Notifications({ initials }: { initials: string }) {
         {rows.map((row) => {
           const Icon = rowIcon(row.code);
           const personal = row.code.startsWith("auth.");
-          const href = orderHref(row) ?? ticketHref(row);
+          const href = orderHref(row) ?? ticketHref(row) ?? postHref(row);
 
           const content = (
             <>

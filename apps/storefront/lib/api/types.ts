@@ -30,11 +30,14 @@ export interface ApiNotification {
   code: string;
   title: string;
   body: string;
-  /** Deep-link hints; `order_code` points at the customer's order and
-   * `ticket_id` at their support ticket thread. */
+  /** Deep-link hints; `order_code` points at the customer's order,
+   * `ticket_id` at their support ticket thread, and `post_id` at the blog
+   * post the approved comment lives on (the public post endpoint resolves
+   * ids as well as slugs). */
   meta: {
     order_code?: string;
     ticket_id?: number;
+    post_id?: number;
     reason?: string | null;
   } | null;
   read_at: string | null;
