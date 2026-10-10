@@ -12,6 +12,16 @@ return [
                 ],
             ],
         ],
+        'content' => [
+            'admin' => [
+                'post_comment' => [
+                    'created' => [
+                        'subject' => 'دیدگاه جدید در انتظار تایید',
+                        'body' => 'یک دیدگاه جدید روی نوشته :post_id در انتظار بررسی است: «:excerpt»',
+                    ],
+                ],
+            ],
+        ],
         'order' => [
             'admin' => [
                 'order' => [

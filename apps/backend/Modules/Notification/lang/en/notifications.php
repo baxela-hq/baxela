@@ -12,6 +12,16 @@ return [
                 ],
             ],
         ],
+        'content' => [
+            'admin' => [
+                'post_comment' => [
+                    'created' => [
+                        'subject' => 'New comment pending approval',
+                        'body' => 'A new comment on post :post_id awaits moderation: ":excerpt"',
+                    ],
+                ],
+            ],
+        ],
         'order' => [
             'admin' => [
                 'order' => [

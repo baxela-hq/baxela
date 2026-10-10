@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
+use Modules\Core\Contracts\Events\Content\PostCommentCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
@@ -18,6 +19,7 @@ use Modules\Core\Contracts\Events\Support\TicketMessageCreatedEvent;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Auth\UserSignedIn\SendNewLoginAlertToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
+use Modules\Notification\Listeners\Content\PostCommentCreated\NotifyAdminPostCommentCreatedListener;
 use Modules\Notification\Listeners\Order\OrderCancelled\SendOrderCancelledNotificationToUserListener;
 use Modules\Notification\Listeners\Order\OrderCompleted\SendOrderCompletedNotificationToUserListener;
 use Modules\Notification\Listeners\Order\OrderCreated\NotifyAdminNewOrderListener;
@@ -39,6 +41,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
+        PostCommentCreatedEvent::class => [
+            NotifyAdminPostCommentCreatedListener::class,
+        ],
         UserSignedInEvent::class => [
             SendNewLoginAlertToUserListener::class,
         ],

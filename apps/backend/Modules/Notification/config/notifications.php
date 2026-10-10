@@ -40,6 +40,13 @@ return [
                 ],
             ],
         ],
+        'content' => [
+            'post_comment' => [
+                'created' => [
+                    'admin' => ['database', 'email'],
+                ],
+            ],
+        ],
         'order' => [
             'order' => [
                 'created' => [
