@@ -21,6 +21,14 @@ return [
                     ],
                 ],
             ],
+            'user' => [
+                'post_comment' => [
+                    'approved' => [
+                        'subject' => 'Your comment was approved',
+                        'body' => 'Good news — your comment ":excerpt" on post :post_id has been approved and is now visible.',
+                    ],
+                ],
+            ],
         ],
         'order' => [
             'admin' => [

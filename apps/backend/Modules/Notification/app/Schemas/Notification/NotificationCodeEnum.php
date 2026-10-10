@@ -28,6 +28,7 @@ enum NotificationCodeEnum: string
     case CONTENT_PAGE_PUBLISHED = 'content.page.published';
     case CONTENT_PAGE_UNPUBLISHED = 'content.page.unpublished';
     case CONTENT_POST_COMMENT_CREATED = 'content.post_comment.created';
+    case CONTENT_POST_COMMENT_APPROVED = 'content.post_comment.approved';
 
     // Inventory
     case INVENTORY_STOCK_INCREASED = 'inventory.stock.increased';

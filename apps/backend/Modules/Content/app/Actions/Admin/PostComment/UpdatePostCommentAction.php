@@ -8,6 +8,7 @@ use Modules\Content\Models\PostComment;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\PostComment\PostCommentSchema as Schema;
 use Modules\Content\Schemas\PostComment\PostCommentStatusEnum;
+use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
 use Throwable;
 
 class UpdatePostCommentAction extends AbstractPostCommentAction
@@ -20,6 +21,8 @@ class UpdatePostCommentAction extends AbstractPostCommentAction
     public function handle(string $id, array $data): PostComment
     {
         $record = PostComment::query()->findOrFail($id);
+
+        $wasApproved = $record->{Schema::STATUS} === PostCommentStatusEnum::APPROVED;
 
         $parentId = $data[Schema::PARENT_ID] ?? null;
         $this->assertValidParent($data[Schema::POST_ID], $parentId, $id);
@@ -45,6 +48,11 @@ class UpdatePostCommentAction extends AbstractPostCommentAction
             Schema::RES_POST.'.'.PostSchema::RES_TRANSLATIONS,
         ]);
         $this->enrichWithUserNames([$record]);
+
+        // tell the author the first time their comment becomes visible
+        if (! $wasApproved && $record->{Schema::STATUS} === PostCommentStatusEnum::APPROVED) {
+            event(PostCommentApprovedEvent::fill($record->toArray()));
+        }
 
         return $record;
     }

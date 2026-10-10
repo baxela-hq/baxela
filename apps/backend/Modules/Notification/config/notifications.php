@@ -45,6 +45,9 @@ return [
                 'created' => [
                     'admin' => ['database', 'email'],
                 ],
+                'approved' => [
+                    'user' => ['database', 'email'],
+                ],
             ],
         ],
         'order' => [
