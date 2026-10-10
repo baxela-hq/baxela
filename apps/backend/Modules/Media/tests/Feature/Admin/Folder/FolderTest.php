@@ -233,24 +233,64 @@ it('creates a folder with name only', function () {
     ]);
 });
 
-it('prevents creating a folder under another user folder', function () {
+it('creates a folder under another admin folder', function () {
 
     $owner = $this->adminUser();
-    $intruder = $this->adminUser();
+    $actor = $this->adminUser();
 
     $ownerFolder = Folder::factory()->create([
         FolderSchema::USER_ID => $owner->id,
         FolderSchema::PARENT_ID => null,
     ]);
 
-    $this->actingAs($intruder);
+    $this->actingAs($actor);
 
     $response = $this->postJson($this->baseUrl('/folders'), [
-        FolderSchema::NAME => 'Intruder Child',
+        FolderSchema::NAME => 'Shared Child',
         FolderSchema::PARENT_ID => $ownerFolder->id,
     ]);
 
-    $response->assertStatus(404);
+    $response->assertCreated();
+    $this->assertDatabaseHas(FolderSchema::TABLE, [
+        FolderSchema::USER_ID => $actor->id,
+        FolderSchema::NAME => 'Shared Child',
+        FolderSchema::PARENT_ID => $ownerFolder->id,
+    ]);
+});
+
+it('prevents creating a folder under a missing parent', function () {
+
+    $user = $this->adminUser();
+    $this->actingAs($user);
+
+    $response = $this->postJson($this->baseUrl('/folders'), [
+        FolderSchema::NAME => 'Orphan',
+        FolderSchema::PARENT_ID => 999,
+    ]);
+
+    $response->assertStatus(422);
+});
+
+it('moves a folder into another admin folder via PATCH', function () {
+
+    $actor = $this->adminUser();
+    $this->actingAs($actor);
+
+    $folder = Folder::factory()->create([
+        FolderSchema::USER_ID => $actor->id,
+        FolderSchema::PARENT_ID => null,
+    ]);
+    $target = Folder::factory()->create([
+        FolderSchema::USER_ID => $this->adminUser()->id,
+        FolderSchema::PARENT_ID => null,
+    ]);
+
+    $response = $this->patchJson($this->baseUrl('/folders/'.$folder->id), [
+        FolderSchema::PARENT_ID => $target->id,
+    ]);
+
+    $response->assertOk();
+    expect($folder->fresh()->parent_id)->toBe($target->id);
 });
 
 it('resolves a nested folder id by path via the media gateway', function () {

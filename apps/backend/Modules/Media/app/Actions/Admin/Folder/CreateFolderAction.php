@@ -12,11 +12,9 @@ class CreateFolderAction
     {
         $data[FolderSchema::USER_ID] = Auth::id();
 
-        // nesting is only allowed under folders owned by the same user
+        // folders are shared across admins: the parent only has to exist
         if (! empty($data[FolderSchema::PARENT_ID])) {
-            Folder::query()
-                ->where(FolderSchema::USER_ID, Auth::id())
-                ->findOrFail((int) $data[FolderSchema::PARENT_ID]);
+            Folder::query()->findOrFail((int) $data[FolderSchema::PARENT_ID]);
         }
 
         return Folder::query()->create($data);

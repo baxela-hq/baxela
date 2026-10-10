@@ -37,10 +37,8 @@ class UpdateFolderAction
      */
     protected function ensureValidMove(Folder $folder, int $parentId): void
     {
-        // the move target must belong to the same owner as the folder
-        $target = Folder::query()
-            ->where(FolderSchema::USER_ID, Auth::id())
-            ->findOrFail($parentId);
+        // folders are shared across admins: the move target only has to exist
+        $target = Folder::query()->findOrFail($parentId);
 
         if ($target->getKey() === $folder->getKey()) {
             throw new CircularMoveException;
