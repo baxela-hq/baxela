@@ -31,6 +31,7 @@ import { FeatureRoutes, Locales } from './data/routes';
 import { fetchOneProduct } from './api/products.api';
 import { useCategoryTree } from '@/features/catalog/categories/hooks/use-categories';
 import { useOptionsAll } from '@/features/catalog/options/hooks/use-options';
+import { useBrandsAll } from '@/features/catalog/brands/hooks/use-brands';
 import { useSaveProduct } from './hooks/use-product-mutations';
 import { Provider } from './components/provider.tsx';
 import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type Product, buildDefaultValues, buildEditValues } from './data/schema';
@@ -53,6 +54,7 @@ export function ProductForm() {
   const [currentRow, setCurrentRow] = useState<Product | null>(null)
   const categories = useCategoryTree()
   const options = useOptionsAll()
+  const brands = useBrandsAll()
   const [matrix, setMatrix] = useState<MatrixOption[]>([]);
   const [addOptionValue, setAddOptionValue] = useState('');
   const [activeTab, setActiveTab] = useState('general');
@@ -907,6 +909,36 @@ export function ProductForm() {
                 </Dialog>
               </TabsContent>
               <TabsContent value="categories" className="pt-5 pb-5">
+                {/* Brand Field */}
+                <FormField
+                  control={form.control}
+                  name='brand_id'
+                  render={({ field }) => (
+                    <FormItem className='mb-5'>
+                      <FormLabel>{tLabel('brand')}</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(value === 'none' ? null : Number(value))}
+                        value={field.value ? String(field.value) : 'none'}
+                      >
+                        <FormControl className='w-full'>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={tPlaceHolder('select')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="none">{tLabel('brand_none')}</SelectItem>
+                          {brands.map((brand) => (
+                            <SelectItem key={brand.id} value={String(brand.id)}>
+                              {pickTranslation(brand.translations)?.title ?? ''}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 {/* Categories Field */}
                 <FormField
                   control={form.control}

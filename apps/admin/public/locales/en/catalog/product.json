@@ -50,6 +50,8 @@
       "status": "Status",
       "is_published": "Is Published",
       "categories": "Categories",
+      "brand": "Brand",
+      "brand_none": "No brand",
       "variants": "Variants",
       "price": "Price",
       "sku": "SKU",

@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "brand": "Brand",
+      "brands": "Brands",
+      "id": "ID",
+      "title": "Title",
+      "slug": "Slug",
+      "position": "Position",
+      "logo": "Logo",
+      "add_logo": "Add logo",
+      "description": "Description",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "position": "Enter your item position",
+      "logo": "Optional logo shown alongside the brand on the storefront."
+    }
+  }
+}

@@ -50,6 +50,8 @@
       "status": "وضعیت",
       "is_published": "منتشر شده؟",
       "categories": "دسته‌بندی‌ها",
+      "brand": "برند",
+      "brand_none": "بدون برند",
       "variants": "تنوع‌ها",
       "price": "قیمت",
       "sku": "SKU",

@@ -60,6 +60,7 @@ import { Route as AuthenticatedCatalogOptionsIndexRouteImport } from './routes/_
 import { Route as AuthenticatedCatalogFeaturedIndexRouteImport } from './routes/_authenticated/catalog/featured/index'
 import { Route as AuthenticatedCatalogDataIndexRouteImport } from './routes/_authenticated/catalog/data/index'
 import { Route as AuthenticatedCatalogCategoriesIndexRouteImport } from './routes/_authenticated/catalog/categories/index'
+import { Route as AuthenticatedCatalogBrandsIndexRouteImport } from './routes/_authenticated/catalog/brands/index'
 import { Route as AuthenticatedCatalogAttributesIndexRouteImport } from './routes/_authenticated/catalog/attributes/index'
 import { Route as AuthenticatedDiscountPromotionsCreateRouteImport } from './routes/_authenticated/discount/promotions/create'
 import { Route as AuthenticatedContentPostsCreateRouteImport } from './routes/_authenticated/content/posts/create'
@@ -368,6 +369,12 @@ const AuthenticatedCatalogCategoriesIndexRoute =
     path: '/catalog/categories/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCatalogBrandsIndexRoute =
+  AuthenticatedCatalogBrandsIndexRouteImport.update({
+    id: '/catalog/brands/',
+    path: '/catalog/brands/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCatalogAttributesIndexRoute =
   AuthenticatedCatalogAttributesIndexRouteImport.update({
     id: '/',
@@ -495,6 +502,7 @@ export interface FileRoutesByFullPath {
   '/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
+  '/catalog/brands': typeof AuthenticatedCatalogBrandsIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/catalog/data': typeof AuthenticatedCatalogDataIndexRoute
   '/catalog/featured': typeof AuthenticatedCatalogFeaturedIndexRoute
@@ -561,6 +569,7 @@ export interface FileRoutesByTo {
   '/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/catalog/attributes': typeof AuthenticatedCatalogAttributesIndexRoute
+  '/catalog/brands': typeof AuthenticatedCatalogBrandsIndexRoute
   '/catalog/categories': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/catalog/data': typeof AuthenticatedCatalogDataIndexRoute
   '/catalog/featured': typeof AuthenticatedCatalogFeaturedIndexRoute
@@ -631,6 +640,7 @@ export interface FileRoutesById {
   '/_authenticated/content/posts/create': typeof AuthenticatedContentPostsCreateRoute
   '/_authenticated/discount/promotions/create': typeof AuthenticatedDiscountPromotionsCreateRoute
   '/_authenticated/catalog/attributes/': typeof AuthenticatedCatalogAttributesIndexRoute
+  '/_authenticated/catalog/brands/': typeof AuthenticatedCatalogBrandsIndexRoute
   '/_authenticated/catalog/categories/': typeof AuthenticatedCatalogCategoriesIndexRoute
   '/_authenticated/catalog/data/': typeof AuthenticatedCatalogDataIndexRoute
   '/_authenticated/catalog/featured/': typeof AuthenticatedCatalogFeaturedIndexRoute
@@ -701,6 +711,7 @@ export interface FileRouteTypes {
     | '/content/posts/create'
     | '/discount/promotions/create'
     | '/catalog/attributes/'
+    | '/catalog/brands'
     | '/catalog/categories'
     | '/catalog/data'
     | '/catalog/featured'
@@ -767,6 +778,7 @@ export interface FileRouteTypes {
     | '/content/posts/create'
     | '/discount/promotions/create'
     | '/catalog/attributes'
+    | '/catalog/brands'
     | '/catalog/categories'
     | '/catalog/data'
     | '/catalog/featured'
@@ -836,6 +848,7 @@ export interface FileRouteTypes {
     | '/_authenticated/content/posts/create'
     | '/_authenticated/discount/promotions/create'
     | '/_authenticated/catalog/attributes/'
+    | '/_authenticated/catalog/brands/'
     | '/_authenticated/catalog/categories/'
     | '/_authenticated/catalog/data/'
     | '/_authenticated/catalog/featured/'
@@ -1248,6 +1261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCatalogCategoriesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/catalog/brands/': {
+      id: '/_authenticated/catalog/brands/'
+      path: '/catalog/brands'
+      fullPath: '/catalog/brands'
+      preLoaderRoute: typeof AuthenticatedCatalogBrandsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/catalog/attributes/': {
       id: '/_authenticated/catalog/attributes/'
       path: '/'
@@ -1422,6 +1442,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
   AuthenticatedContentPostsCreateRoute: typeof AuthenticatedContentPostsCreateRoute
   AuthenticatedDiscountPromotionsCreateRoute: typeof AuthenticatedDiscountPromotionsCreateRoute
+  AuthenticatedCatalogBrandsIndexRoute: typeof AuthenticatedCatalogBrandsIndexRoute
   AuthenticatedCatalogCategoriesIndexRoute: typeof AuthenticatedCatalogCategoriesIndexRoute
   AuthenticatedCatalogDataIndexRoute: typeof AuthenticatedCatalogDataIndexRoute
   AuthenticatedCatalogFeaturedIndexRoute: typeof AuthenticatedCatalogFeaturedIndexRoute
@@ -1475,6 +1496,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentPostsCreateRoute: AuthenticatedContentPostsCreateRoute,
   AuthenticatedDiscountPromotionsCreateRoute:
     AuthenticatedDiscountPromotionsCreateRoute,
+  AuthenticatedCatalogBrandsIndexRoute: AuthenticatedCatalogBrandsIndexRoute,
   AuthenticatedCatalogCategoriesIndexRoute:
     AuthenticatedCatalogCategoriesIndexRoute,
   AuthenticatedCatalogDataIndexRoute: AuthenticatedCatalogDataIndexRoute,
