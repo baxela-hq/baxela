@@ -4,7 +4,6 @@ namespace Modules\Notification\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
-use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentCreatedEvent;
@@ -18,7 +17,6 @@ use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
 use Modules\Core\Contracts\Events\Support\TicketCreatedEvent;
 use Modules\Core\Contracts\Events\Support\TicketMessageCreatedEvent;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
-use Modules\Notification\Listeners\Auth\UserSignedIn\SendNewLoginAlertToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 use Modules\Notification\Listeners\Content\PostCommentApproved\SendPostCommentApprovedToUserListener;
 use Modules\Notification\Listeners\Content\PostCommentCreated\NotifyAdminPostCommentCreatedListener;
@@ -48,9 +46,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         PostCommentApprovedEvent::class => [
             SendPostCommentApprovedToUserListener::class,
-        ],
-        UserSignedInEvent::class => [
-            SendNewLoginAlertToUserListener::class,
         ],
         OtpRequestedEvent::class => [
             SendOtpCodeToUserListener::class,

@@ -2,16 +2,6 @@
 
 return [
     'fa' => [
-        'auth' => [
-            'user' => [
-                'user' => [
-                    'signed_in' => [
-                        'subject' => 'ورود جدید به حساب شما',
-                        'body' => 'یک ورود جدید به حساب شما شناسایی شده است',
-                    ],
-                ],
-            ],
-        ],
         'content' => [
             'admin' => [
                 'post_comment' => [

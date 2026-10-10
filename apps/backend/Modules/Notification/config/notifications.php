@@ -24,10 +24,6 @@ return [
     'notifications' => [
         'auth' => [
             'user' => [
-                'signed_in' => [
-                    'user' => ['database', 'email', 'webpush'],
-                    'admin' => ['database', 'webpush'],
-                ],
                 'otp_code' => [
                     'user' => ['email'],
                 ],

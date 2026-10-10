@@ -17,25 +17,24 @@ it('dispatches a dual-channel notification to the database and email', function 
     Mail::fake();
 
     $user = User::factory()->create();
+    $data = ['post_id' => 42, 'excerpt' => 'Nice post'];
 
     app(NotificationDispatcherInterface::class)->dispatch(new NotificationMessage(
-        code: NotificationCodeEnum::AUTH_USER_SIGNED_IN->value,
+        code: NotificationCodeEnum::CONTENT_POST_COMMENT_APPROVED->value,
         audience: 'user',
         recipients: ['email' => [$user->email], 'database' => [$user->id]],
-        data: ['email' => [
-            'site_name' => config('app.name'),
-            'signed_in_at' => now()->toDateTimeString(),
-        ]],
+        data: ['database' => $data, 'email' => $data],
+        locale: 'en',
     ));
 
     $row = Notification::query()
         ->where('user_id', $user->id)
-        ->where('code', NotificationCodeEnum::AUTH_USER_SIGNED_IN->value)
+        ->where('code', NotificationCodeEnum::CONTENT_POST_COMMENT_APPROVED->value)
         ->first();
 
     expect($row)->not->toBeNull()
-        ->and($row->title)->toBe('New Login to your account')
-        ->and($row->body)->toBe('A new logged in has been identified to your account');
+        ->and($row->title)->toBe('Your comment was approved')
+        ->and($row->body)->toBe('Good news — your comment "Nice post" on post 42 has been approved and is now visible.');
 
     Mail::assertSent(DynamicNotification::class, 1);
     Mail::assertSent(DynamicNotification::class, fn (DynamicNotification $mail) => $mail->hasTo($user->email));
