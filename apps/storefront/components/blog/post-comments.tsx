@@ -21,9 +21,7 @@ function CommentItem({
     <li className="rounded-default border border-border-light p-6">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
-          {comment.user && typeof comment.user === "object" && "name" in comment.user
-            ? String(comment.user.name)
-            : t("texts.anonymous")}
+          {comment.user?.name ?? t("texts.anonymous")}
         </p>
         <p className="text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
           {formatDate(comment.created_at)}
@@ -37,9 +35,7 @@ function CommentItem({
           {comment.replies.map((reply) => (
             <li key={reply.id} className="rounded-default bg-muted p-4">
               <p className="text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
-                {reply.user && typeof reply.user === "object" && "name" in reply.user
-                  ? String(reply.user.name)
-                  : t("texts.anonymous")}
+                {reply.user?.name ?? t("texts.anonymous")}
               </p>
               <p className="mt-2 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
                 {reply.body}
