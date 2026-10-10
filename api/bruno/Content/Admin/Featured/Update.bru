@@ -1,0 +1,31 @@
+meta {
+  name: Update
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/v1/content/admin/featured
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "post_ids": [1, 2, 3]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
