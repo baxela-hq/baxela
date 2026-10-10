@@ -1,2 +1,4 @@
+# The API origin serves no indexable pages — the storefront owns the
+# public content and its sitemap (see the storefront's /robots.txt).
 User-agent: *
-Disallow:
+Disallow: /
