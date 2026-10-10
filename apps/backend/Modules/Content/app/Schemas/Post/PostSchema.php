@@ -15,6 +15,10 @@ class PostSchema
 
     public const string PUBLISHED_AT = 'published_at';
 
+    public const string IMAGE_MEDIA_ID = 'image_media_id';
+
+    public const string IMAGE_URL = 'image_url';
+
     public const string RES_TRANSLATIONS = 'translations';
 
     public const string RES_CATEGORIES = 'categories';

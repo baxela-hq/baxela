@@ -24,6 +24,8 @@ class Post extends Model
     protected $fillable = [
         PostSchema::STATUS,
         PostSchema::PUBLISHED_AT,
+        PostSchema::IMAGE_MEDIA_ID,
+        PostSchema::IMAGE_URL,
     ];
 
     protected function casts(): array

@@ -18,7 +18,7 @@ class MediaDatabaseSeeder extends Seeder
         // duplicate the root folders on every re-run.
         $tree = [
             'Catalog' => ['Product', 'Category', 'Brand', 'Imports'],
-            'Content' => [],
+            'Content' => ['Post'],
             'Settings' => [],
         ];
 

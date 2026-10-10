@@ -14,11 +14,16 @@ use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
 class PostSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
+
+    private MediaGatewayInterface $mediaGateway;
+
+    private int $postFolderId;
 
     /** @var array<string, int|null> */
     private array $languageIds = [];
@@ -29,6 +34,7 @@ class PostSeeder extends Seeder
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
+        $this->mediaGateway = App::make(MediaGatewayInterface::class);
 
         $languageId = $this->coreGateway->getLanguageIdByCode(App::currentLocale());
         if (! $languageId) {
@@ -37,6 +43,15 @@ class PostSeeder extends Seeder
 
             return;
         }
+
+        $postFolderId = $this->mediaGateway->getFolderIdByPath('Content/Post');
+        if ($postFolderId === null) {
+            $this->command->error('Folder Content/Post not found.');
+            $this->command->error('Run this seeder after running the media seeder.');
+
+            return;
+        }
+        $this->postFolderId = $postFolderId;
 
         $moduleKey = Module::NAME_LOWER.'::seeder.posts';
 
@@ -67,12 +82,36 @@ class PostSeeder extends Seeder
                 }
             }
 
+            $image = $this->imageFor((string) $slug);
+
             app(CreatePostAction::class)->handle([
                 PostSchema::STATUS => PostStatusEnum::PUBLISHED,
+                PostSchema::IMAGE_MEDIA_ID => $image?->id,
+                PostSchema::IMAGE_URL => $image?->url,
                 PostSchema::RES_CATEGORIES => $this->categoryIds($post['categories'] ?? []),
                 PostSchema::RES_TRANSLATIONS => $translations,
             ]);
         }
+    }
+
+    /**
+     * Publish the post's seeded cover photo on the public disk and return
+     * its media record. Photos live next to this seeder, keyed by post
+     * slug — so seeding stays reproducible without network access.
+     */
+    private function imageFor(string $slug): ?object
+    {
+        $source = __DIR__.'/media/posts/'.$slug.'.jpg';
+
+        if (! file_exists($source)) {
+            return null;
+        }
+
+        return $this->mediaGateway->upsertLocal(
+            $source,
+            'content/posts/'.basename($source),
+            $this->postFolderId,
+        );
     }
 
     /**

@@ -271,5 +271,35 @@ TXT,
                 ],
             ],
         ],
+
+        // Shipping post
+        'shipping-and-delivery-explained' => [
+            'categories' => ['news'],
+            'translations' => [
+                [
+                    'title' => 'Shipping and delivery, explained',
+                    'slug' => 'shipping-and-delivery-explained',
+                    'description' => 'How your order is packed, when it ships, and how to follow it to your door.',
+                    'content' => <<<'TXT'
+Every order is packed within one business day and picked up by the carrier the same afternoon. You get a tracking link by email as soon as the parcel is scanned, and most deliveries arrive within two to five business days depending on your region. If anything arrives damaged, send us a photo within 48 hours and we will ship a replacement right away.
+TXT,
+                ],
+            ],
+        ],
+
+        // Shoe care post
+        'how-to-care-for-your-shoes' => [
+            'categories' => ['guides'],
+            'translations' => [
+                [
+                    'title' => 'How to care for your shoes',
+                    'slug' => 'how-to-care-for-your-shoes',
+                    'description' => 'Simple habits that keep leather and sneakers looking new for longer.',
+                    'content' => <<<'TXT'
+Let shoes rest a day between wears so the material can dry out and keep its shape. Wipe leather down with a soft cloth every few weeks and feed it with cream when it starts to look dull; for sneakers, a brush and mild soap handle most scuffs. Store them with paper or cedar trees inside, away from direct sunlight, and never machine-dry wet shoes — slow air drying is what protects the glue and stitching.
+TXT,
+                ],
+            ],
+        ],
     ],
 ];

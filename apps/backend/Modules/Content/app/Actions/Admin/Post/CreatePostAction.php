@@ -25,6 +25,8 @@ class CreatePostAction
             $record = Post::query()->create([
                 PostSchema::STATUS => $data[PostSchema::STATUS],
                 PostSchema::PUBLISHED_AT => $data[PostSchema::PUBLISHED_AT] ?? null,
+                PostSchema::IMAGE_MEDIA_ID => $data[PostSchema::IMAGE_MEDIA_ID] ?? null,
+                PostSchema::IMAGE_URL => $data[PostSchema::IMAGE_URL] ?? null,
             ]);
             $record->categories()->attach($data[PostSchema::RES_CATEGORIES] ?? []);
 
