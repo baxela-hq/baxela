@@ -1,0 +1,32 @@
+meta {
+  name: List
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/v1/catalog/admin/brands?per_page=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  per_page: 100
+  @description('position')
+  ~sort: -position
+  ~filter[title]:
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
