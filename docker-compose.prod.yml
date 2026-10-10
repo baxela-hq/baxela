@@ -117,6 +117,9 @@ services:
             # Browser code uses the build-time NEXT_PUBLIC value; server-side
             # fetches run on the compose network and reach nginx directly.
             SERVER_API_BASE_URL: ${SERVER_API_BASE_URL:-http://backend-nginx/api/v1}
+            # Public storefront origin for sitemap.xml/robots.txt/metadataBase
+            # (server-only, read at runtime — no rebuild needed to change it).
+            SITE_URL: ${SITE_URL:-https://example.com}
         security_opt:
             - no-new-privileges:true
         ports:

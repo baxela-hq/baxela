@@ -159,6 +159,8 @@ services:
             NEXT_PUBLIC_REVERB_HOST: ${REVERB_HOST:-localhost}
             NEXT_PUBLIC_REVERB_PORT: ${REVERB_DEV_PORT:-8080}
             NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-http}
+            # Public origin for sitemap.xml/robots.txt/metadataBase (server-only).
+            SITE_URL: ${SITE_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
         depends_on:
             - web
             - reverb
