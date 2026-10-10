@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Content\Database\Factories\PostFactory;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
@@ -62,5 +63,10 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(PostComment::class);
+    }
+
+    public function featuredItem(): MorphOne
+    {
+        return $this->morphOne(FeaturedItem::class, 'featuredable');
     }
 }

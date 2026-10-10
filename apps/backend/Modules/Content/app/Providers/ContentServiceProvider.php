@@ -2,8 +2,11 @@
 
 namespace Modules\Content\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Content\Models\Post;
+use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -21,6 +24,10 @@ class ContentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Relation::morphMap([
+            FeaturedItemSchema::TYPE_POST => Post::class,
+        ]);
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();

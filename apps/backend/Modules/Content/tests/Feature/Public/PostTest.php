@@ -2,8 +2,11 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Content\Models\FeaturedItem;
 use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
+use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
@@ -136,7 +139,11 @@ it('shows a published post by slug or id', function () {
 it('lists the related products of a published post', function () {
     TestCase::defaultLanguage();
 
-    $product = Product::factory()->create();
+    // the gateway only summarizes published products; the factory
+    // randomizes is_published, so pin it for a deterministic assertion
+    $product = Product::factory()->create([
+        ProductSchema::IS_PUBLISHED => true,
+    ]);
     $product->translations()->create([
         'language_id' => TestCase::defaultLanguage()->id,
         'title' => 'Sneaker',
@@ -152,6 +159,49 @@ it('lists the related products of a published post', function () {
         ->assertJsonCount(1, 'data.products')
         ->assertJsonPath('data.products.0.id', $product->id)
         ->assertJsonPath('data.products.0.title', 'Sneaker');
+});
+
+it('lists only curated posts in featured order when the featured filter is on', function () {
+    TestCase::defaultLanguage();
+
+    $second = publishedPost('second-featured');
+    $first = publishedPost('first-featured');
+    publishedPost('unfeatured-post');
+    $draft = Post::factory()->create([PostSchema::STATUS => PostStatusEnum::DRAFT]);
+    $draft->translations()->create([
+        PTSchema::LANGUAGE_ID => TestCase::defaultLanguage()->id,
+        PTSchema::TITLE => 'Draft',
+        PTSchema::SLUG => 'draft-featured',
+        PTSchema::CONTENT => 'Content',
+    ]);
+
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_POST,
+        FeaturedItemSchema::FEATUREDABLE_ID => $second->id,
+        FeaturedItemSchema::POSITION => 2,
+    ]);
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_POST,
+        FeaturedItemSchema::FEATUREDABLE_ID => $draft->id,
+        FeaturedItemSchema::POSITION => 3,
+    ]);
+    FeaturedItem::query()->create([
+        FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_POST,
+        FeaturedItemSchema::FEATUREDABLE_ID => $first->id,
+        FeaturedItemSchema::POSITION => 1,
+    ]);
+
+    $this->getJson($this->baseUrl('/public/posts').'?featured=true')
+        ->assertOk()
+        ->assertJsonCount(2, 'data')
+        ->assertJsonPath('data.0.slug', 'first-featured')
+        ->assertJsonPath('data.1.slug', 'second-featured');
+
+    // without the filter the default newest-first order applies
+    $this->getJson($this->baseUrl('/public/posts'))
+        ->assertOk()
+        ->assertJsonCount(3, 'data')
+        ->assertJsonPath('data.0.slug', 'unfeatured-post');
 });
 
 it('returns 404 for an unknown or draft slug', function () {

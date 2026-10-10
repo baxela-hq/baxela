@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Content\Http\Controllers\Admin\Featured\ListFeaturedController;
+use Modules\Content\Http\Controllers\Admin\Featured\UpdateFeaturedController;
 use Modules\Content\Http\Controllers\Admin\Page\CreatePageController;
 use Modules\Content\Http\Controllers\Admin\Page\DeletePageController;
 use Modules\Content\Http\Controllers\Admin\Page\ListPageController;
@@ -35,6 +37,9 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/posts/{id}', ShowPostController::class)->name('posts.show');
     Route::patch('/posts/{id}', UpdatePostController::class)->name('posts.update');
     Route::delete('/posts/{id}', DeletePostController::class)->name('posts.delete');
+
+    Route::get('/featured', ListFeaturedController::class)->name('featured.list');
+    Route::put('/featured', UpdateFeaturedController::class)->name('featured.update');
 
     Route::get('/post-categories', ListPostCategoryController::class)->name('post-categories.list');
     Route::post('/post-categories', CreatePostCategoryController::class)->name('post-categories.create');
