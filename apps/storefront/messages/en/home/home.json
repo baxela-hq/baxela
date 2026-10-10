@@ -27,6 +27,14 @@
       "view_all": "View all"
     }
   },
+  "featured-posts": {
+    "texts": {
+      "title": "Featured posts"
+    },
+    "actions": {
+      "view_all": "View all"
+    }
+  },
   "promo": {
     "texts": {
       "title": "Members get 10% off their first order.",

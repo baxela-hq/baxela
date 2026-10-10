@@ -1,9 +1,15 @@
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/product-card";
+import PostCard from "@/components/blog/post-card";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { serverApiGet } from "@/lib/api/server";
-import type { ApiProduct, ApiPublicCategory, Paginated } from "@/lib/api/types";
+import type {
+  ApiPost,
+  ApiProduct,
+  ApiPublicCategory,
+  Paginated,
+} from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
 
 export default async function HomePage() {
@@ -11,12 +17,15 @@ export default async function HomePage() {
 
   // Curated featured products; a fresh store with nothing curated yet
   // falls back to the newest products so the section never sits empty.
-  const [categoriesPage, featuredPage] = await Promise.all([
+  const [categoriesPage, featuredPage, featuredPostsPage] = await Promise.all([
     serverApiGet<Paginated<ApiPublicCategory>>(
       "/catalog/public/categories?featured=true&per_page=4"
     ).catch(() => null),
     serverApiGet<Paginated<ApiProduct>>(
       "/catalog/public/products?featured=true&per_page=4"
+    ).catch(() => null),
+    serverApiGet<Paginated<ApiPost>>(
+      "/content/public/posts?featured=true&per_page=3"
     ).catch(() => null),
   ]);
 
@@ -28,6 +37,16 @@ export default async function HomePage() {
       "/catalog/public/products?per_page=4"
     ).catch(() => null);
     featured = newestPage?.data ?? [];
+  }
+
+  // Same curation fallback as products: nothing curated yet → newest posts.
+  let featuredPosts = featuredPostsPage?.data ?? [];
+
+  if (featuredPosts.length === 0) {
+    const newestPostsPage = await serverApiGet<Paginated<ApiPost>>(
+      "/content/public/posts?per_page=3"
+    ).catch(() => null);
+    featuredPosts = newestPostsPage?.data ?? [];
   }
 
   return (
@@ -129,6 +148,30 @@ export default async function HomePage() {
             <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
               {featured.map((product) => (
                 <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Featured posts */}
+      {featuredPosts.length > 0 ? (
+        <section className="border-b border-border-light">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+                {t("featured-posts.texts.title")}
+              </h2>
+              <Link
+                href="/blog"
+                className="text-sm font-medium text-accent hover:underline"
+              >
+                {t("featured-posts.actions.view_all")}
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredPosts.map((post) => (
+                <PostCard key={post.id} post={post} />
               ))}
             </div>
           </div>
