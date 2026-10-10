@@ -1,0 +1,21 @@
+{
+  "texts": {
+    "title": "برندها",
+    "subtitle": "خرید بر اساس برند",
+    "results_count": "نمایش {from}–{to} از {total, plural, =1 {# محصول} other {# محصول}}",
+    "empty": "هنوز محصولی از این برند موجود نیست.",
+    "products_by": "محصولات {brand}"
+  },
+  "labels": {
+    "brand_products": "مشاهده محصولات این برند"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "صفحه‌بندی محصولات برند"
+    },
+    "actions": {
+      "previous": "قبلی",
+      "next": "بعدی"
+    }
+  }
+}

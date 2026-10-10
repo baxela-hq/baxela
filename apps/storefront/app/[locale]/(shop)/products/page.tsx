@@ -3,6 +3,7 @@ import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
 import { serverApiGet } from "@/lib/api/server";
 import type {
+  ApiBrand,
   ApiOptionGroup,
   ApiProduct,
   ApiPublicCategory,
@@ -39,6 +40,7 @@ export default async function ProductsPage({
   const query = firstParam(sp.q);
   const sort = firstParam(sp.sort);
   const category = firstParam(sp.category);
+  const brand = firstParam(sp.brand);
   const page = Math.max(1, Number.parseInt(firstParam(sp.page) || "1", 10) || 1);
   const sizesParam = firstParam(sp.sizes);
   const sizeIds = sizesParam
@@ -50,19 +52,23 @@ export default async function ProductsPage({
   const maxPriceParam = Number.parseInt(firstParam(sp.max_price), 10);
   const maxPrice = Number.isFinite(maxPriceParam) ? maxPriceParam : null;
 
-  // Categories + option groups (Size, Color, …) first: the category param
-  // accepts an id or a slug (the mega-menu links use slugs) and must be
-  // resolved to an id for the backend's categories.id filter. per_page=100
-  // covers the whole list for the sidebar and the slug lookup.
-  const [categoriesPage, optionsPage] = await Promise.all([
+  // Categories + brands + option groups (Size, Color, …) first: the category
+  // and brand params accept an id or a slug (the links use slugs) and must be
+  // resolved to an id for the backend's filters. per_page=100 covers the
+  // whole list for the sidebar and the slug lookup.
+  const [categoriesPage, brandsPage, optionsPage] = await Promise.all([
     serverApiGet<Paginated<ApiPublicCategory>>(
       "/catalog/public/categories?per_page=100",
+    ).catch(() => null),
+    serverApiGet<Paginated<ApiBrand>>(
+      "/catalog/public/brands?per_page=100",
     ).catch(() => null),
     serverApiGet<Paginated<ApiOptionGroup>>(
       "/catalog/public/options?per_page=100",
     ).catch(() => null),
   ]);
   const categories = categoriesPage?.data ?? [];
+  const brands = brandsPage?.data ?? [];
   const optionGroups = optionsPage?.data ?? [];
 
   const matchedCategory = category
@@ -74,12 +80,21 @@ export default async function ProductsPage({
     matchedCategory?.id ??
     (/^\d+$/.test(category) ? Number(category) : null);
 
+  const matchedBrand = brand
+    ? brands.find((b) => String(b.id) === brand || b.slug === brand)
+    : undefined;
+  const brandId =
+    matchedBrand?.id ?? (/^\d+$/.test(brand) ? Number(brand) : null);
+
   const search = new URLSearchParams();
   search.set("per_page", "9");
   if (page > 1) search.set("page", String(page));
   if (query) search.set("filter[title]", query);
   if (categoryId !== null) {
     search.set("filter[categories.id]", String(categoryId));
+  }
+  if (brandId !== null) {
+    search.set("filter[brand.id]", String(brandId));
   }
   for (const sizeId of sizeIds) {
     search.append("filter[option_value_id]", String(sizeId));
@@ -109,6 +124,7 @@ export default async function ProductsPage({
     if (query) params.set("q", query);
     if (sort) params.set("sort", sort);
     if (category) params.set("category", category);
+    if (brand) params.set("brand", brand);
     if (sizeIds.length > 0) params.set("sizes", sizeIds.join(","));
     if (maxPrice !== null) params.set("max_price", String(maxPrice));
     if (target > 1) params.set("page", String(target));
@@ -170,6 +186,8 @@ export default async function ProductsPage({
           <ProductFilters
             categories={categoryOptions}
             selectedCategoryId={categoryId}
+            brands={brands}
+            selectedBrandId={brandId}
             sortValue={sort || "featured"}
             optionGroups={optionGroups}
             selectedOptionValueIds={sizeIds}

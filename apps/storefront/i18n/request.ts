@@ -16,6 +16,7 @@ async function loadMessages(locale: string) {
     home,
     products,
     product,
+    brands,
     checkout,
     cart,
     auth,
@@ -31,6 +32,7 @@ async function loadMessages(locale: string) {
     import(`../messages/${locale}/home/home.json`),
     import(`../messages/${locale}/catalog/products.json`),
     import(`../messages/${locale}/catalog/product.json`),
+    import(`../messages/${locale}/catalog/brands.json`),
     import(`../messages/${locale}/checkout/checkout.json`),
     import(`../messages/${locale}/cart/cart.json`),
     import(`../messages/${locale}/auth/auth.json`),
@@ -51,6 +53,7 @@ async function loadMessages(locale: string) {
     catalog: {
       products: products.default,
       product: product.default,
+      brands: brands.default,
     },
     checkout: { checkout: checkout.default },
     cart: { cart: cart.default },

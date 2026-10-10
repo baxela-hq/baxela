@@ -1,0 +1,21 @@
+{
+  "texts": {
+    "title": "Brands",
+    "subtitle": "Shop by brand",
+    "results_count": "Showing {from}–{to} of {total, plural, =1 {# product} other {# products}}",
+    "empty": "No products from this brand yet.",
+    "products_by": "Products by {brand}"
+  },
+  "labels": {
+    "brand_products": "Browse this brand's products"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "Brand products pagination"
+    },
+    "actions": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  }
+}

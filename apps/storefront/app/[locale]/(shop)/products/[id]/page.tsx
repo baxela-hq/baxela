@@ -90,9 +90,22 @@ export default async function ProductPage({
           <ProductGallery photos={photos} title={product.title ?? ""} />
 
           <div>
-            {product.categories[0]?.title ? (
-              <p className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-                {product.categories[0].title}
+            {product.categories[0]?.title || product.brand?.title ? (
+              <p className="flex flex-wrap items-center gap-2 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {product.brand?.slug ? (
+                  <Link
+                    href={`/brands/${encodeURIComponent(product.brand.slug)}`}
+                    className="font-medium text-secondary-text transition-colors hover:text-accent rtl:normal-case rtl:tracking-normal"
+                  >
+                    {product.brand.title}
+                  </Link>
+                ) : null}
+                {product.brand?.title && product.categories[0]?.title ? (
+                  <span aria-hidden="true">•</span>
+                ) : null}
+                {product.categories[0]?.title ? (
+                  <span>{product.categories[0].title}</span>
+                ) : null}
               </p>
             ) : null}
             <h1 className="mt-2 text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">

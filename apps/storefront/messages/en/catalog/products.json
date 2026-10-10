@@ -11,6 +11,7 @@
     "labels": {
       "aside": "Product filters",
       "category": "Category",
+      "brand": "Brand",
       "size": "Size",
       "price": "Price",
       "max_price": "Maximum price"

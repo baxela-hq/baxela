@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "@/components/ui/icons";
-import type { ApiOptionGroup } from "@/lib/api/types";
+import type { ApiBrand, ApiOptionGroup } from "@/lib/api/types";
 
 export interface ProductFilterCategory {
   id: number;
@@ -17,6 +17,8 @@ export interface ProductFilterCategory {
 interface ProductFiltersProps {
   categories: ProductFilterCategory[];
   selectedCategoryId: number | null;
+  brands: ApiBrand[];
+  selectedBrandId: number | null;
   sortValue: string;
   optionGroups: ApiOptionGroup[];
   selectedOptionValueIds: number[];
@@ -26,13 +28,15 @@ interface ProductFiltersProps {
 }
 
 /**
- * Filter sidebar + toolbar for the products listing. Categories, option
- * values (size/color/…), price and sort all update URL search params so the
- * server-rendered grid refetches.
+ * Filter sidebar + toolbar for the products listing. Categories, brands,
+ * option values (size/color/…), price and sort all update URL search params
+ * so the server-rendered grid refetches.
  */
 export default function ProductFilters({
   categories,
   selectedCategoryId,
+  brands,
+  selectedBrandId,
   sortValue,
   optionGroups,
   selectedOptionValueIds,
@@ -64,6 +68,16 @@ export default function ProductFilters({
     });
   };
 
+  const toggleBrand = (id: number) => {
+    pushParams((params) => {
+      if (selectedBrandId === id) {
+        params.delete("brand");
+      } else {
+        params.set("brand", String(id));
+      }
+    });
+  };
+
   const changeSort = (value: string) => {
     pushParams((params) => {
       params.set("sort", value);
@@ -72,6 +86,7 @@ export default function ProductFilters({
 
   const hasActiveFilters =
     selectedCategoryId !== null ||
+    selectedBrandId !== null ||
     selectedOptionValueIds.length > 0 ||
     maxPriceValue !== null ||
     sortValue !== "featured";
@@ -79,6 +94,7 @@ export default function ProductFilters({
   const resetFilters = () => {
     pushParams((params) => {
       params.delete("category");
+      params.delete("brand");
       params.delete("sizes");
       params.delete("max_price");
       params.delete("sort");
@@ -225,6 +241,29 @@ export default function ProductFilters({
               })}
             </div>
           </div>
+
+          {brands.length > 0 ? (
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground rtl:normal-case rtl:tracking-normal">
+                {t("filters.labels.brand")}
+              </h2>
+              <ul className="mt-4 max-h-44 space-y-3 overflow-y-auto pe-1">
+                {brands.map((brand) => (
+                  <li key={brand.id}>
+                    <label className="flex cursor-pointer items-center gap-3 text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+                      <input
+                        type="checkbox"
+                        checked={selectedBrandId === brand.id}
+                        onChange={() => toggleBrand(brand.id)}
+                        className="size-4 rounded-default border border-border accent-accent"
+                      />
+                      {brand.title}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           {optionGroups.map((group) => (
             <div key={group.id}>

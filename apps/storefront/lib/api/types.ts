@@ -53,6 +53,8 @@ export interface ApiProduct {
   compare_price: string | null;
   /** Present while an automatic promotion is applied to the product. */
   promotion?: ApiPromotion | null;
+  /** The product's brand, when one is assigned. */
+  brand?: ApiBrandRef | null;
   image_url: string | null;
   created_at: string;
 }
@@ -105,6 +107,25 @@ export interface ApiCategoryRef {
   id: number;
   title: string | null;
   slug: string | null;
+}
+
+// Brand reference on a product — title/slug arrive localized via
+// Accept-Language.
+export interface ApiBrandRef {
+  id: number;
+  title: string | null;
+  slug: string | null;
+}
+
+// Catalog brand — public endpoint shape; title/slug/description arrive
+// localized via Accept-Language.
+export interface ApiBrand {
+  id: number;
+  position: number | null;
+  image_url: string | null;
+  title: string | null;
+  slug: string | null;
+  description: string | null;
 }
 
 // Blog post category — public endpoint shape; title/slug arrive localized
@@ -177,6 +198,7 @@ export interface ApiProductDetail {
   price: string | null;
   compare_price: string | null;
   promotion?: ApiPromotion | null;
+  brand?: ApiBrandRef | null;
   variants: ApiVariant[];
   images: ApiImage[];
   categories: ApiCategoryRef[];
