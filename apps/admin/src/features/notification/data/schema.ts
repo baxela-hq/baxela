@@ -11,6 +11,8 @@ export const notificationSchema = z.object({
       order_id: z.number().nullish(),
       ticket_id: z.number().nullish(),
       reason: z.string().nullish(),
+      post_id: z.number().nullish(),
+      post_comment_id: z.number().nullish(),
     })
     .nullish(),
   read_at: z.string().nullable(),

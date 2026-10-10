@@ -1,5 +1,5 @@
 import { type LinkProps, Link } from '@tanstack/react-router'
-import { Bell, CreditCard, Inbox, Package, ShieldCheck } from 'lucide-react'
+import { Bell, CreditCard, Inbox, MessageSquare, Package, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 import { resolveNotificationTarget } from '../data/notification-targets'
@@ -10,6 +10,7 @@ const CODE_ICONS = {
   payment: CreditCard,
   auth: ShieldCheck,
   contact: Inbox,
+  content: MessageSquare,
 } as const
 
 function codeIcon(code: string) {
