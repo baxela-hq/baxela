@@ -9,6 +9,7 @@ import { NotificationsProvider } from "@/context/notifications-context";
 import { ThemeModeProvider } from "@/context/theme-mode-context";
 import { Toaster } from "@/components/ui/sonner";
 import { fetchSettings } from "@/lib/api/site";
+import { SITE_URL } from "@/lib/site-url";
 import { THEME_MODE_INIT_SCRIPT, resolveSiteTheme } from "@/lib/theme";
 import { routing } from "@/i18n/routing";
 
@@ -32,6 +33,9 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
+  // Resolves relative metadata URLs (canonicals, OG images) against the
+  // storefront's public origin.
+  metadataBase: new URL(SITE_URL),
   title: "Baxela Storefront",
   description: "Baxela e-commerce storefront built from the Figma UI kit",
 };
