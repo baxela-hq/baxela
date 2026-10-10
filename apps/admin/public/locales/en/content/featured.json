@@ -1,0 +1,28 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Featured posts",
+      "subtitle": "Curate the posts shown in the storefront featured posts section"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "featured selection",
+      "posts-section": "Featured posts",
+      "add-posts": "Add posts"
+    },
+    "actions": {},
+    "help_texts": {
+      "posts-section": "Shown in the storefront featured posts section, in this order.",
+      "empty-posts": "No posts selected yet."
+    },
+    "placeholders": {
+      "search-posts": "Search posts by title..."
+    },
+    "statuses": {
+      "picker-search-hint": "Search posts by title in any language and pick the ones to feature.",
+      "type-to-search": "Type at least 2 characters to search.",
+      "no-results": "Nothing found."
+    }
+  }
+}

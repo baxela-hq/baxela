@@ -109,6 +109,10 @@ export const useSidebarData = (): SidebarData => {
                 url: '/content/posts',
               },
               {
+                title: t('sidebar.featured-posts'),
+                url: '/content/featured',
+              },
+              {
                 title: t('sidebar.postCategories'),
                 url: '/content/post-categories',
               },

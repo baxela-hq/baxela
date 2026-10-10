@@ -51,6 +51,7 @@ import { Route as AuthenticatedContentPostsIndexRouteImport } from './routes/_au
 import { Route as AuthenticatedContentPostCommentsIndexRouteImport } from './routes/_authenticated/content/post-comments/index'
 import { Route as AuthenticatedContentPostCategoriesIndexRouteImport } from './routes/_authenticated/content/post-categories/index'
 import { Route as AuthenticatedContentPagesIndexRouteImport } from './routes/_authenticated/content/pages/index'
+import { Route as AuthenticatedContentFeaturedIndexRouteImport } from './routes/_authenticated/content/featured/index'
 import { Route as AuthenticatedContactNewsletterSubscribersIndexRouteImport } from './routes/_authenticated/contact/newsletter-subscribers/index'
 import { Route as AuthenticatedContactMessagesIndexRouteImport } from './routes/_authenticated/contact/messages/index'
 import { Route as AuthenticatedCatalogProductsIndexRouteImport } from './routes/_authenticated/catalog/products/index'
@@ -313,6 +314,12 @@ const AuthenticatedContentPagesIndexRoute =
     path: '/content/pages/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedContentFeaturedIndexRoute =
+  AuthenticatedContentFeaturedIndexRouteImport.update({
+    id: '/content/featured/',
+    path: '/content/featured/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContactNewsletterSubscribersIndexRoute =
   AuthenticatedContactNewsletterSubscribersIndexRouteImport.update({
     id: '/contact/newsletter-subscribers/',
@@ -496,6 +503,7 @@ export interface FileRoutesByFullPath {
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
+  '/content/featured': typeof AuthenticatedContentFeaturedIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
@@ -561,6 +569,7 @@ export interface FileRoutesByTo {
   '/catalog/products': typeof AuthenticatedCatalogProductsIndexRoute
   '/contact/messages': typeof AuthenticatedContactMessagesIndexRoute
   '/contact/newsletter-subscribers': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
+  '/content/featured': typeof AuthenticatedContentFeaturedIndexRoute
   '/content/pages': typeof AuthenticatedContentPagesIndexRoute
   '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
@@ -630,6 +639,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/products/': typeof AuthenticatedCatalogProductsIndexRoute
   '/_authenticated/contact/messages/': typeof AuthenticatedContactMessagesIndexRoute
   '/_authenticated/contact/newsletter-subscribers/': typeof AuthenticatedContactNewsletterSubscribersIndexRoute
+  '/_authenticated/content/featured/': typeof AuthenticatedContentFeaturedIndexRoute
   '/_authenticated/content/pages/': typeof AuthenticatedContentPagesIndexRoute
   '/_authenticated/content/post-categories/': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/_authenticated/content/post-comments/': typeof AuthenticatedContentPostCommentsIndexRoute
@@ -699,6 +709,7 @@ export interface FileRouteTypes {
     | '/catalog/products'
     | '/contact/messages'
     | '/contact/newsletter-subscribers'
+    | '/content/featured'
     | '/content/pages'
     | '/content/post-categories'
     | '/content/post-comments'
@@ -764,6 +775,7 @@ export interface FileRouteTypes {
     | '/catalog/products'
     | '/contact/messages'
     | '/contact/newsletter-subscribers'
+    | '/content/featured'
     | '/content/pages'
     | '/content/post-categories'
     | '/content/post-comments'
@@ -832,6 +844,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/products/'
     | '/_authenticated/contact/messages/'
     | '/_authenticated/contact/newsletter-subscribers/'
+    | '/_authenticated/content/featured/'
     | '/_authenticated/content/pages/'
     | '/_authenticated/content/post-categories/'
     | '/_authenticated/content/post-comments/'
@@ -1172,6 +1185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContentPagesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/content/featured/': {
+      id: '/_authenticated/content/featured/'
+      path: '/content/featured'
+      fullPath: '/content/featured'
+      preLoaderRoute: typeof AuthenticatedContentFeaturedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/contact/newsletter-subscribers/': {
       id: '/_authenticated/contact/newsletter-subscribers/'
       path: '/contact/newsletter-subscribers'
@@ -1410,6 +1430,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCatalogProductsIndexRoute: typeof AuthenticatedCatalogProductsIndexRoute
   AuthenticatedContactMessagesIndexRoute: typeof AuthenticatedContactMessagesIndexRoute
   AuthenticatedContactNewsletterSubscribersIndexRoute: typeof AuthenticatedContactNewsletterSubscribersIndexRoute
+  AuthenticatedContentFeaturedIndexRoute: typeof AuthenticatedContentFeaturedIndexRoute
   AuthenticatedContentPagesIndexRoute: typeof AuthenticatedContentPagesIndexRoute
   AuthenticatedContentPostCategoriesIndexRoute: typeof AuthenticatedContentPostCategoriesIndexRoute
   AuthenticatedContentPostCommentsIndexRoute: typeof AuthenticatedContentPostCommentsIndexRoute
@@ -1468,6 +1489,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedContactMessagesIndexRoute,
   AuthenticatedContactNewsletterSubscribersIndexRoute:
     AuthenticatedContactNewsletterSubscribersIndexRoute,
+  AuthenticatedContentFeaturedIndexRoute:
+    AuthenticatedContentFeaturedIndexRoute,
   AuthenticatedContentPagesIndexRoute: AuthenticatedContentPagesIndexRoute,
   AuthenticatedContentPostCategoriesIndexRoute:
     AuthenticatedContentPostCategoriesIndexRoute,
