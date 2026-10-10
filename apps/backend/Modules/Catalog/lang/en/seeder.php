@@ -387,13 +387,16 @@ return [
         ],
     ],
     'brands' => [
-        'urban-edge' => ['featured' => true, 'translations' => [['title' => 'UrbanEdge', 'slug' => 'urban-edge', 'description' => 'Modern streetwear essentials.']]],
-        'north-peak' => ['featured' => true, 'translations' => [['title' => 'NorthPeak', 'slug' => 'north-peak', 'description' => 'Gear for the great outdoors.']]],
-        'classic-co' => ['featured' => true, 'translations' => [['title' => 'ClassicCo', 'slug' => 'classic-co', 'description' => 'Timeless everyday staples.']]],
-        'step-well' => ['featured' => true, 'translations' => [['title' => 'StepWell', 'slug' => 'step-well', 'description' => 'Footwear built for walking.']]],
-        'rialta' => ['translations' => [['title' => 'Rialta', 'slug' => 'rialta', 'description' => 'Refined accessories and eyewear.']]],
-        'carry-all' => ['translations' => [['title' => 'CarryAll', 'slug' => 'carry-all', 'description' => 'Bags for every load.']]],
-        'flo' => ['translations' => [['title' => 'Flo', 'slug' => 'flo', 'description' => 'Light, flowing silhouettes.']]],
+        'nike' => ['featured' => true, 'translations' => [['title' => 'Nike', 'slug' => 'nike', 'description' => 'Athletic footwear, apparel and gear — Just Do It.']]],
+        'adidas' => ['featured' => true, 'translations' => [['title' => 'Adidas', 'slug' => 'adidas', 'description' => 'Sportswear built around the three stripes.']]],
+        'levis' => ['featured' => true, 'translations' => [['title' => "Levi's", 'slug' => 'levis', 'description' => 'Inventors of the blue jean since 1873.']]],
+        'the-north-face' => ['featured' => true, 'translations' => [['title' => 'The North Face', 'slug' => 'the-north-face', 'description' => 'Outdoor equipment and apparel for exploration.']]],
+        'zara' => ['translations' => [['title' => 'Zara', 'slug' => 'zara', 'description' => 'Fast-fashion trends from Spain.']]],
+        'converse' => ['translations' => [['title' => 'Converse', 'slug' => 'converse', 'description' => 'Home of the iconic Chuck Taylor All Star.']]],
+        'dr-martens' => ['translations' => [['title' => 'Dr. Martens', 'slug' => 'dr-martens', 'description' => 'Unmistakable boots since 1960.']]],
+        'michael-kors' => ['translations' => [['title' => 'Michael Kors', 'slug' => 'michael-kors', 'description' => 'American luxury handbags and accessories.']]],
+        'ray-ban' => ['translations' => [['title' => 'Ray-Ban', 'slug' => 'ray-ban', 'description' => 'Timeless sunglasses and eyewear.']]],
+        'puma' => ['translations' => [['title' => 'Puma', 'slug' => 'puma', 'description' => 'Forever Faster — sportswear and sneakers.']]],
     ],
     'attribute_groups' => [
         'General' => [
@@ -547,7 +550,7 @@ return [
         // 1. Men's Slim Fit Cotton T-Shirt (Variable)
         'mens-slim-fit-cotton-t-shirt' => [
             'type' => 'variable',
-            'brand' => 'urban-edge',
+            'brand' => 'nike',
             'categories' => ['mens-fashion', 'mens-t-shirts-tanks'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Men'],
@@ -591,7 +594,7 @@ return [
         // 2. Women's High-Waist Yoga Leggings (Variable)
         'womens-high-waist-yoga-leggings' => [
             'type' => 'variable',
-            'brand' => 'urban-edge',
+            'brand' => 'adidas',
             'categories' => ['womens-fashion', 'womens-leggings', 'sportswear-activewear'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Women'],
@@ -636,7 +639,7 @@ return [
         // 3. Classic Denim Jacket (Variable)
         'classic-denim-jacket' => [
             'type' => 'variable',
-            'brand' => 'classic-co',
+            'brand' => 'levis',
             'categories' => ['mens-fashion', 'womens-fashion'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Unisex'],
@@ -678,7 +681,7 @@ return [
         // 4. Men's Hooded Sweatshirt (Variable)
         'mens-hooded-sweatshirt' => [
             'type' => 'variable',
-            'brand' => 'north-peak',
+            'brand' => 'the-north-face',
             'categories' => ['mens-fashion', 'mens-hoodies-sweatshirts'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Men'],
@@ -722,7 +725,7 @@ return [
         // 5. Women's Floral Summer Dress (Variable)
         'womens-floral-summer-dress' => [
             'type' => 'variable',
-            'brand' => 'flo',
+            'brand' => 'zara',
             'categories' => ['womens-fashion', 'womens-dresses'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Women'],
@@ -764,7 +767,7 @@ return [
         // 6. Men's Knit Sneakers (Variable)
         'mens-knit-sneakers' => [
             'type' => 'variable',
-            'brand' => 'step-well',
+            'brand' => 'converse',
             'categories' => ['shoes', 'sneakers'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Men'],
@@ -810,7 +813,7 @@ return [
         // 7. Unisex Baseball Cap (Simple)
         'unisex-baseball-cap' => [
             'type' => 'simple',
-            'brand' => 'north-peak',
+            'brand' => 'the-north-face',
             'categories' => ['accessories', 'hats-caps'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Unisex'],
@@ -838,7 +841,7 @@ return [
         // 8. Women's Ankle Boots (Variable)
         'womens-ankle-boots' => [
             'type' => 'variable',
-            'brand' => 'step-well',
+            'brand' => 'dr-martens',
             'categories' => ['shoes', 'boots'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Women'],
@@ -885,7 +888,7 @@ return [
         // 9. Leather Belt (Variable)
         'leather-belt' => [
             'type' => 'variable',
-            'brand' => 'classic-co',
+            'brand' => 'levis',
             'categories' => ['accessories', 'belts'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Men'],
@@ -926,7 +929,7 @@ return [
         // 10. Women's Crossbody Bag (Simple)
         'womens-crossbody-bag' => [
             'type' => 'simple',
-            'brand' => 'carry-all',
+            'brand' => 'michael-kors',
             'categories' => ['bags-luggage', 'handbags-totes'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Women'],
@@ -962,7 +965,7 @@ return [
         // 11. Unisex Polarized Sunglasses (Simple)
         'unisex-polarized-sunglasses' => [
             'type' => 'simple',
-            'brand' => 'rialta',
+            'brand' => 'ray-ban',
             'categories' => ['accessories', 'sunglasses'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Unisex'],
@@ -997,7 +1000,7 @@ return [
         // 12. Men's Running Shoes (Variable)
         'mens-running-shoes' => [
             'type' => 'variable',
-            'brand' => 'step-well',
+            'brand' => 'puma',
             'categories' => ['shoes', 'sports-shoes', 'sportswear-activewear'],
             'attributes' => [
                 ['code' => 'gender', 'value' => 'Men'],

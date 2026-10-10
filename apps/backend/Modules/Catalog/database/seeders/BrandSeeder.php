@@ -13,11 +13,16 @@ use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BTSchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Module;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
 class BrandSeeder extends Seeder
 {
     private CoreGatewayInterface $coreGateway;
+
+    private MediaGatewayInterface $mediaGateway;
+
+    private int $brandFolderId;
 
     /** @var array<string, int|null> */
     private array $languageIds = [];
@@ -31,7 +36,17 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
+        $this->mediaGateway = App::make(MediaGatewayInterface::class);
         $moduleKey = Module::NAME_LOWER.'::seeder.brands';
+
+        $brandFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Brand');
+        if ($brandFolderId === null) {
+            $this->command->error('Folder Catalog/Brand not found.');
+            $this->command->error('Run this seeder after running the media seeder.');
+
+            return;
+        }
+        $this->brandFolderId = $brandFolderId;
 
         $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
 
@@ -53,8 +68,12 @@ class BrandSeeder extends Seeder
 
         $i = 1;
         foreach ($brands as $slug => $brand) {
+            $image = $this->logoFor((string) $slug);
+
             $record = Brand::query()->create([
                 BrandSchema::POSITION => $i,
+                BrandSchema::IMAGE_MEDIA_ID => $image?->id,
+                BrandSchema::IMAGE_URL => $image?->url,
             ]);
             $brandId = $record->{BrandSchema::ID};
 
@@ -97,6 +116,26 @@ class BrandSeeder extends Seeder
         if ($rows !== []) {
             FeaturedItem::query()->insert($rows);
         }
+    }
+
+    /**
+     * Publish the brand's seeded logo on the public disk and return its
+     * media record. Logos live next to this seeder, keyed by brand slug —
+     * so seeding stays reproducible without network access.
+     */
+    private function logoFor(string $slug): ?object
+    {
+        $source = __DIR__.'/media/brands/'.$slug.'.png';
+
+        if (! file_exists($source)) {
+            return null;
+        }
+
+        return $this->mediaGateway->upsertLocal(
+            $source,
+            'catalog/brands/'.basename($source),
+            $this->brandFolderId,
+        );
     }
 
     private function languageId(string $code): ?int

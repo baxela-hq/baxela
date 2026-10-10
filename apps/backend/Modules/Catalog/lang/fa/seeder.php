@@ -231,13 +231,16 @@ return [
         ],
     ],
     'brands' => [
-        'urban-edge' => ['translations' => [['title' => 'اربان‌اج', 'slug' => 'urban-edge', 'description' => 'لباس‌های روزمره مدرن شهری.']]],
-        'north-peak' => ['translations' => [['title' => 'نورث‌پیک', 'slug' => 'north-peak', 'description' => 'تجهیزات برای طبیعت‌گردی.']]],
-        'classic-co' => ['translations' => [['title' => 'کلاسیک‌کو', 'slug' => 'classic-co', 'description' => 'پایه‌های بی‌زمان روزمره.']]],
-        'step-well' => ['translations' => [['title' => 'استپ‌ول', 'slug' => 'step-well', 'description' => 'کفش ساخته‌شده برای پیاده‌روی.']]],
-        'rialta' => ['translations' => [['title' => 'ریالتا', 'slug' => 'rialta', 'description' => 'اکسسوری‌ها و عینک‌های ظریف.']]],
-        'carry-all' => ['translations' => [['title' => 'کاری‌ال', 'slug' => 'carry-all', 'description' => 'کیف برای هر بار.']]],
-        'flo' => ['translations' => [['title' => 'فلو', 'slug' => 'flo', 'description' => 'فرم‌های سبک و روان.']]],
+        'nike' => ['translations' => [['title' => 'نایک', 'slug' => 'nike', 'description' => 'کفش و پوشاک ورزشی — تازه‌ترین‌های دنیای ورزش.']]],
+        'adidas' => ['translations' => [['title' => 'آدیداس', 'slug' => 'adidas', 'description' => 'پوشاک ورزشی با سه خط معروف.']]],
+        'levis' => ['translations' => [['title' => 'لِوایز', 'slug' => 'levis', 'description' => 'مخترع شلوار جین از سال ۱۸۷۳.']]],
+        'the-north-face' => ['translations' => [['title' => 'نورث فیس', 'slug' => 'the-north-face', 'description' => 'تجهیزات و پوشاک کوهنوردی و طبیعت‌گردی.']]],
+        'zara' => ['translations' => [['title' => 'زارا', 'slug' => 'zara', 'description' => 'مدهای سریع از اسپانیا.']]],
+        'converse' => ['translations' => [['title' => 'کانورس', 'slug' => 'converse', 'description' => 'خانه کتانی‌های افسانه‌ای چاک تیلور.']]],
+        'dr-martens' => ['translations' => [['title' => 'دکتر مارتینز', 'slug' => 'dr-martens', 'description' => 'بوت‌های شاخص از سال ۱۹۶۰.']]],
+        'michael-kors' => ['translations' => [['title' => 'مایکل کورس', 'slug' => 'michael-kors', 'description' => 'کیف و اکسسوری لوکس آمریکایی.']]],
+        'ray-ban' => ['translations' => [['title' => 'ری‌بن', 'slug' => 'ray-ban', 'description' => 'عینک‌های آفتابی بی‌زمان.']]],
+        'puma' => ['translations' => [['title' => 'پوما', 'slug' => 'puma', 'description' => 'پوشاک و کفش ورزشی.']]],
     ],
     'attribute_groups' => [
         'General' => [
