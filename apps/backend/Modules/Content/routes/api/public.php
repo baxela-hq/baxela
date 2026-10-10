@@ -8,6 +8,7 @@ use Modules\Content\Http\Controllers\Public\Post\ShowPostController;
 use Modules\Content\Http\Controllers\Public\PostCategory\ListPostCategoryController;
 use Modules\Content\Http\Controllers\Public\PostCategory\ShowPostCategoryController;
 use Modules\Content\Http\Controllers\Public\PostComment\ListPostCommentsController;
+use Modules\Content\Http\Controllers\Public\Sitemap\ListSitemapController;
 
 Route::prefix('public')->name('public.')->group(function () {
     Route::get('/pages', ListPageController::class)->name('pages.list');
@@ -19,4 +20,6 @@ Route::prefix('public')->name('public.')->group(function () {
 
     Route::get('/post-categories', ListPostCategoryController::class)->name('post-categories.list');
     Route::get('/post-categories/{idOrSlug}', ShowPostCategoryController::class)->name('post-categories.show');
+
+    Route::get('/sitemap', ListSitemapController::class)->name('sitemap.show');
 });
