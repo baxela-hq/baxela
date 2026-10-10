@@ -5,6 +5,7 @@ namespace Modules\Catalog\Actions\Admin\DataTransfer;
 use Modules\Catalog\Models\Attribute;
 use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Models\AttributeValue;
+use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Option;
@@ -16,6 +17,8 @@ use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
+use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
@@ -65,6 +68,7 @@ class ExportCatalogDataAction
                 $this->section(CatalogTransferFormat::SECTION_OPTIONS, $this->optionRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_OPTION_VALUES, $this->optionValueRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_CATEGORIES, $this->categoryRows($codeByLanguageId)),
+                $this->section(CatalogTransferFormat::SECTION_BRANDS, $this->brandRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_PRODUCTS, $this->productRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_FEATURED_ITEMS, $this->featuredItemRows()),
             ],
@@ -288,6 +292,37 @@ class ExportCatalogDataAction
     /**
      * @return array<int, array<string, mixed>>
      */
+    private function brandRows(array $codeByLanguageId): array
+    {
+        $rows = [];
+        Brand::query()
+            ->with(BrandSchema::RES_TRANSLATIONS)
+            ->orderBy(BrandSchema::POSITION)
+            ->chunkById(200, function ($brands) use (&$rows, $codeByLanguageId): void {
+                foreach ($brands as $brand) {
+                    $rows[] = [
+                        CatalogTransferFormat::KEY_SOURCE_ID => (int) $brand->getKey(),
+                        CatalogTransferFormat::KEY_PAYLOAD => [
+                            BrandSchema::POSITION => $brand->{BrandSchema::POSITION},
+                            BrandSchema::IMAGE_MEDIA_ID => $brand->{BrandSchema::IMAGE_MEDIA_ID},
+                            BrandSchema::IMAGE_URL => $brand->{BrandSchema::IMAGE_URL},
+                            BrandSchema::RES_TRANSLATIONS => $this->translations(
+                                $brand->{BrandSchema::RES_TRANSLATIONS},
+                                $codeByLanguageId,
+                                BrandTranslationSchema::LANGUAGE_ID,
+                                [BrandTranslationSchema::TITLE, BrandTranslationSchema::SLUG, BrandTranslationSchema::DESCRIPTION],
+                            ),
+                        ],
+                    ];
+                }
+            });
+
+        return $rows;
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     private function productRows(array $codeByLanguageId): array
     {
         $rows = [];
@@ -308,6 +343,9 @@ class ExportCatalogDataAction
                         ProductSchema::TYPE => $product->{ProductSchema::TYPE}->value,
                         ProductSchema::STATUS => $product->{ProductSchema::STATUS}->value,
                         ProductSchema::IS_PUBLISHED => (bool) $product->{ProductSchema::IS_PUBLISHED},
+                        ProductSchema::BRAND_ID => $product->{ProductSchema::BRAND_ID} !== null
+                            ? (int) $product->{ProductSchema::BRAND_ID}
+                            : null,
                         ProductSchema::RES_CATEGORIES => $product->{ProductSchema::RES_CATEGORIES}
                             ->pluck(CategorySchema::ID)
                             ->map(fn ($id) => (int) $id)
@@ -394,8 +432,9 @@ class ExportCatalogDataAction
 
         $productIds = $idsOf(FeaturedItemSchema::TYPE_PRODUCT);
         $categoryIds = $idsOf(FeaturedItemSchema::TYPE_CATEGORY);
+        $brandIds = $idsOf(FeaturedItemSchema::TYPE_BRAND);
 
-        if ($productIds === [] && $categoryIds === []) {
+        if ($productIds === [] && $categoryIds === [] && $brandIds === []) {
             return [];
         }
 
@@ -405,6 +444,7 @@ class ExportCatalogDataAction
                 CatalogTransferFormat::KEY_PAYLOAD => [
                     FeaturedItemSchema::REQ_PRODUCT_IDS => $productIds,
                     FeaturedItemSchema::REQ_CATEGORY_IDS => $categoryIds,
+                    FeaturedItemSchema::REQ_BRAND_IDS => $brandIds,
                 ],
             ],
         ];

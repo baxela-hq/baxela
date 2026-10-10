@@ -13,6 +13,8 @@ use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTranslationSchema as ATSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
+use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BRTSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Schemas\Image\ImageSchema;
@@ -44,6 +46,10 @@ class ShowProductResource extends JsonResource
             ->firstWhere(VariantSchema::IS_DEFAULT, true)
             ?? $this->resource->variants->first();
 
+        $brandTranslation = $this->resource->brand?->translations
+            ->firstWhere(BRTSchema::LANGUAGE_ID, $languageId)
+            ?? $this->resource->brand?->translations->first();
+
         return [
             'id' => $this->resource->{ProductSchema::ID},
             'title' => $translation?->{PTSchema::TITLE},
@@ -52,6 +58,11 @@ class ShowProductResource extends JsonResource
             'content' => $translation?->{PTSchema::CONTENT},
             'price' => $variant?->{VariantSchema::PRICE},
             'compare_price' => $variant?->{VariantSchema::COMPARE_PRICE},
+            'brand' => $this->resource->brand ? [
+                'id' => $this->resource->brand->{BrandSchema::ID},
+                'title' => $brandTranslation?->{BRTSchema::TITLE},
+                'slug' => $brandTranslation?->{BRTSchema::SLUG},
+            ] : null,
             // Attached by AppliesProductPromotions when a promotion is live
             'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
             'variants' => $this->resource->variants

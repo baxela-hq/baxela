@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Catalog\Gateways\CatalogGateway;
+use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
@@ -34,6 +35,7 @@ class CatalogServiceProvider extends ServiceProvider
         Relation::morphMap([
             FeaturedItemSchema::TYPE_PRODUCT => Product::class,
             FeaturedItemSchema::TYPE_CATEGORY => Category::class,
+            FeaturedItemSchema::TYPE_BRAND => Brand::class,
         ]);
 
         $this->registerCommands();

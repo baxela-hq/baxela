@@ -11,6 +11,7 @@ use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
@@ -47,6 +48,8 @@ class ProductRequest extends FormRequest
 
         $rules[Schema::RES_CATEGORIES.'.*'][] =
             Rule::exists(CategorySchema::TABLE, CategorySchema::ID);
+        $rules[Schema::BRAND_ID][] =
+            Rule::exists(BrandSchema::TABLE, BrandSchema::ID);
         $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =
             Rule::unique(VSchema::TABLE, VSchema::SKU)->ignore($id, VSchema::PRODUCT_ID);
         $rules[Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
@@ -75,6 +78,7 @@ class ProductRequest extends FormRequest
             Schema::TYPE => ['required', new Enum(ProductTypeEnum::class)],
             Schema::STATUS => ['required', new Enum(ProductStatusEnum::class)],
             Schema::IS_PUBLISHED => ['required', 'boolean'],
+            Schema::BRAND_ID => ['nullable', 'integer'],
 
             // shipping (value and unit must be filled as a pair, or both left null)
             Schema::RES_SHIPPING => ['nullable', 'array'],

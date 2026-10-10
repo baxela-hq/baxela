@@ -92,6 +92,7 @@ class UpdateProductAction
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
                 ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES,
+                ProductSchema::RES_BRAND,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_ATTRIBUTE_VALUES.'.'.ProductAttributeValueSchema::RES_ATTRIBUTE,
             ]

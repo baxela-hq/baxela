@@ -19,6 +19,8 @@ class ProductSchema
 
     public const string IS_PUBLISHED = 'is_published';
 
+    public const string BRAND_ID = 'brand_id';
+
     public const string RES_SHIPPING = 'shipping';
 
     public const string RES_OPTIONS = 'options';
@@ -28,6 +30,8 @@ class ProductSchema
     public const string RES_VARIANTS = 'variants';
 
     public const string RES_CATEGORIES = 'categories';
+
+    public const string RES_BRAND = 'brand';
 
     public const string RES_TRANSLATIONS = 'translations';
 

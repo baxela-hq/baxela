@@ -386,28 +386,21 @@ return [
             ],
         ],
     ],
+    'brands' => [
+        'urban-edge' => ['featured' => true, 'translations' => [['title' => 'UrbanEdge', 'slug' => 'urban-edge', 'description' => 'Modern streetwear essentials.']]],
+        'north-peak' => ['featured' => true, 'translations' => [['title' => 'NorthPeak', 'slug' => 'north-peak', 'description' => 'Gear for the great outdoors.']]],
+        'classic-co' => ['featured' => true, 'translations' => [['title' => 'ClassicCo', 'slug' => 'classic-co', 'description' => 'Timeless everyday staples.']]],
+        'step-well' => ['featured' => true, 'translations' => [['title' => 'StepWell', 'slug' => 'step-well', 'description' => 'Footwear built for walking.']]],
+        'rialta' => ['translations' => [['title' => 'Rialta', 'slug' => 'rialta', 'description' => 'Refined accessories and eyewear.']]],
+        'carry-all' => ['translations' => [['title' => 'CarryAll', 'slug' => 'carry-all', 'description' => 'Bags for every load.']]],
+        'flo' => ['translations' => [['title' => 'Flo', 'slug' => 'flo', 'description' => 'Light, flowing silhouettes.']]],
+    ],
     'attribute_groups' => [
         'General' => [
             'translations' => [
                 ['title' => 'General'],
             ],
             'attributes' => [
-                'brand' => [
-                    'data_type' => 'select',
-                    'is_filterable' => true,
-                    'values' => [
-                        'UrbanEdge' => ['translations' => [['title' => 'UrbanEdge']]],
-                        'NorthPeak' => ['translations' => [['title' => 'NorthPeak']]],
-                        'ClassicCo' => ['translations' => [['title' => 'ClassicCo']]],
-                        'StepWell' => ['translations' => [['title' => 'StepWell']]],
-                        'Rialta' => ['translations' => [['title' => 'Rialta']]],
-                        'CarryAll' => ['translations' => [['title' => 'CarryAll']]],
-                        'Flo' => ['translations' => [['title' => 'Flo']]],
-                    ],
-                    'translations' => [
-                        ['title' => 'Brand'],
-                    ],
-                ],
                 'gender' => [
                     'data_type' => 'select',
                     'is_filterable' => true,
@@ -554,9 +547,9 @@ return [
         // 1. Men's Slim Fit Cotton T-Shirt (Variable)
         'mens-slim-fit-cotton-t-shirt' => [
             'type' => 'variable',
+            'brand' => 'urban-edge',
             'categories' => ['mens-fashion', 'mens-t-shirts-tanks'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'UrbanEdge'],
                 ['code' => 'gender', 'value' => 'Men'],
                 ['code' => 'material', 'value' => 'Cotton'],
                 ['code' => 'fit', 'value' => 'Slim'],
@@ -598,9 +591,9 @@ return [
         // 2. Women's High-Waist Yoga Leggings (Variable)
         'womens-high-waist-yoga-leggings' => [
             'type' => 'variable',
+            'brand' => 'urban-edge',
             'categories' => ['womens-fashion', 'womens-leggings', 'sportswear-activewear'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'UrbanEdge'],
                 ['code' => 'gender', 'value' => 'Women'],
                 ['code' => 'material', 'value' => 'Polyester-Spandex'],
                 ['code' => 'fit', 'value' => 'High-Waist'],
@@ -643,9 +636,9 @@ return [
         // 3. Classic Denim Jacket (Variable)
         'classic-denim-jacket' => [
             'type' => 'variable',
+            'brand' => 'classic-co',
             'categories' => ['mens-fashion', 'womens-fashion'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'ClassicCo'],
                 ['code' => 'gender', 'value' => 'Unisex'],
                 ['code' => 'material', 'value' => 'Denim'],
                 ['code' => 'fit', 'value' => 'Regular'],
@@ -685,9 +678,9 @@ return [
         // 4. Men's Hooded Sweatshirt (Variable)
         'mens-hooded-sweatshirt' => [
             'type' => 'variable',
+            'brand' => 'north-peak',
             'categories' => ['mens-fashion', 'mens-hoodies-sweatshirts'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'NorthPeak'],
                 ['code' => 'gender', 'value' => 'Men'],
                 ['code' => 'material', 'value' => 'Cotton-Polyester Fleece'],
                 ['code' => 'fit', 'value' => 'Regular'],
@@ -729,9 +722,9 @@ return [
         // 5. Women's Floral Summer Dress (Variable)
         'womens-floral-summer-dress' => [
             'type' => 'variable',
+            'brand' => 'flo',
             'categories' => ['womens-fashion', 'womens-dresses'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'Flo'],
                 ['code' => 'gender', 'value' => 'Women'],
                 ['code' => 'material', 'value' => 'Rayon'],
                 ['code' => 'fit', 'value' => 'Relaxed'],
@@ -771,9 +764,9 @@ return [
         // 6. Men's Knit Sneakers (Variable)
         'mens-knit-sneakers' => [
             'type' => 'variable',
+            'brand' => 'step-well',
             'categories' => ['shoes', 'sneakers'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'StepWell'],
                 ['code' => 'gender', 'value' => 'Men'],
                 ['code' => 'material', 'value' => 'Polyester'],
                 ['code' => 'closure', 'value' => 'Lace-Up'],
@@ -817,9 +810,9 @@ return [
         // 7. Unisex Baseball Cap (Simple)
         'unisex-baseball-cap' => [
             'type' => 'simple',
+            'brand' => 'north-peak',
             'categories' => ['accessories', 'hats-caps'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'NorthPeak'],
                 ['code' => 'gender', 'value' => 'Unisex'],
                 ['code' => 'material', 'value' => 'Cotton'],
                 ['code' => 'fit', 'value' => 'One Size'],
@@ -845,9 +838,9 @@ return [
         // 8. Women's Ankle Boots (Variable)
         'womens-ankle-boots' => [
             'type' => 'variable',
+            'brand' => 'step-well',
             'categories' => ['shoes', 'boots'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'StepWell'],
                 ['code' => 'gender', 'value' => 'Women'],
                 ['code' => 'material', 'value' => 'Leather'],
                 ['code' => 'closure', 'value' => 'Lace-Up'],
@@ -892,9 +885,9 @@ return [
         // 9. Leather Belt (Variable)
         'leather-belt' => [
             'type' => 'variable',
+            'brand' => 'classic-co',
             'categories' => ['accessories', 'belts'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'ClassicCo'],
                 ['code' => 'gender', 'value' => 'Men'],
                 ['code' => 'material', 'value' => 'Leather'],
                 ['code' => 'closure', 'value' => 'Buckle'],
@@ -933,9 +926,9 @@ return [
         // 10. Women's Crossbody Bag (Simple)
         'womens-crossbody-bag' => [
             'type' => 'simple',
+            'brand' => 'carry-all',
             'categories' => ['bags-luggage', 'handbags-totes'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'CarryAll'],
                 ['code' => 'gender', 'value' => 'Women'],
                 ['code' => 'material', 'value' => 'Vegan Leather'],
                 ['code' => 'closure', 'value' => 'Zip'],
@@ -969,9 +962,9 @@ return [
         // 11. Unisex Polarized Sunglasses (Simple)
         'unisex-polarized-sunglasses' => [
             'type' => 'simple',
+            'brand' => 'rialta',
             'categories' => ['accessories', 'sunglasses'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'Rialta'],
                 ['code' => 'gender', 'value' => 'Unisex'],
                 ['code' => 'material', 'value' => 'Polycarbonate'],
             ],
@@ -1004,9 +997,9 @@ return [
         // 12. Men's Running Shoes (Variable)
         'mens-running-shoes' => [
             'type' => 'variable',
+            'brand' => 'step-well',
             'categories' => ['shoes', 'sports-shoes', 'sportswear-activewear'],
             'attributes' => [
-                ['code' => 'brand', 'value' => 'StepWell'],
                 ['code' => 'gender', 'value' => 'Men'],
                 ['code' => 'material', 'value' => 'Engineered Mesh'],
                 ['code' => 'closure', 'value' => 'Lace-Up'],

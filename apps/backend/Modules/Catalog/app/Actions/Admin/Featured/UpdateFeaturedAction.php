@@ -16,15 +16,17 @@ class UpdateFeaturedAction
      *
      * @param  array<int, int>  $productIds
      * @param  array<int, int>  $categoryIds
-     * @return array{product: \Illuminate\Support\Collection, category: \Illuminate\Support\Collection}
+     * @param  array<int, int>  $brandIds
+     * @return array{product: \Illuminate\Support\Collection, category: \Illuminate\Support\Collection, brand: \Illuminate\Support\Collection}
      */
-    public function handle(array $productIds, array $categoryIds): array
+    public function handle(array $productIds, array $categoryIds, array $brandIds): array
     {
-        DB::transaction(function () use ($productIds, $categoryIds): void {
+        DB::transaction(function () use ($productIds, $categoryIds, $brandIds): void {
             FeaturedItem::query()->delete();
 
             $this->insert(FeaturedItemSchema::TYPE_PRODUCT, $productIds);
             $this->insert(FeaturedItemSchema::TYPE_CATEGORY, $categoryIds);
+            $this->insert(FeaturedItemSchema::TYPE_BRAND, $brandIds);
         });
 
         return $this->listAction->handle();

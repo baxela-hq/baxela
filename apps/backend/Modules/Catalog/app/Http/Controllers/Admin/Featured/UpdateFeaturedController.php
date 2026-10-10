@@ -19,6 +19,7 @@ class UpdateFeaturedController extends Controller
         return new FeaturedResource($this->action->handle(
             $data[FeaturedItemSchema::REQ_PRODUCT_IDS] ?? [],
             $data[FeaturedItemSchema::REQ_CATEGORY_IDS] ?? [],
+            $data[FeaturedItemSchema::REQ_BRAND_IDS] ?? [],
         ));
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Modules\Catalog\Actions\Admin\Featured;
 
+use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Product;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
@@ -12,10 +14,11 @@ use Modules\Catalog\Schemas\Product\ProductSchema;
 class ListFeaturedAction
 {
     /**
-     * Both sections ordered by their featured position.
+     * All sections ordered by their featured position.
      *
      * @return array{product: \Illuminate\Support\Collection<Product>,
-     *               category: \Illuminate\Support\Collection<Category>}
+     *               category: \Illuminate\Support\Collection<Category>,
+     *               brand: \Illuminate\Support\Collection<Brand>}
      */
     public function handle(): array
     {
@@ -39,6 +42,15 @@ class ListFeaturedAction
                 ->orderBy($this->positionSubquery(
                     FeaturedItemSchema::TYPE_CATEGORY,
                     CategorySchema::TABLE.'.'.CategorySchema::ID
+                ))
+                ->get(),
+
+            FeaturedItemSchema::RES_BRAND => Brand::query()
+                ->whereHas('featuredItem')
+                ->with(BrandSchema::RES_TRANSLATIONS)
+                ->orderBy($this->positionSubquery(
+                    FeaturedItemSchema::TYPE_BRAND,
+                    BrandSchema::TABLE.'.'.BrandSchema::ID
                 ))
                 ->get(),
         ];

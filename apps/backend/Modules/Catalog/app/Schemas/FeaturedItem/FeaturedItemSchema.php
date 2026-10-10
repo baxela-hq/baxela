@@ -23,11 +23,18 @@ class FeaturedItemSchema
     /** Morph alias stored in FEATUREDABLE_TYPE for categories. */
     public const string TYPE_CATEGORY = 'category';
 
+    /** Morph alias stored in FEATUREDABLE_TYPE for brands. */
+    public const string TYPE_BRAND = 'brand';
+
     public const string RES_PRODUCT = 'product';
 
     public const string RES_CATEGORY = 'category';
 
+    public const string RES_BRAND = 'brand';
+
     public const string REQ_PRODUCT_IDS = 'product_ids';
 
     public const string REQ_CATEGORY_IDS = 'category_ids';
+
+    public const string REQ_BRAND_IDS = 'brand_ids';
 }

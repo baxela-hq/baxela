@@ -95,6 +95,7 @@ it('syncs the featured selections, array order encoding position', function () {
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [$b->id, $a->id],
         'category_ids' => [$category->id],
+        'brand_ids' => [],
     ])->assertOk();
 
     $positions = FeaturedItem::query()
@@ -108,6 +109,7 @@ it('syncs the featured selections, array order encoding position', function () {
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [$a->id],
         'category_ids' => [],
+        'brand_ids' => [],
     ])->assertOk();
 
     expect(FeaturedItem::query()->count())->toBe(1)
@@ -128,16 +130,19 @@ it('rejects unknown, duplicate or trashed ids', function () {
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [$product->id, 999999],
         'category_ids' => [],
+        'brand_ids' => [],
     ])->assertStatus(422);
 
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [$product->id, $product->id],
         'category_ids' => [],
+        'brand_ids' => [],
     ])->assertStatus(422);
 
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [$trashed->id],
         'category_ids' => [],
+        'brand_ids' => [],
     ])->assertStatus(422);
 
     // Both keys are required: a partial payload must not wipe a section.
@@ -173,5 +178,6 @@ it('denies the featured endpoints without permission', function () {
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [],
         'category_ids' => [],
+        'brand_ids' => [],
     ])->assertStatus(403)->assertJsonPath('code', 'http.403');
 });

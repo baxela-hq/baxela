@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
@@ -33,6 +34,7 @@ class ShowProductAction extends AbstractProductAction
             ->where(ProductSchema::IS_PUBLISHED, true)
             ->with([
                 ProductSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_BRAND.'.'.BrandSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_IMAGES,
                 ProductSchema::RES_IMAGES,

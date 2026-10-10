@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Requests\Admin\Featured;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema as FISchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
@@ -25,6 +26,10 @@ class UpdateFeaturedRequest extends FormRequest
             FISchema::REQ_CATEGORY_IDS => ['present', 'array', 'max:100'],
             FISchema::REQ_CATEGORY_IDS.'.*' => ['integer', 'distinct',
                 Rule::exists(CategorySchema::TABLE, CategorySchema::ID)],
+
+            FISchema::REQ_BRAND_IDS => ['present', 'array', 'max:100'],
+            FISchema::REQ_BRAND_IDS.'.*' => ['integer', 'distinct',
+                Rule::exists(BrandSchema::TABLE, BrandSchema::ID)],
         ];
     }
 

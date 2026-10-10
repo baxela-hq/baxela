@@ -4,6 +4,8 @@ namespace Modules\Catalog\Transformers\Public\Product;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
+use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BRTSchema;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
@@ -28,6 +30,10 @@ class ListProductResource extends JsonResource
             ->firstWhere(VariantSchema::IS_DEFAULT, true)
             ?? $this->resource->variants->first();
 
+        $brandTranslation = $this->resource->brand?->translations
+            ->firstWhere(BRTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
+            ?? $this->resource->brand?->translations->first();
+
         return [
             'id' => $this->resource->{ProductSchema::ID},
             'title' => $translation?->{PTSchema::TITLE},
@@ -35,6 +41,11 @@ class ListProductResource extends JsonResource
             'description' => $translation?->{PTSchema::DESCRIPTION},
             'price' => $variant?->{VariantSchema::PRICE},
             'compare_price' => $variant?->{VariantSchema::COMPARE_PRICE},
+            'brand' => $this->resource->brand ? [
+                'id' => $this->resource->brand->{BrandSchema::ID},
+                'title' => $brandTranslation?->{BRTSchema::TITLE},
+                'slug' => $brandTranslation?->{BRTSchema::SLUG},
+            ] : null,
             // Attached by AppliesProductPromotions when a promotion is live
             'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
             'image_url' => $this->resource->images->first()?->{ImageSchema::URL},

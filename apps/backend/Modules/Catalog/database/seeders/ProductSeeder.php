@@ -11,6 +11,7 @@ use Modules\Catalog\Actions\Admin\Product\CreateProductAction;
 use Modules\Catalog\Exceptions\Product\CreationFailedException;
 use Modules\Catalog\Models\Attribute;
 use Modules\Catalog\Models\AttributeValueTranslation;
+use Modules\Catalog\Models\BrandTranslation;
 use Modules\Catalog\Models\CategoryTranslation;
 use Modules\Catalog\Models\OptionValueTranslation;
 use Modules\Catalog\Models\Product;
@@ -23,6 +24,7 @@ use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
+use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
@@ -128,6 +130,12 @@ class ProductSeeder extends Seeder
                 ->pluck(CategoryTranslationSchema::CATEGORY_ID)
                 ->toArray();
 
+            $brandId = isset($product['brand'])
+                ? BrandTranslation::query()
+                    ->where(BrandTranslationSchema::SLUG, $product['brand'])
+                    ->value(BrandTranslationSchema::BRAND_ID)
+                : null;
+
             $variants = array_map(function ($variant) {
                 $variant[VariantSchema::QUANTITY] = rand(5, 15);
 
@@ -167,6 +175,7 @@ class ProductSeeder extends Seeder
                 ProductSchema::TYPE => $product[ProductSchema::TYPE],
                 ProductSchema::STATUS => ProductStatusEnum::IN_STOCK,
                 ProductSchema::IS_PUBLISHED => true,
+                ProductSchema::BRAND_ID => $brandId,
                 ProductSchema::RES_CATEGORIES => $categoryIds,
                 ProductSchema::RES_IMAGES => $this->imagesFor((string) $slug),
                 ProductSchema::RES_VARIANTS => $variants,

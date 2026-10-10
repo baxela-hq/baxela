@@ -6,6 +6,7 @@ use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Models\AttributeTranslation;
 use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Models\AttributeValueTranslation;
+use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductComment;
@@ -48,6 +49,19 @@ function commentOn(Product $product, string $body, ProductCommentStatusEnum $sta
         'status' => $status,
         'body' => $body,
     ]);
+}
+
+function productBrand(string $slug): Brand
+{
+    $brand = Brand::query()->create();
+
+    $brand->translations()->create([
+        'language_id' => defaultLanguage()->id,
+        'title' => 'Brand '.$slug,
+        'slug' => $slug,
+    ]);
+
+    return $brand;
 }
 
 it('lists published in-stock products only', function () {
@@ -157,6 +171,28 @@ it('shows the product attributes ordered by position with localized titles', fun
         ->assertJsonPath('data.attributes.1.code', 'brand')
         ->assertJsonPath('data.attributes.1.title', 'Brand')
         ->assertJsonPath('data.attributes.1.value', 'UrbanEdge');
+});
+
+it('filters the storefront list by brand and surfaces the brand on products', function () {
+    $urbanEdge = productBrand('urban-edge');
+    productBrand('north-peak');
+
+    $product = publicProduct('urban-product');
+    $product->update(['brand_id' => $urbanEdge->id]);
+    publicProduct('other-product');
+
+    $response = $this->getJson($this->baseUrl('/public/products?filter[brand.id]='.$urbanEdge->id))
+        ->assertOk();
+
+    $items = collect($response->json('data'));
+
+    expect($items->pluck('id')->all())->toBe([$product->id])
+        ->and($items->first()['brand']['slug'])->toBe('urban-edge')
+        ->and($items->first()['brand']['title'])->toBe('Brand urban-edge');
+
+    $this->getJson($this->baseUrl('/public/products/'.$product->id))
+        ->assertOk()
+        ->assertJsonPath('data.brand.slug', 'urban-edge');
 });
 
 it('lists approved comments with their approved replies for a product', function () {

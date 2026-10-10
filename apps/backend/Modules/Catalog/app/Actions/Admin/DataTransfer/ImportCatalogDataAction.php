@@ -10,6 +10,8 @@ use Modules\Catalog\Actions\Admin\AttributeGroup\CreateAttributeGroupAction;
 use Modules\Catalog\Actions\Admin\AttributeGroup\UpdateAttributeGroupAction;
 use Modules\Catalog\Actions\Admin\AttributeValue\CreateAttributeValueAction;
 use Modules\Catalog\Actions\Admin\AttributeValue\UpdateAttributeValueAction;
+use Modules\Catalog\Actions\Admin\Brand\CreateBrandAction;
+use Modules\Catalog\Actions\Admin\Brand\UpdateBrandAction;
 use Modules\Catalog\Actions\Admin\Category\CreateCategoryAction;
 use Modules\Catalog\Actions\Admin\Category\UpdateCategoryAction;
 use Modules\Catalog\Actions\Admin\Featured\UpdateFeaturedAction;
@@ -23,6 +25,7 @@ use Modules\Catalog\Exceptions\Data\ImportFailedException;
 use Modules\Catalog\Http\Requests\Admin\Attribute\AttributeRequest;
 use Modules\Catalog\Http\Requests\Admin\AttributeGroup\AttributeGroupRequest;
 use Modules\Catalog\Http\Requests\Admin\AttributeValue\AttributeValueRequest;
+use Modules\Catalog\Http\Requests\Admin\Brand\BrandRequest;
 use Modules\Catalog\Http\Requests\Admin\Category\CategoryRequest;
 use Modules\Catalog\Http\Requests\Admin\Option\OptionRequest;
 use Modules\Catalog\Http\Requests\Admin\OptionValue\OptionValueRequest;
@@ -38,6 +41,8 @@ use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
+use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
@@ -130,6 +135,8 @@ class ImportCatalogDataAction
         protected UpdateOptionValueAction $updateOptionValue,
         protected CreateCategoryAction $createCategory,
         protected UpdateCategoryAction $updateCategory,
+        protected CreateBrandAction $createBrand,
+        protected UpdateBrandAction $updateBrand,
         protected CreateProductAction $createProduct,
         protected UpdateProductAction $updateProduct,
         protected UpdateFeaturedAction $updateFeatured,
@@ -356,6 +363,7 @@ class ImportCatalogDataAction
                 CatalogTransferFormat::SECTION_OPTIONS,
                 $row, $messages),
             CatalogTransferFormat::SECTION_CATEGORIES => $this->prepareCategory($payload, $messages),
+            CatalogTransferFormat::SECTION_BRANDS => $this->prepareBrand($payload),
             CatalogTransferFormat::SECTION_PRODUCTS => $this->prepareProduct($payload, $messages),
             CatalogTransferFormat::SECTION_FEATURED_ITEMS => $this->prepareFeatured($payload, $messages),
             default => $payload,
@@ -381,6 +389,12 @@ class ImportCatalogDataAction
             CatalogTransferFormat::SECTION_CATEGORIES,
             (array) ($payload[FeaturedItemSchema::REQ_CATEGORY_IDS] ?? []),
             'category',
+            $messages
+        );
+        $payload[FeaturedItemSchema::REQ_BRAND_IDS] = $this->localIds(
+            CatalogTransferFormat::SECTION_BRANDS,
+            (array) ($payload[FeaturedItemSchema::REQ_BRAND_IDS] ?? []),
+            'brand',
             $messages
         );
 
@@ -462,11 +476,33 @@ class ImportCatalogDataAction
 
     /**
      * @param  array<string, mixed>  $payload
+     * @return array<string, mixed>
+     */
+    protected function prepareBrand(array $payload): array
+    {
+        $payload[BrandSchema::POSITION] ??= null;
+        $payload[BrandSchema::IMAGE_MEDIA_ID] = $this->existingMediaId($payload[BrandSchema::IMAGE_MEDIA_ID] ?? null);
+        $payload[BrandSchema::IMAGE_URL] ??= null;
+
+        return $this->resolveLanguages($payload);
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
      * @param  array<int, string>  $messages
      * @return array<string, mixed>
      */
     protected function prepareProduct(array $payload, array &$messages): array
     {
+        if (($payload[ProductSchema::BRAND_ID] ?? null) !== null) {
+            $payload[ProductSchema::BRAND_ID] = $this->localId(
+                CatalogTransferFormat::SECTION_BRANDS,
+                (int) $payload[ProductSchema::BRAND_ID],
+                'brand',
+                $messages
+            );
+        }
+
         $payload[ProductSchema::RES_CATEGORIES] = $this->localIds(
             CatalogTransferFormat::SECTION_CATEGORIES,
             (array) ($payload[ProductSchema::RES_CATEGORIES] ?? []),
@@ -599,6 +635,7 @@ class ImportCatalogDataAction
             CatalogTransferFormat::SECTION_OPTIONS => OptionRequest::rulesFor($this->languageIdByCode),
             CatalogTransferFormat::SECTION_OPTION_VALUES => OptionValueRequest::rulesFor($this->languageIdByCode),
             CatalogTransferFormat::SECTION_CATEGORIES => CategoryRequest::rulesFor($this->languageIdByCode),
+            CatalogTransferFormat::SECTION_BRANDS => BrandRequest::rulesFor($this->languageIdByCode),
             CatalogTransferFormat::SECTION_PRODUCTS => ProductRequest::rulesFor(
                 $this->languageIdByCode,
                 ($payload[ProductSchema::TYPE] ?? '') === ProductTypeEnum::VARIABLE->value
@@ -660,6 +697,11 @@ class ImportCatalogDataAction
                 return;
             case CatalogTransferFormat::SECTION_CATEGORIES:
                 $this->checkSlugUniqueness(CategoryTranslationSchema::TABLE, CategoryTranslationSchema::CATEGORY_ID,
+                    $payload, $existingId, $messages);
+
+                return;
+            case CatalogTransferFormat::SECTION_BRANDS:
+                $this->checkSlugUniqueness(BrandTranslationSchema::TABLE, BrandTranslationSchema::BRAND_ID,
                     $payload, $existingId, $messages);
 
                 return;
@@ -791,6 +833,12 @@ class ImportCatalogDataAction
                 'slug',
                 $payload
             ),
+            CatalogTransferFormat::SECTION_BRANDS => $this->matchByTranslation(
+                BrandTranslationSchema::TABLE,
+                BrandTranslationSchema::BRAND_ID,
+                'slug',
+                $payload
+            ),
             CatalogTransferFormat::SECTION_PRODUCTS => $this->matchProduct($payload),
             default => null,
         };
@@ -918,6 +966,9 @@ class ImportCatalogDataAction
             CatalogTransferFormat::SECTION_CATEGORIES => (int) ($existingId !== null
                 ? $this->updateCategory->handle((string) $existingId, $data)->getKey()
                 : $this->createCategory->handle($data)->getKey()),
+            CatalogTransferFormat::SECTION_BRANDS => (int) ($existingId !== null
+                ? $this->updateBrand->handle((string) $existingId, $data)->getKey()
+                : $this->createBrand->handle($data)->getKey()),
             CatalogTransferFormat::SECTION_PRODUCTS => (int) ($existingId !== null
                 ? $this->updateProduct->handle((string) $existingId, $data)->getKey()
                 : $this->createProduct->handle($data)->getKey()),
@@ -927,6 +978,7 @@ class ImportCatalogDataAction
             CatalogTransferFormat::SECTION_FEATURED_ITEMS => $this->updateFeatured->handle(
                 array_map('intval', (array) ($data[FeaturedItemSchema::REQ_PRODUCT_IDS] ?? [])),
                 array_map('intval', (array) ($data[FeaturedItemSchema::REQ_CATEGORY_IDS] ?? [])),
+                array_map('intval', (array) ($data[FeaturedItemSchema::REQ_BRAND_IDS] ?? [])),
             ) ? 1 : 0,
             default => 0,
         };

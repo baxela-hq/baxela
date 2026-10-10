@@ -27,6 +27,7 @@ class CatalogDatabaseSeeder extends Seeder
             OptionSeeder::class,
             AttributeSeeder::class,
             CategorySeeder::class,
+            BrandSeeder::class,
             ProductSeeder::class,
         ]);
     }

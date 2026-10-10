@@ -230,26 +230,21 @@ return [
             ],
         ],
     ],
+    'brands' => [
+        'urban-edge' => ['translations' => [['title' => 'اربان‌اج', 'slug' => 'urban-edge', 'description' => 'لباس‌های روزمره مدرن شهری.']]],
+        'north-peak' => ['translations' => [['title' => 'نورث‌پیک', 'slug' => 'north-peak', 'description' => 'تجهیزات برای طبیعت‌گردی.']]],
+        'classic-co' => ['translations' => [['title' => 'کلاسیک‌کو', 'slug' => 'classic-co', 'description' => 'پایه‌های بی‌زمان روزمره.']]],
+        'step-well' => ['translations' => [['title' => 'استپ‌ول', 'slug' => 'step-well', 'description' => 'کفش ساخته‌شده برای پیاده‌روی.']]],
+        'rialta' => ['translations' => [['title' => 'ریالتا', 'slug' => 'rialta', 'description' => 'اکسسوری‌ها و عینک‌های ظریف.']]],
+        'carry-all' => ['translations' => [['title' => 'کاری‌ال', 'slug' => 'carry-all', 'description' => 'کیف برای هر بار.']]],
+        'flo' => ['translations' => [['title' => 'فلو', 'slug' => 'flo', 'description' => 'فرم‌های سبک و روان.']]],
+    ],
     'attribute_groups' => [
         'General' => [
             'translations' => [
                 ['title' => 'عمومی'],
             ],
             'attributes' => [
-                'brand' => [
-                    'values' => [
-                        'UrbanEdge' => ['translations' => [['title' => 'اربان‌اج']]],
-                        'NorthPeak' => ['translations' => [['title' => 'نورث‌پیک']]],
-                        'ClassicCo' => ['translations' => [['title' => 'کلاسیک‌کو']]],
-                        'StepWell' => ['translations' => [['title' => 'استپ‌ول']]],
-                        'Rialta' => ['translations' => [['title' => 'ریالتا']]],
-                        'CarryAll' => ['translations' => [['title' => 'کاری‌ال']]],
-                        'Flo' => ['translations' => [['title' => 'فلو']]],
-                    ],
-                    'translations' => [
-                        ['title' => 'برند'],
-                    ],
-                ],
                 'gender' => [
                     'values' => [
                         'Men' => ['translations' => [['title' => 'مردانه']]],

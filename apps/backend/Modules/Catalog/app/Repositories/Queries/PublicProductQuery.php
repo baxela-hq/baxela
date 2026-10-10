@@ -7,6 +7,7 @@ use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
@@ -26,6 +27,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *   GET /api/v1/catalog/public/products
  *     ?filter[title]=sneak
  *     &filter[categories.id]=3
+ *     &filter[brand.id]=7
  *     &filter[option_value_id]=5|6   (repeats allowed)
  *     &filter[price_min]=10&filter[price_max]=50
  *     &featured=true                (admin-managed featured list)
@@ -55,6 +57,7 @@ class PublicProductQuery implements QueryInterface
                     });
                 }),
                 AllowedFilter::exact(ProductSchema::RES_CATEGORIES.'.'.CategorySchema::ID),
+                AllowedFilter::exact(ProductSchema::RES_BRAND.'.'.BrandSchema::ID),
                 AllowedFilter::callback('option_value_id', function (Builder $query, $value): void {
                     // Values of different options narrow the result
                     // (S AND Red); values of the same option widen it
@@ -127,6 +130,7 @@ class PublicProductQuery implements QueryInterface
             ->where(ProductSchema::IS_PUBLISHED, true)
             ->with([
                 ProductSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_BRAND.'.'.BrandSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES.'.'.CategorySchema::RES_TRANSLATIONS,

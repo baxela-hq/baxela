@@ -21,6 +21,11 @@ use Modules\Catalog\Http\Controllers\Admin\AttributeValue\DeleteAttributeValueCo
 use Modules\Catalog\Http\Controllers\Admin\AttributeValue\ListAttributeValueController;
 use Modules\Catalog\Http\Controllers\Admin\AttributeValue\ShowAttributeValueController;
 use Modules\Catalog\Http\Controllers\Admin\AttributeValue\UpdateAttributeValueController;
+use Modules\Catalog\Http\Controllers\Admin\Brand\CreateBrandController;
+use Modules\Catalog\Http\Controllers\Admin\Brand\DeleteBrandController;
+use Modules\Catalog\Http\Controllers\Admin\Brand\ListBrandController;
+use Modules\Catalog\Http\Controllers\Admin\Brand\ShowBrandController;
+use Modules\Catalog\Http\Controllers\Admin\Brand\UpdateBrandController;
 use Modules\Catalog\Http\Controllers\Admin\Category\CreateCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\DeleteCategoryController;
 use Modules\Catalog\Http\Controllers\Admin\Category\ListCategoryController;
@@ -93,6 +98,12 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/categories/{id}', ShowCategoryController::class)->name('categories.show');
     Route::patch('/categories/{id}', UpdateCategoryController::class)->name('categories.update');
     Route::delete('/categories/{id}', DeleteCategoryController::class)->name('categories.delete');
+
+    Route::get('/brands', ListBrandController::class)->name('brands.list');
+    Route::post('/brands', CreateBrandController::class)->name('brands.create');
+    Route::get('/brands/{id}', ShowBrandController::class)->name('brands.show');
+    Route::patch('/brands/{id}', UpdateBrandController::class)->name('brands.update');
+    Route::delete('/brands/{id}', DeleteBrandController::class)->name('brands.delete');
 
     Route::get('/featured', ListFeaturedController::class)->name('featured.list');
     Route::put('/featured', UpdateFeaturedController::class)->name('featured.update');

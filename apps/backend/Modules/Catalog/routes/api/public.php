@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Catalog\Http\Controllers\Public\Brand\ListBrandController;
+use Modules\Catalog\Http\Controllers\Public\Brand\ShowBrandController;
 use Modules\Catalog\Http\Controllers\Public\Category\ListCategoryController;
 use Modules\Catalog\Http\Controllers\Public\Option\ListOptionController;
 use Modules\Catalog\Http\Controllers\Public\Product\ListProductController;
@@ -13,5 +15,7 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::get('/products/{id}/comments', ListProductCommentsController::class)->name('product-comments.list');
 
     Route::get('/categories', ListCategoryController::class)->name('categories.list');
+    Route::get('/brands', ListBrandController::class)->name('brands.list');
+    Route::get('/brands/{id}', ShowBrandController::class)->name('brands.show');
     Route::get('/options', ListOptionController::class)->name('options.list');
 });

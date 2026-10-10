@@ -54,6 +54,8 @@ final class CatalogTransferFormat
 
     public const string SECTION_CATEGORIES = 'categories';
 
+    public const string SECTION_BRANDS = 'brands';
+
     public const string SECTION_PRODUCTS = 'products';
 
     public const string SECTION_FEATURED_ITEMS = 'featured-items';
@@ -74,6 +76,7 @@ final class CatalogTransferFormat
             self::SECTION_OPTIONS,
             self::SECTION_OPTION_VALUES,
             self::SECTION_CATEGORIES,
+            self::SECTION_BRANDS,
             self::SECTION_PRODUCTS,
             self::SECTION_FEATURED_ITEMS,
         ];

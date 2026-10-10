@@ -4,6 +4,7 @@ namespace Modules\Catalog\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -30,6 +31,7 @@ class Product extends Model
         ProductSchema::TYPE,
         ProductSchema::STATUS,
         ProductSchema::IS_PUBLISHED,
+        ProductSchema::BRAND_ID,
     ];
 
     protected function casts(): array
@@ -50,6 +52,11 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, CategoryProductSchema::TABLE,
             CategoryProductSchema::PRODUCT_ID, CategoryProductSchema::CATEGORY_ID);
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
     }
 
     public function featuredItem(): MorphOne
