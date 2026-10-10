@@ -100,7 +100,7 @@ export default async function BlogPostPage({
                 category.slug ? (
                   <Link
                     key={category.id}
-                    href={`/blog?category=${encodeURIComponent(category.slug)}`}
+                    href={`/blog/cat/${encodeURIComponent(category.slug)}`}
                     className="rounded-default bg-muted px-3 py-1 text-xs text-secondary-text transition-colors hover:text-accent rtl:normal-case rtl:tracking-normal"
                   >
                     {category.title}
