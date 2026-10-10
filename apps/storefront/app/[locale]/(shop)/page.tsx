@@ -5,6 +5,7 @@ import PostCard from "@/components/blog/post-card";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { serverApiGet } from "@/lib/api/server";
 import type {
+  ApiBrand,
   ApiPost,
   ApiProduct,
   ApiPublicCategory,
@@ -17,17 +18,21 @@ export default async function HomePage() {
 
   // Curated featured products; a fresh store with nothing curated yet
   // falls back to the newest products so the section never sits empty.
-  const [categoriesPage, featuredPage, featuredPostsPage] = await Promise.all([
-    serverApiGet<Paginated<ApiPublicCategory>>(
-      "/catalog/public/categories?featured=true&per_page=4"
-    ).catch(() => null),
-    serverApiGet<Paginated<ApiProduct>>(
-      "/catalog/public/products?featured=true&per_page=4"
-    ).catch(() => null),
-    serverApiGet<Paginated<ApiPost>>(
-      "/content/public/posts?featured=true&per_page=3"
-    ).catch(() => null),
-  ]);
+  const [categoriesPage, brandsPage, featuredPage, featuredPostsPage] =
+    await Promise.all([
+      serverApiGet<Paginated<ApiPublicCategory>>(
+        "/catalog/public/categories?featured=true&per_page=4"
+      ).catch(() => null),
+      serverApiGet<Paginated<ApiBrand>>(
+        "/catalog/public/brands?featured=true&per_page=8"
+      ).catch(() => null),
+      serverApiGet<Paginated<ApiProduct>>(
+        "/catalog/public/products?featured=true&per_page=4"
+      ).catch(() => null),
+      serverApiGet<Paginated<ApiPost>>(
+        "/content/public/posts?featured=true&per_page=3"
+      ).catch(() => null),
+    ]);
 
   const categories = (categoriesPage?.data ?? []).slice(0, 4);
   let featured = featuredPage?.data ?? [];
@@ -37,6 +42,16 @@ export default async function HomePage() {
       "/catalog/public/products?per_page=4"
     ).catch(() => null);
     featured = newestPage?.data ?? [];
+  }
+
+  // Same curation fallback as products: nothing curated yet → first brands.
+  let brands = brandsPage?.data ?? [];
+
+  if (brands.length === 0) {
+    const newestBrandsPage = await serverApiGet<Paginated<ApiBrand>>(
+      "/catalog/public/brands?per_page=8"
+    ).catch(() => null);
+    brands = newestBrandsPage?.data ?? [];
   }
 
   // Same curation fallback as products: nothing curated yet → newest posts.
@@ -122,6 +137,59 @@ export default async function HomePage() {
                   </div>
                   <h3 className="mt-4 text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
                     {category.title}
+                  </h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Brands */}
+      {brands.length > 0 ? (
+        <section className="border-b border-border-light">
+          <div className="mx-auto max-w-7xl px-6 py-16">
+            <div className="flex items-end justify-between">
+              <h2 className="text-3xl font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+                {t("brands.texts.title")}
+              </h2>
+              <Link
+                href="/brands"
+                className="text-sm font-medium text-accent hover:underline"
+              >
+                {t("brands.actions.view_all")}
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+              {brands.map((brand) => (
+                <Link
+                  key={brand.id}
+                  href={`/brands/${encodeURIComponent(brand.slug ?? brand.id)}`}
+                  className="group flex flex-col items-center rounded-default border border-border-light p-8 transition-colors hover:border-primary"
+                >
+                  <div className="flex aspect-square w-full max-w-32 items-center justify-center overflow-hidden rounded-default bg-muted transition-colors group-hover:bg-border-light">
+                    {brand.image_url ? (
+                      // Backend-served images from arbitrary hosts — next/image would
+                      // need remotePatterns for every storage host, so use a plain img.
+                      // object-contain (not cover): logos must never crop.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={brand.image_url}
+                        alt={brand.title ?? ""}
+                        className="size-full object-contain p-5"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className="flex size-14 items-center justify-center rounded-full bg-border-light text-xl font-semibold text-secondary-text"
+                      >
+                        {brand.title?.charAt(0).toUpperCase() ?? "?"}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="mt-4 text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                    {brand.title}
                   </h3>
                 </Link>
               ))}

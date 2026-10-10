@@ -19,6 +19,14 @@
       "view_all": "View all"
     }
   },
+  "brands": {
+    "texts": {
+      "title": "Shop by brand"
+    },
+    "actions": {
+      "view_all": "View all"
+    }
+  },
   "featured": {
     "texts": {
       "title": "Featured products"

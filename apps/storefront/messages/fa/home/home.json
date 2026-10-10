@@ -19,6 +19,14 @@
       "view_all": "مشاهده همه"
     }
   },
+  "brands": {
+    "texts": {
+      "title": "خرید بر اساس برند"
+    },
+    "actions": {
+      "view_all": "مشاهده همه"
+    }
+  },
   "featured": {
     "texts": {
       "title": "محصولات ویژه"
