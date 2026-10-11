@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+// v11 serves the build-time wrapper from a dedicated subpath export.
+import { withSentryConfig } from "@sentry/nextjs/config";
 
 const API_ORIGIN = (() => {
   try {
@@ -20,6 +22,18 @@ const REVERB_ORIGIN = REVERB_HOST
       [80, 443].includes(Number(REVERB_PORT)) ? "" : `:${REVERB_PORT}`
     }`
   : "";
+
+// Sentry ingest endpoint the browser SDK sends events to. Derived from the
+// build-time DSN so the CSP only allows it when Sentry is actually
+// configured; an unset or invalid DSN contributes nothing.
+const SENTRY_INGEST_ORIGIN = (() => {
+  try {
+    const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
+    return dsn ? new URL(dsn).origin : "";
+  } catch {
+    return "";
+  }
+})();
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -45,7 +59,7 @@ const contentSecurityPolicy = [
   `style-src 'self' 'unsafe-inline'`,
   `img-src ${imgSources.join(" ")}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${API_ORIGIN} ${REVERB_ORIGIN}`.trimEnd(),
+  `connect-src 'self' ${API_ORIGIN} ${REVERB_ORIGIN} ${SENTRY_INGEST_ORIGIN}`.trimEnd(),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -100,4 +114,14 @@ const nextConfig: NextConfig = {
 
 const withNextIntl = createNextIntlPlugin();
 
-export default withNextIntl(nextConfig);
+// withSentryConfig wraps the next-intl-wrapped config (wrappers compose in
+// either order). No auth token is configured, so nothing is uploaded during
+// builds — minified stack traces stay unreadable until source-map upload is
+// wired up (tracked follow-up in docs/LOGGING.md).
+export default withNextIntl(
+  withSentryConfig(nextConfig, {
+    sourcemaps: { disable: true },
+    telemetry: false,
+    silent: true,
+  })
+);

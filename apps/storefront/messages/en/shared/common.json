@@ -10,7 +10,8 @@
       "cancel": "Cancel",
       "close": "Close",
       "show": "Show",
-      "hide": "Hide"
+      "hide": "Hide",
+      "retry": "Try again"
     },
     "placeholders": {
       "email": "Enter your email",
