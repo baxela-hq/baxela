@@ -11,12 +11,23 @@
 
 name: baxela-production
 
+# Container log rotation: cap json-file logs (~30 MB per service) so they
+# can't grow unbounded — the Docker daemon default keeps everything forever.
+# This governs container stdout/stderr only (Laravel logs land there via
+# LOG_CHANNEL=stderr); Laravel's own file retention is separate.
+x-logging: &default-logging
+    driver: json-file
+    options:
+        max-size: "10m"
+        max-file: "3"
+
 x-backend: &backend
     image: baxela/backend:production
     build:
         context: .
         dockerfile: infrastructure/docker/production/backend/Dockerfile
     env_file: .env.production
+    logging: *default-logging
     restart: unless-stopped
     security_opt:
         - no-new-privileges:true
@@ -40,6 +51,7 @@ services:
 
     backend-nginx:
         image: nginx:stable-bookworm
+        logging: *default-logging
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
@@ -85,6 +97,7 @@ services:
 
     admin:
         image: baxela/admin:production
+        logging: *default-logging
         build:
             context: .
             dockerfile: infrastructure/docker/production/admin/Dockerfile
@@ -95,6 +108,7 @@ services:
                 VITE_REVERB_HOST: ${REVERB_HOST:-api.example.com}
                 VITE_REVERB_PORT: ${REVERB_PORT:-443}
                 VITE_REVERB_SCHEME: ${REVERB_SCHEME:-https}
+                VITE_SENTRY_DSN: ${VITE_SENTRY_DSN}
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
@@ -103,6 +117,7 @@ services:
 
     storefront:
         image: baxela/storefront:production
+        logging: *default-logging
         build:
             context: .
             dockerfile: infrastructure/docker/production/storefront/Dockerfile
@@ -112,6 +127,7 @@ services:
                 NEXT_PUBLIC_REVERB_HOST: ${REVERB_HOST:-api.example.com}
                 NEXT_PUBLIC_REVERB_PORT: ${REVERB_PORT:-443}
                 NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-https}
+                NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN}
         restart: unless-stopped
         environment:
             # Browser code uses the build-time NEXT_PUBLIC value; server-side
@@ -120,6 +136,9 @@ services:
             # Public storefront origin for sitemap.xml/robots.txt/metadataBase
             # (server-only, read at runtime — no rebuild needed to change it).
             SITE_URL: ${SITE_URL:-https://example.com}
+            # Server-side Sentry DSN (runtime, no rebuild); the browser SDK
+            # uses the build-time NEXT_PUBLIC_SENTRY_DSN above.
+            SENTRY_DSN: ${SENTRY_DSN:-}
         security_opt:
             - no-new-privileges:true
         ports:
@@ -127,6 +146,7 @@ services:
 
     mysql:
         image: mysql:8-debian
+        logging: *default-logging
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
@@ -147,6 +167,7 @@ services:
 
     redis:
         image: redis:7-bookworm
+        logging: *default-logging
         restart: unless-stopped
         command: ["redis-server", "--appendonly", "yes"]
         security_opt:

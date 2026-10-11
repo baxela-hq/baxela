@@ -8,8 +8,19 @@
 
 name: baxela-develop
 
+# Container log rotation: cap json-file logs (~30 MB per service) so they
+# can't grow unbounded — the Docker daemon default keeps everything forever.
+# This governs container stdout/stderr only; Laravel's own file retention is
+# separate (LOG_DAILY_DAYS in apps/backend/.env).
+x-logging: &default-logging
+    driver: json-file
+    options:
+        max-size: "10m"
+        max-file: "3"
+
 services:
     app:
+        logging: *default-logging
         build:
             context: ./infrastructure/docker/develop/backend
             dockerfile: Dockerfile
@@ -43,6 +54,7 @@ services:
     # Mirrors the production stack's worker so queued notifications (and
     # anything else on the database queue) process locally too.
     queue:
+        logging: *default-logging
         image: baxela/backend:develop
         restart: unless-stopped
         working_dir: /var/www/html
@@ -63,6 +75,7 @@ services:
     # and both SPAs connect to it for realtime notifications. Same image
     # and bind-mount as the app service, so it reads apps/backend/.env.
     reverb:
+        logging: *default-logging
         image: baxela/backend:develop
         restart: unless-stopped
         working_dir: /var/www/html
@@ -76,6 +89,7 @@ services:
                 condition: service_started
 
     web:
+        logging: *default-logging
         image: nginx:stable-bookworm
         restart: unless-stopped
         ports:
@@ -95,6 +109,7 @@ services:
             start_period: 30s
 
     admin:
+        logging: *default-logging
         build:
             context: ./infrastructure/docker/develop/admin
             dockerfile: Dockerfile
@@ -127,11 +142,14 @@ services:
             VITE_REVERB_HOST: ${REVERB_HOST:-localhost}
             VITE_REVERB_PORT: ${REVERB_DEV_PORT:-8080}
             VITE_REVERB_SCHEME: ${REVERB_SCHEME:-http}
+            # Sentry browser SDK; empty by default (SDK stays disabled).
+            VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
         depends_on:
             - web
             - reverb
 
     storefront:
+        logging: *default-logging
         build:
             context: ./infrastructure/docker/develop/storefront
             dockerfile: Dockerfile
@@ -166,11 +184,17 @@ services:
             NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-http}
             # Public origin for sitemap.xml/robots.txt/metadataBase (server-only).
             SITE_URL: ${SITE_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
+            # Sentry: NEXT_PUBLIC_* feeds the browser SDK (and the CSP
+            # connect-src derivation) at dev-serve time; SENTRY_DSN is the
+            # server-side runtime DSN. Both empty by default (SDK disabled).
+            NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
+            SENTRY_DSN: ${SENTRY_DSN:-}
         depends_on:
             - web
             - reverb
 
     mysql:
+        logging: *default-logging
         image: mysql:8-debian
         restart: unless-stopped
         environment:
@@ -191,6 +215,7 @@ services:
             retries: 20
 
     redis:
+        logging: *default-logging
         image: redis:7-bookworm
         restart: unless-stopped
         ports:
@@ -204,6 +229,7 @@ services:
             retries: 20
 
     mail:
+        logging: *default-logging
         image: axllent/mailpit
         profiles:
             - mail

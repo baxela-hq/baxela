@@ -19,17 +19,20 @@ RUN corepack enable
 COPY apps/storefront/package.json apps/storefront/pnpm-lock.yaml apps/storefront/pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Next inlines NEXT_PUBLIC_* into the client bundle at build time.
+# Next inlines NEXT_PUBLIC_* into the client bundle at build time. The
+# Sentry DSN also feeds the CSP connect-src derivation in next.config.ts.
 ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_REVERB_APP_KEY
 ARG NEXT_PUBLIC_REVERB_HOST
 ARG NEXT_PUBLIC_REVERB_PORT
 ARG NEXT_PUBLIC_REVERB_SCHEME
+ARG NEXT_PUBLIC_SENTRY_DSN
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 ENV NEXT_PUBLIC_REVERB_APP_KEY=$NEXT_PUBLIC_REVERB_APP_KEY
 ENV NEXT_PUBLIC_REVERB_HOST=$NEXT_PUBLIC_REVERB_HOST
 ENV NEXT_PUBLIC_REVERB_PORT=$NEXT_PUBLIC_REVERB_PORT
 ENV NEXT_PUBLIC_REVERB_SCHEME=$NEXT_PUBLIC_REVERB_SCHEME
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 
 COPY apps/storefront ./
 RUN pnpm build
