@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/product-card";
 import PostCard from "@/components/blog/post-card";
@@ -88,10 +89,17 @@ export default async function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="flex aspect-[4/3] items-center justify-center rounded-default bg-muted">
-            <span className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
-              {t("hero.texts.image_placeholder")}
-            </span>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-default bg-muted">
+            {/* Local public/ asset, so next/image applies here — the plain
+                <img> pattern elsewhere is only for backend-served hosts. */}
+            <Image
+              src="/images/hero-campaign.jpg"
+              alt={t("hero.texts.image_alt")}
+              fill
+              priority
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+            />
           </div>
         </div>
       </section>
