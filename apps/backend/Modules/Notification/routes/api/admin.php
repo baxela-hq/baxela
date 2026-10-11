@@ -6,6 +6,8 @@ use Modules\Notification\Http\Controllers\Admin\Notification\GetUnreadNotificati
 use Modules\Notification\Http\Controllers\Admin\Notification\ListNotificationController;
 use Modules\Notification\Http\Controllers\Admin\Notification\MarkAllNotificationsReadController;
 use Modules\Notification\Http\Controllers\Admin\Notification\MarkNotificationReadController;
+use Modules\Notification\Http\Controllers\Admin\NotificationPreference\ListNotificationPreferenceController;
+use Modules\Notification\Http\Controllers\Admin\NotificationPreference\UpdateNotificationPreferenceController;
 use Modules\Notification\Http\Controllers\Admin\PushSubscription\DeletePushSubscriptionController;
 use Modules\Notification\Http\Controllers\Admin\PushSubscription\ListPushSubscriptionsController;
 use Modules\Notification\Http\Controllers\Admin\PushSubscription\UpsertPushSubscriptionController;
@@ -15,6 +17,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/notifications/unread-count', GetUnreadNotificationCountController::class)->name('notifications.unread-count');
     Route::patch('/notifications/{id}/read', MarkNotificationReadController::class)->whereNumber('id')->name('notifications.read');
     Route::patch('/notifications/read-all', MarkAllNotificationsReadController::class)->name('notifications.read-all');
+
+    // Per-account channel toggles for admin-configurable notifications.
+    Route::get('/notification-preferences', ListNotificationPreferenceController::class)->name('notification-preferences.list');
+    Route::patch('/notification-preferences', UpdateNotificationPreferenceController::class)->name('notification-preferences.update');
 
     // Browser push registrations; keyed by endpoint (delete takes it in
     // the body — a URL cannot ride safely as a path parameter).

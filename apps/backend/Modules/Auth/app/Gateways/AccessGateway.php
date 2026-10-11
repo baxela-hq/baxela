@@ -37,4 +37,12 @@ class AccessGateway implements AccessGatewayInterface
             ->pluck(UserSchema::EMAIL, UserSchema::ID)
             ->all();
     }
+
+    public function getUserIdsByEmails(array $emails): array
+    {
+        return User::query()
+            ->whereIn(UserSchema::EMAIL, $emails)
+            ->pluck(UserSchema::ID, UserSchema::EMAIL)
+            ->all();
+    }
 }

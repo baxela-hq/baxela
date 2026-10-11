@@ -29,4 +29,14 @@ interface AccessGatewayInterface
      * @return array<int|string, string>
      */
     public function getUserEmailsByIds(array $ids): array;
+
+    /**
+     * User ids for the given email addresses, keyed by address; addresses
+     * belonging to no user are absent. Backs per-user filtering of
+     * email-channel notification recipients.
+     *
+     * @param  array<int, string>  $emails
+     * @return array<string, int|string>
+     */
+    public function getUserIdsByEmails(array $emails): array;
 }

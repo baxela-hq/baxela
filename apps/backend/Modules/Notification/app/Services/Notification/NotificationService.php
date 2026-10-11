@@ -7,6 +7,7 @@ use Modules\Notification\Services\Notification\Contracts\ChannelRepositoryInterf
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
 use Modules\Notification\Services\Notification\Contracts\TemplateRepositoryInterface;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
+use Modules\Notification\Support\RecipientPreferenceFilter;
 
 class NotificationService implements NotificationDispatcherInterface
 {
@@ -14,6 +15,7 @@ class NotificationService implements NotificationDispatcherInterface
         private ChannelRepositoryInterface $channelRepository,
         private BuilderRepositoryInterface $builderRepository,
         private TemplateRepositoryInterface $templateRepository,
+        private RecipientPreferenceFilter $recipientFilter,
     ) {}
 
     public function dispatch(NotificationMessage $message): void
@@ -21,7 +23,16 @@ class NotificationService implements NotificationDispatcherInterface
         $channels = $message->channel
             ?? config("notification.notifications.notifications.{$message->code}.{$message->audience}", []);
 
+        $message = $this->recipientFilter->filter($message);
+
         foreach ($channels as $channelName) {
+
+            // No recipients left on a channel (e.g. everyone opted out via
+            // preferences) — skip it instead of building a message nobody
+            // would receive.
+            if (($message->recipients[$channelName] ?? []) === []) {
+                continue;
+            }
 
             $builder = $this->builderRepository->get($channelName);
 

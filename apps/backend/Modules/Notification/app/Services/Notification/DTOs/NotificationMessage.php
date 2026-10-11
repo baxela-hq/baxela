@@ -25,4 +25,23 @@ class NotificationMessage implements MessageInterface
          */
         public readonly ?string $locale = null,
     ) {}
+
+    /**
+     * Immutable copy with a replaced recipient map (per-channel lists),
+     * e.g. after recipient filtering — everything else is carried over.
+     */
+    public function withRecipients(array $recipients): self
+    {
+        return new self(
+            code: $this->code,
+            audience: $this->audience,
+            recipients: $recipients,
+            data: $this->data,
+            channel: $this->channel,
+            subjectOverride: $this->subjectOverride,
+            bodyOverride: $this->bodyOverride,
+            meta: $this->meta,
+            locale: $this->locale,
+        );
+    }
 }
