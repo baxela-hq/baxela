@@ -112,6 +112,41 @@ it('updates a post and syncs its categories', function () {
         ->and($post->translations()->first()->title)->toBe('Hello World v2');
 });
 
+it('creates and updates the featured image of a post', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
+        'image_media_id' => 3,
+        'image_url' => '/storage/content/posts/hello-world.jpg',
+    ]))
+        ->assertCreated()
+        ->assertJsonPath('data.image_media_id', 3)
+        ->assertJsonPath('data.image_url', '/storage/content/posts/hello-world.jpg')
+        ->json('data.id');
+
+    $post = Post::query()->find($postId);
+
+    expect($post->{PostSchema::IMAGE_MEDIA_ID})->toBe(3)
+        ->and($post->{PostSchema::IMAGE_URL})->toBe('/storage/content/posts/hello-world.jpg');
+
+    // slug must change on update: same-slug re-saves trip the per-language
+    // unique guard, so refreshes always carry a new slug
+    $this->patchJson($this->baseUrl('/admin/posts/'.$postId), postPayload([
+        'image_media_id' => 5,
+        'image_url' => '/storage/content/posts/hello-world-2.jpg',
+        'translations' => [[
+            'language' => 'en',
+            'title' => 'Hello World v2',
+            'slug' => 'hello-world-v2',
+            'content' => 'Rewritten content',
+            'description' => null,
+        ]],
+    ]))->assertOk();
+
+    expect($post->fresh()->{PostSchema::IMAGE_MEDIA_ID})->toBe(5)
+        ->and($post->fresh()->{PostSchema::IMAGE_URL})->toBe('/storage/content/posts/hello-world-2.jpg');
+});
+
 it('rejects a slug already taken in the same language', function () {
     $this->actingAs($this->superAdminUser());
 

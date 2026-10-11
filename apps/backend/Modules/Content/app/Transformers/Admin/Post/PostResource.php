@@ -18,6 +18,8 @@ class PostResource extends JsonResource
             PostSchema::ID => $this->{PostSchema::ID},
             PostSchema::STATUS => $this->{PostSchema::STATUS},
             PostSchema::PUBLISHED_AT => $this->{PostSchema::PUBLISHED_AT},
+            PostSchema::IMAGE_MEDIA_ID => $this->{PostSchema::IMAGE_MEDIA_ID},
+            PostSchema::IMAGE_URL => $this->{PostSchema::IMAGE_URL},
             PostSchema::CREATED_AT => $this->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->{PostSchema::UPDATED_AT},
             PostSchema::RES_TRANSLATIONS => PostTranslationResource::collection($this->whenLoaded(PostSchema::RES_TRANSLATIONS)),
