@@ -28,13 +28,16 @@
       "open_graph_title": "Open Graph Title",
       "open_graph_description": "Open Graph Description",
       "publish": "Publish",
+      "image": "Image",
+      "add_image": "Add image",
       "comments": "Comments",
       "created_at": "Created At",
       "updated_at": "Updated At"
     },
     "help_texts": {
       "products": "Search and attach products to feature alongside this post.",
-      "publish_date": "Leave empty to publish immediately. A future date keeps the post hidden until that day."
+      "publish_date": "Leave empty to publish immediately. A future date keeps the post hidden until that day.",
+      "image": "Optional cover photo shown with this post on the storefront."
     },
     "placeholders": {
       "search_products": "Search products by title…"

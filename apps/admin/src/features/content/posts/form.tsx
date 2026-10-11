@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from '@tanstack/react-router';
 import { useLanguages } from '@/features/core/languages/hooks/use-languages'
-import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon } from 'lucide-react';
+import { ListCheckIcon, LoaderIcon, SaveIcon, ArrowLeftIcon, ImagePlusIcon, XIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppTranslation } from '@/hooks/useAppTranslation';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,8 @@ import { Provider } from './components/provider.tsx';
 import { formSchema, statuses, buildDefaultValues, buildEditValues, type Post } from './data/schema';
 import { UtcDatePicker } from '@/features/discount/coupons/components/utc-date-picker';
 import { HeaderActions } from '@/components/layout/header-actions'
+import { MediaPickerDialog } from '@/features/media/components/media-picker-dialog';
+import { type MediaItem, getMediaUrl } from '@/features/media/data/schema';
 
 
 export function PostForm() {
@@ -58,6 +60,18 @@ export function PostForm() {
     resolver: zodResolver(formSchema),
     defaultValues: buildDefaultValues(languagesSafe),
   });
+
+  const [mediaPickerOpen, setMediaPickerOpen] = useState(false)
+
+  const handleSelectImage = (item: MediaItem) => {
+    form.setValue('image_media_id', item.id, { shouldDirty: true })
+    form.setValue('image_url', getMediaUrl(item), { shouldDirty: true })
+  }
+
+  const handleRemoveImage = () => {
+    form.setValue('image_media_id', null, { shouldDirty: true })
+    form.setValue('image_url', null, { shouldDirty: true })
+  }
 
   useEffect(() => {
     if (languagesSafe.length > 0) {
@@ -91,6 +105,7 @@ export function PostForm() {
     if (field === 'status' || field === 'published_at') return 'publish';
     if (field === 'categories') return 'categories';
     if (field === 'products') return 'products';
+    if (field.startsWith('image')) return 'image';
     return 'general';
   }
 
@@ -172,6 +187,7 @@ export function PostForm() {
                 <TabsTrigger value="general">{tLabel('general')}</TabsTrigger>
                 <TabsTrigger value="categories">{tLabel('categories')}</TabsTrigger>
                 <TabsTrigger value="products">{tLabel('products')}</TabsTrigger>
+                <TabsTrigger value="image">{tLabel('image')}</TabsTrigger>
                 <TabsTrigger value="seo">{tLabel('seo')}</TabsTrigger>
                 <TabsTrigger value="publish">{tLabel('publish')}</TabsTrigger>
               </TabsList>
@@ -344,8 +360,59 @@ export function PostForm() {
                           noResults={tLabel('no_products_found')}
                         />
                       </FormControl>
+              <FormDescription>
+                {tHelpText('products')}
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+              </TabsContent>
+              <TabsContent value="image" className="pt-5 pb-5">
+                <FormField
+                  control={form.control}
+                  name='image_url'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{tLabel('image')}</FormLabel>
+                      <div className='flex flex-wrap items-start gap-4'>
+                        <button
+                          type='button'
+                          onClick={() => setMediaPickerOpen(true)}
+                          className='flex h-32 w-32 flex-col items-center justify-center gap-2 rounded-md border border-dashed text-muted-foreground transition-colors hover:border-primary hover:bg-muted/50 hover:text-foreground'
+                        >
+                          <ImagePlusIcon size={24} />
+                          <span className='px-2 text-center text-xs font-medium'>
+                            {tLabel('add_image')}
+                          </span>
+                        </button>
+                        {field.value && (
+                          <div className='space-y-1.5'>
+                            <div className='h-32 w-32 overflow-hidden rounded-md border'>
+                              <img
+                                src={field.value}
+                                alt={field.value.split('/').pop() ?? ''}
+                                className='h-full w-full object-cover'
+                              />
+                            </div>
+                            <div className='flex items-center justify-center'>
+                              <Button
+                                type='button'
+                                variant='outline'
+                                size='icon'
+                                className='h-7 w-7 text-destructive hover:text-destructive'
+                                onClick={handleRemoveImage}
+                                title={tAction('remove')}
+                                aria-label={tAction('remove')}
+                              >
+                                <XIcon size={14} />
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                       <FormDescription>
-                        {tHelpText('products')}
+                        {tHelpText('image')}
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -528,6 +595,13 @@ export function PostForm() {
 
           </form>
         </Form>
+
+        <MediaPickerDialog
+          open={mediaPickerOpen}
+          onOpenChange={setMediaPickerOpen}
+          accept='image/*'
+          onSelect={handleSelectImage}
+        />
       </Main>
 
     </Provider>

@@ -52,6 +52,8 @@ export const postSchema = z.object({
   translations: z.array(translationSchema),
   status: z.string(),
   published_at: z.string().nullable(),
+  image_media_id: z.number().nullable(),
+  image_url: z.string().nullable(),
   categories: z.array(postCategoryRefSchema).optional(),
   products: z.array(postProductRefSchema).optional(),
   seo: z.array(postSeoTranslationSchema).optional(),
@@ -65,6 +67,8 @@ export const formSchema = z.object({
   status: _postStatusSchema,
   // Date in the form, ISO string over the wire (see PostPayload)
   published_at: z.date().nullable(),
+  image_media_id: z.number().nullable(),
+  image_url: z.string().nullable(),
   categories: z.array(z.number()),
   products: z.array(z.number()),
   seo: z.array(postSeoTranslationSchema),
@@ -80,6 +84,8 @@ export function buildDefaultValues(languages: Language[]): PostForm {
   return {
     status: '',
     published_at: null,
+    image_media_id: null,
+    image_url: null,
     categories: [],
     products: [],
     seo: languages.map((language, index) => ({
@@ -123,6 +129,8 @@ export function buildEditValues(
   return {
     status: currentRow.status,
     published_at: currentRow.published_at ? new Date(currentRow.published_at) : null,
+    image_media_id: currentRow.image_media_id,
+    image_url: currentRow.image_url,
     categories: currentRow.categories?.map((category) => category.id) ?? [],
     products: currentRow.products?.map((product) => product.id) ?? [],
     seo: base.seo.map((baseSeo, index) => {
