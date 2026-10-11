@@ -34,5 +34,44 @@
       "unconfigured": "در دسترس نیست — اعلان مرورگری روی سرور پیکربندی نشده است (کلیدهای VAPID موجود نیستند).",
       "denied": "مسدود شده — برای فعال‌سازی، مجوز نوتیفیکیشن این سایت را در تنظیمات مرورگر بدهید."
     }
+  },
+  "preferences": {
+    "title": "ترجیحات نوتیفیکیشن‌ها",
+    "description": "انتخاب کنید کدام نوتیفیکیشن‌ها را و از چه راه‌هایی دریافت کنید.",
+    "channels": {
+      "email": "ایمیل",
+      "database": "درون برنامه",
+      "webpush": "پوش"
+    },
+    "codes": {
+      "contact-message-created": {
+        "title": "پیام جدید از فرم تماس",
+        "description": "کسی فرم تماس را ارسال کرده است."
+      },
+      "content-post-comment-created": {
+        "title": "دیدگاه جدید در انتظار تأیید",
+        "description": "یک دیدگاه روی نوشته در انتظار بررسی است."
+      },
+      "order-order-created": {
+        "title": "سفارش جدید",
+        "description": "مشتری یک سفارش جدید ثبت کرده است."
+      },
+      "payment-payment-succeeded": {
+        "title": "پرداخت موفق",
+        "description": "یک پرداخت با موفقیت انجام شد."
+      },
+      "payment-payment-failed": {
+        "title": "پرداخت ناموفق",
+        "description": "یک پرداخت پردازش نشد."
+      },
+      "support-ticket-created": {
+        "title": "تیکت پشتیبانی جدید",
+        "description": "مشتری یک تیکت پشتیبانی باز کرد."
+      },
+      "support-ticket-replied": {
+        "title": "پاسخ به تیکت پشتیبانی",
+        "description": "مشتری به یک تیکت پشتیبانی پاسخ داد."
+      }
+    }
   }
 }

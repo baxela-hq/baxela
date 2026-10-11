@@ -34,5 +34,44 @@
       "unconfigured": "Unavailable — web push is not configured on the server (VAPID keys missing).",
       "denied": "Blocked — allow notifications for this site in the browser settings to enable."
     }
+  },
+  "preferences": {
+    "title": "Notification preferences",
+    "description": "Choose which notifications you receive and through which channels.",
+    "channels": {
+      "email": "Email",
+      "database": "In-app",
+      "webpush": "Push"
+    },
+    "codes": {
+      "contact-message-created": {
+        "title": "New contact message",
+        "description": "Someone submitted the contact form."
+      },
+      "content-post-comment-created": {
+        "title": "New comment pending approval",
+        "description": "A blog post comment awaits moderation."
+      },
+      "order-order-created": {
+        "title": "New order",
+        "description": "A customer placed a new order."
+      },
+      "payment-payment-succeeded": {
+        "title": "Payment succeeded",
+        "description": "A payment was completed successfully."
+      },
+      "payment-payment-failed": {
+        "title": "Payment failed",
+        "description": "A payment could not be processed."
+      },
+      "support-ticket-created": {
+        "title": "New support ticket",
+        "description": "A customer opened a support ticket."
+      },
+      "support-ticket-replied": {
+        "title": "Support ticket reply",
+        "description": "A customer replied to a support ticket."
+      }
+    }
   }
 }
