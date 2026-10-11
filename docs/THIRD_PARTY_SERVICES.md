@@ -88,6 +88,14 @@ These run as containers, no accounts or keys required:
 
 ## Optional integrations
 
+- **Error monitoring (Sentry)** — implemented end-to-end in all three apps
+  (`sentry/sentry-laravel`, `@sentry/nextjs`, `@sentry/react`) and **off by
+  default**: with empty DSNs the SDKs stay disabled and no account is
+  needed. Enable by setting `SENTRY_LARAVEL_DSN` (backend, runtime),
+  `NEXT_PUBLIC_SENTRY_DSN` (storefront browser, build arg), `SENTRY_DSN`
+  (storefront server, runtime) and `VITE_SENTRY_DSN` (admin, build arg).
+  See [LOGGING.md](LOGGING.md) for capture policy, privacy notes and smoke
+  tests. Alternatives (Bugsnag, Flare, GlitchTip) would need new integrations.
 - **Object storage (S3-compatible)** — `AWS_*` env vars, the `s3` disk config, and the
   `S3` value in the media disk enum all exist, but the `league/flysystem-aws-s3` adapter
   is **not installed** and media code currently writes to the local `public` disk only.
@@ -105,7 +113,6 @@ These features have no implementation; an account alone won't enable them:
 |---|---|---|
 | SMS | None (one commented-out channel registration in the Notification module); OTP is email-only | Iran: Kavenegar, Ghasedak, SMS.ir — Global: Twilio, Vonage |
 | Search engine | Catalog filtering is SQL-only; no Scout/Meilisearch/Algolia | Meilisearch (self-host), Algolia, Typesense |
-| Error monitoring | None; file-based logging | Sentry, Bugsnag, Flare |
 | Social login | None; no Socialite | Google, GitHub, etc. |
 | Shipping carrier APIs | Tracking numbers entered manually (`docs/shipping.md`) | FedEx, UPS, DHL, local couriers |
 | Exchange rates | Multi-currency model has no FX rate source | exchangerate.host, Open Exchange Rates, ECB feeds |
