@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Modules\Core\Exceptions\BaseException;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
+use Sentry\Laravel\Integration as SentryIntegration;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,6 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Sentry captures reported exceptions via a reportable callback, so
+        // it only sees what Laravel decides to report (see dontReportWhen
+        // below — expected 4xx domain exceptions stay out of Sentry too).
+        // Inert unless SENTRY_LARAVEL_DSN is set.
+        SentryIntegration::handles($exceptions);
+
         // Domain exceptions are expected client outcomes (invalid OTP,
         // invalid credentials, ...) already rendered as a safe envelope;
         // reporting them only floods the log with stack traces. 5xx domain

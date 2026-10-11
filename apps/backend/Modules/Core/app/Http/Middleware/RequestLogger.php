@@ -53,7 +53,8 @@ class RequestLogger
             'RESPONSE' => $responseContent,
         ];
 
-        // Use a specific channel for logs to avoid cluttering your main laravel.log
-        Log::channel('daily')->info('API Request Log', $log);
+        // Default channel keeps this flowing wherever LOG_CHANNEL points
+        // (stderr alongside the rest of prod logging, daily files in dev).
+        Log::info('API Request Log', $log);
     }
 }
