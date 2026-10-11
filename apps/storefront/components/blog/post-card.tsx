@@ -20,10 +20,22 @@ export default function PostCard({ post, className }: PostCardProps) {
       href={`/blog/${post.slug ?? post.id}`}
       className={cn("group block", className)}
     >
-      <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-default bg-muted p-6 transition-colors group-hover:bg-border-light">
-        <span className="line-clamp-3 text-center text-sm font-medium text-secondary-text rtl:normal-case rtl:tracking-normal">
-          {post.title}
-        </span>
+      <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-default bg-muted transition-colors group-hover:bg-border-light">
+        {post.image_url ? (
+          // Backend-served images from arbitrary hosts — next/image would
+          // need remotePatterns for every storage host, so use a plain img.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={post.image_url}
+            alt={post.title ?? ""}
+            className="size-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <span className="line-clamp-3 p-6 text-center text-sm font-medium text-secondary-text rtl:normal-case rtl:tracking-normal">
+            {post.title}
+          </span>
+        )}
       </div>
       <div className="mt-4">
         {post.title ? (

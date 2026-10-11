@@ -25,6 +25,7 @@ export async function generateMetadata({
       ? {
           title: post.title ?? undefined,
           description: post.description ?? undefined,
+          images: post.image_url ? [{ url: post.image_url }] : undefined,
         }
       : undefined,
   };
@@ -115,6 +116,16 @@ export default async function BlogPostPage({
           <p className="mt-3 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
             {format.dateTime(new Date(date), { dateStyle: "long" })}
           </p>
+          {post.image_url ? (
+            // Backend-served images from arbitrary hosts — next/image would
+            // need remotePatterns for every storage host, so use a plain img.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={post.image_url}
+              alt={post.title ?? ""}
+              className="mt-8 aspect-video w-full rounded-default object-cover"
+            />
+          ) : null}
         </header>
 
         {post.content ? (

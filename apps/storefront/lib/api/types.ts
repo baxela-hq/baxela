@@ -161,6 +161,7 @@ export interface ApiPost {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  image_url: string | null;
   categories?: ApiPostCategory[] | null;
   products?: ApiRelatedProduct[] | null;
 }
