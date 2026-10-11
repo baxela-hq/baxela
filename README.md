@@ -2,6 +2,38 @@
 
 Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel, and storefront frontend plus shared API collections and cross-project documentation.
 
+## Live Demo
+
+- Storefront: [demo.baxela.com](https://demo.baxela.com)
+- Admin panel: [admin-demo.baxela.com](https://admin-demo.baxela.com)
+
+## Tech Stack
+
+### Backend (`apps/backend`)
+
+- PHP 8.3+ / Laravel 13, structured as a modular monolith (`nwidart/laravel-modules`)
+- MySQL 8 and Redis 7 behind nginx
+- Auth via Laravel Sanctum, roles/permissions via `spatie/laravel-permission`
+- API docs with Scramble, query filtering with `spatie/laravel-query-builder`
+- Stripe payments, web push notifications, realtime events via Laravel Reverb
+- Tested with Pest, formatted with Pint
+
+### Storefront (`apps/storefront`)
+
+- Next.js 16 (App Router) with React 19 and TypeScript
+- Tailwind CSS v4
+- Localization with next-intl
+- Realtime updates with Laravel Echo + Pusher client
+- pnpm as package manager
+
+### Admin (`apps/admin`)
+
+- React 19 with Vite 7 and TypeScript
+- TanStack Router, TanStack Query, TanStack Table
+- shadcn/ui on Radix UI with Tailwind CSS v4
+- Forms with react-hook-form + zod, rich text with Tiptap, charts with Recharts
+- State with Zustand, i18n with i18next
+
 ## Structure
 
 ```
@@ -31,6 +63,15 @@ baxela/
 2. See the develop [README](infrastructure/docker/develop/README.md) for
    stack details (services, profiles, mailpit, reset).
 3. Frontend dev servers can also run on the host — see `apps/<app>/README.md`.
+
+## API Collection (Bruno)
+
+The repo ships a ready-to-use [Bruno](https://www.usebruno.com) collection in
+[`api/bruno/`](api/bruno/) covering all backend modules — auth, catalog, cart,
+orders, payments, media, and more — with a `Local` environment out of the box.
+Import it into Bruno and you can start working with the backend APIs right away.
+Prefer Postman? The same collection can be imported into
+[Postman](https://www.postman.com) as well.
 
 ## Layout guidelines
 
