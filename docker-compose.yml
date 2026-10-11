@@ -29,6 +29,11 @@ services:
             REVERB_HOST: reverb
             REVERB_PORT: 8080
             REVERB_SCHEME: http
+            # Sole migration owner among the backend containers: the shared
+            # entrypoint only runs `artisan migrate` when this is set, so a
+            # queue/reverb restart can't race a `module:migrate-fresh` that
+            # just wiped the database.
+            RUN_MIGRATIONS: 1
         depends_on:
             mysql:
                 condition: service_healthy
