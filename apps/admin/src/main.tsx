@@ -9,7 +9,10 @@ import {
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
-import { handleServerError } from '@/lib/handle-server-error'
+import { handleServerError, reportServerError } from '@/lib/handle-server-error'
+// Importing Sentry from lib/sentry also runs its init before any component
+// can report errors; the boundary still renders when the SDK is disabled.
+import { Sentry } from '@/lib/sentry'
 import { DirectionProvider } from './context/direction-provider'
 import { FontProvider } from './context/font-provider'
 import { ThemeProvider } from './context/theme-provider'
@@ -52,6 +55,11 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (error) => {
+      // Unexpected query failures (5xx / network) go to Sentry; the toast
+      // handling below stays the user-facing layer. Mutations report via
+      // handleServerError instead — the paths are disjoint by design.
+      reportServerError(error)
+
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
           toast.error('Session expired!')
@@ -99,7 +107,26 @@ if (!rootElement.innerHTML) {
         <ThemeProvider>
           <FontProvider>
             <DirectionProvider>
-              <RouterProvider router={router} />
+              <Sentry.ErrorBoundary
+                fallback={({ resetError }) => (
+                  // Render-lifecycle failures only (API/query failures are
+                  // reported through their own handlers); static markup so
+                  // it works regardless of Sentry being configured.
+                  <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+                    <p className="text-xl font-semibold">
+                      Something went wrong
+                    </p>
+                    <button
+                      className="text-sm font-medium underline underline-offset-4"
+                      onClick={() => resetError()}
+                    >
+                      Try again
+                    </button>
+                  </div>
+                )}
+              >
+                <RouterProvider router={router} />
+              </Sentry.ErrorBoundary>
             </DirectionProvider>
           </FontProvider>
         </ThemeProvider>
