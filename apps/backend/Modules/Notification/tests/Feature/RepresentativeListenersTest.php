@@ -13,6 +13,10 @@ uses(HelperTrait::class);
 it('emails the OTP code when an OTP is requested', function () {
     Mail::fake();
 
+    // The OTP email renders in the app locale; pin it so the English
+    // body assertions below hold on machines whose default is fa.
+    app()->setLocale('en');
+
     $user = User::factory()->create();
 
     event(OtpRequestedEvent::fill([

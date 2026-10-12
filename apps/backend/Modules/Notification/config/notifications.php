@@ -2,9 +2,11 @@
 
 use Modules\Notification\Services\Notification\Builders\DatabasePayloadBuilder;
 use Modules\Notification\Services\Notification\Builders\EmailPayloadBuilder;
+use Modules\Notification\Services\Notification\Builders\TelegramPayloadBuilder;
 use Modules\Notification\Services\Notification\Builders\WebPushPayloadBuilder;
 use Modules\Notification\Services\Notification\Channels\DatabaseChannel;
 use Modules\Notification\Services\Notification\Channels\EmailChannel;
+use Modules\Notification\Services\Notification\Channels\TelegramChannel;
 use Modules\Notification\Services\Notification\Channels\WebPushChannel;
 use Modules\Notification\Services\Notification\Templates\BladeTemplateEngine;
 use Modules\Notification\Services\Notification\Templates\LocaleTemplateEngine;
@@ -14,11 +16,13 @@ return [
         'database' => DatabaseChannel::class,
         'email' => EmailChannel::class,
         'webpush' => WebPushChannel::class,
+        'telegram' => TelegramChannel::class,
     ],
     'builders' => [
         'database' => DatabasePayloadBuilder::class,
         'email' => EmailPayloadBuilder::class,
         'webpush' => WebPushPayloadBuilder::class,
+        'telegram' => TelegramPayloadBuilder::class,
     ],
 
     'notifications' => [
@@ -49,31 +53,31 @@ return [
         'order' => [
             'order' => [
                 'created' => [
-                    'admin' => ['database', 'email', 'webpush'],
-                    'user' => ['database', 'email', 'webpush'],
+                    'admin' => ['database', 'email', 'webpush', 'telegram'],
+                    'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
                 'paid' => [
-                    'user' => ['database', 'email', 'webpush'],
+                    'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
                 'shipped' => [
-                    'user' => ['database', 'email', 'webpush'],
+                    'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
                 'completed' => [
-                    'user' => ['database', 'webpush'],
+                    'user' => ['database', 'webpush', 'telegram'],
                 ],
                 'cancelled' => [
-                    'user' => ['database', 'email', 'webpush'],
+                    'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
             ],
         ],
         'payment' => [
             'payment' => [
                 'succeeded' => [
-                    'admin' => ['database', 'webpush'],
+                    'admin' => ['database', 'webpush', 'telegram'],
                 ],
                 'failed' => [
-                    'user' => ['database', 'webpush'],
-                    'admin' => ['database', 'webpush'],
+                    'user' => ['database', 'webpush', 'telegram'],
+                    'admin' => ['database', 'webpush', 'telegram'],
                 ],
             ],
         ],
@@ -111,6 +115,19 @@ return [
             'subject' => env('VAPID_SUBJECT', env('MAIL_FROM_ADDRESS', 'hello@example.com')),
             'public_key' => env('VAPID_PUBLIC_KEY'),
             'private_key' => env('VAPID_PRIVATE_KEY'),
+        ],
+    ],
+
+    // Telegram bot delivery. Create the bot once with @BotFather and set
+    // the token; without it the channel no-ops with a warning. Register
+    // the webhook (against APP_URL) with `php artisan
+    // notification:telegram-webhook`; for local dev without a public URL
+    // use `php artisan notification:telegram-poll` instead.
+    'telegram' => [
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        'rate_limit' => [
+            'webhook' => env('NOTIFICATION_WEBHOOK_RATE_LIMIT', 60),
         ],
     ],
 

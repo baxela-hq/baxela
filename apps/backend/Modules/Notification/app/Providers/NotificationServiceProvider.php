@@ -2,9 +2,14 @@
 
 namespace Modules\Notification\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Modules\Notification\Console\Commands\GenerateVapidKeysCommand;
+use Modules\Notification\Console\Commands\PollTelegramUpdatesCommand;
+use Modules\Notification\Console\Commands\SetTelegramWebhookCommand;
 use Modules\Notification\Schemas\Module;
 use Modules\Notification\Services\Notification\Contracts\BuilderRepositoryInterface;
 use Modules\Notification\Services\Notification\Contracts\ChannelRepositoryInterface;
@@ -41,6 +46,9 @@ class NotificationServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        RateLimiter::for('notification-webhook', fn (Request $request) => Limit::perMinute((int) config('notification.notifications.telegram.rate_limit.webhook', 60))
+            ->by($request->ip()));
     }
 
     /**
@@ -103,6 +111,8 @@ class NotificationServiceProvider extends ServiceProvider
     {
         $this->commands([
             GenerateVapidKeysCommand::class,
+            SetTelegramWebhookCommand::class,
+            PollTelegramUpdatesCommand::class,
         ]);
     }
 

@@ -9,4 +9,6 @@ enum NotificationChannelEnum: string
     case EMAIL = 'email';
 
     case WEBPUSH = 'webpush';
+
+    case TELEGRAM = 'telegram';
 }

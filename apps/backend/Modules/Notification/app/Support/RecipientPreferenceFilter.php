@@ -12,10 +12,11 @@ use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
 /**
  * Drops recipients who turned the notification code off for a channel,
  * before builders materialize channel messages. Id-based channels
- * (database, webpush) filter directly; email recipients are addresses, so
- * only those that resolve to an app user via the access gateway are
- * filtered — env-configured admin addresses belong to no user and always
- * stay. Locked (transactional) codes skip filtering entirely.
+ * (database, webpush, telegram) filter directly; email recipients are
+ * addresses, so only those that resolve to an app user via the access
+ * gateway are filtered — env-configured admin addresses belong to no
+ * user and always stay. Locked (transactional) codes skip filtering
+ * entirely.
  */
 class RecipientPreferenceFilter
 {
@@ -30,11 +31,25 @@ class RecipientPreferenceFilter
         }
 
         $recipients = $message->recipients;
+
+        // Webpush and telegram ride on the database recipient list unless
+        // a listener names their own — materialize the fallback here so
+        // per-channel mutes apply to it and the dispatcher's empty-skip
+        // sees one resolved map (mirrors the builders' own fallback).
+        foreach ([NotificationChannelEnum::WEBPUSH, NotificationChannelEnum::TELEGRAM] as $channel) {
+            if (! array_key_exists($channel->value, $recipients)) {
+                $recipients[$channel->value] = $recipients[NotificationChannelEnum::DATABASE->value] ?? [];
+            }
+        }
+
+        $message = $message->withRecipients($recipients);
+
         $emailToUserId = $this->emailUserIds($recipients);
 
         $userIds = array_unique([
             ...array_map(intval(...), $recipients[NotificationChannelEnum::DATABASE->value] ?? []),
             ...array_map(intval(...), $recipients[NotificationChannelEnum::WEBPUSH->value] ?? []),
+            ...array_map(intval(...), $recipients[NotificationChannelEnum::TELEGRAM->value] ?? []),
             ...array_map(intval(...), array_values($emailToUserId)),
         ]);
 
@@ -56,7 +71,7 @@ class RecipientPreferenceFilter
             return $message;
         }
 
-        foreach ([NotificationChannelEnum::DATABASE, NotificationChannelEnum::WEBPUSH] as $channel) {
+        foreach ([NotificationChannelEnum::DATABASE, NotificationChannelEnum::WEBPUSH, NotificationChannelEnum::TELEGRAM] as $channel) {
             $name = $channel->value;
 
             $recipients[$name] = array_values(array_filter(

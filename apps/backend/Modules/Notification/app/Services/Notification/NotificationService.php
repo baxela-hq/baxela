@@ -29,7 +29,8 @@ class NotificationService implements NotificationDispatcherInterface
 
             // No recipients left on a channel (e.g. everyone opted out via
             // preferences) — skip it instead of building a message nobody
-            // would receive.
+            // would receive. Webpush/telegram keys are always materialized
+            // by the recipient filter before this point.
             if (($message->recipients[$channelName] ?? []) === []) {
                 continue;
             }
