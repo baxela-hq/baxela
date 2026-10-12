@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "گزارش فعالیت",
+      "subtitle": "سابقه عملیات انجام‌شده توسط مدیران در سراسر پلتفرم"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "گزارش فعالیت",
+      "id": "شناسه",
+      "user": "کاربر",
+      "module": "ماژول",
+      "entity": "موجودیت",
+      "action": "عملیات",
+      "ip-address": "آدرس IP",
+      "user-agent": "عامل کاربر",
+      "properties": "ویژگی‌ها",
+      "created_at": "زمان وقوع",
+      "actions": "عملیات"
+    },
+    "actions": {
+      "view": "مشاهده"
+    }
+  }
+}

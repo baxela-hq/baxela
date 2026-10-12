@@ -46,7 +46,8 @@
     "notifications-inbox": "Notifications",
     "toggle": "Toggle Sidebar",
     "featured": "Featured",
-    "promotions": "Promotions"
+    "promotions": "Promotions",
+    "audit-logs": "Audit Logs"
   },
   "dialog": {
     "sign-out": {

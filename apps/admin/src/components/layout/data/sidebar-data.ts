@@ -6,6 +6,7 @@ import {
   Menu as MenuIcon,
   Newspaper,
   Package,
+  ScrollText,
   Settings,
   Ticket as TicketIcon,
   Users,
@@ -18,7 +19,20 @@ import {
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { type SidebarData } from '../types'
+import { hasPermission } from '@/shared/hooks/use-permissions'
+import { type NavItem, type SidebarData } from '../types'
+
+/** Drop nav items (and emptied collapsible groups) the user can't access. */
+function filterByPermission(items: NavItem[]): NavItem[] {
+  return items
+    .filter((item) => item.permission === undefined || hasPermission(item.permission))
+    .map((item) =>
+      'items' in item && item.items
+        ? { ...item, items: item.items.filter((child) => child.permission === undefined || hasPermission(child.permission)) }
+        : item
+    )
+    .filter((item) => !('items' in item && item.items) || item.items.length > 0)
+}
 
 export const useSidebarData = (): SidebarData => {
   const { t } = useAppTranslation('shared/layout')
@@ -60,6 +74,12 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.notifications-inbox'),
             url: '/notifications',
             icon: Bell,
+          },
+          {
+            title: t('sidebar.audit-logs'),
+            url: '/audit/logs',
+            icon: ScrollText,
+            permission: 'audit.admin.logs.list',
           },
         ],
       },
@@ -245,6 +265,8 @@ export const useSidebarData = (): SidebarData => {
           },
         ],
       },
-    ],
+    ]
+      .map((group) => ({ ...group, items: filterByPermission(group.items) }))
+      .filter((group) => group.items.length > 0),
   }
 }

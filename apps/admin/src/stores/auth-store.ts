@@ -7,6 +7,8 @@ interface AuthUser {
   accountNo: string
   email: string
   role: string[]
+  /** Permission names from the account payload; `['*']` means super-admin. */
+  permissions: string[]
   name: string
   exp: number
 }

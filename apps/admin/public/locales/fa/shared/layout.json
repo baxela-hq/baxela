@@ -46,7 +46,8 @@
     "notifications-inbox": "نوتیفیکیشن ها",
     "toggle": "نمایش/مخفی کردن نوار کناری",
     "featured": "ویژه",
-    "promotions": "تخفیف‌ها"
+    "promotions": "تخفیف‌ها",
+    "audit-logs": "گزارش فعالیت"
   },
   "dialog": {
     "sign-out": {

@@ -16,6 +16,8 @@ type BaseNavItem = {
   title: string
   badge?: string
   icon?: React.ElementType
+  /** Required permission name; the item is hidden when the user lacks it. */
+  permission?: string
 }
 
 type NavLink = BaseNavItem & {

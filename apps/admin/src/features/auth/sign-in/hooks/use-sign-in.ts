@@ -64,6 +64,7 @@ export function useSignIn() {
           accountNo: 'ACC001',
           email: account.email,
           role: account.roles.map((role) => role.name),
+          permissions: account.permissions ?? [],
           name: ' ', //TODO: set name
           exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30*24 hours from now
         })

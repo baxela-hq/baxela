@@ -13,6 +13,8 @@ export interface AdminAccount {
   id: number
   email: string
   roles: AdminAccountRole[]
+  /** Permission names; `['*']` for super-admins. */
+  permissions: string[]
 }
 
 /**

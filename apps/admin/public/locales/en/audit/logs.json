@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Audit Logs",
+      "subtitle": "Trail of admin actions performed across the platform"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "Audit log",
+      "id": "ID",
+      "user": "User",
+      "module": "Module",
+      "entity": "Entity",
+      "action": "Action",
+      "ip-address": "IP Address",
+      "user-agent": "User Agent",
+      "properties": "Properties",
+      "created_at": "Occurred At",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "View"
+    }
+  }
+}
