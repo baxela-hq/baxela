@@ -93,7 +93,7 @@ export default async function HomePage() {
             {/* Local public/ asset, so next/image applies here — the plain
                 <img> pattern elsewhere is only for backend-served hosts. */}
             <Image
-              src="/images/hero-campaign.jpg?v=2"
+              src="/images/hero-campaign.jpg?v=4"
               alt={t("hero.texts.image_alt")}
               fill
               priority
