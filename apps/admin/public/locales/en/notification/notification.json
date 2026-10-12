@@ -35,13 +35,39 @@
       "denied": "Blocked — allow notifications for this site in the browser settings to enable."
     }
   },
+  "telegram": {
+    "title": "Telegram notifications",
+    "description": "Receive your notifications in a Telegram chat, via the store's bot.",
+    "instructions": "Message the bot on Telegram with /start, then enter the 6-digit code it replies with (or your Telegram ID).",
+    "placeholder": "Linking code or Telegram ID",
+    "linked-as": "Linked as @{{username}}.",
+    "linked-chat": "Linked to Telegram chat {{chatId}}.",
+    "actions": {
+      "open-bot": "Open the bot",
+      "link": "Link",
+      "unlink": "Unlink",
+      "test": "Send test message"
+    },
+    "status": {
+      "unconfigured": "Unavailable — the Telegram bot is not configured on the server (bot token missing)."
+    },
+    "errors": {
+      "invalid-input": "Enter the 6-digit code from the bot, or your numeric Telegram ID."
+    },
+    "messages": {
+      "linked": "Telegram linked — you'll receive notifications there.",
+      "unlinked": "Telegram unlinked.",
+      "test_sent": "Test message sent to your Telegram chat."
+    }
+  },
   "preferences": {
     "title": "Notification preferences",
     "description": "Choose which notifications you receive and through which channels.",
     "channels": {
       "email": "Email",
       "database": "In-app",
-      "webpush": "Push"
+      "webpush": "Push",
+      "telegram": "Telegram"
     },
     "codes": {
       "contact-message-created": {

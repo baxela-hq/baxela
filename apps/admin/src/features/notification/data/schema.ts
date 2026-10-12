@@ -21,7 +21,12 @@ export const notificationSchema = z.object({
 
 export type Notification = z.infer<typeof notificationSchema>
 
-export const notificationChannelSchema = z.enum(['database', 'email', 'webpush'])
+export const notificationChannelSchema = z.enum([
+  'database',
+  'email',
+  'webpush',
+  'telegram',
+])
 
 export const notificationPreferenceChannelSchema = z.object({
   channel: notificationChannelSchema,

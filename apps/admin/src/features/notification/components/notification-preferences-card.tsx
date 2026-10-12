@@ -1,4 +1,4 @@
-import { Bell, BellRing, Mail } from 'lucide-react'
+import { Bell, BellRing, Mail, Send } from 'lucide-react'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
@@ -11,6 +11,7 @@ const CHANNEL_ICONS: Record<NotificationChannel, typeof Mail> = {
   email: Mail,
   database: Bell,
   webpush: BellRing,
+  telegram: Send,
 }
 
 /** i18n key fragment for a notification code: "order.order.created" → "order-order-created" (kebab-case). */
