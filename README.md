@@ -1,6 +1,6 @@
 # Baxela
 
-Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel, and storefront frontend plus shared API collections and cross-project documentation.
+Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel, and storefront frontend plus shared API collections and cross-project documentation. The platform also ships a mobile app, maintained in a separate repository: [baxela-hq/mobile-app](https://github.com/baxela-hq/mobile-app).
 
 ## Live Demo
 
