@@ -2,10 +2,18 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { ChevronDownIcon } from "@/components/ui/icons";
+import { toast } from "sonner";
+import { ChevronDownIcon, TelegramIcon } from "@/components/ui/icons";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/context/auth-context";
 import { useThemeMode } from "@/context/theme-mode-context";
+import { ApiError } from "@/lib/api/client";
+import {
+  fetchTelegramBotInfo,
+  telegramApi,
+} from "@/lib/api/telegram";
 import {
   fetchVapidPublicKey,
   notificationsApi,
@@ -229,6 +237,165 @@ function BrowserNotificationsRow() {
   );
 }
 
+/**
+ * Telegram delivery for this account: enabled means a chat is linked
+ * server-side. Turning it on needs the linking code the bot replies
+ * with on /start, so the switch expands an inline code form instead of
+ * toggling directly; turning it off simply unlinks.
+ */
+function TelegramNotificationsRow() {
+  const t = useTranslations("account.account");
+  const { token } = useAuth();
+
+  type TelegramState =
+    | "checking"
+    | "unavailable"
+    | "off"
+    | "linking"
+    | "busy"
+    | "on";
+
+  const [state, setState] = useState<TelegramState>("checking");
+  const [botUrl, setBotUrl] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!token) return;
+    let active = true;
+    void (async () => {
+      try {
+        const bot = await fetchTelegramBotInfo();
+        if (!active) return;
+        setBotUrl(bot.bot_url);
+        if (!bot.bot_url) {
+          setState("unavailable");
+          return;
+        }
+        const subscription = await telegramApi(token).subscription();
+        if (active) setState(subscription ? "on" : "off");
+      } catch {
+        if (active) setState("off");
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [token]);
+
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!token) return;
+
+    const trimmed = code.trim();
+    if (!/^\d{6}$/.test(trimmed)) {
+      setError(t("settings.telegram_notifications.link.invalid"));
+      return;
+    }
+
+    setError(null);
+    setState("busy");
+    try {
+      await telegramApi(token).link({ code: trimmed, chat_id: null });
+      setState("on");
+      setCode("");
+      toast.success(t("settings.telegram_notifications.link.success"));
+    } catch (cause) {
+      setState("linking");
+      toast.error(
+        cause instanceof ApiError
+          ? cause.message
+          : t("settings.telegram_notifications.link.failed"),
+      );
+    }
+  };
+
+  const unlink = async () => {
+    if (!token) return;
+    setState("busy");
+    try {
+      await telegramApi(token).unlink();
+      setState("off");
+    } catch {
+      setState("on");
+    }
+  };
+
+  return (
+    <li className="py-6 first:pt-0">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-base font-bold text-foreground rtl:normal-case rtl:tracking-normal">
+            <TelegramIcon className="size-4" />
+            {t("settings.telegram_notifications.title")}
+          </p>
+          <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+            {state === "unavailable"
+              ? t("settings.telegram_notifications.hints.unavailable")
+              : t("settings.telegram_notifications.description")}
+          </p>
+        </div>
+        <Switch
+          checked={state === "on"}
+          disabled={
+            state === "checking" ||
+            state === "busy" ||
+            state === "unavailable"
+          }
+          onCheckedChange={(checked) => {
+            if (checked) setState("linking");
+            else void unlink();
+          }}
+          label={t("settings.telegram_notifications.title")}
+        />
+      </div>
+
+      {state === "linking" && (
+        <form className="mt-4 max-w-sm space-y-2" onSubmit={submit}>
+          <p className="text-sm text-secondary-text">
+            {t("settings.telegram_notifications.link.instructions")}{" "}
+            {botUrl && (
+              <a
+                href={botUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-primary underline underline-offset-4"
+              >
+                {t("settings.telegram_notifications.link.open_bot")}
+              </a>
+            )}
+          </p>
+          <Input
+            value={code}
+            onChange={(event) => setCode(event.target.value)}
+            placeholder={t("settings.telegram_notifications.link.placeholder")}
+            inputMode="numeric"
+            aria-label={t("settings.telegram_notifications.link.placeholder")}
+          />
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          <div className="flex items-center gap-2">
+            <Button type="submit" size="sm" className="w-auto px-4" disabled={code.trim() === ""}>
+              {t("settings.telegram_notifications.link.submit")}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-auto px-4"
+              onClick={() => {
+                setState("off");
+                setError(null);
+              }}
+            >
+              {t("settings.telegram_notifications.link.cancel")}
+            </Button>
+          </div>
+        </form>
+      )}
+    </li>
+  );
+}
+
 export function Settings() {
   const t = useTranslations("account.account");
   const locale = useLocale();
@@ -285,6 +452,8 @@ export function Settings() {
       </SettingsRow>
 
       <BrowserNotificationsRow />
+
+      <TelegramNotificationsRow />
 
       <SettingsRow
         title={t("settings.email_notifications.title")}

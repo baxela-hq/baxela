@@ -154,6 +154,23 @@
         "unsupported": "Not supported in this browser",
         "unavailable": "Temporarily unavailable — try again later"
       }
+    },
+    "telegram_notifications": {
+      "title": "Telegram notifications",
+      "description": "Get your order updates in a Telegram chat via the store's bot",
+      "hints": {
+        "unavailable": "Temporarily unavailable — try again later"
+      },
+      "link": {
+        "instructions": "Send /start to the bot on Telegram, then enter the 6-digit code it replies with:",
+        "open_bot": "Open the bot",
+        "placeholder": "Linking code",
+        "submit": "Link",
+        "cancel": "Cancel",
+        "invalid": "Enter the 6-digit code the bot sent you",
+        "success": "Telegram linked — you'll get your updates there",
+        "failed": "Could not link — check the code and try again"
+      }
     }
   },
   "notifications": {
