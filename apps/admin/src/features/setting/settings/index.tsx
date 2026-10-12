@@ -25,11 +25,9 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea.tsx'
-import { Header } from '@/components/layout/header'
-import { Main } from '@/components/layout/main'
-import { Search } from '@/components/search'
 import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
+import { ContentSection } from '@/features/settings/components/content-section'
 import { useCurrencies } from '@/features/core/currencies/hooks/use-currencies'
 import { useLanguages } from '@/features/core/languages/hooks/use-languages'
 import { Locales } from './data/routes'
@@ -42,11 +40,10 @@ import {
 } from './data/schema'
 import { useUpdateSettings } from './hooks/use-setting-mutations'
 import { useSettings } from './hooks/use-settings'
-import { HeaderActions } from '@/components/layout/header-actions'
 
-const route = getRouteApi('/_authenticated/setting/settings/')
+const route = getRouteApi('/_authenticated/settings/store')
 
-export function Settings() {
+export function SettingsStore() {
   const search = route.useSearch()
   const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(
     Locales.SHARED_COMMON
@@ -101,30 +98,17 @@ export function Settings() {
   if (isLoading) return <SkeletonWidget />
 
   return (
-    <>
-      <Header fixed>
-        <Search />
-        <HeaderActions />
-      </Header>
-
-      <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
-          <div>
-            <h2 className='text-2xl font-bold tracking-tight'>
-              {tPageTitle('index.title', { entity: entityName.plural })}
-            </h2>
-            <p className='text-muted-foreground'>
-              {tPageTitle('index.subtitle', { entity: entityName.plural })}
-            </p>
-          </div>
-        </div>
-
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className='space-y-8'
-          >
-            <Tabs defaultValue='general' className='w-full'>
+    <ContentSection
+      title={tPageTitle('index.title', { entity: entityName.plural })}
+      desc={tPageTitle('index.subtitle', { entity: entityName.plural })}
+      contentClassName='lg:max-w-4xl'
+    >
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className='space-y-8'
+        >
+          <Tabs defaultValue='general' className='w-full'>
               <TabsList className='w-full'>
                 <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
                 {hasThemeGroup && (
@@ -436,9 +420,8 @@ export function Settings() {
                 {tAction('submit')}
               </Button>
             </div>
-          </form>
-        </Form>
-      </Main>
-    </>
+        </form>
+      </Form>
+    </ContentSection>
   )
 }

@@ -53,7 +53,7 @@ export const useSidebarData = (): SidebarData => {
           },
           {
             title: t('sidebar.settings'),
-            url: '/setting/settings',
+            url: '/settings/store',
             icon: Settings,
           },
           {
