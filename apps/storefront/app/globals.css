@@ -21,7 +21,8 @@
 
 :root {
   color-scheme: light;
-  /* Baxela palette — extracted from Figma UI kit (design/tokens-notes.md) */
+  /* Baxela palette — Persian turquoise accent from the brand package
+     (baxela-design/, the parcel identity). */
   --background: #ffffff;
   --foreground: #171717;
   --primary: #171717;
@@ -30,7 +31,7 @@
   --muted: #f4f4f5;
   --border: #d1d5db;
   --border-light: #e5e7eb;
-  --accent: #e84393;
+  --accent: #16a8b1;
   --accent-foreground: #ffffff;
   --radius: 8px;
 }
@@ -38,8 +39,8 @@
 html[data-mode="dark"] {
   color-scheme: dark;
   /* Dark variant of the default palette — zinc scale to match the light
-     neutrals, accent lifted to pink-400 for contrast on dark surfaces
-     (design/tokens-notes.md). */
+     neutrals, accent lifted to a brighter turquoise for contrast on dark
+     surfaces. */
   --background: #09090b;
   --foreground: #fafafa;
   --primary: #fafafa;
@@ -48,8 +49,8 @@ html[data-mode="dark"] {
   --muted: #18181b;
   --border: #3f3f46;
   --border-light: #27272a;
-  --accent: #f472b6;
-  --accent-foreground: #260a17;
+  --accent: #2bd9e0;
+  --accent-foreground: #06343a;
 }
 
 @theme inline {

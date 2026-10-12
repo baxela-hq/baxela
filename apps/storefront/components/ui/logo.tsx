@@ -12,14 +12,15 @@ export function Logo({
     <Link
       href={href}
       aria-label="Baxela home"
-      className={cn("inline-flex items-center gap-2 sm:gap-3", className)}
+      className={cn("inline-flex items-center", className)}
     >
-      <span className="grid size-9 place-items-center rounded-default bg-primary text-lg font-bold text-primary-foreground sm:size-10">
-        B
-      </span>
-      <span className="text-xl font-bold leading-none tracking-tight text-primary sm:text-[26px]">
-        Baxela
-      </span>
+      <img
+        src="/brand/baxela-symbol-lockup.svg"
+        alt="Baxela"
+        width={327}
+        height={96}
+        className="h-9 w-auto sm:h-10"
+      />
     </Link>
   );
 }
