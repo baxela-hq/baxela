@@ -102,6 +102,13 @@ const nextConfig: NextConfig = {
   // one dot-segment each, so this survives DHCP IP changes.
   allowedDevOrigins: ["127.0.0.1", "192.168.*.*"],
 
+  images: {
+    // Same reach as the default (any local path), but `search` is left
+    // unset so cache-busting version queries (?v=2) are allowed too —
+    // the default rejects local images that carry a query string.
+    localPatterns: [{ pathname: "/**" }],
+  },
+
   async headers() {
     return [
       {
