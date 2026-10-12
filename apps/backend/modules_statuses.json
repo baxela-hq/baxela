@@ -15,5 +15,6 @@
     "Menu": true,
     "Contact": true,
     "Discount": true,
-    "Support": true
+    "Support": true,
+  "Audit": true
 }

@@ -38,4 +38,7 @@ class UserSchema
 
     /** Serialization key for role objects attached to a user — not a column. */
     public const string ROLES = 'roles';
+
+    /** Serialization key for the user's permission names — not a column. */
+    public const string PERMISSIONS = 'permissions';
 }
