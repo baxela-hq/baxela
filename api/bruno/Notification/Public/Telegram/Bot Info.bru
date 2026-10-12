@@ -1,0 +1,16 @@
+meta {
+  name: Bot Info
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/notification/telegram/bot-info
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}

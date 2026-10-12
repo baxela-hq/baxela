@@ -1,0 +1,27 @@
+meta {
+  name: Link
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/notification/user/telegram/link
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "code": "654321",
+    "chat_id": null
+  }
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Telegram
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/notification/webhook/telegram
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+  X-Telegram-Bot-Api-Secret-Token: {{telegramWebhookSecret}}
+}
+
+body:json {
+  {
+    "update_id": 1,
+    "message": {
+      "message_id": 10,
+      "text": "/start",
+      "chat": { "id": 501 },
+      "from": { "id": 501, "username": "johndoe", "language_code": "en" }
+    }
+  }
+}
