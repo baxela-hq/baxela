@@ -83,7 +83,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const usd = { style: "currency", currency: "USD" } as const;
+
 
   const load = useCallback(
     async (nextPage: number) => {
@@ -272,7 +272,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                   <p className="w-24 text-end text-sm font-semibold text-foreground">
                     {format.number(
                       Number(item.price_snapshot) * item.quantity,
-                      usd,
+                      "price",
                     )}
                   </p>
                 </div>
@@ -383,14 +383,14 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                           {t("labels.discount", { code: order.coupon_code })}
                         </span>
                         <span className="font-medium text-accent">
-                          −{format.number(Number(order.discount_amount), usd)}
+                          −{format.number(Number(order.discount_amount), "price")}
                         </span>
                       </p>
                     ) : null}
                     <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       <span>{t("labels.total")}</span>
                       <span className="text-base font-semibold text-foreground">
-                        {format.number(Number(order.total_amount), usd)}
+                        {format.number(Number(order.total_amount), "price")}
                       </span>
                     </p>
                   </div>

@@ -2,6 +2,9 @@ import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locale as getRootLocale } from "next/root-params";
+import { api } from "@/lib/api/client";
+import { currencyNumberOptions, toStoreCurrency } from "@/lib/currency";
+import type { ApiCurrency } from "@/lib/api/types";
 import { routing } from "./routing";
 
 /**
@@ -26,6 +29,7 @@ async function loadMessages(locale: string) {
     paymentReturn,
     blogPosts,
     blogPost,
+    saleBadge,
   ] = await Promise.all([
     import(`../messages/${locale}/shared/common.json`),
     import(`../messages/${locale}/shared/layout.json`),
@@ -42,6 +46,7 @@ async function loadMessages(locale: string) {
     import(`../messages/${locale}/payment/return.json`),
     import(`../messages/${locale}/blog/posts.json`),
     import(`../messages/${locale}/blog/post.json`),
+    import(`../messages/${locale}/components/sale-badge.json`),
   ]);
 
   return {
@@ -68,6 +73,7 @@ async function loadMessages(locale: string) {
       posts: blogPosts.default,
       post: blogPost.default,
     },
+    components: { "sale-badge": saleBadge.default },
   };
 }
 
@@ -83,9 +89,24 @@ export default getRequestConfig(async ({ locale }) => {
     }
   }
 
+  // Fetched via the plain api client (not serverApiGet) — its locale
+  // injection would call getLocale() mid-request-config and recurse.
+  const currency = await api
+    .get<ApiCurrency>("/core/public/currency", { locale })
+    .catch(() => null);
+
   return {
     locale,
     messages: await loadMessages(locale),
+    // Named "price" format supplies the store's default currency to every
+    // format.number(value, "price") call, server (getFormatter) and client
+    // (the bare NextIntlClientProvider inherits formats) alike. Falls back
+    // to USD when the backend is unreachable.
+    formats: {
+      number: {
+        price: currencyNumberOptions(toStoreCurrency(currency)),
+      },
+    },
     // Reference time for relative formatting; the bare NextIntlClientProvider
     // in the [locale] layout inherits it as the global default.
     now: new Date(),

@@ -18,7 +18,7 @@ export function CartMenu() {
   const format = useFormatter();
   const { items, ready, itemCount, subtotal } = useCart();
 
-  const usd = { style: "currency", currency: "USD" } as const;
+
 
   return (
     <div className="group relative">
@@ -88,7 +88,7 @@ export function CartMenu() {
                       <span className="w-20 shrink-0 text-end text-sm font-semibold text-foreground">
                         {format.number(
                           Number(item.price_snapshot) * item.quantity,
-                          usd,
+                          "price",
                         )}
                       </span>
                     </Link>
@@ -101,7 +101,7 @@ export function CartMenu() {
                     {t("header.cart.labels.subtotal")}
                   </span>
                   <span className="font-semibold text-foreground">
-                    {format.number(subtotal, usd)}
+                    {format.number(subtotal, "price")}
                   </span>
                 </p>
                 <Link

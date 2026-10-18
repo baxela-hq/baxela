@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { serverApiGet } from "./server";
-import type { ApiMenu, ApiSetting } from "./types";
+import type { ApiCurrency, ApiMenu, ApiSetting } from "./types";
 
 // Public site menus — header (nav) and footer (link columns) both come from
 // the Menu module. Returns null when the backend is unreachable so the
@@ -22,6 +22,18 @@ export const fetchSettings = cache(
   async (): Promise<ApiSetting[] | null> => {
     try {
       return await serverApiGet<ApiSetting[]>("/setting/public/settings");
+    } catch {
+      return null;
+    }
+  },
+);
+
+// Store's default currency (Core module). Same contract as fetchSettings:
+// null when the backend is unreachable, so formatting falls back to USD.
+export const fetchCurrency = cache(
+  async (): Promise<ApiCurrency | null> => {
+    try {
+      return await serverApiGet<ApiCurrency>("/core/public/currency");
     } catch {
       return null;
     }

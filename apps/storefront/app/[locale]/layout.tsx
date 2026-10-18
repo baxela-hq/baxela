@@ -12,6 +12,7 @@ import { fetchSettings } from "@/lib/api/site";
 import { SITE_URL } from "@/lib/site-url";
 import { THEME_MODE_INIT_SCRIPT, resolveSiteTheme } from "@/lib/theme";
 import { routing } from "@/i18n/routing";
+import { localeDirection } from "@/lib/i18n";
 
 import "../globals.css";
 
@@ -25,7 +26,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Geist has no Arabic-script glyphs — Vazirmatn covers Persian (see
+// Geist has no Arabic-script glyphs — Vazirmatn covers RTL locales (see
 // globals.css: html[dir="rtl"] swaps the body font).
 const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
@@ -58,7 +59,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const dir = locale === "fa" ? "rtl" : "ltr";
+  const dir = localeDirection(locale);
 
   // Site theme from the admin-selected storefront_theme setting; unknown or
   // missing values (also when the backend is unreachable) fall back to the

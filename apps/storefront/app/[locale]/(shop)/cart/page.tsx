@@ -62,7 +62,7 @@ export default function CartPage() {
     }
   };
 
-  const usd = { style: "currency", currency: "USD" } as const;
+
 
   // Hold rendering until the shared context has settled the audience and
   // fetched the list (it gates on the restored session before choosing the
@@ -184,7 +184,7 @@ export default function CartPage() {
                     ) : null}
                     <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {t("labels.unit_price")}:{" "}
-                      {format.number(Number(item.price_snapshot), usd)}
+                      {format.number(Number(item.price_snapshot), "price")}
                     </p>
                   </div>
                   <QuantityStepper
@@ -199,7 +199,7 @@ export default function CartPage() {
                   <p className="w-24 text-end text-sm font-semibold text-foreground">
                     {format.number(
                       Number(item.price_snapshot) * item.quantity,
-                      usd,
+                      "price",
                     )}
                   </p>
                   <button
@@ -218,7 +218,7 @@ export default function CartPage() {
               <p className="flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                 <span>{t("labels.item_total")}</span>
                 <span className="text-base font-semibold text-foreground">
-                  {format.number(subtotal, usd)}
+                  {format.number(subtotal, "price")}
                 </span>
               </p>
               <Button

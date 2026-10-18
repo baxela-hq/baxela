@@ -425,6 +425,19 @@ export interface ApiSetting {
   value: string | null;
 }
 
+// Store's default currency (Core module, /core/public/currency). Drives all
+// storefront price formatting; the storefront falls back to USD when the
+// backend is unreachable.
+export interface ApiCurrency {
+  code: string;
+  name: string;
+  native_name: string | null;
+  symbol: string | null;
+  is_default: boolean;
+  is_symbol_right: boolean;
+  decimal_places: number;
+}
+
 // Support tickets (Support module). A ticket is a customer-owned
 // conversation: the first message plus any replies, with staff answers
 // marked by the "answered" status.

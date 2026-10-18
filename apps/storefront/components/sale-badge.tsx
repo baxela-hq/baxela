@@ -20,6 +20,7 @@ export default function SaleBadge({
   const t = useTranslations("components.sale-badge");
   const format = useFormatter();
 
+
   if (price === null || comparePrice === null) return null;
 
   const saving = Number(comparePrice) - Number(price);
@@ -33,7 +34,7 @@ export default function SaleBadge({
       )}
     >
       {t("save_amount", {
-        amount: format.number(saving, { style: "currency", currency: "USD" }),
+        amount: format.number(saving, "price"),
       })}
     </span>
   );

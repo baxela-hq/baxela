@@ -122,18 +122,12 @@ export default async function ProductPage({
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
               <p className="text-2xl font-semibold text-foreground">
                 {product.price !== null
-                  ? format.number(Number(product.price), {
-                      style: "currency",
-                      currency: "USD",
-                    })
+                  ? format.number(Number(product.price), "price")
                   : null}
               </p>
               {product.compare_price !== null ? (
                 <p className="text-lg text-secondary-text line-through rtl:normal-case rtl:tracking-normal">
-                  {format.number(Number(product.compare_price), {
-                    style: "currency",
-                    currency: "USD",
-                  })}
+                  {format.number(Number(product.compare_price), "price")}
                 </p>
               ) : null}
               <SaleBadge

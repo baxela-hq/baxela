@@ -202,7 +202,7 @@ export default function CheckoutPage() {
   const shippingCost = selectedMethod?.price ?? 0;
   const total = subtotal - discount + shippingCost;
 
-  const usd = { style: "currency", currency: "USD" } as const;
+
 
   const onApplyCoupon = async () => {
     const code = couponInput.trim();
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
                           </span>
                         </span>
                         <span className="text-sm font-medium text-foreground">
-                          {format.number(method.price, usd)}
+                          {format.number(method.price, "price")}
                         </span>
                       </label>
                     ))}
@@ -645,7 +645,7 @@ export default function CheckoutPage() {
                     <span className="text-sm font-medium text-foreground">
                       {format.number(
                         Number(item.price_snapshot) * item.quantity,
-                        usd,
+                        "price",
                       )}
                     </span>
                   </li>
@@ -656,7 +656,7 @@ export default function CheckoutPage() {
                 <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.subtotal")}</span>
                   <span className="font-medium text-foreground">
-                    {format.number(subtotal, usd)}
+                    {format.number(subtotal, "price")}
                   </span>
                 </p>
 
@@ -669,7 +669,7 @@ export default function CheckoutPage() {
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="font-medium text-accent">
-                        −{format.number(discount, usd)}
+                        −{format.number(discount, "price")}
                       </span>
                       <button
                         type="button"
@@ -722,13 +722,13 @@ export default function CheckoutPage() {
                   <span>{t("summary.labels.shipping")}</span>
                   <span className="font-medium text-foreground">
                     {selectedMethod
-                      ? format.number(shippingCost, usd)
+                      ? format.number(shippingCost, "price")
                       : "—"}
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-t border-border-light pt-3 text-base font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.total")}</span>
-                  <span>{selectedMethod ? format.number(total, usd) : "—"}</span>
+                  <span>{selectedMethod ? format.number(total, "price") : "—"}</span>
                 </p>
               </div>
 

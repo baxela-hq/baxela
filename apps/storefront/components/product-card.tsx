@@ -20,6 +20,7 @@ export interface ProductCardProps {
 export default function ProductCard({ product, className }: ProductCardProps) {
   const format = useFormatter();
 
+
   return (
     <Link
       href={`/products/${product.slug ?? product.id}`}
@@ -49,18 +50,12 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="text-sm font-semibold text-foreground">
             {product.price !== null
-              ? format.number(Number(product.price), {
-                  style: "currency",
-                  currency: "USD",
-                })
+              ? format.number(Number(product.price), "price")
               : null}
           </span>
           {product.compare_price !== null ? (
             <span className="text-sm text-secondary-text line-through rtl:normal-case rtl:tracking-normal">
-              {format.number(Number(product.compare_price), {
-                style: "currency",
-                currency: "USD",
-              })}
+              {format.number(Number(product.compare_price), "price")}
             </span>
           ) : null}
           <SaleBadge price={product.price} comparePrice={product.compare_price} />
