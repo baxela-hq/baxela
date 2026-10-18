@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Modules\Core\Exceptions\BaseException;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
+use Modules\Core\Support\SupportedLocales;
 use Sentry\Laravel\Integration as SentryIntegration;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -42,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // Error messages localize by the Accept-Language header; the
             // translator otherwise renders in the configured app locale.
-            app()->setLocale($request->getPreferredLanguage(['en', 'fa']));
+            app()->setLocale($request->getPreferredLanguage(SupportedLocales::codes()));
 
             $mapper = app(ExceptionMapper::class);
             $exception = $mapper->map($e);

@@ -3,6 +3,7 @@
 namespace Modules\Core\Utils;
 
 use Illuminate\Http\Request;
+use Modules\Core\Support\SupportedLocales;
 use Throwable;
 
 /**
@@ -12,8 +13,6 @@ use Throwable;
  */
 class Locale
 {
-    public const array SUPPORTED = ['en', 'fa'];
-
     public static function fromRequest(): string
     {
         try {
@@ -26,7 +25,7 @@ class Locale
             return self::fallback();
         }
 
-        return $request->getPreferredLanguage(self::SUPPORTED) ?? self::fallback();
+        return $request->getPreferredLanguage(SupportedLocales::codes()) ?? self::fallback();
     }
 
     private static function fallback(): string
