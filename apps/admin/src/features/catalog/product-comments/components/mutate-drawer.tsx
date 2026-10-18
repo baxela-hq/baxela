@@ -58,6 +58,7 @@ export function MutateDrawer({
     resolver: zodResolver(editFormSchema),
     defaultValues: {
       body: currentRow.body,
+      rating: currentRow.rating,
       status: currentRow.status,
     },
   })
@@ -65,6 +66,7 @@ export function MutateDrawer({
   useEffect(() => {
     form.reset({
       body: currentRow.body,
+      rating: currentRow.rating,
       status: currentRow.status,
     })
   }, [currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -79,6 +81,8 @@ export function MutateDrawer({
           product_id: currentRow.product_id,
           parent_id: currentRow.parent_id,
           body: data.body,
+          // ratings belong to top-level reviews only
+          rating: currentRow.parent_id === null ? data.rating : null,
           status: data.status,
         },
       },
@@ -131,6 +135,47 @@ export function MutateDrawer({
                 </FormItem>
               )}
             />
+            {currentRow.parent_id === null && (
+              <FormField
+                control={form.control}
+                name='rating'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{tLabel('rating')}</FormLabel>
+                    <Select
+                      onValueChange={(value) =>
+                        field.onChange(value === 'none' ? null : Number(value))
+                      }
+                      value={
+                        field.value === null ? 'none' : String(field.value)
+                      }
+                    >
+                      <FormControl>
+                        <SelectTrigger className='w-full'>
+                          <SelectValue
+                            placeholder={tPlaceHolder('select')}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value='none'>
+                          {tLabel('no_rating')}
+                        </SelectItem>
+                        {[1, 2, 3, 4, 5].map((rating) => (
+                          <SelectItem
+                            key={rating}
+                            value={String(rating)}
+                          >
+                            {tLabel('rating_value', { rating: String(rating) })}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name='status'

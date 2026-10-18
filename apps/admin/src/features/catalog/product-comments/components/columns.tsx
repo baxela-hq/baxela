@@ -10,6 +10,7 @@ import { Locales } from '../data/routes'
 import { statusBadgeVariants } from '../data/data'
 import { type ProductComment, type ProductCommentStatus } from '../data/schema'
 import { DataTableRowActions } from './data-table-row-actions'
+import { RatingStars } from './rating-stars'
 import { useFormatDateTime } from '@/shared/hooks/use-format-date-time.ts'
 
 export const Columns = (): ColumnDef<ProductComment>[] => {
@@ -74,6 +75,46 @@ export const Columns = (): ColumnDef<ProductComment>[] => {
       ),
       enableSorting: false,
       enableHiding: false,
+    },
+    {
+      accessorKey: 'rating',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('rating')} />
+      ),
+      cell: ({ row }) => {
+        const rating = row.original.rating
+        // replies and legacy text-only reviews carry no stars
+        return rating === null ? (
+          <span className='ps-3 text-muted-foreground'>—</span>
+        ) : (
+          <RatingStars rating={rating} className='ps-3' />
+        )
+      },
+      enableSorting: false,
+      enableHiding: true,
+    },
+    {
+      id: 'reactions',
+      accessorFn: (row) =>
+        `${row.likes_count ?? 0}/${row.dislikes_count ?? 0}`,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={tLabel('reactions')} />
+      ),
+      cell: ({ row }) => {
+        const { likes_count = 0, dislikes_count = 0 } = row.original
+        return (
+          <div className='flex items-center gap-3 ps-3 text-sm tabular-nums'>
+            <span className='text-emerald-600 dark:text-emerald-400'>
+              👍 {likes_count}
+            </span>
+            <span className='text-rose-600 dark:text-rose-400'>
+              👎 {dislikes_count}
+            </span>
+          </div>
+        )
+      },
+      enableSorting: false,
+      enableHiding: true,
     },
     {
       id: 'product',

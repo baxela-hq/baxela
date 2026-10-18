@@ -81,6 +81,7 @@ export function useUpdateProductCommentStatus() {
         product_id: comment.product_id,
         parent_id: comment.parent_id,
         body: comment.body,
+        rating: comment.rating,
         status,
       }),
     onSuccess: async (_result, { status }) => {
@@ -118,6 +119,7 @@ export function useBulkUpdateProductCommentStatus() {
           product_id: comment.product_id,
           parent_id: comment.parent_id,
           body: comment.body,
+          rating: comment.rating,
           status,
         })
       }

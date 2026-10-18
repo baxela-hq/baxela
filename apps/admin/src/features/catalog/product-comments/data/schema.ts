@@ -23,6 +23,9 @@ export const productCommentSchema = z.object({
   parent_id: z.number().nullable(),
   user_id: z.number(),
   body: z.string(),
+  rating: z.number().nullable(),
+  likes_count: z.number().optional(),
+  dislikes_count: z.number().optional(),
   status: productCommentStatusSchema,
   created_at: z.string(),
   updated_at: z.string(),
@@ -49,6 +52,7 @@ export const productCommentFormSchema = z.object({
   product_id: z.number(),
   parent_id: z.number().nullable(),
   body: z.string().min(1, 'required'),
+  rating: z.number().nullable(),
   status: productCommentStatusSchema,
 })
 export type ProductCommentForm = z.infer<typeof productCommentFormSchema>
@@ -60,6 +64,7 @@ export type ProductCommentReplyForm = z.infer<typeof replyFormSchema>
 
 export const editFormSchema = z.object({
   body: z.string().min(1, 'required'),
+  rating: z.number().nullable(),
   status: productCommentStatusSchema,
 })
 export type ProductCommentEditForm = z.infer<typeof editFormSchema>
