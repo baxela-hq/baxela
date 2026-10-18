@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Database\Factories\ProductCommentFactory;
+use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 
@@ -25,12 +26,14 @@ class ProductComment extends Model
         ProductCommentSchema::USER_ID,
         ProductCommentSchema::PARENT_ID,
         ProductCommentSchema::BODY,
+        ProductCommentSchema::RATING,
         ProductCommentSchema::STATUS,
     ];
 
     protected function casts(): array
     {
         return [
+            ProductCommentSchema::RATING => 'integer',
             ProductCommentSchema::STATUS => ProductCommentStatusEnum::class,
         ];
     }
@@ -53,5 +56,10 @@ class ProductComment extends Model
     public function replies(): HasMany
     {
         return $this->hasMany(self::class, ProductCommentSchema::PARENT_ID);
+    }
+
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(ProductCommentReaction::class, ProductCommentReactionSchema::PRODUCT_COMMENT_ID);
     }
 }

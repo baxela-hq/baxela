@@ -31,7 +31,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  *     &filter[option_value_id]=5|6   (repeats allowed)
  *     &filter[price_min]=10&filter[price_max]=50
  *     &featured=true                (admin-managed featured list)
- *     &sort=-price|price|created_at|id
+ *     &sort=-price|price|created_at|rating|id
  *     &per_page=1..50
  */
 class PublicProductQuery implements QueryInterface
@@ -108,6 +108,10 @@ class PublicProductQuery implements QueryInterface
                             ->limit(1),
                         $direction
                     );
+                }),
+                // "top rated": unrated products (null average) sink on descending
+                AllowedSort::callback('rating', function (Builder $query, bool $descending): void {
+                    $query->orderBy(ProductSchema::RATING_AVG, $descending ? 'desc' : 'asc');
                 }),
             )
             ->defaultSort($this->featured

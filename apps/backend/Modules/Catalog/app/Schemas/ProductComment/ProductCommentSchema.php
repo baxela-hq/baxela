@@ -19,6 +19,8 @@ class ProductCommentSchema
 
     public const string BODY = 'body';
 
+    public const string RATING = 'rating';
+
     public const string STATUS = 'status';
 
     public const string RES_USER = 'user';
@@ -28,4 +30,10 @@ class ProductCommentSchema
     public const string RES_PRODUCT = 'product';
 
     public const string RES_REPLIES = 'replies';
+
+    public const string RES_REACTIONS = 'reactions';
+
+    public const string RES_LIKES_COUNT = 'likes_count';
+
+    public const string RES_DISLIKES_COUNT = 'dislikes_count';
 }

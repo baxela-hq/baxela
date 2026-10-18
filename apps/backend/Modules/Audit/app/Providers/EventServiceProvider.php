@@ -7,6 +7,7 @@ use Modules\Audit\Listeners\RecordAuditLogListener;
 use Modules\Core\Contracts\Events\Auth\UserActivatedEvent;
 use Modules\Core\Contracts\Events\Auth\UserDeactivatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductActivatedEvent;
+use Modules\Core\Contracts\Events\Catalog\ProductCommentApprovedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductDeactivatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductDeletedEvent;
@@ -59,6 +60,7 @@ class EventServiceProvider extends ServiceProvider
         ProductDeletedEvent::class => [RecordAuditLogListener::class],
         ProductActivatedEvent::class => [RecordAuditLogListener::class],
         ProductDeactivatedEvent::class => [RecordAuditLogListener::class],
+        ProductCommentApprovedEvent::class => [RecordAuditLogListener::class],
 
         ContactMessageDeletedEvent::class => [RecordAuditLogListener::class],
         ContactMessageStatusUpdatedEvent::class => [RecordAuditLogListener::class],

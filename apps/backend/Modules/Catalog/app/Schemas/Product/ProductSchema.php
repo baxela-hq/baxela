@@ -21,6 +21,10 @@ class ProductSchema
 
     public const string BRAND_ID = 'brand_id';
 
+    public const string RATING_AVG = 'rating_avg';
+
+    public const string RATING_COUNT = 'rating_count';
+
     public const string RES_SHIPPING = 'shipping';
 
     public const string RES_OPTIONS = 'options';

@@ -65,6 +65,8 @@ class ShowProductResource extends JsonResource
             ] : null,
             // Attached by AppliesProductPromotions when a promotion is live
             'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
+            'rating_avg' => $this->resource->{ProductSchema::RATING_AVG},
+            'rating_count' => $this->resource->{ProductSchema::RATING_COUNT},
             'variants' => $this->resource->variants
                 ->map(fn (Variant $variant): array => [
                     'id' => $variant->{VariantSchema::ID},

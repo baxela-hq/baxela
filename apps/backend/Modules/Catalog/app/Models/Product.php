@@ -32,6 +32,8 @@ class Product extends Model
         ProductSchema::STATUS,
         ProductSchema::IS_PUBLISHED,
         ProductSchema::BRAND_ID,
+        ProductSchema::RATING_AVG,
+        ProductSchema::RATING_COUNT,
     ];
 
     protected function casts(): array
@@ -40,6 +42,8 @@ class Product extends Model
             ProductSchema::TYPE => ProductTypeEnum::class,
             ProductSchema::STATUS => ProductStatusEnum::class,
             ProductSchema::IS_PUBLISHED => 'boolean',
+            ProductSchema::RATING_AVG => 'decimal:2',
+            ProductSchema::RATING_COUNT => 'integer',
         ];
     }
 

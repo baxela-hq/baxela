@@ -16,6 +16,8 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
 
     case PRODUCT_COMMENT_UPDATE_FAILED = 'catalog.product_comment.update_failed';
 
+    case PRODUCT_COMMENT_REACTION_FAILED = 'catalog.product_comment.reaction_failed';
+
     case ATTRIBUTE_GROUP_CREATION_FAILED = 'catalog.attribute_group.creation_failed';
 
     case ATTRIBUTE_GROUP_UPDATE_FAILED = 'catalog.attribute_group.update_failed';

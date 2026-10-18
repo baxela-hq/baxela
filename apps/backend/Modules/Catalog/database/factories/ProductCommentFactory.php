@@ -29,6 +29,8 @@ class ProductCommentFactory extends Factory
                 ?? null,
             ProductCommentSchema::BODY => $params[ProductCommentSchema::BODY]
                 ?? $this->faker->paragraph(),
+            ProductCommentSchema::RATING => $params[ProductCommentSchema::RATING]
+                ?? $this->faker->optional()->numberBetween(1, 5),
             ProductCommentSchema::STATUS => $params[ProductCommentSchema::STATUS]
                 ?? $this->faker->randomElement(ProductCommentStatusEnum::cases()),
         ];

@@ -34,6 +34,8 @@ class CreateProductCommentAction
                 Schema::USER_ID => Auth::id(),
                 Schema::PARENT_ID => $parentId,
                 Schema::BODY => $data[Schema::BODY],
+                // ratings belong to top-level reviews only
+                Schema::RATING => is_null($parentId) ? ($data[Schema::RATING] ?? null) : null,
                 Schema::STATUS => ProductCommentStatusEnum::PENDING,
             ]);
         } catch (Throwable $e) {

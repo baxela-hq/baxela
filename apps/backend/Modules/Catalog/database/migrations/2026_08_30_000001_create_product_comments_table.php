@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreignId(ProductCommentSchema::PARENT_ID)->nullable()
                 ->constrained(ProductCommentSchema::TABLE)->onDelete('cascade');
             $table->text(ProductCommentSchema::BODY);
+            // 1–5 stars; top-level reviews only, null on replies and legacy text-only rows
+            $table->unsignedTinyInteger(ProductCommentSchema::RATING)->nullable();
             $table->enum(ProductCommentSchema::STATUS, ProductCommentStatusEnum::cases())
                 ->default(ProductCommentStatusEnum::PENDING->value);
             $table->timestamps();

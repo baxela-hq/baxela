@@ -49,6 +49,8 @@ class ListProductResource extends JsonResource
             // Attached by AppliesProductPromotions when a promotion is live
             'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
             'image_url' => $this->resource->images->first()?->{ImageSchema::URL},
+            'rating_avg' => $this->resource->{ProductSchema::RATING_AVG},
+            'rating_count' => $this->resource->{ProductSchema::RATING_COUNT},
             'created_at' => $this->resource->{ProductSchema::CREATED_AT}?->toIso8601String(),
         ];
     }

@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
+use Modules\Catalog\Support\CommentReactionCounts;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Utils\Pagination;
 
@@ -20,9 +21,11 @@ class ListProductCommentsAction
             ->where(Schema::PRODUCT_ID, $productId)
             ->whereNull(Schema::PARENT_ID)
             ->where(Schema::STATUS, ProductCommentStatusEnum::APPROVED)
+            ->withCount(CommentReactionCounts::withCount())
             ->with([
-                Schema::RES_REPLIES => fn (Builder $query) => $query->where(
-                    Schema::STATUS, ProductCommentStatusEnum::APPROVED),
+                Schema::RES_REPLIES => fn (Builder $query) => $query
+                    ->where(Schema::STATUS, ProductCommentStatusEnum::APPROVED)
+                    ->withCount(CommentReactionCounts::withCount()),
             ])
             ->orderBy(Schema::ID, 'desc')
             ->paginate(Pagination::perPage());

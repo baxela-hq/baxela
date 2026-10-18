@@ -16,6 +16,7 @@ class ProductCommentResource extends JsonResource
         return [
             Schema::ID => $this->resource->{Schema::ID},
             Schema::BODY => $this->resource->{Schema::BODY},
+            Schema::RATING => $this->resource->{Schema::RATING},
             Schema::STATUS => $this->resource->{Schema::STATUS},
             Schema::CREATED_AT => $this->resource->{Schema::CREATED_AT},
         ];

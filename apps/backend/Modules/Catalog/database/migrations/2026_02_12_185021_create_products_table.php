@@ -21,6 +21,9 @@ return new class extends Migration
             $table->enum(ProductSchema::TYPE, ProductTypeEnum::cases());
             $table->enum(ProductSchema::STATUS, ProductStatusEnum::cases());
             $table->boolean(ProductSchema::IS_PUBLISHED)->default(false);
+            // Denormalized review aggregate, recalculated by RecalculatesProductRating
+            $table->decimal(ProductSchema::RATING_AVG, 3, 2)->nullable();
+            $table->unsignedInteger(ProductSchema::RATING_COUNT)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

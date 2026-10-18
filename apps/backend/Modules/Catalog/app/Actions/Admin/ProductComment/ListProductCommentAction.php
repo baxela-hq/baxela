@@ -6,6 +6,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
+use Modules\Catalog\Support\CommentReactionCounts;
 use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -29,10 +30,12 @@ class ListProductCommentAction extends AbstractProductCommentAction
                 Schema::TABLE.'.'.Schema::USER_ID,
                 Schema::TABLE.'.'.Schema::PARENT_ID,
                 Schema::TABLE.'.'.Schema::BODY,
+                Schema::TABLE.'.'.Schema::RATING,
                 Schema::TABLE.'.'.Schema::STATUS,
                 Schema::TABLE.'.'.Schema::CREATED_AT,
                 Schema::TABLE.'.'.Schema::UPDATED_AT,
             ])
+            ->withCount(CommentReactionCounts::withCount())
             ->with(Schema::RES_PRODUCT.'.'.ProductSchema::RES_TRANSLATIONS)
             ->orderBy(Schema::TABLE.'.'.Schema::ID, 'desc')
             ->paginate(Pagination::perPage());

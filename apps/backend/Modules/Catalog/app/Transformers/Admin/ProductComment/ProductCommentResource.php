@@ -21,6 +21,10 @@ class ProductCommentResource extends JsonResource
             Schema::PARENT_ID => $this->resource->{Schema::PARENT_ID},
             Schema::USER_ID => $this->resource->{Schema::USER_ID},
             Schema::BODY => $this->resource->{Schema::BODY},
+            Schema::RATING => $this->resource->{Schema::RATING},
+            // Attached by the list/show actions' withCount
+            Schema::RES_LIKES_COUNT => $this->resource->{Schema::RES_LIKES_COUNT} ?? 0,
+            Schema::RES_DISLIKES_COUNT => $this->resource->{Schema::RES_DISLIKES_COUNT} ?? 0,
             Schema::STATUS => $this->resource->{Schema::STATUS},
             Schema::CREATED_AT => $this->resource->{Schema::CREATED_AT},
             Schema::UPDATED_AT => $this->resource->{Schema::UPDATED_AT},

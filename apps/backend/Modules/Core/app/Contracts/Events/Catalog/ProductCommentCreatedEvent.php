@@ -16,6 +16,8 @@ class ProductCommentCreatedEvent extends AbstractBaseEvent
 
     public string $body;
 
+    public ?int $rating;
+
     public string $status;
 
     public string $created_at;

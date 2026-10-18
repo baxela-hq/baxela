@@ -28,6 +28,13 @@ class ProductCommentRequest extends FormRequest
                 Rule::exists(Schema::TABLE, Schema::ID),
             ],
             Schema::BODY => ['required', 'string', 'max:2000'],
+            // ratings belong to top-level reviews only; null keeps legacy text-only rows editable
+            Schema::RATING => [
+                Rule::prohibitedIf(fn (): bool => filled($this->input(Schema::PARENT_ID))),
+                'nullable',
+                'integer',
+                'between:1,5',
+            ],
             // status is forced to approved on create, so it is only meaningful on update
             Schema::STATUS => [
                 is_null($id) ? 'nullable' : 'required',
