@@ -44,6 +44,16 @@ jobs:
           printf '%s\n' "$HEAD_COMMIT_MESSAGE" | head -n 1 > /tmp/commit-msg
           sh .githooks/commit-msg /tmp/commit-msg
 
+  # Cross-locale translation parity (missing/extra keys & files) plus
+  # storefront loader registration — dependency-free Node script.
+  i18n-parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Check translation parity
+        run: node scripts/check-i18n-parity.mjs
+
   backend:
     runs-on: ubuntu-latest
     defaults:
