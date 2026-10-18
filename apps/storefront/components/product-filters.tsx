@@ -135,6 +135,7 @@ export default function ProductFilters({
   const sortOptions = [
     { value: "featured", label: t("sort.options.featured") },
     { value: "newest", label: t("sort.options.newest") },
+    { value: "rating", label: t("sort.options.rating") },
     { value: "price_asc", label: t("sort.options.price_low_high") },
     { value: "price_desc", label: t("sort.options.price_high_low") },
   ];

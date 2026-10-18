@@ -31,6 +31,7 @@
     "options": {
       "featured": "ویژه",
       "newest": "جدیدترین",
+      "rating": "بالاترین امتیاز",
       "price_low_high": "قیمت: کم به زیاد",
       "price_high_low": "قیمت: زیاد به کم"
     }

@@ -15,6 +15,7 @@ import { Link } from "@/i18n/navigation";
 const SORT_MAP: Record<string, string> = {
   featured: "-id",
   newest: "created_at",
+  rating: "-rating",
   price_asc: "price",
   price_desc: "-price",
 };

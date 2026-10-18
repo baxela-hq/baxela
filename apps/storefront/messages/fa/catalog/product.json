@@ -52,12 +52,21 @@
       "empty": "هنوز دیدگاهی ثبت نشده است. اولین نفر باشید.",
       "anonymous": "مشتری"
     },
+    "aria": {
+      "average_rating": "امتیاز {rating} از ۵"
+    },
+    "actions": {
+      "like": "مفید بود",
+      "dislike": "مفید نبود"
+    },
     "form": {
       "texts": {
         "title": "ثبت دیدگاه"
       },
       "labels": {
-        "review": "دیدگاه شما"
+        "review": "دیدگاه شما",
+        "rating": "امتیاز شما",
+        "rating_value": "{rating} ستاره"
       },
       "placeholders": {
         "review": "نظر خود را بنویسید"

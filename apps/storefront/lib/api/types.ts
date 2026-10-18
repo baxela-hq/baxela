@@ -56,6 +56,9 @@ export interface ApiProduct {
   /** The product's brand, when one is assigned. */
   brand?: ApiBrandRef | null;
   image_url: string | null;
+  /** Denormalized review aggregate — null until an approved rated review exists. */
+  rating_avg: string | null;
+  rating_count: number;
   created_at: string;
 }
 
@@ -148,6 +151,8 @@ export interface ApiRelatedProduct {
   price: string | null;
   compare_price: string | null;
   image_url: string | null;
+  rating_avg: string | null;
+  rating_count: number;
 }
 
 export interface ApiPost {
@@ -204,6 +209,9 @@ export interface ApiProductDetail {
   images: ApiImage[];
   categories: ApiCategoryRef[];
   attributes: ApiProductAttribute[];
+  /** Denormalized review aggregate — null until an approved rated review exists. */
+  rating_avg: string | null;
+  rating_count: number;
 }
 
 export interface ApiPublicCategory {
@@ -378,9 +386,26 @@ export interface ApiProductCommentUser {
 export interface ApiProductComment {
   id: number;
   body: string;
+  /** 1–5 stars on top-level reviews; null on replies and legacy rows. */
+  rating: number | null;
+  likes_count: number;
+  dislikes_count: number;
   created_at: string;
   user: ApiProductCommentUser | null;
   replies: ApiProductComment[];
+}
+
+/** Result of toggling a like/dislike on a comment. */
+export interface ApiCommentReactionResult {
+  reaction: "like" | "dislike" | null;
+  likes_count: number;
+  dislikes_count: number;
+}
+
+/** One row of the authenticated user's reactions on a product's thread. */
+export interface ApiMyCommentReaction {
+  comment_id: number;
+  reaction: "like" | "dislike";
 }
 
 // CMS page (Content module) — plain-text copy localizing by Accept-Language.

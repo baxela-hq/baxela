@@ -4,12 +4,20 @@ import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
 import type { ApiProduct } from "@/lib/api/types";
 import SaleBadge from "@/components/sale-badge";
+import { StarRating } from "@/components/star-rating";
 
 // Only the card-relevant fields are required so lighter product shapes
 // (e.g. gateway summaries on blog posts) can render through this card too.
 export type ProductCardProduct = Pick<
   ApiProduct,
-  "id" | "title" | "slug" | "price" | "compare_price" | "image_url"
+  | "id"
+  | "title"
+  | "slug"
+  | "price"
+  | "compare_price"
+  | "image_url"
+  | "rating_avg"
+  | "rating_count"
 >;
 
 export interface ProductCardProps {
@@ -47,6 +55,14 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         <h3 className="text-base font-medium text-foreground rtl:normal-case rtl:tracking-normal">
           {product.title}
         </h3>
+        {product.rating_count > 0 ? (
+          <div className="mt-1 flex items-center gap-1.5">
+            <StarRating rating={product.rating_avg} />
+            <span className="text-xs text-secondary-text tabular-nums">
+              ({product.rating_count})
+            </span>
+          </div>
+        ) : null}
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="text-sm font-semibold text-foreground">
             {product.price !== null

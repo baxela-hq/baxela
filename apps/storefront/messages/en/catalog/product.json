@@ -52,12 +52,21 @@
       "empty": "No reviews yet. Be the first to share your thoughts.",
       "anonymous": "Customer"
     },
+    "aria": {
+      "average_rating": "Rated {rating, number, ::.} out of 5"
+    },
+    "actions": {
+      "like": "Helpful",
+      "dislike": "Not helpful"
+    },
     "form": {
       "texts": {
         "title": "Write a review"
       },
       "labels": {
-        "review": "Your review"
+        "review": "Your review",
+        "rating": "Your rating",
+        "rating_value": "{rating, plural, one {# star} other {# stars}}"
       },
       "placeholders": {
         "review": "Share your thoughts"

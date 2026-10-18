@@ -31,6 +31,7 @@
     "options": {
       "featured": "Featured",
       "newest": "Newest",
+      "rating": "Top rated",
       "price_low_high": "Price: Low to High",
       "price_high_low": "Price: High to Low"
     }

@@ -5,6 +5,7 @@ import ProductCard from "@/components/product-card";
 import { ProductActions } from "@/components/product-actions";
 import { ProductGallery } from "@/components/product-gallery";
 import { ProductTabs } from "@/components/product-tabs";
+import { StarRating } from "@/components/star-rating";
 import { StarSolidIcon } from "@/components/ui/icons";
 import SaleBadge from "@/components/sale-badge";
 import { serverApiGet } from "@/lib/api/server";
@@ -112,7 +113,11 @@ export default async function ProductPage({
               {product.title}
             </h1>
             <div className="mt-3 flex items-center gap-2">
-              <StarSolidIcon className="size-5 text-accent" />
+              {product.rating_count > 0 ? (
+                <StarRating rating={product.rating_avg} size="size-4" />
+              ) : (
+                <StarSolidIcon className="size-5 text-accent" />
+              )}
               <span className="text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                 {t("texts.reviews_count", {
                   count: commentsPage?.meta.total ?? 0,
@@ -156,6 +161,8 @@ export default async function ProductPage({
         attributes={product.attributes}
         comments={comments}
         commentsTotal={commentsPage?.meta.total ?? 0}
+        ratingAvg={product.rating_avg}
+        ratingCount={product.rating_count}
       />
 
       {related.length > 0 ? (
