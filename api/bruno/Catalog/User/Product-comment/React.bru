@@ -1,0 +1,31 @@
+meta {
+  name: React
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/catalog/user/product-comments/3/reaction
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "reaction": "like"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
