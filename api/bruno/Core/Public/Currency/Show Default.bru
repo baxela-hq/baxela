@@ -1,0 +1,16 @@
+meta {
+  name: Show Default
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/core/public/currency
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
