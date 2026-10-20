@@ -22,6 +22,12 @@ return [
         ],
         'order' => [
             'admin' => [
+                'return' => [
+                    'requested' => [
+                        'subject' => 'درخواست مرجوعی جدید برای :order_code',
+                        'body' => 'برای سفارش :order_code درخواست مرجوعی ثبت شد (دلیل: :reason).',
+                    ],
+                ],
                 'order' => [
                     'created' => [
                         'subject' => 'سفارش جدید :order_code',
@@ -31,6 +37,10 @@ return [
             ],
             'user' => [
                 'order' => [
+                    'refunded' => [
+                        'subject' => 'سفارش :order_code بازپرداخت شد',
+                        'body' => 'سفارش شما :order_code به‌طور کامل بازپرداخت شد (:amount).',
+                    ],
                     'created' => [
                         'subject' => 'سفارش :order_code ثبت شد',
                         'body' => 'از خرید شما سپاسگزاریم. سفارش :order_code به مبلغ :amount در انتظار پرداخت است.',
@@ -50,6 +60,24 @@ return [
                     'cancelled' => [
                         'subject' => 'سفارش :order_code لغو شد',
                         'body' => 'سفارش :order_code لغو شد.',
+                    ],
+                ],
+                'return' => [
+                    'approved' => [
+                        'subject' => 'مرجوعی :order_code تایید شد',
+                        'body' => 'درخواست مرجوعی سفارش :order_code تایید شد — می‌توانید کالا را بازگردانید.',
+                    ],
+                    'rejected' => [
+                        'subject' => 'مرجوعی :order_code رد شد',
+                        'body' => 'درخواست مرجوعی سفارش :order_code رد شد.',
+                    ],
+                    'received' => [
+                        'subject' => 'مرجوعی :order_code دریافت شد',
+                        'body' => 'مرجوعی سفارش :order_code دریافت شد.',
+                    ],
+                    'completed' => [
+                        'subject' => 'مرجوعی :order_code تکمیل شد',
+                        'body' => 'فرآیند مرجوعی سفارش :order_code تکمیل شد.',
                     ],
                 ],
             ],

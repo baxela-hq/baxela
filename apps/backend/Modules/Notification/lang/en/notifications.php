@@ -22,6 +22,12 @@ return [
         ],
         'order' => [
             'admin' => [
+                'return' => [
+                    'requested' => [
+                        'subject' => 'New return request for :order_code',
+                        'body' => 'A return was requested for order :order_code (reason: :reason).',
+                    ],
+                ],
                 'order' => [
                     'created' => [
                         'subject' => 'New order :order_code',
@@ -31,6 +37,10 @@ return [
             ],
             'user' => [
                 'order' => [
+                    'refunded' => [
+                        'subject' => 'Order :order_code refunded',
+                        'body' => 'Your order :order_code has been fully refunded (:amount).',
+                    ],
                     'created' => [
                         'subject' => 'Order :order_code confirmed',
                         'body' => 'Thank you for your purchase. Your order :order_code totals :amount and is awaiting payment.',
@@ -50,6 +60,24 @@ return [
                     'cancelled' => [
                         'subject' => 'Order :order_code cancelled',
                         'body' => 'Order :order_code has been cancelled.',
+                    ],
+                ],
+                'return' => [
+                    'approved' => [
+                        'subject' => 'Return approved for :order_code',
+                        'body' => 'Your return request for order :order_code was approved — you can ship the items back.',
+                    ],
+                    'rejected' => [
+                        'subject' => 'Return rejected for :order_code',
+                        'body' => 'Your return request for order :order_code was rejected.',
+                    ],
+                    'received' => [
+                        'subject' => 'Return received for :order_code',
+                        'body' => 'We received your return for order :order_code.',
+                    ],
+                    'completed' => [
+                        'subject' => 'Return completed for :order_code',
+                        'body' => 'Your return for :order_code is complete.',
                     ],
                 ],
             ],

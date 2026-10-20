@@ -41,6 +41,18 @@ enum NotificationCodeEnum: string
     case ORDER_ORDER_CANCELLED = 'order.order.cancelled';
     case ORDER_ORDER_SHIPPED = 'order.order.shipped';
 
+    case ORDER_ORDER_REFUNDED = 'order.order.refunded';
+
+    case ORDER_RETURN_REQUESTED = 'order.return.requested';
+
+    case ORDER_RETURN_APPROVED = 'order.return.approved';
+
+    case ORDER_RETURN_REJECTED = 'order.return.rejected';
+
+    case ORDER_RETURN_RECEIVED = 'order.return.received';
+
+    case ORDER_RETURN_COMPLETED = 'order.return.completed';
+
     // Payment
     case PAYMENT_PAYMENT_INITIATED = 'payment.payment.initiated';
     case PAYMENT_PAYMENT_SUCCEEDED = 'payment.payment.succeeded';

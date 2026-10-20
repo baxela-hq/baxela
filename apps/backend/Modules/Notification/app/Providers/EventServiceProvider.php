@@ -25,6 +25,18 @@ use Modules\Notification\Listeners\Order\OrderCompleted\SendOrderCompletedNotifi
 use Modules\Notification\Listeners\Order\OrderCreated\NotifyAdminNewOrderListener;
 use Modules\Notification\Listeners\Order\OrderCreated\SendOrderConfirmationToUserListener;
 use Modules\Notification\Listeners\Order\OrderPaid\SendPaymentReceivedNotificationToUserListener;
+use Modules\Notification\Listeners\Order\OrderRefunded\SendOrderRefundedNotificationToUserListener;
+use Modules\Notification\Listeners\Order\OrderReturn\NotifyAdminReturnRequestedListener;
+use Modules\Notification\Listeners\Order\OrderReturn\SendReturnApprovedToUserListener;
+use Modules\Notification\Listeners\Order\OrderReturn\SendReturnCompletedToUserListener;
+use Modules\Notification\Listeners\Order\OrderReturn\SendReturnReceivedToUserListener;
+use Modules\Notification\Listeners\Order\OrderReturn\SendReturnRejectedToUserListener;
+use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnApprovedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnCompletedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnReceivedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnRejectedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnRequestedEvent;
 use Modules\Notification\Listeners\Order\OrderShipped\SendOrderShippedNotificationToUserListener;
 use Modules\Notification\Listeners\Payment\PaymentFailed\NotifyAdminPaymentFailedListener;
 use Modules\Notification\Listeners\Payment\PaymentFailed\SendPaymentFailedNotificationToUserListener;
@@ -59,6 +71,24 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPaidEvent::class => [
             SendPaymentReceivedNotificationToUserListener::class,
+        ],
+        OrderRefundedEvent::class => [
+            SendOrderRefundedNotificationToUserListener::class,
+        ],
+        OrderReturnRequestedEvent::class => [
+            NotifyAdminReturnRequestedListener::class,
+        ],
+        OrderReturnApprovedEvent::class => [
+            SendReturnApprovedToUserListener::class,
+        ],
+        OrderReturnRejectedEvent::class => [
+            SendReturnRejectedToUserListener::class,
+        ],
+        OrderReturnReceivedEvent::class => [
+            SendReturnReceivedToUserListener::class,
+        ],
+        OrderReturnCompletedEvent::class => [
+            SendReturnCompletedToUserListener::class,
         ],
         OrderShippedEvent::class => [
             SendOrderShippedNotificationToUserListener::class,

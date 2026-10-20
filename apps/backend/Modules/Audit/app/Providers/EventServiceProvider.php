@@ -32,6 +32,11 @@ use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPendingEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnApprovedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnCompletedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnReceivedEvent;
+use Modules\Core\Contracts\Events\Order\OrderReturnRejectedEvent;
+use Modules\Core\Contracts\Events\Payment\PaymentRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
 use Modules\Core\Contracts\Events\Shipping\ShipmentCreatedEvent;
@@ -88,6 +93,13 @@ class EventServiceProvider extends ServiceProvider
         OrderCompletedEvent::class => [RecordAuditLogListener::class],
         OrderShippedEvent::class => [RecordAuditLogListener::class],
         OrderRefundedEvent::class => [RecordAuditLogListener::class],
+        // return events triggered by the CUSTOMER (requested/shipped/
+        // cancelled) stay out of the audit trail, like other public actions
+        OrderReturnApprovedEvent::class => [RecordAuditLogListener::class],
+        OrderReturnRejectedEvent::class => [RecordAuditLogListener::class],
+        OrderReturnReceivedEvent::class => [RecordAuditLogListener::class],
+        OrderReturnCompletedEvent::class => [RecordAuditLogListener::class],
+        PaymentRefundedEvent::class => [RecordAuditLogListener::class],
 
         SettingUpdatedEvent::class => [RecordAuditLogListener::class],
 
