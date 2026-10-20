@@ -1,0 +1,31 @@
+meta {
+  name: MarkShipped
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/order/user/returns/1/shipped
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "tracking_number": "TRK-123"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

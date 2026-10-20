@@ -1,0 +1,32 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/order/user/orders/AB12CD34/returns
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "reason": "damaged",
+    "note": "arrived cracked"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Resolve
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/payment/admin/refunds/1/resolve
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "success",
+    "transaction_id": "re_late_1"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/order/admin/returns/1
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "status": "received",
+    "admin_note": "items verified",
+    "restore_stock": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
