@@ -86,6 +86,32 @@ These run as containers, no accounts or keys required:
 - **Mailpit** — dev-only mail catcher.
 - **nginx** — serves the API and the admin SPA.
 
+## Taxes (built-in Tax module — V1 scope)
+
+No tax provider is integrated; calculation is local and fully self-hosted:
+
+- **Model** — tax-exclusive pricing; one rate per (country × tax class) resolved
+  from the shipping address country. **Not supported in V1**: regional/state
+  rates, stacked taxes (e.g. CA GST+PST), effective-dated rates, tax-inclusive
+  display, automated filing/reporting. Resolution stays behind
+  `TaxGatewayInterface`, so jurisdiction-aware implementations can replace it
+  without touching Catalog or Checkout.
+- **Rates** — stored as `decimal(7,4)` percentages; all math is exact integer
+  arithmetic (rates parsed to integer units, money in minor units, per-line
+  half-up rounding). Seller-funded coupon discounts reduce the taxable base via
+  proportional allocation. Shipping is taxed only through the class flagged
+  `is_shipping` — no rate for the country means untaxed shipping. A missing or
+  inactive rate is a valid zero-tax configuration; a product referencing a
+  deleted class fails checkout loudly (`tax.configuration.invalid_class`)
+  instead of silently untaxing.
+- **Orders** — tax amounts, rates and resolved classes are snapshotted on
+  `order_items` and `orders` (`tax_amount` = Σ item taxes + shipping tax,
+  entered into the total exactly once), so historical orders stay explainable
+  after rate/class edits. Deletion guards: the active default class and classes
+  still referenced by products cannot be deleted.
+- A hosted tax engine (Avalara, TaxJar, Stripe Tax) can later sit behind the
+  same gateway contract; none is wired today.
+
 ## Optional integrations
 
 - **Error monitoring (Sentry)** — implemented end-to-end in all three apps
