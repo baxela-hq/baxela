@@ -8,4 +8,9 @@ return [
     'update.invalid_status_transition' => 'The payment status can no longer be changed',
     'webhook.not_supported' => 'This payment driver does not accept webhooks',
     'webhook.invalid' => 'The webhook payload does not match any payment',
+    'refund.not_supported' => 'This payment method does not support refunds yet',
+    'refund.exceeds_refundable' => 'The refund amount exceeds the remaining refundable balance',
+    'refund.invalid_status' => 'The payment or refund is not in a state that allows this action',
+    'refund.failed' => 'The gateway rejected the refund',
+    'refund.outcome_unknown' => 'The refund result is unknown; it is held for reconciliation',
 ];

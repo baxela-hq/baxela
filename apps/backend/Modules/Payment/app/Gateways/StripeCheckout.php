@@ -17,6 +17,21 @@ class StripeCheckout
         return $this->client()->checkout->sessions->create($params);
     }
 
+    public function retrieveSession(string $id): Session
+    {
+        return $this->client()->checkout->sessions->retrieve($id);
+    }
+
+    /**
+     * @param  array<string, mixed>  $params  e.g. ['payment_intent' => ..., 'amount' => ...]
+     */
+    public function createRefund(array $params, ?string $idempotencyKey = null): \Stripe\Refund
+    {
+        $options = is_null($idempotencyKey) ? [] : ['idempotency_key' => $idempotencyKey];
+
+        return $this->client()->refunds->create($params, $options);
+    }
+
     private function client(): StripeClient
     {
         $secret = (string) config('payment.stripe.secret');

@@ -19,4 +19,14 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case WEBHOOK_NOT_SUPPORTED = 'payment.webhook.not_supported';
 
     case WEBHOOK_INVALID = 'payment.webhook.invalid';
+
+    case REFUND_NOT_SUPPORTED = 'payment.refund.not_supported';
+
+    case REFUND_EXCEEDS_REFUNDABLE = 'payment.refund.exceeds_refundable';
+
+    case REFUND_INVALID_STATUS = 'payment.refund.invalid_status';
+
+    case REFUND_FAILED = 'payment.refund.failed';
+
+    case REFUND_OUTCOME_UNKNOWN = 'payment.refund.outcome_unknown';
 }

@@ -14,6 +14,8 @@ use RuntimeException;
 
 class MercadopagoPaymentDriver implements PaymentDriverInterface
 {
+    use CannotRefund;
+
     public function __construct(protected MercadopagoClient $mercadopago) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult

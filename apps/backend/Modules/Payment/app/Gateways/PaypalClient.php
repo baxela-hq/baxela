@@ -25,6 +25,30 @@ class PaypalClient
             ->throw()->object();
     }
 
+    public function getOrder(string $id): object
+    {
+        return $this->request()->get("/v2/checkout/orders/{$id}")
+            ->throw()->object();
+    }
+
+    /**
+     * Refund a captured payment. PayPal refunds target a capture id, not
+     * the order id; the request id header makes retries idempotent.
+     *
+     * @param  array<string, mixed>  $body  e.g. ['amount' => ['value' => '10.00', 'currency_code' => 'USD']]
+     */
+    public function refundCapture(string $captureId, array $body, ?string $requestId = null): object
+    {
+        $request = $this->request();
+
+        if (! is_null($requestId)) {
+            $request = $request->withHeaders(['PayPal-Request-Id' => $requestId]);
+        }
+
+        return $request->post("/v2/payments/captures/{$captureId}/refund", $body)
+            ->throw()->object();
+    }
+
     /**
      * Certificate-based verification (unlike Stripe's HMAC): PayPal signs
      * the transmission headers, so the event travels with them and the

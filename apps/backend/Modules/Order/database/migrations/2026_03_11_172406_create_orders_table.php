@@ -40,6 +40,10 @@ return new class extends Migration
             $table->decimal(OrderSchema::SHIPPING_TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderSchema::SHIPPING_TAX_RATE, 7, 4)->unsigned()->default(0.0000);
             $table->unsignedBigInteger(OrderSchema::SHIPPING_TAX_CLASS_ID)->nullable();
+            // Refund aggregate (Σ successful ledger refunds across all the
+            // order's payments); the payment status derives from it vs the
+            // paid total — both maintained by OrderGateway::applyRefund()
+            $table->decimal(OrderSchema::REFUNDED_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->timestamp(OrderSchema::EXPIRES_AT)->nullable();
             $table->timestamps();
         });

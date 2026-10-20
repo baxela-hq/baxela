@@ -22,6 +22,19 @@ checkout + webhook signature verification + tests). Enable a gateway by filling 
 vars in `apps/backend/.env.example` (lines ~101–181); gateways without credentials hide
 themselves automatically via `isConfigured()`.
 
+### Refunds
+
+Refunds run through the `payment_refunds` ledger (partial + full, two-phase with
+row locks, gateway idempotency keys, and a `reconciliation_required` state for
+ambiguous gateway outcomes that an admin resolves with the verified result).
+
+| Gateway | Refund support | Notes |
+|---|---|---|
+| Stripe | Yes | Checkout Session → PaymentIntent → `refunds` API, idempotency-keyed |
+| PayPal | Yes | Orders v2 capture refund (`PayPal-Request-Id` idempotency) |
+| Manual | Bookkeeping only | Recording that the offline refund already happened |
+| Adyen, Mercado Pago, Checkout.com, NowPayments, Razorpay | Not yet | Refund attempts fail loudly (`payment.refund.not_supported`) |
+
 | Gateway | Env prefix | Notes |
 |---|---|---|
 | Stripe | `STRIPE_*` | Hosted Checkout; official SDK (`stripe/stripe-php`) |

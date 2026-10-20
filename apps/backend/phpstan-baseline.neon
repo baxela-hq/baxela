@@ -12607,12 +12607,6 @@ parameters:
 			path: Modules/Notification/app/Listeners/Order/OrderPending/SendOrderPendingNotificationToUserListener.php
 
 		-
-			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderRefunded\\SendOrderRefundedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Order/OrderRefunded/SendOrderRefundedNotificationToUserListener.php
-
-		-
 			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderShipped\\NotifyAdminOrderShippedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
@@ -13461,7 +13455,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
 			identifier: property.notFound
-			count: 5
+			count: 6
 			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
 
 		-
@@ -13487,6 +13481,66 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: Modules/Order/app/Actions/Admin/OrderItem/ListOrderItemAction.php
+
+		-
+			message: '#^Method Modules\\Order\\Actions\\Admin\\OrderReturn\\ListOrderReturnAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/ListOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$variant_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$admin_note\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$stock_restored_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/OrderReturn/UpdateOrderReturnAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$name\.$#'
@@ -13585,6 +13639,102 @@ parameters:
 			path: Modules/Order/app/Actions/User/OrderItem/ListOrderItemAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
+
+		-
+			message: '#^Method Modules\\Order\\Actions\\User\\OrderReturn\\ListOrderReturnsAction\:\:handle\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/ListOrderReturnsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$tracking_number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -13623,13 +13773,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 5
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 4
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
@@ -13641,7 +13791,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 8
+			path: Modules/Order/app/Gateways/OrderGateway.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$refunded_amount\.$#'
+			identifier: property.notFound
+			count: 1
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
@@ -13677,13 +13833,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 3
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 4
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
@@ -13831,10 +13987,28 @@ parameters:
 			path: Modules/Order/app/Http/Requests/Admin/Order/OrderRequest.php
 
 		-
+			message: '#^Method Modules\\Order\\Http\\Requests\\Admin\\OrderReturn\\UpdateOrderReturnRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Http/Requests/Admin/OrderReturn/UpdateOrderReturnRequest.php
+
+		-
 			message: '#^Method Modules\\Order\\Http\\Requests\\User\\Order\\OrderRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/app/Http/Requests/User/Order/OrderRequest.php
+
+		-
+			message: '#^Method Modules\\Order\\Http\\Requests\\User\\OrderReturn\\CreateOrderReturnRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Http/Requests/User/OrderReturn/CreateOrderReturnRequest.php
+
+		-
+			message: '#^Method Modules\\Order\\Http\\Requests\\User\\OrderReturn\\MarkOrderReturnShippedRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Http/Requests/User/OrderReturn/MarkOrderReturnShippedRequest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
@@ -13891,6 +14065,24 @@ parameters:
 			path: Modules/Order/app/Models/OrderItem.php
 
 		-
+			message: '#^Class Modules\\Order\\Models\\OrderReturn uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderReturn.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderReturn\:\:order\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderReturn.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderReturn.php
+
+		-
 			message: '#^Method Modules\\Order\\Providers\\OrderServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -13909,6 +14101,12 @@ parameters:
 			path: Modules/Order/app/Providers/OrderServiceProvider.php
 
 		-
+			message: '#^Method Modules\\Order\\Schemas\\OrderReturn\\OrderReturnStatusEnum\:\:open\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Schemas/OrderReturn/OrderReturnStatusEnum.php
+
+		-
 			message: '#^Method Modules\\Order\\Transformers\\Admin\\Order\\OrderResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -13925,6 +14123,78 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/app/Transformers/Admin/OrderItem/OrderItemResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$admin_note\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$note\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$stock_restored_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$tracking_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Method Modules\\Order\\Transformers\\Admin\\OrderReturn\\OrderReturnResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/OrderReturn/OrderReturnResource.php
 
 		-
 			message: '#^Method Modules\\Order\\Transformers\\Admin\\Stats\\StatsResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -13949,6 +14219,60 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/app/Transformers/User/OrderItem/OrderItemResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$note\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$tracking_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
+
+		-
+			message: '#^Method Modules\\Order\\Transformers\\User\\OrderReturn\\OrderReturnResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
@@ -14009,6 +14333,24 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Order/database/factories/OrderItemFactory.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/database/factories/OrderReturnFactory.php
+
+		-
+			message: '#^Class Modules\\Order\\Database\\Factories\\OrderReturnFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/database/factories/OrderReturnFactory.php
+
+		-
+			message: '#^Method Modules\\Order\\Database\\Factories\\OrderReturnFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/database/factories/OrderReturnFactory.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:addresses\(\)\.$#'
@@ -14187,7 +14529,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 2
+			count: 1
 			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
 
 		-
@@ -14467,6 +14809,84 @@ parameters:
 			path: Modules/Order/tests/Feature/HelperTrait.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 6
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$stock_restored_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 10
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 10
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Function requestReturn\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Function shippedPaidOrder\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Order/tests/Feature/OrderReturnTest.php
+
+		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -14554,6 +14974,120 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
 			identifier: property.notFound
 			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$method\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$transaction_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''id'' \(\\Modules\\Payment\\Schemas\\PaymentRefund\\PaymentRefundSchema\:\:ID, \\Modules\\Payment\\Schemas\\Payment\\PaymentSchema\:\:ID\)\.$#'
+			identifier: array.duplicateKey
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Parameter \#1 \$previous of static method Modules\\Payment\\Exceptions\\PaymentException\:\:refundFailed\(\) expects Modules\\Payment\\Exceptions\\Throwable\|null, Throwable given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Parameter \#1 \$previous of static method Modules\\Payment\\Exceptions\\PaymentException\:\:refundOutcomeUnknown\(\) expects Modules\\Payment\\Exceptions\\Throwable\|null, Illuminate\\Http\\Client\\ConnectionException\|Stripe\\Exception\\ApiConnectionException given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+
+		-
+			message: '#^Method Modules\\Payment\\Actions\\Admin\\PaymentRefund\\ListPaymentRefundsAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ListPaymentRefundsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''id'' \(\\Modules\\Payment\\Schemas\\PaymentRefund\\PaymentRefundSchema\:\:ID, \\Modules\\Payment\\Schemas\\Payment\\PaymentSchema\:\:ID\)\.$#'
+			identifier: array.duplicateKey
+			count: 1
+			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
 			path: Modules/Payment/app/Actions/User/Payment/CreatePaymentAction.php
 
 		-
@@ -14591,6 +15125,24 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Payment/app/Actions/Webhook/Payment/HandleWebhookAction.php
+
+		-
+			message: '#^Parameter \$previous of class Modules\\Payment\\Exceptions\\PaymentException constructor expects Throwable\|null, Modules\\Payment\\Exceptions\\Throwable\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Modules/Payment/app/Exceptions/PaymentException.php
+
+		-
+			message: '#^Parameter \$previous of method Modules\\Payment\\Exceptions\\PaymentException\:\:refundFailed\(\) has invalid type Modules\\Payment\\Exceptions\\Throwable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Payment/app/Exceptions/PaymentException.php
+
+		-
+			message: '#^Parameter \$previous of method Modules\\Payment\\Exceptions\\PaymentException\:\:refundOutcomeUnknown\(\) has invalid type Modules\\Payment\\Exceptions\\Throwable\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Payment/app/Exceptions/PaymentException.php
 
 		-
 			message: '#^Method Modules\\Payment\\Gateways\\AdyenCheckout\:\:createPaymentLink\(\) has parameter \$params with no value type specified in iterable type array\.$#'
@@ -14671,6 +15223,18 @@ parameters:
 			path: Modules/Payment/app/Http/Requests/Admin/Payment/UpdatePaymentRequest.php
 
 		-
+			message: '#^Method Modules\\Payment\\Http\\Requests\\Admin\\PaymentRefund\\CreateRefundRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/app/Http/Requests/Admin/PaymentRefund/CreateRefundRequest.php
+
+		-
+			message: '#^Method Modules\\Payment\\Http\\Requests\\Admin\\PaymentRefund\\ResolveRefundRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/app/Http/Requests/Admin/PaymentRefund/ResolveRefundRequest.php
+
+		-
 			message: '#^Method Modules\\Payment\\Http\\Requests\\User\\Payment\\PaymentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -14681,6 +15245,24 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Payment/app/Models/Payment.php
+
+		-
+			message: '#^Class Modules\\Payment\\Models\\PaymentRefund uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/app/Models/PaymentRefund.php
+
+		-
+			message: '#^Method Modules\\Payment\\Models\\PaymentRefund\:\:payment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/app/Models/PaymentRefund.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/app/Models/PaymentRefund.php
 
 		-
 			message: '#^Method Modules\\Payment\\Providers\\PaymentServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
@@ -14695,6 +15277,24 @@ parameters:
 			path: Modules/Payment/app/Providers/PaymentServiceProvider.php
 
 		-
+			message: '#^Method Modules\\Payment\\Schemas\\PaymentRefund\\PaymentRefundStatusEnum\:\:reserving\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/app/Schemas/PaymentRefund/PaymentRefundStatusEnum.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FinalizesRefund.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Payment/app/Support/FinalizesRefund.php
+
+		-
 			message: '#^Method Modules\\Payment\\Transformers\\Admin\\Payment\\PaymentMethodResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -14705,6 +15305,78 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/app/Transformers/Admin/Payment/PaymentResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$payment_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$refunded_by\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$transaction_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+
+		-
+			message: '#^Method Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
 
 		-
 			message: '#^Method Modules\\Payment\\Transformers\\User\\Payment\\PaymentMethodResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -14729,6 +15401,18 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Payment/database/factories/PaymentFactory.php
+
+		-
+			message: '#^Class Modules\\Payment\\Database\\Factories\\PaymentRefundFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/database/factories/PaymentRefundFactory.php
+
+		-
+			message: '#^Method Modules\\Payment\\Database\\Factories\\PaymentRefundFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/database/factories/PaymentRefundFactory.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -14939,6 +15623,54 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 15
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 15
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 14
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Function paidOrderWithManualPayment\(\) has parameter \$orderOverrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Function paidOrderWithManualPayment\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Function refundPayload\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
 			message: '#^Trait Modules\\Payment\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -15889,6 +16621,18 @@ parameters:
 			path: Modules/Payment/tests/Unit/PaypalPaymentDriverTest.php
 
 		-
+			message: '#^Parameter \#1 \$adyen of class Modules\\Payment\\Gateways\\Drivers\\AdyenPaymentDriver constructor expects Modules\\Payment\\Gateways\\AdyenCheckout, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Payment/tests/Unit/PaypalRefundDriverTest.php
+
+		-
+			message: '#^Parameter \#1 \$paypal of class Modules\\Payment\\Gateways\\Drivers\\PaypalPaymentDriver constructor expects Modules\\Payment\\Gateways\\PaypalClient, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Modules/Payment/tests/Unit/PaypalRefundDriverTest.php
+
+		-
 			message: '#^Function razorpayEvent\(\) has parameter \$payload with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -15923,6 +16667,18 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/StripePaymentDriverTest.php
+
+		-
+			message: '#^Function stripeSession\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php
+
+		-
+			message: '#^Parameter \#1 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php
 
 		-
 			message: '#^Method Modules\\Setting\\Actions\\Admin\\Setting\\ListSettingAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'

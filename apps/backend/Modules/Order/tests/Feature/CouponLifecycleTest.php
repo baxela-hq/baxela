@@ -89,11 +89,22 @@ it('keeps the coupon consumed when an admin refunds a paid order', function () {
         OrderSchema::EXPIRES_AT => now()->addHour(),
     ]);
 
+    // Refund statuses are ledger-owned since the refunds feature: the
+    // order PATCH no longer flips them, so the refund runs through the
+    // manual-method ledger (bookkeeping-only gateway)
+    $payment = \Modules\Payment\Models\Payment::query()->create([
+        \Modules\Payment\Schemas\Payment\PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
+        \Modules\Payment\Schemas\Payment\PaymentSchema::METHOD => \Modules\Payment\Schemas\Payment\PaymentMethodEnum::MANUAL,
+        \Modules\Payment\Schemas\Payment\PaymentSchema::STATUS => \Modules\Payment\Schemas\Payment\PaymentStatusEnum::SUCCESS,
+        \Modules\Payment\Schemas\Payment\PaymentSchema::AMOUNT => $order->{OrderSchema::TOTAL_AMOUNT},
+    ]);
+
     $this->actingAs($this->superAdminUser())
-        ->patchJson($this->baseUrl('/admin/orders/'.$order->{OrderSchema::ID}), [
-            OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::REFUNDED->value,
+        ->postJson('api/v1/payment/admin/payments/'.$payment->id.'/refunds', [
+            'amount' => (string) $order->{OrderSchema::TOTAL_AMOUNT},
+            'reason' => 'coupon lifecycle test',
         ])
-        ->assertOk();
+        ->assertCreated();
 
     // V1 business rule: a refunded order genuinely redeemed its coupon
     expect($order->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::REFUNDED)

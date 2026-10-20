@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
-use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
 use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
 use Modules\Core\Utils\Locale;
@@ -37,6 +36,14 @@ class UpdateOrderAction extends AbstractOrderAction
         $paymentStatus = ! is_null($data[OrderSchema::PAYMENT_STATUS] ?? null)
             ? OrderPaymentStatusEnum::from($data[OrderSchema::PAYMENT_STATUS])
             : $record->{OrderSchema::PAYMENT_STATUS};
+
+        // Refund statuses are ledger-owned: they derive from the refund
+        // totals as refunds finalize, never from a direct admin flip — an
+        // unrecorded "refunded" order is unauditable money movement
+        if (in_array($paymentStatus, [OrderPaymentStatusEnum::REFUNDED, OrderPaymentStatusEnum::PARTIALLY_REFUNDED], true)
+            && $record->{OrderSchema::PAYMENT_STATUS} !== $paymentStatus) {
+            throw OrderException::invalidPaymentStatusTransition();
+        }
 
         $paymentJustSucceeded = $paymentStatus === OrderPaymentStatusEnum::PAID
             && $record->{OrderSchema::PAYMENT_STATUS} !== OrderPaymentStatusEnum::PAID;
@@ -121,9 +128,10 @@ class UpdateOrderAction extends AbstractOrderAction
         }
 
         if ($paymentStatusChanged) {
+            // REFUNDED/PARTIALLY_REFUNDED are unreachable here — the guard
+            // above keeps refund statuses ledger-owned
             $event = match ($paymentStatus) {
                 OrderPaymentStatusEnum::PAID => OrderPaidEvent::class,
-                OrderPaymentStatusEnum::REFUNDED => OrderRefundedEvent::class,
                 default => null,
             };
 

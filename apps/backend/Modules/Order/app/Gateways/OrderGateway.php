@@ -261,6 +261,47 @@ class OrderGateway implements OrderGatewayInterface
         return $this->applyPaymentStatus($orderId, OrderPaymentStatusEnum::REFUNDED, OrderRefundedEvent::class);
     }
 
+    public function applyRefund(int $orderId, int $refundedTotalMinor, int $paidTotalMinor): bool
+    {
+        $order = Order::query()
+            ->where(OrderSchema::ID, $orderId)
+            ->lockForUpdate()
+            ->first();
+
+        if (is_null($order)) {
+            return false;
+        }
+
+        // Order-level accounting: the status derives from the aggregate
+        // totals across ALL the order's payments, never from the single
+        // payment being refunded
+        $status = ($paidTotalMinor > 0 && $refundedTotalMinor >= $paidTotalMinor)
+            ? OrderPaymentStatusEnum::REFUNDED
+            : OrderPaymentStatusEnum::PARTIALLY_REFUNDED;
+
+        $order->{OrderSchema::REFUNDED_AMOUNT} = Money::toDecimal($refundedTotalMinor);
+
+        if ($order->{OrderSchema::PAYMENT_STATUS} !== $status
+            && $order->{OrderSchema::PAYMENT_STATUS}->canTransitionTo($status)) {
+            $order->{OrderSchema::PAYMENT_STATUS} = $status;
+        }
+
+        $order->save();
+
+        if ($order->{OrderSchema::PAYMENT_STATUS} === OrderPaymentStatusEnum::REFUNDED
+            && $status === OrderPaymentStatusEnum::REFUNDED) {
+            event(OrderRefundedEvent::fill([
+                OrderSchema::ID => $order->{OrderSchema::ID},
+                OrderSchema::USER_ID => $order->{OrderSchema::USER_ID},
+                OrderSchema::ORDER_CODE => $order->{OrderSchema::ORDER_CODE},
+                OrderSchema::PAYMENT_STATUS => $status->value,
+                OrderSchema::TOTAL_AMOUNT => (float) $order->{OrderSchema::TOTAL_AMOUNT},
+            ]));
+        }
+
+        return true;
+    }
+
     public function markAsShipped(int $orderId): bool
     {
         return $this->applyFulfillmentStatus($orderId, OrderStatusEnum::SHIPPED, OrderShippedEvent::class);

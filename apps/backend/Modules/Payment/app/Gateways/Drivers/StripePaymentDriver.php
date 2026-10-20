@@ -5,6 +5,8 @@ namespace Modules\Payment\Gateways\Drivers;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Payment\Exceptions\PaymentException;
@@ -91,6 +93,29 @@ class StripePaymentDriver implements PaymentDriverInterface
             transaction_id: (string) $session->id,
             status: $status,
         );
+    }
+
+    public function refund(PaymentRefundInput $input): PaymentRefundResult
+    {
+        // The stored transaction_id is a Checkout Session: refunds operate
+        // on its PaymentIntent. A session without one (unpaid, or an
+        // unsupported flow) has nothing to refund — refuse explicitly.
+        $session = $this->stripe->retrieveSession($input->transaction_id);
+
+        $paymentIntentId = $session->payment_intent ?? null;
+
+        if (is_null($paymentIntentId) || trim((string) $paymentIntentId) === '') {
+            throw PaymentException::refundNotSupported();
+        }
+
+        $refund = $this->stripe->createRefund(array_filter([
+            'payment_intent' => (string) $paymentIntentId,
+            // Stripe wants integer minor units, built from the payment
+            // currency's decimal places
+            'amount' => $this->minorUnits($input->amount, $input->currency_decimal_places ?? 2),
+        ]), $input->idempotency_key);
+
+        return new PaymentRefundResult(transaction_id: $refund->id);
     }
 
     private function minorUnits(float $amount, int $decimalPlaces): int

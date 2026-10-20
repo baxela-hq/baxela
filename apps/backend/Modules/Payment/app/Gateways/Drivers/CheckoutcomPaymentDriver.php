@@ -14,6 +14,8 @@ use RuntimeException;
 
 class CheckoutcomPaymentDriver implements PaymentDriverInterface
 {
+    use CannotRefund;
+
     public function __construct(protected CheckoutcomClient $checkoutcom) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult

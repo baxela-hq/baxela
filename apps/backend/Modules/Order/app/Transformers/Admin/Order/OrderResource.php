@@ -29,6 +29,8 @@ class OrderResource extends JsonResource
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
             OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},
             OrderSchema::DISCOUNT_AMOUNT => $this->resource->{OrderSchema::DISCOUNT_AMOUNT},
+            // Refund aggregate — Σ successful ledger refunds
+            OrderSchema::REFUNDED_AMOUNT => $this->resource->{OrderSchema::REFUNDED_AMOUNT},
             // Tax snapshot — tax includes the shipping-tax portion
             OrderSchema::TAX_AMOUNT => $this->resource->{OrderSchema::TAX_AMOUNT},
             OrderSchema::SHIPPING_TAX_AMOUNT => $this->resource->{OrderSchema::SHIPPING_TAX_AMOUNT},

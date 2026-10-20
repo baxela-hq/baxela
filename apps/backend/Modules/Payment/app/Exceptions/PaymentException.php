@@ -47,4 +47,29 @@ class PaymentException extends BaseException
     {
         return new self(ErrorCodeEnum::WEBHOOK_INVALID->value);
     }
+
+    public static function refundNotSupported(): PaymentException
+    {
+        return new self(ErrorCodeEnum::REFUND_NOT_SUPPORTED->value);
+    }
+
+    public static function refundExceedsRefundable(): PaymentException
+    {
+        return new self(ErrorCodeEnum::REFUND_EXCEEDS_REFUNDABLE->value);
+    }
+
+    public static function refundInvalidStatus(): PaymentException
+    {
+        return new self(ErrorCodeEnum::REFUND_INVALID_STATUS->value);
+    }
+
+    public static function refundFailed(?Throwable $previous = null): PaymentException
+    {
+        return new self(ErrorCodeEnum::REFUND_FAILED->value, previous: $previous);
+    }
+
+    public static function refundOutcomeUnknown(?Throwable $previous = null): PaymentException
+    {
+        return new self(ErrorCodeEnum::REFUND_OUTCOME_UNKNOWN->value, previous: $previous);
+    }
 }

@@ -14,6 +14,8 @@ use RuntimeException;
 
 class AdyenPaymentDriver implements PaymentDriverInterface
 {
+    use CannotRefund;
+
     public function __construct(protected AdyenCheckout $adyen) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult

@@ -8,6 +8,8 @@ enum OrderPaymentStatusEnum: string
 
     case PAID = 'paid';
 
+    case PARTIALLY_REFUNDED = 'partially_refunded';
+
     case REFUNDED = 'refunded';
 
     /**
@@ -17,7 +19,8 @@ enum OrderPaymentStatusEnum: string
     {
         return match ($this) {
             self::UNPAID => [self::PAID],
-            self::PAID => [self::REFUNDED],
+            self::PAID => [self::PARTIALLY_REFUNDED, self::REFUNDED],
+            self::PARTIALLY_REFUNDED => [self::REFUNDED],
             self::REFUNDED => [],
         };
     }

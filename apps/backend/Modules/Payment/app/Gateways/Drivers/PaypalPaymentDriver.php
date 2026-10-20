@@ -6,6 +6,8 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Payment\Exceptions\PaymentException;
@@ -90,6 +92,33 @@ class PaypalPaymentDriver implements PaymentDriverInterface
             transaction_id: $paypalOrderId,
             status: $status,
         );
+    }
+
+    public function refund(PaymentRefundInput $input): PaymentRefundResult
+    {
+        // The stored transaction_id is a PayPal order id: refunds target a
+        // capture id. Our CAPTURE-intent flow captures once — find that
+        // completed capture; an order without one has nothing to refund.
+        $order = $this->paypal->getOrder($input->transaction_id);
+
+        $captures = collect((array) ($order->purchase_units[0]->payments->captures ?? []))
+            ->filter(fn ($capture): bool => ($capture->status ?? null) === 'COMPLETED');
+
+        if ($captures->isEmpty()) {
+            throw PaymentException::refundNotSupported();
+        }
+
+        $captureId = (string) $captures->first()->id;
+
+        $refund = $this->paypal->refundCapture($captureId, [
+            'amount' => [
+                'currency_code' => (string) $input->currency,
+                // PayPal wants a decimal string, not minor units
+                'value' => number_format($input->amount, $input->currency_decimal_places ?? 2, '.', ''),
+            ],
+        ], $input->idempotency_key);
+
+        return new PaymentRefundResult(transaction_id: (string) ($refund->id ?? null));
     }
 
     private function capture(string $paypalOrderId): string

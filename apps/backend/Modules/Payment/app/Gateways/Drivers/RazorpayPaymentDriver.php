@@ -14,6 +14,8 @@ use RuntimeException;
 
 class RazorpayPaymentDriver implements PaymentDriverInterface
 {
+    use CannotRefund;
+
     public function __construct(protected RazorpayClient $razorpay) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult

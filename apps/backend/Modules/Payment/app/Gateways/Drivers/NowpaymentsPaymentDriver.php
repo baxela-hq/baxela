@@ -14,6 +14,8 @@ use RuntimeException;
 
 class NowpaymentsPaymentDriver implements PaymentDriverInterface
 {
+    use CannotRefund;
+
     public function __construct(protected NowpaymentsClient $nowpayments) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult

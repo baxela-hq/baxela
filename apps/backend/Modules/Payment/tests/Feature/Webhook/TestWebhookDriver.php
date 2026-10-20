@@ -5,6 +5,8 @@ namespace Modules\Payment\Tests\Feature\Webhook;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Payment\Exceptions\PaymentException;
@@ -18,6 +20,11 @@ class TestWebhookDriver implements PaymentDriverInterface
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {
         return new PaymentGatewayResult;
+    }
+
+    public function refund(PaymentRefundInput $input): PaymentRefundResult
+    {
+        throw PaymentException::refundNotSupported();
     }
 
     public function handleWebhook(Request $request): WebhookResult

@@ -65,6 +65,12 @@ class OrderSchema
 
     public const string SHIPPING_TAX_CLASS_ID = 'shipping_tax_class_id';
 
+    /**
+     * Σ successful refund ledger amounts across all the order's payments,
+     * maintained by OrderGateway::applyRefund() as refunds finalize.
+     */
+    public const string REFUNDED_AMOUNT = 'refunded_amount';
+
     public const string EXPIRES_AT = 'expires_at';
 
     public const string RES_ITEMS = 'items';
