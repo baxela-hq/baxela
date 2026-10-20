@@ -153,6 +153,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 - Migrations live in `Modules\{Name}\database\migrations` (auto-loaded by the module's ServiceProvider). They use Schema constants for the table and every column.
 - **Column removals/changes (pre-v1):** edit the original table migration in place instead of adding a `drop_*` migration. No release has shipped yet, so rewriting history keeps it clean, and the per-entity Schema classes (e.g. `CategorySchema`) make every affected reference easy to locate. **After v1 is published this flips** — schema changes must then go through new, dedicated migrations.
 - Pivot/relational tables (e.g. `variant_option_values`) are created in the owning module.
+- **Composite index names must stay under MySQL's 64-character identifier limit.** The Laravel-generated name (`table_col1_col2_unique`) easily overruns it — pass an explicit short name: `$table->unique([...], 'tax_rates_country_class_unique')`.
 - Soft-deleted entities use `SoftDeletes` and `SoftDeleteTrait` constants.
 - Seeders are per-module under `database/seeders`; seed data for catalog uses lang files (`Modules\Catalog\lang\{en}\seeder.php`). Core seeds `languages`, `currencies`, `countries`.
 - Run migrations with `php artisan migrate`; seed individual modules with `php artisan db:seed --class="Modules\{Name}\Database\Seeders\...Seeder"`.
@@ -166,10 +167,20 @@ Request payloads must keep a fixed shape: every key is always present — its va
 - **Assert payloads loosely:** status code, `code` error key, `data.id`-style anchors, and database state — never full response shapes, so pre-v1 payload churn doesn't break the suite.
 - `phpunit.xml` auto-includes `Modules/*/tests/{Unit,Feature}` plus root `tests/`. The global binding in `tests/Pest.php` already extends `Tests\TestCase` over `Modules/*/tests/*` — do **not** re-declare `uses(TestCase::class)` in module test files (Pest fails on the double registration). Keep per-file `uses(RefreshDatabase::class)` and `uses(HelperTrait::class)`.
 - Each module keeps a `tests/Feature/HelperTrait.php` with `baseUrl()` plus fixture/actor helpers (`superAdminUser()` = `User::factory()->superAdmin()`). Auth via `$this->actingAs($user)`; guest carts via the `X-Cart-Token` header. Shared cross-module fixtures live on `Tests\TestCase` (e.g. `TestCase::defaultLanguage()`).
+- **Test fixtures are HelperTrait methods, never file-level `function`s.** Pest loads every test file into one process, so two files declaring the same global function fatal the whole suite (and the failure surfaces as a silent exit — see `composer test` below). If a fixture is needed by a second file, move it to the module HelperTrait.
+- SQLite returns decimal columns as numbers, not strings: assert DB-level money values with `(float)` casts (`expect((float) $order->{OrderSchema::TOTAL_AMOUNT})->toBe(222.43)`), and remember `toBe()` on arrays compares key **order**, not just contents.
+- `RefreshDatabase` wipes the seeded core rows (`countries`, `languages`, `currencies`). Requests validated by `CountryCodeRule` (or anything checking seeded tables) must re-create the rows they reference in the test.
 - Prefer DB-state assertions over event fakes. Never blanket-`Event::fake()` where listeners carry the behavior under test (stock restore on cancel); use `Event::fakeFor()`/`assertDispatched` for dispatch-count checks and `Mail::fake()` for notification assertions.
 - Tests run against SQLite `:memory:` (configured in `phpunit.xml`) — MySQL-only SQL or enums in `DB::statement` calls can break tests. If an Action uses MySQL-only SQL, test it at the level that works and flag it rather than hacking around it.
 - Some factories are known-broken (`CategoryTranslationFactory` targets the wrong model; `OptionFactory` references removed schema constants) — build such rows through model relations instead.
-- Always run the full suite (`composer test` / `php artisan test`) and `vendor/bin/pint` on touched paths after changes.
+- Always run the full suite (`composer test`) and `vendor/bin/pint` on touched paths after changes.
+- **`composer test` is a plain-output wrapper** (`scripts/test.sh`): Pest's collision TUI emits ANSI/binary output that vanishes or reads as binary when piped, hiding failures in agent/CI logs. The wrapper strips escapes, echoes everything, and leaves a greppable log at `storage/logs/pest.log` — grep it with `grep -a`. Use it (not raw `vendor/bin/pest`) whenever output is captured or piped.
+
+## Static analysis (Larastan)
+
+- `composer analyse` runs PHPStan via **`larastan/larastan`** (the current repo — `nunomaduro/larastan` is deprecated) at level 6 over `app/` + `Modules/`, with `--memory-limit=1G`.
+- Pre-existing debt is absorbed by `phpstan-baseline.neon` (5,665 entries); **new code must add zero new errors**. After intentional refactors, regenerate with `vendor/bin/phpstan analyse --generate-baseline --memory-limit=1G` and commit the updated baseline.
+- Run it before Pest: it catches wrong/unresolved imports, invalid method overrides (a class-link fatal that Pest reports as a silent exit-2 with no output), and unknown properties in seconds — classes of bugs that otherwise cost a full debugging session.
 
 ## Commands
 
@@ -178,8 +189,8 @@ Request payloads must keep a fixed shape: every key is always present — its va
 docker compose up -d        # MySQL/Redis/nginx dev environment
 docker compose exec app composer install
 docker compose exec app php artisan migrate
-composer test               # = config:clear + artisan test (Pest)
-php artisan test            # run tests
+composer test               # Pest via scripts/test.sh (plain, greppable output)
+composer analyse            # Larastan (phpstan level 6 + baseline)
 vendor/bin/pint             # format code (use --test to check only)
 composer dev                # server + queue + logs + vite (concurrently)
 ```
@@ -192,9 +203,9 @@ composer dev                # server + queue + logs + vite (concurrently)
 
 ## Workflow for Adding a Feature (Checklist)
 
-1. Identify the owning module (or create a new one via `php artisan module:make`).
+1. Identify the owning module (or create a new one via `php artisan module:make` — it scaffolds providers, `module.json`, `composer.json` and routes including `web.php`, which the RouteServiceProvider expects to exist; then mirror Shipping's structure for the bindings/config/lang/tests layout).
 2. Add `Schemas\{Entity}\*Schema.php` (+ `Module.php` constants) and a migration using them.
-3. Add the model (with `$table`, fillable via schema constants, casts, relations, factory).
+3. Add the model (with `$table`, fillable via schema constants, casts, relations, factory). **Every new column must reach `$fillable`** — Eloquent mass assignment (`create()`/`update()` with an array) silently drops unlisted attributes instead of erroring.
 4. Add the FormRequest (schema-constant keys, `ResolvesLanguagesTrait` where needed).
 5. Add the Action (`handle()`), using transactions for multi-table writes and throwing module exceptions.
 6. Add the invokable Controller + Transformer resource.
