@@ -387,6 +387,14 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                         </span>
                       </p>
                     ) : null}
+                    {Number(order.tax_amount) > 0 ? (
+                      <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        <span>{t("labels.tax")}</span>
+                        <span className="font-medium text-foreground">
+                          {format.number(Number(order.tax_amount), "price")}
+                        </span>
+                      </p>
+                    ) : null}
                     <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       <span>{t("labels.total")}</span>
                       <span className="text-base font-semibold text-foreground">

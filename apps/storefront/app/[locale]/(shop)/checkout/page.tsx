@@ -15,6 +15,7 @@ import type {
   ApiPaymentMethodInfo,
   ApiProfile,
   ApiShippingMethod,
+  ApiTaxPreview,
 } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -59,6 +60,7 @@ export default function CheckoutPage() {
   );
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [appliedCoupon, setAppliedCoupon] = useState<ApiAppliedCoupon | null>(null);
+  const [taxPreview, setTaxPreview] = useState<ApiTaxPreview | null>(null);
   const [couponInput, setCouponInput] = useState("");
   const [couponPending, setCouponPending] = useState(false);
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -144,14 +146,40 @@ export default function CheckoutPage() {
     [token, tCommon],
   );
 
+  // Advisory tax figure from the same calculator the order charges with;
+  // refreshed whenever the address, method or coupon changes the base.
+  const loadTaxPreview = useCallback(
+    async (chosenAddressId: number, chosenMethodId: number | null) => {
+      try {
+        const query = new URLSearchParams({ address_id: String(chosenAddressId) });
+        if (chosenMethodId !== null) {
+          query.set("shipping_method_id", String(chosenMethodId));
+        }
+        const preview = await api.get<ApiTaxPreview>(
+          `/cart/user/cart/tax-preview?${query.toString()}`,
+          { token },
+        );
+        setTaxPreview(preview);
+        setError(null);
+      } catch {
+        // Preview only — an unavailable figure shows as "—" and the server
+        // still computes the authoritative tax at order placement
+        setTaxPreview(null);
+      }
+    },
+    [token],
+  );
+
   useEffect(() => {
     if (addressId !== null) {
       // See cart page: fetch-on-change effect, setState only in the async
       // continuation.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       void loadMethods(addressId);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      void loadTaxPreview(addressId, methodId);
     }
-  }, [addressId, loadMethods]);
+  }, [addressId, methodId, appliedCoupon, loadMethods, loadTaxPreview]);
 
   const onCreateAddress = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -200,7 +228,8 @@ export default function CheckoutPage() {
   // read, re-validated again at order placement) — like the shipping quote
   const discount = appliedCoupon?.coupon ? Number(appliedCoupon.discount_amount) : 0;
   const shippingCost = selectedMethod?.price ?? 0;
-  const total = subtotal - discount + shippingCost;
+  const taxAmount = taxPreview ? Number(taxPreview.tax_amount) : 0;
+  const total = subtotal - discount + shippingCost + taxAmount;
 
 
 
@@ -724,6 +753,12 @@ export default function CheckoutPage() {
                     {selectedMethod
                       ? format.number(shippingCost, "price")
                       : "—"}
+                  </span>
+                </p>
+                <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
+                  <span>{t("summary.labels.tax")}</span>
+                  <span className="font-medium text-foreground">
+                    {taxPreview ? format.number(taxAmount, "price") : "—"}
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-t border-border-light pt-3 text-base font-semibold text-foreground rtl:normal-case rtl:tracking-normal">

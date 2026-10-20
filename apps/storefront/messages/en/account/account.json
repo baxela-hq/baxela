@@ -31,7 +31,8 @@
     "shipping_address": "Shipping address",
     "shipping_method": "Shipping method",
     "discount": "Discount ({code})",
-    "default_badge": "Default"
+    "default_badge": "Default",
+    "tax": "Tax"
   },
   "profile": {
     "labels": {

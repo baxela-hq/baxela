@@ -300,6 +300,21 @@ export interface ApiCreatePaymentResponse {
   payment_url: string | null;
 }
 
+/** Advisory checkout tax figure (GET /cart/user/cart/tax-preview). */
+export interface ApiTaxPreview {
+  /** Decimal strings — the exact amounts the order would persist. */
+  tax_amount: string;
+  shipping_tax_included: boolean;
+  shipping_tax_amount: string;
+  currency_id: number | null;
+  lines: {
+    variant_id: number;
+    tax_amount: string;
+    rate: string;
+    tax_class_id: number | null;
+  }[];
+}
+
 /** Coupon applied to the cart (GET/POST /cart/user/cart/coupon). */
 export interface ApiAppliedCoupon {
   /** null when no coupon is applied — the backend self-heals stale codes. */
@@ -322,6 +337,9 @@ export interface ApiOrder {
   /** Coupon snapshot captured at purchase time (null = no coupon). */
   coupon_code: string | null;
   discount_amount: string;
+  /** Tax snapshot — tax_amount includes the shipping-tax portion. */
+  tax_amount: string;
+  shipping_tax_amount: string;
   /** Order placement timestamp. */
   created_at: string | null;
   /** Line items with name snapshots; only endpoints that load them return it. */

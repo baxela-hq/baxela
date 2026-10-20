@@ -31,7 +31,8 @@
     "shipping_address": "آدرس ارسال",
     "shipping_method": "روش ارسال",
     "discount": "تخفیف ({code})",
-    "default_badge": "پیش‌فرض"
+    "default_badge": "پیش‌فرض",
+    "tax": "مالیات"
   },
   "profile": {
     "labels": {

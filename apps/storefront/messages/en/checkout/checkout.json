@@ -81,7 +81,9 @@
       "subtotal": "Subtotal",
       "shipping": "Shipping",
       "total": "Total",
-      "discount": "Discount ({code})"
+      "discount": "Discount ({code})",
+      "tax": "Tax",
+      "tax_note": "Estimated from your shipping address; the final amount is calculated at order placement."
     },
     "texts": {
       "qty": "Qty {count}"
