@@ -1,0 +1,33 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/tax/admin/tax-classes
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Standard",
+    "is_default": true,
+    "is_shipping": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

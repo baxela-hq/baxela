@@ -1,0 +1,35 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/tax/admin/tax-rates
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "US Standard 8.5%",
+    "country_code": "US",
+    "tax_class_id": 1,
+    "rate": "8.5",
+    "is_active": true
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
