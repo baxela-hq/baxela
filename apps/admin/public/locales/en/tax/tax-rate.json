@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "tax_rate": "Tax Rate",
+      "tax_rates": "Tax Rates",
+      "id": "ID",
+      "name": "Name",
+      "country_code": "Country",
+      "tax_class": "Tax Class",
+      "rate": "Rate (%)",
+      "is_active": "Active",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "rate": "Percentage between 0 and 100 with up to 4 decimal places (e.g. 8.5 or 5.125); one rate per country and class"
+    },
+    "placeholders": {
+      "rate": "8.5"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Active",
+        "false": "Inactive"
+      }
+    }
+  }
+}

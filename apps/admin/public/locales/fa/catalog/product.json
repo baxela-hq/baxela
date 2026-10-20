@@ -143,7 +143,9 @@
       "import_no_history": "هنوز واردکردی ثبت نشده است.",
       "import_back": "بازگشت",
       "import_next": "بعدی",
-      "import_row_cap_exceeded": "فایل از سقف {{cap}} ردیف بیشتر است."
+      "import_row_cap_exceeded": "فایل از سقف {{cap}} ردیف بیشتر است.",
+      "tax_class": "دسته مالیات",
+      "tax_class_none": "دسته پیش‌فرض"
     },
     "tooltips": {
       "is_published": {

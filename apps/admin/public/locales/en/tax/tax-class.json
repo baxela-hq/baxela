@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "tax_class": "Tax Class",
+      "tax_classes": "Tax Classes",
+      "id": "ID",
+      "name": "Name",
+      "is_default": "Default",
+      "is_shipping": "Shipping",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "is_default": "Products without an explicit class fall back to the default one; promoting this demotes the previous default",
+      "is_shipping": "Shipping cost is taxed only through the class carrying this flag; keep exactly one"
+    },
+    "statuses": {
+      "is_default": {
+        "true": "Default"
+      },
+      "is_shipping": {
+        "true": "Shipping"
+      }
+    }
+  }
+}

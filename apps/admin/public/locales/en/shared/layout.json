@@ -47,7 +47,10 @@
     "toggle": "Toggle Sidebar",
     "featured": "Featured",
     "promotions": "Promotions",
-    "audit-logs": "Audit Logs"
+    "audit-logs": "Audit Logs",
+    "tax": "Tax",
+    "tax-classes": "Tax Classes",
+    "tax-rates": "Tax Rates"
   },
   "dialog": {
     "sign-out": {

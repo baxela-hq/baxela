@@ -21,7 +21,9 @@
       "variant_id": "شناسه ویژگی",
       "product_name_snapshot": "نام محصول",
       "quantity": "تعداد",
-      "price_snapshot": "قیمت لحظه ای"
+      "price_snapshot": "قیمت لحظه ای",
+      "tax_amount": "مالیات",
+      "shipping_tax_amount": "مالیات ارسال"
     },
     "help_texts": {
       "description": "این متن توسط مشتری نوشته است و قابل ویرایش نیست",

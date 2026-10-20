@@ -143,7 +143,9 @@
       "import_no_history": "No imports yet.",
       "import_back": "Back",
       "import_next": "Next",
-      "import_row_cap_exceeded": "The file exceeds the {{cap}}-row limit."
+      "import_row_cap_exceeded": "The file exceeds the {{cap}}-row limit.",
+      "tax_class": "Tax Class",
+      "tax_class_none": "Default class"
     },
     "tooltips": {
       "is_published": {

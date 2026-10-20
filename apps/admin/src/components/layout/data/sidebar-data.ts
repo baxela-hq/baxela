@@ -13,6 +13,7 @@ import {
   GalleryVerticalEnd,
   Images,
   Truck,
+  Percent,
   CreditCard,
   TicketPercent,
 } from 'lucide-react'
@@ -246,6 +247,22 @@ export const useSidebarData = (): SidebarData => {
               {
                 title: t('sidebar.shipments'),
                 url: '/shipping/shipments',
+              },
+            ],
+          },
+          {
+            title: t('sidebar.tax'),
+            icon: Percent,
+            items: [
+              {
+                title: t('sidebar.tax-classes'),
+                url: '/tax/tax-classes',
+                permission: 'tax.admin.tax-classes.list',
+              },
+              {
+                title: t('sidebar.tax-rates'),
+                url: '/tax/tax-rates',
+                permission: 'tax.admin.tax-rates.list',
               },
             ],
           },

@@ -32,6 +32,7 @@ import { fetchOneProduct } from './api/products.api';
 import { useCategoryTree } from '@/features/catalog/categories/hooks/use-categories';
 import { useOptionsAll } from '@/features/catalog/options/hooks/use-options';
 import { useBrandsAll } from '@/features/catalog/brands/hooks/use-brands';
+import { useTaxClassOptions } from '@/features/tax/tax-classes/hooks/use-tax-classes';
 import { useSaveProduct } from './hooks/use-product-mutations';
 import { Provider } from './components/provider.tsx';
 import { formSchema, STATUSES, TYPES, IMAGE_COLLECTION, type Product, buildDefaultValues, buildEditValues } from './data/schema';
@@ -55,6 +56,7 @@ export function ProductForm() {
   const categories = useCategoryTree()
   const options = useOptionsAll()
   const brands = useBrandsAll()
+  const taxClasses = useTaxClassOptions()
   const [matrix, setMatrix] = useState<MatrixOption[]>([]);
   const [addOptionValue, setAddOptionValue] = useState('');
   const [activeTab, setActiveTab] = useState('general');
@@ -930,6 +932,36 @@ export function ProductForm() {
                           {brands.map((brand) => (
                             <SelectItem key={brand.id} value={String(brand.id)}>
                               {pickTranslation(brand.translations)?.title ?? ''}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Tax Class Field */}
+                <FormField
+                  control={form.control}
+                  name='tax_class_id'
+                  render={({ field }) => (
+                    <FormItem className='mb-5'>
+                      <FormLabel>{tLabel('tax_class')}</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(value === 'none' ? null : Number(value))}
+                        value={field.value ? String(field.value) : 'none'}
+                      >
+                        <FormControl className='w-full'>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder={tPlaceHolder('select')} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="none">{tLabel('tax_class_none')}</SelectItem>
+                          {taxClasses.map((taxClass) => (
+                            <SelectItem key={taxClass.id} value={String(taxClass.id)}>
+                              {taxClass.name}
                             </SelectItem>
                           ))}
                         </SelectContent>

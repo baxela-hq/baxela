@@ -97,6 +97,8 @@ export function OrderShow() {
                       <TableHead>{tLabel('total_amount')}</TableHead>
                       <TableHead>{tLabel('coupon_code')}</TableHead>
                       <TableHead>{tLabel('discount_amount')}</TableHead>
+                      <TableHead>{tLabel('tax_amount')}</TableHead>
+                      <TableHead>{tLabel('shipping_tax_amount')}</TableHead>
                       <TableHead>{tLabel('description')}</TableHead>
                       <TableHead>{tLabel('status')}</TableHead>
                       <TableHead>{tLabel('payment_status')}</TableHead>
@@ -123,6 +125,16 @@ export function OrderShow() {
                       <TableCell>
                         {record.coupon_code
                           ? formatPrice(record.discount_amount, record.currency_id)
+                          : '—'}
+                      </TableCell>
+                      <TableCell>
+                        {record.tax_amount
+                          ? formatPrice(record.tax_amount, record.currency_id)
+                          : '—'}
+                      </TableCell>
+                      <TableCell>
+                        {record.shipping_tax_amount
+                          ? formatPrice(record.shipping_tax_amount, record.currency_id)
                           : '—'}
                       </TableCell>
                       <TableCell className='max-w-[240px] truncate'>

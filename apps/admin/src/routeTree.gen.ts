@@ -35,6 +35,8 @@ import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenti
 import { Route as AuthenticatedCatalogAttributesRouteRouteImport } from './routes/_authenticated/catalog/attributes/route'
 import { Route as AuthenticatedUserUsersIndexRouteImport } from './routes/_authenticated/user/users/index'
 import { Route as AuthenticatedUserRolesIndexRouteImport } from './routes/_authenticated/user/roles/index'
+import { Route as AuthenticatedTaxTaxRatesIndexRouteImport } from './routes/_authenticated/tax/tax-rates/index'
+import { Route as AuthenticatedTaxTaxClassesIndexRouteImport } from './routes/_authenticated/tax/tax-classes/index'
 import { Route as AuthenticatedSupportTicketsIndexRouteImport } from './routes/_authenticated/support/tickets/index'
 import { Route as AuthenticatedShippingZonesIndexRouteImport } from './routes/_authenticated/shipping/zones/index'
 import { Route as AuthenticatedShippingShipmentsIndexRouteImport } from './routes/_authenticated/shipping/shipments/index'
@@ -219,6 +221,18 @@ const AuthenticatedUserRolesIndexRoute =
   AuthenticatedUserRolesIndexRouteImport.update({
     id: '/user/roles/',
     path: '/user/roles/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTaxTaxRatesIndexRoute =
+  AuthenticatedTaxTaxRatesIndexRouteImport.update({
+    id: '/tax/tax-rates/',
+    path: '/tax/tax-rates/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTaxTaxClassesIndexRoute =
+  AuthenticatedTaxTaxClassesIndexRouteImport.update({
+    id: '/tax/tax-classes/',
+    path: '/tax/tax-classes/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSupportTicketsIndexRoute =
@@ -545,6 +559,8 @@ export interface FileRoutesByFullPath {
   '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
   '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
   '/support/tickets': typeof AuthenticatedSupportTicketsIndexRoute
+  '/tax/tax-classes': typeof AuthenticatedTaxTaxClassesIndexRoute
+  '/tax/tax-rates': typeof AuthenticatedTaxTaxRatesIndexRoute
   '/user/roles': typeof AuthenticatedUserRolesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
@@ -614,6 +630,8 @@ export interface FileRoutesByTo {
   '/shipping/shipments': typeof AuthenticatedShippingShipmentsIndexRoute
   '/shipping/zones': typeof AuthenticatedShippingZonesIndexRoute
   '/support/tickets': typeof AuthenticatedSupportTicketsIndexRoute
+  '/tax/tax-classes': typeof AuthenticatedTaxTaxClassesIndexRoute
+  '/tax/tax-rates': typeof AuthenticatedTaxTaxRatesIndexRoute
   '/user/roles': typeof AuthenticatedUserRolesIndexRoute
   '/user/users': typeof AuthenticatedUserUsersIndexRoute
   '/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
@@ -687,6 +705,8 @@ export interface FileRoutesById {
   '/_authenticated/shipping/shipments/': typeof AuthenticatedShippingShipmentsIndexRoute
   '/_authenticated/shipping/zones/': typeof AuthenticatedShippingZonesIndexRoute
   '/_authenticated/support/tickets/': typeof AuthenticatedSupportTicketsIndexRoute
+  '/_authenticated/tax/tax-classes/': typeof AuthenticatedTaxTaxClassesIndexRoute
+  '/_authenticated/tax/tax-rates/': typeof AuthenticatedTaxTaxRatesIndexRoute
   '/_authenticated/user/roles/': typeof AuthenticatedUserRolesIndexRoute
   '/_authenticated/user/users/': typeof AuthenticatedUserUsersIndexRoute
   '/_authenticated/catalog/products/$id/edit': typeof AuthenticatedCatalogProductsIdEditRoute
@@ -760,6 +780,8 @@ export interface FileRouteTypes {
     | '/shipping/shipments'
     | '/shipping/zones'
     | '/support/tickets'
+    | '/tax/tax-classes'
+    | '/tax/tax-rates'
     | '/user/roles'
     | '/user/users'
     | '/catalog/products/$id/edit'
@@ -829,6 +851,8 @@ export interface FileRouteTypes {
     | '/shipping/shipments'
     | '/shipping/zones'
     | '/support/tickets'
+    | '/tax/tax-classes'
+    | '/tax/tax-rates'
     | '/user/roles'
     | '/user/users'
     | '/catalog/products/$id/edit'
@@ -901,6 +925,8 @@ export interface FileRouteTypes {
     | '/_authenticated/shipping/shipments/'
     | '/_authenticated/shipping/zones/'
     | '/_authenticated/support/tickets/'
+    | '/_authenticated/tax/tax-classes/'
+    | '/_authenticated/tax/tax-rates/'
     | '/_authenticated/user/roles/'
     | '/_authenticated/user/users/'
     | '/_authenticated/catalog/products/$id/edit'
@@ -1110,6 +1136,20 @@ declare module '@tanstack/react-router' {
       path: '/user/roles'
       fullPath: '/user/roles'
       preLoaderRoute: typeof AuthenticatedUserRolesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tax/tax-rates/': {
+      id: '/_authenticated/tax/tax-rates/'
+      path: '/tax/tax-rates'
+      fullPath: '/tax/tax-rates'
+      preLoaderRoute: typeof AuthenticatedTaxTaxRatesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tax/tax-classes/': {
+      id: '/_authenticated/tax/tax-classes/'
+      path: '/tax/tax-classes'
+      fullPath: '/tax/tax-classes'
+      preLoaderRoute: typeof AuthenticatedTaxTaxClassesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/support/tickets/': {
@@ -1512,6 +1552,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedShippingShipmentsIndexRoute: typeof AuthenticatedShippingShipmentsIndexRoute
   AuthenticatedShippingZonesIndexRoute: typeof AuthenticatedShippingZonesIndexRoute
   AuthenticatedSupportTicketsIndexRoute: typeof AuthenticatedSupportTicketsIndexRoute
+  AuthenticatedTaxTaxClassesIndexRoute: typeof AuthenticatedTaxTaxClassesIndexRoute
+  AuthenticatedTaxTaxRatesIndexRoute: typeof AuthenticatedTaxTaxRatesIndexRoute
   AuthenticatedUserRolesIndexRoute: typeof AuthenticatedUserRolesIndexRoute
   AuthenticatedUserUsersIndexRoute: typeof AuthenticatedUserUsersIndexRoute
   AuthenticatedCatalogProductsIdEditRoute: typeof AuthenticatedCatalogProductsIdEditRoute
@@ -1583,6 +1625,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedShippingShipmentsIndexRoute,
   AuthenticatedShippingZonesIndexRoute: AuthenticatedShippingZonesIndexRoute,
   AuthenticatedSupportTicketsIndexRoute: AuthenticatedSupportTicketsIndexRoute,
+  AuthenticatedTaxTaxClassesIndexRoute: AuthenticatedTaxTaxClassesIndexRoute,
+  AuthenticatedTaxTaxRatesIndexRoute: AuthenticatedTaxTaxRatesIndexRoute,
   AuthenticatedUserRolesIndexRoute: AuthenticatedUserRolesIndexRoute,
   AuthenticatedUserUsersIndexRoute: AuthenticatedUserUsersIndexRoute,
   AuthenticatedCatalogProductsIdEditRoute:

@@ -47,7 +47,10 @@
     "toggle": "نمایش/مخفی کردن نوار کناری",
     "featured": "ویژه",
     "promotions": "تخفیف‌ها",
-    "audit-logs": "گزارش فعالیت"
+    "audit-logs": "گزارش فعالیت",
+    "tax": "مالیات",
+    "tax-classes": "دسته‌های مالیات",
+    "tax-rates": "نرخ‌های مالیات"
   },
   "dialog": {
     "sign-out": {

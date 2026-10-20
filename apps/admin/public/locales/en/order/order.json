@@ -21,7 +21,9 @@
       "variant_id": "Variant ID",
       "product_name_snapshot": "Product name",
       "quantity": "Quantity",
-      "price_snapshot": "Price Snapshot"
+      "price_snapshot": "Price Snapshot",
+      "tax_amount": "Tax",
+      "shipping_tax_amount": "Shipping Tax"
     },
     "help_texts": {
       "description": "The text has been written by the Customer and is not editable",

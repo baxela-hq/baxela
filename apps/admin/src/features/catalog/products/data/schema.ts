@@ -123,6 +123,7 @@ const _productSchema = z.object({
   status: z.string(),
   is_published: z.boolean(),
   brand_id: z.number().nullable(),
+  tax_class_id: z.number().nullable(),
   categories: z.array(categorySchema),
   variants: z.array(variantSchema),
   images: z.array(productImageSchema).optional(),
@@ -174,6 +175,7 @@ export const formSchema = z.object({
   status: z.enum(STATUSES),
   is_published: z.boolean(),
   brand_id: z.number().nullable(),
+  tax_class_id: z.number().nullable(),
   categories: z.array(z.number()).refine((value: number[]) => value.some((item: number) => item), {
     message: "You have to select at least one item.",
   }),
@@ -393,6 +395,7 @@ export const defaultValues: ProductForm = {
   status: '',
   is_published: false,
   brand_id: null,
+  tax_class_id: null,
   categories: [],
   variants: [{
     sku: "", price: "", is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [], image: null,
@@ -410,6 +413,7 @@ export function buildDefaultValues(languages: Language[]): ProductForm {
     status: '',
     is_published: false,
     brand_id: null,
+    tax_class_id: null,
     categories: [],
     variants: [{
       sku: '', price: '', is_default: false, quantity: 0, currency_id: getDefaultCurrency()?.id ?? null, option_value_ids: [], image: null,
@@ -461,6 +465,7 @@ export function buildEditValues(
     status: currentRow.status,
     is_published: currentRow.is_published,
     brand_id: currentRow.brand_id ?? null,
+    tax_class_id: currentRow.tax_class_id ?? null,
     categories: currentRow.categories.map((cat) => cat.id),
     variants: currentRow.variants.map((va) => ({
       sku: va.sku,
