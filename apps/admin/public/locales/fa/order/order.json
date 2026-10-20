@@ -23,7 +23,8 @@
       "quantity": "تعداد",
       "price_snapshot": "قیمت لحظه ای",
       "tax_amount": "مالیات",
-      "shipping_tax_amount": "مالیات ارسال"
+      "shipping_tax_amount": "مالیات ارسال",
+      "refunded_amount": "بازپرداخت‌شده"
     },
     "help_texts": {
       "description": "این متن توسط مشتری نوشته است و قابل ویرایش نیست",
@@ -42,7 +43,8 @@
       "payment_status": {
         "unpaid": "پرداخت نشده",
         "paid": "پرداخت شده",
-        "refunded": "مبلغ عودت شده"
+        "refunded": "مبلغ عودت شده",
+        "partially_refunded": "بازپرداخت جزئی"
       }
     },
     "tooltips": {

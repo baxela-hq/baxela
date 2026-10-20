@@ -23,7 +23,8 @@
       "quantity": "Quantity",
       "price_snapshot": "Price Snapshot",
       "tax_amount": "Tax",
-      "shipping_tax_amount": "Shipping Tax"
+      "shipping_tax_amount": "Shipping Tax",
+      "refunded_amount": "Refunded"
     },
     "help_texts": {
       "description": "The text has been written by the Customer and is not editable",
@@ -42,7 +43,8 @@
       "payment_status": {
         "unpaid": "Unpaid",
         "paid": "Paid",
-        "refunded": "Refunded"
+        "refunded": "Refunded",
+        "partially_refunded": "Partially Refunded"
       }
     },
     "tooltips": {

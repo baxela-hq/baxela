@@ -50,7 +50,8 @@
     "audit-logs": "Audit Logs",
     "tax": "Tax",
     "tax-classes": "Tax Classes",
-    "tax-rates": "Tax Rates"
+    "tax-rates": "Tax Rates",
+    "returns": "Returns"
   },
   "dialog": {
     "sign-out": {

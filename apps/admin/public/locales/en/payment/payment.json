@@ -9,7 +9,9 @@
       "method": "Method",
       "amount": "Amount",
       "status": "Status",
-      "created_at": "Created At"
+      "created_at": "Created At",
+      "refund_amount": "Refund amount",
+      "refund_reason": "Reason"
     },
     "help_texts": {
       "confirm": "Confirming registers the money as received: the payment is marked successful and its order becomes paid and moves to processing. The customer is notified.",
@@ -30,11 +32,19 @@
         "mercadopago": "Mercado Pago",
         "checkoutcom": "Checkout.com",
         "razorpay": "Razorpay"
+      },
+      "refund_status": {
+        "pending": "Pending",
+        "success": "Refunded",
+        "failed": "Failed",
+        "reconciliation_required": "Needs reconciliation"
       }
     },
     "actions": {
       "confirm": "Confirm payment",
-      "fail": "Mark as failed"
+      "fail": "Mark as failed",
+      "issue_refund": "Issue refund",
+      "refund_history": "Refund history"
     }
   },
   "dialog": {
@@ -47,6 +57,24 @@
       "title": "Mark payment as failed",
       "desc": "Mark payment #{{id}} as failed? The order stays unpaid and the customer can pay it again.",
       "confirm": "Mark as failed"
+    }
+  },
+  "refund": {
+    "dialog": {
+      "title": "Issue refund",
+      "subtitle": "Ledger refund against payment #{id} — partial amounts allowed.",
+      "manual_note": "For manual payments this records that YOU have already returned the money outside Baxela.",
+      "confirm": "Refund"
+    },
+    "history": {
+      "title": "Refund history",
+      "subtitle": "Ledger records for payment #{id}",
+      "empty": "No refunds yet.",
+      "resolve": "Resolve",
+      "confirm_success": "Confirm refunded",
+      "confirm_failed": "Confirm failed",
+      "gateway_id": "Gateway refund id (re_play… / REF-…)",
+      "reserved_note": "Amounts marked as needing reconciliation stay counted against the refundable balance until resolved."
     }
   }
 }

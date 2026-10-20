@@ -9,7 +9,7 @@ export const statuses = [
 ] as const
 export type OrderStatus = (typeof statuses)[number]
 
-export const paymentStatuses = ['unpaid', 'paid', 'refunded'] as const
+export const paymentStatuses = ['unpaid', 'paid', 'partially_refunded', 'refunded'] as const
 export type OrderPaymentStatus = (typeof paymentStatuses)[number]
 
 /**
@@ -32,7 +32,8 @@ export const paymentStatusTransitions: Record<
   OrderPaymentStatus[]
 > = {
   unpaid: ['paid'],
-  paid: ['refunded'],
+  paid: [],
+  partially_refunded: [],
   refunded: [],
 }
 
@@ -54,6 +55,7 @@ export const orderSchema = z.object({
   currency_id: z.number().nullable(),
   coupon_code: z.string().nullable(),
   discount_amount: z.number(),
+  refunded_amount: z.number(),
   tax_amount: z.number(),
   shipping_tax_amount: z.number(),
   description: z.string(),

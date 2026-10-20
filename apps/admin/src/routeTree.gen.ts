@@ -45,6 +45,7 @@ import { Route as AuthenticatedShippingMethodsIndexRouteImport } from './routes/
 import { Route as AuthenticatedSettingSettingsIndexRouteImport } from './routes/_authenticated/setting/settings/index'
 import { Route as AuthenticatedPaymentPaymentsIndexRouteImport } from './routes/_authenticated/payment/payments/index'
 import { Route as AuthenticatedPaymentMethodsIndexRouteImport } from './routes/_authenticated/payment/methods/index'
+import { Route as AuthenticatedOrderReturnsIndexRouteImport } from './routes/_authenticated/order/returns/index'
 import { Route as AuthenticatedOrderOrdersIndexRouteImport } from './routes/_authenticated/order/orders/index'
 import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authenticated/menu/menus/index'
 import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
@@ -281,6 +282,12 @@ const AuthenticatedPaymentMethodsIndexRoute =
   AuthenticatedPaymentMethodsIndexRouteImport.update({
     id: '/payment/methods/',
     path: '/payment/methods/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOrderReturnsIndexRoute =
+  AuthenticatedOrderReturnsIndexRouteImport.update({
+    id: '/order/returns/',
+    path: '/order/returns/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedOrderOrdersIndexRoute =
@@ -551,6 +558,7 @@ export interface FileRoutesByFullPath {
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
+  '/order/returns': typeof AuthenticatedOrderReturnsIndexRoute
   '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
@@ -622,6 +630,7 @@ export interface FileRoutesByTo {
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/menu/menus': typeof AuthenticatedMenuMenusIndexRoute
   '/order/orders': typeof AuthenticatedOrderOrdersIndexRoute
+  '/order/returns': typeof AuthenticatedOrderReturnsIndexRoute
   '/payment/methods': typeof AuthenticatedPaymentMethodsIndexRoute
   '/payment/payments': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/setting/settings': typeof AuthenticatedSettingSettingsIndexRoute
@@ -697,6 +706,7 @@ export interface FileRoutesById {
   '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
   '/_authenticated/menu/menus/': typeof AuthenticatedMenuMenusIndexRoute
   '/_authenticated/order/orders/': typeof AuthenticatedOrderOrdersIndexRoute
+  '/_authenticated/order/returns/': typeof AuthenticatedOrderReturnsIndexRoute
   '/_authenticated/payment/methods/': typeof AuthenticatedPaymentMethodsIndexRoute
   '/_authenticated/payment/payments/': typeof AuthenticatedPaymentPaymentsIndexRoute
   '/_authenticated/setting/settings/': typeof AuthenticatedSettingSettingsIndexRoute
@@ -772,6 +782,7 @@ export interface FileRouteTypes {
     | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
+    | '/order/returns'
     | '/payment/methods'
     | '/payment/payments'
     | '/setting/settings'
@@ -843,6 +854,7 @@ export interface FileRouteTypes {
     | '/inventory/inventory-stocks'
     | '/menu/menus'
     | '/order/orders'
+    | '/order/returns'
     | '/payment/methods'
     | '/payment/payments'
     | '/setting/settings'
@@ -917,6 +929,7 @@ export interface FileRouteTypes {
     | '/_authenticated/inventory/inventory-stocks/'
     | '/_authenticated/menu/menus/'
     | '/_authenticated/order/orders/'
+    | '/_authenticated/order/returns/'
     | '/_authenticated/payment/methods/'
     | '/_authenticated/payment/payments/'
     | '/_authenticated/setting/settings/'
@@ -1206,6 +1219,13 @@ declare module '@tanstack/react-router' {
       path: '/payment/methods'
       fullPath: '/payment/methods'
       preLoaderRoute: typeof AuthenticatedPaymentMethodsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/order/returns/': {
+      id: '/_authenticated/order/returns/'
+      path: '/order/returns'
+      fullPath: '/order/returns'
+      preLoaderRoute: typeof AuthenticatedOrderReturnsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/order/orders/': {
@@ -1544,6 +1564,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
   AuthenticatedMenuMenusIndexRoute: typeof AuthenticatedMenuMenusIndexRoute
   AuthenticatedOrderOrdersIndexRoute: typeof AuthenticatedOrderOrdersIndexRoute
+  AuthenticatedOrderReturnsIndexRoute: typeof AuthenticatedOrderReturnsIndexRoute
   AuthenticatedPaymentMethodsIndexRoute: typeof AuthenticatedPaymentMethodsIndexRoute
   AuthenticatedPaymentPaymentsIndexRoute: typeof AuthenticatedPaymentPaymentsIndexRoute
   AuthenticatedSettingSettingsIndexRoute: typeof AuthenticatedSettingSettingsIndexRoute
@@ -1613,6 +1634,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedInventoryInventoryStocksIndexRoute,
   AuthenticatedMenuMenusIndexRoute: AuthenticatedMenuMenusIndexRoute,
   AuthenticatedOrderOrdersIndexRoute: AuthenticatedOrderOrdersIndexRoute,
+  AuthenticatedOrderReturnsIndexRoute: AuthenticatedOrderReturnsIndexRoute,
   AuthenticatedPaymentMethodsIndexRoute: AuthenticatedPaymentMethodsIndexRoute,
   AuthenticatedPaymentPaymentsIndexRoute:
     AuthenticatedPaymentPaymentsIndexRoute,

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { BadgeCheck, XCircle } from 'lucide-react'
+import { BadgeCheck, History, RotateCcw, XCircle } from 'lucide-react'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
 import { Button } from '@/components/ui/button'
 import {
@@ -23,6 +23,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = usePayments()
   const { tAction } = useAppTranslation(Locales.PAYMENT)
   const settleable = isSettleable(row.original.status)
+  const refundable = row.original.status === 'success'
 
   return (
     <>
@@ -61,6 +62,31 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             {tAction('fail')}
             <DropdownMenuShortcut>
               <XCircle size={16} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            disabled={!refundable}
+            onClick={() => {
+              setCurrentRow(row.original)
+              setOpen('refund')
+            }}
+          >
+            {tAction('issue_refund')}
+            <DropdownMenuShortcut>
+              <RotateCcw size={16} />
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={!refundable}
+            onClick={() => {
+              setCurrentRow(row.original)
+              setOpen('refunds')
+            }}
+          >
+            {tAction('refund_history')}
+            <DropdownMenuShortcut>
+              <History size={16} />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>

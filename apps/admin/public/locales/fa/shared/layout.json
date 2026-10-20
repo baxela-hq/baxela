@@ -50,7 +50,8 @@
     "audit-logs": "گزارش فعالیت",
     "tax": "مالیات",
     "tax-classes": "دسته‌های مالیات",
-    "tax-rates": "نرخ‌های مالیات"
+    "tax-rates": "نرخ‌های مالیات",
+    "returns": "مرجوعی‌ها"
   },
   "dialog": {
     "sign-out": {

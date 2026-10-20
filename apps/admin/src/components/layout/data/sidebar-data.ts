@@ -207,6 +207,12 @@ export const useSidebarData = (): SidebarData => {
                 title: t('sidebar.orders'),
                 url: '/order/orders',
               },
+
+              {
+                title: t('sidebar.returns'),
+                url: '/order/returns',
+                permission: 'order.admin.returns.list',
+              },
             ],
           },
           {

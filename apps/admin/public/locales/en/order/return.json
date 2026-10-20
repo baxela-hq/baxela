@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "Return",
+      "returns": "Returns",
+      "id": "ID",
+      "order_code": "Order",
+      "user_id": "User",
+      "reason": "Reason",
+      "status": "Status",
+      "tracking_number": "Tracking",
+      "admin_note": "Admin note",
+      "restore_stock": "Restore stock",
+      "created_at": "Requested At",
+      "updated_at": "Updated At"
+    },
+    "help_texts": {
+      "restore_stock": "Adds the returned quantities back to inventory (exactly once)"
+    },
+    "placeholders": {
+      "admin_note": "Optional note for the audit trail"
+    },
+    "statuses": {
+      "status": {
+        "requested": "Requested",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "shipped": "Shipped by customer",
+        "received": "Received",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "reason": {
+        "damaged": "Damaged",
+        "wrong_item": "Wrong item",
+        "not_as_described": "Not as described",
+        "other": "Other"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "Mark return as {status}?",
+      "confirmation": "Return for order {code} will move to {status}.",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "no_auto_refund_title": "Refunds are separate",
+      "no_auto_refund_body": "Completing a return never refunds automatically — issue the refund on the order's payment first, then complete."
+    }
+  }
+}

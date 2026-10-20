@@ -2,6 +2,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FeatureRoutes } from '../data/routes'
 import { usePayments } from './provider.tsx'
 import { SettleDialog } from './settle-dialog.tsx'
+import { RefundDialog } from './refund-dialog.tsx'
+import { RefundsDialog } from './refunds-dialog.tsx'
 
 export function Dialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = usePayments()
@@ -41,6 +43,26 @@ export function Dialogs() {
             }}
             currentRow={currentRow}
             status='failed'
+          />
+
+          <RefundDialog
+            key={`payment-refund-${currentRow.id}`}
+            open={open === 'refund'}
+            onOpenChange={(v) => {
+              setOpen(v ? 'refund' : null)
+              if (!v) setTimeout(() => setCurrentRow(null), 500)
+            }}
+            currentRow={currentRow}
+          />
+
+          <RefundsDialog
+            key={`payment-refunds-${currentRow.id}`}
+            open={open === 'refunds'}
+            onOpenChange={(v) => {
+              setOpen(v ? 'refunds' : null)
+              if (!v) setTimeout(() => setCurrentRow(null), 500)
+            }}
+            currentRow={currentRow}
           />
         </>
       )}

@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "مرجوعی",
+      "returns": "مرجوعی‌ها",
+      "id": "شناسه",
+      "order_code": "سفارش",
+      "user_id": "کاربر",
+      "reason": "دلیل",
+      "status": "وضعیت",
+      "tracking_number": "کد رهگیری",
+      "admin_note": "یادداشت مدیر",
+      "restore_stock": "بازگشت به موجودی",
+      "created_at": "تاریخ درخواست",
+      "updated_at": "تاریخ به‌روزرسانی"
+    },
+    "help_texts": {
+      "restore_stock": "تعداد بازگشتی به موجودی اضافه می‌شود (فقط یک بار)"
+    },
+    "placeholders": {
+      "admin_note": "یادداشت اختیاری برای ردگیری"
+    },
+    "statuses": {
+      "status": {
+        "requested": "درخواست‌شده",
+        "approved": "تاییدشده",
+        "rejected": "ردشده",
+        "shipped": "ارسال‌شده توسط مشتری",
+        "received": "دریافت‌شده",
+        "completed": "تکمیل‌شده",
+        "cancelled": "لغوشده"
+      },
+      "reason": {
+        "damaged": "آسیب‌دیده",
+        "wrong_item": "کالای اشتباه",
+        "not_as_described": "مغایر با توضیحات",
+        "other": "سایر"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "مرجوعی به «{status}» تغییر کند؟",
+      "confirmation": "مرجوعی سفارش {code} به وضعیت {status} می‌رود.",
+      "confirm": "تایید",
+      "cancel": "انصراف",
+      "no_auto_refund_title": "بازپرداخت جداگانه است",
+      "no_auto_refund_body": "تکمیل مرجوعی به‌طور خودکار بازپرداخت نمی‌کند — ابتدا بازپرداخت را روی پرداخت سفارش ثبت کنید، سپس تکمیل کنید."
+    }
+  }
+}
