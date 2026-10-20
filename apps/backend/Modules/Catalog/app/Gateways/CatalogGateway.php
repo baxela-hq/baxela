@@ -103,6 +103,13 @@ class CatalogGateway implements CatalogGatewayInterface
         return Variant::query()->whereKey($variantId)->exists();
     }
 
+    public function countProductsByTaxClass(int $taxClassId): int
+    {
+        return Product::query()
+            ->where(ProductSchema::TAX_CLASS_ID, $taxClassId)
+            ->count();
+    }
+
     public function getProductSlugForVariant(int $variantId): ?string
     {
         $productId = Variant::query()
@@ -182,6 +189,9 @@ class CatalogGateway implements CatalogGatewayInterface
             image_url: $product?->{ProductSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
             variant_label: $labels->isNotEmpty() ? $labels->join(' / ') : null,
             promotion: $promotion,
+            tax_class_id: $product?->{ProductSchema::TAX_CLASS_ID} !== null
+                ? (int) $product->{ProductSchema::TAX_CLASS_ID}
+                : null,
         );
     }
 

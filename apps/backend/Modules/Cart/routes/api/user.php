@@ -9,6 +9,7 @@ use Modules\Cart\Http\Controllers\User\CartItem\UpdateCartItemController;
 use Modules\Cart\Http\Controllers\User\Coupon\ApplyCouponController;
 use Modules\Cart\Http\Controllers\User\Coupon\RemoveCouponController;
 use Modules\Cart\Http\Controllers\User\Coupon\ShowAppliedCouponController;
+use Modules\Cart\Http\Controllers\User\Tax\ShowTaxPreviewController;
 use Modules\Core\Http\Middleware\IdempotencyMiddleware;
 
 Route::middleware('auth:sanctum')->prefix('user')->name('user.')->group(function () {
@@ -24,4 +25,6 @@ Route::middleware('auth:sanctum')->prefix('user')->name('user.')->group(function
     Route::get('/cart/coupon', ShowAppliedCouponController::class)->name('coupon.show');
     Route::post('/cart/coupon', ApplyCouponController::class)->name('coupon.apply');
     Route::delete('/cart/coupon', RemoveCouponController::class)->name('coupon.remove');
+
+    Route::get('/cart/tax-preview', ShowTaxPreviewController::class)->name('tax-preview.show');
 });

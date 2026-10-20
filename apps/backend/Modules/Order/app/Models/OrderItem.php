@@ -28,6 +28,9 @@ class OrderItem extends Model
         OrderItemSchema::BASE_PRICE,
         OrderItemSchema::PROMOTION_DISCOUNT,
         OrderItemSchema::PROMOTION_ID,
+        OrderItemSchema::TAX_AMOUNT,
+        OrderItemSchema::TAX_RATE,
+        OrderItemSchema::TAX_CLASS_ID,
     ];
 
     public static function boot(): void

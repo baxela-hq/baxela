@@ -21,6 +21,10 @@ class OrderItemResource extends JsonResource
             OrderItemSchema::BASE_PRICE => $this->resource->{OrderItemSchema::BASE_PRICE},
             OrderItemSchema::PROMOTION_DISCOUNT => $this->resource->{OrderItemSchema::PROMOTION_DISCOUNT},
             OrderItemSchema::PROMOTION_ID => $this->resource->{OrderItemSchema::PROMOTION_ID},
+            // Tax snapshot — zeros when untaxed
+            OrderItemSchema::TAX_AMOUNT => $this->resource->{OrderItemSchema::TAX_AMOUNT},
+            OrderItemSchema::TAX_RATE => $this->resource->{OrderItemSchema::TAX_RATE},
+            OrderItemSchema::TAX_CLASS_ID => $this->resource->{OrderItemSchema::TAX_CLASS_ID},
             OrderItemSchema::QUANTITY => $this->resource->{OrderItemSchema::QUANTITY},
         ];
     }

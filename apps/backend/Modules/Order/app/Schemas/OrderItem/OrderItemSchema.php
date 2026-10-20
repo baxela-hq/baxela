@@ -37,6 +37,19 @@ class OrderItemSchema
 
     public const string QUANTITY = 'quantity';
 
+    /**
+     * Tax history — always filled (zeros when untaxed) so the invoice
+     * stays self-contained: tax_amount the ACTUAL charged amount, tax_rate
+     * the exact applied rate ('8.5000'), tax_class_id the class actually
+     * applied (the product's, or the resolved default; loose reference,
+     * no cross-module FK).
+     */
+    public const string TAX_AMOUNT = 'tax_amount';
+
+    public const string TAX_RATE = 'tax_rate';
+
+    public const string TAX_CLASS_ID = 'tax_class_id';
+
     public const string IMAGE_URL = 'image_url';
 
     /**

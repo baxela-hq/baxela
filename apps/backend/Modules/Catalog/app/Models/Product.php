@@ -32,6 +32,7 @@ class Product extends Model
         ProductSchema::STATUS,
         ProductSchema::IS_PUBLISHED,
         ProductSchema::BRAND_ID,
+        ProductSchema::TAX_CLASS_ID,
         ProductSchema::RATING_AVG,
         ProductSchema::RATING_COUNT,
     ];

@@ -25,8 +25,12 @@ use Modules\Core\Contracts\Gateways\Discount\RedemptionResult;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\DTOs\OrderItemPromotion;
+use Modules\Core\Contracts\Gateways\Order\DTOs\OrderItemTax;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem;
+use Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Exceptions\Discount\RedemptionRefusedException;
 use Modules\Core\Support\Money;
@@ -116,7 +120,7 @@ class CheckoutAction
         // unlocked: a concurrent admin edit may interleave, but one
         // checkout is always internally coherent.
         try {
-            $orderCode = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart): ?string {
+            $orderCode = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $address): ?string {
                 $cart = Cart::query()
                     ->where(CartSchema::USER_ID, Auth::id())
                     ->lockForUpdate()
@@ -174,6 +178,41 @@ class CheckoutAction
                     $input->coupon_id = $evaluation->discount->coupon_id;
                     $input->coupon_code = $evaluation->discount->code;
                     $input->discount_minor = $evaluation->discount->discount_minor;
+                }
+
+                // Taxes from the same single pricing resolution: bases are
+                // the post-promotion line amounts, the (cart-wide) coupon
+                // discount is allocated across them by the Tax gateway, and
+                // shipping is rated through the flagged shipping class. A
+                // TaxConfigurationException aborts the whole checkout — a
+                // broken class reference must never become a silent
+                // zero-tax order.
+                $taxItems = $cartItems->map(fn ($item): TaxCalculationItem => new TaxCalculationItem(
+                    variant_id: (int) $item->{CartItemSchema::VARIANT_ID},
+                    amount_minor: Money::fromDecimal((string) $item->{CartItemSchema::PRICE_SNAPSHOT})
+                        * (int) $item->{CartItemSchema::QUANTITY},
+                    tax_class_id: $item->getAttribute(CartItemSchema::ATTR_VARIANT_SUMMARY)?->tax_class_id,
+                ))->all();
+
+                $tax = app(TaxGatewayInterface::class)->calculateForItems(new TaxCalculationInput(
+                    items: $taxItems,
+                    country_code: (string) $address->country_code,
+                    coupon_discount_minor: $input->discount_minor,
+                    shipping_cost_minor: Money::fromDecimal(number_format($input->shipping_cost, 2, '.', '')),
+                ));
+
+                $input->tax_amount_minor = $tax->total_minor;
+                $input->shipping_tax_minor = $tax->shipping_tax_minor;
+                $input->shipping_tax_rate = $tax->shipping_rate;
+                $input->shipping_tax_class_id = $tax->shipping_tax_class_id;
+
+                foreach ($tax->lines as $variantId => $line) {
+                    $input->item_taxes[$variantId] = new OrderItemTax(
+                        variant_id: $variantId,
+                        tax_minor: $line->tax_minor,
+                        rate: $line->rate,
+                        tax_class_id: $line->tax_class_id,
+                    );
                 }
 
                 $orderCode = $orderGateway->createFromCart($input);

@@ -49,6 +49,22 @@ class OrderSchema
 
     public const string DISCOUNT_AMOUNT = 'discount_amount';
 
+    /**
+     * Tax snapshot of what was charged at purchase time: tax_amount is the
+     * Σ of the item taxes PLUS the shipping tax (added into the total
+     * exactly once); the shipping_tax_* columns explain that portion
+     * independently so historical orders stay auditable after rate or
+     * class changes. shipping_tax_class_id references tax_classes loosely
+     * (no cross-module FK).
+     */
+    public const string TAX_AMOUNT = 'tax_amount';
+
+    public const string SHIPPING_TAX_AMOUNT = 'shipping_tax_amount';
+
+    public const string SHIPPING_TAX_RATE = 'shipping_tax_rate';
+
+    public const string SHIPPING_TAX_CLASS_ID = 'shipping_tax_class_id';
+
     public const string EXPIRES_AT = 'expires_at';
 
     public const string RES_ITEMS = 'items';

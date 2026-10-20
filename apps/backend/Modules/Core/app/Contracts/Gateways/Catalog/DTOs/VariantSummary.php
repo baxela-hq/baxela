@@ -24,5 +24,7 @@ final readonly class VariantSummary
         public ?string $image_url,
         public ?string $variant_label,
         public ?ProductPromotion $promotion = null,
+        /** The product's tax class (null → default class at calculation time). */
+        public ?int $tax_class_id = null,
     ) {}
 }

@@ -29,6 +29,11 @@ class OrderResource extends JsonResource
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
             OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},
             OrderSchema::DISCOUNT_AMOUNT => $this->resource->{OrderSchema::DISCOUNT_AMOUNT},
+            // Tax snapshot — tax includes the shipping-tax portion
+            OrderSchema::TAX_AMOUNT => $this->resource->{OrderSchema::TAX_AMOUNT},
+            OrderSchema::SHIPPING_TAX_AMOUNT => $this->resource->{OrderSchema::SHIPPING_TAX_AMOUNT},
+            OrderSchema::SHIPPING_TAX_RATE => $this->resource->{OrderSchema::SHIPPING_TAX_RATE},
+            OrderSchema::SHIPPING_TAX_CLASS_ID => $this->resource->{OrderSchema::SHIPPING_TAX_CLASS_ID},
             OrderSchema::CREATED_AT => $this->resource->{OrderSchema::CREATED_AT},
             OrderSchema::UPDATED_AT => $this->resource->{OrderSchema::UPDATED_AT},
             OrderSchema::RES_ITEMS => OrderItemResource::collection($this->whenLoaded(OrderSchema::RES_ITEMS)),

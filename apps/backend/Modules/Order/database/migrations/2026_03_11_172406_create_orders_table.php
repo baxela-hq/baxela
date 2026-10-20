@@ -34,6 +34,12 @@ return new class extends Migration
             $table->unsignedBigInteger(OrderSchema::COUPON_ID)->nullable()->index();
             $table->string(OrderSchema::COUPON_CODE)->nullable();
             $table->decimal(OrderSchema::DISCOUNT_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            // Tax snapshot: tax_amount = Σ item taxes + shipping tax; the
+            // shipping_tax_* columns explain the shipping portion alone
+            $table->decimal(OrderSchema::TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->decimal(OrderSchema::SHIPPING_TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->decimal(OrderSchema::SHIPPING_TAX_RATE, 7, 4)->unsigned()->default(0.0000);
+            $table->unsignedBigInteger(OrderSchema::SHIPPING_TAX_CLASS_ID)->nullable();
             $table->timestamp(OrderSchema::EXPIRES_AT)->nullable();
             $table->timestamps();
         });

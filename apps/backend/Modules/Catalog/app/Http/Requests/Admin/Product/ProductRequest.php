@@ -50,6 +50,14 @@ class ProductRequest extends FormRequest
             Rule::exists(CategorySchema::TABLE, CategorySchema::ID);
         $rules[Schema::BRAND_ID][] =
             Rule::exists(BrandSchema::TABLE, BrandSchema::ID);
+        // Cross-module existence goes through the Tax gateway (Schemas are
+        // module-internal), mirroring how other modules validate references
+        $rules[Schema::TAX_CLASS_ID][] =
+            fn (string $attribute, mixed $value, \Closure $fail) => (
+                ! is_null($value)
+                && ! app(\Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface::class)
+                    ->taxClassExists((int) $value)
+            ) ? $fail('validation.exists')->translate() : null;
         $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =
             Rule::unique(VSchema::TABLE, VSchema::SKU)->ignore($id, VSchema::PRODUCT_ID);
         $rules[Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
@@ -79,6 +87,7 @@ class ProductRequest extends FormRequest
             Schema::STATUS => ['required', new Enum(ProductStatusEnum::class)],
             Schema::IS_PUBLISHED => ['required', 'boolean'],
             Schema::BRAND_ID => ['nullable', 'integer'],
+            Schema::TAX_CLASS_ID => ['nullable', 'integer'],
 
             // shipping (value and unit must be filled as a pair, or both left null)
             Schema::RES_SHIPPING => ['nullable', 'array'],

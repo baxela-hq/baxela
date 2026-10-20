@@ -21,6 +21,11 @@ return new class extends Migration
             $table->string(OrderItemSchema::PRODUCT_SLUG_SNAPSHOT)->nullable();
             $table->decimal(OrderItemSchema::PRICE_SNAPSHOT, 12, 2)->unsigned()->default(0.00);
             $table->unsignedTinyInteger(OrderItemSchema::QUANTITY)->default(0);
+            // Tax snapshot — zeros when untaxed, never null (null would be
+            // ambiguous against an explicit zero rate)
+            $table->decimal(OrderItemSchema::TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            $table->decimal(OrderItemSchema::TAX_RATE, 7, 4)->unsigned()->default(0.0000);
+            $table->unsignedBigInteger(OrderItemSchema::TAX_CLASS_ID)->nullable();
             $table->timestamp(OrderItemSchema::CREATED_AT)->nullable();
         });
     }

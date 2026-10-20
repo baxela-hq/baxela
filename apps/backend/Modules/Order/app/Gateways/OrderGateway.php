@@ -62,6 +62,9 @@ class OrderGateway implements OrderGatewayInterface
                 // non-promoted line
                 $promotion = $input->item_promotions[(int) $cartItem[OrderItemSchema::VARIANT_ID]] ?? null;
 
+                // Tax facts from the same resolution — zeros when untaxed
+                $tax = $input->item_taxes[(int) $cartItem[OrderItemSchema::VARIANT_ID]] ?? null;
+
                 $order->items()->create([
                     OrderItemSchema::VARIANT_ID => $cartItem[OrderItemSchema::VARIANT_ID],
                     OrderItemSchema::PRICE_SNAPSHOT => $cartItem[OrderItemSchema::PRICE_SNAPSHOT],
@@ -72,6 +75,9 @@ class OrderGateway implements OrderGatewayInterface
                     OrderItemSchema::BASE_PRICE => $promotion?->base_price,
                     OrderItemSchema::PROMOTION_DISCOUNT => $promotion?->promotion_discount,
                     OrderItemSchema::PROMOTION_ID => $promotion?->promotion_id,
+                    OrderItemSchema::TAX_AMOUNT => Money::toDecimal($tax?->tax_minor ?? 0),
+                    OrderItemSchema::TAX_RATE => $tax?->rate ?? '0.0000',
+                    OrderItemSchema::TAX_CLASS_ID => $tax?->tax_class_id,
                     OrderItemSchema::QUANTITY => $cartItem[OrderItemSchema::QUANTITY],
                 ]);
 
@@ -112,6 +118,15 @@ class OrderGateway implements OrderGatewayInterface
             }
 
             $totalAmountMinor += Money::fromDecimal(number_format($input->shipping_cost, 2, '.', ''));
+
+            // Tax enters the total exactly once: tax_amount_minor already
+            // includes the shipping tax
+            $totalAmountMinor += $input->tax_amount_minor;
+
+            $order->{OrderSchema::TAX_AMOUNT} = Money::toDecimal($input->tax_amount_minor);
+            $order->{OrderSchema::SHIPPING_TAX_AMOUNT} = Money::toDecimal($input->shipping_tax_minor);
+            $order->{OrderSchema::SHIPPING_TAX_RATE} = $input->shipping_tax_rate ?? '0.0000';
+            $order->{OrderSchema::SHIPPING_TAX_CLASS_ID} = $input->shipping_tax_class_id;
 
             $order->{OrderSchema::TOTAL_AMOUNT} = Money::toDecimal($totalAmountMinor);
             $order->save();

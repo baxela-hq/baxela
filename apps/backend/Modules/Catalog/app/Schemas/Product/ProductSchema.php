@@ -21,6 +21,12 @@ class ProductSchema
 
     public const string BRAND_ID = 'brand_id';
 
+    /**
+     * Loose reference to the Tax module's tax_classes (no cross-module
+     * FK); null resolves to the default class at calculation time.
+     */
+    public const string TAX_CLASS_ID = 'tax_class_id';
+
     public const string RATING_AVG = 'rating_avg';
 
     public const string RATING_COUNT = 'rating_count';

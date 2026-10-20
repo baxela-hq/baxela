@@ -14,6 +14,8 @@ use Modules\Order\Schemas\Order\OrderSchema;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+beforeEach(fn () => $this->defaultTaxClass());
+
 function userCartWithItem(User $user, int $variantId, int $quantity = 2, int $price = 150): Cart
 {
     $cart = Cart::query()->firstOrCreate(

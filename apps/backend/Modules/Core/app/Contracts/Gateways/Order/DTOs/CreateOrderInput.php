@@ -42,4 +42,21 @@ class CreateOrderInput
     public ?string $coupon_code = null;
 
     public int $discount_minor = 0;
+
+    /**
+     * Tax facts resolved by the Tax gateway at checkout — server-populated
+     * only, like every other money field here. tax_amount_minor INCLUDES
+     * the shipping tax; the gateway adds it to the total exactly once.
+     *
+     * @var array<int, OrderItemTax>  keyed by variant id
+     */
+    public int $tax_amount_minor = 0;
+
+    public int $shipping_tax_minor = 0;
+
+    public ?string $shipping_tax_rate = null;
+
+    public ?int $shipping_tax_class_id = null;
+
+    public array $item_taxes = [];
 }

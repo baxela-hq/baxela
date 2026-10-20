@@ -39,6 +39,13 @@ interface CatalogGatewayInterface
     public function variantExists(int $variantId): bool;
 
     /**
+     * How many products currently reference the given tax class — used by
+     * the Tax module to refuse deleting a class that would strand products
+     * on an unresolvable reference.
+     */
+    public function countProductsByTaxClass(int $taxClassId): int;
+
+    /**
      * Whether the category can be referenced (exists). Parallels
      * productExists — used by other modules to validate scope selections.
      */

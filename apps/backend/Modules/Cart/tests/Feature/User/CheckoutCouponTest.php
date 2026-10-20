@@ -19,6 +19,8 @@ use Modules\Order\Schemas\Order\OrderSchema;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+beforeEach(fn () => $this->defaultTaxClass());
+
 function couponCart(User $user, Variant $variant, int $quantity = 2): Cart
 {
     $cart = Cart::query()->firstOrCreate(
