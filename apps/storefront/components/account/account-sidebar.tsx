@@ -6,6 +6,7 @@ import { useAuth } from "@/context/auth-context";
 import {
   BellIcon,
   BoxIcon,
+  RotateCcwIcon,
   CreditCardIcon,
   HeartIcon,
   LogoutIcon,
@@ -19,6 +20,7 @@ import { Link, usePathname, useRouter } from "@/i18n/navigation";
 export type AccountTab =
   | "personal_information"
   | "my_orders"
+  | "my_returns"
   | "my_wishlists"
   | "manage_addresses"
   | "saved_cards"
@@ -33,6 +35,7 @@ const TABS: { key: AccountTab; href: string; icon: ReactNode }[] = [
     icon: <UserIcon className="size-5" />,
   },
   { key: "my_orders", href: "/profile/orders", icon: <BoxIcon className="size-5" /> },
+  { key: "my_returns", href: "/profile/returns", icon: <RotateCcwIcon className="size-5" /> },
   {
     key: "my_wishlists",
     href: "/profile/wishlists",

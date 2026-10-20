@@ -24,6 +24,7 @@ async function loadMessages(locale: string) {
     cart,
     auth,
     account,
+    returns,
     tickets,
     contact,
     paymentReturn,
@@ -41,6 +42,7 @@ async function loadMessages(locale: string) {
     import(`../messages/${locale}/cart/cart.json`),
     import(`../messages/${locale}/auth/auth.json`),
     import(`../messages/${locale}/account/account.json`),
+    import(`../messages/${locale}/account/returns.json`),
     import(`../messages/${locale}/account/tickets.json`),
     import(`../messages/${locale}/contact/contact.json`),
     import(`../messages/${locale}/payment/return.json`),
@@ -65,6 +67,7 @@ async function loadMessages(locale: string) {
     auth: { auth: auth.default },
     account: {
       account: account.default,
+      returns: returns.default,
       tickets: tickets.default,
     },
     contact: { contact: contact.default },

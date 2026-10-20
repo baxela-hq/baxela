@@ -32,7 +32,8 @@
     "shipping_method": "روش ارسال",
     "discount": "تخفیف ({code})",
     "default_badge": "پیش‌فرض",
-    "tax": "مالیات"
+    "tax": "مالیات",
+    "my_returns": "مرجوعی‌های من"
   },
   "profile": {
     "labels": {
@@ -81,7 +82,8 @@
       "keep_order": "نگه داشتن سفارش",
       "continue_shopping": "ادامه خرید",
       "prev_page": "صفحه قبل",
-      "next_page": "صفحه بعد"
+      "next_page": "صفحه بعد",
+      "request_return": "درخواست مرجوعی"
     },
     "filters": {
       "all": "همه وضعیت‌ها",
@@ -99,7 +101,8 @@
     "payment_status": {
       "unpaid": "در انتظار پرداخت",
       "paid": "پرداخت‌شده",
-      "refunded": "بازپرداخت‌شده"
+      "refunded": "بازپرداخت‌شده",
+      "partially_refunded": "بازپرداخت جزئی"
     },
     "hints": {
       "awaiting_payment": "این سفارش در انتظار تایید پرداخت است.",
@@ -109,12 +112,27 @@
     },
     "messages": {
       "success": {
-        "cancelled": "سفارش لغو شد."
+        "cancelled": "سفارش لغو شد.",
+        "return_requested": "درخواست مرجوعی ثبت شد — به‌زودی بررسی می‌شود."
       },
       "error": {
         "cancel_failed": "لغو سفارش ناموفق بود.",
-        "load_failed": "بارگذاری سفارش‌ها ناموفق بود."
+        "load_failed": "بارگذاری سفارش‌ها ناموفق بود.",
+        "return_failed": "ثبت درخواست مرجوعی ناموفق بود."
       }
+    },
+    "return_form": {
+      "title": "ثبت درخواست مرجوعی برای این سفارش",
+      "reason": "دلیل",
+      "reasons": {
+        "damaged": "کالا آسیب‌دیده رسیده است",
+        "wrong_item": "کالای اشتباه دریافت شده",
+        "not_as_described": "مغایر با توضیحات",
+        "other": "سایر دلایل"
+      },
+      "note": "توضیح (اختیاری)",
+      "note_placeholder": "نکته‌ای که تیم باید بداند",
+      "submit": "ثبت درخواست مرجوعی"
     }
   },
   "banner": {
@@ -258,5 +276,8 @@
   "actions": {
     "wishlist_continue_shopping": "ادامه خرید",
     "wishlist_remove_cancel": "انصراف"
+  },
+  "tabs": {
+    "my_returns": "مرجوعی‌های من"
   }
 }

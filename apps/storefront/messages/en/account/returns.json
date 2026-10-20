@@ -1,0 +1,28 @@
+{
+  "title": "My returns",
+  "subtitle": "Track your return requests — refunds are issued separately once the return is processed.",
+  "empty": "No return requests yet.",
+  "tracking": "Tracking",
+  "tracking_placeholder": "Tracking number (optional)",
+  "statuses": {
+    "requested": "Requested",
+    "approved": "Approved — ship it back",
+    "rejected": "Rejected",
+    "shipped": "Shipped by you",
+    "received": "Received",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "reasons": {
+    "damaged": "Item arrived damaged",
+    "wrong_item": "Wrong item received",
+    "not_as_described": "Not as described",
+    "other": "Other reason"
+  },
+  "actions": {
+    "mark_shipped": "I have shipped it",
+    "confirm_shipped": "Confirm shipped",
+    "cancel_return": "Cancel request",
+    "back": "Back"
+  }
+}

@@ -276,7 +276,11 @@ export type ApiOrderStatus =
   | "completed"
   | "cancelled";
 
-export type ApiOrderPaymentStatus = "unpaid" | "paid" | "refunded";
+export type ApiOrderPaymentStatus =
+  | "unpaid"
+  | "paid"
+  | "partially_refunded"
+  | "refunded";
 
 /** Payment methods the backend can serve (values of PaymentMethodEnum). */
 export type ApiPaymentMethod =
@@ -340,6 +344,8 @@ export interface ApiOrder {
   /** Tax snapshot — tax_amount includes the shipping-tax portion. */
   tax_amount: string;
   shipping_tax_amount: string;
+  /** Σ successful ledger refunds across all the order's payments. */
+  refunded_amount: string;
   /** Order placement timestamp. */
   created_at: string | null;
   /** Line items with name snapshots; only endpoints that load them return it. */
@@ -506,4 +512,31 @@ export interface ApiTicket {
   updated_at: string | null;
   /** Present on the show endpoint; absent from list rows. */
   messages?: ApiTicketMessage[];
+}
+
+export type ApiOrderReturnStatus =
+  | "requested"
+  | "approved"
+  | "rejected"
+  | "shipped"
+  | "received"
+  | "completed"
+  | "cancelled";
+
+export type ApiOrderReturnReason =
+  | "damaged"
+  | "wrong_item"
+  | "not_as_described"
+  | "other";
+
+export interface ApiOrderReturn {
+  id: number;
+  order_id: number;
+  order_code?: string | null;
+  status: ApiOrderReturnStatus;
+  reason: ApiOrderReturnReason;
+  note: string | null;
+  tracking_number: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 }

@@ -29,6 +29,7 @@ const BADGE_CLASSES: Record<ApiOrderStatus, string> = {
 const PAYMENT_BADGE_CLASSES: Record<ApiOrderPaymentStatus, string> = {
   unpaid: "bg-amber-100 text-amber-700",
   paid: "bg-accent/10 text-accent",
+  partially_refunded: "bg-orange-100 text-orange-700",
   refunded: "bg-red-100 text-red-600",
 };
 
@@ -77,6 +78,10 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [expandedCode, setExpandedCode] = useState<string | null>(null);
+  const [returningCode, setReturningCode] = useState<string | null>(null);
+  const [returnReason, setReturnReason] = useState("damaged");
+  const [returnNote, setReturnNote] = useState("");
+  const [returning, setReturning] = useState(false);
   const [confirmingCancelCode, setConfirmingCancelCode] = useState<string | null>(
     null,
   );
@@ -126,6 +131,29 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
       void load(page);
     }
   }, [token, page, load]);
+
+  const requestReturn = async (order: ApiOrder) => {
+    setReturning(true);
+    try {
+      await api.post(
+        `/order/user/orders/${order.order_code}/returns`,
+        { reason: returnReason, note: returnNote.trim() || null },
+        { token },
+      );
+      setReturningCode(null);
+      setReturnReason("damaged");
+      setReturnNote("");
+      toast.success(t("orders.messages.success.return_requested"));
+    } catch (cause) {
+      toast.error(
+        cause instanceof ApiError
+          ? cause.message
+          : t("orders.messages.error.return_failed"),
+      );
+    } finally {
+      setReturning(false);
+    }
+  };
 
   const cancelOrder = async (order: ApiOrder) => {
     setCancelling(true);
@@ -224,6 +252,10 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
             (address) => address.type === "shipping",
           );
           const cancellable = CANCELLABLE_STATUSES.includes(order.status);
+          const returnable =
+            (order.status === "shipped" || order.status === "completed") &&
+            (order.payment_status === "paid" ||
+              order.payment_status === "partially_refunded");
 
           return (
             <li key={order.order_code} className="py-8 first:pt-0 last:pb-0">
@@ -297,6 +329,62 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                   </span>
                 </p>
 
+                {returningCode === order.order_code ? (
+                  <div className="mt-4 max-w-xl space-y-3 rounded-default border border-border-light p-4">
+                    <p className="text-sm font-medium text-foreground rtl:normal-case rtl:tracking-normal">
+                      {t("orders.return_form.title")}
+                    </p>
+                    <label className="block space-y-1">
+                      <span className="text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        {t("orders.return_form.reason")}
+                      </span>
+                      <select
+                        value={returnReason}
+                        onChange={(event) => setReturnReason(event.target.value)}
+                        className="w-full rounded-default border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none rtl:normal-case rtl:tracking-normal"
+                      >
+                        {["damaged", "wrong_item", "not_as_described", "other"].map(
+                          (reason) => (
+                            <option key={reason} value={reason}>
+                              {t(`orders.return_form.reasons.${reason}`)}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </label>
+                    <label className="block space-y-1">
+                      <span className="text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
+                        {t("orders.return_form.note")}
+                      </span>
+                      <textarea
+                        rows={3}
+                        value={returnNote}
+                        onChange={(event) => setReturnNote(event.target.value)}
+                        className="w-full rounded-default border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-secondary-text focus:border-primary focus:outline-none rtl:normal-case rtl:tracking-normal"
+                        placeholder={t("orders.return_form.note_placeholder")}
+                      />
+                    </label>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <button
+                        type="button"
+                        disabled={returning}
+                        onClick={() => requestReturn(order)}
+                        className="inline-flex h-10 items-center justify-center rounded-default bg-foreground px-5 text-sm font-medium text-background transition-colors hover:opacity-90 disabled:opacity-60 rtl:normal-case rtl:tracking-normal"
+                      >
+                        {returning
+                          ? tCommon("messages.info.loading")
+                          : t("orders.return_form.submit")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setReturningCode(null)}
+                        className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+                      >
+                        {t("orders.actions.keep_order")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
                 <div className="flex flex-wrap items-center gap-3">
                   {confirmingCancelCode === order.order_code ? (
                     <>
@@ -332,6 +420,15 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                           ? t("orders.actions.hide_order")
                           : t("orders.actions.view_order")}
                       </button>
+                      {returnable ? (
+                        <button
+                          type="button"
+                          onClick={() => setReturningCode(order.order_code)}
+                          className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted rtl:normal-case rtl:tracking-normal"
+                        >
+                          {t("orders.actions.request_return")}
+                        </button>
+                      ) : null}
                       {cancellable ? (
                         <button
                           type="button"

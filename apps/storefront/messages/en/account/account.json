@@ -32,7 +32,8 @@
     "shipping_method": "Shipping method",
     "discount": "Discount ({code})",
     "default_badge": "Default",
-    "tax": "Tax"
+    "tax": "Tax",
+    "my_returns": "My returns"
   },
   "profile": {
     "labels": {
@@ -81,7 +82,8 @@
       "keep_order": "Keep Order",
       "continue_shopping": "Continue shopping",
       "prev_page": "Previous page",
-      "next_page": "Next page"
+      "next_page": "Next page",
+      "request_return": "Request return"
     },
     "filters": {
       "all": "All statuses",
@@ -99,7 +101,8 @@
     "payment_status": {
       "unpaid": "Awaiting payment",
       "paid": "Paid",
-      "refunded": "Refunded"
+      "refunded": "Refunded",
+      "partially_refunded": "Partially refunded"
     },
     "hints": {
       "awaiting_payment": "This order is awaiting payment confirmation.",
@@ -109,12 +112,27 @@
     },
     "messages": {
       "success": {
-        "cancelled": "The order has been cancelled."
+        "cancelled": "The order has been cancelled.",
+        "return_requested": "Return requested — we will review it shortly."
       },
       "error": {
         "cancel_failed": "Cancelling the order failed.",
-        "load_failed": "Loading your orders failed."
+        "load_failed": "Loading your orders failed.",
+        "return_failed": "Could not submit the return request."
       }
+    },
+    "return_form": {
+      "title": "Request a return for this order",
+      "reason": "Reason",
+      "reasons": {
+        "damaged": "Item arrived damaged",
+        "wrong_item": "Wrong item received",
+        "not_as_described": "Not as described",
+        "other": "Other reason"
+      },
+      "note": "Note (optional)",
+      "note_placeholder": "Anything the team should know",
+      "submit": "Submit return request"
     }
   },
   "banner": {
@@ -258,5 +276,8 @@
   "actions": {
     "wishlist_continue_shopping": "Continue shopping",
     "wishlist_remove_cancel": "Cancel"
+  },
+  "tabs": {
+    "my_returns": "My returns"
   }
 }
