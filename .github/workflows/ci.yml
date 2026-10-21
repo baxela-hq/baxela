@@ -126,3 +126,16 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  # Secrets scan — commits history on PRs, head on push. Findings fail the build
+  # (see SECURITY.md for the secrets policy; only known-safe fixtures are ignored).
+  secrets-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
