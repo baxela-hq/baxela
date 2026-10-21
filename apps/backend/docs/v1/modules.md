@@ -8,17 +8,24 @@ Welcome! This guide helps you understand all modules in under 30 minutes.
 
 ### Modules
 ```
+├── Audit
 ├── Auth
 ├── Cart
 ├── Catalog
+├── Contact
 ├── Content
 ├── Core
+├── Discount
 ├── Inventory
 ├── Media
+├── Menu
+├── Notification
 ├── Order
 ├── Payment
 ├── Setting
 ├── Shipping
+├── Support
+├── Tax
 └── User
 ```
 
@@ -70,6 +77,32 @@ Welcome! This guide helps you understand all modules in under 30 minutes.
 └── User
     └── UserProfileUpdatedEvent.php
 ```
+
+
+---
+## Audit
+This module records admin activity to an audit log and exposes it in the admin panel
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| audit_logs                   | One row per recorded admin action (acting user, module, action, changes) |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| None  | None |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| All domain events | Records admin actions to `audit_logs` (listener lives here) |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| None  | None |
+
 
 
 ---
@@ -257,6 +290,37 @@ This module is shared with all modules
 
 
 ---
+## Discount
+This module is responsible for coupons (with redemption guards) and product/category-scoped promotions
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| discount_coupons             | Coupon definitions |
+| discount_redemptions         | One row per coupon redemption (guard against over-redemption) |
+| discount_promotions          | Promotion definitions |
+| discount_promotion_products  | Product scope of a promotion |
+| discount_promotion_categories| Category scope of a promotion |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| None  | None |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| Cart   | Coupon application + discount totals at checkout (via Discount gateway) |
+| Catalog | Promotion price resolution for listing/PDP prices (via Discount gateway) |
+
+
+
+---
 ## Inventory
 This module is responsible for checking products stocks
 
@@ -347,6 +411,36 @@ This module is responsible for managing navigation menus and their nested links
 | None  | None |
 
 
+
+
+
+---
+
+## Notification
+This module delivers notifications across four channels (email, database, web-push, Telegram) behind builder/template/channel contracts, with a per-recipient preference matrix
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| notification_notifications   | Database-channel notification rows |
+| notification_preferences     | Per-recipient channel/topic preferences |
+| notification_push_subscriptions  | Web-push (VAPID) subscriptions |
+| notification_telegram_subscriptions | Telegram chat subscriptions |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| None  | None |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| Events from all modules | ~40 listeners turn domain events (orders, payments, tickets, contact, …) into notifications |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| None  | Consumes events only; channels are self-contained |
 
 
 
@@ -494,6 +588,66 @@ This module is responsible for shipping methods, zones, rates and per-order ship
 
 
 ---
+## Support
+This module is responsible for customer support tickets with threaded messages
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| support_tickets              | Tickets (status: open/closed, order reference) |
+| support_ticket_messages      | Threaded messages on a ticket (customer/admin sender) |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| TicketCreatedEvent  | Customer opens a ticket |
+| TicketMessageCreatedEvent  | Reply added to a ticket |
+| TicketStatusUpdatedEvent  | Status changed (open/closed/reopened) |
+| TicketDeletedEvent  | Admin deletes a ticket |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| Order  | Verifies order ownership when a ticket references an order code |
+| Notification | Notifies participants on ticket events (listener lives in Notification) |
+
+
+
+---
+
+## Tax
+This module is responsible for tax classes and rates, with exact integer math and tax snapshots on orders
+
+### 🗂 Tables
+| Table (DB Prefix_Table Name) | Description |
+|------------------------------|----|
+| tax_classes                  | Tax classes (e.g. standard, reduced) |
+| tax_rates                    | Rates per class × country |
+
+### 🔔 Events Emitted
+| Event | When |
+|----|----|
+| None  | None |
+
+### 👂 Events Listened To
+| Event | Reaction       |
+|-------|----------------|
+| None   | None |
+
+### 🔗 Dependencies
+| Module | Reason           |
+|--------|------------------|
+| None  | None (consumed by Cart/Order via the Tax gateway) |
+
+
+
+---
+
 ## User
 This module is responsible for users
 
