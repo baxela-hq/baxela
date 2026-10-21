@@ -6,19 +6,24 @@
 >
 > **Created:** 2026-10-21 · **Owner:** solo maintainer · **Status:** awaiting execution
 >
-> **How to use:** Work phases strictly in order (0 → 1 → 2 → 3). Within a phase, task order
+> **How to use:** Detailed, fact-checked execution plans for each phase live in
+> `docs/plans/phase-{0..3}.md` — prefer those; this file is the master outline. Work phases
+> strictly in order (0 → 1 → 2 → 3). Within a phase, task order
 > is flexible unless a task says otherwise. Re-verify any fact below against the codebase
 > before relying on it — numbers may have drifted since this was written. Tick the checkbox
 > and note the date when a task completes. Repo conventions: read root `AGENTS.md` and each
 > app's `AGENTS.md` first; conventional commits (`type(scope): subject`); never commit unless
 > explicitly asked.
+>
+> **Open assumptions:** root license MIT; new-locale strings agent-drafted then
+> owner-reviewed (both are flagged where they matter in the phase plans).
 
 ---
 
 ## Context — verified state as of 2026-10-21
 
 **What Baxela is:** E-commerce platform monorepo — Laravel 13 modular monolith API
-(`apps/backend`, 18 modules), React 19 + Vite admin (`apps/admin`, forked from shadcn-admin
+(`apps/backend`, 19 modules), React 19 + Vite admin (`apps/admin`, forked from shadcn-admin
 v2.2.1), Next.js 16 storefront (`apps/storefront`), Bruno API collection (`api/`, 417
 requests). Project predates its GitHub history (migrated from GitLab; GitHub monorepo
 history starts 2026-08-28, ~514 commits since). Mobile app lives in a sibling repo. Live
@@ -52,9 +57,11 @@ demo sites exist.
    overclaims (Scramble API docs "implemented" but unwired) and links to docs that don't
    exist (`/docs/architecture.md`, `/docs/api`, `/docs/deployment`, `/docs/database`).
 3. **No visitor-facing multi-currency** — see dedicated section below (confirmed correct and in scope).
-4. **Test gaps**: Shipping has 2 test files for 22 controllers; Menu/Support/Setting/Audit
-   have 1 each; zero frontend/e2e tests (no framework installed); phpstan baseline
-   suppresses 3,076 errors (`apps/backend/phpstan-baseline.neon`).
+4. **Test gaps** (verified 2026-10-21): Shipping's 19 admin controllers and Menu's
+   update/delete/permission paths are untested (Support, Audit, and Setting turned out
+   adequately covered despite low file counts); zero frontend/e2e tests (no framework
+   installed); phpstan baseline suppresses ~3,200 errors (`apps/backend/phpstan-baseline.neon`
+   — regenerate for the live count).
 5. **Search is SQL `LIKE` only**; **media is local-disk only** (S3 enum exists, flysystem-aws
    adapter not installed); locales limited to en/fa.
 6. **Template/mock leftovers** in admin and storefront (detailed in Phase 1).
@@ -122,7 +129,7 @@ Goal: make the repo legally usable and every public claim true. Nothing here is 
 - [ ] **0.2 README truth pass.** In `apps/backend/README.md` and root `README.md`: remove or
   implement the Scramble API-docs claim; delete links to non-existent `/docs/architecture.md`,
   `/docs/api`, `/docs/deployment`, `/docs/database`; verify every remaining link resolves.
-- [ ] **0.3 Rewrite `docs/modules.md`** (backend) to describe the real 18 modules instead of
+- [ ] **0.3 Rewrite `docs/modules.md`** (backend) to describe the real 19 modules instead of
   the aspirational structure (it currently mentions modules like "Identity" and "Pricing"
   that don't exist).
 - [ ] **0.4 Secrets audit.** Grep repo for Sentry DSNs, API keys, tokens, passwords;
@@ -162,7 +169,8 @@ Goal: nothing embarrassing or unsafe on launch day. Work through in rough priori
   User, Inventory, Contact (2–3 each). At minimum: happy path + one auth/permission test
   per module's admin surface.
 - [ ] **1.5 Shrink the phpstan baseline.** `apps/backend/phpstan-baseline.neon` currently
-  suppresses 3,076 errors. Work module-by-module (Core → Catalog → Payment → rest); target
+  suppresses ~3,200 errors (3,202 on 2026-10-21 — regenerate first for the live count).
+  Work module-by-module (Core → Catalog → Payment → rest); target
   **< 500** by alpha tag, fix-not-suppress. Track the number in the CHANGELOG entry.
 - [ ] **1.6 E2E happy path (Playwright).** Install Playwright in `apps/storefront` (first
   frontend test framework in the monorepo). One test: home → PDP → add to cart → checkout
@@ -186,10 +194,14 @@ Goal: nothing embarrassing or unsafe on launch day. Work through in rough priori
 
 ### Cleanup
 
-- [ ] **1.10 Admin template leftovers.** Remove routes `/sign-in-2`, `/sign-up`,
-  `/forgot-password` (admin has its own auth flow), `/groups`, `/templates`, `/values/$id`,
-  `/display`, `/appearance`; merge duplicate `src/features/users` vs `src/features/user/users`
-  and template `src/features/settings` vs real `src/features/setting/settings`.
+- [ ] **1.10 Admin template leftovers (list corrected 2026-10-21).** Remove `/sign-in-2`,
+  `/sign-up`, `/forgot-password` (mock `console.log` forms), the template
+  `/settings/display` + `/settings/appearance` pages, and the faker-seeded template
+  `src/features/users/` + `/users` route (the real users feature is `features/user/users`).
+  **Keep `/catalog/attributes/groups`, `/templates`, `/values/$id` — they are live Baxela
+  attribute features, not leftovers** (this task's original list was wrong about them).
+  Also delete the orphaned storefront `coming-soon-panel.tsx` and the mock saved-cards
+  page. Exact steps + link-site fixes: `docs/plans/phase-1-alpha-hardening.md` §1.8.
 - [ ] **1.11 Storefront mock/placeholder removal.** Hide mock saved-cards UI behind a
   feature flag or remove (`apps/storefront/components/account/saved-cards.tsx` states cards
   live in memory only); delete unused `coming-soon-panel.tsx` or wire it to unfinished pages.
@@ -250,7 +262,7 @@ Goal: convert launch spike into a compounding curve. Cadence beats bursts.
   UI, admin reindex command, optional compose profile. Ship with a blog post — most
   visible feature gap today.
 - [ ] **3.3 Engineering content.** 2–3 posts on the machinery: idempotent checkout, the
-  dual-track order state machine, ports-and-adapters across 18 Laravel modules. These
+  dual-track order state machine, ports-and-adapters across 19 Laravel modules. These
   rank in search and convert readers better than feature announcements.
 - [ ] **3.4 Community locales.** Move new translations to PR-driven (each locale = a
   contributor + their network); credit translators in release notes.
@@ -282,7 +294,7 @@ assets matter as much as Phase 1 code.
 | Core | 6 | Money, DTOs, seed data |
 | User | 3 | profiles, addresses, wishlist |
 | Media | 3 | local disk only |
-| Shipping | **2** | 22 controllers — worst gap |
+| Shipping | **2** | 19 admin + 2 user controllers — worst gap |
 | Contact | 2 | no ESP |
 | Inventory | 2 | single stock per variant |
 | Support | **1** | tickets |
@@ -290,8 +302,11 @@ assets matter as much as Phase 1 code.
 | Setting | **1** | ~8 settings |
 | Audit | **1** | log + list |
 
-Totals: 123 Pest files, ~726 test functions. Frontend: **no test framework installed in
-either admin or storefront** (Playwright arrives with task 1.6).
+Totals: 123 Pest files, ~726 test functions. File count ≠ coverage — verified 2026-10-21:
+Support's single file holds 9 thorough tests, Audit 6, Setting 5; the true gaps are
+Shipping's admin surface and Menu's update/delete/permission paths. Frontend: **no test
+framework installed in either admin or storefront** (Playwright arrives with Phase 1 —
+`docs/plans/phase-1-alpha-hardening.md` §1.2).
 
 ## Appendix B — Key file references
 
