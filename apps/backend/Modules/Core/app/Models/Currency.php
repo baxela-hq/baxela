@@ -21,11 +21,15 @@ class Currency extends Model
         CurrencySchema::SYMBOL,
         CurrencySchema::IS_SYMBOL_RIGHT,
         CurrencySchema::IS_DEFAULT,
+        CurrencySchema::EXCHANGE_RATE,
+        CurrencySchema::IS_ACTIVE,
     ];
 
     protected $casts = [
         CurrencySchema::IS_SYMBOL_RIGHT => 'boolean',
         CurrencySchema::IS_DEFAULT => 'boolean',
+        CurrencySchema::EXCHANGE_RATE => 'decimal:8',
+        CurrencySchema::IS_ACTIVE => 'boolean',
     ];
 
     protected static function newFactory(): CurrencyFactory

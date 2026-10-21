@@ -20,6 +20,10 @@ class CurrencyDto
 
     public bool $is_symbol_right;
 
+    public string $exchange_rate = '1.00000000';
+
+    public bool $is_active = true;
+
     public static function fill(array $input): self
     {
         $media = new self;

@@ -27,4 +27,13 @@ interface CoreGatewayInterface
     public function getLanguageIdsByCodes(array $codes): array;
 
     public function getActiveLanguages(): Collection;
+
+    /**
+     * Active currencies ordered default-first — the storefront currency
+     * switcher's source of truth (display conversion only; charging stays
+     * in the base currency).
+     */
+    public function getActiveCurrencies(): Collection;
+
+    public function getActiveCurrencyByCode(string $code): ?CurrencyDto;
 }

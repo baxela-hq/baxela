@@ -24,4 +24,13 @@ class CurrencySchema
     public const string IS_DEFAULT = 'is_default';
 
     public const string IS_SYMBOL_RIGHT = 'is_symbol_right';
+
+    /**
+     * Display-conversion rate against the base (default) currency as a
+     * decimal(16,8) string — 1 base unit = rate display units. Kept at 1
+     * for the default currency itself; admin-managed, no external FX feed.
+     */
+    public const string EXCHANGE_RATE = 'exchange_rate';
+
+    public const string IS_ACTIVE = 'is_active';
 }

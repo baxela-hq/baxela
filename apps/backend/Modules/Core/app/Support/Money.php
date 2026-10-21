@@ -75,6 +75,44 @@ class Money
         return $quotient;
     }
 
+    /**
+     * Convert a minor-unit amount between currencies via a decimal exchange
+     * rate ('1.08500000' == 1.085 target units per base unit), rounded
+     * half-up once at the target precision.
+     *
+     * $rate matches the decimal(16,8) exchange_rate storage: at most 8
+     * fraction digits, no sign. Integer math only — the rate is scaled to
+     * an 8-digit integer, so the result is
+     * minor × rate × 10^to / (10^8 × 10^from) with one half-up rounding.
+     */
+    public static function convert(int $minor, string $rate, int $fromPrecision = 2, int $toPrecision = 2): int
+    {
+        if ($minor < 0) {
+            throw new InvalidArgumentException('Minor units cannot be negative.');
+        }
+
+        if (! preg_match('/^\d+(\.\d{1,8})?$/', $rate)) {
+            throw new InvalidArgumentException(sprintf(
+                'Malformed exchange rate "%s" (expected a decimal string with up to 8 fraction digits, no sign).',
+                $rate,
+            ));
+        }
+
+        $rateMinor = self::fromDecimal($rate, 8);
+
+        $numerator = $minor * $rateMinor * (10 ** $toPrecision);
+        $denominator = (10 ** 8) * (10 ** $fromPrecision);
+
+        $quotient = intdiv($numerator, $denominator);
+        $remainder = $numerator % $denominator;
+
+        if ($remainder * 2 >= $denominator) {
+            $quotient++;
+        }
+
+        return $quotient;
+    }
+
     public static function min(int ...$values): int
     {
         return min($values);

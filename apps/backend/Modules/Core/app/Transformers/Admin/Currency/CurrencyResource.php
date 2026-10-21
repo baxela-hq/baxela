@@ -22,6 +22,8 @@ class CurrencyResource extends JsonResource
             Schema::SYMBOL => $this->{Schema::SYMBOL},
             Schema::IS_DEFAULT => $this->{Schema::IS_DEFAULT},
             Schema::IS_SYMBOL_RIGHT => $this->{Schema::IS_SYMBOL_RIGHT},
+            Schema::EXCHANGE_RATE => $this->{Schema::EXCHANGE_RATE},
+            Schema::IS_ACTIVE => $this->{Schema::IS_ACTIVE},
             Schema::CREATED_AT => $this->{Schema::CREATED_AT},
             Schema::UPDATED_AT => $this->{Schema::UPDATED_AT},
         ];

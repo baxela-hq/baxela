@@ -76,4 +76,22 @@ class CoreGateway implements CoreGatewayInterface
     {
         return Language::query()->where(LanguageSchema::IS_ACTIVE, true)->get();
     }
+
+    public function getActiveCurrencies(): Collection
+    {
+        return Currency::query()
+            ->where(CurrencySchema::IS_ACTIVE, true)
+            ->orderBy(CurrencySchema::IS_DEFAULT, 'desc')
+            ->get();
+    }
+
+    public function getActiveCurrencyByCode(string $code): ?CurrencyDto
+    {
+        $record = Currency::query()
+            ->where(CurrencySchema::CODE, $code)
+            ->where(CurrencySchema::IS_ACTIVE, true)
+            ->first();
+
+        return $record ? CurrencyDto::fill($record->toArray()) : null;
+    }
 }
