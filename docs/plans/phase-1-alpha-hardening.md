@@ -1,5 +1,27 @@
 # Phase 1 Plan — v0.1.0-alpha Hardening (Weeks 1–3)
 
+> **Execution status 2026-10-22:** §1.1 done — throttles/OTP hardening were ALREADY
+> implemented (rate-limit tests existed too); the delivered piece is the route-audit test
+> `Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php` (green — zero
+> unprotected admin routes). §1.2 done — Playwright 1.64 installed in apps/storefront,
+> `e2e/happy-path.spec.ts` PASSES locally (40s, full signup→OTP(Mailpit)→checkout→profile
+> journey) against the compose stack; `.github/workflows/e2e.yml` added (push+dispatch,
+> continue-on-error). Gotchas solved: dev mail must point at Mailpit
+> (`MAIL_MAILER=smtp MAIL_HOST=mail MAIL_PORT=1025` in apps/backend/.env — CI workflow
+> injects this), seeding order is core→setting→**media→**catalog (ProductSeeder needs the
+> `Catalog/Product` media folder)→payment→shipping→tax, and container-created
+> `storage/logs/*.log` files must be deleted (not chmodded — SELinux) before host-run
+> tests. §1.3 backend done — `exchange_rate`/`is_active` on currencies (+admin
+> create/update routes with auto-derived permissions), public
+> `GET core/public/currencies` (default-first), `Money::convert()` integer math, order
+> `display_currency_code`/`display_fx_rate` snapshot (client sends only the code; rate
+> resolved server-side; unknown/inactive codes ignored), Order/User resource exposure;
+> 19 new tests across Money/Currency/Checkout — full Core+Cart+Order suites green (179
+> tests), dev DB migrated. **§1.3 storefront is NEXT:** cookie preference (theme-mode
+> pattern), header switcher, CurrencyProvider + conversion at the 8 price consumers,
+> checkout `display_currency` param + "charged in" note. §1.4–1.8 untouched.
+> All changes uncommitted (owner commits explicitly).
+
 > Execution plan for Phase 1 of `docs/ROADMAP.md`. Prerequisite: Phase 0 complete
 > (`docs/plans/phase-0-legal-and-truth.md`). Re-verify line numbers before editing.
 > Sections are parallelizable across sessions except where noted; suggested order:

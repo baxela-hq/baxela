@@ -10,6 +10,19 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Multi-currency groundwork (backend)**: currencies gain admin-managed
+  `exchange_rate` + `is_active`; new admin create/update endpoints (permissions derive
+  from route names) and public `GET /core/v1/core/public/currencies` (default-first);
+  `Money::convert()` for exact integer display conversion; orders snapshot
+  `display_currency_code` + `display_fx_rate` at checkout when a non-base currency was
+  selected (client supplies only the code; the rate is resolved server-side; charging
+  stays in the base currency).
+- **E2E testing**: Playwright in `apps/storefront` with a passing happy-path spec
+  (signup → email-OTP via Mailpit → checkout with manual payment → order in profile)
+  plus an `e2e` GitHub Actions workflow booting the full compose stack.
+- **Security regression test**: every `api/v1/*/admin/*` route must carry
+  `auth:sanctum` + permission middleware (`AdminRouteProtectionTest`).
+
 - MIT `LICENSE` at the repo root (the admin panel keeps its upstream shadcn-admin MIT
   license and credits).
 - Governance: `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue templates,

@@ -87,3 +87,23 @@ docker compose --profile mail up -d
 docker compose down -v   # stops everything; drops the MySQL/Redis volumes and
                          # the frontends' node_modules (reinstalled on next up)
 ```
+
+## Seeding
+
+The master `DatabaseSeeder` is intentionally empty — seed per module, in
+dependency order:
+
+```bash
+docker compose exec app php artisan db:seed --class="Modules\Core\Database\Seeders\CoreDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Media\Database\Seeders\MediaDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Shipping\Database\Seeders\ShippingDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Tax\Database\Seeders\TaxDatabaseSeeder"
+```
+
+Core first (languages/countries/currencies), **Media before Catalog** — the product
+seeder needs the `Catalog/Product` media folder tree. The e2e suite
+(`apps/storefront`, `pnpm test:e2e`) expects this seed plus Mailpit running, and
+completes checkout through the manual payment method the Payment seeder activates.
