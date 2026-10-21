@@ -20,6 +20,10 @@ class OrderResource extends JsonResource
             OrderSchema::STATUS => $this->resource->{OrderSchema::STATUS},
             OrderSchema::PAYMENT_STATUS => $this->resource->{OrderSchema::PAYMENT_STATUS},
             OrderSchema::TOTAL_AMOUNT => $this->resource->{OrderSchema::TOTAL_AMOUNT},
+            // What the customer saw when a non-base display currency was
+            // selected at checkout (amounts are in the base currency)
+            OrderSchema::DISPLAY_CURRENCY_CODE => $this->resource->{OrderSchema::DISPLAY_CURRENCY_CODE},
+            OrderSchema::DISPLAY_FX_RATE => $this->resource->{OrderSchema::DISPLAY_FX_RATE},
             OrderSchema::SHIPPING_METHOD_NAME => $this->resource->{OrderSchema::SHIPPING_METHOD_NAME},
             OrderSchema::SHIPPING_COST => $this->resource->{OrderSchema::SHIPPING_COST},
             OrderSchema::COUPON_CODE => $this->resource->{OrderSchema::COUPON_CODE},

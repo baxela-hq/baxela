@@ -33,6 +33,16 @@ class CreateOrderInput
     public ?int $currency_id = null;
 
     /**
+     * Display currency the customer had selected at checkout (non-base
+     * only). Server-resolved from the request's display_currency code
+     * against active currencies — the rate is never trusted from the
+     * client. Null when the customer used the base currency.
+     */
+    public ?string $display_currency_code = null;
+
+    public ?string $display_fx_rate = null;
+
+    /**
      * Coupon applied at checkout. Server-populated internal values only —
      * never client input. CheckoutAction is the sole writer, after
      * re-evaluating the cart's stored coupon code against the live cart.

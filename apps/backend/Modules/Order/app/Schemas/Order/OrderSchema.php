@@ -32,6 +32,16 @@ class OrderSchema
      */
     public const string CURRENCY_ID = 'currency_id';
 
+    /**
+     * Display-currency facts snapshotted at checkout when the customer
+     * checked out with a non-base currency selected: the ISO code shown and
+     * the FX rate applied. Charging amounts stay in the base currency —
+     * these columns record what the customer saw, nothing more.
+     */
+    public const string DISPLAY_CURRENCY_CODE = 'display_currency_code';
+
+    public const string DISPLAY_FX_RATE = 'display_fx_rate';
+
     public const string SHIPPING_METHOD_ID = 'shipping_method_id';
 
     public const string SHIPPING_METHOD_NAME = 'shipping_method_name';

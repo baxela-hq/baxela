@@ -147,3 +147,62 @@ it('snapshots the default currency onto the order at checkout', function () {
 
     expect($order->{OrderSchema::CURRENCY_ID})->toBe($currency->id);
 });
+
+it('snapshots the display currency and fx rate when a non-base currency was selected', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    Currency::factory()->create(['is_default' => true, 'code' => 'USD']);
+    $euro = Currency::factory()->create([
+        'code' => 'EUR',
+        'exchange_rate' => '1.08500000',
+        'is_active' => true,
+        'is_default' => false,
+    ]);
+    $variant = $this->variantWithStock(10, price: 150);
+    $address = $this->addressForUser($user);
+    userCartWithItem($user, $variant->id);
+
+    $response = $this->postJson($this->baseUrl('/user/checkout'), [
+        'address_id' => $address->id,
+        'display_currency' => 'eur',
+    ])->assertOk();
+
+    $order = Order::query()
+        ->where(OrderSchema::ORDER_CODE, $response->json('data.order_code'))
+        ->first();
+
+    // Code is normalized, rate comes from the active record — never the client
+    expect($order->{OrderSchema::DISPLAY_CURRENCY_CODE})->toBe('EUR')
+        // SQLite returns the decimal unpadded — compare numerically
+        ->and((float) $order->{OrderSchema::DISPLAY_FX_RATE})->toBe(1.085)
+        // charging amounts stay in the base currency, untouched
+        ->and((float) $order->{OrderSchema::TOTAL_AMOUNT})->toBe(300.0);
+});
+
+it('ignores unknown or inactive display currencies instead of blocking checkout', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    Currency::factory()->create(['is_default' => true, 'code' => 'USD']);
+    Currency::factory()->create(['code' => 'GBP', 'is_active' => false, 'is_default' => false]);
+    $variant = $this->variantWithStock(10);
+    $address = $this->addressForUser($user);
+
+    foreach (['XXX', 'gbp'] as $code) {
+        // checkout tears the cart down — rebuild it per iteration
+        userCartWithItem($user, $variant->id);
+
+        $response = $this->postJson($this->baseUrl('/user/checkout'), [
+            'address_id' => $address->id,
+            'display_currency' => $code,
+        ])->assertOk();
+
+        $order = Order::query()
+            ->where(OrderSchema::ORDER_CODE, $response->json('data.order_code'))
+            ->first();
+
+        expect($order->{OrderSchema::DISPLAY_CURRENCY_CODE})->toBeNull()
+            ->and($order->{OrderSchema::DISPLAY_FX_RATE})->toBeNull();
+    }
+});

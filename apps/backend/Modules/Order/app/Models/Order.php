@@ -29,6 +29,8 @@ class Order extends Model
         OrderSchema::PAID_AT,
         OrderSchema::TOTAL_AMOUNT,
         OrderSchema::CURRENCY_ID,
+        OrderSchema::DISPLAY_CURRENCY_CODE,
+        OrderSchema::DISPLAY_FX_RATE,
         OrderSchema::SHIPPING_METHOD_ID,
         OrderSchema::SHIPPING_METHOD_NAME,
         OrderSchema::SHIPPING_COST,

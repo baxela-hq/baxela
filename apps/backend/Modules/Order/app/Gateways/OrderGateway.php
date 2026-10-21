@@ -42,6 +42,8 @@ class OrderGateway implements OrderGatewayInterface
                 OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::UNPAID,
                 OrderSchema::TOTAL_AMOUNT => 0,
                 OrderSchema::CURRENCY_ID => $input->currency_id,
+                OrderSchema::DISPLAY_CURRENCY_CODE => $input->display_currency_code,
+                OrderSchema::DISPLAY_FX_RATE => $input->display_fx_rate,
                 OrderSchema::SHIPPING_METHOD_ID => $input->shipping_method_id,
                 OrderSchema::SHIPPING_METHOD_NAME => $input->shipping_method_name,
                 OrderSchema::SHIPPING_COST => $input->shipping_cost,

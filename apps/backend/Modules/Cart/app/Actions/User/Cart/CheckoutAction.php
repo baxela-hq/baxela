@@ -89,8 +89,23 @@ class CheckoutAction
 
         // Snapshot the currency the totals are quoted in, so the order keeps
         // it even if the shop default changes later
-        $defaultCurrency = app(CoreGatewayInterface::class)->getDefaultCurrency();
+        $coreGateway = app(CoreGatewayInterface::class);
+        $defaultCurrency = $coreGateway->getDefaultCurrency();
         $input->currency_id = is_null($defaultCurrency) ? null : (int) $defaultCurrency->id;
+
+        // Display-currency facts (what the customer saw when a non-base
+        // currency was selected). The code is the only client input; the
+        // rate is resolved server-side from the active-currency record.
+        // Unknown or inactive codes are ignored — a display preference
+        // must never block an order.
+        $displayCode = strtoupper((string) $request->input('display_currency'));
+        if ($displayCode !== '' && $displayCode !== $defaultCurrency?->code) {
+            $displayCurrency = $coreGateway->getActiveCurrencyByCode($displayCode);
+            if (! is_null($displayCurrency)) {
+                $input->display_currency_code = $displayCurrency->code;
+                $input->display_fx_rate = $displayCurrency->exchange_rate;
+            }
+        }
 
         $shippingMethodId = $request->input('shipping_method_id');
         if (! is_null($shippingMethodId)) {

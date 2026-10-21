@@ -14,6 +14,9 @@ class CheckoutRequest extends FormRequest
         return [
             'address_id' => ['required', 'integer'],
             'shipping_method_id' => ['nullable', 'integer'],
+            // Display-only preference: resolved and rate-snapshotted
+            // server-side in CheckoutAction, never trusted for amounts.
+            'display_currency' => ['nullable', 'string', 'size:3'],
         ];
     }
 
