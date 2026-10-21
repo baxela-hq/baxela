@@ -1,0 +1,95 @@
+name: E2E
+
+# Playwright happy-path against the real compose stack (frontend + mail
+# profiles). Not on pull_request yet: heavy (~15 min) and allowed to fail
+# while it settles — flip continue-on-error once it's stable, then consider
+# adding it to PRs.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: apps/storefront
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Prepare environment files
+        working-directory: .
+        run: |
+          cp .env.example .env
+          # Route OTP mail to Mailpit: the backend entrypoint copies
+          # .env.example → .env on first boot, so the overrides must ride
+          # along (same values the develop README documents for the mail
+          # profile).
+          printf '\nMAIL_MAILER=smtp\nMAIL_HOST=mail\nMAIL_PORT=1025\n' >> apps/backend/.env.example
+
+      - name: Boot the compose stack
+        working-directory: .
+        run: docker compose --profile frontend --profile mail up -d --quiet-pull
+
+      - name: Wait for API, storefront, and Mailpit
+        working-directory: .
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf -o /dev/null http://localhost:8085/up \
+               && curl -sf -o /dev/null http://localhost:3000/en \
+               && curl -sf -o /dev/null http://localhost:8025/api/v1/messages; then
+              echo "stack is up"; exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::stack did not become healthy in 5 minutes"
+          docker compose --profile frontend --profile mail ps
+          exit 1
+
+      - name: Seed demo data
+        working-directory: .
+        run: |
+          seed() { docker compose exec -T app php artisan db:seed --class="$1" || exit 1; }
+          seed "Modules\Core\Database\Seeders\CoreDatabaseSeeder"
+          seed "Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
+          seed "Modules\Media\Database\Seeders\MediaDatabaseSeeder"
+          seed "Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"
+          seed "Modules\Shipping\Database\Seeders\ShippingDatabaseSeeder"
+          seed "Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder"
+          seed "Modules\Tax\Database\Seeders\TaxDatabaseSeeder"
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 11.21.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: apps/storefront/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        run: pnpm test:e2e
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: playwright-artifacts
+          path: |
+            apps/storefront/playwright-report
+            apps/storefront/test-results
+          retention-days: 7
