@@ -3,8 +3,10 @@ import type { ApiCurrency } from "@/lib/api/types";
 
 /**
  * Price formatting driven by the store's default currency instead of a
- * hardcoded USD. Server components call currencyNumberOptions() with the
- * fetchCurrency() result; client components use the CurrencyProvider hook.
+ * hardcoded USD. The `price` number format is registered in i18n/request.ts
+ * from the /core/public/currency response; every consumer formats via
+ * format.number(value, "price"). Visitor-facing multi-currency (switcher +
+ * display conversion) is planned — see docs/plans/phase-1-alpha-hardening.md.
  */
 
 const FALLBACK_CODE = "USD";

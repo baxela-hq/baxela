@@ -19,7 +19,7 @@ Guiding principles (from README):
 - PHP **^8.3**, Laravel **^13**, `nwidart/laravel-modules` **^12**
 - Auth: `laravel/sanctum` (token auth)
 - Query/filtering: `spatie/laravel-query-builder`
-- API docs: `dedoc/scramble` (OpenAPI generated from code)
+- API reference: the Bruno collection at the repo root (`api/bruno/`) — `dedoc/scramble` is installed but **not wired yet** (planned in `docs/plans/phase-1-alpha-hardening.md`)
 - Tests: **Pest** (`pestphp/pest`) + PHPUnit
 - Code style: **Laravel Pint** (4-space indent, LF — see `.editorconfig`)
 - DB: MySQL in dev (Docker), SQLite `:memory:` in tests

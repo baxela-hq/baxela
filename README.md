@@ -14,7 +14,7 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
 - PHP 8.3+ / Laravel 13, structured as a modular monolith (`nwidart/laravel-modules`)
 - MySQL 8 and Redis 7 behind nginx
 - Auth via Laravel Sanctum, roles/permissions via `spatie/laravel-permission`
-- API docs with Scramble, query filtering with `spatie/laravel-query-builder`
+- Query filtering with `spatie/laravel-query-builder`
 - Stripe payments, web push notifications, realtime events via Laravel Reverb
 - Tested with Pest, formatted with Pint
 
@@ -47,7 +47,7 @@ baxela/
 ├── docs/                 # Cross-project documentation
 ├── infrastructure/
 │   └── docker/           # Docker build assets per environment (Dockerfiles, nginx, php.ini)
-├── .github/              # CI / PR templates
+├── .github/              # CI, issue/PR templates
 ├── docker-compose.yml    # Develop stack (default): docker compose up -d
 ├── docker-compose.prod.yml # Production stack (single-server deploy)
 └── README.md
@@ -85,6 +85,12 @@ Prefer Postman? The same collection can be imported into
 ## Contributing
 
 - Follow the [commit message convention](docs/COMMIT_CONVENTION.md): `<type>(<scope>): <subject>` with a mandatory scope. A local git hook validates commit messages — enable it once after cloning with `sh scripts/install-hooks.sh`.
+
+## License
+
+Released under the [MIT License](LICENSE). The admin panel (`apps/admin`) builds on
+[shadcn-admin](https://github.com/satnaing/shadcn-admin) (also MIT) — see
+[apps/admin/LICENSE](apps/admin/LICENSE) and its Credits section.
 
 ## Moving apps
 
