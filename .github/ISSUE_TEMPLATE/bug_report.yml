@@ -1,0 +1,49 @@
+name: Bug report
+description: Something is broken or behaves incorrectly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please check existing issues first
+        to avoid duplicates.
+  - type: dropdown
+    id: app
+    attributes:
+      label: Which app is affected?
+      options:
+        - Backend (apps/backend)
+        - Admin (apps/admin)
+        - Storefront (apps/storefront)
+        - Infrastructure / CI
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Baxela version or commit
+      description: Tag, release, or commit SHA you're running.
+      placeholder: main @ abc1234
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug. Include expected vs actual behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or screenshots
+      description: Backend: `storage/logs/pest.log` style output, Sentry IDs, or API error envelopes. Redact anything sensitive.
+      render: shell

@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest an idea or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Feature discussions often start better in GitHub Discussions (Ideas category) —
+        feel free to open there instead if you want to gauge interest first.
+  - type: dropdown
+    id: app
+    attributes:
+      label: Which app or area?
+      options:
+        - Backend (apps/backend)
+        - Admin (apps/admin)
+        - Storefront (apps/storefront)
+        - Infrastructure / CI
+        - Documentation
+        - Whole platform
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: The user story or pain point — what can't you do today?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+      description: Your proposed solution, sketch, or API shape.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered
