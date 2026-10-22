@@ -1,6 +1,8 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
+
+import { useCurrency } from "@/context/currency-context";
 import { useCart } from "@/context/cart-context";
 import { ShoppingCartIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
@@ -17,6 +19,7 @@ export function CartMenu() {
   const tCommon = useTranslations("shared.common");
   const format = useFormatter();
   const { items, ready, itemCount, subtotal } = useCart();
+  const { convert } = useCurrency();
 
 
 
@@ -87,7 +90,7 @@ export function CartMenu() {
                       </span>
                       <span className="w-20 shrink-0 text-end text-sm font-semibold text-foreground">
                         {format.number(
-                          Number(item.price_snapshot) * item.quantity,
+                          convert(Number(item.price_snapshot) * item.quantity),
                           "price",
                         )}
                       </span>
@@ -101,7 +104,7 @@ export function CartMenu() {
                     {t("header.cart.labels.subtotal")}
                   </span>
                   <span className="font-semibold text-foreground">
-                    {format.number(subtotal, "price")}
+                    {format.number(convert(subtotal), "price")}
                   </span>
                 </p>
                 <Link

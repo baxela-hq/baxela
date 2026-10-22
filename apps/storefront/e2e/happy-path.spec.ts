@@ -73,6 +73,22 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
   // -- PDP: pick a variant (single chip selects the default) -------------------
   const sizeChips = page.locator("button[aria-pressed]");
   if ((await sizeChips.count()) > 1) await sizeChips.first().click();
+
+  // -- Display-currency switch: the price re-renders in the seeded second
+  //    currency (IRR, rate 600000) and switches back cleanly ----------------
+  const priceLocator = page.locator("p.text-2xl").first();
+  const basePrice = await priceLocator.innerText();
+  await page.getByRole("button", { name: "Display currency" }).click();
+  await page.getByRole("option", { name: "IRR", exact: false }).click();
+  await expect
+    .poll(async () => priceLocator.innerText(), { timeout: 15_000 })
+    .not.toBe(basePrice);
+  await page.getByRole("button", { name: "Display currency" }).click();
+  await page.getByRole("option", { name: "USD", exact: false }).click();
+  await expect
+    .poll(async () => priceLocator.innerText(), { timeout: 15_000 })
+    .toBe(basePrice);
+
   await page.getByRole("button", { name: "Add to cart" }).click();
   await page.getByRole("link", { name: "View cart" }).click();
   await expect(page).toHaveURL(/\/cart/);

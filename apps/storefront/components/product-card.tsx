@@ -1,4 +1,7 @@
+"use client";
 import { useFormatter } from "next-intl";
+
+import { useCurrency } from "@/context/currency-context";
 
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
@@ -27,6 +30,7 @@ export interface ProductCardProps {
 
 export default function ProductCard({ product, className }: ProductCardProps) {
   const format = useFormatter();
+  const { convert } = useCurrency();
 
 
   return (
@@ -66,15 +70,24 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="text-sm font-semibold text-foreground">
             {product.price !== null
-              ? format.number(Number(product.price), "price")
+              ? format.number(convert(Number(product.price)), "price")
               : null}
           </span>
           {product.compare_price !== null ? (
             <span className="text-sm text-secondary-text line-through rtl:normal-case rtl:tracking-normal">
-              {format.number(Number(product.compare_price), "price")}
+              {format.number(convert(Number(product.compare_price)), "price")}
             </span>
           ) : null}
-          <SaleBadge price={product.price} comparePrice={product.compare_price} />
+          <SaleBadge
+            price={
+              product.price !== null ? String(convert(Number(product.price))) : null
+            }
+            comparePrice={
+              product.compare_price !== null
+                ? String(convert(Number(product.compare_price)))
+                : null
+            }
+          />
         </div>
       </div>
     </Link>

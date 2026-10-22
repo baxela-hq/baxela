@@ -6,6 +6,7 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { SearchMenu } from "@/components/search-menu";
 import { AccountMenu } from "@/components/layout/account-menu";
 import { CartMenu } from "@/components/layout/cart-menu";
+import { CurrencySwitcher } from "@/components/layout/currency-switcher";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -80,6 +81,7 @@ export async function SiteHeader() {
             <NotificationsMenu />
             <AccountMenu />
             <ThemeToggle />
+            <CurrencySwitcher />
             <LanguageSwitcher />
             <MobileMenu links={links} categories={categories} />
           </div>

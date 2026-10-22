@@ -2,9 +2,8 @@ import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { locale as getRootLocale } from "next/root-params";
-import { api } from "@/lib/api/client";
-import { currencyNumberOptions, toStoreCurrency } from "@/lib/currency";
-import type { ApiCurrency } from "@/lib/api/types";
+import { currencyNumberOptions } from "@/lib/currency";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import { routing } from "./routing";
 
 /**
@@ -92,11 +91,13 @@ export default getRequestConfig(async ({ locale }) => {
     }
   }
 
-  // Fetched via the plain api client (not serverApiGet) — its locale
-  // injection would call getLocale() mid-request-config and recurse.
-  const currency = await api
-    .get<ApiCurrency>("/core/public/currency", { locale })
-    .catch(() => null);
+  // The price format reflects the visitor's SELECTED display currency
+  // (baxela-currency cookie against the active list), falling back to the
+  // store default. Resolved via the plain client (not serverApiGet) — its
+  // locale injection would call getLocale() mid-request-config and
+  // recurse; currency rows carry no translated fields anyway. Same
+  // cache()d resolution the layout and header switcher use.
+  const display = await resolveDisplayCurrency();
 
   return {
     locale,
@@ -107,7 +108,7 @@ export default getRequestConfig(async ({ locale }) => {
     // to USD when the backend is unreachable.
     formats: {
       number: {
-        price: currencyNumberOptions(toStoreCurrency(currency)),
+        price: currencyNumberOptions(display.currency),
       },
     },
     // Reference time for relative formatting; the bare NextIntlClientProvider

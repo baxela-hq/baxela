@@ -2,6 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
+
+import {
+  convertAmount,
+  currencyNumberOptions,
+  type StoreCurrency,
+} from "@/lib/currency";
+import { useCurrency } from "@/context/currency-context";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { api, ApiError } from "@/lib/api/client";
@@ -69,6 +76,38 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const t = useTranslations("account.account");
   const tCommon = useTranslations("shared.common");
   const format = useFormatter();
+  const { base, currencies } = useCurrency();
+
+  // Historical money is charged money: an order with a display snapshot
+  // shows exactly what the customer saw at purchase (snapshot currency +
+  // snapshot rate, never today's rate); orders without one are pure base
+  // currency. The session's "price" format is deliberately unused here.
+  const orderFormat = (order: ApiOrder): ((amount: number) => string) => {
+    const snapshot = order.display_currency_code
+      ? currencies.find((row) => row.code === order.display_currency_code)
+      : null;
+
+    if (order.display_fx_rate !== null && snapshot) {
+      const currency: StoreCurrency = {
+        code: snapshot.code,
+        symbol: snapshot.symbol,
+        is_symbol_right: snapshot.is_symbol_right,
+        decimal_places: snapshot.decimal_places,
+      };
+      return (amount) =>
+        format.number(
+          convertAmount(
+            amount,
+            order.display_fx_rate ?? "1",
+            base.decimal_places,
+            snapshot.decimal_places,
+          ),
+          currencyNumberOptions(currency),
+        );
+    }
+
+    return (amount) => format.number(amount, currencyNumberOptions(base));
+  };
   const { token } = useAuth();
 
   const [orders, setOrders] = useState<ApiOrder[] | null>(null);
@@ -247,6 +286,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
       <ul className="divide-y divide-border-light">
         {visibleOrders.map((order) => {
           const items = itemsByCode[order.order_code] ?? [];
+          const money = orderFormat(order);
           const expanded = expandedCode === order.order_code;
           const shippingAddress = (order.addresses ?? []).find(
             (address) => address.type === "shipping",
@@ -302,10 +342,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                     </p>
                   </div>
                   <p className="w-24 text-end text-sm font-semibold text-foreground">
-                    {format.number(
-                      Number(item.price_snapshot) * item.quantity,
-                      "price",
-                    )}
+                    {money(Number(item.price_snapshot) * item.quantity)}
                   </p>
                 </div>
               ))}
@@ -480,7 +517,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                           {t("labels.discount", { code: order.coupon_code })}
                         </span>
                         <span className="font-medium text-accent">
-                          −{format.number(Number(order.discount_amount), "price")}
+                          −{money(Number(order.discount_amount))}
                         </span>
                       </p>
                     ) : null}
@@ -488,14 +525,14 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                       <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                         <span>{t("labels.tax")}</span>
                         <span className="font-medium text-foreground">
-                          {format.number(Number(order.tax_amount), "price")}
+                          {money(Number(order.tax_amount))}
                         </span>
                       </p>
                     ) : null}
                     <p className="mt-4 flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       <span>{t("labels.total")}</span>
                       <span className="text-base font-semibold text-foreground">
-                        {format.number(Number(order.total_amount), "price")}
+                        {money(Number(order.total_amount))}
                       </span>
                     </p>
                   </div>

@@ -9,6 +9,7 @@ import { StarRating } from "@/components/star-rating";
 import { StarSolidIcon } from "@/components/ui/icons";
 import SaleBadge from "@/components/sale-badge";
 import { serverApiGet } from "@/lib/api/server";
+import { resolveDisplayCurrency } from "@/lib/display-currency";
 import type {
   ApiProduct,
   ApiProductComment,
@@ -34,6 +35,9 @@ export default async function ProductPage({
     notFound();
   }
   const productId = product.id;
+  // Display currency for this render (per-request cached) — prices arrive
+  // in the base currency and convert for display only
+  const display = await resolveDisplayCurrency();
   const productHref = `/products/${product.slug ?? product.id}`;
 
   const [t, tLayout, format, commentsPage, relatedPage] = await Promise.all([
@@ -127,17 +131,28 @@ export default async function ProductPage({
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
               <p className="text-2xl font-semibold text-foreground">
                 {product.price !== null
-                  ? format.number(Number(product.price), "price")
+                  ? format.number(display.convert(Number(product.price)), "price")
                   : null}
               </p>
               {product.compare_price !== null ? (
                 <p className="text-lg text-secondary-text line-through rtl:normal-case rtl:tracking-normal">
-                  {format.number(Number(product.compare_price), "price")}
+                  {format.number(
+                    display.convert(Number(product.compare_price)),
+                    "price",
+                  )}
                 </p>
               ) : null}
               <SaleBadge
-                price={product.price}
-                comparePrice={product.compare_price}
+                price={
+                  product.price !== null
+                    ? String(display.convert(Number(product.price)))
+                    : null
+                }
+                comparePrice={
+                  product.compare_price !== null
+                    ? String(display.convert(Number(product.compare_price)))
+                    : null
+                }
               />
             </div>
             {product.description ? (

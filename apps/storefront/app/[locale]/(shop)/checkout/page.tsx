@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
+import { useCurrency } from "@/context/currency-context";
 import { api, ApiError } from "@/lib/api/client";
 import type {
   ApiAddress,
@@ -44,6 +45,7 @@ export default function CheckoutPage() {
   const tLayout = useTranslations("shared.layout");
   const format = useFormatter();
   const { status, token } = useAuth();
+  const { currency, base, isBase, convert } = useCurrency();
   const { refresh } = useCart();
   const router = useRouter();
 
@@ -176,7 +178,6 @@ export default function CheckoutPage() {
       // continuation.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       void loadMethods(addressId);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       void loadTaxPreview(addressId, methodId);
     }
   }, [addressId, methodId, appliedCoupon, loadMethods, loadTaxPreview]);
@@ -287,7 +288,13 @@ export default function CheckoutPage() {
       const idempotencyKey = uuidv4();
       const { order_code: orderCode } = await api.post<{ order_code: string }>(
         "/cart/user/checkout",
-        { address_id: addressId, shipping_method_id: methodId },
+        {
+          address_id: addressId,
+          shipping_method_id: methodId,
+          // Snapshot what the customer saw; charging stays in the base
+          // currency and the server resolves the rate itself
+          ...(isBase ? {} : { display_currency: currency.code }),
+        },
         { token, headers: { "X-Idempotency-Key": idempotencyKey } },
       );
       const payment = await api.post<ApiCreatePaymentResponse>(
@@ -585,7 +592,7 @@ export default function CheckoutPage() {
                           </span>
                         </span>
                         <span className="text-sm font-medium text-foreground">
-                          {format.number(method.price, "price")}
+                          {format.number(convert(method.price), "price")}
                         </span>
                       </label>
                     ))}
@@ -685,7 +692,7 @@ export default function CheckoutPage() {
                 <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.subtotal")}</span>
                   <span className="font-medium text-foreground">
-                    {format.number(subtotal, "price")}
+                    {format.number(convert(subtotal), "price")}
                   </span>
                 </p>
 
@@ -698,7 +705,7 @@ export default function CheckoutPage() {
                     </span>
                     <span className="flex items-center gap-2">
                       <span className="font-medium text-accent">
-                        −{format.number(discount, "price")}
+                        −{format.number(convert(discount), "price")}
                       </span>
                       <button
                         type="button"
@@ -751,20 +758,25 @@ export default function CheckoutPage() {
                   <span>{t("summary.labels.shipping")}</span>
                   <span className="font-medium text-foreground">
                     {selectedMethod
-                      ? format.number(shippingCost, "price")
+                      ? format.number(convert(shippingCost), "price")
                       : "—"}
                   </span>
                 </p>
                 <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.tax")}</span>
                   <span className="font-medium text-foreground">
-                    {taxPreview ? format.number(taxAmount, "price") : "—"}
+                    {taxPreview ? format.number(convert(taxAmount), "price") : "—"}
                   </span>
                 </p>
                 <p className="flex items-center justify-between border-t border-border-light pt-3 text-base font-semibold text-foreground rtl:normal-case rtl:tracking-normal">
                   <span>{t("summary.labels.total")}</span>
-                  <span>{selectedMethod ? format.number(total, "price") : "—"}</span>
+                  <span>{selectedMethod ? format.number(convert(total), "price") : "—"}</span>
                 </p>
+                {!isBase ? (
+                  <p className="text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
+                    {t("summary.labels.charged_in", { display: currency.code, code: base.code })}
+                  </p>
+                ) : null}
               </div>
 
               {error ? (

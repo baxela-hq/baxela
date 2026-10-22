@@ -83,7 +83,8 @@
       "total": "Total",
       "discount": "Discount ({code})",
       "tax": "Tax",
-      "tax_note": "Estimated from your shipping address; the final amount is calculated at order placement."
+      "tax_note": "Estimated from your shipping address; the final amount is calculated at order placement.",
+      "charged_in": "Prices shown in {display} at today's rate — you will be charged in {code}."
     },
     "texts": {
       "qty": "Qty {count}"

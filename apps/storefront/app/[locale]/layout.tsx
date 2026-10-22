@@ -7,8 +7,10 @@ import { AuthProvider } from "@/context/auth-context";
 import { CartProvider } from "@/context/cart-context";
 import { NotificationsProvider } from "@/context/notifications-context";
 import { ThemeModeProvider } from "@/context/theme-mode-context";
+import { CurrencyProvider } from "@/context/currency-context";
 import { Toaster } from "@/components/ui/sonner";
 import { fetchSettings } from "@/lib/api/site";
+import { resolveDisplayCurrency, toDisplayCurrencyData } from "@/lib/display-currency";
 import { SITE_URL } from "@/lib/site-url";
 import { THEME_MODE_INIT_SCRIPT, resolveSiteTheme } from "@/lib/theme";
 import { routing } from "@/i18n/routing";
@@ -66,6 +68,10 @@ export default async function LocaleLayout({
   // default theme. fetchSettings is per-request cached, so this dedupes with
   // the SiteHeader announcement lookup.
   const settings = await fetchSettings();
+  // Visitor's display currency (cookie + active rates) — per-request
+  // cached, deduping with the price-format resolution and the header
+  // switcher into one fetch.
+  const display = await resolveDisplayCurrency();
   const siteTheme = resolveSiteTheme(
     settings?.find((setting) => setting.name === "storefront_theme")?.value,
   );
@@ -89,7 +95,9 @@ export default async function LocaleLayout({
           <AuthProvider>
             <CartProvider>
               <NotificationsProvider>
-                <ThemeModeProvider>{children}</ThemeModeProvider>
+                <CurrencyProvider data={toDisplayCurrencyData(display)}>
+                  <ThemeModeProvider>{children}</ThemeModeProvider>
+                </CurrencyProvider>
               </NotificationsProvider>
             </CartProvider>
           </AuthProvider>

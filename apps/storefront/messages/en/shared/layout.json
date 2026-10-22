@@ -20,7 +20,8 @@
       "close_menu": "Close menu",
       "language": "Change language",
       "notifications": "Notifications",
-      "theme": "Toggle dark mode"
+      "theme": "Toggle dark mode",
+      "currency": "Display currency"
     },
     "notifications": {
       "texts": {

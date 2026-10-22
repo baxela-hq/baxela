@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useAuth } from "@/context/auth-context";
 import { useCart } from "@/context/cart-context";
+import { useCurrency } from "@/context/currency-context";
 import { ApiError } from "@/lib/api/client";
 import type { ApiCartItem } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ export default function CartPage() {
   const format = useFormatter();
   const { status } = useAuth();
   const { items, ready, subtotal, updateItem, removeItem } = useCart();
+  const { convert } = useCurrency();
   const router = useRouter();
 
   const [busyItemId, setBusyItemId] = useState<number | null>(null);
@@ -184,7 +186,7 @@ export default function CartPage() {
                     ) : null}
                     <p className="mt-1 text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                       {t("labels.unit_price")}:{" "}
-                      {format.number(Number(item.price_snapshot), "price")}
+                      {format.number(convert(Number(item.price_snapshot)), "price")}
                     </p>
                   </div>
                   <QuantityStepper
@@ -198,7 +200,7 @@ export default function CartPage() {
                   />
                   <p className="w-24 text-end text-sm font-semibold text-foreground">
                     {format.number(
-                      Number(item.price_snapshot) * item.quantity,
+                      convert(Number(item.price_snapshot) * item.quantity),
                       "price",
                     )}
                   </p>
@@ -218,7 +220,7 @@ export default function CartPage() {
               <p className="flex items-center justify-between text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
                 <span>{t("labels.item_total")}</span>
                 <span className="text-base font-semibold text-foreground">
-                  {format.number(subtotal, "price")}
+                  {format.number(convert(subtotal), "price")}
                 </span>
               </p>
               <Button

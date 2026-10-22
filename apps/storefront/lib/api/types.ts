@@ -346,6 +346,9 @@ export interface ApiOrder {
   shipping_tax_amount: string;
   /** Σ successful ledger refunds across all the order's payments. */
   refunded_amount: string;
+  /** What the customer saw at checkout; null = displayed in the base currency. */
+  display_currency_code: string | null;
+  display_fx_rate: string | null;
   /** Order placement timestamp. */
   created_at: string | null;
   /** Line items with name snapshots; only endpoints that load them return it. */
@@ -485,6 +488,15 @@ export interface ApiCurrency {
   is_default: boolean;
   is_symbol_right: boolean;
   decimal_places: number;
+}
+
+/**
+ * A row of GET /core/public/currencies — the switcher's payload. The base
+ * (default) currency always carries the rate it was priced in: 1.
+ */
+export interface ApiActiveCurrency extends ApiCurrency {
+  /** Decimal string with up to 8 fraction digits ("600000.00000000"). */
+  exchange_rate: string;
 }
 
 // Support tickets (Support module). A ticket is a customer-owned

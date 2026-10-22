@@ -20,7 +20,8 @@
       "close_menu": "بستن منو",
       "language": "تغییر زبان",
       "notifications": "اطلاع‌رسانی‌ها",
-      "theme": "تغییر حالت تاریک"
+      "theme": "تغییر حالت تاریک",
+      "currency": "واحد نمایش"
     },
     "notifications": {
       "texts": {

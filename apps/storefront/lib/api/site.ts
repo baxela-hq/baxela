@@ -1,6 +1,7 @@
 import { cache } from "react";
+import { api } from "./client";
 import { serverApiGet } from "./server";
-import type { ApiCurrency, ApiMenu, ApiSetting } from "./types";
+import type { ApiActiveCurrency, ApiCurrency, ApiMenu, ApiSetting } from "./types";
 
 // Public site menus — header (nav) and footer (link columns) both come from
 // the Menu module. Returns null when the backend is unreachable so the
@@ -34,6 +35,20 @@ export const fetchCurrency = cache(
   async (): Promise<ApiCurrency | null> => {
     try {
       return await serverApiGet<ApiCurrency>("/core/public/currency");
+    } catch {
+      return null;
+    }
+  },
+);
+// Active currencies with display-conversion rates (Core module) — the
+// switcher's data and the conversion context, default-first. Fetched via
+// the plain client (not serverApiGet) so the request-config resolver can
+// share this cache without recursing through getLocale(); currency rows
+// carry no translated fields, so locale injection is unnecessary anyway.
+export const fetchActiveCurrencies = cache(
+  async (): Promise<ApiActiveCurrency[] | null> => {
+    try {
+      return await api.get<ApiActiveCurrency[]>("/core/public/currencies");
     } catch {
       return null;
     }
