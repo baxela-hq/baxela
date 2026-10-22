@@ -1,0 +1,59 @@
+{
+  "form": {
+    "labels": {
+      "promotion": "Promoción",
+      "promotions": "Promociones",
+      "id": "ID",
+      "name": "Nombre",
+      "scope": "Alcance",
+      "type": "Tipo",
+      "value": "Valor",
+      "priority": "Prioridad",
+      "starts_at": "Comienza el (UTC)",
+      "ends_at": "Termina el (UTC)",
+      "window": "Validez",
+      "is_active": "Activo",
+      "category_ids": "Categorías",
+      "product_ids": "Productos",
+      "preview": "Vista previa del precio",
+      "confirm_all_title": "¿Activar una promoción para toda la tienda?",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "statuses": {
+      "percent": "Porcentaje",
+      "fixed": "Fijo",
+      "all": "Todos",
+      "specific": "Específico",
+      "scope_all": "Todos los productos (toda la tienda)",
+      "scope_specific": "Productos y categorías seleccionados",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "placeholders": {
+      "name": "Rebajas de invierno",
+      "date": "Elija una fecha",
+      "product_search": "Buscar productos por título…"
+    },
+    "help_texts": {
+      "name": "Etiqueta interna para esta rebaja, nunca se muestra a los clientes",
+      "type_percent": "Porcentaje de descuento sobre el precio base de cada unidad",
+      "type_fixed": "Importe plano de descuento sobre el precio base de cada unidad",
+      "value_percent": "Porcentaje de descuento — 20.00 significa 20%",
+      "value_fixed": "Importe plano de descuento en cada unidad, en la moneda de la tienda",
+      "priority": "Desempate cuando varias promociones coinciden con un producto en el mismo nivel de alcance — gana la mayor",
+      "starts_at": "Los precios cambian desde este momento (UTC); vacío significa de inmediato",
+      "ends_at": "Los precios se revierten después de este momento (UTC); vacío significa hasta desactivarse",
+      "is_active": "Las promociones inactivas dejan de aplicarse de inmediato, incluso dentro de su ventana",
+      "scope": "Todos los productos, o una selección explícita — una selección vacía nunca puede abarcar toda la tienda",
+      "category_ids": "Los productos de las categorías marcadas se promocionan (categorías exactas, no sus hijas)",
+      "product_ids": "Productos individuales adicionales, además de las categorías anteriores",
+      "no_categories": "Aún no existen categorías",
+      "no_products": "No se encontraron productos",
+      "preview_note": "Ejemplo en un producto de {{base}} — las mismas reglas de acotación que aplica la tienda",
+      "precedence": "Cuando varias promociones activas cubren un producto, exactamente una gana: una coincidencia a nivel de producto vence a una de categoría, que vence a toda la tienda; los empates dentro de un nivel van a la prioridad más alta, luego a la promoción más antigua. Las promociones nunca se acumulan entre sí; los códigos de cupón siguen aplicándose sobre los precios promocionados.",
+      "confirm_all_title": "¿Activar una promoción para toda la tienda?",
+      "confirm_all": "Esta promoción cambiará de inmediato el precio de TODOS los productos de la tienda mientras esté activa. Verifique el valor y la ventana de validez antes de confirmar."
+    }
+  }
+}

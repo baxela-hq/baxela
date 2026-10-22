@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "zone": "منطقة الشحن",
+      "zones": "مناطق الشحن",
+      "id": "المعرّف",
+      "name": "الاسم",
+      "is_active": "نشط",
+      "position": "الترتيب",
+      "country_codes": "الدول",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "position": "أدخل ترتيب العنصر",
+      "country_codes": "اتركه فارغًا لاستخدام هذه المنطقة كخيار احتياطي عالمي (بقية العالم)"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "نشط",
+        "false": "غير نشط"
+      },
+      "country_codes": {
+        "rest_of_world": "بقية العالم"
+      }
+    }
+  }
+}

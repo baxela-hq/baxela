@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "user": "Usuario",
+      "users": "Usuarios",
+      "id": "ID",
+      "email": "Correo electrónico",
+      "email_verified_at": "Correo verificado el",
+      "password": "Contraseña",
+      "is_active": "¿Está activo?",
+      "roles": "Roles",
+      "comment": "Comentario",
+      "created_at": "Registrado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "password": "déjelo en blanco si no desea cambiar la contraseña del usuario",
+      "roles": "Los roles otorgan acceso a capacidades de administración. Solo un superadministrador puede asignar o quitar el rol de superadministrador.",
+      "comment": "Comentario que los administradores pueden dejar para el usuario. (visible solo por los administradores)"
+    },
+    "tooltips": {
+      "is_active": {
+        "active": "Cuando está activado, el usuario ha verificado su correo electrónico.",
+        "inactive": "Cuando está desactivado, el usuario aún no ha verificado su correo electrónico."
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "مخزون الجرد",
+      "inventory-stocks": "مخزونات الجرد",
+      "id": "المعرّف",
+      "product": "المنتج",
+      "variant": "المتغير",
+      "quantity": "الكمية",
+      "low_stock": "مخزون منخفض",
+      "sku": "SKU",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "statuses": {
+      "low_stock": "مخزون منخفض"
+    },
+    "help_texts": {
+      "product": "اختر المنتج الذي تريد تخزين أحد متغيراته",
+      "variant": "اختر متغير المنتج المحدد",
+      "quantity": "الوحدات المتاحة لهذا المتغير — صف مخزون واحد لكل متغير"
+    },
+    "placeholders": {
+      "select_product_first": "اختر منتجًا أولًا"
+    }
+  }
+}

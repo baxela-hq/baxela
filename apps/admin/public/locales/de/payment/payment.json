@@ -1,0 +1,80 @@
+{
+  "form": {
+    "labels": {
+      "payment": "Zahlung",
+      "payments": "Zahlungen",
+      "id": "ID",
+      "order_id": "Bestellung",
+      "transaction_id": "Transaktion",
+      "method": "Methode",
+      "amount": "Betrag",
+      "status": "Status",
+      "created_at": "Erstellt am",
+      "refund_amount": "Erstattungsbetrag",
+      "refund_reason": "Grund"
+    },
+    "help_texts": {
+      "confirm": "Die Bestätigung registriert das Geld als erhalten: die Zahlung wird als erfolgreich markiert und ihre Bestellung wird als bezahlt markiert und in die Bearbeitung verschoben. Der Kunde wird benachrichtigt.",
+      "fail": "Das Fehlschlagen markiert diese Zahlung als fehlgeschlagen. Die Bestellung bleibt unbezahlt und der Kunde kann sie erneut bezahlen."
+    },
+    "statuses": {
+      "status": {
+        "pending": "Ausstehend",
+        "success": "Erfolgreich",
+        "failed": "Fehlgeschlagen"
+      },
+      "method": {
+        "manual": "Manuell",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments",
+        "mercadopago": "Mercado Pago",
+        "checkoutcom": "Checkout.com",
+        "razorpay": "Razorpay"
+      },
+      "refund_status": {
+        "pending": "Ausstehend",
+        "success": "Erstattet",
+        "failed": "Fehlgeschlagen",
+        "reconciliation_required": "Abgleich erforderlich"
+      }
+    },
+    "actions": {
+      "confirm": "Zahlung bestätigen",
+      "fail": "Als fehlgeschlagen markieren",
+      "issue_refund": "Erstattung ausstellen",
+      "refund_history": "Erstattungsverlauf"
+    }
+  },
+  "dialog": {
+    "success": {
+      "title": "Zahlung bestätigen",
+      "desc": "Zahlung #{{id}} als erfolgreich markieren? Ihre Bestellung wird als bezahlt markiert und in die Bearbeitung verschoben.",
+      "confirm": "Bestätigen"
+    },
+    "failed": {
+      "title": "Zahlung als fehlgeschlagen markieren",
+      "desc": "Zahlung #{{id}} als fehlgeschlagen markieren? Die Bestellung bleibt unbezahlt und der Kunde kann sie erneut bezahlen.",
+      "confirm": "Als fehlgeschlagen markieren"
+    }
+  },
+  "refund": {
+    "dialog": {
+      "title": "Erstattung ausstellen",
+      "subtitle": "Kontoerstattung für Zahlung #{id} — Teilbeträge sind erlaubt.",
+      "manual_note": "Bei manuellen Zahlungen wird vermerkt, dass SIE das Geld bereits außerhalb von Baxela zurückgezahlt haben.",
+      "confirm": "Erstatten"
+    },
+    "history": {
+      "title": "Erstattungsverlauf",
+      "subtitle": "Kontoeinträge für Zahlung #{id}",
+      "empty": "Noch keine Erstattungen.",
+      "resolve": "Auflösen",
+      "confirm_success": "Erstattet bestätigen",
+      "confirm_failed": "Fehlgeschlagen bestätigen",
+      "gateway_id": "Gateway-Erstattungs-ID (re_play… / REF-…)",
+      "reserved_note": "Beträge, die als abgleichsbedürftig markiert sind, bleiben bis zur Auflösung gegen den erstattungsfähigen Saldo gezählt."
+    }
+  }
+}

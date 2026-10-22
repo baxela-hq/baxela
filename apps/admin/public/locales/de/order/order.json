@@ -1,0 +1,65 @@
+{
+  "messages": {
+    "no_items": "Keine Artikel für diese Bestellung gefunden"
+  },
+  "form": {
+    "labels": {
+      "order": "Bestellung",
+      "orders": "Bestellungen",
+      "id": "ID",
+      "order_code": "Bestellcode",
+      "user_id": "Benutzer-ID",
+      "status": "Status",
+      "payment_status": "Zahlungsstatus",
+      "description": "Beschreibung",
+      "note": "Notiz",
+      "total_amount": "Gesamtbetrag",
+      "coupon_code": "Gutschein",
+      "discount_amount": "Rabatt",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am",
+      "variant_id": "Varianten-ID",
+      "product_name_snapshot": "Produktname",
+      "quantity": "Menge",
+      "price_snapshot": "Preis-Momentaufnahme",
+      "tax_amount": "Steuer",
+      "shipping_tax_amount": "Versandsteuer",
+      "refunded_amount": "Erstattet"
+    },
+    "help_texts": {
+      "description": "Der Text wurde vom Kunden geschrieben und ist nicht bearbeitbar",
+      "note": "Der Text ist nur im Admin-Panel sichtbar und wird von Admins angezeigt",
+      "status": "Der Kunde wird nach einer Statusänderung benachrichtigt",
+      "payment_status": "Das Markieren einer Bestellung als bezahlt startet auch ihre Erfüllung; der Kunde wird nach einer Änderung des Zahlungsstatus benachrichtigt"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Ausstehend",
+        "processing": "In Bearbeitung",
+        "shipped": "Versandt",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert"
+      },
+      "payment_status": {
+        "unpaid": "Unbezahlt",
+        "paid": "Bezahlt",
+        "refunded": "Erstattet",
+        "partially_refunded": "Teilweise erstattet"
+      }
+    },
+    "tooltips": {
+      "status": {
+        "pending": "Die Bestellung wurde aufgegeben und wartet auf Zahlungsbestätigung",
+        "processing": "Die Bestellung ist bezahlt und wird für den Versand vorbereitet",
+        "shipped": "Die Bestellung wurde versandt und wurde vom Kunden noch nicht empfangen",
+        "completed": "Die Bestellung wurde vom Kunden empfangen",
+        "cancelled": "Die Bestellung wurde storniert"
+      },
+      "payment_status": {
+        "unpaid": "Die Bestellung wurde noch nicht bezahlt; sie läuft ab, wenn die Zahlung nicht rechtzeitig abgeschlossen wird",
+        "paid": "Die Bestellung wurde bezahlt — Erstattungen beginnen hier",
+        "refunded": "Die Zahlung der Bestellung wurde dem Kunden erstattet"
+      }
+    }
+  }
+}

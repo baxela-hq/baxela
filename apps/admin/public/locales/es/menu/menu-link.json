@@ -1,0 +1,32 @@
+{
+  "form": {
+    "labels": {
+      "link": "Enlace",
+      "links": "Enlaces",
+      "menus": "Menús",
+      "id": "ID",
+      "title": "Título",
+      "description": "Descripción",
+      "parent": "Padre",
+      "no_parent": "Sin padre (raíz)",
+      "url": "URL",
+      "target": "Destino",
+      "target__self": "Misma pestaña",
+      "target__blank": "Nueva pestaña",
+      "position": "Posición",
+      "sort": "Ordenar",
+      "sort_links": "Ordenar enlaces del menú",
+      "sort_help": "Arrastre los elementos para reordenarlos dentro de su grupo",
+      "sorting": "Ordenando enlaces...",
+      "no_links": "Este menú aún no tiene enlaces.",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "parent": "Los enlaces anidados se muestran como un desplegable bajo su padre",
+      "url": "Ruta relativa (/products) o URL absoluta",
+      "position": "Introduzca la posición de su elemento",
+      "delete_subtree": "Eliminar un enlace también elimina todos sus enlaces anidados."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "Anmelden",
+    "description": "Geben Sie unten Ihre E-Mail und Ihr Passwort ein, um sich bei Ihrem Konto anzumelden",
+    "or-continue-with": "Oder fortfahren mit",
+    "footer": "Mit der Anmeldung stimmen Sie unseren <termsLink>Nutzungsbedingungen</termsLink> und der <privacyLink>Datenschutzerklärung</privacyLink> zu."
+  },
+  "form": {
+    "labels": {
+      "email": "E-Mail",
+      "password": "Passwort"
+    },
+    "placeholders": {
+      "email": "name@beispiel.de",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "Anmelden",
+      "forgot-password": "Passwort vergessen?"
+    },
+    "validation": {
+      "email-required": "Bitte geben Sie Ihre E-Mail ein",
+      "password-required": "Bitte geben Sie Ihr Passwort ein",
+      "password-min-length": "Das Passwort muss mindestens 7 Zeichen lang sein"
+    }
+  }
+}

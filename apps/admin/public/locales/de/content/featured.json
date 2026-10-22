@@ -1,0 +1,28 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Empfohlene Beiträge",
+      "subtitle": "Auswahl der Beiträge für die Storefront-Sektion empfohlener Beiträge kuratieren"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "Empfohlene Auswahl",
+      "posts-section": "Empfohlene Beiträge",
+      "add-posts": "Beiträge hinzufügen"
+    },
+    "actions": {},
+    "help_texts": {
+      "posts-section": "Wird in der Storefront-Sektion für empfohlene Beiträge in dieser Reihenfolge angezeigt.",
+      "empty-posts": "Noch keine Beiträge ausgewählt."
+    },
+    "placeholders": {
+      "search-posts": "Beiträge nach Titel suchen..."
+    },
+    "statuses": {
+      "picker-search-hint": "Suchen Sie Beiträge nach Titel in jeder Sprache und wählen Sie die aus, die empfohlen werden sollen.",
+      "type-to-search": "Geben Sie mindestens 2 Zeichen ein, um zu suchen.",
+      "no-results": "Nichts gefunden."
+    }
+  }
+}

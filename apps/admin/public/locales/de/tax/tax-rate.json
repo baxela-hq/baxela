@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "tax_rate": "Steuersatz",
+      "tax_rates": "Steuersätze",
+      "id": "ID",
+      "name": "Name",
+      "country_code": "Land",
+      "tax_class": "Steuerklasse",
+      "rate": "Satz (%)",
+      "is_active": "Aktiv",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "rate": "Prozentsatz zwischen 0 und 100 mit bis zu 4 Dezimalstellen (z. B. 8.5 oder 5.125); ein Satz pro Land und Klasse"
+    },
+    "placeholders": {
+      "rate": "8.5"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Aktiv",
+        "false": "Inaktiv"
+      }
+    }
+  }
+}

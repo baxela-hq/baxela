@@ -1,0 +1,50 @@
+{
+  "form": {
+    "labels": {
+      "coupon": "Cupón",
+      "coupons": "Cupones",
+      "id": "ID",
+      "code": "Código",
+      "name": "Nombre interno",
+      "type": "Tipo",
+      "value": "Valor",
+      "max_discount_amount": "Descuento máximo",
+      "min_order_amount": "Importe mínimo del pedido",
+      "starts_at": "Comienza el (UTC)",
+      "ends_at": "Termina el (UTC)",
+      "usage_limit": "Límite de uso",
+      "per_user_limit": "Límite por usuario",
+      "usage": "Uso",
+      "window": "Validez",
+      "is_active": "Activo",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "statuses": {
+      "percent": "Porcentaje",
+      "fixed": "Fijo",
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "placeholders": {
+      "code": "AHORRA20",
+      "name": "Rebajas de primavera",
+      "unlimited": "Ilimitado",
+      "date": "Elija una fecha"
+    },
+    "help_texts": {
+      "code": "Código visible para el cliente — letras, números, guiones y guiones bajos; se guarda en mayúsculas",
+      "name": "Etiqueta interna opcional, nunca se muestra a los clientes",
+      "type": "Porcentaje descuenta un porcentaje del subtotal; fijo descuenta un importe plano",
+      "value_percent": "Porcentaje de descuento sobre el subtotal del pedido — 15.00 significa 15%",
+      "value_fixed": "Importe plano de descuento sobre el subtotal del pedido",
+      "max_discount_amount": "Techo opcional para cupones de porcentaje — deje vacío para sin límite",
+      "min_order_amount": "Subtotal mínimo opcional de mercancía requerido para usar el cupón",
+      "usage_limit": "Total de canjes permitidos entre todos los clientes — vacío significa ilimitado",
+      "per_user_limit": "Canjes permitidos por cliente — vacío significa ilimitado",
+      "starts_at": "El cupón se puede usar desde este momento (UTC)",
+      "ends_at": "El cupón deja de poder usarse después de este momento (UTC)",
+      "is_active": "Los cupones inactivos fallan la evaluación de inmediato, incluso dentro de su ventana de validez"
+    }
+  }
+}

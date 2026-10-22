@@ -1,0 +1,126 @@
+{
+  "sidebar": {
+    "admin-panel": "Panel de administración",
+    "dashboard": "Panel de control",
+    "catalog": "Catálogo",
+    "products": "Productos",
+    "categories": "Categorías",
+    "brands": "Marcas",
+    "options": "Opciones",
+    "attributes": "Atributos",
+    "productComments": "Comentarios",
+    "catalog-data": "Importar / Exportar",
+    "settings": "Configuración",
+    "content": "Contenido",
+    "pages": "Páginas",
+    "posts": "Artículos",
+    "featured-posts": "Artículos destacados",
+    "postCategories": "Categorías",
+    "postComments": "Comentarios",
+    "media": "Multimedia",
+    "menus": "Menús",
+    "contactMessages": "Mensajes de contacto",
+    "contact": "Contacto",
+    "support": "Soporte",
+    "tickets": "Tickets",
+    "newsletter-subscribers": "Suscriptores del boletín",
+    "order": "Pedido",
+    "orders": "Pedidos",
+    "inventory-stocks": "Existencias de inventario",
+    "shipping": "Envío",
+    "payment": "Pago",
+    "payments": "Pagos",
+    "payment-methods": "Métodos de pago",
+    "methods": "Métodos",
+    "zones": "Zonas",
+    "rates": "Tarifas",
+    "shipments": "Envíos",
+    "discount": "Descuento",
+    "coupons": "Cupones",
+    "modules": "Módulos",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "general": "general",
+    "account": "Cuenta",
+    "notifications": "Notificaciones",
+    "notifications-inbox": "Notificaciones",
+    "toggle": "Alternar barra lateral",
+    "featured": "Destacados",
+    "promotions": "Promociones",
+    "audit-logs": "Registros de auditoría",
+    "tax": "Impuestos",
+    "tax-classes": "Clases de impuesto",
+    "tax-rates": "Tarifas de impuesto",
+    "returns": "Devoluciones"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "Cerrar sesión",
+      "body": "¿Está seguro de que desea cerrar sesión? Tendrá que iniciar sesión de nuevo para acceder a su cuenta."
+    },
+    "cancel": "Cancelar"
+  },
+  "toolbar": {
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "logout": "Salir",
+    "upgrade-to-pro": "Mejorar a Pro",
+    "theme": {
+      "label": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    },
+    "toggle-theme": "Alternar tema",
+    "open-theme-settings": "Abrir configuración del tema",
+    "view-website": "Ver sitio web"
+  },
+  "search": {
+    "placeholder": "Buscar...",
+    "command_input": "Escriba un comando o busque..."
+  },
+  "config-drawer": {
+    "direction-help": "Anula la dirección derivada del idioma predeterminado del almacén hasta que la restablezca.",
+    "title": "Configuración del tema",
+    "description": "Ajuste la apariencia y el diseño según sus preferencias.",
+    "reset": "Restablecer",
+    "reset-all-settings": "Restablecer todos los valores a los predeterminados",
+    "sections": {
+      "theme": "Tema",
+      "sidebar": "Barra lateral",
+      "layout": "Diseño",
+      "direction": "Dirección"
+    },
+    "options": {
+      "inset": "Insertada",
+      "floating": "Flotante",
+      "sidebar": "Barra lateral",
+      "default": "Predeterminado",
+      "compact": "Compacto",
+      "full-layout": "Diseño completo",
+      "ltr": "De izquierda a derecha",
+      "rtl": "De derecha a izquierda"
+    },
+    "group-aria": {
+      "theme": "Seleccionar preferencia de tema",
+      "sidebar": "Seleccionar estilo de barra lateral",
+      "layout": "Seleccionar estilo de diseño",
+      "direction": "Seleccionar dirección del sitio"
+    },
+    "section-descriptions": {
+      "theme": "Elija entre preferencia del sistema, modo claro o modo oscuro",
+      "sidebar": "Elija entre barra lateral insertada, flotante o estándar",
+      "layout": "Elija entre expandido predeterminado, solo iconos compacto o modo de diseño completo",
+      "direction": "Elija entre dirección del sitio de izquierda a derecha o de derecha a izquierda"
+    },
+    "select-option-aria": "Seleccionar {{label}}",
+    "option-preview-aria": "Vista previa de la opción {{label}}"
+  },
+  "command-menu": {
+    "theme-heading": "Tema",
+    "no-results": "No se encontraron resultados.",
+    "records-heading": "Registros",
+    "products-heading": "Producto",
+    "orders-heading": "Pedido"
+  }
+}

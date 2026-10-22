@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "Attributvorlage",
+      "attribute_templates": "Attributvorlagen",
+      "id": "ID",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "is_active": "Aktiv",
+      "position": "Position",
+      "groups": "Gruppen",
+      "groups_count": "Anzahl Gruppen",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Aktiv",
+        "false": "Inaktiv"
+      }
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "groups": "Wählen Sie Gruppen aus und ordnen Sie sie — die Reihenfolge bestimmt das Layout des Produktformulars"
+    }
+  }
+}

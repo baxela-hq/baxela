@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "Modèle d'attributs",
+      "attribute_templates": "Modèles d'attributs",
+      "id": "ID",
+      "title": "Titre",
+      "description": "Description",
+      "is_active": "Actif",
+      "position": "Position",
+      "groups": "Groupes",
+      "groups_count": "Nombre de groupes",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Actif",
+        "false": "Inactif"
+      }
+    },
+    "help_texts": {
+      "position": "Saisissez la position de votre élément",
+      "groups": "Choisissez les groupes et ordonnez-les — l'ordre définit la disposition du formulaire produit"
+    }
+  }
+}

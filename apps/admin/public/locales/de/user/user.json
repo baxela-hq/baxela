@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "user": "Benutzer",
+      "users": "Benutzer",
+      "id": "ID",
+      "email": "E-Mail",
+      "email_verified_at": "E-Mail verifiziert am",
+      "password": "Passwort",
+      "is_active": "Aktiv?",
+      "roles": "Rollen",
+      "comment": "Kommentar",
+      "created_at": "Registriert am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "password": "leer lassen, wenn Sie das Passwort des Benutzers nicht ändern möchten",
+      "roles": "Rollen gewähren Zugriff auf Admin-Funktionen. Nur ein Super-Admin kann die Super-Admin-Rolle zuweisen oder entfernen.",
+      "comment": "Kommentar, den Admins für den Benutzer hinterlassen können. (nur für Admins sichtbar)"
+    },
+    "tooltips": {
+      "is_active": {
+        "active": "Wenn aktiviert, hat der Benutzer seine E-Mail verifiziert.",
+        "inactive": "Wenn deaktiviert, hat der Benutzer seine E-Mail noch nicht verifiziert."
+      }
+    }
+  }
+}

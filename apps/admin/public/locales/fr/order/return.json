@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "Retour",
+      "returns": "Retours",
+      "id": "ID",
+      "order_code": "Commande",
+      "user_id": "Utilisateur",
+      "reason": "Motif",
+      "status": "Statut",
+      "tracking_number": "Suivi",
+      "admin_note": "Note d'administration",
+      "restore_stock": "Restaurer le stock",
+      "created_at": "Demandé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "restore_stock": "Ajoute les quantités retournées au stock (exactement une fois)"
+    },
+    "placeholders": {
+      "admin_note": "Note facultative pour la piste d'audit"
+    },
+    "statuses": {
+      "status": {
+        "requested": "Demandé",
+        "approved": "Approuvé",
+        "rejected": "Rejeté",
+        "shipped": "Expédié par le client",
+        "received": "Reçu",
+        "completed": "Terminé",
+        "cancelled": "Annulé"
+      },
+      "reason": {
+        "damaged": "Endommagé",
+        "wrong_item": "Mauvais article",
+        "not_as_described": "Non conforme à la description",
+        "other": "Autre"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "Marquer le retour comme {status} ?",
+      "confirmation": "Le retour de la commande {code} passera à {status}.",
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "no_auto_refund_title": "Les remboursements sont séparés",
+      "no_auto_refund_body": "Terminer un retour ne rembourse jamais automatiquement — effectuez d'abord le remboursement sur le paiement de la commande, puis terminez."
+    }
+  }
+}

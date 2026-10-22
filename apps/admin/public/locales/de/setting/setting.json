@@ -1,0 +1,41 @@
+{
+  "form": {
+    "labels": {
+      "setting": "Einstellung",
+      "settings": "Einstellungen",
+      "id": "ID",
+      "name": "Name",
+      "value": "Wert",
+      "general": "Allgemein",
+      "announcement": "Ankündigung",
+      "theme": "Design",
+      "themes": {
+        "default": "Standard (Baxela)"
+      }
+    },
+    "statuses": {
+      "name": {
+        "website_title": "Website-Titel",
+        "website_description": "Website-Beschreibung",
+        "language_id": "Standardsprache",
+        "currency_id": "Standardwährung",
+        "announcement_text": "Ankündigungstext",
+        "announcement_bar_enabled": "Ankündigungsbalken anzeigen",
+        "storefront-theme": "Storefront-Design"
+      }
+    },
+    "tooltips": {
+      "name": {
+        "website_title": "Titel Ihrer Startseite",
+        "website_description": "Beschreibung Ihrer Startseite, die für SEO verwendet wird",
+        "language_id": "Sprache, in der die Storefront angezeigt wird",
+        "currency_id": "Währung, die für Preise verwendet wird",
+        "announcement_bar_enabled": "Den Ankündigungsbalken in der Storefront anzeigen",
+        "storefront-theme": "Farbpalette, die auf die Storefront angewendet wird; unbekannte Werte fallen auf den Storefront-Standard zurück"
+      }
+    },
+    "help_texts": {
+      "announcement_text": "Der Text kann gespeichert werden, während der Balken deaktiviert ist"
+    }
+  }
+}

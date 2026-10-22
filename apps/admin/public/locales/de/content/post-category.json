@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "post_category": "Beitragskategorie",
+      "post_categories": "Beitragskategorien",
+      "id": "ID",
+      "parent_id": "Übergeordnet",
+      "none": "Keine",
+      "title": "Titel",
+      "slug": "Slug",
+      "position": "Position",
+      "description": "Beschreibung",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "parent_id": "Wählen Sie eine übergeordnete Kategorie, um diese unterzuordnen, oder wählen Sie Keine für eine Kategorie auf oberster Ebene."
+    }
+  }
+}

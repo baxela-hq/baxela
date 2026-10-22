@@ -1,0 +1,180 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "discontinued": "Eingestellt",
+        "out_of_stock": "Nicht verfügbar",
+        "in_stock": "Verfügbar",
+        "inactive": "Inaktiv"
+      },
+      "type": {
+        "simple": "Einfach",
+        "variable": "Variabel"
+      },
+      "is_published": {
+        "false": "Nein",
+        "true": "Ja"
+      },
+      "weight_unit": {
+        "kg": "Kilogramm (kg)",
+        "g": "Gramm (g)",
+        "lb": "Pfund (lb)",
+        "oz": "Unze (oz)"
+      },
+      "dimension_unit": {
+        "mm": "Millimeter (mm)",
+        "cm": "Zentimeter (cm)",
+        "m": "Meter (m)",
+        "in": "Zoll (in)"
+      },
+      "import_status": {
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen"
+      },
+      "import_strategy": {
+        "update": "Bestehende Produkte aktualisieren",
+        "skip": "Bestehende Produkte überspringen"
+      }
+    },
+    "labels": {
+      "product": "Produkt",
+      "products": "Produkte",
+      "comments": "Kommentare",
+      "id": "ID",
+      "title": "Titel",
+      "slug": "Slug",
+      "content": "Inhalt",
+      "description": "Beschreibung",
+      "base_price": "Grundpreis",
+      "type": "Typ",
+      "status": "Status",
+      "is_published": "Veröffentlicht",
+      "categories": "Kategorien",
+      "brand": "Marke",
+      "brand_none": "Keine Marke",
+      "variants": "Varianten",
+      "price": "Preis",
+      "sku": "SKU",
+      "quantity": "Menge",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am",
+      "general": "Allgemein",
+      "images": "Bilder",
+      "publish": "Veröffentlichen",
+      "is_default": "Standard?",
+      "photo": "Foto",
+      "add_photo": "Foto hinzufügen",
+      "change_photo": "Foto ändern",
+      "variant_photo": "Variantenfoto",
+      "options": "Optionen",
+      "add_option": "Option hinzufügen",
+      "generate": "Generieren",
+      "no_options_added": "Noch keine Optionen hinzugefügt.",
+      "no_more_options": "Keine weiteren Optionen verfügbar.",
+      "select_values_before_generate": "Bitte wählen Sie vor dem Generieren mindestens einen Wert für jede Option aus.",
+      "add_images": "Bilder hinzufügen",
+      "featured_image": "Titelbild",
+      "move_left": "Nach links verschieben",
+      "move_right": "Nach rechts verschieben",
+      "image_preview": "Bildvorschau",
+      "open_original": "Original öffnen",
+      "attributes": "Attribute",
+      "load_from_template": "Aus Vorlage laden",
+      "add_attribute": "Attribut hinzufügen",
+      "no_attributes_added": "Noch keine Attribute. Laden Sie eine Vorlage oder fügen Sie Attribute manuell hinzu.",
+      "no_templates": "Keine Vorlagen verfügbar",
+      "no_more_attributes": "Keine weiteren Attribute verfügbar",
+      "no_attribute_values": "Dieses Attribut hat keine vordefinierten Werte.",
+      "manage_values": "Werte verwalten",
+      "ungrouped": "Nicht gruppiert",
+      "not_set": "Nicht festgelegt",
+      "remove_attribute": "Attribut entfernen",
+      "shipping": "Versand",
+      "requires_shipping": "Versand erforderlich",
+      "weight": "Gewicht",
+      "weight_unit": "Gewichtseinheit",
+      "package_length": "Länge",
+      "package_width": "Breite",
+      "package_height": "Höhe",
+      "dimension_unit": "Maßeinheit",
+      "seo": "SEO",
+      "serp_preview": "Google-SERP-Vorschau",
+      "meta_title": "Meta-Titel",
+      "meta_description": "Meta-Beschreibung",
+      "open_graph_title": "Open-Graph-Titel",
+      "open_graph_description": "Open-Graph-Beschreibung",
+      "import_products": "Produkte importieren",
+      "import_description": "Laden Sie eine CSV-Datei hoch, ordnen Sie die Spalten zu und importieren Sie Ihre Produkte.",
+      "import_tab_run": "Neuer Import",
+      "import_step_file": "Datei",
+      "import_step_mapping": "Zuordnung",
+      "import_step_options": "Optionen",
+      "import_choose_file": "CSV-Datei auswählen",
+      "import_change_file": "Datei ändern",
+      "import_download_template": "Beispiel-CSV herunterladen",
+      "import_file_column": "Dateispalte",
+      "import_sample_value": "Beispielwert",
+      "import_field": "Zugeordnetes Feld",
+      "import_ignore": "Ignorieren",
+      "import_group_variant": "Variante",
+      "import_group_options": "Mehrere Varianten",
+      "import_group_base": "Produkt",
+      "import_rows": "Zeilen",
+      "import_duplicate_strategy": "Bestehende Produkte mit derselben SKU",
+      "import_create_missing_options": "Fehlende Optionen und Werte erstellen",
+      "import_dry_run": "Nur validieren (Testlauf)",
+      "import_run_dry_run": "Validieren",
+      "import_run_import": "Importieren",
+      "import_created": "Erstellt",
+      "import_updated": "Aktualisiert",
+      "import_skipped": "Übersprungen",
+      "import_failed": "Fehlgeschlagen",
+      "import_total_rows": "Zeilen insgesamt",
+      "import_duration": "Dauer",
+      "import_row": "Zeile",
+      "import_messages": "Meldungen",
+      "import_no_errors": "Keine Zeilenfehler.",
+      "import_history": "Verlauf",
+      "import_new_import": "Neuer Import",
+      "import_filename": "Datei",
+      "import_run_at": "Datum",
+      "import_view_errors": "Fehler anzeigen",
+      "import_hide_errors": "Fehler ausblenden",
+      "import_no_history": "Noch keine Importe.",
+      "import_back": "Zurück",
+      "import_next": "Weiter",
+      "import_row_cap_exceeded": "Die Datei überschreitet das Zeilenlimit von {{cap}}.",
+      "tax_class": "Steuerklasse",
+      "tax_class_none": "Standardklasse"
+    },
+    "tooltips": {
+      "is_published": {
+        "active": "Wenn aktiviert, ist das Produkt auf der Website sichtbar.",
+        "inactive": "Wenn deaktiviert, ist das Produkt nur im Admin-Panel sichtbar."
+      },
+      "requires_shipping": {
+        "active": "Wenn aktiviert, ist das Produkt ein physischer Artikel, und das unten angegebene Gewicht und die Maße werden für den Versand verwendet.",
+        "inactive": "Wenn deaktiviert, muss das Produkt nicht versendet werden (z. B. digitale Güter), und die folgenden Felder werden ignoriert."
+      },
+      "is_default": {
+        "active": "Wenn aktiviert, wird die Variante auf der Website als Standard ausgewählt",
+        "inactive": "Wenn deaktiviert, wird die Variante auf der Website nicht als Standard ausgewählt."
+      },
+      "status": {
+        "in_stock": "Aktiv und kaufbar. Kunden können dieses Produkt sehen und kaufen.",
+        "out_of_stock": "In der Storefront sichtbar, aber Kunden können es nicht in den Warenkorb legen. Wird verwendet, wenn der Lagerbestand null erreicht.",
+        "inactive": "In der Storefront ausgeblendet. Kunden können dieses Produkt weder sehen noch kaufen, aber es bleibt in Ihrem Katalog.",
+        "discontinued": "Dauerhaft eingestellt. Dieses Produkt ist ausgeblendet, kann nicht gekauft werden und wird nicht erneut bestückt."
+      }
+    },
+    "help_texts": {
+      "is_default": "Wenn aktiviert, wird diese Variante auf der Website als Standardoption ausgewählt.",
+      "images": "Das erste Bild ist das Titelbild. Verwenden Sie die Pfeile, um die Reihenfolge zu ändern.",
+      "attributes": "Laden Sie Attribute aus einer Vorlage, fügen Sie sie manuell hinzu oder kombinieren Sie beides — und entfernen Sie dann, was Sie nicht benötigen. Attribute ohne Wert werden nicht gespeichert.",
+      "shipping": "Legen Sie Paketgewicht und -maße fest, die zur Berechnung der Versandkosten verwendet werden. Jeder Wert braucht seine Einheit; lassen Sie alles leer, wenn nicht benötigt.",
+      "import": "Laden Sie die Beispiel-CSV herunter, füllen Sie Ihre Produkte aus, laden Sie sie über die Dateiauswahl hoch, ordnen Sie dann die Spalten zu und validieren Sie mit einem Testlauf, bevor Sie importieren. Zeilen mit demselben Handle werden zu den Varianten eines Produkts.",
+      "import_dry_run": "Validiert die gesamte Datei und schreibt nichts; das Ergebnis zeigt, was der echte Import tun würde.",
+      "import_create_missing_options": "Varianten-Optionsnamen und -werte (z. B. Farbe / Rot), die im Optionskatalog fehlen, werden in der Standardsprache des Shops erstellt; deaktivieren Sie die Option, um Zeilen mit unbekannten Optionen stattdessen fehlschlagen zu lassen."
+    }
+  }
+}

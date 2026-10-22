@@ -1,0 +1,33 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "En vedette",
+      "subtitle": "Sélectionner les produits et catégories affichés sur la page d'accueil de la vitrine"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "sélection en vedette",
+      "products-section": "Produits en vedette",
+      "categories-section": "Catégories en vedette",
+      "add-products": "Ajouter des produits",
+      "add-categories": "Ajouter des catégories"
+    },
+    "actions": {},
+    "help_texts": {
+      "products-section": "Affichés dans la section des produits en vedette de la vitrine, dans cet ordre.",
+      "categories-section": "Affichés dans la section « acheter par catégorie » de la vitrine, dans cet ordre.",
+      "empty-products": "Aucun produit sélectionné pour le moment.",
+      "empty-categories": "Aucune catégorie sélectionnée pour le moment."
+    },
+    "placeholders": {
+      "search-products": "Rechercher des produits par titre..."
+    },
+    "statuses": {
+      "picker-search-hint": "Recherchez des produits par titre dans n'importe quelle langue et choisissez ceux à mettre en vedette.",
+      "picker-tree-hint": "Choisissez les catégories à mettre en vedette.",
+      "type-to-search": "Saisissez au moins 2 caractères pour rechercher.",
+      "no-results": "Aucun résultat."
+    }
+  }
+}

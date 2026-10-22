@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "rate": "Tarifa de envío",
+      "rates": "Tarifas de envío",
+      "id": "ID",
+      "method_id": "Método",
+      "zone_id": "Zona",
+      "price": "Precio",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "method_id": "Seleccione el método de envío al que se aplica esta tarifa",
+      "zone_id": "Seleccione la zona a la que se aplica esta tarifa",
+      "price": "Precio fijo para este método en esta zona — 0.00 significa envío gratis"
+    }
+  }
+}

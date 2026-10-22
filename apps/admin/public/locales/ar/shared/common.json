@@ -1,0 +1,94 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "قائمة {{entity}}",
+      "subtitle": "اعرض جميع {{entity}} وأدِرها"
+    },
+    "form": {
+      "title_create": "إنشاء {{entity}}",
+      "title_edit": "تعديل {{entity}} رقم {{id}}",
+      "subtitle": "يرجى تعبئة التفاصيل أدناه"
+    },
+    "show": {
+      "title": "عرض {{entity}} رقم {{id}} ",
+      "subtitle": "عرض جميع التفاصيل"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "تم {{action}} {{name}} بنجاح.",
+      "record": {
+        "created": "تم إنشاء {{name}} بنجاح.",
+        "updated": "تم تحديث {{name}} بنجاح.",
+        "deleted": "تم حذف {{name}} بنجاح.",
+        "deleted_general": "تم حذف العنصر بنجاح."
+      },
+      "upload_general": "تم رفع الملف بنجاح",
+      "sign-in": "تم تسجيل الدخول بنجاح."
+    },
+    "error": {
+      "default": "حدث خطأ أثناء عملية {{action}}.",
+      "general": "حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقًا.",
+      "api": "تعذر جلب البيانات. يرجى التحقق من اتصالك.",
+      "validation": "يرجى التحقق من المعلومات المقدمة بحثًا عن أخطاء.",
+      "invalid_name": "يحتوي الاسم على أحرف غير مسموح بها.",
+      "forbidden": "لا يُسمح لك بعرض هذه الصفحة.",
+      "sign-in-failed": "تعذر إكمال تسجيل الدخول: {{message}}",
+      "record": {
+        "not_found": "لم يتم العثور على السجل المطلوب.",
+        "already_exists": "يوجد بالفعل سجل بهذا المعرّف."
+      }
+    },
+    "info": {
+      "loading": "جارٍ التحميل...",
+      "processing": "جارٍ معالجة طلبك..."
+    },
+    "warning": {
+      "session_timeout": "ستنتهي جلستك قريبًا. يرجى حفظ عملك."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "سجل",
+      "item": "عنصر",
+      "items": "عناصر",
+      "yes": "نعم",
+      "no": "لا",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "id": "المعرّف",
+      "image": "صورة",
+      "images": "صور",
+      "main": "رئيسي"
+    },
+    "actions": {
+      "ok": "حسنًا",
+      "confirm": "تأكيد",
+      "clear": "مسح",
+      "create": "إنشاء",
+      "import": "استيراد",
+      "export": "تصدير",
+      "download": "تنزيل",
+      "update": "تحديث",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "show_details": "عرض التفاصيل",
+      "remove": "إزالة",
+      "save": "حفظ",
+      "submit": "إرسال",
+      "cancel": "إلغاء",
+      "close": "إغلاق",
+      "add": "إضافة",
+      "add_item": "إضافة عنصر",
+      "remove_item": "إزالة عنصر"
+    },
+    "placeholders": {
+      "input": "أدخل قيمة هنا",
+      "select": "اختر خيارًا",
+      "textarea": "اكتب هنا"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}

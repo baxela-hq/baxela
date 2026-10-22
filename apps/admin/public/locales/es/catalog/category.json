@@ -1,0 +1,24 @@
+{
+  "form": {
+    "labels": {
+      "category": "Categoría",
+      "categories": "Categorías",
+      "id": "ID",
+      "parent_id": "ID del padre",
+      "none": "Ninguna",
+      "title": "Título",
+      "slug": "Slug",
+      "position": "Posición",
+      "image": "Imagen",
+      "add_image": "Añadir imagen",
+      "description": "Descripción",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento",
+      "parent_id": "Seleccione una categoría padre para anidar esta debajo de ella, o elija Ninguna para una categoría de nivel superior.",
+      "image": "Imagen opcional que se muestra junto a la categoría en la tienda."
+    }
+  }
+}

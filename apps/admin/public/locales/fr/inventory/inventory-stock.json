@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "Stock",
+      "inventory-stocks": "Stocks",
+      "id": "ID",
+      "product": "Produit",
+      "variant": "Variante",
+      "quantity": "Quantité",
+      "low_stock": "Stock faible",
+      "sku": "SKU",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "statuses": {
+      "low_stock": "stock faible"
+    },
+    "help_texts": {
+      "product": "Choisissez le produit dont vous voulez stocker la variante",
+      "variant": "Choisissez la variante du produit sélectionné",
+      "quantity": "Unités disponibles pour cette variante — une ligne de stock par variante"
+    },
+    "placeholders": {
+      "select_product_first": "Sélectionnez d'abord un produit"
+    }
+  }
+}

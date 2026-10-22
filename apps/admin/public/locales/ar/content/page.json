@@ -1,0 +1,25 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "مسودة",
+        "published": "منشور"
+      }
+    },
+    "labels": {
+      "page": "الصفحة",
+      "pages": "الصفحات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "slug": "الرابط اللطيف (slug)",
+      "content": "المحتوى",
+      "description": "الوصف",
+      "status": "الحالة",
+      "general": "عام",
+      "images": "الصور",
+      "publish": "نشر",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    }
+  }
+}

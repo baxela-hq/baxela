@@ -1,0 +1,41 @@
+{
+  "form": {
+    "labels": {
+      "setting": "Configuración",
+      "settings": "Configuraciones",
+      "id": "ID",
+      "name": "Nombre",
+      "value": "Valor",
+      "general": "General",
+      "announcement": "Anuncio",
+      "theme": "Tema",
+      "themes": {
+        "default": "Predeterminado (Baxela)"
+      }
+    },
+    "statuses": {
+      "name": {
+        "website_title": "Título del sitio web",
+        "website_description": "Descripción del sitio web",
+        "language_id": "Idioma predeterminado",
+        "currency_id": "Moneda predeterminada",
+        "announcement_text": "Texto del anuncio",
+        "announcement_bar_enabled": "Mostrar barra de anuncios",
+        "storefront-theme": "Tema de la tienda"
+      }
+    },
+    "tooltips": {
+      "name": {
+        "website_title": "Título de su página principal",
+        "website_description": "Descripción de su página principal que se usa para SEO",
+        "language_id": "Idioma usado para mostrar la tienda",
+        "currency_id": "Moneda usada para los precios",
+        "announcement_bar_enabled": "Mostrar la barra de anuncios en la tienda",
+        "storefront-theme": "Paleta aplicada a la tienda; los valores desconocidos revierten al tema predeterminado de la tienda"
+      }
+    },
+    "help_texts": {
+      "announcement_text": "El texto se puede guardar mientras la barra está desactivada"
+    }
+  }
+}

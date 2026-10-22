@@ -1,0 +1,25 @@
+{
+  "form": {
+    "labels": {
+      "menu": "Menú",
+      "menus": "Menús",
+      "id": "ID",
+      "title": "Título",
+      "description": "Descripción",
+      "location": "Ubicación",
+      "location_header": "Encabezado",
+      "location_footer": "Pie de página",
+      "is_active": "Activo",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "links": "Enlaces",
+      "sort": "Ordenar",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "location": "Dónde se muestra este menú en la tienda",
+      "is_active": "Los menús inactivos se ocultan de la tienda"
+    }
+  }
+}

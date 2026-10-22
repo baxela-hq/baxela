@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "Lagerbestand",
+      "inventory-stocks": "Lagerbestände",
+      "id": "ID",
+      "product": "Produkt",
+      "variant": "Variante",
+      "quantity": "Menge",
+      "low_stock": "Niedriger Bestand",
+      "sku": "SKU",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "low_stock": "niedriger Bestand"
+    },
+    "help_texts": {
+      "product": "Wählen Sie das Produkt, dessen Variante Sie bestücken möchten",
+      "variant": "Wählen Sie die Variante des ausgewählten Produkts",
+      "quantity": "Verfügbare Einheiten dieser Variante — eine Bestandszeile pro Variante"
+    },
+    "placeholders": {
+      "select_product_first": "Wählen Sie zuerst ein Produkt"
+    }
+  }
+}

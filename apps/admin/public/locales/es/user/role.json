@@ -1,0 +1,23 @@
+{
+  "form": {
+    "labels": {
+      "role": "Rol",
+      "roles": "Roles",
+      "id": "ID",
+      "name": "Nombre",
+      "permissions": "Permisos",
+      "select_all": "Seleccionar todos los permisos en este módulo",
+      "no_permission_results": "Ningún permiso coincide con su búsqueda."
+    },
+    "placeholders": {
+      "search_permissions": "Buscar permisos (p. ej. products.list)"
+    },
+    "help_texts": {
+      "name": "Letras minúsculas, números y guiones (p. ej. content-editor).",
+      "permissions": "Los permisos otorgan acceso a capacidades de administración. Están agrupados por módulo; el rol de superadministrador siempre omite todas las comprobaciones."
+    },
+    "statuses": {
+      "system": "sistema"
+    }
+  }
+}

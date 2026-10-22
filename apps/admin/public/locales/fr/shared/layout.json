@@ -1,0 +1,126 @@
+{
+  "sidebar": {
+    "admin-panel": "Panneau d'administration",
+    "dashboard": "Tableau de bord",
+    "catalog": "Catalogue",
+    "products": "Produits",
+    "categories": "Catégories",
+    "brands": "Marques",
+    "options": "Options",
+    "attributes": "Attributs",
+    "productComments": "Commentaires",
+    "catalog-data": "Import / Export",
+    "settings": "Paramètres",
+    "content": "Contenu",
+    "pages": "Pages",
+    "posts": "Articles",
+    "featured-posts": "Articles en vedette",
+    "postCategories": "Catégories",
+    "postComments": "Commentaires",
+    "media": "Médias",
+    "menus": "Menus",
+    "contactMessages": "Messages de contact",
+    "contact": "Contact",
+    "support": "Assistance",
+    "tickets": "Tickets",
+    "newsletter-subscribers": "Abonnés à la newsletter",
+    "order": "Commande",
+    "orders": "Commandes",
+    "inventory-stocks": "Stocks",
+    "shipping": "Livraison",
+    "payment": "Paiement",
+    "payments": "Paiements",
+    "payment-methods": "Méthodes de paiement",
+    "methods": "Méthodes",
+    "zones": "Zones",
+    "rates": "Tarifs",
+    "shipments": "Expéditions",
+    "discount": "Remise",
+    "coupons": "Codes promo",
+    "modules": "Modules",
+    "users": "Utilisateurs",
+    "roles": "Rôles",
+    "general": "général",
+    "account": "Compte",
+    "notifications": "Notifications",
+    "notifications-inbox": "Notifications",
+    "toggle": "Basculer la barre latérale",
+    "featured": "En vedette",
+    "promotions": "Promotions",
+    "audit-logs": "Journaux d'audit",
+    "tax": "Taxes",
+    "tax-classes": "Classes de taxes",
+    "tax-rates": "Taux de taxe",
+    "returns": "Retours"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "Se déconnecter",
+      "body": "Êtes-vous sûr de vouloir vous déconnecter ? Vous devrez vous reconnecter pour accéder à votre compte."
+    },
+    "cancel": "Annuler"
+  },
+  "toolbar": {
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "upgrade-to-pro": "Passer à Pro",
+    "theme": {
+      "label": "Thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système"
+    },
+    "toggle-theme": "Changer de thème",
+    "open-theme-settings": "Ouvrir les paramètres du thème",
+    "view-website": "Voir le site"
+  },
+  "search": {
+    "placeholder": "Rechercher...",
+    "command_input": "Saisir une commande ou rechercher..."
+  },
+  "config-drawer": {
+    "direction-help": "Remplace la direction dérivée de la langue par défaut de la boutique jusqu'à ce que vous la réinitialisiez.",
+    "title": "Paramètres du thème",
+    "description": "Ajustez l'apparence et la disposition selon vos préférences.",
+    "reset": "Réinitialiser",
+    "reset-all-settings": "Réinitialiser tous les paramètres aux valeurs par défaut",
+    "sections": {
+      "theme": "Thème",
+      "sidebar": "Barre latérale",
+      "layout": "Disposition",
+      "direction": "Direction"
+    },
+    "options": {
+      "inset": "Intégrée",
+      "floating": "Flottante",
+      "sidebar": "Barre latérale",
+      "default": "Par défaut",
+      "compact": "Compacte",
+      "full-layout": "Disposition complète",
+      "ltr": "De gauche à droite",
+      "rtl": "De droite à gauche"
+    },
+    "group-aria": {
+      "theme": "Sélectionner la préférence de thème",
+      "sidebar": "Sélectionner le style de la barre latérale",
+      "layout": "Sélectionner le style de disposition",
+      "direction": "Sélectionner la direction du site"
+    },
+    "section-descriptions": {
+      "theme": "Choisissez entre la préférence système, le mode clair ou le mode sombre",
+      "sidebar": "Choisissez entre une barre latérale intégrée, flottante ou standard",
+      "layout": "Choisissez entre développée par défaut, compacte avec icônes seulement, ou disposition complète",
+      "direction": "Choisissez entre une direction de gauche à droite ou de droite à gauche"
+    },
+    "select-option-aria": "Sélectionner {{label}}",
+    "option-preview-aria": "Aperçu de l'option {{label}}"
+  },
+  "command-menu": {
+    "theme-heading": "Thème",
+    "no-results": "Aucun résultat trouvé.",
+    "records-heading": "Enregistrements",
+    "products-heading": "Produit",
+    "orders-heading": "Commande"
+  }
+}

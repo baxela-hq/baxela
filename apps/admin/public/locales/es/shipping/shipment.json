@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "shipment": "Envío",
+      "shipments": "Envíos",
+      "id": "ID",
+      "order_id": "Pedido",
+      "carrier_name": "Transportista",
+      "tracking_number": "Número de seguimiento",
+      "tracking_url": "URL de seguimiento",
+      "status": "Estado",
+      "shipped_at": "Enviado el",
+      "delivered_at": "Entregado el",
+      "notes": "Notas",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "order_id": "ID del pedido al que pertenece este envío",
+      "status": "El estado solo puede avanzar a lo largo del ciclo de vida",
+      "tracking_url": "Enlace público de seguimiento que se muestra al cliente"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pendiente",
+        "packed": "Empaquetado",
+        "shipped": "Enviado",
+        "in_transit": "En tránsito",
+        "delivered": "Entregado",
+        "failed": "Fallido"
+      }
+    }
+  }
+}

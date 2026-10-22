@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "message": "Kontaktnachricht",
+      "messages": "Kontaktnachrichten",
+      "id": "ID",
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "subject": "Betreff",
+      "content": "Nachricht",
+      "status": "Status",
+      "ip_address": "IP-Adresse",
+      "view": "Anzeigen",
+      "read": "Als gelesen markieren",
+      "replied": "Als beantwortet markieren",
+      "archived": "Archivieren",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "status": {
+        "unread": "Ungelesen",
+        "read": "Gelesen",
+        "replied": "Beantwortet",
+        "archived": "Archiviert"
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Entwurf",
+        "published": "Veröffentlicht",
+        "scheduled": "Geplant"
+      }
+    },
+    "labels": {
+      "post": "Beitrag",
+      "posts": "Beiträge",
+      "id": "ID",
+      "title": "Titel",
+      "slug": "Slug",
+      "content": "Inhalt",
+      "description": "Beschreibung",
+      "status": "Status",
+      "publish_date": "Veröffentlichungsdatum",
+      "general": "Allgemein",
+      "categories": "Kategorien",
+      "no_products_found": "Keine Produkte gefunden.",
+      "products": "Verknüpfte Produkte",
+      "seo": "SEO",
+      "serp_preview": "Google-SERP-Vorschau",
+      "meta_title": "Meta-Titel",
+      "meta_description": "Meta-Beschreibung",
+      "open_graph_title": "Open-Graph-Titel",
+      "open_graph_description": "Open-Graph-Beschreibung",
+      "publish": "Veröffentlichen",
+      "image": "Bild",
+      "add_image": "Bild hinzufügen",
+      "comments": "Kommentare",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "products": "Suchen Sie Produkte und verknüpfen Sie sie, um sie neben diesem Beitrag zu präsentieren.",
+      "publish_date": "Leer lassen, um sofort zu veröffentlichen. Ein zukünftiges Datum hält den Beitrag bis zu diesem Tag verborgen.",
+      "image": "Optionales Titelbild, das in der Storefront neben diesem Beitrag angezeigt wird."
+    },
+    "placeholders": {
+      "search_products": "Produkte nach Titel suchen…"
+    }
+  }
+}

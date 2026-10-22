@@ -1,0 +1,73 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Médiathèque",
+      "subtitle": "Téléverser, organiser et gérer vos fichiers et dossiers"
+    },
+    "picker": {
+      "title": "Sélectionner un média",
+      "subtitle": "Parcourir les dossiers, téléverser de nouveaux fichiers ou en choisir un existant"
+    }
+  },
+  "form": {
+    "labels": {
+      "root": "Médias",
+      "folder": "Dossier",
+      "folders": "Dossiers",
+      "file": "Fichier",
+      "files": "Fichiers",
+      "name": "Nom",
+      "filename": "Nom de fichier physique",
+      "parent_id": "Dossier parent",
+      "none": "Aucun (racine)",
+      "size": "Taille",
+      "type": "Type",
+      "created_at": "Créé le",
+      "url": "URL"
+    },
+    "actions": {
+      "upload": "Téléverser",
+      "new_folder": "Nouveau dossier",
+      "open": "Ouvrir",
+      "open_menu": "Ouvrir le menu",
+      "preview": "Aperçu",
+      "rename_move": "Renommer / Déplacer",
+      "copy_url": "Copier l'URL",
+      "select": "Sélectionner",
+      "deselect": "Désélectionner",
+      "grid_view": "Vue grille",
+      "list_view": "Vue liste"
+    },
+    "placeholders": {
+      "search": "Rechercher des fichiers et dossiers...",
+      "name": "Saisir le nom du dossier",
+      "media_name": "Saisir le nom du fichier"
+    },
+    "help_texts": {
+      "parent_id": "Sélectionnez un dossier parent pour l'y imbriquer, ou choisissez Aucun pour un dossier de premier niveau.",
+      "folder_id": "Déplacez ce fichier vers un autre dossier, ou choisissez Aucun pour le placer à la racine.",
+      "media_name": "Saisissez le nom sans l'extension — elle reste fixe. Le fichier physique \"{{filename}}\" n'est jamais modifié, donc les URL existantes continuent de fonctionner."
+    }
+  },
+  "messages": {
+    "success": {
+      "url_copied": "URL copiée dans le presse-papiers."
+    },
+    "error": {
+      "no_url": "Ce fichier n'a pas d'URL accessible.",
+      "clipboard_insecure": "Le presse-papiers est bloqué parce que cette page n'est pas sécurisée (http sur une IP LAN/vhost). Ouvrez l'application via localhost ou https.",
+      "file_too_large": "\"{{name}}\" dépasse la taille maximale de téléversement du serveur."
+    },
+    "info": {
+      "drop_files": "Déposez des fichiers pour les téléverser dans le dossier actuel",
+      "no_results": "Aucun résultat.",
+      "empty_folder": "Ce dossier est vide. Glissez-déposez des fichiers ici pour les téléverser.",
+      "selected_count": "{{count}} sélectionné(s)"
+    },
+    "dialog": {
+      "delete": {
+        "folder_warning_body": "Supprimer ce dossier peut aussi supprimer tous les fichiers et sous-dossiers qu'il contient. Cette action est irréversible."
+      }
+    }
+  }
+}

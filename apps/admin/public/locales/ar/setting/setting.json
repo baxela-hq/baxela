@@ -1,0 +1,41 @@
+{
+  "form": {
+    "labels": {
+      "setting": "الإعداد",
+      "settings": "الإعدادات",
+      "id": "المعرّف",
+      "name": "الاسم",
+      "value": "القيمة",
+      "general": "عام",
+      "announcement": "الإعلان",
+      "theme": "المظهر",
+      "themes": {
+        "default": "الافتراضي (Baxela)"
+      }
+    },
+    "statuses": {
+      "name": {
+        "website_title": "عنوان الموقع",
+        "website_description": "وصف الموقع",
+        "language_id": "اللغة الافتراضية",
+        "currency_id": "العملة الافتراضية",
+        "announcement_text": "نص الإعلان",
+        "announcement_bar_enabled": "إظهار شريط الإعلان",
+        "storefront-theme": "مظهر واجهة المتجر"
+      }
+    },
+    "tooltips": {
+      "name": {
+        "website_title": "عنوان صفحتك الرئيسية",
+        "website_description": "وصف صفحتك الرئيسية المستخدم لتحسين محركات البحث",
+        "language_id": "اللغة المستخدمة لعرض واجهة المتجر",
+        "currency_id": "العملة المستخدمة في التسعير",
+        "announcement_bar_enabled": "عرض شريط الإعلان في واجهة المتجر",
+        "storefront-theme": "لوحة الألوان المطبقة على واجهة المتجر؛ القيم غير المعروفة تعود إلى الافتراضي لواجهة المتجر"
+      }
+    },
+    "help_texts": {
+      "announcement_text": "يمكن حفظ النص أثناء تعطيل الشريط"
+    }
+  }
+}

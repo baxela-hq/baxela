@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "Método de envío",
+      "methods": "Métodos de envío",
+      "id": "ID",
+      "code": "Código",
+      "name": "Nombre",
+      "is_active": "Activo",
+      "position": "Posición",
+      "description": "Descripción",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "code": "Código único que identifica este método (p. ej. standard, express)",
+      "position": "Introduzca la posición de su elemento"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Activo",
+        "false": "Inactivo"
+      }
+    }
+  }
+}

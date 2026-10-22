@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "tax_class": "Steuerklasse",
+      "tax_classes": "Steuerklassen",
+      "id": "ID",
+      "name": "Name",
+      "is_default": "Standard",
+      "is_shipping": "Versand",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "is_default": "Produkte ohne explizite Klasse fallen auf die Standardklasse zurück; das Hochstufen dieser stuft den bisherigen Standard herab",
+      "is_shipping": "Versandkosten werden nur über die Klasse mit diesem Flag versteuert; behalten Sie genau eine bei"
+    },
+    "statuses": {
+      "is_default": {
+        "true": "Standard"
+      },
+      "is_shipping": {
+        "true": "Versand"
+      }
+    }
+  }
+}

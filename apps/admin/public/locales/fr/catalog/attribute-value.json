@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "attribute_value": "Valeur d'attribut",
+      "attribute_values": "Valeurs d'attribut",
+      "value": "Valeur",
+      "values": "Valeurs",
+      "attributes": "Attributs",
+      "id": "ID",
+      "title": "Titre",
+      "position": "Position",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "position": "Saisissez la position de votre élément"
+    }
+  }
+}

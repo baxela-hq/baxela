@@ -1,0 +1,46 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Borrador",
+        "published": "Publicado",
+        "scheduled": "Programado"
+      }
+    },
+    "labels": {
+      "post": "Artículo",
+      "posts": "Artículos",
+      "id": "ID",
+      "title": "Título",
+      "slug": "Slug",
+      "content": "Contenido",
+      "description": "Descripción",
+      "status": "Estado",
+      "publish_date": "Fecha de publicación",
+      "general": "General",
+      "categories": "Categorías",
+      "no_products_found": "No se encontraron productos.",
+      "products": "Productos relacionados",
+      "seo": "SEO",
+      "serp_preview": "Vista previa de Google SERP",
+      "meta_title": "Meta título",
+      "meta_description": "Meta descripción",
+      "open_graph_title": "Título de Open Graph",
+      "open_graph_description": "Descripción de Open Graph",
+      "publish": "Publicar",
+      "image": "Imagen",
+      "add_image": "Añadir imagen",
+      "comments": "Comentarios",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "products": "Busque y adjunte productos para destacar junto a este artículo.",
+      "publish_date": "Deje vacío para publicar de inmediato. Una fecha futura mantiene el artículo oculto hasta ese día.",
+      "image": "Foto de portada opcional que se muestra con este artículo en la tienda."
+    },
+    "placeholders": {
+      "search_products": "Buscar productos por título…"
+    }
+  }
+}

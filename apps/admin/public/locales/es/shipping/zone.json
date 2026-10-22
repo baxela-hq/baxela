@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "zone": "Zona de envío",
+      "zones": "Zonas de envío",
+      "id": "ID",
+      "name": "Nombre",
+      "is_active": "Activo",
+      "position": "Posición",
+      "country_codes": "Países",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento",
+      "country_codes": "Deje vacío para usar esta zona como respaldo mundial (resto del mundo)"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Activo",
+        "false": "Inactivo"
+      },
+      "country_codes": {
+        "rest_of_world": "Resto del mundo"
+      }
+    }
+  }
+}

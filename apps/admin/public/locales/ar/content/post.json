@@ -1,0 +1,46 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "مسودة",
+        "published": "منشور",
+        "scheduled": "مجدول"
+      }
+    },
+    "labels": {
+      "post": "المقال",
+      "posts": "المقالات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "slug": "الرابط اللطيف (slug)",
+      "content": "المحتوى",
+      "description": "الوصف",
+      "status": "الحالة",
+      "publish_date": "تاريخ النشر",
+      "general": "عام",
+      "categories": "التصنيفات",
+      "no_products_found": "لم يتم العثور على منتجات.",
+      "products": "منتجات ذات صلة",
+      "seo": "تحسين محركات البحث (SEO)",
+      "serp_preview": "معاينة نتائج Google",
+      "meta_title": "عنوان Meta",
+      "meta_description": "وصف Meta",
+      "open_graph_title": "عنوان Open Graph",
+      "open_graph_description": "وصف Open Graph",
+      "publish": "نشر",
+      "image": "الصورة",
+      "add_image": "إضافة صورة",
+      "comments": "التعليقات",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "products": "ابحث عن المنتجات وأرفقها لإبرازها بجانب هذا المقال.",
+      "publish_date": "اتركه فارغًا للنشر فورًا. التاريخ المستقبلي يبقي المقال مخفيًا حتى ذلك اليوم.",
+      "image": "صورة غلاف اختيارية تُعرض مع هذا المقال في واجهة المتجر."
+    },
+    "placeholders": {
+      "search_products": "البحث عن المنتجات بالعنوان…"
+    }
+  }
+}

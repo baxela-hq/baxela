@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "Ver",
+    "toggle-columns": "Alternar columnas"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "Advertencia",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "delete_item": "Eliminar elemento",
+      "delete_confirmation": "¿Está seguro de que desea eliminar este elemento?",
+      "enter_to_confirm": "Escriba {{word}} para confirmar la eliminación.",
+      "operation_warning": "Tenga cuidado, esta operación no se puede revertir."
+    },
+    "bulk": {
+      "toolbar-aria": "Acciones masivas para {{selectedCount}} {{name}} seleccionados",
+      "toolbar_available": "La barra de acciones masivas está disponible.",
+      "clear-selection": "Borrar selección",
+      "selected": "seleccionados"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "Eliminar elementos seleccionados",
+      "delete_items_x": "Eliminar {{n}} {{name}}",
+      "deleted_items_x": "{{n}} {{name}} eliminados",
+      "deleted": "eliminados",
+      "deleting-items": "Eliminando elementos...",
+      "delete_confirmation": "¿Está seguro de que desea eliminar los elementos seleccionados?",
+      "action_warning": "Esta acción no se puede deshacer.",
+      "confirm_by_typing": "Confirmar escribiendo",
+      "type_to_confirm": "Escriba {{word}} para confirmar."
+    }
+  },
+  "toolbar": {
+    "reset": "Restablecer",
+    "filter": "Buscar en {{name}}..."
+  },
+  "filter": {
+    "clear-filters": "Borrar filtros"
+  },
+  "columns": {
+    "aria-select-all": "Seleccionar todo",
+    "aria-select-row": "Seleccionar fila"
+  },
+  "shared": {
+    "item": "Elemento",
+    "items": "Elementos"
+  },
+  "pagination": {
+    "current_status": "Página {{currentPage}} de {{totalPages}}",
+    "page": "Página",
+    "rows-per-page": "Filas por página",
+    "go-to-page": "Ir a la página",
+    "go-first-page": "Ir a la primera página",
+    "go-last-page": "Ir a la última página",
+    "go-next-page": "Ir a la página siguiente",
+    "go-previous-page": "Ir a la página anterior"
+  }
+}

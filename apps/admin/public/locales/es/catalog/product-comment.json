@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "comment": "Comentario",
+      "comments": "Comentarios",
+      "id": "ID",
+      "body": "Contenido",
+      "rating": "Valoración",
+      "no_rating": "Sin valoración",
+      "rating_value": "{{rating}} / 5",
+      "reactions": "Reacciones",
+      "product": "Producto",
+      "user": "Usuario",
+      "anonymous": "Anónimo",
+      "status": "Estado",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el",
+      "reply": "Responder",
+      "reply_title": "Responder al comentario",
+      "reply_subtitle": "Su respuesta se publica de inmediato",
+      "approve": "Aprobar",
+      "approved": "aprobado",
+      "reject": "Rechazar",
+      "rejected": "rechazado"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pendiente",
+        "approved": "Aprobado",
+        "rejected": "Rechazado"
+      }
+    }
+  }
+}

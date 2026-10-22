@@ -1,0 +1,103 @@
+{
+  "form": {
+    "labels": {
+      "notification": "Notification",
+      "notifications": "Notifications",
+      "all": "Toutes",
+      "unread": "Non lues",
+      "empty": "Vous êtes à jour — aucune notification"
+    },
+    "actions": {
+      "mark-all-read": "Tout marquer comme lu",
+      "previous": "Précédent",
+      "next": "Suivant"
+    }
+  },
+  "menu": {
+    "title": "Notifications",
+    "empty": "Aucune nouvelle notification",
+    "view-all": "Voir toutes les notifications"
+  },
+  "settings": {
+    "title": "Notifications",
+    "desc": "Configurez la façon dont vous recevez les notifications."
+  },
+  "push": {
+    "title": "Notifications du navigateur",
+    "description": "Recevez des notifications au niveau du système dans ce navigateur, même quand l'onglet est fermé.",
+    "actions": {
+      "enabling": "Activation…",
+      "disabling": "Désactivation…"
+    },
+    "status": {
+      "unsupported-browser": "Non pris en charge — ce navigateur ne gère pas le web push.",
+      "unconfigured": "Indisponible — le web push n'est pas configuré sur le serveur (clés VAPID manquantes).",
+      "denied": "Bloqué — autorisez les notifications pour ce site dans les paramètres du navigateur pour activer."
+    }
+  },
+  "telegram": {
+    "title": "Notifications Telegram",
+    "description": "Recevez vos notifications dans une conversation Telegram, via le bot de la boutique.",
+    "instructions": "Envoyez /start au bot sur Telegram, puis saisissez le code à 6 chiffres qu'il répond (ou votre identifiant Telegram).",
+    "placeholder": "Code de liaison ou identifiant Telegram",
+    "linked-as": "Lié en tant que @{{username}}.",
+    "linked-chat": "Lié à la conversation Telegram {{chatId}}.",
+    "actions": {
+      "open-bot": "Ouvrir le bot",
+      "link": "Lier",
+      "unlink": "Délier",
+      "test": "Envoyer un message de test"
+    },
+    "status": {
+      "unconfigured": "Indisponible — le bot Telegram n'est pas configuré sur le serveur (jeton de bot manquant)."
+    },
+    "errors": {
+      "invalid-input": "Saisissez le code à 6 chiffres du bot, ou votre identifiant Telegram numérique."
+    },
+    "messages": {
+      "linked": "Telegram lié — vous recevrez les notifications là-bas.",
+      "unlinked": "Telegram délié.",
+      "test_sent": "Message de test envoyé à votre conversation Telegram."
+    }
+  },
+  "preferences": {
+    "title": "Préférences de notification",
+    "description": "Choisissez quelles notifications vous recevez et par quels canaux.",
+    "channels": {
+      "email": "E-mail",
+      "database": "Dans l'application",
+      "webpush": "Push",
+      "telegram": "Telegram"
+    },
+    "codes": {
+      "contact-message-created": {
+        "title": "Nouveau message de contact",
+        "description": "Quelqu'un a soumis le formulaire de contact."
+      },
+      "content-post-comment-created": {
+        "title": "Nouveau commentaire en attente d'approbation",
+        "description": "Un commentaire d'article attend la modération."
+      },
+      "order-order-created": {
+        "title": "Nouvelle commande",
+        "description": "Un client a passé une nouvelle commande."
+      },
+      "payment-payment-succeeded": {
+        "title": "Paiement réussi",
+        "description": "Un paiement a été effectué avec succès."
+      },
+      "payment-payment-failed": {
+        "title": "Paiement échoué",
+        "description": "Un paiement n'a pas pu être traité."
+      },
+      "support-ticket-created": {
+        "title": "Nouveau ticket d'assistance",
+        "description": "Un client a ouvert un ticket d'assistance."
+      },
+      "support-ticket-replied": {
+        "title": "Réponse à un ticket d'assistance",
+        "description": "Un client a répondu à un ticket d'assistance."
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "attribute_group": "Grupo de atributos",
+      "attribute_groups": "Grupos de atributos",
+      "attributes": "Atributos",
+      "id": "ID",
+      "title": "Título",
+      "position": "Posición",
+      "attributes_count": "Cantidad de atributos",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "تسجيل الدخول",
+    "description": "أدخل بريدك الإلكتروني وكلمة المرور أدناه لتسجيل الدخول إلى حسابك",
+    "or-continue-with": "أو تابع باستخدام",
+    "footer": "بالنقر على تسجيل الدخول، فإنك توافق على <termsLink>شروط الخدمة</termsLink> و<privacyLink>سياسة الخصوصية</privacyLink> الخاصة بنا."
+  },
+  "form": {
+    "labels": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    },
+    "placeholders": {
+      "email": "name@example.com",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "تسجيل الدخول",
+      "forgot-password": "هل نسيت كلمة المرور؟"
+    },
+    "validation": {
+      "email-required": "يرجى إدخال بريدك الإلكتروني",
+      "password-required": "يرجى إدخال كلمة المرور",
+      "password-min-length": "يجب أن تتكون كلمة المرور من 7 أحرف على الأقل"
+    }
+  }
+}

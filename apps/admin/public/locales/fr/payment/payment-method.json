@@ -1,0 +1,31 @@
+{
+  "form": {
+    "labels": {
+      "payment-method": "Méthode de paiement",
+      "payment-methods": "Méthodes de paiement"
+    },
+    "statuses": {
+      "method": {
+        "manual": "Manuel",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments",
+        "mercadopago": "Mercado Pago",
+        "checkoutcom": "Checkout.com",
+        "razorpay": "Razorpay"
+      },
+      "state": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "not-configured": "Non configurée",
+        "not-registered": "Pilote manquant"
+      }
+    },
+    "help_texts": {
+      "active-hint": "Les méthodes actives sont proposées au paiement, ordonnées par leur position dans cette liste.",
+      "not-configured": "Les identifiants manquent dans la configuration du backend ; cette méthode reste masquée au paiement jusqu'à sa configuration.",
+      "not-registered": "Aucun pilote n'est enregistré pour cette méthode dans le backend, elle ne peut donc plus être utilisée."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "form": {
+    "labels": {
+      "role": "Rolle",
+      "roles": "Rollen",
+      "id": "ID",
+      "name": "Name",
+      "permissions": "Berechtigungen",
+      "select_all": "Alle Berechtigungen in diesem Modul auswählen",
+      "no_permission_results": "Keine Berechtigungen entsprechen Ihrer Suche."
+    },
+    "placeholders": {
+      "search_permissions": "Berechtigungen suchen (z. B. products.list)"
+    },
+    "help_texts": {
+      "name": "Kleinbuchstaben, Zahlen und Bindestriche (z. B. content-editor).",
+      "permissions": "Berechtigungen gewähren Zugriff auf Admin-Funktionen. Sie sind nach Modul gruppiert; die Super-Admin-Rolle umgeht immer alle Prüfungen."
+    },
+    "statuses": {
+      "system": "System"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "Plantilla de atributos",
+      "attribute_templates": "Plantillas de atributos",
+      "id": "ID",
+      "title": "Título",
+      "description": "Descripción",
+      "is_active": "Activo",
+      "position": "Posición",
+      "groups": "Grupos",
+      "groups_count": "Cantidad de grupos",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Activo",
+        "false": "Inactivo"
+      }
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento",
+      "groups": "Elija los grupos y ordénelos — el orden define el diseño del formulario del producto"
+    }
+  }
+}

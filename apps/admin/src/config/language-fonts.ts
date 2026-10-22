@@ -16,6 +16,7 @@
  */
 const languageFonts = {
   fa: 'vazirmatn',
+  ar: 'vazirmatn',
 } as const
 
 export type LanguageFont = (typeof languageFonts)[keyof typeof languageFonts]

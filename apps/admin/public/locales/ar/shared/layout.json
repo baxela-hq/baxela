@@ -1,0 +1,126 @@
+{
+  "sidebar": {
+    "admin-panel": "لوحة الإدارة",
+    "dashboard": "لوحة التحكم",
+    "catalog": "الكتالوج",
+    "products": "المنتجات",
+    "categories": "التصنيفات",
+    "brands": "العلامات التجارية",
+    "options": "الخيارات",
+    "attributes": "السمات",
+    "productComments": "التعليقات",
+    "catalog-data": "استيراد / تصدير",
+    "settings": "الإعدادات",
+    "content": "المحتوى",
+    "pages": "الصفحات",
+    "posts": "المقالات",
+    "featured-posts": "المقالات المميزة",
+    "postCategories": "التصنيفات",
+    "postComments": "التعليقات",
+    "media": "الوسائط",
+    "menus": "القوائم",
+    "contactMessages": "رسائل التواصل",
+    "contact": "التواصل",
+    "support": "الدعم",
+    "tickets": "التذاكر",
+    "newsletter-subscribers": "المشتركون في النشرة البريدية",
+    "order": "طلب",
+    "orders": "الطلبات",
+    "inventory-stocks": "مخزونات الجرد",
+    "shipping": "الشحن",
+    "payment": "الدفع",
+    "payments": "المدفوعات",
+    "payment-methods": "طرق الدفع",
+    "methods": "الطرق",
+    "zones": "المناطق",
+    "rates": "الأسعار",
+    "shipments": "الإرساليات",
+    "discount": "الخصم",
+    "coupons": "قسائم الخصم",
+    "modules": "الوحدات",
+    "users": "المستخدمون",
+    "roles": "الأدوار",
+    "general": "عام",
+    "account": "الحساب",
+    "notifications": "الإشعارات",
+    "notifications-inbox": "الإشعارات",
+    "toggle": "إظهار/إخفاء الشريط الجانبي",
+    "featured": "المميز",
+    "promotions": "العروض الترويجية",
+    "audit-logs": "سجلات التدقيق",
+    "tax": "الضريبة",
+    "tax-classes": "فئات الضريبة",
+    "tax-rates": "نسب الضريبة",
+    "returns": "المرتجعات"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "تسجيل الخروج",
+      "body": "هل أنت متأكد أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حسابك."
+    },
+    "cancel": "إلغاء"
+  },
+  "toolbar": {
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "upgrade-to-pro": "الترقية إلى Pro",
+    "theme": {
+      "label": "المظهر",
+      "light": "فاتح",
+      "dark": "داكن",
+      "system": "النظام"
+    },
+    "toggle-theme": "تبديل المظهر",
+    "open-theme-settings": "فتح إعدادات المظهر",
+    "view-website": "عرض الموقع"
+  },
+  "search": {
+    "placeholder": "بحث...",
+    "command_input": "اكتب أمرًا أو ابحث..."
+  },
+  "config-drawer": {
+    "direction-help": "يتجاوز الاتجاه المشتق من اللغة الافتراضية للمتجر إلى أن تقوم بإعادة تعيينه.",
+    "title": "إعدادات المظهر",
+    "description": "اضبط المظهر والتخطيط بما يناسب تفضيلاتك.",
+    "reset": "إعادة تعيين",
+    "reset-all-settings": "إعادة تعيين جميع الإعدادات إلى القيم الافتراضية",
+    "sections": {
+      "theme": "المظهر",
+      "sidebar": "الشريط الجانبي",
+      "layout": "التخطيط",
+      "direction": "الاتجاه"
+    },
+    "options": {
+      "inset": "مدمج",
+      "floating": "عائم",
+      "sidebar": "الشريط الجانبي",
+      "default": "افتراضي",
+      "compact": "مضغوط",
+      "full-layout": "تخطيط كامل",
+      "ltr": "من اليسار إلى اليمين",
+      "rtl": "من اليمين إلى اليسار"
+    },
+    "group-aria": {
+      "theme": "اختيار تفضيل المظهر",
+      "sidebar": "اختيار نمط الشريط الجانبي",
+      "layout": "اختيار نمط التخطيط",
+      "direction": "اختيار اتجاه الموقع"
+    },
+    "section-descriptions": {
+      "theme": "اختر بين تفضيل النظام أو الوضع الفاتح أو الوضع الداكن",
+      "sidebar": "اختر بين شريط جانبي مدمج أو عائم أو قياسي",
+      "layout": "اختر بين التوسيع الافتراضي أو الأيقونات المضغوطة فقط أو وضع التخطيط الكامل",
+      "direction": "اختر بين اتجاه موقع من اليسار إلى اليمين أو من اليمين إلى اليسار"
+    },
+    "select-option-aria": "اختيار {{label}}",
+    "option-preview-aria": "معاينة خيار {{label}}"
+  },
+  "command-menu": {
+    "theme-heading": "المظهر",
+    "no-results": "لم يتم العثور على نتائج.",
+    "records-heading": "السجلات",
+    "products-heading": "المنتج",
+    "orders-heading": "الطلب"
+  }
+}

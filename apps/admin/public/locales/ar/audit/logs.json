@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "سجلات التدقيق",
+      "subtitle": "سجل الإجراءات الإدارية المنفذة عبر المنصة"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "سجل التدقيق",
+      "id": "المعرّف",
+      "user": "المستخدم",
+      "module": "الوحدة",
+      "entity": "الكيان",
+      "action": "الإجراء",
+      "ip-address": "عنوان IP",
+      "user-agent": "وكيل المستخدم",
+      "properties": "الخصائص",
+      "created_at": "تاريخ الحدوث",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "view": "عرض"
+    }
+  }
+}

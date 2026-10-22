@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "Se connecter",
+    "description": "Saisissez votre e-mail et votre mot de passe ci-dessous pour vous connecter à votre compte",
+    "or-continue-with": "Ou continuer avec",
+    "footer": "En cliquant sur se connecter, vous acceptez nos <termsLink>Conditions d'utilisation</termsLink> et notre <privacyLink>Politique de confidentialité</privacyLink>."
+  },
+  "form": {
+    "labels": {
+      "email": "E-mail",
+      "password": "Mot de passe"
+    },
+    "placeholders": {
+      "email": "nom@exemple.com",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "Se connecter",
+      "forgot-password": "Mot de passe oublié ?"
+    },
+    "validation": {
+      "email-required": "Veuillez saisir votre e-mail",
+      "password-required": "Veuillez saisir votre mot de passe",
+      "password-min-length": "Le mot de passe doit contenir au moins 7 caractères"
+    }
+  }
+}

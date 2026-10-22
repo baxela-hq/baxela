@@ -1,0 +1,63 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Tableau de bord"
+    }
+  },
+  "top-nav": {
+    "overview": "Vue d'ensemble",
+    "customers": "Clients",
+    "products": "Produits",
+    "settings": "Paramètres"
+  },
+  "tabs": {
+    "overview": "Vue d'ensemble",
+    "analytics": "Analytique",
+    "reports": "Rapports",
+    "notifications": "Notifications"
+  },
+  "stat-cards": {
+    "total-revenue": "Chiffre d'affaires total",
+    "total-revenue-change": "{{value}} par rapport au mois dernier",
+    "orders": "Commandes",
+    "orders-change": "{{value}} par rapport au mois dernier",
+    "customers": "Clients",
+    "customers-change": "{{value}} par rapport au mois dernier",
+    "pending-orders": "Commandes en attente",
+    "pending-orders-change": "En attente de traitement",
+    "no-change-data": "Aucune donnée pour le mois dernier"
+  },
+  "overview-card": "Vue d'ensemble",
+  "no-data": "Aucune donnée disponible",
+  "recent-orders": {
+    "title": "Commandes récentes",
+    "description": "Les dernières commandes passées dans votre boutique",
+    "empty": "Aucune commande pour le moment"
+  },
+  "analytics": {
+    "orders-overview": {
+      "title": "Vue d'ensemble des commandes",
+      "description": "Commandes passées au cours des 30 derniers jours"
+    },
+    "stat-cards": {
+      "avg-order-value": "Panier moyen",
+      "avg-order-value-caption": "Sur les commandes payées",
+      "paid-orders": "Commandes payées",
+      "paid-orders-caption": "Sur toutes les commandes",
+      "cancelled-orders": "Commandes annulées",
+      "cancelled-orders-caption": "Sur toutes les commandes",
+      "new-customers": "Nouveaux clients",
+      "new-customers-caption": "Inscrits ce mois-ci"
+    },
+    "orders-by-status": {
+      "title": "Commandes par statut",
+      "description": "Toutes les commandes groupées par statut",
+      "empty": "Aucune commande pour le moment"
+    },
+    "top-products": {
+      "title": "Meilleurs produits",
+      "description": "Meilleures ventes par unités vendues",
+      "empty": "Aucune vente pour le moment"
+    }
+  }
+}

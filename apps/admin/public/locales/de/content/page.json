@@ -1,0 +1,25 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Entwurf",
+        "published": "Veröffentlicht"
+      }
+    },
+    "labels": {
+      "page": "Seite",
+      "pages": "Seiten",
+      "id": "ID",
+      "title": "Titel",
+      "slug": "Slug",
+      "content": "Inhalt",
+      "description": "Beschreibung",
+      "status": "Status",
+      "general": "Allgemein",
+      "images": "Bilder",
+      "publish": "Veröffentlichen",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    }
+  }
+}

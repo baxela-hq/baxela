@@ -1,0 +1,59 @@
+{
+  "form": {
+    "labels": {
+      "promotion": "Aktion",
+      "promotions": "Aktionen",
+      "id": "ID",
+      "name": "Name",
+      "scope": "Geltungsbereich",
+      "type": "Typ",
+      "value": "Wert",
+      "priority": "Priorität",
+      "starts_at": "Beginnt am (UTC)",
+      "ends_at": "Endet am (UTC)",
+      "window": "Gültigkeit",
+      "is_active": "Aktiv",
+      "category_ids": "Kategorien",
+      "product_ids": "Produkte",
+      "preview": "Preisvorschau",
+      "confirm_all_title": "Eine shopweite Aktion aktivieren?",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "percent": "Prozent",
+      "fixed": "Festbetrag",
+      "all": "Alle",
+      "specific": "Bestimmt",
+      "scope_all": "Alle Produkte (shopweit)",
+      "scope_specific": "Ausgewählte Produkte und Kategorien",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "placeholders": {
+      "name": "Wintersale",
+      "date": "Datum auswählen",
+      "product_search": "Produkte nach Titel suchen…"
+    },
+    "help_texts": {
+      "name": "Internes Label für diese Aktion, wird Kunden nie angezeigt",
+      "type_percent": "Prozentsatz Rabatt auf den Grundpreis jeder Einheit",
+      "type_fixed": "Fester Betrag Rabatt auf den Grundpreis jeder Einheit",
+      "value_percent": "Prozentsatz Rabatt — 20.00 bedeutet 20 %",
+      "value_fixed": "Fester Rabattbetrag pro Einheit, in der Shop-Währung",
+      "priority": "Entscheider bei Gleichstand, wenn mehrere Aktionen mit derselben Geltungsbereichsstufe auf ein Produkt passen — der höhere gewinnt",
+      "starts_at": "Die Preise ändern sich ab diesem Zeitpunkt (UTC); leer bedeutet sofort",
+      "ends_at": "Die Preise kehren nach diesem Zeitpunkt (UTC) zurück; leer bedeutet bis zur Deaktivierung",
+      "is_active": "Inaktive Aktionen werden sofort nicht mehr angewendet, selbst innerhalb ihres Zeitraums",
+      "scope": "Alle Produkte oder eine explizite Auswahl — eine leere Auswahl kann nie shopweit werden",
+      "category_ids": "Produkte in den markierten Kategorien sind in der Aktion enthalten (exakte Kategorien, nicht deren Unterkategorien)",
+      "product_ids": "Zusätzliche einzelne Produkte, zusätzlich zu den obigen Kategorien",
+      "no_categories": "Noch keine Kategorien vorhanden",
+      "no_products": "Keine Produkte gefunden",
+      "preview_note": "Beispiel an einem {{base}}-Produkt — dieselben Begrenzungsregeln, die die Storefront anwendet",
+      "precedence": "Wenn mehrere aktive Aktionen ein Produkt abdecken, gewinnt genau eine: ein Treffer auf Produktebene schlägt einen Treffer auf Kategorieebene, der shopweit schlägt; Gleichstände innerhalb einer Stufe gehen an die höhere Priorität, dann an die ältere Aktion. Aktionen werden niemals miteinander kombiniert; Gutscheincodes gelten weiterhin zusätzlich zu Aktionspreisen.",
+      "confirm_all_title": "Eine shopweite Aktion aktivieren?",
+      "confirm_all": "Diese Aktion ändert sofort den Preis JEDES Produkts im Shop, solange sie aktiv ist. Prüfen Sie den Wert und das Gültigkeitsfenster doppelt, bevor Sie bestätigen."
+    }
+  }
+}

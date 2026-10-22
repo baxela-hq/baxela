@@ -1,0 +1,61 @@
+{
+  "page_titles": {
+    "title": "Katalogdaten",
+    "subtitle": "Sichern, wiederherstellen und übertragen des gesamten Katalogmoduls als einzelne JSON-Datei."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Import",
+      "import_description": "Katalogdaten aus einer Modul-Exportdatei wiederherstellen oder übertragen.",
+      "export_title": "Export",
+      "choose_file": "JSON-Datei auswählen",
+      "change_file": "Datei ändern",
+      "section": "Abschnitt",
+      "rows": "Zeilen",
+      "total_rows": "Zeilen insgesamt",
+      "exported_at": "Exportiert",
+      "duplicate_strategy": "Bestehende Datensätze mit demselben Schlüssel (Code, Slug oder SKU)",
+      "dry_run": "Nur validieren (Testlauf)",
+      "run_dry_run": "Validieren",
+      "created": "Erstellt",
+      "updated": "Aktualisiert",
+      "skipped": "Übersprungen",
+      "failed": "Fehlgeschlagen",
+      "duration": "Dauer",
+      "messages": "Meldungen",
+      "no_errors": "Keine Zeilenfehler.",
+      "row_cap_exceeded": "Die Datei überschreitet das Zeilenlimit von {{cap}}.",
+      "history": "Verlauf",
+      "history_description": "Frühere Importvorgänge des Moduls, neueste zuerst.",
+      "no_history": "Noch keine Importe.",
+      "filename": "Datei",
+      "status": "Status",
+      "run_at": "Ausgeführt am",
+      "new_import": "Neuer Import"
+    },
+    "help_texts": {
+      "import": "Wählen Sie eine JSON-Datei, die vom Export dieses oder eines anderen Shops erzeugt wurde. Abschnitte werden in Abhängigkeitsreihenfolge importiert; Zeilen, die zu bestehenden Datensätzen passen, folgen der Duplikatstrategie.",
+      "export": "Lädt jedes Produkt, jede Kategorie, jedes Attribut und jede Option mit allen Übersetzungen als verlustfreies JSON-Backup herunter, das Sie in jedem Shop erneut importieren können.",
+      "dry_run": "Validiert jede Zeile und meldet das Ergebnis, ohne etwas zu schreiben."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen"
+      },
+      "strategy": {
+        "update": "Bestehende Datensätze aktualisieren",
+        "skip": "Bestehende Datensätze überspringen"
+      },
+      "section": {
+        "attribute-groups": "Attributgruppen",
+        "attributes": "Attribute",
+        "attribute-values": "Attributwerte",
+        "options": "Optionen",
+        "option-values": "Optionswerte",
+        "categories": "Kategorien",
+        "products": "Produkte"
+      }
+    }
+  }
+}

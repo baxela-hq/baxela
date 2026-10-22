@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "Rückgabe",
+      "returns": "Rückgaben",
+      "id": "ID",
+      "order_code": "Bestellung",
+      "user_id": "Benutzer",
+      "reason": "Grund",
+      "status": "Status",
+      "tracking_number": "Sendungsverfolgung",
+      "admin_note": "Admin-Notiz",
+      "restore_stock": "Bestand wiederherstellen",
+      "created_at": "Angefragt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "restore_stock": "Fügt die zurückgegebenen Mengen wieder zum Lagerbestand hinzu (genau einmal)"
+    },
+    "placeholders": {
+      "admin_note": "Optionale Notiz für das Audit-Protokoll"
+    },
+    "statuses": {
+      "status": {
+        "requested": "Angefragt",
+        "approved": "Genehmigt",
+        "rejected": "Abgelehnt",
+        "shipped": "Vom Kunden versandt",
+        "received": "Empfangen",
+        "completed": "Abgeschlossen",
+        "cancelled": "Storniert"
+      },
+      "reason": {
+        "damaged": "Beschädigt",
+        "wrong_item": "Falscher Artikel",
+        "not_as_described": "Nicht wie beschrieben",
+        "other": "Sonstiges"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "Rückgabe als {status} markieren?",
+      "confirmation": "Die Rückgabe für Bestellung {code} wird zu {status} wechseln.",
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen",
+      "no_auto_refund_title": "Erstattungen sind separat",
+      "no_auto_refund_body": "Das Abschließen einer Rückgabe erstattet nie automatisch — führen Sie zunächst die Erstattung über die Zahlung der Bestellung durch und schließen Sie dann ab."
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "messages": {
+    "no_items": "No se encontraron artículos para este pedido"
+  },
+  "form": {
+    "labels": {
+      "order": "Pedido",
+      "orders": "Pedidos",
+      "id": "ID",
+      "order_code": "Código del pedido",
+      "user_id": "ID del usuario",
+      "status": "Estado",
+      "payment_status": "Estado del pago",
+      "description": "Descripción",
+      "note": "Nota",
+      "total_amount": "Importe total",
+      "coupon_code": "Cupón",
+      "discount_amount": "Descuento",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el",
+      "variant_id": "ID de la variante",
+      "product_name_snapshot": "Nombre del producto",
+      "quantity": "Cantidad",
+      "price_snapshot": "Instantánea del precio",
+      "tax_amount": "Impuesto",
+      "shipping_tax_amount": "Impuesto del envío",
+      "refunded_amount": "Reembolsado"
+    },
+    "help_texts": {
+      "description": "El texto fue escrito por el cliente y no es editable",
+      "note": "El texto solo es visible en el panel de administración y lo muestran los administradores",
+      "status": "El cliente será notificado después de cambiar el estado",
+      "payment_status": "Marcar un pedido como pagado también inicia su preparación; se notifica al cliente después de cambiar el estado del pago"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pendiente",
+        "processing": "Procesando",
+        "shipped": "Enviado",
+        "completed": "Completado",
+        "cancelled": "Cancelado"
+      },
+      "payment_status": {
+        "unpaid": "No pagado",
+        "paid": "Pagado",
+        "refunded": "Reembolsado",
+        "partially_refunded": "Parcialmente reembolsado"
+      }
+    },
+    "tooltips": {
+      "status": {
+        "pending": "El pedido se realizó y está a la espera de confirmación del pago",
+        "processing": "El pedido está pagado y se está preparando para el envío",
+        "shipped": "El pedido se envió y el cliente aún no lo recibió",
+        "completed": "El cliente recibió el pedido",
+        "cancelled": "El pedido fue cancelado"
+      },
+      "payment_status": {
+        "unpaid": "El pedido aún no se ha pagado; caduca si el pago no se completa a tiempo",
+        "paid": "El pedido se ha pagado — los reembolsos comienzan desde aquí",
+        "refunded": "El pago del pedido fue reembolsado al cliente"
+      }
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Mediathek",
+      "subtitle": "Dateien und Ordner hochladen, organisieren und verwalten"
+    },
+    "picker": {
+      "title": "Medien auswählen",
+      "subtitle": "Ordner durchsuchen, neue Dateien hochladen oder eine bestehende auswählen"
+    }
+  },
+  "form": {
+    "labels": {
+      "root": "Medien",
+      "folder": "Ordner",
+      "folders": "Ordner",
+      "file": "Datei",
+      "files": "Dateien",
+      "name": "Name",
+      "filename": "Physischer Dateiname",
+      "parent_id": "Übergeordneter Ordner",
+      "none": "Keine (Stammverzeichnis)",
+      "size": "Größe",
+      "type": "Typ",
+      "created_at": "Erstellt am",
+      "url": "URL"
+    },
+    "actions": {
+      "upload": "Hochladen",
+      "new_folder": "Neuer Ordner",
+      "open": "Öffnen",
+      "open_menu": "Menü öffnen",
+      "preview": "Vorschau",
+      "rename_move": "Umbenennen / Verschieben",
+      "copy_url": "URL kopieren",
+      "select": "Auswählen",
+      "deselect": "Abwählen",
+      "grid_view": "Rasteransicht",
+      "list_view": "Listenansicht"
+    },
+    "placeholders": {
+      "search": "Dateien und Ordner suchen...",
+      "name": "Ordnernamen eingeben",
+      "media_name": "Dateinamen eingeben"
+    },
+    "help_texts": {
+      "parent_id": "Wählen Sie einen übergeordneten Ordner, um diesen unterzuordnen, oder wählen Sie Keine für einen Ordner auf oberster Ebene.",
+      "folder_id": "Verschieben Sie diese Datei in einen anderen Ordner, oder wählen Sie Keine, um sie im Stammverzeichnis abzulegen.",
+      "media_name": "Geben Sie den Namen ohne Erweiterung ein — sie bleibt unveränderlich. Die physische Datei \"{{filename}}\" wird nie geändert, sodass bestehende URLs weiterhin funktionieren."
+    }
+  },
+  "messages": {
+    "success": {
+      "url_copied": "URL in die Zwischenablage kopiert."
+    },
+    "error": {
+      "no_url": "Diese Datei hat keine zugängliche URL.",
+      "clipboard_insecure": "Die Zwischenablage ist gesperrt, weil diese Seite nicht sicher ist (http über eine LAN-IP/einen vhost). Öffnen Sie die App über localhost oder https.",
+      "file_too_large": "\"{{name}}\" überschreitet die maximale Upload-Größe des Servers."
+    },
+    "info": {
+      "drop_files": "Dateien hierher ziehen, um sie in den aktuellen Ordner hochzuladen",
+      "no_results": "Keine Ergebnisse.",
+      "empty_folder": "Dieser Ordner ist leer. Ziehen Sie Dateien hierher, um sie hochzuladen.",
+      "selected_count": "{{count}} ausgewählt"
+    },
+    "dialog": {
+      "delete": {
+        "folder_warning_body": "Das Löschen dieses Ordners kann auch alle darin enthaltenen Dateien und Unterordner löschen. Diese Aktion kann nicht rückgängig gemacht werden."
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "form": {
+    "labels": {
+      "payment": "Paiement",
+      "payments": "Paiements",
+      "id": "ID",
+      "order_id": "Commande",
+      "transaction_id": "Transaction",
+      "method": "Méthode",
+      "amount": "Montant",
+      "status": "Statut",
+      "created_at": "Créé le",
+      "refund_amount": "Montant du remboursement",
+      "refund_reason": "Motif"
+    },
+    "help_texts": {
+      "confirm": "La confirmation enregistre l'argent comme reçu : le paiement est marqué réussi et sa commande devient payée et passe en traitement. Le client est notifié.",
+      "fail": "L'échec marque ce paiement comme échoué. La commande reste non payée et le client peut la payer à nouveau."
+    },
+    "statuses": {
+      "status": {
+        "pending": "En attente",
+        "success": "Réussi",
+        "failed": "Échoué"
+      },
+      "method": {
+        "manual": "Manuel",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments",
+        "mercadopago": "Mercado Pago",
+        "checkoutcom": "Checkout.com",
+        "razorpay": "Razorpay"
+      },
+      "refund_status": {
+        "pending": "En attente",
+        "success": "Remboursé",
+        "failed": "Échoué",
+        "reconciliation_required": "Rapprochement requis"
+      }
+    },
+    "actions": {
+      "confirm": "Confirmer le paiement",
+      "fail": "Marquer comme échoué",
+      "issue_refund": "Émettre un remboursement",
+      "refund_history": "Historique des remboursements"
+    }
+  },
+  "dialog": {
+    "success": {
+      "title": "Confirmer le paiement",
+      "desc": "Marquer le paiement #{{id}} comme réussi ? Sa commande sera marquée payée et passera en traitement.",
+      "confirm": "Confirmer"
+    },
+    "failed": {
+      "title": "Marquer le paiement comme échoué",
+      "desc": "Marquer le paiement #{{id}} comme échoué ? La commande reste non payée et le client peut la payer à nouveau.",
+      "confirm": "Marquer comme échoué"
+    }
+  },
+  "refund": {
+    "dialog": {
+      "title": "Émettre un remboursement",
+      "subtitle": "Remboursement comptable sur le paiement #{id} — les montants partiels sont autorisés.",
+      "manual_note": "Pour les paiements manuels, cela enregistre que VOUS avez déjà rendu l'argent en dehors de Baxela.",
+      "confirm": "Rembourser"
+    },
+    "history": {
+      "title": "Historique des remboursements",
+      "subtitle": "Écritures comptables pour le paiement #{id}",
+      "empty": "Aucun remboursement pour le moment.",
+      "resolve": "Résoudre",
+      "confirm_success": "Confirmer remboursé",
+      "confirm_failed": "Confirmer échoué",
+      "gateway_id": "ID de remboursement de la passerelle (re_play… / REF-…)",
+      "reserved_note": "Les montants marqués comme nécessitant un rapprochement restent comptés dans le solde remboursable jusqu'à résolution."
+    }
+  }
+}

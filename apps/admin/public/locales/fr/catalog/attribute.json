@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "Attribut",
+      "attributes": "Attributs",
+      "id": "ID",
+      "title": "Titre",
+      "code": "Code",
+      "data_type": "Type de données",
+      "is_filterable": "Filtrable",
+      "group": "Groupe",
+      "position": "Position",
+      "values": "Valeurs",
+      "values_count": "Nombre de valeurs",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "Texte",
+        "number": "Nombre",
+        "boolean": "Booléen",
+        "select": "Liste déroulante",
+        "multiselect": "Sélection multiple"
+      }
+    },
+    "help_texts": {
+      "position": "Saisissez la position de votre élément",
+      "code": "Identifiant unique de type slug, p. ex. screen_size",
+      "is_filterable": "Utiliser cet attribut dans les filtres de la vitrine"
+    }
+  }
+}

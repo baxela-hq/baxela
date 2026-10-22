@@ -1,0 +1,33 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Empfohlen",
+      "subtitle": "Auswahl der Produkte und Kategorien für die Startseite der Storefront kuratieren"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "Empfohlene Auswahl",
+      "products-section": "Empfohlene Produkte",
+      "categories-section": "Empfohlene Kategorien",
+      "add-products": "Produkte hinzufügen",
+      "add-categories": "Kategorien hinzufügen"
+    },
+    "actions": {},
+    "help_texts": {
+      "products-section": "Wird in der Storefront-Sektion für empfohlene Produkte in dieser Reihenfolge angezeigt.",
+      "categories-section": "Wird in der Storefront-Sektion „Nach Kategorie shoppen“ in dieser Reihenfolge angezeigt.",
+      "empty-products": "Noch keine Produkte ausgewählt.",
+      "empty-categories": "Noch keine Kategorien ausgewählt."
+    },
+    "placeholders": {
+      "search-products": "Produkte nach Titel suchen..."
+    },
+    "statuses": {
+      "picker-search-hint": "Suchen Sie Produkte nach Titel in jeder Sprache und wählen Sie die aus, die empfohlen werden sollen.",
+      "picker-tree-hint": "Wählen Sie die Kategorien aus, die empfohlen werden sollen.",
+      "type-to-search": "Geben Sie mindestens 2 Zeichen ein, um zu suchen.",
+      "no-results": "Nichts gefunden."
+    }
+  }
+}

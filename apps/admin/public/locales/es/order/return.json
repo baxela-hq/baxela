@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "Devolución",
+      "returns": "Devoluciones",
+      "id": "ID",
+      "order_code": "Pedido",
+      "user_id": "Usuario",
+      "reason": "Motivo",
+      "status": "Estado",
+      "tracking_number": "Seguimiento",
+      "admin_note": "Nota del administrador",
+      "restore_stock": "Restaurar existencias",
+      "created_at": "Solicitado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "restore_stock": "Añade de nuevo las cantidades devueltas al inventario (exactamente una vez)"
+    },
+    "placeholders": {
+      "admin_note": "Nota opcional para el rastro de auditoría"
+    },
+    "statuses": {
+      "status": {
+        "requested": "Solicitada",
+        "approved": "Aprobada",
+        "rejected": "Rechazada",
+        "shipped": "Enviada por el cliente",
+        "received": "Recibida",
+        "completed": "Completada",
+        "cancelled": "Cancelada"
+      },
+      "reason": {
+        "damaged": "Dañado",
+        "wrong_item": "Artículo incorrecto",
+        "not_as_described": "No coincide con la descripción",
+        "other": "Otro"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "¿Marcar la devolución como {status}?",
+      "confirmation": "La devolución del pedido {code} pasará a {status}.",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar",
+      "no_auto_refund_title": "Los reembolsos son independientes",
+      "no_auto_refund_body": "Completar una devolución nunca reembolsa automáticamente — emita el reembolso en el pago del pedido primero, luego complete."
+    }
+  }
+}

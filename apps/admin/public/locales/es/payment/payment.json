@@ -1,0 +1,80 @@
+{
+  "form": {
+    "labels": {
+      "payment": "Pago",
+      "payments": "Pagos",
+      "id": "ID",
+      "order_id": "Pedido",
+      "transaction_id": "Transacción",
+      "method": "Método",
+      "amount": "Importe",
+      "status": "Estado",
+      "created_at": "Creado el",
+      "refund_amount": "Importe del reembolso",
+      "refund_reason": "Motivo"
+    },
+    "help_texts": {
+      "confirm": "Confirmar registra el dinero como recibido: el pago se marca como exitoso y su pedido pasa a pagado y se mueve a procesamiento. Se notifica al cliente.",
+      "fail": "Fallar marca este pago como fallido. El pedido permanece sin pagar y el cliente puede pagarlo de nuevo."
+    },
+    "statuses": {
+      "status": {
+        "pending": "Pendiente",
+        "success": "Exitoso",
+        "failed": "Fallido"
+      },
+      "method": {
+        "manual": "Manual",
+        "paypal": "PayPal",
+        "stripe": "Stripe",
+        "adyen": "Adyen",
+        "nowpayments": "NowPayments",
+        "mercadopago": "Mercado Pago",
+        "checkoutcom": "Checkout.com",
+        "razorpay": "Razorpay"
+      },
+      "refund_status": {
+        "pending": "Pendiente",
+        "success": "Reembolsado",
+        "failed": "Fallido",
+        "reconciliation_required": "Requiere conciliación"
+      }
+    },
+    "actions": {
+      "confirm": "Confirmar pago",
+      "fail": "Marcar como fallido",
+      "issue_refund": "Emitir reembolso",
+      "refund_history": "Historial de reembolsos"
+    }
+  },
+  "dialog": {
+    "success": {
+      "title": "Confirmar pago",
+      "desc": "¿Marcar el pago #{{id}} como exitoso? Su pedido se marcará como pagado y pasará a procesamiento.",
+      "confirm": "Confirmar"
+    },
+    "failed": {
+      "title": "Marcar pago como fallido",
+      "desc": "¿Marcar el pago #{{id}} como fallido? El pedido permanece sin pagar y el cliente puede pagarlo de nuevo.",
+      "confirm": "Marcar como fallido"
+    }
+  },
+  "refund": {
+    "dialog": {
+      "title": "Emitir reembolso",
+      "subtitle": "Reembolso contable sobre el pago #{id} — se permiten importes parciales.",
+      "manual_note": "Para pagos manuales esto registra que USTED ya devolvió el dinero fuera de Baxela.",
+      "confirm": "Reembolsar"
+    },
+    "history": {
+      "title": "Historial de reembolsos",
+      "subtitle": "Registros contables del pago #{id}",
+      "empty": "Aún no hay reembolsos.",
+      "resolve": "Resolver",
+      "confirm_success": "Confirmar reembolsado",
+      "confirm_failed": "Confirmar fallido",
+      "gateway_id": "ID de reembolso de la pasarela (re_play… / REF-…)",
+      "reserved_note": "Los importes marcados como que requieren conciliación siguen contando contra el saldo reembolsable hasta que se resuelvan."
+    }
+  }
+}

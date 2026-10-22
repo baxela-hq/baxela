@@ -1,0 +1,50 @@
+{
+  "form": {
+    "labels": {
+      "coupon": "Gutschein",
+      "coupons": "Gutscheine",
+      "id": "ID",
+      "code": "Code",
+      "name": "Interner Name",
+      "type": "Typ",
+      "value": "Wert",
+      "max_discount_amount": "Maximaler Rabatt",
+      "min_order_amount": "Mindestbestellwert",
+      "starts_at": "Beginnt am (UTC)",
+      "ends_at": "Endet am (UTC)",
+      "usage_limit": "Nutzungslimit",
+      "per_user_limit": "Limit pro Benutzer",
+      "usage": "Nutzung",
+      "window": "Gültigkeit",
+      "is_active": "Aktiv",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "percent": "Prozent",
+      "fixed": "Festbetrag",
+      "active": "Aktiv",
+      "inactive": "Inaktiv"
+    },
+    "placeholders": {
+      "code": "SPARE20",
+      "name": "Frühjahrsaktion",
+      "unlimited": "Unbegrenzt",
+      "date": "Datum auswählen"
+    },
+    "help_texts": {
+      "code": "Kundenseitiger Code — Buchstaben, Zahlen, Bindestriche und Unterstriche; in Großbuchstaben gespeichert",
+      "name": "Optionales internes Label, wird Kunden nie angezeigt",
+      "type": "Prozent zieht einen Prozentsatz vom Zwischensumme ab; Festbetrag zieht einen festen Betrag ab",
+      "value_percent": "Prozentsatz Rabatt auf die Zwischensumme der Bestellung — 15.00 bedeutet 15 %",
+      "value_fixed": "Fester Rabattbetrag auf die Zwischensumme der Bestellung",
+      "max_discount_amount": "Optionale Obergrenze für Prozent-Gutscheine — leer lassen für keine Begrenzung",
+      "min_order_amount": "Optionale Mindest-Warenzwischensumme, die zur Nutzung des Gutscheins erforderlich ist",
+      "usage_limit": "Zulässige Einlösungen insgesamt über alle Kunden — leer bedeutet unbegrenzt",
+      "per_user_limit": "Zulässige Einlösungen pro Kunde — leer bedeutet unbegrenzt",
+      "starts_at": "Der Gutschein ist ab diesem Zeitpunkt (UTC) nutzbar",
+      "ends_at": "Der Gutschein ist nach diesem Zeitpunkt (UTC) nicht mehr nutzbar",
+      "is_active": "Inaktive Gutscheine scheitern sofort bei der Auswertung, selbst innerhalb ihres Gültigkeitszeitraums"
+    }
+  }
+}

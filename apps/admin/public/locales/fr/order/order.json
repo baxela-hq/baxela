@@ -1,0 +1,65 @@
+{
+  "messages": {
+    "no_items": "Aucun article trouvé pour cette commande"
+  },
+  "form": {
+    "labels": {
+      "order": "Commande",
+      "orders": "Commandes",
+      "id": "ID",
+      "order_code": "Code de commande",
+      "user_id": "ID utilisateur",
+      "status": "Statut",
+      "payment_status": "Statut de paiement",
+      "description": "Description",
+      "note": "Note",
+      "total_amount": "Montant total",
+      "coupon_code": "Code promo",
+      "discount_amount": "Remise",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le",
+      "variant_id": "ID de variante",
+      "product_name_snapshot": "Nom du produit",
+      "quantity": "Quantité",
+      "price_snapshot": "Prix figé",
+      "tax_amount": "Taxe",
+      "shipping_tax_amount": "Taxe de livraison",
+      "refunded_amount": "Remboursé"
+    },
+    "help_texts": {
+      "description": "Le texte a été rédigé par le client et n'est pas modifiable",
+      "note": "Le texte est visible uniquement dans le panneau d'administration et est montré par les administrateurs",
+      "status": "Le client sera notifié après un changement de statut",
+      "payment_status": "Marquer une commande comme payée démarre aussi son traitement ; le client est notifié après un changement du statut de paiement"
+    },
+    "statuses": {
+      "status": {
+        "pending": "En attente",
+        "processing": "En cours de traitement",
+        "shipped": "Expédiée",
+        "completed": "Terminée",
+        "cancelled": "Annulée"
+      },
+      "payment_status": {
+        "unpaid": "Non payée",
+        "paid": "Payée",
+        "refunded": "Remboursée",
+        "partially_refunded": "Partiellement remboursée"
+      }
+    },
+    "tooltips": {
+      "status": {
+        "pending": "La commande a été passée et attend la confirmation du paiement",
+        "processing": "La commande est payée et préparée pour l'expédition",
+        "shipped": "La commande a été expédiée et n'a pas encore été reçue par le client",
+        "completed": "La commande a été reçue par le client",
+        "cancelled": "La commande a été annulée"
+      },
+      "payment_status": {
+        "unpaid": "La commande n'a pas encore été payée ; elle expire si le paiement n'est pas effectué à temps",
+        "paid": "La commande a été payée — les remboursements commencent ici",
+        "refunded": "Le paiement de la commande a été remboursé au client"
+      }
+    }
+  }
+}

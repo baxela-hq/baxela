@@ -1,0 +1,24 @@
+{
+  "form": {
+    "labels": {
+      "category": "Kategorie",
+      "categories": "Kategorien",
+      "id": "ID",
+      "parent_id": "Übergeordnete ID",
+      "none": "Keine",
+      "title": "Titel",
+      "slug": "Slug",
+      "position": "Position",
+      "image": "Bild",
+      "add_image": "Bild hinzufügen",
+      "description": "Beschreibung",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "parent_id": "Wählen Sie eine übergeordnete Kategorie, um diese unterzuordnen, oder wählen Sie Keine für eine Kategorie auf oberster Ebene.",
+      "image": "Optionales Bild, das in der Storefront neben der Kategorie angezeigt wird."
+    }
+  }
+}

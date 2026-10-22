@@ -1,0 +1,180 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "discontinued": "موقوف",
+        "out_of_stock": "غير متوفر",
+        "in_stock": "متوفر",
+        "inactive": "غير نشط"
+      },
+      "type": {
+        "simple": "بسيط",
+        "variable": "متغير"
+      },
+      "is_published": {
+        "false": "لا",
+        "true": "نعم"
+      },
+      "weight_unit": {
+        "kg": "كيلوغرام (kg)",
+        "g": "غرام (g)",
+        "lb": "رطل (lb)",
+        "oz": "أونصة (oz)"
+      },
+      "dimension_unit": {
+        "mm": "مليمتر (mm)",
+        "cm": "سنتيمتر (cm)",
+        "m": "متر (m)",
+        "in": "بوصة (in)"
+      },
+      "import_status": {
+        "completed": "مكتمل",
+        "failed": "فشل"
+      },
+      "import_strategy": {
+        "update": "تحديث المنتجات الحالية",
+        "skip": "تخطي المنتجات الحالية"
+      }
+    },
+    "labels": {
+      "product": "المنتج",
+      "products": "المنتجات",
+      "comments": "التعليقات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "slug": "الرابط اللطيف (slug)",
+      "content": "المحتوى",
+      "description": "الوصف",
+      "base_price": "السعر الأساسي",
+      "type": "النوع",
+      "status": "الحالة",
+      "is_published": "منشور",
+      "categories": "التصنيفات",
+      "brand": "العلامة التجارية",
+      "brand_none": "بدون علامة تجارية",
+      "variants": "المتغيرات",
+      "price": "السعر",
+      "sku": "SKU",
+      "quantity": "الكمية",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث",
+      "general": "عام",
+      "images": "الصور",
+      "publish": "نشر",
+      "is_default": "هل هو الافتراضي؟",
+      "photo": "الصورة",
+      "add_photo": "إضافة صورة",
+      "change_photo": "تغيير الصورة",
+      "variant_photo": "صورة المتغير",
+      "options": "الخيارات",
+      "add_option": "إضافة خيار",
+      "generate": "توليد",
+      "no_options_added": "لم تُضف أي خيارات بعد.",
+      "no_more_options": "لا توجد خيارات أخرى متاحة.",
+      "select_values_before_generate": "يرجى اختيار قيمة واحدة على الأقل لكل خيار قبل التوليد.",
+      "add_images": "إضافة صور",
+      "featured_image": "المميزة",
+      "move_left": "تحريك لليسار",
+      "move_right": "تحريك لليمين",
+      "image_preview": "معاينة الصورة",
+      "open_original": "فتح الأصل",
+      "attributes": "السمات",
+      "load_from_template": "تحميل من قالب",
+      "add_attribute": "إضافة سمة",
+      "no_attributes_added": "لا توجد سمات بعد. حمّل قالبًا أو أضف السمات يدويًا.",
+      "no_templates": "لا توجد قوالب متاحة",
+      "no_more_attributes": "لا توجد سمات أخرى متاحة",
+      "no_attribute_values": "لا تحتوي هذه السمة على قيم معرّفة مسبقًا.",
+      "manage_values": "إدارة القيم",
+      "ungrouped": "غير مجمّعة",
+      "not_set": "غير محدد",
+      "remove_attribute": "إزالة السمة",
+      "shipping": "الشحن",
+      "requires_shipping": "يتطلب شحنًا",
+      "weight": "الوزن",
+      "weight_unit": "وحدة الوزن",
+      "package_length": "الطول",
+      "package_width": "العرض",
+      "package_height": "الارتفاع",
+      "dimension_unit": "وحدة الأبعاد",
+      "seo": "تحسين محركات البحث (SEO)",
+      "serp_preview": "معاينة نتائج Google",
+      "meta_title": "عنوان Meta",
+      "meta_description": "وصف Meta",
+      "open_graph_title": "عنوان Open Graph",
+      "open_graph_description": "وصف Open Graph",
+      "import_products": "استيراد المنتجات",
+      "import_description": "ارفع ملف CSV، وطابق أعمدته، ثم استورد منتجاتك.",
+      "import_tab_run": "استيراد جديد",
+      "import_step_file": "الملف",
+      "import_step_mapping": "المطابقة",
+      "import_step_options": "الخيارات",
+      "import_choose_file": "اختيار ملف CSV",
+      "import_change_file": "تغيير الملف",
+      "import_download_template": "تنزيل ملف CSV نموذجي",
+      "import_file_column": "عمود الملف",
+      "import_sample_value": "قيمة نموذجية",
+      "import_field": "الحقل المطابق",
+      "import_ignore": "تجاهل",
+      "import_group_variant": "المتغير",
+      "import_group_options": "متعدد المتغيرات",
+      "import_group_base": "المنتج",
+      "import_rows": "الصفوف",
+      "import_duplicate_strategy": "المنتجات الحالية بنفس SKU",
+      "import_create_missing_options": "إنشاء الخيارات والقيم المفقودة",
+      "import_dry_run": "التحقق فقط (تشغيل تجريبي)",
+      "import_run_dry_run": "تحقق",
+      "import_run_import": "استيراد",
+      "import_created": "أُنشئت",
+      "import_updated": "حُدّثت",
+      "import_skipped": "تم تخطيها",
+      "import_failed": "فشلت",
+      "import_total_rows": "إجمالي الصفوف",
+      "import_duration": "المدة",
+      "import_row": "الصف",
+      "import_messages": "الرسائل",
+      "import_no_errors": "لا توجد أخطاء في الصفوف.",
+      "import_history": "السجل",
+      "import_new_import": "استيراد جديد",
+      "import_filename": "الملف",
+      "import_run_at": "التاريخ",
+      "import_view_errors": "عرض الأخطاء",
+      "import_hide_errors": "إخفاء الأخطاء",
+      "import_no_history": "لا توجد عمليات استيراد بعد.",
+      "import_back": "رجوع",
+      "import_next": "التالي",
+      "import_row_cap_exceeded": "يتجاوز الملف حد {{cap}} صفًا.",
+      "tax_class": "فئة الضريبة",
+      "tax_class_none": "الفئة الافتراضية"
+    },
+    "tooltips": {
+      "is_published": {
+        "active": "عند التمكين، سيكون المنتج مرئيًا في الموقع.",
+        "inactive": "عند التعطيل، سيكون المنتج مرئيًا في لوحة الإدارة فقط."
+      },
+      "requires_shipping": {
+        "active": "عند التمكين، يكون المنتج عنصرًا ماديًا ويُستخدم الوزن والأبعاد أدناه للشحن.",
+        "inactive": "عند التعطيل، لا يتطلب المنتج شحنًا (مثل السلع الرقمية) وتُتجاهل الحقول أدناه."
+      },
+      "is_default": {
+        "active": "عند التمكين، سيُختار المتغير كخيار افتراضي في الموقع",
+        "inactive": "عند التعطيل، لن يُختار المتغير كخيار افتراضي في الموقع."
+      },
+      "status": {
+        "in_stock": "نشط ومتاح للشراء. يمكن للعملاء رؤية هذا المنتج وشراؤه.",
+        "out_of_stock": "مرئي في واجهة المتجر، لكن لا يمكن للعملاء إضافته إلى سلة التسوق. يُستخدم عندما يصل المخزون إلى الصفر.",
+        "inactive": "مخفي عن واجهة المتجر. لا يمكن للعملاء رؤية هذا المنتج أو شرائه، لكنه يبقى في الكتالوج.",
+        "discontinued": "موقوف نهائيًا. هذا المنتج مخفي، ولا يمكن شراؤه، ولن يُعاد تخزينه."
+      }
+    },
+    "help_texts": {
+      "is_default": "عند التمكين، سيُختار هذا المتغير كخيار افتراضي في الموقع.",
+      "images": "الصورة الأولى هي الصورة المميزة. استخدم الأسهم لتغيير الترتيب.",
+      "attributes": "حمّل السمات من قالب، أو أضفها يدويًا، أو اجمع بين الطريقتين — ثم أزل ما لا تحتاجه. السمات التي تبقى بدون قيمة لا تُحفظ.",
+      "shipping": "حدد وزن الطرد وأبعاده المستخدمة لحساب تكاليف الشحن. كل قيمة تحتاج وحدتها؛ اترك كل شيء فارغًا عند عدم الحاجة.",
+      "import": "نزّل ملف CSV النموذجي، ثم املأ منتجاتك، وارفعه عبر منتقي الملفات، ثم طابق الأعمدة وتحقق بتشغيل تجريبي قبل الاستيراد. الصفوف التي تتشارك المعرّف تصبح متغيرات منتج واحد.",
+      "import_dry_run": "يتحقق من الملف بأكمله ولا يكتب شيئًا؛ وتُظهر النتيجة ما سيفعله الاستيراد الفعلي.",
+      "import_create_missing_options": "أسماء خيارات المتغيرات وقيمها (مثل اللون / أحمر) المفقودة من كتالوج الخيارات تُنشأ باللغة الافتراضية للمتجر؛ أزل تحديدها لتفشل الصفوف التي تشير إلى خيارات غير معروفة بدلًا من ذلك."
+    }
+  }
+}

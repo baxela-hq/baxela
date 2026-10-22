@@ -1,0 +1,61 @@
+{
+  "page_titles": {
+    "title": "Données du catalogue",
+    "subtitle": "Sauvegarder, restaurer et transférer tout le module catalogue sous forme d'un seul fichier JSON."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Importation",
+      "import_description": "Restaurer ou transférer des données du catalogue à partir d'un fichier d'export du module.",
+      "export_title": "Exportation",
+      "choose_file": "Choisir un fichier JSON",
+      "change_file": "Changer de fichier",
+      "section": "Section",
+      "rows": "Lignes",
+      "total_rows": "Total des lignes",
+      "exported_at": "Exporté",
+      "duplicate_strategy": "Enregistrements existants avec la même clé (code, slug ou SKU)",
+      "dry_run": "Validation seule (simulation)",
+      "run_dry_run": "Valider",
+      "created": "Créés",
+      "updated": "Mis à jour",
+      "skipped": "Ignorés",
+      "failed": "Échoués",
+      "duration": "Durée",
+      "messages": "Messages",
+      "no_errors": "Aucune erreur de ligne.",
+      "row_cap_exceeded": "Le fichier dépasse la limite de {{cap}} lignes.",
+      "history": "Historique",
+      "history_description": "Importations précédentes du module, plus récentes en premier.",
+      "no_history": "Aucune importation pour le moment.",
+      "filename": "Fichier",
+      "status": "Statut",
+      "run_at": "Exécuté le",
+      "new_import": "Nouvelle importation"
+    },
+    "help_texts": {
+      "import": "Choisissez un fichier JSON produit par l'exportation de cette boutique ou d'une autre. Les sections sont importées dans l'ordre des dépendances ; les lignes correspondant à des enregistrements existants suivent la stratégie de doublons.",
+      "export": "Télécharge chaque produit, catégorie, attribut et option avec toutes les traductions sous forme de sauvegarde JSON sans perte que vous pouvez réimporter dans n'importe quelle boutique.",
+      "dry_run": "Valide chaque ligne et rapporte le résultat sans rien écrire."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Terminé",
+        "failed": "Échoué"
+      },
+      "strategy": {
+        "update": "Mettre à jour les enregistrements existants",
+        "skip": "Ignorer les enregistrements existants"
+      },
+      "section": {
+        "attribute-groups": "Groupes d'attributs",
+        "attributes": "Attributs",
+        "attribute-values": "Valeurs d'attribut",
+        "options": "Options",
+        "option-values": "Valeurs d'option",
+        "categories": "Catégories",
+        "products": "Produits"
+      }
+    }
+  }
+}

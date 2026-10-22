@@ -1,0 +1,28 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Artículos destacados",
+      "subtitle": "Seleccione y organice los artículos que se muestran en la sección de artículos destacados de la tienda"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "selección destacada",
+      "posts-section": "Artículos destacados",
+      "add-posts": "Añadir artículos"
+    },
+    "actions": {},
+    "help_texts": {
+      "posts-section": "Se muestran en la sección de artículos destacados de la tienda, en este orden.",
+      "empty-posts": "Aún no hay artículos seleccionados."
+    },
+    "placeholders": {
+      "search-posts": "Buscar artículos por título..."
+    },
+    "statuses": {
+      "picker-search-hint": "Busque artículos por título en cualquier idioma y elija cuáles destacar.",
+      "type-to-search": "Escriba al menos 2 caracteres para buscar.",
+      "no-results": "No se encontró nada."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "form": {
+    "labels": {
+      "role": "Rôle",
+      "roles": "Rôles",
+      "id": "ID",
+      "name": "Nom",
+      "permissions": "Permissions",
+      "select_all": "Sélectionner toutes les permissions de ce module",
+      "no_permission_results": "Aucune permission ne correspond à votre recherche."
+    },
+    "placeholders": {
+      "search_permissions": "Rechercher des permissions (p. ex. products.list)"
+    },
+    "help_texts": {
+      "name": "Lettres minuscules, chiffres et tirets (p. ex. content-editor).",
+      "permissions": "Les permissions accordent l'accès aux fonctionnalités d'administration. Elles sont groupées par module ; le rôle super-admin contourne toujours toutes les vérifications."
+    },
+    "statuses": {
+      "system": "système"
+    }
+  }
+}

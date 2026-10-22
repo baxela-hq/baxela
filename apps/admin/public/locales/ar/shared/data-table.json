@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "عرض",
+    "toggle-columns": "إظهار/إخفاء الأعمدة"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "تحذير",
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "delete_item": "حذف العنصر",
+      "delete_confirmation": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+      "enter_to_confirm": "اكتب {{word}} لتأكيد الحذف.",
+      "operation_warning": "يرجى الحذر، لا يمكن التراجع عن هذه العملية."
+    },
+    "bulk": {
+      "toolbar-aria": "إجراءات جماعية على {{selectedCount}} {{name}} محددة",
+      "toolbar_available": "شريط الإجراءات الجماعية متاح.",
+      "clear-selection": "مسح التحديد",
+      "selected": "محدد"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "حذف العناصر المحددة",
+      "delete_items_x": "حذف {{n}} {{name}}",
+      "deleted_items_x": "تم حذف {{n}} {{name}}",
+      "deleted": "محذوف",
+      "deleting-items": "جارٍ حذف العناصر...",
+      "delete_confirmation": "هل أنت متأكد أنك تريد حذف العناصر المحددة؟",
+      "action_warning": "لا يمكن التراجع عن هذا الإجراء.",
+      "confirm_by_typing": "أكِّد بالكتابة",
+      "type_to_confirm": "يرجى كتابة {{word}} للتأكيد."
+    }
+  },
+  "toolbar": {
+    "reset": "إعادة تعيين",
+    "filter": "البحث في {{name}}..."
+  },
+  "filter": {
+    "clear-filters": "مسح عوامل التصفية"
+  },
+  "columns": {
+    "aria-select-all": "تحديد الكل",
+    "aria-select-row": "تحديد الصف"
+  },
+  "shared": {
+    "item": "عنصر",
+    "items": "عناصر"
+  },
+  "pagination": {
+    "current_status": "صفحة {{currentPage}} من {{totalPages}}",
+    "page": "صفحة",
+    "rows-per-page": "صفوف في الصفحة",
+    "go-to-page": "الانتقال إلى الصفحة",
+    "go-first-page": "الانتقال إلى الصفحة الأولى",
+    "go-last-page": "الانتقال إلى الصفحة الأخيرة",
+    "go-next-page": "الانتقال إلى الصفحة التالية",
+    "go-previous-page": "الانتقال إلى الصفحة السابقة"
+  }
+}

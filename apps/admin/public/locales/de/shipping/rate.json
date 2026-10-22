@@ -1,0 +1,19 @@
+{
+  "form": {
+    "labels": {
+      "rate": "Versandgebühr",
+      "rates": "Versandgebühren",
+      "id": "ID",
+      "method_id": "Methode",
+      "zone_id": "Zone",
+      "price": "Preis",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "method_id": "Wählen Sie die Versandmethode, für die diese Gebühr gilt",
+      "zone_id": "Wählen Sie die Zone, für die diese Gebühr gilt",
+      "price": "Pauschalpreis für diese Methode in dieser Zone — 0.00 bedeutet kostenloser Versand"
+    }
+  }
+}

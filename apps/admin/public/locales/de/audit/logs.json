@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Audit-Protokolle",
+      "subtitle": "Verlauf der plattformweit ausgeführten Admin-Aktionen"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "Audit-Protokoll",
+      "id": "ID",
+      "user": "Benutzer",
+      "module": "Modul",
+      "entity": "Entität",
+      "action": "Aktion",
+      "ip-address": "IP-Adresse",
+      "user-agent": "User Agent",
+      "properties": "Eigenschaften",
+      "created_at": "Aufgetreten am",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "view": "Anzeigen"
+    }
+  }
+}

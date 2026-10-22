@@ -1,0 +1,33 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Destacados",
+      "subtitle": "Seleccione y organice los productos y categorías que se muestran en la página principal de la tienda"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "selección destacada",
+      "products-section": "Productos destacados",
+      "categories-section": "Categorías destacadas",
+      "add-products": "Añadir productos",
+      "add-categories": "Añadir categorías"
+    },
+    "actions": {},
+    "help_texts": {
+      "products-section": "Se muestran en la sección de productos destacados de la tienda, en este orden.",
+      "categories-section": "Se muestran en la sección de comprar por categoría de la tienda, en este orden.",
+      "empty-products": "Aún no hay productos seleccionados.",
+      "empty-categories": "Aún no hay categorías seleccionadas."
+    },
+    "placeholders": {
+      "search-products": "Buscar productos por título..."
+    },
+    "statuses": {
+      "picker-search-hint": "Busque productos por título en cualquier idioma y elija cuáles destacar.",
+      "picker-tree-hint": "Elija las categorías a destacar.",
+      "type-to-search": "Escriba al menos 2 caracteres para buscar.",
+      "no-results": "No se encontró nada."
+    }
+  }
+}

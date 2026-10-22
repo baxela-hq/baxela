@@ -1,0 +1,32 @@
+{
+  "form": {
+    "labels": {
+      "link": "Lien",
+      "links": "Liens",
+      "menus": "Menus",
+      "id": "ID",
+      "title": "Titre",
+      "description": "Description",
+      "parent": "Parent",
+      "no_parent": "Aucun parent (racine)",
+      "url": "URL",
+      "target": "Cible",
+      "target__self": "Même onglet",
+      "target__blank": "Nouvel onglet",
+      "position": "Position",
+      "sort": "Trier",
+      "sort_links": "Trier les liens du menu",
+      "sort_help": "Faites glisser les éléments pour les réordonner dans leur groupe",
+      "sorting": "Tri des liens...",
+      "no_links": "Ce menu n'a pas encore de liens.",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "parent": "Les liens imbriqués s'affichent en menu déroulant sous leur parent",
+      "url": "Chemin relatif (/products) ou URL absolue",
+      "position": "Saisissez la position de votre élément",
+      "delete_subtree": "Supprimer un lien supprime aussi tous ses liens imbriqués."
+    }
+  }
+}

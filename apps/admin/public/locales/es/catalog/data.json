@@ -1,0 +1,61 @@
+{
+  "page_titles": {
+    "title": "Datos del catálogo",
+    "subtitle": "Haga copia de seguridad, restaure y transfiera todo el módulo de catálogo como un único archivo JSON."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Importar",
+      "import_description": "Restaure o transfiera datos del catálogo desde un archivo de exportación del módulo.",
+      "export_title": "Exportar",
+      "choose_file": "Elegir archivo JSON",
+      "change_file": "Cambiar archivo",
+      "section": "Sección",
+      "rows": "Filas",
+      "total_rows": "Total de filas",
+      "exported_at": "Exportado",
+      "duplicate_strategy": "Registros existentes con la misma clave (código, slug o SKU)",
+      "dry_run": "Solo validar (simulación)",
+      "run_dry_run": "Validar",
+      "created": "Creados",
+      "updated": "Actualizados",
+      "skipped": "Omitidos",
+      "failed": "Fallidos",
+      "duration": "Duración",
+      "messages": "Mensajes",
+      "no_errors": "Sin errores de filas.",
+      "row_cap_exceeded": "El archivo supera el límite de {{cap}} filas.",
+      "history": "Historial",
+      "history_description": "Importaciones anteriores del módulo, la más reciente primero.",
+      "no_history": "Aún no hay importaciones.",
+      "filename": "Archivo",
+      "status": "Estado",
+      "run_at": "Ejecutado el",
+      "new_import": "Nueva importación"
+    },
+    "help_texts": {
+      "import": "Elija un archivo JSON generado por la exportación en esta u otra tienda. Las secciones se importan en orden de dependencia; las filas que coincidan con registros existentes siguen la estrategia de duplicados.",
+      "export": "Descarga todos los productos, categorías, atributos y opciones con todas sus traducciones como una copia de seguridad JSON sin pérdida que puede reimportar en cualquier tienda.",
+      "dry_run": "Valida cada fila e informa el resultado sin escribir nada."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Completado",
+        "failed": "Fallido"
+      },
+      "strategy": {
+        "update": "Actualizar los registros existentes",
+        "skip": "Omitir los registros existentes"
+      },
+      "section": {
+        "attribute-groups": "Grupos de atributos",
+        "attributes": "Atributos",
+        "attribute-values": "Valores de atributo",
+        "options": "Opciones",
+        "option-values": "Valores de opción",
+        "categories": "Categorías",
+        "products": "Productos"
+      }
+    }
+  }
+}

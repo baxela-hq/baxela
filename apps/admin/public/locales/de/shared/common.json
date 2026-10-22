@@ -1,0 +1,94 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "{{entity}}-Liste",
+      "subtitle": "Alle {{entity}} anzeigen und verwalten"
+    },
+    "form": {
+      "title_create": "{{entity}} erstellen",
+      "title_edit": "{{entity}} #{{id}} bearbeiten",
+      "subtitle": "Bitte füllen Sie die folgenden Details aus"
+    },
+    "show": {
+      "title": "{{entity}} #{{id}} anzeigen",
+      "subtitle": "Alle Details anzeigen"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "{{name}} wurde erfolgreich {{action}}.",
+      "record": {
+        "created": "{{name}} wurde erfolgreich erstellt.",
+        "updated": "{{name}} wurde erfolgreich aktualisiert.",
+        "deleted": "{{name}} wurde erfolgreich gelöscht.",
+        "deleted_general": "Das Element wurde erfolgreich gelöscht."
+      },
+      "upload_general": "die Datei wurde erfolgreich hochgeladen",
+      "sign-in": "Sie haben sich erfolgreich angemeldet."
+    },
+    "error": {
+      "default": "Beim Vorgang {{action}} ist ein Fehler aufgetreten.",
+      "general": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+      "api": "Daten konnten nicht abgerufen werden. Bitte prüfen Sie Ihre Verbindung.",
+      "validation": "Bitte prüfen Sie die angegebenen Informationen auf Fehler.",
+      "invalid_name": "Der Name enthält nicht erlaubte Zeichen.",
+      "forbidden": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",
+      "sign-in-failed": "Die Anmeldung konnte nicht abgeschlossen werden: {{message}}",
+      "record": {
+        "not_found": "Der angeforderte Datensatz wurde nicht gefunden.",
+        "already_exists": "Ein Datensatz mit dieser Kennung existiert bereits."
+      }
+    },
+    "info": {
+      "loading": "Wird geladen...",
+      "processing": "Ihre Anfrage wird verarbeitet..."
+    },
+    "warning": {
+      "session_timeout": "Ihre Sitzung läuft bald ab. Bitte speichern Sie Ihre Arbeit."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "Datensatz",
+      "item": "Element",
+      "items": "Elemente",
+      "yes": "Ja",
+      "no": "Nein",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "id": "ID",
+      "image": "Bild",
+      "images": "Bilder",
+      "main": "Haupt"
+    },
+    "actions": {
+      "ok": "Ok",
+      "confirm": "Bestätigen",
+      "clear": "Leeren",
+      "create": "Erstellen",
+      "import": "Importieren",
+      "export": "Exportieren",
+      "download": "Herunterladen",
+      "update": "Aktualisieren",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "show_details": "Details anzeigen",
+      "remove": "Entfernen",
+      "save": "Speichern",
+      "submit": "Absenden",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "add": "Hinzufügen",
+      "add_item": "Element hinzufügen",
+      "remove_item": "Element entfernen"
+    },
+    "placeholders": {
+      "input": "Geben Sie hier einen Wert ein",
+      "select": "Wählen Sie eine Option",
+      "textarea": "Hier schreiben"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "form": {
+    "labels": {
+      "promotion": "Promotion",
+      "promotions": "Promotions",
+      "id": "ID",
+      "name": "Nom",
+      "scope": "Portée",
+      "type": "Type",
+      "value": "Valeur",
+      "priority": "Priorité",
+      "starts_at": "Débute le (UTC)",
+      "ends_at": "Termine le (UTC)",
+      "window": "Validité",
+      "is_active": "Active",
+      "category_ids": "Catégories",
+      "product_ids": "Produits",
+      "preview": "Aperçu du prix",
+      "confirm_all_title": "Activer une promotion sur toute la boutique ?",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "statuses": {
+      "percent": "Pourcentage",
+      "fixed": "Montant fixe",
+      "all": "Tout",
+      "specific": "Spécifique",
+      "scope_all": "Tous les produits (toute la boutique)",
+      "scope_specific": "Produits et catégories sélectionnés",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "placeholders": {
+      "name": "Soldes d'hiver",
+      "date": "Choisir une date",
+      "product_search": "Rechercher des produits par titre…"
+    },
+    "help_texts": {
+      "name": "Libellé interne pour cette promotion, jamais montré aux clients",
+      "type_percent": "Pourcentage de remise sur le prix de base de chaque unité",
+      "type_fixed": "Montant forfaitaire déduit du prix de base de chaque unité",
+      "value_percent": "Pourcentage de remise — 20.00 signifie 20 %",
+      "value_fixed": "Montant forfaitaire déduit de chaque unité, dans la devise de la boutique",
+      "priority": "Départage lorsque plusieurs promotions correspondent à un produit au même niveau de portée — la plus élevée l'emporte",
+      "starts_at": "Les prix changent à partir de ce moment (UTC) ; vide signifie immédiatement",
+      "ends_at": "Les prix reviennent après ce moment (UTC) ; vide signifie jusqu'à la désactivation",
+      "is_active": "Les promotions inactives cessent de s'appliquer immédiatement, même pendant leur période",
+      "scope": "Tous les produits, ou une sélection explicite — une sélection vide ne peut jamais devenir globale",
+      "category_ids": "Les produits des catégories cochées sont promus (catégories exactes, pas leurs enfants)",
+      "product_ids": "Produits individuels supplémentaires, en plus des catégories ci-dessus",
+      "no_categories": "Aucune catégorie n'existe pour le moment",
+      "no_products": "Aucun produit trouvé",
+      "preview_note": "Exemple sur un produit à {{base}} — les mêmes règles de Bornage que celles appliquées par la vitrine",
+      "precedence": "Quand plusieurs promotions actives couvrent un produit, une seule l'emporte : une correspondance au niveau produit bat une correspondance au niveau catégorie, qui bat toute la boutique ; les égalités dans un niveau vont à la priorité la plus élevée, puis à la promotion la plus ancienne. Les promotions ne se cumulent jamais entre elles ; les codes promo s'appliquent toujours en plus des prix promotionnels.",
+      "confirm_all_title": "Activer une promotion sur toute la boutique ?",
+      "confirm_all": "Cette promotion changera immédiatement le prix de TOUS les produits de la boutique tant qu'elle est active. Vérifiez bien la valeur et la période de validité avant de confirmer."
+    }
+  }
+}

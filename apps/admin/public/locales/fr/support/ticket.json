@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "ticket": "Ticket",
+      "tickets": "Tickets",
+      "id": "ID",
+      "subject": "Objet",
+      "customer": "Client",
+      "customer_email": "E-mail du client",
+      "order_code": "Code de commande",
+      "status": "Statut",
+      "last_message_at": "Dernière activité",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le",
+      "view": "Voir",
+      "open": "Rouvrir",
+      "closed": "Fermer",
+      "replied": "Répondu",
+      "reply": "Répondre",
+      "sender": {
+        "customer": "Client",
+        "admin": "Équipe"
+      }
+    },
+    "statuses": {
+      "status": {
+        "open": "Ouvert",
+        "answered": "Répondu",
+        "closed": "Fermé"
+      }
+    }
+  }
+}

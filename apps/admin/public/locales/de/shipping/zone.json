@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "zone": "Versandzone",
+      "zones": "Versandzonen",
+      "id": "ID",
+      "name": "Name",
+      "is_active": "Aktiv",
+      "position": "Position",
+      "country_codes": "Länder",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "country_codes": "Leer lassen, um diese Zone als weltweiten Fallback zu verwenden (Rest der Welt)"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Aktiv",
+        "false": "Inaktiv"
+      },
+      "country_codes": {
+        "rest_of_world": "Rest der Welt"
+      }
+    }
+  }
+}

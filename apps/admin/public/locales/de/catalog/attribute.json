@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "Attribut",
+      "attributes": "Attribute",
+      "id": "ID",
+      "title": "Titel",
+      "code": "Code",
+      "data_type": "Datentyp",
+      "is_filterable": "Filterbar",
+      "group": "Gruppe",
+      "position": "Position",
+      "values": "Werte",
+      "values_count": "Anzahl Werte",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "Text",
+        "number": "Zahl",
+        "boolean": "Boolesch",
+        "select": "Auswahlliste",
+        "multiselect": "Mehrfachauswahl"
+      }
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "code": "Eindeutiger, slug-ähnlicher Bezeichner, z. B. screen_size",
+      "is_filterable": "Dieses Attribut in Storefront-Filtern verwenden"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "Voir",
+    "toggle-columns": "Afficher/masquer les colonnes"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "Avertissement",
+      "delete": "Supprimer",
+      "cancel": "Annuler",
+      "delete_item": "Supprimer l'élément",
+      "delete_confirmation": "Êtes-vous sûr de vouloir supprimer cet élément",
+      "enter_to_confirm": "Saisissez {{word}} pour confirmer la suppression.",
+      "operation_warning": "Veuillez faire attention, cette opération ne peut pas être annulée."
+    },
+    "bulk": {
+      "toolbar-aria": "Actions groupées pour {{selectedCount}} {{name}} sélectionnés",
+      "toolbar_available": "La barre d'actions groupées est disponible.",
+      "clear-selection": "Effacer la sélection",
+      "selected": "sélectionné(s)"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "Supprimer les éléments sélectionnés",
+      "delete_items_x": "Supprimer {{n}} {{name}}",
+      "deleted_items_x": "{{n}} {{name}} supprimés",
+      "deleted": "supprimé",
+      "deleting-items": "Suppression des éléments ...",
+      "delete_confirmation": "Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?",
+      "action_warning": "Cette action est irréversible.",
+      "confirm_by_typing": "Confirmer en saisissant",
+      "type_to_confirm": "Veuillez saisir {{word}} pour confirmer."
+    }
+  },
+  "toolbar": {
+    "reset": "Réinitialiser",
+    "filter": "Rechercher dans {{name}}..."
+  },
+  "filter": {
+    "clear-filters": "Effacer les filtres"
+  },
+  "columns": {
+    "aria-select-all": "Tout sélectionner",
+    "aria-select-row": "Sélectionner la ligne"
+  },
+  "shared": {
+    "item": "Élément",
+    "items": "Éléments"
+  },
+  "pagination": {
+    "current_status": "Page {{currentPage}} sur {{totalPages}}",
+    "page": "Page",
+    "rows-per-page": "Lignes par page",
+    "go-to-page": "Aller à la page",
+    "go-first-page": "Aller à la première page",
+    "go-last-page": "Aller à la dernière page",
+    "go-next-page": "Aller à la page suivante",
+    "go-previous-page": "Aller à la page précédente"
+  }
+}

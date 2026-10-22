@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "Méthode de livraison",
+      "methods": "Méthodes de livraison",
+      "id": "ID",
+      "code": "Code",
+      "name": "Nom",
+      "is_active": "Active",
+      "position": "Position",
+      "description": "Description",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "code": "Code unique identifiant cette méthode (p. ex. standard, express)",
+      "position": "Saisissez la position de votre élément"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Active",
+        "false": "Inactive"
+      }
+    }
+  }
+}

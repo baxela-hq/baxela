@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Journaux d'audit",
+      "subtitle": "Historique des actions d'administration effectuées sur la plateforme"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "Journal d'audit",
+      "id": "ID",
+      "user": "Utilisateur",
+      "module": "Module",
+      "entity": "Entité",
+      "action": "Action",
+      "ip-address": "Adresse IP",
+      "user-agent": "User Agent",
+      "properties": "Propriétés",
+      "created_at": "Survenu le",
+      "actions": "Actions"
+    },
+    "actions": {
+      "view": "Voir"
+    }
+  }
+}

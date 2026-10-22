@@ -1,0 +1,41 @@
+{
+  "form": {
+    "labels": {
+      "setting": "Paramètre",
+      "settings": "Paramètres",
+      "id": "ID",
+      "name": "Nom",
+      "value": "Valeur",
+      "general": "Général",
+      "announcement": "Annonce",
+      "theme": "Thème",
+      "themes": {
+        "default": "Par défaut (Baxela)"
+      }
+    },
+    "statuses": {
+      "name": {
+        "website_title": "Titre du site",
+        "website_description": "Description du site",
+        "language_id": "Langue par défaut",
+        "currency_id": "Devise par défaut",
+        "announcement_text": "Texte de l'annonce",
+        "announcement_bar_enabled": "Afficher la barre d'annonce",
+        "storefront-theme": "Thème de la vitrine"
+      }
+    },
+    "tooltips": {
+      "name": {
+        "website_title": "Titre de votre page d'accueil",
+        "website_description": "Description de votre page d'accueil utilisée pour le SEO",
+        "language_id": "Langue utilisée pour afficher la vitrine",
+        "currency_id": "Devise utilisée pour les prix",
+        "announcement_bar_enabled": "Afficher la barre d'annonce sur la vitrine",
+        "storefront-theme": "Palette appliquée à la vitrine ; les valeurs inconnues reviennent au thème par défaut de la vitrine"
+      }
+    },
+    "help_texts": {
+      "announcement_text": "Le texte peut être enregistré pendant que la barre est désactivée"
+    }
+  }
+}

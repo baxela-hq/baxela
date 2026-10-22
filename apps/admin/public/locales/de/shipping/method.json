@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "Versandmethode",
+      "methods": "Versandmethoden",
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "is_active": "Aktiv",
+      "position": "Position",
+      "description": "Beschreibung",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "code": "Eindeutiger Code, der diese Methode identifiziert (z. B. standard, express)",
+      "position": "Geben Sie die Position Ihres Elements ein"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Aktiv",
+        "false": "Inaktiv"
+      }
+    }
+  }
+}

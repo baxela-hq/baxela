@@ -1,0 +1,63 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Dashboard"
+    }
+  },
+  "top-nav": {
+    "overview": "Übersicht",
+    "customers": "Kunden",
+    "products": "Produkte",
+    "settings": "Einstellungen"
+  },
+  "tabs": {
+    "overview": "Übersicht",
+    "analytics": "Analysen",
+    "reports": "Berichte",
+    "notifications": "Benachrichtigungen"
+  },
+  "stat-cards": {
+    "total-revenue": "Gesamtumsatz",
+    "total-revenue-change": "{{value}} gegenüber dem letzten Monat",
+    "orders": "Bestellungen",
+    "orders-change": "{{value}} gegenüber dem letzten Monat",
+    "customers": "Kunden",
+    "customers-change": "{{value}} gegenüber dem letzten Monat",
+    "pending-orders": "Offene Bestellungen",
+    "pending-orders-change": "Warten auf Bearbeitung",
+    "no-change-data": "Keine Daten für den letzten Monat"
+  },
+  "overview-card": "Übersicht",
+  "no-data": "Keine Daten verfügbar",
+  "recent-orders": {
+    "title": "Neueste Bestellungen",
+    "description": "Die letzten in Ihrem Shop getätigten Bestellungen",
+    "empty": "Noch keine Bestellungen"
+  },
+  "analytics": {
+    "orders-overview": {
+      "title": "Bestellübersicht",
+      "description": "Bestellungen der letzten 30 Tage"
+    },
+    "stat-cards": {
+      "avg-order-value": "Ø Bestellwert",
+      "avg-order-value-caption": "Über bezahlte Bestellungen",
+      "paid-orders": "Bezahlte Bestellungen",
+      "paid-orders-caption": "Über alle Bestellungen",
+      "cancelled-orders": "Stornierte Bestellungen",
+      "cancelled-orders-caption": "Über alle Bestellungen",
+      "new-customers": "Neue Kunden",
+      "new-customers-caption": "Diesen Monat beigetreten"
+    },
+    "orders-by-status": {
+      "title": "Bestellungen nach Status",
+      "description": "Alle Bestellungen nach Status gruppiert",
+      "empty": "Noch keine Bestellungen"
+    },
+    "top-products": {
+      "title": "Top-Produkte",
+      "description": "Bestverkäufe nach verkauften Einheiten",
+      "empty": "Noch keine Verkäufe"
+    }
+  }
+}

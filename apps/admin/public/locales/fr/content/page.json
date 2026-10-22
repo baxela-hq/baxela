@@ -1,0 +1,25 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Brouillon",
+        "published": "Publié"
+      }
+    },
+    "labels": {
+      "page": "Page",
+      "pages": "Pages",
+      "id": "ID",
+      "title": "Titre",
+      "slug": "Slug",
+      "content": "Contenu",
+      "description": "Description",
+      "status": "Statut",
+      "general": "Général",
+      "images": "Images",
+      "publish": "Publier",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    }
+  }
+}

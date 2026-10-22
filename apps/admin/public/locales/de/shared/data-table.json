@@ -1,0 +1,59 @@
+{
+  "view": {
+    "view": "Anzeigen",
+    "toggle-columns": "Spalten ein-/ausblenden"
+  },
+  "dialog": {
+    "delete": {
+      "warning": "Warnung",
+      "delete": "Löschen",
+      "cancel": "Abbrechen",
+      "delete_item": "Element löschen",
+      "delete_confirmation": "Sind Sie sicher, dass Sie dieses Element löschen möchten",
+      "enter_to_confirm": "Geben Sie {{word}} ein, um die Löschung zu bestätigen.",
+      "operation_warning": "Bitte seien Sie vorsichtig, dieser Vorgang kann nicht rückgängig gemacht werden."
+    },
+    "bulk": {
+      "toolbar-aria": "Sammelaktionen für {{selectedCount}} ausgewählte {{name}}",
+      "toolbar_available": "Die Symbolleiste für Sammelaktionen ist verfügbar.",
+      "clear-selection": "Auswahl aufheben",
+      "selected": "ausgewählt"
+    },
+    "bulk_delete": {
+      "delete-selected-items": "Ausgewählte Elemente löschen",
+      "delete_items_x": "{{n}} {{name}} löschen",
+      "deleted_items_x": "{{n}} {{name}} gelöscht",
+      "deleted": "gelöscht",
+      "deleting-items": "Elemente werden gelöscht ...",
+      "delete_confirmation": "Sind Sie sicher, dass Sie die ausgewählten Elemente löschen möchten?",
+      "action_warning": "Diese Aktion kann nicht rückgängig gemacht werden.",
+      "confirm_by_typing": "Bestätigen durch Eingabe von",
+      "type_to_confirm": "Bitte geben Sie {{word}} ein, um zu bestätigen."
+    }
+  },
+  "toolbar": {
+    "reset": "Zurücksetzen",
+    "filter": "In {{name}} suchen..."
+  },
+  "filter": {
+    "clear-filters": "Filter zurücksetzen"
+  },
+  "columns": {
+    "aria-select-all": "Alle auswählen",
+    "aria-select-row": "Zeile auswählen"
+  },
+  "shared": {
+    "item": "Element",
+    "items": "Elemente"
+  },
+  "pagination": {
+    "current_status": "Seite {{currentPage}} von {{totalPages}}",
+    "page": "Seite",
+    "rows-per-page": "Zeilen pro Seite",
+    "go-to-page": "Zur Seite gehen",
+    "go-first-page": "Zur ersten Seite gehen",
+    "go-last-page": "Zur letzten Seite gehen",
+    "go-next-page": "Zur nächsten Seite gehen",
+    "go-previous-page": "Zur vorherigen Seite gehen"
+  }
+}

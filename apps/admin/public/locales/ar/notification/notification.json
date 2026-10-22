@@ -1,0 +1,103 @@
+{
+  "form": {
+    "labels": {
+      "notification": "الإشعار",
+      "notifications": "الإشعارات",
+      "all": "الكل",
+      "unread": "غير مقروء",
+      "empty": "أنت على اطلاع تام — لا توجد إشعارات"
+    },
+    "actions": {
+      "mark-all-read": "وضع علامة مقروء على الكل",
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  },
+  "menu": {
+    "title": "الإشعارات",
+    "empty": "لا توجد إشعارات جديدة",
+    "view-all": "عرض جميع الإشعارات"
+  },
+  "settings": {
+    "title": "الإشعارات",
+    "desc": "اضبط كيفية استلامك للإشعارات."
+  },
+  "push": {
+    "title": "إشعارات المتصفح",
+    "description": "استلم إشعارات على مستوى نظام التشغيل في هذا المتصفح، حتى عندما تكون علامة التبويب مغلقة.",
+    "actions": {
+      "enabling": "جارٍ التمكين…",
+      "disabling": "جارٍ التعطيل…"
+    },
+    "status": {
+      "unsupported-browser": "غير مدعوم — هذا المتصفح لا يدعم الإشعارات الفورية للويب.",
+      "unconfigured": "غير متاح — الإشعارات الفورية للويب غير مكونة على الخادم (مفاتيح VAPID مفقودة).",
+      "denied": "محجوب — اسمح بالإشعارات لهذا الموقع في إعدادات المتصفح للتمكين."
+    }
+  },
+  "telegram": {
+    "title": "إشعارات Telegram",
+    "description": "استلم إشعاراتك في محادثة Telegram، عبر روبوت المتجر.",
+    "instructions": "أرسل الأمر /start إلى الروبوت على Telegram، ثم أدخل رمز الربط المكوّن من 6 أرقام الذي يرد به (أو معرّف Telegram الخاص بك).",
+    "placeholder": "رمز الربط أو معرّف Telegram",
+    "linked-as": "مرتبط باسم @{{username}}.",
+    "linked-chat": "مرتبط بمحادثة Telegram {{chatId}}.",
+    "actions": {
+      "open-bot": "فتح الروبوت",
+      "link": "ربط",
+      "unlink": "إلغاء الربط",
+      "test": "إرسال رسالة تجريبية"
+    },
+    "status": {
+      "unconfigured": "غير متاح — روبوت Telegram غير مكون على الخادم (رمز الروبوت مفقود)."
+    },
+    "errors": {
+      "invalid-input": "أدخل رمز الربط المكوّن من 6 أرقام من الروبوت، أو معرّف Telegram الرقمي الخاص بك."
+    },
+    "messages": {
+      "linked": "تم ربط Telegram — ستستلم الإشعارات هناك.",
+      "unlinked": "تم إلغاء ربط Telegram.",
+      "test_sent": "تم إرسال رسالة تجريبية إلى محادثتك على Telegram."
+    }
+  },
+  "preferences": {
+    "title": "تفضيلات الإشعارات",
+    "description": "اختر الإشعارات التي تستلمها والقنوات التي تصل عبرها.",
+    "channels": {
+      "email": "البريد الإلكتروني",
+      "database": "داخل التطبيق",
+      "webpush": "إشعارات فورية",
+      "telegram": "Telegram"
+    },
+    "codes": {
+      "contact-message-created": {
+        "title": "رسالة تواصل جديدة",
+        "description": "أرسل أحدهم نموذج التواصل."
+      },
+      "content-post-comment-created": {
+        "title": "تعليق جديد بانتظار الاعتماد",
+        "description": "تعليق على مقال بانتظار المراجعة."
+      },
+      "order-order-created": {
+        "title": "طلب جديد",
+        "description": "أنشأ أحد العملاء طلبًا جديدًا."
+      },
+      "payment-payment-succeeded": {
+        "title": "تمت عملية الدفع",
+        "description": "اكتملت عملية دفع بنجاح."
+      },
+      "payment-payment-failed": {
+        "title": "فشلت عملية الدفع",
+        "description": "تعذر معالجة عملية دفع."
+      },
+      "support-ticket-created": {
+        "title": "تذكرة دعم جديدة",
+        "description": "فتح أحد العملاء تذكرة دعم."
+      },
+      "support-ticket-replied": {
+        "title": "رد على تذكرة دعم",
+        "description": "رد أحد العملاء على تذكرة دعم."
+      }
+    }
+  }
+}

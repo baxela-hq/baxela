@@ -1,0 +1,28 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Articles en vedette",
+      "subtitle": "Sélectionner les articles affichés dans la section des articles en vedette de la vitrine"
+    }
+  },
+  "form": {
+    "labels": {
+      "featured": "sélection en vedette",
+      "posts-section": "Articles en vedette",
+      "add-posts": "Ajouter des articles"
+    },
+    "actions": {},
+    "help_texts": {
+      "posts-section": "Affichés dans la section des articles en vedette de la vitrine, dans cet ordre.",
+      "empty-posts": "Aucun article sélectionné pour le moment."
+    },
+    "placeholders": {
+      "search-posts": "Rechercher des articles par titre..."
+    },
+    "statuses": {
+      "picker-search-hint": "Recherchez des articles par titre dans n'importe quelle langue et choisissez ceux à mettre en vedette.",
+      "type-to-search": "Saisissez au moins 2 caractères pour rechercher.",
+      "no-results": "Aucun résultat."
+    }
+  }
+}

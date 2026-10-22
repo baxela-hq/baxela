@@ -1,0 +1,63 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Panel de control"
+    }
+  },
+  "top-nav": {
+    "overview": "Resumen",
+    "customers": "Clientes",
+    "products": "Productos",
+    "settings": "Configuración"
+  },
+  "tabs": {
+    "overview": "Resumen",
+    "analytics": "Analíticas",
+    "reports": "Informes",
+    "notifications": "Notificaciones"
+  },
+  "stat-cards": {
+    "total-revenue": "Ingresos totales",
+    "total-revenue-change": "{{value}} vs el mes pasado",
+    "orders": "Pedidos",
+    "orders-change": "{{value}} vs el mes pasado",
+    "customers": "Clientes",
+    "customers-change": "{{value}} vs el mes pasado",
+    "pending-orders": "Pedidos pendientes",
+    "pending-orders-change": "En espera de procesamiento",
+    "no-change-data": "Sin datos del mes pasado"
+  },
+  "overview-card": "Resumen",
+  "no-data": "No hay datos disponibles",
+  "recent-orders": {
+    "title": "Pedidos recientes",
+    "description": "Los últimos pedidos realizados en su tienda",
+    "empty": "Aún no hay pedidos"
+  },
+  "analytics": {
+    "orders-overview": {
+      "title": "Resumen de pedidos",
+      "description": "Pedidos realizados en los últimos 30 días"
+    },
+    "stat-cards": {
+      "avg-order-value": "Valor prom. del pedido",
+      "avg-order-value-caption": "Sobre pedidos pagados",
+      "paid-orders": "Pedidos pagados",
+      "paid-orders-caption": "Sobre todos los pedidos",
+      "cancelled-orders": "Pedidos cancelados",
+      "cancelled-orders-caption": "Sobre todos los pedidos",
+      "new-customers": "Clientes nuevos",
+      "new-customers-caption": "Se unieron este mes"
+    },
+    "orders-by-status": {
+      "title": "Pedidos por estado",
+      "description": "Todos los pedidos agrupados por estado",
+      "empty": "Aún no hay pedidos"
+    },
+    "top-products": {
+      "title": "Productos más vendidos",
+      "description": "Los más vendidos por unidades vendidas",
+      "empty": "Aún no hay ventas"
+    }
+  }
+}

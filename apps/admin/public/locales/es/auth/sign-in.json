@@ -1,0 +1,27 @@
+{
+  "card": {
+    "title": "Iniciar sesión",
+    "description": "Introduzca su correo electrónico y contraseña a continuación para acceder a su cuenta",
+    "or-continue-with": "O continúe con",
+    "footer": "Al hacer clic en iniciar sesión, usted acepta nuestros <termsLink>Términos del servicio</termsLink> y la <privacyLink>Política de privacidad</privacyLink>."
+  },
+  "form": {
+    "labels": {
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    },
+    "placeholders": {
+      "email": "nombre@ejemplo.com",
+      "password": "********"
+    },
+    "actions": {
+      "sign-in": "Iniciar sesión",
+      "forgot-password": "¿Olvidó su contraseña?"
+    },
+    "validation": {
+      "email-required": "Introduzca su correo electrónico",
+      "password-required": "Introduzca su contraseña",
+      "password-min-length": "La contraseña debe tener al menos 7 caracteres"
+    }
+  }
+}

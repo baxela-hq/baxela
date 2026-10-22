@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "subscriber": "Suscriptor del boletín",
+      "subscribers": "Suscriptores del boletín",
+      "id": "ID",
+      "email": "Correo electrónico",
+      "locale": "Configuración regional",
+      "status": "Estado",
+      "created_at": "Suscrito el",
+      "subscribed": "Marcar como suscrito",
+      "unsubscribed": "Marcar como no suscrito"
+    },
+    "statuses": {
+      "status": {
+        "subscribed": "Suscrito",
+        "unsubscribed": "No suscrito"
+      }
+    }
+  }
+}

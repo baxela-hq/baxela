@@ -1,0 +1,51 @@
+{
+  "form": {
+    "labels": {
+      "return": "المرتجع",
+      "returns": "المرتجعات",
+      "id": "المعرّف",
+      "order_code": "الطلب",
+      "user_id": "المستخدم",
+      "reason": "السبب",
+      "status": "الحالة",
+      "tracking_number": "التتبع",
+      "admin_note": "ملاحظة المسؤول",
+      "restore_stock": "استعادة المخزون",
+      "created_at": "تاريخ الطلب",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "restore_stock": "يضيف الكميات المرتجعة إلى المخزون مرة أخرى (مرة واحدة بالضبط)"
+    },
+    "placeholders": {
+      "admin_note": "ملاحظة اختيارية لسجل التدقيق"
+    },
+    "statuses": {
+      "status": {
+        "requested": "مطلوب",
+        "approved": "معتمد",
+        "rejected": "مرفوض",
+        "shipped": "شحنه العميل",
+        "received": "تم الاستلام",
+        "completed": "مكتمل",
+        "cancelled": "ملغى"
+      },
+      "reason": {
+        "damaged": "تالف",
+        "wrong_item": "عنصر خاطئ",
+        "not_as_described": "لا يطابق الوصف",
+        "other": "أخرى"
+      }
+    }
+  },
+  "dialog": {
+    "transition": {
+      "title": "هل تريد وضع علامة {status} على المرتجع؟",
+      "confirmation": "سيصل مرتجع الطلب {code} إلى حالة {status}.",
+      "confirm": "تأكيد",
+      "cancel": "إلغاء",
+      "no_auto_refund_title": "عمليات الاسترداد منفصلة",
+      "no_auto_refund_body": "إكمال المرتجع لا يسترد المبلغ تلقائيًا أبدًا — أصدر الاسترداد على دفعة الطلب أولًا، ثم أكمل."
+    }
+  }
+}

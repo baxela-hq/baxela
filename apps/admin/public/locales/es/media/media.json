@@ -1,0 +1,73 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Biblioteca multimedia",
+      "subtitle": "Cargue, organice y gestione sus archivos y carpetas"
+    },
+    "picker": {
+      "title": "Seleccionar multimedia",
+      "subtitle": "Explore carpetas, cargue archivos nuevos o elija uno existente"
+    }
+  },
+  "form": {
+    "labels": {
+      "root": "Multimedia",
+      "folder": "Carpeta",
+      "folders": "Carpetas",
+      "file": "Archivo",
+      "files": "Archivos",
+      "name": "Nombre",
+      "filename": "Nombre físico del archivo",
+      "parent_id": "Carpeta padre",
+      "none": "Ninguna (raíz)",
+      "size": "Tamaño",
+      "type": "Tipo",
+      "created_at": "Creado el",
+      "url": "URL"
+    },
+    "actions": {
+      "upload": "Cargar",
+      "new_folder": "Nueva carpeta",
+      "open": "Abrir",
+      "open_menu": "Abrir menú",
+      "preview": "Vista previa",
+      "rename_move": "Renombrar / Mover",
+      "copy_url": "Copiar URL",
+      "select": "Seleccionar",
+      "deselect": "Deseleccionar",
+      "grid_view": "Vista de cuadrícula",
+      "list_view": "Vista de lista"
+    },
+    "placeholders": {
+      "search": "Buscar archivos y carpetas...",
+      "name": "Introduzca el nombre de la carpeta",
+      "media_name": "Introduzca el nombre del archivo"
+    },
+    "help_texts": {
+      "parent_id": "Seleccione una carpeta padre para anidar esta debajo de ella, o elija Ninguna para una carpeta de nivel superior.",
+      "folder_id": "Mueva este archivo a otra carpeta, o elija Ninguna para colocarlo en la raíz.",
+      "media_name": "Introduzca el nombre sin la extensión — esta permanece fija. El archivo físico \"{{filename}}\" nunca se cambia, por lo que las URL existentes siguen funcionando."
+    }
+  },
+  "messages": {
+    "success": {
+      "url_copied": "URL copiada al portapapeles."
+    },
+    "error": {
+      "no_url": "Este archivo no tiene una URL accesible.",
+      "clipboard_insecure": "El portapapeles está bloqueado porque esta página no es segura (http en una IP de red local/vhost). Abra la aplicación mediante localhost o https.",
+      "file_too_large": "\"{{name}}\" supera el tamaño máximo de carga del servidor."
+    },
+    "info": {
+      "drop_files": "Suelte archivos para cargarlos en la carpeta actual",
+      "no_results": "Sin resultados.",
+      "empty_folder": "Esta carpeta está vacía. Arrastre y suelte archivos aquí para cargarlos.",
+      "selected_count": "{{count}} seleccionados"
+    },
+    "dialog": {
+      "delete": {
+        "folder_warning_body": "Eliminar esta carpeta también puede eliminar todos los archivos y subcarpetas que contiene. Esta acción no se puede deshacer."
+      }
+    }
+  }
+}

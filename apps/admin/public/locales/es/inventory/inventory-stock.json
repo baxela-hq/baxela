@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "inventory-stock": "Existencia de inventario",
+      "inventory-stocks": "Existencias de inventario",
+      "id": "ID",
+      "product": "Producto",
+      "variant": "Variante",
+      "quantity": "Cantidad",
+      "low_stock": "Existencia baja",
+      "sku": "SKU",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "statuses": {
+      "low_stock": "existencia baja"
+    },
+    "help_texts": {
+      "product": "Elija el producto cuya variante desea almacenar",
+      "variant": "Elija la variante del producto seleccionado",
+      "quantity": "Unidades disponibles para esta variante — una fila de existencia por variante"
+    },
+    "placeholders": {
+      "select_product_first": "Seleccione primero un producto"
+    }
+  }
+}

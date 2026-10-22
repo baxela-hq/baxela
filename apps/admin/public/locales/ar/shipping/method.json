@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "method": "طريقة الشحن",
+      "methods": "طرق الشحن",
+      "id": "المعرّف",
+      "code": "الرمز",
+      "name": "الاسم",
+      "is_active": "نشط",
+      "position": "الترتيب",
+      "description": "الوصف",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "code": "رمز فريد يحدد هذه الطريقة (مثل standard أو express)",
+      "position": "أدخل ترتيب العنصر"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "نشط",
+        "false": "غير نشط"
+      }
+    }
+  }
+}

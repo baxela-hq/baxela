@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "shipment": "الإرسالية",
+      "shipments": "الإرساليات",
+      "id": "المعرّف",
+      "order_id": "الطلب",
+      "carrier_name": "الناقل",
+      "tracking_number": "رقم التتبع",
+      "tracking_url": "رابط التتبع",
+      "status": "الحالة",
+      "shipped_at": "تاريخ الشحن",
+      "delivered_at": "تاريخ التسليم",
+      "notes": "الملاحظات",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "order_id": "معرّف الطلب الذي تنتمي إليه هذه الإرسالية",
+      "status": "لا يمكن للحالة إلا التقدم للأمام على مدار دورة الحياة",
+      "tracking_url": "رابط تتبع عام يُعرض للعميل"
+    },
+    "statuses": {
+      "status": {
+        "pending": "قيد الانتظار",
+        "packed": "تم التغليف",
+        "shipped": "تم الشحن",
+        "in_transit": "في الطريق",
+        "delivered": "تم التسليم",
+        "failed": "فشل"
+      }
+    }
+  }
+}

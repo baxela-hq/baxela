@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "السمة",
+      "attributes": "السمات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "code": "الرمز",
+      "data_type": "نوع البيانات",
+      "is_filterable": "قابل للتصفية",
+      "group": "المجموعة",
+      "position": "الترتيب",
+      "values": "القيم",
+      "values_count": "عدد القيم",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "نص",
+        "number": "رقم",
+        "boolean": "منطقي",
+        "select": "قائمة اختيار",
+        "multiselect": "اختيار متعدد"
+      }
+    },
+    "help_texts": {
+      "position": "أدخل ترتيب العنصر",
+      "code": "معرّف فريد بصيغة slug، مثل screen_size",
+      "is_filterable": "استخدم هذه السمة في عوامل تصفية واجهة المتجر"
+    }
+  }
+}

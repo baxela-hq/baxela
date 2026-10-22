@@ -1,0 +1,27 @@
+{
+  "form": {
+    "labels": {
+      "attribute_template": "قالب السمات",
+      "attribute_templates": "قوالب السمات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "description": "الوصف",
+      "is_active": "نشط",
+      "position": "الترتيب",
+      "groups": "المجموعات",
+      "groups_count": "عدد المجموعات",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "نشط",
+        "false": "غير نشط"
+      }
+    },
+    "help_texts": {
+      "position": "أدخل ترتيب العنصر",
+      "groups": "اختر المجموعات ورتّبها — الترتيب يحدد تخطيط نموذج المنتج"
+    }
+  }
+}

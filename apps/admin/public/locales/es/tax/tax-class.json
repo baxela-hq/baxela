@@ -1,0 +1,26 @@
+{
+  "form": {
+    "labels": {
+      "tax_class": "Clase de impuesto",
+      "tax_classes": "Clases de impuesto",
+      "id": "ID",
+      "name": "Nombre",
+      "is_default": "Predeterminada",
+      "is_shipping": "Envío",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "is_default": "Los productos sin una clase explícita revierten a la predeterminada; promover esta degrada la anterior predeterminada",
+      "is_shipping": "El costo de envío solo se grava a través de la clase que lleva esta marca; mantenga exactamente una"
+    },
+    "statuses": {
+      "is_default": {
+        "true": "Predeterminada"
+      },
+      "is_shipping": {
+        "true": "Envío"
+      }
+    }
+  }
+}

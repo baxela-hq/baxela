@@ -1,0 +1,32 @@
+{
+  "form": {
+    "labels": {
+      "link": "Link",
+      "links": "Links",
+      "menus": "Menüs",
+      "id": "ID",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "parent": "Übergeordnet",
+      "no_parent": "Kein übergeordneter Eintrag (Stammverzeichnis)",
+      "url": "URL",
+      "target": "Ziel",
+      "target__self": "Gleicher Tab",
+      "target__blank": "Neuer Tab",
+      "position": "Position",
+      "sort": "Sortieren",
+      "sort_links": "Menü-Links sortieren",
+      "sort_help": "Ziehen Sie Elemente, um sie innerhalb ihrer Gruppe neu anzuordnen",
+      "sorting": "Links werden sortiert...",
+      "no_links": "Dieses Menü hat noch keine Links.",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "parent": "Untergeordnete Links werden als Dropdown unter ihrem übergeordneten Eintrag angezeigt",
+      "url": "Relativer Pfad (/products) oder absolute URL",
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "delete_subtree": "Das Löschen eines Links löscht auch alle untergeordneten Links."
+    }
+  }
+}

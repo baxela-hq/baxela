@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "brand": "Marke",
+      "brands": "Marken",
+      "id": "ID",
+      "title": "Titel",
+      "slug": "Slug",
+      "position": "Position",
+      "logo": "Logo",
+      "add_logo": "Logo hinzufügen",
+      "description": "Beschreibung",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "position": "Geben Sie die Position Ihres Elements ein",
+      "logo": "Optionales Logo, das in der Storefront neben der Marke angezeigt wird."
+    }
+  }
+}

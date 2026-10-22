@@ -1,0 +1,46 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "draft": "Brouillon",
+        "published": "Publié",
+        "scheduled": "Planifié"
+      }
+    },
+    "labels": {
+      "post": "Article",
+      "posts": "Articles",
+      "id": "ID",
+      "title": "Titre",
+      "slug": "Slug",
+      "content": "Contenu",
+      "description": "Description",
+      "status": "Statut",
+      "publish_date": "Date de publication",
+      "general": "Général",
+      "categories": "Catégories",
+      "no_products_found": "Aucun produit trouvé.",
+      "products": "Produits associés",
+      "seo": "SEO",
+      "serp_preview": "Aperçu SERP Google",
+      "meta_title": "Titre méta",
+      "meta_description": "Description méta",
+      "open_graph_title": "Titre Open Graph",
+      "open_graph_description": "Description Open Graph",
+      "publish": "Publier",
+      "image": "Image",
+      "add_image": "Ajouter une image",
+      "comments": "Commentaires",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "products": "Recherchez et associez des produits à mettre en avant avec cet article.",
+      "publish_date": "Laissez vide pour publier immédiatement. Une date future garde l'article masqué jusqu'à ce jour.",
+      "image": "Photo de couverture facultative affichée avec cet article sur la vitrine."
+    },
+    "placeholders": {
+      "search_products": "Rechercher des produits par titre…"
+    }
+  }
+}

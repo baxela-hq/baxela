@@ -1,0 +1,25 @@
+{
+  "form": {
+    "labels": {
+      "menu": "Menü",
+      "menus": "Menüs",
+      "id": "ID",
+      "title": "Titel",
+      "description": "Beschreibung",
+      "location": "Position",
+      "location_header": "Kopfbereich",
+      "location_footer": "Fußbereich",
+      "is_active": "Aktiv",
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "links": "Links",
+      "sort": "Sortieren",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "location": "Wo dieses Menü in der Storefront angezeigt wird",
+      "is_active": "Inaktive Menüs sind in der Storefront ausgeblendet"
+    }
+  }
+}

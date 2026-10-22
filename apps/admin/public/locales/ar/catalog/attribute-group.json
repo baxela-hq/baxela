@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "attribute_group": "مجموعة السمات",
+      "attribute_groups": "مجموعات السمات",
+      "attributes": "السمات",
+      "id": "المعرّف",
+      "title": "العنوان",
+      "position": "الترتيب",
+      "attributes_count": "عدد السمات",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "position": "أدخل ترتيب العنصر"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "tax_rate": "Tarifa de impuesto",
+      "tax_rates": "Tarifas de impuesto",
+      "id": "ID",
+      "name": "Nombre",
+      "country_code": "País",
+      "tax_class": "Clase de impuesto",
+      "rate": "Tasa (%)",
+      "is_active": "Activo",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "rate": "Porcentaje entre 0 y 100 con hasta 4 decimales (p. ej. 8.5 o 5.125); una tarifa por país y clase"
+    },
+    "placeholders": {
+      "rate": "8.5"
+    },
+    "statuses": {
+      "is_active": {
+        "true": "Activo",
+        "false": "Inactivo"
+      }
+    }
+  }
+}

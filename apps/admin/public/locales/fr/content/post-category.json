@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "post_category": "Catégorie d'article",
+      "post_categories": "Catégories d'articles",
+      "id": "ID",
+      "parent_id": "Parente",
+      "none": "Aucune",
+      "title": "Titre",
+      "slug": "Slug",
+      "position": "Position",
+      "description": "Description",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "position": "Saisissez la position de votre élément",
+      "parent_id": "Sélectionnez une catégorie parente pour l'y imbriquer, ou choisissez Aucune pour une catégorie de premier niveau."
+    }
+  }
+}

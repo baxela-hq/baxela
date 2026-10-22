@@ -1,0 +1,94 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Liste des {{entity}}",
+      "subtitle": "Consulter et gérer tous les {{entity}}"
+    },
+    "form": {
+      "title_create": "Créer un {{entity}}",
+      "title_edit": "Modifier le {{entity}} #{{id}}",
+      "subtitle": "Veuillez remplir les détails ci-dessous"
+    },
+    "show": {
+      "title": "Voir le {{entity}} #{{id}} ",
+      "subtitle": "Voir tous les détails"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "{{name}} a été {{action}} avec succès.",
+      "record": {
+        "created": "{{name}} a été créé avec succès.",
+        "updated": "{{name}} a été mis à jour avec succès.",
+        "deleted": "{{name}} a été supprimé avec succès.",
+        "deleted_general": "L'élément a été supprimé avec succès."
+      },
+      "upload_general": "le fichier a été téléversé avec succès",
+      "sign-in": "Vous vous êtes connecté avec succès."
+    },
+    "error": {
+      "default": "Une erreur s'est produite pendant l'opération {{action}}.",
+      "general": "Une erreur est survenue. Veuillez réessayer plus tard.",
+      "api": "Échec de la récupération des données. Veuillez vérifier votre connexion.",
+      "validation": "Veuillez vérifier les informations fournies pour des erreurs.",
+      "invalid_name": "Le nom contient des caractères non autorisés.",
+      "forbidden": "Vous n'êtes pas autorisé à voir cette page.",
+      "sign-in-failed": "La connexion n'a pas pu être effectuée : {{message}}",
+      "record": {
+        "not_found": "L'enregistrement demandé est introuvable.",
+        "already_exists": "Un enregistrement avec cet identifiant existe déjà."
+      }
+    },
+    "info": {
+      "loading": "Chargement...",
+      "processing": "Traitement de votre demande..."
+    },
+    "warning": {
+      "session_timeout": "Votre session expire bientôt. Veuillez enregistrer votre travail."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "Enregistrement",
+      "item": "Élément",
+      "items": "Éléments",
+      "yes": "Oui",
+      "no": "Non",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "id": "ID",
+      "image": "Image",
+      "images": "Images",
+      "main": "Principal"
+    },
+    "actions": {
+      "ok": "Ok",
+      "confirm": "Confirmer",
+      "clear": "Effacer",
+      "create": "Créer",
+      "import": "Importer",
+      "export": "Exporter",
+      "download": "Télécharger",
+      "update": "Mettre à jour",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "show_details": "Voir les détails",
+      "remove": "Retirer",
+      "save": "Enregistrer",
+      "submit": "Envoyer",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "add": "Ajouter",
+      "add_item": "Ajouter un élément",
+      "remove_item": "Retirer l'élément"
+    },
+    "placeholders": {
+      "input": "Saisissez une valeur ici",
+      "select": "Sélectionnez une option",
+      "textarea": "Écrivez ici"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}

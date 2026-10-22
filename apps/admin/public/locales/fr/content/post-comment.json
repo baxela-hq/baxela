@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "comment": "Commentaire",
+      "comments": "Commentaires",
+      "id": "ID",
+      "body": "Contenu",
+      "post": "Article",
+      "user": "Utilisateur",
+      "anonymous": "Anonyme",
+      "status": "Statut",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le",
+      "reply": "Répondre",
+      "reply_title": "Répondre au commentaire",
+      "reply_subtitle": "Votre réponse est publiée immédiatement",
+      "approve": "Approuver",
+      "approved": "approuvé",
+      "reject": "Rejeter",
+      "rejected": "rejeté"
+    },
+    "statuses": {
+      "status": {
+        "pending": "En attente",
+        "approved": "Approuvé",
+        "rejected": "Rejeté"
+      }
+    }
+  }
+}

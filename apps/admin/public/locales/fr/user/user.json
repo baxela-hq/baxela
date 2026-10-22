@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "user": "Utilisateur",
+      "users": "Utilisateurs",
+      "id": "ID",
+      "email": "E-mail",
+      "email_verified_at": "E-mail vérifié le",
+      "password": "Mot de passe",
+      "is_active": "Actif ?",
+      "roles": "Rôles",
+      "comment": "Commentaire",
+      "created_at": "Inscrit le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "password": "laissez vide si vous ne voulez pas changer le mot de passe de l'utilisateur",
+      "roles": "Les rôles accordent l'accès aux fonctionnalités d'administration. Seul un super-admin peut attribuer ou retirer le rôle super-admin.",
+      "comment": "Commentaire que les administrateurs peuvent laisser pour l'utilisateur. (visible uniquement par les administrateurs)"
+    },
+    "tooltips": {
+      "is_active": {
+        "active": "Si activé, l'utilisateur a vérifié son e-mail.",
+        "inactive": "Si désactivé, l'utilisateur n'a pas encore vérifié son e-mail."
+      }
+    }
+  }
+}

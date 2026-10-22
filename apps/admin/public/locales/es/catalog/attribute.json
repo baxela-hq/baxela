@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "attribute": "Atributo",
+      "attributes": "Atributos",
+      "id": "ID",
+      "title": "Título",
+      "code": "Código",
+      "data_type": "Tipo de datos",
+      "is_filterable": "Filtrable",
+      "group": "Grupo",
+      "position": "Posición",
+      "values": "Valores",
+      "values_count": "Cantidad de valores",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "statuses": {
+      "data_type": {
+        "text": "Texto",
+        "number": "Número",
+        "boolean": "Booleano",
+        "select": "Selección",
+        "multiselect": "Selección múltiple"
+      }
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento",
+      "code": "Identificador único tipo slug, p. ej. screen_size",
+      "is_filterable": "Usar este atributo en los filtros de la tienda"
+    }
+  }
+}

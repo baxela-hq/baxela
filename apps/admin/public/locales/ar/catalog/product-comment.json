@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "comment": "التعليق",
+      "comments": "التعليقات",
+      "id": "المعرّف",
+      "body": "المحتوى",
+      "rating": "التقييم",
+      "no_rating": "بدون تقييم",
+      "rating_value": "{{rating}} / 5",
+      "reactions": "التفاعلات",
+      "product": "المنتج",
+      "user": "المستخدم",
+      "anonymous": "مجهول",
+      "status": "الحالة",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث",
+      "reply": "رد",
+      "reply_title": "الرد على التعليق",
+      "reply_subtitle": "يُنشر ردك فورًا",
+      "approve": "اعتماد",
+      "approved": "معتمد",
+      "reject": "رفض",
+      "rejected": "مرفوض"
+    },
+    "statuses": {
+      "status": {
+        "pending": "قيد الانتظار",
+        "approved": "معتمد",
+        "rejected": "مرفوض"
+      }
+    }
+  }
+}

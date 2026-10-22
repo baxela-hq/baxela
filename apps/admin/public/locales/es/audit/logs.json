@@ -1,0 +1,26 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Registros de auditoría",
+      "subtitle": "Rastro de las acciones de administración realizadas en toda la plataforma"
+    }
+  },
+  "form": {
+    "labels": {
+      "audit-log": "Registro de auditoría",
+      "id": "ID",
+      "user": "Usuario",
+      "module": "Módulo",
+      "entity": "Entidad",
+      "action": "Acción",
+      "ip-address": "Dirección IP",
+      "user-agent": "Agente de usuario",
+      "properties": "Propiedades",
+      "created_at": "Fecha de ocurrencia",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "view": "Ver"
+    }
+  }
+}

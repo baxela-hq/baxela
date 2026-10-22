@@ -1,0 +1,20 @@
+{
+  "form": {
+    "labels": {
+      "option": "الخيار",
+      "options": "الخيارات",
+      "id": "المعرّف",
+      "parent_id": "معرّف الأصل",
+      "title": "العنوان",
+      "values": "القيم",
+      "slug": "الرابط اللطيف (slug)",
+      "position": "الترتيب",
+      "description": "الوصف",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
+    },
+    "help_texts": {
+      "position": "أدخل ترتيب العنصر"
+    }
+  }
+}

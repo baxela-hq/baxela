@@ -1,0 +1,94 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Lista de {{entity}}",
+      "subtitle": "Vea y gestione todos los {{entity}}"
+    },
+    "form": {
+      "title_create": "Crear un {{entity}}",
+      "title_edit": "Editar el {{entity}} #{{id}}",
+      "subtitle": "Complete los detalles a continuación"
+    },
+    "show": {
+      "title": "Ver {{entity}} #{{id}} ",
+      "subtitle": "Ver todos los detalles"
+    }
+  },
+  "messages": {
+    "success": {
+      "default": "El {{name}} se {{action}} correctamente.",
+      "record": {
+        "created": "El {{name}} se creó correctamente.",
+        "updated": "El {{name}} se actualizó correctamente.",
+        "deleted": "El {{name}} se eliminó correctamente.",
+        "deleted_general": "El elemento se eliminó correctamente."
+      },
+      "upload_general": "el archivo se cargó correctamente",
+      "sign-in": "Ha iniciado sesión correctamente."
+    },
+    "error": {
+      "default": "Ocurrió un error durante la operación de {{action}}.",
+      "general": "Algo salió mal. Inténtelo de nuevo más tarde.",
+      "api": "No se pudieron obtener los datos. Compruebe su conexión.",
+      "validation": "Compruebe la información proporcionada en busca de errores.",
+      "invalid_name": "El nombre contiene caracteres que no están permitidos.",
+      "forbidden": "No tiene permiso para ver esta página.",
+      "sign-in-failed": "No se pudo completar el inicio de sesión: {{message}}",
+      "record": {
+        "not_found": "No se encontró el registro solicitado.",
+        "already_exists": "Ya existe un registro con este identificador."
+      }
+    },
+    "info": {
+      "loading": "Cargando...",
+      "processing": "Procesando su solicitud..."
+    },
+    "warning": {
+      "session_timeout": "Su sesión caducará pronto. Guarde su trabajo."
+    }
+  },
+  "form": {
+    "labels": {
+      "record": "Registro",
+      "item": "Elemento",
+      "items": "Elementos",
+      "yes": "Sí",
+      "no": "No",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "id": "ID",
+      "image": "Imagen",
+      "images": "Imágenes",
+      "main": "Principal"
+    },
+    "actions": {
+      "ok": "Aceptar",
+      "confirm": "Confirmar",
+      "clear": "Limpiar",
+      "create": "Crear",
+      "import": "Importar",
+      "export": "Exportar",
+      "download": "Descargar",
+      "update": "Actualizar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "show_details": "Ver detalles",
+      "remove": "Quitar",
+      "save": "Guardar",
+      "submit": "Enviar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "add": "Añadir",
+      "add_item": "Añadir elemento",
+      "remove_item": "Quitar elemento"
+    },
+    "placeholders": {
+      "input": "Introduzca un valor aquí",
+      "select": "Seleccione una opción",
+      "textarea": "Escriba aquí"
+    },
+    "help_texts": {},
+    "statuses": {},
+    "validation": {}
+  }
+}

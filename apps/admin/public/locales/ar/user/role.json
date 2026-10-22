@@ -1,0 +1,23 @@
+{
+  "form": {
+    "labels": {
+      "role": "الدور",
+      "roles": "الأدوار",
+      "id": "المعرّف",
+      "name": "الاسم",
+      "permissions": "الأذونات",
+      "select_all": "تحديد جميع الأذونات في هذه الوحدة",
+      "no_permission_results": "لا توجد أذونات تطابق بحثك."
+    },
+    "placeholders": {
+      "search_permissions": "البحث في الأذونات (مثل products.list)"
+    },
+    "help_texts": {
+      "name": "أحرف صغيرة وأرقام وشرطات (مثل content-editor).",
+      "permissions": "تمنح الأذونات الوصول إلى قدرات الإدارة. وهي مجمعة حسب الوحدة؛ ودور المسؤول الأعلى يتجاوز جميع الفحوص دائمًا."
+    },
+    "statuses": {
+      "system": "النظام"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "post_category": "Categoría de artículo",
+      "post_categories": "Categorías de artículos",
+      "id": "ID",
+      "parent_id": "Padre",
+      "none": "Ninguna",
+      "title": "Título",
+      "slug": "Slug",
+      "position": "Posición",
+      "description": "Descripción",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el"
+    },
+    "help_texts": {
+      "position": "Introduzca la posición de su elemento",
+      "parent_id": "Seleccione una categoría padre para anidar esta debajo de ella, o elija Ninguna para una categoría de nivel superior."
+    }
+  }
+}

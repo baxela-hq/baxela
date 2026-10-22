@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "subscriber": "Abonné à la newsletter",
+      "subscribers": "Abonnés à la newsletter",
+      "id": "ID",
+      "email": "E-mail",
+      "locale": "Langue",
+      "status": "Statut",
+      "created_at": "Abonné le",
+      "subscribed": "Marquer comme abonné",
+      "unsubscribed": "Marquer comme désabonné"
+    },
+    "statuses": {
+      "status": {
+        "subscribed": "Abonné",
+        "unsubscribed": "Désabonné"
+      }
+    }
+  }
+}

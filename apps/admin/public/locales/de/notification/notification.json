@@ -1,0 +1,103 @@
+{
+  "form": {
+    "labels": {
+      "notification": "Benachrichtigung",
+      "notifications": "Benachrichtigungen",
+      "all": "Alle",
+      "unread": "Ungelesen",
+      "empty": "Sie sind auf dem neuesten Stand — keine Benachrichtigungen"
+    },
+    "actions": {
+      "mark-all-read": "Alle als gelesen markieren",
+      "previous": "Zurück",
+      "next": "Weiter"
+    }
+  },
+  "menu": {
+    "title": "Benachrichtigungen",
+    "empty": "Keine neuen Benachrichtigungen",
+    "view-all": "Alle Benachrichtigungen anzeigen"
+  },
+  "settings": {
+    "title": "Benachrichtigungen",
+    "desc": "Konfigurieren Sie, wie Sie Benachrichtigungen erhalten."
+  },
+  "push": {
+    "title": "Browser-Benachrichtigungen",
+    "description": "Erhalten Sie Benachrichtigungen auf Betriebssystemebene in diesem Browser, auch wenn der Tab geschlossen ist.",
+    "actions": {
+      "enabling": "Wird aktiviert…",
+      "disabling": "Wird deaktiviert…"
+    },
+    "status": {
+      "unsupported-browser": "Nicht unterstützt — dieser Browser unterstützt kein Web Push.",
+      "unconfigured": "Nicht verfügbar — Web Push ist auf dem Server nicht konfiguriert (VAPID-Schlüssel fehlen).",
+      "denied": "Blockiert — erlauben Sie Benachrichtigungen für diese Website in den Browser-Einstellungen, um sie zu aktivieren."
+    }
+  },
+  "telegram": {
+    "title": "Telegram-Benachrichtigungen",
+    "description": "Erhalten Sie Ihre Benachrichtigungen in einem Telegram-Chat über den Bot des Shops.",
+    "instructions": "Senden Sie dem Bot auf Telegram /start und geben Sie dann den 6-stelligen Code ein, den er antwortet (oder Ihre Telegram-ID).",
+    "placeholder": "Verknüpfungscode oder Telegram-ID",
+    "linked-as": "Verknüpft als @{{username}}.",
+    "linked-chat": "Mit dem Telegram-Chat {{chatId}} verknüpft.",
+    "actions": {
+      "open-bot": "Bot öffnen",
+      "link": "Verknüpfen",
+      "unlink": "Verknüpfung aufheben",
+      "test": "Testnachricht senden"
+    },
+    "status": {
+      "unconfigured": "Nicht verfügbar — der Telegram-Bot ist auf dem Server nicht konfiguriert (Bot-Token fehlt)."
+    },
+    "errors": {
+      "invalid-input": "Geben Sie den 6-stelligen Code vom Bot oder Ihre numerische Telegram-ID ein."
+    },
+    "messages": {
+      "linked": "Telegram verknüpft — Sie erhalten dort Benachrichtigungen.",
+      "unlinked": "Telegram-Verknüpfung aufgehoben.",
+      "test_sent": "Testnachricht an Ihren Telegram-Chat gesendet."
+    }
+  },
+  "preferences": {
+    "title": "Benachrichtigungseinstellungen",
+    "description": "Wählen Sie, welche Benachrichtigungen Sie über welche Kanäle erhalten.",
+    "channels": {
+      "email": "E-Mail",
+      "database": "In der App",
+      "webpush": "Push",
+      "telegram": "Telegram"
+    },
+    "codes": {
+      "contact-message-created": {
+        "title": "Neue Kontaktnachricht",
+        "description": "Jemand hat das Kontaktformular abgesendet."
+      },
+      "content-post-comment-created": {
+        "title": "Neuer Kommentar wartet auf Genehmigung",
+        "description": "Ein Blog-Kommentar wartet auf Moderation."
+      },
+      "order-order-created": {
+        "title": "Neue Bestellung",
+        "description": "Ein Kunde hat eine neue Bestellung aufgegeben."
+      },
+      "payment-payment-succeeded": {
+        "title": "Zahlung erfolgreich",
+        "description": "Eine Zahlung wurde erfolgreich abgeschlossen."
+      },
+      "payment-payment-failed": {
+        "title": "Zahlung fehlgeschlagen",
+        "description": "Eine Zahlung konnte nicht verarbeitet werden."
+      },
+      "support-ticket-created": {
+        "title": "Neues Support-Ticket",
+        "description": "Ein Kunde hat ein Support-Ticket eröffnet."
+      },
+      "support-ticket-replied": {
+        "title": "Antwort auf Support-Ticket",
+        "description": "Ein Kunde hat auf ein Support-Ticket geantwortet."
+      }
+    }
+  }
+}

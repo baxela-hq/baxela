@@ -1,0 +1,63 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "لوحة التحكم"
+    }
+  },
+  "top-nav": {
+    "overview": "نظرة عامة",
+    "customers": "العملاء",
+    "products": "المنتجات",
+    "settings": "الإعدادات"
+  },
+  "tabs": {
+    "overview": "نظرة عامة",
+    "analytics": "التحليلات",
+    "reports": "التقارير",
+    "notifications": "الإشعارات"
+  },
+  "stat-cards": {
+    "total-revenue": "إجمالي الإيرادات",
+    "total-revenue-change": "{{value}} مقارنة بالشهر الماضي",
+    "orders": "الطلبات",
+    "orders-change": "{{value}} مقارنة بالشهر الماضي",
+    "customers": "العملاء",
+    "customers-change": "{{value}} مقارنة بالشهر الماضي",
+    "pending-orders": "الطلبات المعلقة",
+    "pending-orders-change": "في انتظار المعالجة",
+    "no-change-data": "لا توجد بيانات للشهر الماضي"
+  },
+  "overview-card": "نظرة عامة",
+  "no-data": "لا توجد بيانات متاحة",
+  "recent-orders": {
+    "title": "أحدث الطلبات",
+    "description": "أحدث الطلبات المسجلة في متجرك",
+    "empty": "لا توجد طلبات بعد"
+  },
+  "analytics": {
+    "orders-overview": {
+      "title": "نظرة عامة على الطلبات",
+      "description": "الطلبات المسجلة خلال آخر 30 يومًا"
+    },
+    "stat-cards": {
+      "avg-order-value": "متوسط قيمة الطلب",
+      "avg-order-value-caption": "من الطلبات المدفوعة",
+      "paid-orders": "الطلبات المدفوعة",
+      "paid-orders-caption": "من جميع الطلبات",
+      "cancelled-orders": "الطلبات الملغاة",
+      "cancelled-orders-caption": "من جميع الطلبات",
+      "new-customers": "عملاء جدد",
+      "new-customers-caption": "انضموا هذا الشهر"
+    },
+    "orders-by-status": {
+      "title": "الطلبات حسب الحالة",
+      "description": "جميع الطلبات مجمعة حسب الحالة",
+      "empty": "لا توجد طلبات بعد"
+    },
+    "top-products": {
+      "title": "أفضل المنتجات",
+      "description": "الأكثر مبيعًا حسب الوحدات المبيعة",
+      "empty": "لا توجد مبيعات بعد"
+    }
+  }
+}

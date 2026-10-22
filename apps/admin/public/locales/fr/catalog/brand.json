@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "brand": "Marque",
+      "brands": "Marques",
+      "id": "ID",
+      "title": "Titre",
+      "slug": "Slug",
+      "position": "Position",
+      "logo": "Logo",
+      "add_logo": "Ajouter un logo",
+      "description": "Description",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "help_texts": {
+      "position": "Saisissez la position de votre élément",
+      "logo": "Logo facultatif affiché à côté de la marque sur la vitrine."
+    }
+  }
+}

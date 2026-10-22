@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "subscriber": "مشترك في النشرة البريدية",
+      "subscribers": "المشتركون في النشرة البريدية",
+      "id": "المعرّف",
+      "email": "البريد الإلكتروني",
+      "locale": "اللغة",
+      "status": "الحالة",
+      "created_at": "تاريخ الاشتراك",
+      "subscribed": "وضع علامة كمشترك",
+      "unsubscribed": "وضع علامة كغير مشترك"
+    },
+    "statuses": {
+      "status": {
+        "subscribed": "مشترك",
+        "unsubscribed": "غير مشترك"
+      }
+    }
+  }
+}

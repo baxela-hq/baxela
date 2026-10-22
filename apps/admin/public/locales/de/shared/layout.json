@@ -1,0 +1,126 @@
+{
+  "sidebar": {
+    "admin-panel": "Admin-Panel",
+    "dashboard": "Dashboard",
+    "catalog": "Katalog",
+    "products": "Produkte",
+    "categories": "Kategorien",
+    "brands": "Marken",
+    "options": "Optionen",
+    "attributes": "Attribute",
+    "productComments": "Kommentare",
+    "catalog-data": "Import / Export",
+    "settings": "Einstellungen",
+    "content": "Inhalte",
+    "pages": "Seiten",
+    "posts": "Beiträge",
+    "featured-posts": "Empfohlene Beiträge",
+    "postCategories": "Kategorien",
+    "postComments": "Kommentare",
+    "media": "Medien",
+    "menus": "Menüs",
+    "contactMessages": "Kontaktnachrichten",
+    "contact": "Kontakt",
+    "support": "Support",
+    "tickets": "Tickets",
+    "newsletter-subscribers": "Newsletter-Abonnenten",
+    "order": "Bestellung",
+    "orders": "Bestellungen",
+    "inventory-stocks": "Lagerbestände",
+    "shipping": "Versand",
+    "payment": "Zahlung",
+    "payments": "Zahlungen",
+    "payment-methods": "Zahlungsmethoden",
+    "methods": "Methoden",
+    "zones": "Zonen",
+    "rates": "Gebühren",
+    "shipments": "Sendungen",
+    "discount": "Rabatt",
+    "coupons": "Gutscheine",
+    "modules": "Module",
+    "users": "Benutzer",
+    "roles": "Rollen",
+    "general": "Allgemein",
+    "account": "Konto",
+    "notifications": "Benachrichtigungen",
+    "notifications-inbox": "Benachrichtigungen",
+    "toggle": "Seitenleiste umschalten",
+    "featured": "Empfohlen",
+    "promotions": "Aktionen",
+    "audit-logs": "Audit-Protokolle",
+    "tax": "Steuern",
+    "tax-classes": "Steuerklassen",
+    "tax-rates": "Steuersätze",
+    "returns": "Rückgaben"
+  },
+  "dialog": {
+    "sign-out": {
+      "title": "Abmelden",
+      "body": "Sind Sie sicher, dass Sie sich abmelden möchten? Sie müssen sich erneut anmelden, um auf Ihr Konto zuzugreifen."
+    },
+    "cancel": "Abbrechen"
+  },
+  "toolbar": {
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logout": "Abmelden",
+    "upgrade-to-pro": "Auf Pro upgraden",
+    "theme": {
+      "label": "Design",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    },
+    "toggle-theme": "Design umschalten",
+    "open-theme-settings": "Designeinstellungen öffnen",
+    "view-website": "Website ansehen"
+  },
+  "search": {
+    "placeholder": "Suchen...",
+    "command_input": "Befehl eingeben oder suchen..."
+  },
+  "config-drawer": {
+    "direction-help": "Überschreibt die von der Standardsprache des Stores abgeleitete Richtung, bis Sie sie zurücksetzen.",
+    "title": "Designeinstellungen",
+    "description": "Passen Sie Erscheinungsbild und Layout Ihren Vorlieben an.",
+    "reset": "Zurücksetzen",
+    "reset-all-settings": "Alle Einstellungen auf Standardwerte zurücksetzen",
+    "sections": {
+      "theme": "Design",
+      "sidebar": "Seitenleiste",
+      "layout": "Layout",
+      "direction": "Richtung"
+    },
+    "options": {
+      "inset": "Eingebettet",
+      "floating": "Schwebend",
+      "sidebar": "Seitenleiste",
+      "default": "Standard",
+      "compact": "Kompakt",
+      "full-layout": "Volles Layout",
+      "ltr": "Von links nach rechts",
+      "rtl": "Von rechts nach links"
+    },
+    "group-aria": {
+      "theme": "Designpräferenz auswählen",
+      "sidebar": "Stil der Seitenleiste auswählen",
+      "layout": "Layoutstil auswählen",
+      "direction": "Seitenrichtung auswählen"
+    },
+    "section-descriptions": {
+      "theme": "Wählen Sie zwischen Systemeinstellung, hellem oder dunklem Modus",
+      "sidebar": "Wählen Sie zwischen eingebetteter, schwebender oder Standard-Seitenleiste",
+      "layout": "Wählen Sie zwischen standardmäßig ausgeklappt, kompakt nur mit Symbolen oder vollem Layout",
+      "direction": "Wählen Sie zwischen linker-nach-rechter- oder rechter-nach-linker-Seitenrichtung"
+    },
+    "select-option-aria": "{{label}} auswählen",
+    "option-preview-aria": "Vorschau der Option {{label}}"
+  },
+  "command-menu": {
+    "theme-heading": "Design",
+    "no-results": "Keine Ergebnisse gefunden.",
+    "records-heading": "Datensätze",
+    "products-heading": "Produkt",
+    "orders-heading": "Bestellung"
+  }
+}

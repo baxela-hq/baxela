@@ -1,0 +1,180 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "discontinued": "Arrêté",
+        "out_of_stock": "En rupture de stock",
+        "in_stock": "En stock",
+        "inactive": "Inactif"
+      },
+      "type": {
+        "simple": "Simple",
+        "variable": "Variable"
+      },
+      "is_published": {
+        "false": "Non",
+        "true": "Oui"
+      },
+      "weight_unit": {
+        "kg": "Kilogramme (kg)",
+        "g": "Gramme (g)",
+        "lb": "Livre (lb)",
+        "oz": "Once (oz)"
+      },
+      "dimension_unit": {
+        "mm": "Millimètre (mm)",
+        "cm": "Centimètre (cm)",
+        "m": "Mètre (m)",
+        "in": "Pouce (in)"
+      },
+      "import_status": {
+        "completed": "Terminé",
+        "failed": "Échoué"
+      },
+      "import_strategy": {
+        "update": "Mettre à jour les produits existants",
+        "skip": "Ignorer les produits existants"
+      }
+    },
+    "labels": {
+      "product": "Produit",
+      "products": "Produits",
+      "comments": "Commentaires",
+      "id": "ID",
+      "title": "Titre",
+      "slug": "Slug",
+      "content": "Contenu",
+      "description": "Description",
+      "base_price": "Prix de base",
+      "type": "Type",
+      "status": "Statut",
+      "is_published": "Publié",
+      "categories": "Catégories",
+      "brand": "Marque",
+      "brand_none": "Aucune marque",
+      "variants": "Variantes",
+      "price": "Prix",
+      "sku": "SKU",
+      "quantity": "Quantité",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le",
+      "general": "Général",
+      "images": "Images",
+      "publish": "Publier",
+      "is_default": "Par défaut ?",
+      "photo": "Photo",
+      "add_photo": "Ajouter une photo",
+      "change_photo": "Changer la photo",
+      "variant_photo": "Photo de la variante",
+      "options": "Options",
+      "add_option": "Ajouter une option",
+      "generate": "Générer",
+      "no_options_added": "Aucune option ajoutée pour le moment.",
+      "no_more_options": "Plus d'options disponibles.",
+      "select_values_before_generate": "Veuillez sélectionner au moins une valeur pour chaque option avant de générer.",
+      "add_images": "Ajouter des images",
+      "featured_image": "En vedette",
+      "move_left": "Déplacer à gauche",
+      "move_right": "Déplacer à droite",
+      "image_preview": "Aperçu de l'image",
+      "open_original": "Ouvrir l'original",
+      "attributes": "Attributs",
+      "load_from_template": "Charger depuis un modèle",
+      "add_attribute": "Ajouter un attribut",
+      "no_attributes_added": "Aucun attribut pour le moment. Chargez un modèle ou ajoutez des attributs manuellement.",
+      "no_templates": "Aucun modèle disponible",
+      "no_more_attributes": "Plus d'attributs disponibles",
+      "no_attribute_values": "Cet attribut n'a pas de valeurs prédéfinies.",
+      "manage_values": "Gérer les valeurs",
+      "ungrouped": "Non groupé",
+      "not_set": "Non défini",
+      "remove_attribute": "Retirer l'attribut",
+      "shipping": "Livraison",
+      "requires_shipping": "Nécessite une livraison",
+      "weight": "Poids",
+      "weight_unit": "Unité de poids",
+      "package_length": "Longueur",
+      "package_width": "Largeur",
+      "package_height": "Hauteur",
+      "dimension_unit": "Unité de dimension",
+      "seo": "SEO",
+      "serp_preview": "Aperçu SERP Google",
+      "meta_title": "Titre méta",
+      "meta_description": "Description méta",
+      "open_graph_title": "Titre Open Graph",
+      "open_graph_description": "Description Open Graph",
+      "import_products": "Importer des produits",
+      "import_description": "Téléversez un fichier CSV, mappez ses colonnes et importez vos produits.",
+      "import_tab_run": "Nouvelle importation",
+      "import_step_file": "Fichier",
+      "import_step_mapping": "Mapping",
+      "import_step_options": "Options",
+      "import_choose_file": "Choisir un fichier CSV",
+      "import_change_file": "Changer de fichier",
+      "import_download_template": "Télécharger un CSV d'exemple",
+      "import_file_column": "Colonne du fichier",
+      "import_sample_value": "Exemple de valeur",
+      "import_field": "Champ mappé",
+      "import_ignore": "Ignorer",
+      "import_group_variant": "Variante",
+      "import_group_options": "Multi-variantes",
+      "import_group_base": "Produit",
+      "import_rows": "Lignes",
+      "import_duplicate_strategy": "Produits existants avec le même SKU",
+      "import_create_missing_options": "Créer les options et valeurs manquantes",
+      "import_dry_run": "Validation seule (simulation)",
+      "import_run_dry_run": "Valider",
+      "import_run_import": "Importer",
+      "import_created": "Créés",
+      "import_updated": "Mis à jour",
+      "import_skipped": "Ignorés",
+      "import_failed": "Échoués",
+      "import_total_rows": "Total des lignes",
+      "import_duration": "Durée",
+      "import_row": "Ligne",
+      "import_messages": "Messages",
+      "import_no_errors": "Aucune erreur de ligne.",
+      "import_history": "Historique",
+      "import_new_import": "Nouvelle importation",
+      "import_filename": "Fichier",
+      "import_run_at": "Date",
+      "import_view_errors": "Voir les erreurs",
+      "import_hide_errors": "Masquer les erreurs",
+      "import_no_history": "Aucune importation pour le moment.",
+      "import_back": "Retour",
+      "import_next": "Suivant",
+      "import_row_cap_exceeded": "Le fichier dépasse la limite de {{cap}} lignes.",
+      "tax_class": "Classe de taxes",
+      "tax_class_none": "Classe par défaut"
+    },
+    "tooltips": {
+      "is_published": {
+        "active": "Si activé, le produit sera visible sur le site.",
+        "inactive": "Si désactivé, le produit sera visible uniquement dans le panneau d'administration."
+      },
+      "requires_shipping": {
+        "active": "Si activé, le produit est un article physique et le poids et les dimensions ci-dessous sont utilisés pour la livraison.",
+        "inactive": "Si désactivé, le produit ne nécessite pas d'expédition (p. ex. produits numériques) et les champs ci-dessous sont ignorés."
+      },
+      "is_default": {
+        "active": "Si activé, la variante sera sélectionnée par défaut sur le site",
+        "inactive": "Si désactivé, la variante ne sera pas sélectionnée par défaut sur le site."
+      },
+      "status": {
+        "in_stock": "Actif et disponible à l'achat. Les clients peuvent voir et acheter ce produit.",
+        "out_of_stock": "Visible sur la vitrine, mais les clients ne peuvent pas l'ajouter à leur panier. Utilisé lorsque le stock atteint zéro.",
+        "inactive": "Masqué de la vitrine. Les clients ne peuvent ni voir ni acheter ce produit, mais il reste dans votre catalogue.",
+        "discontinued": "Retiré définitivement. Ce produit est masqué, ne peut pas être acheté et ne sera pas réapprovisionné."
+      }
+    },
+    "help_texts": {
+      "is_default": "Si activé, cette variante sera sélectionnée comme option par défaut sur le site.",
+      "images": "La première image est la photo en vedette. Utilisez les flèches pour changer l'ordre.",
+      "attributes": "Chargez des attributs depuis un modèle, ajoutez-les manuellement, ou combinez les deux — puis retirez ce dont vous n'avez pas besoin. Les attributs sans valeur ne sont pas enregistrés.",
+      "shipping": "Définissez le poids et les dimensions du colis utilisés pour calculer les frais de livraison. Chaque valeur nécessite son unité ; laissez tout vide si inutile.",
+      "import": "Téléchargez le CSV d'exemple, remplissez vos produits, téléversez-le via le sélecteur de fichiers, puis mappez les colonnes et validez avec une simulation avant d'importer. Les lignes partageant un identifiant deviennent les variantes d'un même produit.",
+      "import_dry_run": "Valide tout le fichier et n'écrit rien ; le résultat montre ce que l'import réel ferait.",
+      "import_create_missing_options": "Les noms et valeurs d'options de variantes (p. ex. Couleur / Rouge) absents du catalogue d'options sont créés dans la langue par défaut de la boutique ; décochez-la pour faire échouer les lignes référençant des options inconnues."
+    }
+  }
+}

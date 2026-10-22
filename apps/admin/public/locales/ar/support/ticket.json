@@ -1,0 +1,33 @@
+{
+  "form": {
+    "labels": {
+      "ticket": "التذكرة",
+      "tickets": "التذاكر",
+      "id": "المعرّف",
+      "subject": "الموضوع",
+      "customer": "العميل",
+      "customer_email": "البريد الإلكتروني للعميل",
+      "order_code": "رمز الطلب",
+      "status": "الحالة",
+      "last_message_at": "آخر نشاط",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث",
+      "view": "عرض",
+      "open": "إعادة فتح",
+      "closed": "إغلاق",
+      "replied": "تم الرد",
+      "reply": "رد",
+      "sender": {
+        "customer": "العميل",
+        "admin": "فريق الدعم"
+      }
+    },
+    "statuses": {
+      "status": {
+        "open": "مفتوحة",
+        "answered": "تم الرد عليها",
+        "closed": "مغلقة"
+      }
+    }
+  }
+}

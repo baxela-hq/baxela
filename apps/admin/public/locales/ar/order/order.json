@@ -1,0 +1,65 @@
+{
+  "messages": {
+    "no_items": "لم يتم العثور على عناصر لهذا الطلب"
+  },
+  "form": {
+    "labels": {
+      "order": "الطلب",
+      "orders": "الطلبات",
+      "id": "المعرّف",
+      "order_code": "رمز الطلب",
+      "user_id": "معرّف المستخدم",
+      "status": "الحالة",
+      "payment_status": "حالة الدفع",
+      "description": "الوصف",
+      "note": "ملاحظة",
+      "total_amount": "المبلغ الإجمالي",
+      "coupon_code": "قسيمة الخصم",
+      "discount_amount": "الخصم",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث",
+      "variant_id": "معرّف المتغير",
+      "product_name_snapshot": "اسم المنتج",
+      "quantity": "الكمية",
+      "price_snapshot": "السعر المسجل",
+      "tax_amount": "الضريبة",
+      "shipping_tax_amount": "ضريبة الشحن",
+      "refunded_amount": "المسترد"
+    },
+    "help_texts": {
+      "description": "كتب العميل هذا النص ولا يمكن تعديله",
+      "note": "النص مرئي في لوحة الإدارة فقط ويعرضه المسؤولون",
+      "status": "سيتم إشعار العميل بعد تغيير الحالة",
+      "payment_status": "وضع علامة مدفوع على الطلب يبدأ أيضًا تنفيذه؛ ويُشعر العميل بعد تغيير حالة الدفع"
+    },
+    "statuses": {
+      "status": {
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة",
+        "shipped": "تم شحنه",
+        "completed": "مكتمل",
+        "cancelled": "ملغى"
+      },
+      "payment_status": {
+        "unpaid": "غير مدفوع",
+        "paid": "مدفوع",
+        "refunded": "مسترد",
+        "partially_refunded": "مسترد جزئيًا"
+      }
+    },
+    "tooltips": {
+      "status": {
+        "pending": "تم تسجيل الطلب وهو بانتظار تأكيد الدفع",
+        "processing": "الطلب مدفوع وجارٍ تجهيزه للشحن",
+        "shipped": "تم شحن الطلب ولم يستلمه العميل بعد",
+        "completed": "استلم العميل الطلب",
+        "cancelled": "تم إلغاء الطلب"
+      },
+      "payment_status": {
+        "unpaid": "لم يُدفع الطلب بعد؛ ينتهي إذا لم يكتمل الدفع في الوقت المحدد",
+        "paid": "تم دفع الطلب — تبدأ عمليات الاسترداد من هنا",
+        "refunded": "تمت إعادة مبلغ الطلب إلى العميل"
+      }
+    }
+  }
+}

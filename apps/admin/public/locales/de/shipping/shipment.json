@@ -1,0 +1,34 @@
+{
+  "form": {
+    "labels": {
+      "shipment": "Sendung",
+      "shipments": "Sendungen",
+      "id": "ID",
+      "order_id": "Bestellung",
+      "carrier_name": "Frachtführer",
+      "tracking_number": "Sendungsnummer",
+      "tracking_url": "Sendungsverfolgungs-URL",
+      "status": "Status",
+      "shipped_at": "Versandt am",
+      "delivered_at": "Zugestellt am",
+      "notes": "Notizen",
+      "created_at": "Erstellt am",
+      "updated_at": "Aktualisiert am"
+    },
+    "help_texts": {
+      "order_id": "ID der Bestellung, zu der diese Sendung gehört",
+      "status": "Der Status kann nur vorwärts entlang des Lebenszyklus wandern",
+      "tracking_url": "Öffentlicher Sendungsverfolgungs-Link, der dem Kunden angezeigt wird"
+    },
+    "statuses": {
+      "status": {
+        "pending": "Ausstehend",
+        "packed": "Verpackt",
+        "shipped": "Versandt",
+        "in_transit": "Unterwegs",
+        "delivered": "Zugestellt",
+        "failed": "Fehlgeschlagen"
+      }
+    }
+  }
+}

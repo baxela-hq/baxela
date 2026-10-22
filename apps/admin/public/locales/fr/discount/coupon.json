@@ -1,0 +1,50 @@
+{
+  "form": {
+    "labels": {
+      "coupon": "Code promo",
+      "coupons": "Codes promo",
+      "id": "ID",
+      "code": "Code",
+      "name": "Nom interne",
+      "type": "Type",
+      "value": "Valeur",
+      "max_discount_amount": "Remise maximale",
+      "min_order_amount": "Montant minimum de commande",
+      "starts_at": "Débute le (UTC)",
+      "ends_at": "Termine le (UTC)",
+      "usage_limit": "Limite d'utilisation",
+      "per_user_limit": "Limite par utilisateur",
+      "usage": "Utilisation",
+      "window": "Validité",
+      "is_active": "Actif",
+      "created_at": "Créé le",
+      "updated_at": "Mis à jour le"
+    },
+    "statuses": {
+      "percent": "Pourcentage",
+      "fixed": "Montant fixe",
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "placeholders": {
+      "code": "PROMO20",
+      "name": "Soldes de printemps",
+      "unlimited": "Illimité",
+      "date": "Choisir une date"
+    },
+    "help_texts": {
+      "code": "Code visible par les clients — lettres, chiffres, tirets et underscores ; stocké en majuscules",
+      "name": "Libellé interne facultatif, jamais montré aux clients",
+      "type": "Pourcentage déduit un pourcentage du sous-total ; montant fixe déduit un montant forfaitaire",
+      "value_percent": "Pourcentage de remise sur le sous-total de la commande — 15.00 signifie 15 %",
+      "value_fixed": "Montant forfaitaire déduit du sous-total de la commande",
+      "max_discount_amount": "Plafond facultatif pour les codes en pourcentage — laissez vide pour aucun plafond",
+      "min_order_amount": "Sous-total minimum de marchandises facultatif requis pour utiliser le code",
+      "usage_limit": "Nombre total d'utilisations autorisé pour tous les clients — vide signifie illimité",
+      "per_user_limit": "Utilisations autorisées par client — vide signifie illimité",
+      "starts_at": "Le code devient utilisable à partir de ce moment (UTC)",
+      "ends_at": "Le code cesse d'être utilisable après ce moment (UTC)",
+      "is_active": "Les codes inactifs échouent immédiatement à l'évaluation, même pendant leur période de validité"
+    }
+  }
+}

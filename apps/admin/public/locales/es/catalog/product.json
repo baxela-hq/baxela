@@ -1,0 +1,180 @@
+{
+  "form": {
+    "statuses": {
+      "status": {
+        "discontinued": "Descatalogado",
+        "out_of_stock": "Agotado",
+        "in_stock": "En existencia",
+        "inactive": "Inactivo"
+      },
+      "type": {
+        "simple": "Simple",
+        "variable": "Variable"
+      },
+      "is_published": {
+        "false": "No",
+        "true": "Sí"
+      },
+      "weight_unit": {
+        "kg": "Kilogramo (kg)",
+        "g": "Gramo (g)",
+        "lb": "Libra (lb)",
+        "oz": "Onza (oz)"
+      },
+      "dimension_unit": {
+        "mm": "Milímetro (mm)",
+        "cm": "Centímetro (cm)",
+        "m": "Metro (m)",
+        "in": "Pulgada (in)"
+      },
+      "import_status": {
+        "completed": "Completado",
+        "failed": "Fallido"
+      },
+      "import_strategy": {
+        "update": "Actualizar los productos existentes",
+        "skip": "Omitir los productos existentes"
+      }
+    },
+    "labels": {
+      "product": "Producto",
+      "products": "Productos",
+      "comments": "Comentarios",
+      "id": "ID",
+      "title": "Título",
+      "slug": "Slug",
+      "content": "Contenido",
+      "description": "Descripción",
+      "base_price": "Precio base",
+      "type": "Tipo",
+      "status": "Estado",
+      "is_published": "Publicado",
+      "categories": "Categorías",
+      "brand": "Marca",
+      "brand_none": "Sin marca",
+      "variants": "Variantes",
+      "price": "Precio",
+      "sku": "SKU",
+      "quantity": "Cantidad",
+      "created_at": "Creado el",
+      "updated_at": "Actualizado el",
+      "general": "General",
+      "images": "Imágenes",
+      "publish": "Publicar",
+      "is_default": "¿Es predeterminada?",
+      "photo": "Foto",
+      "add_photo": "Añadir foto",
+      "change_photo": "Cambiar foto",
+      "variant_photo": "Foto de la variante",
+      "options": "Opciones",
+      "add_option": "Añadir opción",
+      "generate": "Generar",
+      "no_options_added": "Aún no se han añadido opciones.",
+      "no_more_options": "No hay más opciones disponibles.",
+      "select_values_before_generate": "Seleccione al menos un valor para cada opción antes de generar.",
+      "add_images": "Añadir imágenes",
+      "featured_image": "Destacada",
+      "move_left": "Mover a la izquierda",
+      "move_right": "Mover a la derecha",
+      "image_preview": "Vista previa de la imagen",
+      "open_original": "Abrir original",
+      "attributes": "Atributos",
+      "load_from_template": "Cargar desde plantilla",
+      "add_attribute": "Añadir atributo",
+      "no_attributes_added": "Aún no hay atributos. Cargue una plantilla o añada atributos manualmente.",
+      "no_templates": "No hay plantillas disponibles",
+      "no_more_attributes": "No hay más atributos disponibles",
+      "no_attribute_values": "Este atributo no tiene valores predefinidos.",
+      "manage_values": "Gestionar valores",
+      "ungrouped": "Sin agrupar",
+      "not_set": "Sin establecer",
+      "remove_attribute": "Quitar atributo",
+      "shipping": "Envío",
+      "requires_shipping": "Requiere envío",
+      "weight": "Peso",
+      "weight_unit": "Unidad de peso",
+      "package_length": "Largo",
+      "package_width": "Ancho",
+      "package_height": "Alto",
+      "dimension_unit": "Unidad de dimensión",
+      "seo": "SEO",
+      "serp_preview": "Vista previa de Google SERP",
+      "meta_title": "Meta título",
+      "meta_description": "Meta descripción",
+      "open_graph_title": "Título de Open Graph",
+      "open_graph_description": "Descripción de Open Graph",
+      "import_products": "Importar productos",
+      "import_description": "Cargue un archivo CSV, asigne sus columnas e importe sus productos.",
+      "import_tab_run": "Nueva importación",
+      "import_step_file": "Archivo",
+      "import_step_mapping": "Asignación",
+      "import_step_options": "Opciones",
+      "import_choose_file": "Elegir archivo CSV",
+      "import_change_file": "Cambiar archivo",
+      "import_download_template": "Descargar CSV de ejemplo",
+      "import_file_column": "Columna del archivo",
+      "import_sample_value": "Valor de ejemplo",
+      "import_field": "Campo asignado",
+      "import_ignore": "Ignorar",
+      "import_group_variant": "Variante",
+      "import_group_options": "Multivariante",
+      "import_group_base": "Producto",
+      "import_rows": "Filas",
+      "import_duplicate_strategy": "Productos existentes con el mismo SKU",
+      "import_create_missing_options": "Crear opciones y valores faltantes",
+      "import_dry_run": "Solo validar (simulación)",
+      "import_run_dry_run": "Validar",
+      "import_run_import": "Importar",
+      "import_created": "Creados",
+      "import_updated": "Actualizados",
+      "import_skipped": "Omitidos",
+      "import_failed": "Fallidos",
+      "import_total_rows": "Total de filas",
+      "import_duration": "Duración",
+      "import_row": "Fila",
+      "import_messages": "Mensajes",
+      "import_no_errors": "Sin errores de filas.",
+      "import_history": "Historial",
+      "import_new_import": "Nueva importación",
+      "import_filename": "Archivo",
+      "import_run_at": "Fecha",
+      "import_view_errors": "Ver errores",
+      "import_hide_errors": "Ocultar errores",
+      "import_no_history": "Aún no hay importaciones.",
+      "import_back": "Atrás",
+      "import_next": "Siguiente",
+      "import_row_cap_exceeded": "El archivo supera el límite de {{cap}} filas.",
+      "tax_class": "Clase de impuesto",
+      "tax_class_none": "Clase predeterminada"
+    },
+    "tooltips": {
+      "is_published": {
+        "active": "Cuando está activado, el producto será visible en el sitio web.",
+        "inactive": "Cuando está desactivado, el producto solo será visible en el panel de administración."
+      },
+      "requires_shipping": {
+        "active": "Cuando está activado, el producto es un artículo físico y el peso y las dimensiones siguientes se usan para el envío.",
+        "inactive": "Cuando está desactivado, el producto no requiere envío (p. ej. bienes digitales) y los campos siguientes se ignoran."
+      },
+      "is_default": {
+        "active": "Cuando está activado, la variante se seleccionará como predeterminada en el sitio web",
+        "inactive": "Cuando está desactivado, la variante no se seleccionará como predeterminada en el sitio web."
+      },
+      "status": {
+        "in_stock": "Activo y disponible para compra. Los clientes pueden ver y comprar este producto.",
+        "out_of_stock": "Visible en la tienda, pero los clientes no pueden añadirlo al carrito. Se usa cuando el inventario llega a cero.",
+        "inactive": "Oculto en la tienda. Los clientes no pueden ver ni comprar este producto, pero permanece en su catálogo.",
+        "discontinued": "Retirado permanentemente. Este producto está oculto, no se puede comprar y no se repondrá."
+      }
+    },
+    "help_texts": {
+      "is_default": "Cuando está activado, esta variante se seleccionará como opción predeterminada en el sitio web.",
+      "images": "La primera imagen es la foto destacada. Use las flechas para cambiar el orden.",
+      "attributes": "Cargue atributos desde una plantilla, añádalos manualmente o combine ambos — luego quite lo que no necesite. Los atributos que queden sin valor no se guardan.",
+      "shipping": "Establezca el peso y las dimensiones del paquete usados para calcular los costos de envío. Cada valor necesita su unidad; deje todo vacío cuando no sea necesario.",
+      "import": "Descargue el CSV de ejemplo, complete sus productos, cárguelo mediante el selector de archivos, luego asigne las columnas y valide con una simulación antes de importar. Las filas que compartan un identificador se convierten en las variantes de un producto.",
+      "import_dry_run": "Valida todo el archivo y no escribe nada; el resultado muestra lo que haría la importación real.",
+      "import_create_missing_options": "Los nombres y valores de opciones de variante (p. ej. Color / Rojo) que falten en el catálogo de opciones se crean en el idioma predeterminado de la tienda; desmárguelo para que las filas que hagan referencia a opciones desconocidas fallen."
+    }
+  }
+}
