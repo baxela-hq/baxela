@@ -2053,6 +2053,18 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$display_currency_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$display_fx_rate\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_method_name\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2061,7 +2073,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -2073,19 +2085,19 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 8
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 8
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 8
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -2097,7 +2109,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 8
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -2109,7 +2121,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
 			identifier: method.notFound
-			count: 5
+			count: 7
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -2119,9 +2131,15 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
+			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 3
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -9355,10 +9373,28 @@ parameters:
 			path: Modules/Core/app/Actions/Admin/Country/ListCountryAction.php
 
 		-
+			message: '#^Method Modules\\Core\\Actions\\Admin\\Currency\\CreateCurrencyAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/CreateCurrencyAction.php
+
+		-
 			message: '#^Method Modules\\Core\\Actions\\Admin\\Currency\\ListCurrencyAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Actions/Admin/Currency/ListCurrencyAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/UpdateCurrencyAction.php
+
+		-
+			message: '#^Method Modules\\Core\\Actions\\Admin\\Currency\\UpdateCurrencyAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/UpdateCurrencyAction.php
 
 		-
 			message: '#^Method Modules\\Core\\Actions\\Admin\\Language\\ListLanguageAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
@@ -9371,6 +9407,12 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Actions/Public/Country/ListCountryAction.php
+
+		-
+			message: '#^Method Modules\\Core\\Actions\\Public\\Currency\\ListActiveCurrenciesAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Core/app/Actions/Public/Currency/ListActiveCurrenciesAction.php
 
 		-
 			message: '#^Cannot call abstract static method Modules\\Core\\Contracts\\DTOs\\AbstractDTO\:\:fromArray\(\)\.$#'
@@ -9443,6 +9485,12 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Contracts/Gateways/Catalog/CatalogGatewayInterface.php
+
+		-
+			message: '#^Method Modules\\Core\\Contracts\\Gateways\\Core\\CoreGatewayInterface\:\:getActiveCurrencies\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Core/app/Contracts/Gateways/Core/CoreGatewayInterface.php
 
 		-
 			message: '#^Method Modules\\Core\\Contracts\\Gateways\\Core\\CoreGatewayInterface\:\:getActiveLanguages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
@@ -9599,6 +9647,12 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Exceptions/Tax/TaxConfigurationException.php
+
+		-
+			message: '#^Method Modules\\Core\\Gateways\\CoreGateway\:\:getActiveCurrencies\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Core/app/Gateways/CoreGateway.php
 
 		-
 			message: '#^Method Modules\\Core\\Gateways\\CoreGateway\:\:getActiveLanguages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
@@ -9931,7 +9985,19 @@ parameters:
 			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$is_active\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
@@ -10093,6 +10159,60 @@ parameters:
 			path: Modules/Core/app/Transformers/Public/Country/CountryResource.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$decimal_places\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_symbol_right\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$native_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$symbol\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
+			message: '#^Method Modules\\Core\\Transformers\\Public\\Currency\\ActiveCurrencyResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
+
+		-
 			message: '#^Method Modules\\Core\\Transformers\\Public\\Currency\\CurrencyResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -10133,6 +10253,108 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/database/factories/LanguageFactory.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$superAdmin\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
+
+		-
+			message: '#^Offset ''method'' does not exist on array\{uri\: mixed, middleware\: mixed\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 3
+			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 3
+			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
