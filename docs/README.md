@@ -7,3 +7,4 @@ Cross-project documentation for the Baxela monorepo.
 - [Logging & Error Monitoring](LOGGING.md)
 - [Roadmap](ROADMAP.md)
 - [Phase plans](plans/) — per-phase execution plans (Phase 0–3)
+- [Release lifecycle](RELEASE_LIFECYCLE.md) — alpha → beta → stable → 1.0 stage gates

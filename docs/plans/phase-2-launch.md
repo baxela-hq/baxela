@@ -7,7 +7,7 @@
 > **Timing:** Tue–Thu launch morning Eastern time. Avoid late December. November or
 > mid-January are the windows.
 >
-> **Exit criteria:** v0.1.0-alpha tagged with release notes · launch assets live in README
+> **Exit criteria:** v0.1.0-alpha.1 tagged with release notes · launch assets live in README
 > · all channels posted · community channels open · same-day issue replies during week 1.
 
 ## Verified state (2026-10-21)
@@ -24,21 +24,22 @@
 
 ---
 
-## 2.1 Tag v0.1.0-alpha
+## 2.1 Tag v0.1.0-alpha.1
 
 1. Freeze: all Phase 1 exit criteria ticked, CI green on `main` (incl. e2e job or its
    tracking issue), `composer analyse` at baseline target.
-2. `CHANGELOG.md`: add `## [0.1.0-alpha] - YYYY-MM-DD` — highlights (multi-currency
+2. `CHANGELOG.md`: add `## [0.1.0-alpha.1] - YYYY-MM-DD` — highlights (multi-currency
    display, 6 locales/RTL, 8 payment drivers, e2e + 700+ backend tests, OpenAPI docs,
    S3 media), known limitations (SQL LIKE search, manual FX rates, no multi-vendor —
    stated plainly with roadmap pointers), install pointers.
-3. `git tag -a v0.1.0-alpha -m "..."` → push tag → GitHub Release using the CHANGELOG
-   entry + a 3-screenshot header (storefront, admin, checkout).
+3. `git tag -a v0.1.0-alpha.1 -m "..."` → push tag → GitHub Release (checked as
+   **pre-release**) using the CHANGELOG entry + a 3-screenshot header (storefront,
+   admin, checkout).
 4. Dry-run the Release page as a stranger: does quickstart work from a clean clone?
    `git clone` → `cp .env.example .env` → `docker compose up -d` → store loads. Fix
    whatever blocks this before announcing anything.
 
-Suggested commit: `chore(monorepo): release v0.1.0-alpha`
+Suggested commit: `chore(monorepo): release v0.1.0-alpha.1`
 
 ## 2.2 Launch assets (repo changes)
 
@@ -111,7 +112,7 @@ Post in this order, same week; personalize per channel, never paste one blob:
       Discussions, hostile takes → one calm factual reply, move on
 - [ ] Watch star graph (star-history.com embed) + referrers (GitHub traffic insights) —
       note which channel converts; it decides where Phase 3 content goes
-- [ ] If any checkout-breaking bug appears: fix forward, patch release `v0.1.0-alpha.1`,
+- [ ] If any checkout-breaking bug appears: fix forward, patch release `v0.1.0-alpha.2`,
       reply in-thread with the fix commit
 
 ## Definition of done

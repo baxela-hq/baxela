@@ -14,9 +14,8 @@
 SOP per release:
 1. Pick a theme a stranger can describe in one line ("Meilisearch", "6 more locales",
    "multi-vendor beta") — releases need a headline, not a changelog dump.
-2. `CHANGELOG.md` entry → tag `v0.X.0` (semver-ish: alpha suffix drops at v0.6 when
-   multi-vendor lands or e2e+baseline fully green, whichever first — rename that to the
-   v1.0-beta discussion when close).
+2. `CHANGELOG.md` entry → tag per `docs/RELEASE_LIFECYCLE.md` (alpha.N while features
+   land, then the beta → rc → 0.1.0 gates defined there).
 3. GitHub Release: notes + one GIF of the headline feature + migration notes if env vars
    or migrations changed.
 4. Post the release to X + relevant Discussions thread; update comparison-table data

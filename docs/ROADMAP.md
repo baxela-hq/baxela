@@ -76,7 +76,8 @@ feature-count war with Bagisto.
 
 **Goals:**
 
-1. Tag and publish **v0.1.0-alpha** publicly (~3–4 weeks of work at current velocity).
+1. Tag and publish **v0.1.0-alpha.1** publicly (~3–4 weeks of work at current velocity;
+   the full stage plan — alpha → beta → 1.0 gates — lives in `docs/RELEASE_LIFECYCLE.md`).
 2. Execute a coordinated public launch (Show HN, Laravel News, Reddit, X, Persian dev
    communities).
 3. Reach **1,000 GitHub stars within 6–9 months** via release cadence + content + community.
@@ -185,10 +186,23 @@ Goal: nothing embarrassing or unsafe on launch day. Work through in rough priori
   conversion with rounding, order snapshot of applied rate, extended public currency API.
   Add Pest tests for rate resolution + conversion + snapshotting; add store switcher states
   to the Playwright happy path.
-- [ ] **1.8 Locale expansion.** Ship en, fa + **de, fr, es, ar** (Arabic proves RTL isn't a
-  one-off). Add `apps/admin/public/locales/{de,fr,es,ar}/` namespaces and storefront
-  messages; extend `scripts/check-i18n-parity.mjs` to cover them; keep CI green. After
-  launch, new locales move to community PRs (see 3.4).
+- [ ] **1.8 Locale expansion — all three apps, backend first.** Ship en, fa + **de, fr, es,
+  ar** (Arabic proves RTL isn't a one-off).
+  - **Backend (highest impact — customer-facing email/Telegram templates live here):**
+    add `Modules/*/lang/{de,fr,es,ar}/` mirroring each module's `en/` tree (18 modules:
+    `errors.php` everywhere; `auth.php`, `address.php`; `seeder.php` for
+    Catalog/Content/Menu/Setting/Shipping; Notification also carries `notifications.php`
+    + `telegram.php`). Fallback reality drives the order: `errors.php` misses degrade
+    gracefully to English via Laravel's fallback locale (progressive delivery is safe),
+    but `LocaleTemplateEngine` keys notification templates by locale inside one file
+    (`notifications.$locale.…`) and renders the **raw translation key** as the subject
+    when a locale is absent — so first harden `LocaleTemplateEngine` to fall back to
+    `en` (small patch), then translate Notification's files fully per locale.
+  - **Admin + storefront:** mirror `apps/admin/public/locales/{de,fr,es,ar}/` namespaces
+    and storefront `messages/{de,fr,es,ar}/`.
+  - Extend `scripts/check-i18n-parity.mjs` to also walk `apps/backend/Modules/*/lang/`
+    (today it covers only the two frontends); keep CI green. After launch, new locales
+    move to community PRs (see 3.4).
 - [ ] **1.9 Finish S3 media driver.** Install flysystem-aws adapter; implement the existing
   `S3` disk enum path; admin setting to pick disk; docs section for both local and S3.
 
@@ -220,7 +234,8 @@ claim true. Then tag.
 
 Goal: one coordinated launch moment. Do not leak the announcement before the tag.
 
-- [ ] **2.1 Tag `v0.1.0-alpha`** + GitHub Release with notes (highlights, known limitations
+- [ ] **2.1 Tag `v0.1.0-alpha.1`** + GitHub Release (marked pre-release) with notes
+  (highlights, known limitations
   — LIKE search, manual FX rates, no multi-vendor — stated honestly; upgrade path).
 - [ ] **2.2 Launch assets.** 60–90s demo GIF (README top), architecture diagram (monorepo
   + contracts/events layer), honest comparison table vs Bagisto/BeikeShop/InnoShop/Velstore,
