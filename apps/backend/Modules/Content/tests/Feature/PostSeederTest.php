@@ -9,6 +9,7 @@ use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Tests\Feature\HelperTrait;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
+use Modules\Core\Models\Language;
 use Modules\Media\Database\Seeders\MediaDatabaseSeeder;
 
 uses(RefreshDatabase::class);
@@ -32,8 +33,10 @@ it('seeds posts and post categories with translations', function () {
     );
     expect($welcome)->not->toBeNull()
         ->and($welcome->{PostSchema::STATUS})->toBe(PostStatusEnum::PUBLISHED)
-        // posts seed with a translation per active language (en + fa)
-        ->and($welcome->translations)->toHaveCount(2)
+        // posts seed with a translation per ACTIVE language (6 since the
+        // de/fr/es/ar locale expansion)
+        ->and($welcome->translations)
+        ->toHaveCount(Language::query()->where('is_active', true)->count())
         // the welcome post is attached to the news category
         ->and($welcome->categories()->count())->toBe(1)
         // each seeded post carries its cover photo on the public disk

@@ -21,6 +21,7 @@ use Modules\Core\Contracts\Gateways\Catalog\DTOs\VariantSummary;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Discount\DTOs\ProductPromotion;
 use Modules\Core\Support\Money;
+use Modules\Core\Support\PicksTranslation;
 
 class CatalogGateway implements CatalogGatewayInterface
 {
@@ -140,9 +141,10 @@ class CatalogGateway implements CatalogGatewayInterface
      */
     private function toSummary(Product $product, ?int $languageId): ProductSummary
     {
-        $translation = $product->{ProductSchema::RES_TRANSLATIONS}
-            ->firstWhere(PTSchema::LANGUAGE_ID, $languageId)
-            ?? $product->{ProductSchema::RES_TRANSLATIONS}->first();
+        $translation = PicksTranslation::pick(
+            $product->{ProductSchema::RES_TRANSLATIONS},
+            $languageId,
+        );
 
         $variant = $product->{ProductSchema::RES_VARIANTS}->first();
 
@@ -160,15 +162,17 @@ class CatalogGateway implements CatalogGatewayInterface
     private function toVariantSummary(Variant $variant, ?int $languageId, ?ProductPromotion $promotion): VariantSummary
     {
         $product = $variant->{VariantSchema::RES_PRODUCT};
-        $productTranslation = $product?->{ProductSchema::RES_TRANSLATIONS}
-            ->firstWhere(PTSchema::LANGUAGE_ID, $languageId)
-            ?? $product?->{ProductSchema::RES_TRANSLATIONS}->first();
+        $productTranslation = PicksTranslation::pick(
+            $product?->{ProductSchema::RES_TRANSLATIONS},
+            $languageId,
+        );
 
         $labels = $variant->{VariantSchema::RES_OPTION_VALUES}
             ->map(function ($optionValue) use ($languageId): ?string {
-                $translation = $optionValue->{OptionValueSchema::RES_TRANSLATIONS}
-                    ->firstWhere(OVTSchema::LANGUAGE_ID, $languageId)
-                    ?? $optionValue->{OptionValueSchema::RES_TRANSLATIONS}->first();
+                $translation = PicksTranslation::pick(
+                    $optionValue->{OptionValueSchema::RES_TRANSLATIONS},
+                    $languageId,
+                );
 
                 return $translation?->{OVTSchema::TITLE};
             })

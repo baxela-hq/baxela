@@ -9,6 +9,7 @@ use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as MTSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Transformers\Public\MenuLink\MenuLinkResource;
+use Modules\Core\Support\PicksTranslation;
 
 class MenuResource extends JsonResource
 {
@@ -23,7 +24,7 @@ class MenuResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(MTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         $links = $this->resource->links
             ->whereNull(MenuLinkSchema::PARENT_ID)

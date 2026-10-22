@@ -10,6 +10,7 @@ use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Transformers\Public\PostCategory\PostCategoryResource;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
 use Modules\Core\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class PostResource extends JsonResource
 {
@@ -23,7 +24,7 @@ class PostResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(PTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             PostSchema::ID => $this->resource->{PostSchema::ID},

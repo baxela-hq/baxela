@@ -4,6 +4,7 @@ namespace Modules\Shipping\Gateways;
 
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Contracts\Gateways\Shipping\DTOs\ShippingMethodQuoteDto;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Schemas\Country\CountrySchema;
@@ -99,9 +100,8 @@ class ShippingGateway implements ShippingGatewayInterface
     {
         $translations = $method->translations;
 
-        return $translations->firstWhere(MethodTranslationSchema::LANGUAGE_ID, $languageId)
+        return PicksTranslation::pick($translations, $languageId)
             ?->{MethodTranslationSchema::NAME}
-            ?? $translations->first()?->{MethodTranslationSchema::NAME}
             ?? $method->{MethodSchema::CODE};
     }
 }

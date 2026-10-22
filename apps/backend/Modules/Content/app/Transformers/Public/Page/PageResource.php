@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PTSchema;
 use Modules\Core\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class PageResource extends JsonResource
 {
@@ -20,7 +21,7 @@ class PageResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(PTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             PageSchema::ID => $this->resource->{PageSchema::ID},

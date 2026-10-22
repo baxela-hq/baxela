@@ -12,6 +12,7 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class ListProductResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class ListProductResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(PTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         $variant = $this->resource->variants
             ->firstWhere(VariantSchema::IS_DEFAULT, true)
@@ -32,7 +33,7 @@ class ListProductResource extends JsonResource
 
         $brandTranslation = $this->resource->brand?->translations
             ->firstWhere(BRTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->brand?->translations->first();
+            ?? PicksTranslation::pick($this->resource->brand?->translations, $this->resolvePublicLanguageId($request));
 
         return [
             'id' => $this->resource->{ProductSchema::ID},

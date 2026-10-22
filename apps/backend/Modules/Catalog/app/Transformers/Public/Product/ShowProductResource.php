@@ -26,6 +26,7 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class ShowProductResource extends JsonResource
 {
@@ -40,7 +41,7 @@ class ShowProductResource extends JsonResource
 
         $translation = $this->resource->translations
             ->firstWhere(PTSchema::LANGUAGE_ID, $languageId)
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $languageId);
 
         $variant = $this->resource->variants
             ->firstWhere(VariantSchema::IS_DEFAULT, true)
@@ -48,7 +49,7 @@ class ShowProductResource extends JsonResource
 
         $brandTranslation = $this->resource->brand?->translations
             ->firstWhere(BRTSchema::LANGUAGE_ID, $languageId)
-            ?? $this->resource->brand?->translations->first();
+            ?? PicksTranslation::pick($this->resource->brand?->translations, $languageId);
 
         return [
             'id' => $this->resource->{ProductSchema::ID},
@@ -82,7 +83,7 @@ class ShowProductResource extends JsonResource
                             'title' => $optionValue->translations
                                 ->firstWhere(OVTSchema::LANGUAGE_ID, $languageId)
                                 ?->{OVTSchema::TITLE}
-                                ?? $optionValue->translations->first()?->{OVTSchema::TITLE},
+                                ?? PicksTranslation::pick($optionValue->translations, $languageId)?->{OVTSchema::TITLE},
                         ])->all(),
                 ])->all(),
             'images' => $this->resource->images
@@ -98,11 +99,11 @@ class ShowProductResource extends JsonResource
                     'title' => $category->translations
                         ->firstWhere(CTSchema::LANGUAGE_ID, $languageId)
                         ?->{CTSchema::TITLE}
-                        ?? $category->translations->first()?->{CTSchema::TITLE},
+                        ?? PicksTranslation::pick($category->translations, $languageId)?->{CTSchema::TITLE},
                     'slug' => $category->translations
                         ->firstWhere(CTSchema::LANGUAGE_ID, $languageId)
                         ?->{CTSchema::SLUG}
-                        ?? $category->translations->first()?->{CTSchema::SLUG},
+                        ?? PicksTranslation::pick($category->translations, $languageId)?->{CTSchema::SLUG},
                 ])->all(),
             'attributes' => $this->resource->attributeValues
                 ->sortBy(fn (ProductAttributeValue $row): int => $row->attribute?->{AttributeSchema::POSITION} ?? 0)
@@ -112,12 +113,12 @@ class ShowProductResource extends JsonResource
                     'title' => $row->attribute?->translations
                         ->firstWhere(ATSchema::LANGUAGE_ID, $languageId)
                         ?->{ATSchema::TITLE}
-                        ?? $row->attribute?->translations->first()?->{ATSchema::TITLE},
+                        ?? PicksTranslation::pick($row->attribute?->translations, $languageId)?->{ATSchema::TITLE},
                     'value' => match ($row->attribute?->{AttributeSchema::DATA_TYPE}) {
                         AttributeTypeEnum::SELECT, AttributeTypeEnum::MULTISELECT => $row->attributeValue?->translations
                             ->firstWhere(AVTSchema::LANGUAGE_ID, $languageId)
                             ?->{AVTSchema::TITLE}
-                            ?? $row->attributeValue?->translations->first()?->{AVTSchema::TITLE},
+                            ?? PicksTranslation::pick($row->attributeValue?->translations, $languageId)?->{AVTSchema::TITLE},
                         AttributeTypeEnum::NUMBER => $row->{PAVSchema::NUMBER_VALUE},
                         AttributeTypeEnum::BOOLEAN => $row->{PAVSchema::BOOLEAN_VALUE},
                         default => $row->{PAVSchema::TEXT_VALUE},

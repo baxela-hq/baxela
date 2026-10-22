@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
 use Modules\Core\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class PostCategoryResource extends JsonResource
 {
@@ -20,7 +21,7 @@ class PostCategoryResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(PCTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             PostCategorySchema::ID => $this->resource->{PostCategorySchema::ID},

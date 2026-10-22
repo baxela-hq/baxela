@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BTSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class BrandResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class BrandResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(BTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             'id' => $this->resource->{BrandSchema::ID},

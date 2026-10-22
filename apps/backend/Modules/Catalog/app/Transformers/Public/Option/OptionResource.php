@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Option\OptionTranslationSchema as OTSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class OptionResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class OptionResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(OTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             'id' => $this->resource->{OptionSchema::ID},
@@ -31,7 +32,7 @@ class OptionResource extends JsonResource
                 ->map(function ($value) use ($request): array {
                     $valueTranslation = $value->translations
                         ->firstWhere(OVTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-                        ?? $value->translations->first();
+                        ?? PicksTranslation::pick($value->translations, $this->resolvePublicLanguageId($request));
 
                     return [
                         'id' => $value->{OptionValueSchema::ID},

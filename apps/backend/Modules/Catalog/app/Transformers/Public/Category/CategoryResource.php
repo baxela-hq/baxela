@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Support\PicksTranslation;
 
 class CategoryResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class CategoryResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(CTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             'id' => $this->resource->{CategorySchema::ID},

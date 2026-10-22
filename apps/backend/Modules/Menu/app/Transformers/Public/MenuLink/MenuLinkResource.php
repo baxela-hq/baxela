@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTranslationSchema as MLTSchema;
+use Modules\Core\Support\PicksTranslation;
 
 class MenuLinkResource extends JsonResource
 {
@@ -21,7 +22,7 @@ class MenuLinkResource extends JsonResource
     {
         $translation = $this->resource->translations
             ->firstWhere(MLTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
-            ?? $this->resource->translations->first();
+            ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
         return [
             MenuLinkSchema::ID => $this->resource->{MenuLinkSchema::ID},
