@@ -154,7 +154,7 @@ These features have no implementation; an account alone won't enable them:
 | Search engine | Catalog filtering is SQL-only; no Scout/Meilisearch/Algolia | Meilisearch (self-host), Algolia, Typesense |
 | Social login | None; no Socialite | Google, GitHub, etc. |
 | Shipping carrier APIs | Tracking numbers entered manually (`docs/shipping.md`) | FedEx, UPS, DHL, local couriers |
-| Exchange rates | Multi-currency model has no FX rate source | exchangerate.host, Open Exchange Rates, ECB feeds |
+| Exchange rates | Built in: admin-managed manual FX rates on currencies, storefront switcher (display conversion), order snapshots — charging stays in the base currency | exchangerate.host, Open Exchange Rates, ECB feeds (automated rate sync) |
 | Newsletter / mailing list | Contact module stores subscribers in DB only | Mailchimp, Brevo, Listmonk (self-host) |
 
 ## Minimum launch checklist

@@ -59,6 +59,8 @@ class CoreDatabaseSeeder extends Seeder
                 CurrencySchema::IS_DEFAULT => true,
                 CurrencySchema::IS_SYMBOL_RIGHT => false,
                 CurrencySchema::DECIMAL_PLACES => 2,
+                CurrencySchema::EXCHANGE_RATE => '1.00000000',
+                CurrencySchema::IS_ACTIVE => true,
             ],
             [
                 CurrencySchema::NAME => 'Iranian Rial',
@@ -68,6 +70,9 @@ class CoreDatabaseSeeder extends Seeder
                 CurrencySchema::IS_DEFAULT => false,
                 CurrencySchema::IS_SYMBOL_RIGHT => true,
                 CurrencySchema::DECIMAL_PLACES => 2,
+                // Demo display rate — admin-managed, no external FX source
+                CurrencySchema::EXCHANGE_RATE => '600000.00000000',
+                CurrencySchema::IS_ACTIVE => true,
             ],
         ];
         $currencies = array_map(function ($row) {
