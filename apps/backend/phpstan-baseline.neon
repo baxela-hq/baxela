@@ -3595,19 +3595,7 @@ parameters:
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
@@ -3615,7 +3603,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$translations\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 2
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
 		-
@@ -3663,6 +3651,12 @@ parameters:
 		-
 			message: '#^Method Modules\\Catalog\\Gateways\\CatalogGateway\:\:getVariantSummaries\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
+			count: 1
+			path: Modules/Catalog/app/Gateways/CatalogGateway.php
+
+		-
+			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
@@ -5625,13 +5619,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 2
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
 
 		-
@@ -5722,6 +5716,12 @@ parameters:
 			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{id\: int, title\: mixed\}, Closure\(Modules\\Catalog\\Models\\OptionValue\)\: array\{id\: int, title\: mixed\} given\.$#'
 			identifier: argument.type
 			count: 1
+			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
+
+		-
+			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
+			identifier: argument.type
+			count: 3
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
 
 		-
@@ -9923,6 +9923,12 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Rules/UniquePair.php
+
+		-
+			message: '#^Anonymous function never returns int so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: Modules/Core/app/Support/PicksTranslation.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$code\.$#'
@@ -17443,12 +17449,6 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Zone/UpdateFailedException.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Method\:\:\$code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -17473,9 +17473,15 @@ parameters:
 			path: Modules/Shipping/app/Gateways/ShippingGateway.php
 
 		-
+			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Shipping/app/Gateways/ShippingGateway.php
+
+		-
 			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
-			count: 2
+			count: 1
 			path: Modules/Shipping/app/Gateways/ShippingGateway.php
 
 		-
