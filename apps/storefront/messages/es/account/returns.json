@@ -1,0 +1,28 @@
+{
+  "title": "Mis devoluciones",
+  "subtitle": "Sigue tus solicitudes de devolución — los reembolsos se emiten por separado una vez procesada la devolución.",
+  "empty": "Todavía no hay solicitudes de devolución.",
+  "tracking": "Seguimiento",
+  "tracking_placeholder": "Número de seguimiento (opcional)",
+  "statuses": {
+    "requested": "Solicitada",
+    "approved": "Aprobada — envuélvela de vuelta",
+    "rejected": "Rechazada",
+    "shipped": "Enviada por ti",
+    "received": "Recibida",
+    "completed": "Completada",
+    "cancelled": "Cancelada"
+  },
+  "reasons": {
+    "damaged": "El artículo llegó dañado",
+    "wrong_item": "Artículo incorrecto recibido",
+    "not_as_described": "No coincide con la descripción",
+    "other": "Otro motivo"
+  },
+  "actions": {
+    "mark_shipped": "Ya la he enviado",
+    "confirm_shipped": "Confirmar envío",
+    "cancel_return": "Cancelar solicitud",
+    "back": "Volver"
+  }
+}

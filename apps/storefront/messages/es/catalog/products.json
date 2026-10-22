@@ -1,0 +1,48 @@
+{
+  "texts": {
+    "title": "Todos los productos",
+    "search_results_title": "Resultados de búsqueda para «{query}»",
+    "results_count": "Mostrando {from}–{to} de {total} resultados",
+    "search_results_count": "Mostrando {count, plural, one {# resultado} other {# resultados}}",
+    "empty": "No se encontraron productos.",
+    "empty_search": "No se encontraron productos para «{query}». Prueba con otro término de búsqueda."
+  },
+  "filters": {
+    "labels": {
+      "aside": "Filtros de productos",
+      "category": "Categoría",
+      "brand": "Marca",
+      "size": "Talla",
+      "price": "Precio",
+      "max_price": "Precio máximo"
+    },
+    "actions": {
+      "hide": "Ocultar filtros",
+      "show": "Filtros",
+      "reset": "Restablecer filtros",
+      "expand_category": "Mostrar subcategorías",
+      "collapse_category": "Ocultar subcategorías"
+    }
+  },
+  "sort": {
+    "labels": {
+      "by": "Ordenar por"
+    },
+    "options": {
+      "featured": "Destacados",
+      "newest": "Más nuevos",
+      "rating": "Mejor valorados",
+      "price_low_high": "Precio: de menor a mayor",
+      "price_high_low": "Precio: de mayor a menor"
+    }
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "Paginación"
+    },
+    "actions": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
+  }
+}

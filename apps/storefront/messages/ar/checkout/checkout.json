@@ -1,0 +1,118 @@
+{
+  "texts": {
+    "title": "إتمام الشراء",
+    "empty_cart": "سلتك فارغة."
+  },
+  "address": {
+    "texts": {
+      "title": "عنوان الشحن"
+    },
+    "labels": {
+      "full_name": "الاسم الكامل",
+      "phone": "الهاتف",
+      "address_line": "سطر العنوان",
+      "city": "المدينة",
+      "postal_code": "الرمز البريدي",
+      "country": "البلد"
+    },
+    "placeholders": {
+      "full_name": "الاسم الأول والعائلة",
+      "phone": "رقم الهاتف",
+      "address_line": "العنوان، رقم المبنى، الوحدة",
+      "city": "المدينة",
+      "postal_code": "الرمز البريدي"
+    },
+    "actions": {
+      "new": "إضافة عنوان جديد",
+      "save": "حفظ العنوان"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "طريقة الشحن",
+      "select_address_first": "اختر عنوان الشحن لعرض الطرق المتاحة.",
+      "none_available": "لا توجد طريقة شحن متاحة للعنوان المحدد."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "الدفع",
+      "empty": "لا توجد طريقة دفع متاحة حاليًا. يرجى المحاولة لاحقًا أو التواصل معنا."
+    },
+    "methods": {
+      "manual": {
+        "label": "دفع يدوي",
+        "description": "سيتواصل معك فريقنا لترتيب الدفع وتأكيده."
+      },
+      "stripe": {
+        "label": "الدفع بالبطاقة (Stripe)",
+        "description": "ادفع بأمان عبر البطاقة — سيتم تحويلك إلى Stripe."
+      },
+      "paypal": {
+        "label": "PayPal",
+        "description": "ادفع باستخدام حسابك في PayPal."
+      },
+      "adyen": {
+        "label": "الدفع بالبطاقة (Adyen)",
+        "description": "ادفع بأمان بطريقتك المفضلة — سيتم تحويلك إلى Adyen."
+      },
+      "nowpayments": {
+        "label": "الدفع بالعملات الرقمية (NowPayments)",
+        "description": "ادفع بعملتك الرقمية المفضلة — سيتم تحويلك إلى NowPayments."
+      },
+      "mercadopago": {
+        "label": "دفع محلي (Mercado Pago)",
+        "description": "ادفع عبر Pix أو Boleto أو البطاقات المحلية — سيتم تحويلك إلى Mercado Pago."
+      },
+      "checkoutcom": {
+        "label": "الدفع بالبطاقة (Checkout.com)",
+        "description": "ادفع بأمان بطريقتك المفضلة — سيتم تحويلك إلى Checkout.com."
+      },
+      "razorpay": {
+        "label": "دفع عبر UPI / البطاقة (Razorpay)",
+        "description": "ادفع عبر UPI أو البطاقات أو netbanking — سيتم تحويلك إلى Razorpay."
+      }
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "ملخص الطلب",
+      "title": "ملخص الطلب",
+      "subtotal": "المجموع الفرعي",
+      "shipping": "الشحن",
+      "total": "الإجمالي",
+      "discount": "خصم ({code})",
+      "tax": "الضريبة",
+      "tax_note": "مقدّرة بناءً على عنوان الشحن؛ ويُحسب المبلغ النهائي عند تقديم الطلب.",
+      "charged_in": "الأسعار معروضة بعملة {display} بسعر صرف اليوم — سيتم محاسبتك بعملة {code}."
+    },
+    "texts": {
+      "qty": "الكمية {count}"
+    }
+  },
+  "actions": {
+    "place_order": "تقديم الطلب"
+  },
+  "success": {
+    "texts": {
+      "title": "تم تقديم الطلب!",
+      "order_number": "رمز الطلب: {code}",
+      "description": "تم استلام طلبك وهو بانتظار تأكيد الدفع. سنتواصل معك قريبًا."
+    },
+    "actions": {
+      "continue_shopping": "متابعة التسوق"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "تطبيق",
+      "remove": "إزالة"
+    },
+    "placeholders": {
+      "code": "رمز القسيمة"
+    },
+    "messages": {
+      "applied": "تم تطبيق القسيمة {code}"
+    }
+  }
+}

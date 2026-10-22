@@ -1,0 +1,25 @@
+{
+  "texts": {
+    "title": "سلة التسوق",
+    "empty": "سلتك فارغة.",
+    "empty_hint": "تصفح المنتجات وأضف ما يعجبك.",
+    "guest_checkout_hint": "ستسجل الدخول عند إتمام الشراء."
+  },
+  "labels": {
+    "product": "المنتج",
+    "unit_price": "السعر",
+    "quantity": "الكمية",
+    "item_total": "الإجمالي"
+  },
+  "actions": {
+    "remove": "إزالة",
+    "checkout": "متابعة إلى الدفع",
+    "continue_shopping": "متابعة التسوق"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "تعذر تحديث عنصر السلة.",
+      "remove_failed": "تعذر إزالة عنصر السلة."
+    }
+  }
+}

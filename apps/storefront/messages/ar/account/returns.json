@@ -1,0 +1,28 @@
+{
+  "title": "مرتجعاتي",
+  "subtitle": "تابع طلبات الإرجاع — تُصدر المبالغ المستردة بشكل منفصل بعد معالجة الإرجاع.",
+  "empty": "لا توجد طلبات إرجاع بعد.",
+  "tracking": "التتبع",
+  "tracking_placeholder": "رقم التتبع (اختياري)",
+  "statuses": {
+    "requested": "مطلوب",
+    "approved": "تمت الموافقة — أرسله مرة أخرى",
+    "rejected": "مرفوض",
+    "shipped": "تم شحنه من قبلك",
+    "received": "تم الاستلام",
+    "completed": "مكتمل",
+    "cancelled": "ملغى"
+  },
+  "reasons": {
+    "damaged": "وصل المنتج تالفًا",
+    "wrong_item": "تم استلام منتج خاطئ",
+    "not_as_described": "غير مطابق للوصف",
+    "other": "سبب آخر"
+  },
+  "actions": {
+    "mark_shipped": "لقد قمت بشحنه",
+    "confirm_shipped": "تأكيد الشحن",
+    "cancel_return": "إلغاء الطلب",
+    "back": "رجوع"
+  }
+}

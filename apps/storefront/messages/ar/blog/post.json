@@ -1,0 +1,36 @@
+{
+  "texts": {
+    "anonymous": "مجهول",
+    "comments_count": "{count, plural, one {# تعليق} other {# تعليقات}}",
+    "empty_comments": "لا توجد تعليقات بعد. كن أول من يشارك رأيه."
+  },
+  "related_products": {
+    "title": "منتجات ذات صلة"
+  },
+  "comments": {
+    "title": "التعليقات",
+    "form": {
+      "texts": {
+        "title": "اكتب تعليقًا"
+      },
+      "labels": {
+        "comment": "التعليق"
+      },
+      "placeholders": {
+        "comment": "اكتب تعليقك…"
+      },
+      "actions": {
+        "submit": "إرسال التعليق"
+      },
+      "messages": {
+        "success": {
+          "submitted": "تم إرسال تعليقك وسيظهر بعد الموافقة عليه."
+        },
+        "info": {
+          "login_required": "يرجى تسجيل الدخول لكتابة تعليق.",
+          "login_link": "تسجيل الدخول"
+        }
+      }
+    }
+  }
+}

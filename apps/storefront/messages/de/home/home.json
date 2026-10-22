@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "texts": {
+      "eyebrow": "Neue Saison, neue Basics",
+      "title": "Essentials für jeden Tag, gemacht, um zu bleiben.",
+      "description": "Zeitlose Sneaker, Kleidung und Accessoires aus verantwortungsvoll bezogenen Materialien — in kleinen Serien entworfen, fair bepreist.",
+      "image_alt": "Aktuelle Kampagne: junge Frau in einer Brokatjacke in einer persischen Kolonnade"
+    },
+    "actions": {
+      "primary": "Jetzt einkaufen",
+      "secondary": "Unsere Geschichte"
+    }
+  },
+  "categories": {
+    "texts": {
+      "title": "Nach Kategorie einkaufen"
+    },
+    "actions": {
+      "view_all": "Alle ansehen"
+    }
+  },
+  "brands": {
+    "texts": {
+      "title": "Nach Marke einkaufen"
+    },
+    "actions": {
+      "view_all": "Alle ansehen"
+    }
+  },
+  "featured": {
+    "texts": {
+      "title": "Ausgewählte Produkte"
+    },
+    "actions": {
+      "view_all": "Alle ansehen"
+    }
+  },
+  "featured-posts": {
+    "texts": {
+      "title": "Ausgewählte Beiträge"
+    },
+    "actions": {
+      "view_all": "Alle ansehen"
+    }
+  },
+  "promo": {
+    "texts": {
+      "title": "Mitglieder erhalten 10% Rabatt auf ihre erste Bestellung.",
+      "description": "Erstellen Sie ein Konto für frühzeitigen Zugang zu Drops, kostenlose Retouren und einen dauerhaften Mitgliedsrabatt."
+    },
+    "actions": {
+      "create_account": "Konto erstellen"
+    }
+  },
+  "newsletter": {
+    "texts": {
+      "title": "Abonnieren Sie unseren Newsletter",
+      "description": "Erhalten Sie 10% Rabatt auf Ihre erste Bestellung und frühen Zugang zu Neuerscheinungen."
+    },
+    "labels": {
+      "email": "E-Mail-Adresse"
+    },
+    "placeholders": {
+      "email": "Geben Sie Ihre E-Mail-Adresse ein"
+    },
+    "actions": {
+      "subscribe": "Abonnieren"
+    },
+    "messages": {
+      "success": "Sie sind auf der Liste — prüfen Sie Ihr Postfach auf eine Begrüßungsnachricht.",
+      "error_general": "Derzeit ist kein Abonnement möglich. Bitte versuchen Sie es später erneut."
+    }
+  }
+}

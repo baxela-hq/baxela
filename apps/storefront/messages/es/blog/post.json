@@ -1,0 +1,36 @@
+{
+  "texts": {
+    "anonymous": "Anónimo",
+    "comments_count": "{count, plural, one {# comentario} other {# comentarios}}",
+    "empty_comments": "Todavía no hay comentarios. Sé el primero en compartir tu opinión."
+  },
+  "related_products": {
+    "title": "Productos relacionados"
+  },
+  "comments": {
+    "title": "Comentarios",
+    "form": {
+      "texts": {
+        "title": "Deja un comentario"
+      },
+      "labels": {
+        "comment": "Comentario"
+      },
+      "placeholders": {
+        "comment": "Escribe tu comentario…"
+      },
+      "actions": {
+        "submit": "Enviar comentario"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Tu comentario fue enviado y aparecerá tras su aprobación."
+        },
+        "info": {
+          "login_required": "Inicia sesión para escribir un comentario.",
+          "login_link": "Iniciar sesión"
+        }
+      }
+    }
+  }
+}

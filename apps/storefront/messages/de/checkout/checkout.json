@@ -1,0 +1,118 @@
+{
+  "texts": {
+    "title": "Kasse",
+    "empty_cart": "Ihr Warenkorb ist leer."
+  },
+  "address": {
+    "texts": {
+      "title": "Lieferadresse"
+    },
+    "labels": {
+      "full_name": "Vollständiger Name",
+      "phone": "Telefon",
+      "address_line": "Adresszeile",
+      "city": "Stadt",
+      "postal_code": "Postleitzahl",
+      "country": "Land"
+    },
+    "placeholders": {
+      "full_name": "Vor- und Nachname",
+      "phone": "Telefonnummer",
+      "address_line": "Straße, Hausnummer, Wohnung",
+      "city": "Stadt",
+      "postal_code": "Postleitzahl"
+    },
+    "actions": {
+      "new": "Neue Adresse hinzufügen",
+      "save": "Adresse speichern"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "Versandart",
+      "select_address_first": "Wählen Sie eine Lieferadresse, um verfügbare Versandarten zu sehen.",
+      "none_available": "Für die ausgewählte Adresse ist keine Versandart verfügbar."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "Zahlung",
+      "empty": "Derzeit ist keine Zahlungsmethode verfügbar. Bitte versuchen Sie es später erneut oder kontaktieren Sie uns."
+    },
+    "methods": {
+      "manual": {
+        "label": "Manuelle Zahlung",
+        "description": "Unser Team kontaktiert Sie, um sie zu vereinbaren und zu bestätigen."
+      },
+      "stripe": {
+        "label": "Kartenzahlung (Stripe)",
+        "description": "Zahlen Sie sicher per Karte — Sie werden zu Stripe weitergeleitet."
+      },
+      "paypal": {
+        "label": "PayPal",
+        "description": "Zahlen Sie mit Ihrem PayPal-Konto."
+      },
+      "adyen": {
+        "label": "Kartenzahlung (Adyen)",
+        "description": "Zahlen Sie sicher mit Ihrer bevorzugten Methode — Sie werden zu Adyen weitergeleitet."
+      },
+      "nowpayments": {
+        "label": "Krypto-Zahlung (NowPayments)",
+        "description": "Zahlen Sie mit der Kryptowährung Ihrer Wahl — Sie werden zu NowPayments weitergeleitet."
+      },
+      "mercadopago": {
+        "label": "Lokale Zahlung (Mercado Pago)",
+        "description": "Zahlen Sie mit Pix, Boleto oder lokalen Karten — Sie werden zu Mercado Pago weitergeleitet."
+      },
+      "checkoutcom": {
+        "label": "Kartenzahlung (Checkout.com)",
+        "description": "Zahlen Sie sicher mit Ihrer bevorzugten Methode — Sie werden zu Checkout.com weitergeleitet."
+      },
+      "razorpay": {
+        "label": "UPI- / Kartenzahlung (Razorpay)",
+        "description": "Zahlen Sie mit UPI, Karten oder Netbanking — Sie werden zu Razorpay weitergeleitet."
+      }
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "Bestellübersicht",
+      "title": "Bestellübersicht",
+      "subtotal": "Zwischensumme",
+      "shipping": "Versand",
+      "total": "Gesamt",
+      "discount": "Rabatt ({code})",
+      "tax": "Steuern",
+      "tax_note": "Basierend auf Ihrer Lieferadresse geschätzt; der endgültige Betrag wird bei der Bestellung berechnet.",
+      "charged_in": "Preise in {display} zum heutigen Kurs angezeigt — abgerechnet wird in {code}."
+    },
+    "texts": {
+      "qty": "Menge {count}"
+    }
+  },
+  "actions": {
+    "place_order": "Bestellung aufgeben"
+  },
+  "success": {
+    "texts": {
+      "title": "Bestellung aufgegeben!",
+      "order_number": "Bestellcode: {code}",
+      "description": "Ihre Bestellung ist eingegangen und wartet auf die Zahlungsbestätigung. Wir melden uns in Kürze bei Ihnen."
+    },
+    "actions": {
+      "continue_shopping": "Weiter einkaufen"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "Anwenden",
+      "remove": "Entfernen"
+    },
+    "placeholders": {
+      "code": "Gutscheincode"
+    },
+    "messages": {
+      "applied": "Gutschein {code} angewendet"
+    }
+  }
+}

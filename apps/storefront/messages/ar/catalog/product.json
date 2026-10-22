@@ -1,0 +1,88 @@
+{
+  "texts": {
+    "reviews_count": "({count, plural, one {# تقييم} other {# تقييم}})",
+    "related_title": "قد يعجبك أيضًا"
+  },
+  "labels": {
+    "size": "المقاس",
+    "in_cart": "في السلة",
+    "main_image": "الصورة الرئيسية لـ {name}",
+    "quantity_decrease": "إنقاص الكمية",
+    "quantity_increase": "زيادة الكمية",
+    "thumbnail_image": "{name} — صورة {index}"
+  },
+  "actions": {
+    "add_to_cart": "أضف إلى السلة",
+    "add_to_wishlist": "أضف إلى المفضلة",
+    "remove_from_wishlist": "إزالة من المفضلة",
+    "added_to_cart": "تمت الإضافة إلى السلة",
+    "view_cart": "عرض السلة"
+  },
+  "messages": {
+    "success": {
+      "added_to_cart": "تمت الإضافة إلى سلتك.",
+      "wishlist_added": "تم الحفظ في قائمة المفضلة.",
+      "wishlist_removed": "تمت الإزالة من قائمة المفضلة."
+    },
+    "info": {
+      "adding": "جارٍ الإضافة…"
+    },
+    "error": {
+      "add_failed": "تعذر إضافة المنتج إلى السلة.",
+      "update_failed": "تعذر تحديث المنتج في السلة.",
+      "wishlist_failed": "تعذر تحديث قائمة المفضلة."
+    }
+  },
+  "tabs": {
+    "labels": {
+      "group": "معلومات المنتج",
+      "description": "الوصف",
+      "specifications": "المواصفات",
+      "reviews": "التقييمات ({count})"
+    },
+    "texts": {
+      "no_description": "لا يوجد وصف متاح لهذا المنتج بعد.",
+      "yes": "نعم",
+      "no": "لا"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "استنادًا إلى {count, plural, one {# تقييم} other {# تقييم}}",
+      "empty": "لا توجد تقييمات بعد. كن أول من يشارك رأيه.",
+      "anonymous": "عميل"
+    },
+    "aria": {
+      "average_rating": "تقييم {rating, number, ::.} من أصل 5"
+    },
+    "actions": {
+      "like": "مفيد",
+      "dislike": "غير مفيد"
+    },
+    "form": {
+      "texts": {
+        "title": "اكتب تقييمًا"
+      },
+      "labels": {
+        "review": "تقييمك",
+        "rating": "تقييمك بالنجوم",
+        "rating_value": "{rating, plural, one {# نجمة} other {# نجوم}}"
+      },
+      "placeholders": {
+        "review": "شارك رأيك"
+      },
+      "actions": {
+        "submit": "إرسال التقييم"
+      },
+      "messages": {
+        "success": {
+          "submitted": "شكرًا لك! تم إرسال تقييمك وسيظهر بعد الموافقة عليه."
+        },
+        "info": {
+          "login_required": "يرجى تسجيل الدخول لكتابة تقييم.",
+          "login_link": "تسجيل الدخول"
+        }
+      }
+    }
+  }
+}

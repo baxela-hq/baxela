@@ -1,0 +1,28 @@
+{
+  "title": "Meine Retouren",
+  "subtitle": "Verfolgen Sie Ihre Retourenanfragen — Erstattungen erfolgen separat, sobald die Retoure bearbeitet wurde.",
+  "empty": "Noch keine Retourenanfragen.",
+  "tracking": "Sendungsverfolgung",
+  "tracking_placeholder": "Sendungsnummer (optional)",
+  "statuses": {
+    "requested": "Angefragt",
+    "approved": "Genehmigt — bitte zurücksenden",
+    "rejected": "Abgelehnt",
+    "shipped": "Von Ihnen versandt",
+    "received": "Empfangen",
+    "completed": "Abgeschlossen",
+    "cancelled": "Storniert"
+  },
+  "reasons": {
+    "damaged": "Artikel beschädigt angekommen",
+    "wrong_item": "Falscher Artikel erhalten",
+    "not_as_described": "Entspricht nicht der Beschreibung",
+    "other": "Anderer Grund"
+  },
+  "actions": {
+    "mark_shipped": "Ich habe versandt",
+    "confirm_shipped": "Versand bestätigen",
+    "cancel_return": "Anfrage abbrechen",
+    "back": "Zurück"
+  }
+}

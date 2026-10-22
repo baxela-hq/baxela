@@ -1,0 +1,135 @@
+{
+  "header": {
+    "labels": {
+      "main_navigation": "Navegación principal"
+    },
+    "nav": {
+      "home": "Inicio",
+      "products": "Productos",
+      "about": "Nosotros",
+      "contact": "Contacto",
+      "blog": "Blog"
+    },
+    "actions": {
+      "search": "Buscar",
+      "wishlist": "Lista de deseos",
+      "cart": "Carrito",
+      "account": "Mi cuenta",
+      "login": "Iniciar sesión",
+      "open_menu": "Abrir menú",
+      "close_menu": "Cerrar menú",
+      "language": "Cambiar idioma",
+      "notifications": "Notificaciones",
+      "theme": "Alternar modo oscuro",
+      "currency": "Moneda de visualización"
+    },
+    "notifications": {
+      "texts": {
+        "empty": "No tienes notificaciones."
+      },
+      "actions": {
+        "view_all": "Ver todas las notificaciones"
+      }
+    },
+    "cart": {
+      "texts": {
+        "empty": "Tu carrito está vacío."
+      },
+      "labels": {
+        "subtotal": "Subtotal"
+      },
+      "actions": {
+        "view_cart": "Ver carrito",
+        "checkout": "Pagar"
+      }
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "Buscar productos",
+      "input": "Buscar productos"
+    },
+    "texts": {
+      "title": "Buscar productos",
+      "popular_categories": "Categorías populares"
+    },
+    "placeholders": {
+      "query": "Buscar productos…"
+    },
+    "actions": {
+      "submit": "Buscar",
+      "close": "Cerrar búsqueda"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "Navegación móvil"
+    },
+    "texts": {
+      "categories": "Compra por categoría"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "Ruta de navegación"
+    },
+    "links": {
+      "home": "Inicio"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "Esenciales de cada día, hechos para durar. Diseñados en series pequeñas desde 2019.",
+      "tagline_short": "Esenciales de cada día, hechos para durar."
+    },
+    "columns": {
+      "shop": {
+        "title": "Tienda"
+      },
+      "support": {
+        "title": "Soporte",
+        "links": {
+          "contact_us": "Contáctanos",
+          "shipping_returns": "Envíos y devoluciones",
+          "size_guide": "Guía de tallas",
+          "faq": "Preguntas frecuentes"
+        }
+      },
+      "account": {
+        "title": "Cuenta",
+        "links": {
+          "login": "Iniciar sesión",
+          "create_account": "Crear cuenta",
+          "forgot_password": "Olvidé mi contraseña"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "Boletín",
+        "description": "Suscríbete para recibir novedades y ofertas."
+      },
+      "placeholders": {
+        "email": "Introduce tu correo electrónico"
+      },
+      "actions": {
+        "subscribe": "Suscribirse"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "Te has suscrito al boletín correctamente."
+        },
+        "error": {
+          "invalid_email": "Introduce una dirección de correo electrónico válida."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "Política de privacidad",
+      "terms_of_service": "Términos del servicio"
+    },
+    "copyright": {
+      "text": "© {year} {company}. Todos los derechos reservados."
+    }
+  }
+}

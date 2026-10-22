@@ -1,0 +1,25 @@
+{
+  "texts": {
+    "title": "Panier",
+    "empty": "Votre panier est vide.",
+    "empty_hint": "Parcourez les produits et ajoutez ce qui vous plaît.",
+    "guest_checkout_hint": "Vous vous connecterez au moment du paiement."
+  },
+  "labels": {
+    "product": "Produit",
+    "unit_price": "Prix",
+    "quantity": "Quantité",
+    "item_total": "Total"
+  },
+  "actions": {
+    "remove": "Retirer",
+    "checkout": "Passer au paiement",
+    "continue_shopping": "Continuer mes achats"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "Impossible de mettre à jour l'article du panier.",
+      "remove_failed": "Impossible de retirer l'article du panier."
+    }
+  }
+}

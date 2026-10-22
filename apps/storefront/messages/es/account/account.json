@@ -1,0 +1,283 @@
+{
+  "texts": {
+    "title": "Mi perfil",
+    "greeting": "Hola",
+    "coming_soon": "Esta sección estará disponible pronto.",
+    "orders_empty": "Todavía no tienes pedidos.",
+    "orders_empty_hint": "Cuando realices un pedido, aparecerá aquí.",
+    "orders_none_matching": "Ningún pedido coincide con tu búsqueda.",
+    "addresses_empty": "No tienes direcciones guardadas.",
+    "addresses_empty_hint": "Guarda una dirección para agilizar el pago.",
+    "wishlist_empty": "Tu lista de deseos está vacía.",
+    "wishlist_empty_hint": "Toca el corazón en un producto para guardarlo aquí.",
+    "wishlist_unavailable": "Este producto ya no está disponible.",
+    "wishlist_remove": "Quitar",
+    "wishlist_remove_confirm_title": "¿Quitar de la lista de deseos?",
+    "wishlist_remove_confirm_message": "¿Quitar {title} de tu lista de deseos?"
+  },
+  "labels": {
+    "personal_information": "Información personal",
+    "my_orders": "Mis pedidos",
+    "my_wishlists": "Mis listas de deseos",
+    "manage_addresses": "Gestionar direcciones",
+    "saved_cards": "Tarjetas guardadas",
+    "notifications": "Notificaciones",
+    "support_tickets": "Tickets de soporte",
+    "settings": "Configuración",
+    "sign_out": "Cerrar sesión",
+    "order_number": "Pedido #{code}",
+    "qty": "Cant. {count}",
+    "total": "Total",
+    "shipping_address": "Dirección de envío",
+    "shipping_method": "Método de envío",
+    "discount": "Descuento ({code})",
+    "default_badge": "Predeterminada",
+    "tax": "Impuestos",
+    "my_returns": "Mis devoluciones"
+  },
+  "profile": {
+    "labels": {
+      "full_name": "Nombre completo",
+      "display_name": "Nombre visible",
+      "bio": "Biografía",
+      "gender": "Género",
+      "date_of_birth": "Fecha de nacimiento",
+      "email_address": "Correo electrónico"
+    },
+    "placeholders": {
+      "bio": "Cuéntanos un poco sobre ti"
+    },
+    "gender_options": {
+      "male": "Masculino",
+      "female": "Femenino",
+      "other": "Otro"
+    },
+    "actions": {
+      "edit": "Editar perfil",
+      "save": "Guardar cambios",
+      "cancel_edit": "Cancelar"
+    },
+    "messages": {
+      "success": {
+        "saved": "Tu perfil ha sido actualizado."
+      },
+      "error": {
+        "save_failed": "No se pudo actualizar tu perfil."
+      }
+    }
+  },
+  "orders": {
+    "placeholders": {
+      "search": "Buscar pedidos"
+    },
+    "labels": {
+      "filter": "Filtrar",
+      "status": "Estado"
+    },
+    "actions": {
+      "view_order": "Ver pedido",
+      "hide_order": "Ocultar detalles",
+      "cancel_order": "Cancelar pedido",
+      "confirm_cancel": "Sí, cancelar",
+      "keep_order": "Conservar pedido",
+      "continue_shopping": "Seguir comprando",
+      "prev_page": "Página anterior",
+      "next_page": "Página siguiente",
+      "request_return": "Solicitar devolución"
+    },
+    "filters": {
+      "all": "Todos los estados",
+      "delivered": "Entregados",
+      "in_process": "En proceso",
+      "cancelled": "Cancelados"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "processing": "Procesando",
+      "shipped": "Enviado",
+      "completed": "Entregado",
+      "cancelled": "Cancelado"
+    },
+    "payment_status": {
+      "unpaid": "Pendiente de pago",
+      "paid": "Pagado",
+      "refunded": "Reembolsado",
+      "partially_refunded": "Reembolsado parcialmente"
+    },
+    "hints": {
+      "awaiting_payment": "Este pedido está pendiente de confirmación de pago.",
+      "in_process": "Tu pedido está siendo procesado.",
+      "delivered": "Tu producto ha sido entregado.",
+      "cancelled": "Este pedido ha sido cancelado."
+    },
+    "messages": {
+      "success": {
+        "cancelled": "El pedido ha sido cancelado.",
+        "return_requested": "Devolución solicitada — la revisaremos en breve."
+      },
+      "error": {
+        "cancel_failed": "No se pudo cancelar el pedido.",
+        "load_failed": "No se pudieron cargar tus pedidos.",
+        "return_failed": "No se pudo enviar la solicitud de devolución."
+      }
+    },
+    "return_form": {
+      "title": "Solicitar una devolución de este pedido",
+      "reason": "Motivo",
+      "reasons": {
+        "damaged": "El artículo llegó dañado",
+        "wrong_item": "Artículo incorrecto recibido",
+        "not_as_described": "No coincide con la descripción",
+        "other": "Otro motivo"
+      },
+      "note": "Nota (opcional)",
+      "note_placeholder": "Algo que el equipo deba saber",
+      "submit": "Enviar solicitud de devolución"
+    }
+  },
+  "banner": {
+    "texts": {
+      "title": "Completa tu perfil",
+      "description": "Añade tu nombre y completaremos el pago por ti automáticamente."
+    },
+    "actions": {
+      "complete": "Completar ahora",
+      "dismiss": "Descartar"
+    }
+  },
+  "settings": {
+    "appearance": {
+      "title": "Apariencia",
+      "description": "Personaliza el aspecto del tema en tu dispositivo",
+      "theme_light": "Claro",
+      "theme_dark": "Oscuro",
+      "theme_system": "Sistema"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Selecciona tu idioma"
+    },
+    "two_factor": {
+      "title": "Autenticación en dos pasos",
+      "description": "Mantén tu cuenta segura activando la 2FA por correo"
+    },
+    "email_notifications": {
+      "title": "Notificaciones por correo",
+      "description": "Recibir notificaciones por correo"
+    },
+    "browser_notifications": {
+      "title": "Notificaciones del navegador",
+      "description": "Recibe actualizaciones de tus pedidos en este dispositivo, incluso con el sitio cerrado",
+      "hints": {
+        "blocked": "Bloqueadas — permite las notificaciones de este sitio en la configuración de tu navegador para activarlas",
+        "unsupported": "No compatible con este navegador",
+        "unavailable": "No disponible temporalmente — inténtalo de nuevo más tarde"
+      }
+    },
+    "telegram_notifications": {
+      "title": "Notificaciones de Telegram",
+      "description": "Recibe las actualizaciones de tus pedidos en un chat de Telegram a través del bot de la tienda",
+      "hints": {
+        "unavailable": "No disponible temporalmente — inténtalo de nuevo más tarde"
+      },
+      "link": {
+        "instructions": "Envía /start al bot en Telegram y luego introduce el código de 6 dígitos que te responda:",
+        "open_bot": "Abrir el bot",
+        "placeholder": "Código de vinculación",
+        "submit": "Vincular",
+        "cancel": "Cancelar",
+        "invalid": "Introduce el código de 6 dígitos que te envió el bot",
+        "success": "Telegram vinculado — recibirás tus actualizaciones allí",
+        "failed": "No se pudo vincular — comprueba el código e inténtalo de nuevo"
+      }
+    }
+  },
+  "notifications": {
+    "texts": {
+      "empty": "Todavía no tienes notificaciones."
+    },
+    "actions": {
+      "mark_all_read": "Marcar todo como leído",
+      "load_more": "Cargar más"
+    },
+    "messages": {
+      "error": {
+        "load_failed": "No se pudieron cargar tus notificaciones. Inténtalo de nuevo."
+      }
+    }
+  },
+  "cards": {
+    "texts": {
+      "add_title": "Añadir una nueva tarjeta",
+      "empty": "No tienes tarjetas guardadas.",
+      "empty_hint": "Guarda una tarjeta para agilizar el pago."
+    },
+    "labels": {
+      "number": "Número de tarjeta"
+    },
+    "placeholders": {
+      "number": "Introduce el número de tarjeta"
+    },
+    "actions": {
+      "add": "Añadir nueva tarjeta",
+      "delete": "Eliminar",
+      "confirm_delete": "Sí, eliminar",
+      "keep": "Conservar",
+      "cancel": "Cancelar"
+    },
+    "messages": {
+      "error": {
+        "invalid": "Introduce un número de tarjeta válido."
+      }
+    }
+  },
+  "address": {
+    "texts": {
+      "add_title": "Añadir una nueva dirección",
+      "edit_title": "Editar dirección"
+    },
+    "labels": {
+      "full_name": "Nombre",
+      "phone": "Número de móvil",
+      "address_line": "Piso, nº de casa, edificio, empresa, apartamento",
+      "address_line_2": "Zona, colonia, calle, sector, pueblo",
+      "city": "Ciudad",
+      "postal_code": "Código postal",
+      "country": "País",
+      "is_default": "Usar como dirección predeterminada"
+    },
+    "placeholders": {
+      "full_name": "Introduce el nombre",
+      "phone": "Introduce el número de móvil",
+      "city": "Introduce la ciudad",
+      "postal_code": "Introduce el código postal"
+    },
+    "actions": {
+      "add": "Añadir nueva dirección",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "confirm_delete": "Sí, eliminar",
+      "keep": "Conservar",
+      "save": "Guardar dirección",
+      "cancel_edit": "Cancelar"
+    },
+    "messages": {
+      "success": {
+        "saved": "La dirección ha sido guardada.",
+        "deleted": "La dirección ha sido eliminada."
+      },
+      "error": {
+        "save_failed": "No se pudo guardar la dirección.",
+        "delete_failed": "No se pudo eliminar la dirección.",
+        "country_required": "Selecciona un país."
+      }
+    }
+  },
+  "actions": {
+    "wishlist_continue_shopping": "Seguir comprando",
+    "wishlist_remove_cancel": "Cancelar"
+  },
+  "tabs": {
+    "my_returns": "Mis devoluciones"
+  }
+}

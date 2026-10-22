@@ -1,0 +1,25 @@
+{
+  "texts": {
+    "title": "Warenkorb",
+    "empty": "Ihr Warenkorb ist leer.",
+    "empty_hint": "Stöbern Sie in den Produkten und legen Sie etwas ab, das Ihnen gefällt.",
+    "guest_checkout_hint": "Sie melden sich beim Bezahlen an."
+  },
+  "labels": {
+    "product": "Produkt",
+    "unit_price": "Preis",
+    "quantity": "Menge",
+    "item_total": "Gesamt"
+  },
+  "actions": {
+    "remove": "Entfernen",
+    "checkout": "Zur Kasse gehen",
+    "continue_shopping": "Weiter einkaufen"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "Der Artikel konnte nicht im Warenkorb aktualisiert werden.",
+      "remove_failed": "Der Artikel konnte nicht aus dem Warenkorb entfernt werden."
+    }
+  }
+}

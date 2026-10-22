@@ -1,0 +1,23 @@
+{
+  "texts": {
+    "title": "المدونة",
+    "subtitle": "أخبار وأدلة وقصص من فريق Baxela.",
+    "results_count": "عرض {from}–{to} من أصل {total} منشورًا",
+    "category_title": "منشورات في «{category}»",
+    "empty": "لا توجد منشورات بعد. عد قريبًا.",
+    "empty_category": "لا توجد منشورات في هذه الفئة بعد."
+  },
+  "labels": {
+    "all_categories": "جميع المنشورات",
+    "categories": "التصنيفات"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "تنقل صفحات المدونة"
+    },
+    "actions": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  }
+}

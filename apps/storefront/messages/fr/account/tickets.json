@@ -1,0 +1,64 @@
+{
+  "texts": {
+    "empty": "Vous n'avez aucun ticket d'assistance.",
+    "empty_hint": "Ouvrez un ticket et notre équipe vous répondra.",
+    "new_title": "Ouvrir un ticket d'assistance",
+    "reopen_hint": "Ce ticket est fermé. Envoyer une réponse le rouvrira."
+  },
+  "labels": {
+    "title": "Tickets d'assistance",
+    "you": "Vous",
+    "support_team": "Assistance",
+    "created_at": "{date}",
+    "last_activity": "Dernière activité {date}",
+    "order_reference": "Commande #{code}"
+  },
+  "actions": {
+    "new_ticket": "Nouveau ticket",
+    "submit": "Envoyer le ticket",
+    "send": "Envoyer la réponse",
+    "close": "Fermer le ticket",
+    "reopen": "Rouvrir",
+    "back_to_tickets": "Retour aux tickets",
+    "prev_page": "Page précédente",
+    "next_page": "Page suivante"
+  },
+  "filters": {
+    "all": "Tous",
+    "open": "Ouverts",
+    "answered": "Répondus",
+    "closed": "Fermés"
+  },
+  "status": {
+    "open": "Ouvert",
+    "answered": "Répondu",
+    "closed": "Fermé"
+  },
+  "form": {
+    "labels": {
+      "subject": "Objet",
+      "order": "Commande associée (facultatif)",
+      "message": "Message",
+      "reply": "Votre réponse"
+    },
+    "placeholders": {
+      "subject": "En bref, de quoi s'agit-il ?",
+      "message": "Décrivez votre question ou votre problème",
+      "reply": "Écrivez votre réponse…"
+    }
+  },
+  "messages": {
+    "success": {
+      "created": "Votre ticket a été envoyé.",
+      "replied": "Votre réponse a été envoyée.",
+      "closed": "Le ticket a été fermé.",
+      "reopened": "Le ticket a été rouvert."
+    },
+    "error": {
+      "load_failed": "Échec du chargement des tickets.",
+      "create_failed": "Échec de l'envoi du ticket.",
+      "reply_failed": "Échec de l'envoi de votre réponse.",
+      "status_failed": "Échec de la mise à jour du ticket."
+    }
+  }
+}

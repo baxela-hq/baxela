@@ -1,0 +1,64 @@
+{
+  "texts": {
+    "empty": "لا توجد لديك تذاكر دعم.",
+    "empty_hint": "افتح تذكرة وسيتواصل معك فريقنا.",
+    "new_title": "فتح تذكرة دعم",
+    "reopen_hint": "هذه التذكرة مغلقة. إرسال رد سيؤدي إلى إعادة فتحها."
+  },
+  "labels": {
+    "title": "تذاكر الدعم",
+    "you": "أنت",
+    "support_team": "الدعم",
+    "created_at": "{date}",
+    "last_activity": "آخر نشاط {date}",
+    "order_reference": "طلب #{code}"
+  },
+  "actions": {
+    "new_ticket": "تذكرة جديدة",
+    "submit": "إرسال التذكرة",
+    "send": "إرسال الرد",
+    "close": "إغلاق التذكرة",
+    "reopen": "إعادة الفتح",
+    "back_to_tickets": "العودة إلى التذاكر",
+    "prev_page": "الصفحة السابقة",
+    "next_page": "الصفحة التالية"
+  },
+  "filters": {
+    "all": "الكل",
+    "open": "مفتوحة",
+    "answered": "تم الرد عليها",
+    "closed": "مغلقة"
+  },
+  "status": {
+    "open": "مفتوحة",
+    "answered": "تم الرد عليها",
+    "closed": "مغلقة"
+  },
+  "form": {
+    "labels": {
+      "subject": "الموضوع",
+      "order": "الطلب المرتبط (اختياري)",
+      "message": "الرسالة",
+      "reply": "ردك"
+    },
+    "placeholders": {
+      "subject": "باختصار، ما موضوع التذكرة؟",
+      "message": "صف سؤالك أو مشكلتك",
+      "reply": "اكتب ردك…"
+    }
+  },
+  "messages": {
+    "success": {
+      "created": "تم إرسال تذكرتك.",
+      "replied": "تم إرسال ردك.",
+      "closed": "تم إغلاق التذكرة.",
+      "reopened": "تمت إعادة فتح التذكرة."
+    },
+    "error": {
+      "load_failed": "فشل تحميل التذاكر.",
+      "create_failed": "فشل إرسال التذكرة.",
+      "reply_failed": "فشل إرسال ردك.",
+      "status_failed": "فشل تحديث التذكرة."
+    }
+  }
+}

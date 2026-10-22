@@ -1,0 +1,40 @@
+{
+  "form": {
+    "labels": {
+      "email": "E-mail",
+      "password": "Mot de passe"
+    },
+    "actions": {
+      "back": "Retour",
+      "continue": "Continuer",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "show": "Afficher",
+      "hide": "Masquer",
+      "retry": "Réessayer"
+    },
+    "placeholders": {
+      "email": "Saisissez votre e-mail",
+      "password": "Saisissez votre mot de passe",
+      "select": "Sélectionnez une option",
+      "search": "Rechercher…"
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire.",
+      "email": "Veuillez saisir une adresse e-mail valide.",
+      "min_length": "Doit contenir au moins {min} caractères.",
+      "password_mismatch": "Les mots de passe ne correspondent pas."
+    }
+  },
+  "messages": {
+    "error": {
+      "general": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+      "network": "Échec de la connexion. Veuillez vérifier votre connexion."
+    },
+    "info": {
+      "loading": "Chargement…",
+      "not_found": "La page que vous recherchez est introuvable.",
+      "no_results": "Aucun résultat trouvé."
+    }
+  }
+}

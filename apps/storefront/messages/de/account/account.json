@@ -1,0 +1,283 @@
+{
+  "texts": {
+    "title": "Mein Profil",
+    "greeting": "Hallo",
+    "coming_soon": "Dieser Bereich folgt in Kürze.",
+    "orders_empty": "Sie haben noch keine Bestellungen.",
+    "orders_empty_hint": "Sobald Sie eine Bestellung aufgegeben haben, erscheint sie hier.",
+    "orders_none_matching": "Keine Bestellungen entsprechen Ihrer Suche.",
+    "addresses_empty": "Sie haben keine gespeicherten Adressen.",
+    "addresses_empty_hint": "Speichern Sie eine Adresse, um den Checkout zu beschleunigen.",
+    "wishlist_empty": "Ihre Wunschliste ist leer.",
+    "wishlist_empty_hint": "Tippen Sie auf das Herz bei einem Produkt, um es hier zu speichern.",
+    "wishlist_unavailable": "Dieses Produkt ist nicht mehr verfügbar.",
+    "wishlist_remove": "Entfernen",
+    "wishlist_remove_confirm_title": "Von der Wunschliste entfernen?",
+    "wishlist_remove_confirm_message": "{title} von Ihrer Wunschliste entfernen?"
+  },
+  "labels": {
+    "personal_information": "Persönliche Informationen",
+    "my_orders": "Meine Bestellungen",
+    "my_wishlists": "Meine Wunschlisten",
+    "manage_addresses": "Adressen verwalten",
+    "saved_cards": "Gespeicherte Karten",
+    "notifications": "Benachrichtigungen",
+    "support_tickets": "Support-Tickets",
+    "settings": "Einstellungen",
+    "sign_out": "Abmelden",
+    "order_number": "Bestellung #{code}",
+    "qty": "Menge {count}",
+    "total": "Gesamt",
+    "shipping_address": "Lieferadresse",
+    "shipping_method": "Versandart",
+    "discount": "Rabatt ({code})",
+    "default_badge": "Standard",
+    "tax": "Steuern",
+    "my_returns": "Meine Retouren"
+  },
+  "profile": {
+    "labels": {
+      "full_name": "Vollständiger Name",
+      "display_name": "Anzeigename",
+      "bio": "Über mich",
+      "gender": "Geschlecht",
+      "date_of_birth": "Geburtsdatum",
+      "email_address": "E-Mail-Adresse"
+    },
+    "placeholders": {
+      "bio": "Erzählen Sie uns kurz etwas über sich"
+    },
+    "gender_options": {
+      "male": "Männlich",
+      "female": "Weiblich",
+      "other": "Divers"
+    },
+    "actions": {
+      "edit": "Profil bearbeiten",
+      "save": "Änderungen speichern",
+      "cancel_edit": "Abbrechen"
+    },
+    "messages": {
+      "success": {
+        "saved": "Ihr Profil wurde aktualisiert."
+      },
+      "error": {
+        "save_failed": "Das Aktualisieren Ihres Profils ist fehlgeschlagen."
+      }
+    }
+  },
+  "orders": {
+    "placeholders": {
+      "search": "Bestellungen durchsuchen"
+    },
+    "labels": {
+      "filter": "Filter",
+      "status": "Status"
+    },
+    "actions": {
+      "view_order": "Bestellung ansehen",
+      "hide_order": "Details ausblenden",
+      "cancel_order": "Bestellung stornieren",
+      "confirm_cancel": "Ja, stornieren",
+      "keep_order": "Bestellung behalten",
+      "continue_shopping": "Weiter einkaufen",
+      "prev_page": "Vorherige Seite",
+      "next_page": "Nächste Seite",
+      "request_return": "Retoure beantragen"
+    },
+    "filters": {
+      "all": "Alle Status",
+      "delivered": "Zugestellt",
+      "in_process": "In Bearbeitung",
+      "cancelled": "Storniert"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "processing": "In Bearbeitung",
+      "shipped": "Versandt",
+      "completed": "Zugestellt",
+      "cancelled": "Storniert"
+    },
+    "payment_status": {
+      "unpaid": "Zahlung ausstehend",
+      "paid": "Bezahlt",
+      "refunded": "Erstattet",
+      "partially_refunded": "Teilweise erstattet"
+    },
+    "hints": {
+      "awaiting_payment": "Diese Bestellung wartet auf die Zahlungsbestätigung.",
+      "in_process": "Ihre Bestellung wird bearbeitet.",
+      "delivered": "Ihr Produkt wurde zugestellt.",
+      "cancelled": "Diese Bestellung wurde storniert."
+    },
+    "messages": {
+      "success": {
+        "cancelled": "Die Bestellung wurde storniert.",
+        "return_requested": "Retoure angefragt — wir prüfen sie in Kürze."
+      },
+      "error": {
+        "cancel_failed": "Das Stornieren der Bestellung ist fehlgeschlagen.",
+        "load_failed": "Das Laden Ihrer Bestellungen ist fehlgeschlagen.",
+        "return_failed": "Die Retourenanfrage konnte nicht gesendet werden."
+      }
+    },
+    "return_form": {
+      "title": "Für diese Bestellung eine Retoure beantragen",
+      "reason": "Grund",
+      "reasons": {
+        "damaged": "Artikel beschädigt angekommen",
+        "wrong_item": "Falscher Artikel erhalten",
+        "not_as_described": "Entspricht nicht der Beschreibung",
+        "other": "Anderer Grund"
+      },
+      "note": "Notiz (optional)",
+      "note_placeholder": "Etwas, das das Team wissen sollte",
+      "submit": "Retourenanfrage senden"
+    }
+  },
+  "banner": {
+    "texts": {
+      "title": "Vervollständigen Sie Ihr Profil",
+      "description": "Hinterlegen Sie Ihren Namen — wir füllen den Checkout dann für Sie vor."
+    },
+    "actions": {
+      "complete": "Jetzt vervollständigen",
+      "dismiss": "Ausblenden"
+    }
+  },
+  "settings": {
+    "appearance": {
+      "title": "Erscheinungsbild",
+      "description": "Passen Sie an, wie Ihr Theme auf Ihrem Gerät aussieht",
+      "theme_light": "Hell",
+      "theme_dark": "Dunkel",
+      "theme_system": "System"
+    },
+    "language": {
+      "title": "Sprache",
+      "description": "Wählen Sie Ihre Sprache"
+    },
+    "two_factor": {
+      "title": "Zwei-Faktor-Authentifizierung",
+      "description": "Sichern Sie Ihr Konto mit 2FA per E-Mail ab"
+    },
+    "email_notifications": {
+      "title": "E-Mail-Benachrichtigungen",
+      "description": "E-Mail-Benachrichtigungen erhalten"
+    },
+    "browser_notifications": {
+      "title": "Browser-Benachrichtigungen",
+      "description": "Erhalten Sie Bestell-Updates auf diesem Gerät, auch wenn die Seite geschlossen ist",
+      "hints": {
+        "blocked": "Blockiert — erlauben Sie Benachrichtigungen für diese Seite in den Browser-Einstellungen, um sie zu aktivieren",
+        "unsupported": "In diesem Browser nicht unterstützt",
+        "unavailable": "Vorübergehend nicht verfügbar — versuchen Sie es später erneut"
+      }
+    },
+    "telegram_notifications": {
+      "title": "Telegram-Benachrichtigungen",
+      "description": "Erhalten Sie Ihre Bestell-Updates per Telegram-Chat über den Bot des Shops",
+      "hints": {
+        "unavailable": "Vorübergehend nicht verfügbar — versuchen Sie es später erneut"
+      },
+      "link": {
+        "instructions": "Senden Sie /start an den Bot auf Telegram und geben Sie dann den 6-stelligen Code ein, den Sie als Antwort erhalten:",
+        "open_bot": "Bot öffnen",
+        "placeholder": "Verknüpfungscode",
+        "submit": "Verknüpfen",
+        "cancel": "Abbrechen",
+        "invalid": "Geben Sie den 6-stelligen Code ein, den der Bot Ihnen gesendet hat",
+        "success": "Telegram verknüpft — Ihre Updates erhalten Sie dort",
+        "failed": "Verknüpfen fehlgeschlagen — prüfen Sie den Code und versuchen Sie es erneut"
+      }
+    }
+  },
+  "notifications": {
+    "texts": {
+      "empty": "Sie haben noch keine Benachrichtigungen."
+    },
+    "actions": {
+      "mark_all_read": "Alle als gelesen markieren",
+      "load_more": "Mehr laden"
+    },
+    "messages": {
+      "error": {
+        "load_failed": "Ihre Benachrichtigungen konnten nicht geladen werden. Bitte versuchen Sie es erneut."
+      }
+    }
+  },
+  "cards": {
+    "texts": {
+      "add_title": "Neue Karte hinzufügen",
+      "empty": "Sie haben keine gespeicherten Karten.",
+      "empty_hint": "Speichern Sie eine Karte, um den Checkout zu beschleunigen."
+    },
+    "labels": {
+      "number": "Kartennummer"
+    },
+    "placeholders": {
+      "number": "Kartennummer eingeben"
+    },
+    "actions": {
+      "add": "Neue Karte hinzufügen",
+      "delete": "Löschen",
+      "confirm_delete": "Ja, löschen",
+      "keep": "Behalten",
+      "cancel": "Abbrechen"
+    },
+    "messages": {
+      "error": {
+        "invalid": "Bitte geben Sie eine gültige Kartennummer ein."
+      }
+    }
+  },
+  "address": {
+    "texts": {
+      "add_title": "Neue Adresse hinzufügen",
+      "edit_title": "Adresse bearbeiten"
+    },
+    "labels": {
+      "full_name": "Name",
+      "phone": "Mobilnummer",
+      "address_line": "Wohnung, Hausnummer, Gebäude, Firma, Apartment",
+      "address_line_2": "Stadtteil, Siedlung, Straße, Sektor, Dorf",
+      "city": "Stadt",
+      "postal_code": "Postleitzahl",
+      "country": "Land",
+      "is_default": "Als Standardadresse verwenden"
+    },
+    "placeholders": {
+      "full_name": "Namen eingeben",
+      "phone": "Mobilnummer eingeben",
+      "city": "Stadt eingeben",
+      "postal_code": "Postleitzahl eingeben"
+    },
+    "actions": {
+      "add": "Neue Adresse hinzufügen",
+      "edit": "Bearbeiten",
+      "delete": "Löschen",
+      "confirm_delete": "Ja, löschen",
+      "keep": "Behalten",
+      "save": "Adresse speichern",
+      "cancel_edit": "Abbrechen"
+    },
+    "messages": {
+      "success": {
+        "saved": "Die Adresse wurde gespeichert.",
+        "deleted": "Die Adresse wurde gelöscht."
+      },
+      "error": {
+        "save_failed": "Das Speichern der Adresse ist fehlgeschlagen.",
+        "delete_failed": "Das Löschen der Adresse ist fehlgeschlagen.",
+        "country_required": "Bitte wählen Sie ein Land aus."
+      }
+    }
+  },
+  "actions": {
+    "wishlist_continue_shopping": "Weiter einkaufen",
+    "wishlist_remove_cancel": "Abbrechen"
+  },
+  "tabs": {
+    "my_returns": "Meine Retouren"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "texts": {
+    "empty": "Sie haben keine Support-Tickets.",
+    "empty_hint": "Öffnen Sie ein Ticket und unser Team meldet sich bei Ihnen.",
+    "new_title": "Support-Ticket eröffnen",
+    "reopen_hint": "Dieses Ticket ist geschlossen. Eine Antwort öffnet es erneut."
+  },
+  "labels": {
+    "title": "Support-Tickets",
+    "you": "Sie",
+    "support_team": "Support",
+    "created_at": "{date}",
+    "last_activity": "Letzte Aktivität {date}",
+    "order_reference": "Bestellung #{code}"
+  },
+  "actions": {
+    "new_ticket": "Neues Ticket",
+    "submit": "Ticket einreichen",
+    "send": "Antwort senden",
+    "close": "Ticket schließen",
+    "reopen": "Erneut öffnen",
+    "back_to_tickets": "Zurück zu den Tickets",
+    "prev_page": "Vorherige Seite",
+    "next_page": "Nächste Seite"
+  },
+  "filters": {
+    "all": "Alle",
+    "open": "Offen",
+    "answered": "Beantwortet",
+    "closed": "Geschlossen"
+  },
+  "status": {
+    "open": "Offen",
+    "answered": "Beantwortet",
+    "closed": "Geschlossen"
+  },
+  "form": {
+    "labels": {
+      "subject": "Betreff",
+      "order": "Zugehörige Bestellung (optional)",
+      "message": "Nachricht",
+      "reply": "Ihre Antwort"
+    },
+    "placeholders": {
+      "subject": "Worum geht es kurz gesagt?",
+      "message": "Beschreiben Sie Ihre Frage oder Ihr Problem",
+      "reply": "Schreiben Sie Ihre Antwort…"
+    }
+  },
+  "messages": {
+    "success": {
+      "created": "Ihr Ticket wurde eingereicht.",
+      "replied": "Ihre Antwort wurde gesendet.",
+      "closed": "Das Ticket wurde geschlossen.",
+      "reopened": "Das Ticket wurde erneut geöffnet."
+    },
+    "error": {
+      "load_failed": "Das Laden der Tickets ist fehlgeschlagen.",
+      "create_failed": "Das Einreichen des Tickets ist fehlgeschlagen.",
+      "reply_failed": "Das Senden Ihrer Antwort ist fehlgeschlagen.",
+      "status_failed": "Das Aktualisieren des Tickets ist fehlgeschlagen."
+    }
+  }
+}

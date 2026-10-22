@@ -1,0 +1,118 @@
+{
+  "texts": {
+    "title": "Paiement",
+    "empty_cart": "Votre panier est vide."
+  },
+  "address": {
+    "texts": {
+      "title": "Adresse de livraison"
+    },
+    "labels": {
+      "full_name": "Nom complet",
+      "phone": "Téléphone",
+      "address_line": "Ligne d'adresse",
+      "city": "Ville",
+      "postal_code": "Code postal",
+      "country": "Pays"
+    },
+    "placeholders": {
+      "full_name": "Prénom et nom",
+      "phone": "Numéro de téléphone",
+      "address_line": "Adresse, numéro, appartement",
+      "city": "Ville",
+      "postal_code": "Code postal"
+    },
+    "actions": {
+      "new": "Ajouter une nouvelle adresse",
+      "save": "Enregistrer l'adresse"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "Mode de livraison",
+      "select_address_first": "Choisissez une adresse de livraison pour voir les modes disponibles.",
+      "none_available": "Aucun mode de livraison n'est disponible pour l'adresse sélectionnée."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "Paiement",
+      "empty": "Aucun moyen de paiement n'est disponible actuellement. Veuillez réessayer plus tard ou contactez-nous."
+    },
+    "methods": {
+      "manual": {
+        "label": "Paiement manuel",
+        "description": "Notre équipe vous contactera pour l'organiser et le confirmer."
+      },
+      "stripe": {
+        "label": "Paiement par carte (Stripe)",
+        "description": "Payez par carte en toute sécurité — vous serez redirigé vers Stripe."
+      },
+      "paypal": {
+        "label": "PayPal",
+        "description": "Payez avec votre compte PayPal."
+      },
+      "adyen": {
+        "label": "Paiement par carte (Adyen)",
+        "description": "Payez en toute sécurité avec votre moyen préféré — vous serez redirigé vers Adyen."
+      },
+      "nowpayments": {
+        "label": "Paiement en crypto (NowPayments)",
+        "description": "Payez avec la cryptomonnaie de votre choix — vous serez redirigé vers NowPayments."
+      },
+      "mercadopago": {
+        "label": "Paiement local (Mercado Pago)",
+        "description": "Payez avec Pix, Boleto ou des cartes locales — vous serez redirigé vers Mercado Pago."
+      },
+      "checkoutcom": {
+        "label": "Paiement par carte (Checkout.com)",
+        "description": "Payez en toute sécurité avec votre moyen préféré — vous serez redirigé vers Checkout.com."
+      },
+      "razorpay": {
+        "label": "Paiement UPI / carte (Razorpay)",
+        "description": "Payez par UPI, carte ou netbanking — vous serez redirigé vers Razorpay."
+      }
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "Récapitulatif de la commande",
+      "title": "Récapitulatif de la commande",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "total": "Total",
+      "discount": "Remise ({code})",
+      "tax": "Taxes",
+      "tax_note": "Estimées d'après votre adresse de livraison ; le montant final est calculé lors de la commande.",
+      "charged_in": "Prix affichés en {display} au taux du jour — vous serez débité en {code}."
+    },
+    "texts": {
+      "qty": "Qté {count}"
+    }
+  },
+  "actions": {
+    "place_order": "Passer la commande"
+  },
+  "success": {
+    "texts": {
+      "title": "Commande passée !",
+      "order_number": "Code de commande : {code}",
+      "description": "Votre commande a été reçue et est en attente de confirmation du paiement. Nous vous contacterons sous peu."
+    },
+    "actions": {
+      "continue_shopping": "Continuer mes achats"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "Appliquer",
+      "remove": "Retirer"
+    },
+    "placeholders": {
+      "code": "Code promo"
+    },
+    "messages": {
+      "applied": "Code promo {code} appliqué"
+    }
+  }
+}

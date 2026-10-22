@@ -1,0 +1,18 @@
+{
+  "texts": {
+    "title_verifying": "Ihre Zahlung wird bestätigt…",
+    "title_paid": "Zahlung eingegangen!",
+    "title_pending": "Wir bestätigen Ihre Zahlung noch",
+    "title_cancelled": "Zahlung abgebrochen",
+    "order_number": "Bestellcode: {code}",
+    "description_verifying": "Dies dauert in der Regel nur wenige Sekunden.",
+    "description_paid": "Ihre Bestellung ist bestätigt und wird in Kürze bearbeitet.",
+    "description_pending": "Ihre Zahlung wird verarbeitet. Prüfen Sie in einigen Minuten erneut Ihre Bestellungen.",
+    "description_cancelled": "Die Zahlung wurde nicht abgeschlossen. Ihre Bestellung bleibt noch eine Weile ausstehend; Sie können im Shop eine neue Bestellung aufgeben.",
+    "error_missing_code": "Wir konnten die Bestellung nicht identifizieren."
+  },
+  "actions": {
+    "view_orders": "Meine Bestellungen ansehen",
+    "continue_shopping": "Weiter einkaufen"
+  }
+}

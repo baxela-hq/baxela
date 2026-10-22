@@ -1,0 +1,40 @@
+{
+  "form": {
+    "labels": {
+      "email": "E-Mail",
+      "password": "Passwort"
+    },
+    "actions": {
+      "back": "Zurück",
+      "continue": "Weiter",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "show": "Anzeigen",
+      "hide": "Verbergen",
+      "retry": "Erneut versuchen"
+    },
+    "placeholders": {
+      "email": "Geben Sie Ihre E-Mail-Adresse ein",
+      "password": "Geben Sie Ihr Passwort ein",
+      "select": "Option auswählen",
+      "search": "Suchen…"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "min_length": "Muss mindestens {min} Zeichen lang sein.",
+      "password_mismatch": "Die Passwörter stimmen nicht überein."
+    }
+  },
+  "messages": {
+    "error": {
+      "general": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
+      "network": "Verbindung fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung."
+    },
+    "info": {
+      "loading": "Wird geladen…",
+      "not_found": "Die gesuchte Seite wurde nicht gefunden.",
+      "no_results": "Keine Ergebnisse gefunden."
+    }
+  }
+}

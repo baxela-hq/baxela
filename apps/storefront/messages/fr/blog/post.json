@@ -1,0 +1,36 @@
+{
+  "texts": {
+    "anonymous": "Anonyme",
+    "comments_count": "{count, plural, one {# commentaire} other {# commentaires}}",
+    "empty_comments": "Pas encore de commentaire. Soyez le premier à partager votre avis."
+  },
+  "related_products": {
+    "title": "Produits similaires"
+  },
+  "comments": {
+    "title": "Commentaires",
+    "form": {
+      "texts": {
+        "title": "Laisser un commentaire"
+      },
+      "labels": {
+        "comment": "Commentaire"
+      },
+      "placeholders": {
+        "comment": "Écrivez votre commentaire…"
+      },
+      "actions": {
+        "submit": "Envoyer le commentaire"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Votre commentaire a été envoyé et apparaîtra après validation."
+        },
+        "info": {
+          "login_required": "Veuillez vous connecter pour écrire un commentaire.",
+          "login_link": "Se connecter"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "texts": {
+    "empty": "No tienes tickets de soporte.",
+    "empty_hint": "Abre un ticket y nuestro equipo te responderá.",
+    "new_title": "Abrir un ticket de soporte",
+    "reopen_hint": "Este ticket está cerrado. Enviar una respuesta lo reabrirá."
+  },
+  "labels": {
+    "title": "Tickets de soporte",
+    "you": "Tú",
+    "support_team": "Soporte",
+    "created_at": "{date}",
+    "last_activity": "Última actividad {date}",
+    "order_reference": "Pedido #{code}"
+  },
+  "actions": {
+    "new_ticket": "Nuevo ticket",
+    "submit": "Enviar ticket",
+    "send": "Enviar respuesta",
+    "close": "Cerrar ticket",
+    "reopen": "Reabrir",
+    "back_to_tickets": "Volver a los tickets",
+    "prev_page": "Página anterior",
+    "next_page": "Página siguiente"
+  },
+  "filters": {
+    "all": "Todos",
+    "open": "Abiertos",
+    "answered": "Respondidos",
+    "closed": "Cerrados"
+  },
+  "status": {
+    "open": "Abierto",
+    "answered": "Respondido",
+    "closed": "Cerrado"
+  },
+  "form": {
+    "labels": {
+      "subject": "Asunto",
+      "order": "Pedido relacionado (opcional)",
+      "message": "Mensaje",
+      "reply": "Tu respuesta"
+    },
+    "placeholders": {
+      "subject": "Brevemente, ¿sobre qué es?",
+      "message": "Describe tu pregunta o problema",
+      "reply": "Escribe tu respuesta…"
+    }
+  },
+  "messages": {
+    "success": {
+      "created": "Tu ticket ha sido enviado.",
+      "replied": "Tu respuesta ha sido enviada.",
+      "closed": "El ticket ha sido cerrado.",
+      "reopened": "El ticket ha sido reabierto."
+    },
+    "error": {
+      "load_failed": "No se pudieron cargar los tickets.",
+      "create_failed": "No se pudo enviar el ticket.",
+      "reply_failed": "No se pudo enviar tu respuesta.",
+      "status_failed": "No se pudo actualizar el ticket."
+    }
+  }
+}

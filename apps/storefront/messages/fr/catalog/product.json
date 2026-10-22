@@ -1,0 +1,88 @@
+{
+  "texts": {
+    "reviews_count": "({count, plural, one {# avis} other {# avis}})",
+    "related_title": "Vous aimerez aussi"
+  },
+  "labels": {
+    "size": "Taille",
+    "in_cart": "Dans le panier",
+    "main_image": "Image principale de {name}",
+    "quantity_decrease": "Diminuer la quantité",
+    "quantity_increase": "Augmenter la quantité",
+    "thumbnail_image": "{name} — photo {index}"
+  },
+  "actions": {
+    "add_to_cart": "Ajouter au panier",
+    "add_to_wishlist": "Ajouter aux favoris",
+    "remove_from_wishlist": "Retirer des favoris",
+    "added_to_cart": "Ajouté au panier",
+    "view_cart": "Voir le panier"
+  },
+  "messages": {
+    "success": {
+      "added_to_cart": "Ajouté à votre panier.",
+      "wishlist_added": "Enregistré dans vos favoris.",
+      "wishlist_removed": "Retiré de vos favoris."
+    },
+    "info": {
+      "adding": "Ajout en cours…"
+    },
+    "error": {
+      "add_failed": "Impossible d'ajouter l'article au panier.",
+      "update_failed": "Impossible de mettre à jour l'article dans le panier.",
+      "wishlist_failed": "Impossible de mettre à jour vos favoris."
+    }
+  },
+  "tabs": {
+    "labels": {
+      "group": "Informations produit",
+      "description": "Description",
+      "specifications": "Caractéristiques",
+      "reviews": "Avis ({count})"
+    },
+    "texts": {
+      "no_description": "Aucune description n'est encore disponible pour ce produit.",
+      "yes": "Oui",
+      "no": "Non"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "Basé sur {count, plural, one {# avis} other {# avis}}",
+      "empty": "Pas encore d'avis. Soyez le premier à partager votre opinion.",
+      "anonymous": "Client"
+    },
+    "aria": {
+      "average_rating": "Noté {rating, number, ::.} sur 5"
+    },
+    "actions": {
+      "like": "Utile",
+      "dislike": "Pas utile"
+    },
+    "form": {
+      "texts": {
+        "title": "Écrire un avis"
+      },
+      "labels": {
+        "review": "Votre avis",
+        "rating": "Votre note",
+        "rating_value": "{rating, plural, one {# étoile} other {# étoiles}}"
+      },
+      "placeholders": {
+        "review": "Partagez votre opinion"
+      },
+      "actions": {
+        "submit": "Envoyer l'avis"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Merci ! Votre avis a été envoyé et apparaîtra après validation."
+        },
+        "info": {
+          "login_required": "Veuillez vous connecter pour écrire un avis.",
+          "login_link": "Se connecter"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "header": {
+    "labels": {
+      "main_navigation": "Hauptnavigation"
+    },
+    "nav": {
+      "home": "Startseite",
+      "products": "Produkte",
+      "about": "Über uns",
+      "contact": "Kontakt",
+      "blog": "Blog"
+    },
+    "actions": {
+      "search": "Suchen",
+      "wishlist": "Wunschliste",
+      "cart": "Warenkorb",
+      "account": "Mein Konto",
+      "login": "Anmelden",
+      "open_menu": "Menü öffnen",
+      "close_menu": "Menü schließen",
+      "language": "Sprache wechseln",
+      "notifications": "Benachrichtigungen",
+      "theme": "Dunkelmodus umschalten",
+      "currency": "Anzeigewährung"
+    },
+    "notifications": {
+      "texts": {
+        "empty": "Sie haben keine Benachrichtigungen."
+      },
+      "actions": {
+        "view_all": "Alle Benachrichtigungen ansehen"
+      }
+    },
+    "cart": {
+      "texts": {
+        "empty": "Ihr Warenkorb ist leer."
+      },
+      "labels": {
+        "subtotal": "Zwischensumme"
+      },
+      "actions": {
+        "view_cart": "Warenkorb ansehen",
+        "checkout": "Zur Kasse"
+      }
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "Produkte suchen",
+      "input": "Produkte suchen"
+    },
+    "texts": {
+      "title": "Produkte suchen",
+      "popular_categories": "Beliebte Kategorien"
+    },
+    "placeholders": {
+      "query": "Produkte suchen…"
+    },
+    "actions": {
+      "submit": "Suchen",
+      "close": "Suche schließen"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "Mobile Navigation"
+    },
+    "texts": {
+      "categories": "Nach Kategorie einkaufen"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "Breadcrumb-Navigation"
+    },
+    "links": {
+      "home": "Startseite"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "Essentials für jeden Tag, gemacht, um zu bleiben. Seit 2019 in kleinen Serien entworfen.",
+      "tagline_short": "Essentials für jeden Tag, gemacht, um zu bleiben."
+    },
+    "columns": {
+      "shop": {
+        "title": "Shop"
+      },
+      "support": {
+        "title": "Support",
+        "links": {
+          "contact_us": "Kontakt",
+          "shipping_returns": "Versand & Retouren",
+          "size_guide": "Größentabelle",
+          "faq": "FAQ"
+        }
+      },
+      "account": {
+        "title": "Konto",
+        "links": {
+          "login": "Anmelden",
+          "create_account": "Konto erstellen",
+          "forgot_password": "Passwort vergessen"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "Newsletter",
+        "description": "Melden Sie sich für Neuheiten und Angebote an."
+      },
+      "placeholders": {
+        "email": "Geben Sie Ihre E-Mail-Adresse ein"
+      },
+      "actions": {
+        "subscribe": "Abonnieren"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "Sie haben den Newsletter erfolgreich abonniert."
+        },
+        "error": {
+          "invalid_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "Datenschutzerklärung",
+      "terms_of_service": "Nutzungsbedingungen"
+    },
+    "copyright": {
+      "text": "© {year} {company}. Alle Rechte vorbehalten."
+    }
+  }
+}

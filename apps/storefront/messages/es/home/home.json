@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "texts": {
+      "eyebrow": "Nueva temporada, nuevos básicos",
+      "title": "Esenciales de cada día, hechos para durar.",
+      "description": "Zapatillas, ropa y accesorios atemporales fabricados con materiales de origen responsable — diseñados en series pequeñas, a un precio justo.",
+      "image_alt": "Campaña destacada: joven con chaqueta de brocado en una columnata persa"
+    },
+    "actions": {
+      "primary": "Comprar ahora",
+      "secondary": "Nuestra historia"
+    }
+  },
+  "categories": {
+    "texts": {
+      "title": "Compra por categoría"
+    },
+    "actions": {
+      "view_all": "Ver todo"
+    }
+  },
+  "brands": {
+    "texts": {
+      "title": "Compra por marca"
+    },
+    "actions": {
+      "view_all": "Ver todo"
+    }
+  },
+  "featured": {
+    "texts": {
+      "title": "Productos destacados"
+    },
+    "actions": {
+      "view_all": "Ver todo"
+    }
+  },
+  "featured-posts": {
+    "texts": {
+      "title": "Publicaciones destacadas"
+    },
+    "actions": {
+      "view_all": "Ver todo"
+    }
+  },
+  "promo": {
+    "texts": {
+      "title": "Los miembros obtienen un 10% de descuento en su primer pedido.",
+      "description": "Crea una cuenta para desbloquear acceso anticipado a lanzamientos, devoluciones gratuitas y un descuento permanente de miembro."
+    },
+    "actions": {
+      "create_account": "Crear una cuenta"
+    }
+  },
+  "newsletter": {
+    "texts": {
+      "title": "Únete a nuestro boletín",
+      "description": "Obtén un 10% de descuento en tu primer pedido además de acceso anticipado a los nuevos lanzamientos."
+    },
+    "labels": {
+      "email": "Correo electrónico"
+    },
+    "placeholders": {
+      "email": "Introduce tu correo electrónico"
+    },
+    "actions": {
+      "subscribe": "Suscribirse"
+    },
+    "messages": {
+      "success": "Ya estás en la lista — revisa tu bandeja de entrada para la nota de bienvenida.",
+      "error_general": "No se pudo completar la suscripción ahora mismo. Inténtalo de nuevo más tarde."
+    }
+  }
+}

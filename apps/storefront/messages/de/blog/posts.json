@@ -1,0 +1,23 @@
+{
+  "texts": {
+    "title": "Blog",
+    "subtitle": "Neuigkeiten, Anleitungen und Geschichten vom Baxela-Team.",
+    "results_count": "{from}–{to} von {total} Beiträgen werden angezeigt",
+    "category_title": "Beiträge in „{category}“",
+    "empty": "Noch keine Beiträge. Schauen Sie bald wieder vorbei.",
+    "empty_category": "Noch keine Beiträge in dieser Kategorie."
+  },
+  "labels": {
+    "all_categories": "Alle Beiträge",
+    "categories": "Kategorien"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "Blog-Paginierung"
+    },
+    "actions": {
+      "previous": "Zurück",
+      "next": "Weiter"
+    }
+  }
+}

@@ -25,6 +25,10 @@ const RTL_LOCALES = new Set([
 const NATIVE_NAMES: Record<string, string> = {
   en: "English",
   fa: "فارسی",
+  de: "Deutsch",
+  fr: "Français",
+  es: "Español",
+  ar: "العربية",
 };
 
 export function localeDirection(locale: string): "ltr" | "rtl" {

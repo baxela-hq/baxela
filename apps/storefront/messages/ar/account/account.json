@@ -1,0 +1,283 @@
+{
+  "texts": {
+    "title": "ملفي الشخصي",
+    "greeting": "مرحبًا",
+    "coming_soon": "سيتوفر هذا القسم قريبًا.",
+    "orders_empty": "لا توجد لديك طلبات بعد.",
+    "orders_empty_hint": "بمجرد إجراء طلب، سيظهر هنا.",
+    "orders_none_matching": "لا توجد طلبات تطابق بحثك.",
+    "addresses_empty": "لا توجد لديك عناوين محفوظة.",
+    "addresses_empty_hint": "احفظ عنوانًا لتسريع عملية الدفع.",
+    "wishlist_empty": "قائمة المفضلة لديك فارغة.",
+    "wishlist_empty_hint": "اضغط على القلب في أي منتج لحفظه هنا.",
+    "wishlist_unavailable": "هذا المنتج لم يعد متوفرًا.",
+    "wishlist_remove": "إزالة",
+    "wishlist_remove_confirm_title": "هل تريد الإزالة من قائمة المفضلة؟",
+    "wishlist_remove_confirm_message": "هل تريد إزالة {title} من قائمة المفضلة؟"
+  },
+  "labels": {
+    "personal_information": "المعلومات الشخصية",
+    "my_orders": "طلباتي",
+    "my_wishlists": "قوائم المفضلة",
+    "manage_addresses": "إدارة العناوين",
+    "saved_cards": "البطاقات المحفوظة",
+    "notifications": "الإشعارات",
+    "support_tickets": "تذاكر الدعم",
+    "settings": "الإعدادات",
+    "sign_out": "تسجيل الخروج",
+    "order_number": "طلب #{code}",
+    "qty": "الكمية {count}",
+    "total": "الإجمالي",
+    "shipping_address": "عنوان الشحن",
+    "shipping_method": "طريقة الشحن",
+    "discount": "خصم ({code})",
+    "default_badge": "افتراضي",
+    "tax": "الضريبة",
+    "my_returns": "مرتجعاتي"
+  },
+  "profile": {
+    "labels": {
+      "full_name": "الاسم الكامل",
+      "display_name": "الاسم المعروض",
+      "bio": "نبذة تعريفية",
+      "gender": "الجنس",
+      "date_of_birth": "تاريخ الميلاد",
+      "email_address": "البريد الإلكتروني"
+    },
+    "placeholders": {
+      "bio": "أخبرنا قليلًا عن نفسك"
+    },
+    "gender_options": {
+      "male": "ذكر",
+      "female": "أنثى",
+      "other": "آخر"
+    },
+    "actions": {
+      "edit": "تعديل الملف الشخصي",
+      "save": "حفظ التغييرات",
+      "cancel_edit": "إلغاء"
+    },
+    "messages": {
+      "success": {
+        "saved": "تم تحديث ملفك الشخصي."
+      },
+      "error": {
+        "save_failed": "فشل تحديث ملفك الشخصي."
+      }
+    }
+  },
+  "orders": {
+    "placeholders": {
+      "search": "البحث في الطلبات"
+    },
+    "labels": {
+      "filter": "تصفية",
+      "status": "الحالة"
+    },
+    "actions": {
+      "view_order": "عرض الطلب",
+      "hide_order": "إخفاء التفاصيل",
+      "cancel_order": "إلغاء الطلب",
+      "confirm_cancel": "نعم، ألغِه",
+      "keep_order": "الاحتفاظ بالطلب",
+      "continue_shopping": "متابعة التسوق",
+      "prev_page": "الصفحة السابقة",
+      "next_page": "الصفحة التالية",
+      "request_return": "طلب إرجاع"
+    },
+    "filters": {
+      "all": "جميع الحالات",
+      "delivered": "تم التوصيل",
+      "in_process": "قيد المعالجة",
+      "cancelled": "ملغاة"
+    },
+    "status": {
+      "pending": "قيد الانتظار",
+      "processing": "قيد المعالجة",
+      "shipped": "تم الشحن",
+      "completed": "تم التوصيل",
+      "cancelled": "ملغى"
+    },
+    "payment_status": {
+      "unpaid": "بانتظار الدفع",
+      "paid": "مدفوع",
+      "refunded": "تم الاسترداد",
+      "partially_refunded": "تم الاسترداد جزئيًا"
+    },
+    "hints": {
+      "awaiting_payment": "هذا الطلب بانتظار تأكيد الدفع.",
+      "in_process": "جارٍ معالجة طلبك.",
+      "delivered": "تم توصيل منتجك.",
+      "cancelled": "تم إلغاء هذا الطلب."
+    },
+    "messages": {
+      "success": {
+        "cancelled": "تم إلغاء الطلب.",
+        "return_requested": "تم إرسال طلب الإرجاع — سنراجعه قريبًا."
+      },
+      "error": {
+        "cancel_failed": "فشل إلغاء الطلب.",
+        "load_failed": "فشل تحميل طلباتك.",
+        "return_failed": "تعذر إرسال طلب الإرجاع."
+      }
+    },
+    "return_form": {
+      "title": "طلب إرجاع لهذا الطلب",
+      "reason": "السبب",
+      "reasons": {
+        "damaged": "وصل المنتج تالفًا",
+        "wrong_item": "تم استلام منتج خاطئ",
+        "not_as_described": "غير مطابق للوصف",
+        "other": "سبب آخر"
+      },
+      "note": "ملاحظة (اختياري)",
+      "note_placeholder": "أي شيء يجب أن يعرفه الفريق",
+      "submit": "إرسال طلب الإرجاع"
+    }
+  },
+  "banner": {
+    "texts": {
+      "title": "أكمل ملفك الشخصي",
+      "description": "أضف اسمك وسنملأ بيانات الدفع تلقائيًا من أجلك."
+    },
+    "actions": {
+      "complete": "أكمل الآن",
+      "dismiss": "تجاهل"
+    }
+  },
+  "settings": {
+    "appearance": {
+      "title": "المظهر",
+      "description": "خصص مظهر السمة على جهازك",
+      "theme_light": "فاتح",
+      "theme_dark": "داكن",
+      "theme_system": "النظام"
+    },
+    "language": {
+      "title": "اللغة",
+      "description": "اختر لغتك"
+    },
+    "two_factor": {
+      "title": "المصادقة الثنائية",
+      "description": "احمِ حسابك بتفعيل المصادقة الثنائية عبر البريد الإلكتروني"
+    },
+    "email_notifications": {
+      "title": "إشعارات البريد الإلكتروني",
+      "description": "استلام إشعارات بالبريد الإلكتروني"
+    },
+    "browser_notifications": {
+      "title": "إشعارات المتصفح",
+      "description": "احصل على تحديثات الطلبات على هذا الجهاز حتى عند إغلاق الموقع",
+      "hints": {
+        "blocked": "محظورة — اسمح بالإشعارات لهذا الموقع في إعدادات المتصفح لتفعيلها",
+        "unsupported": "غير مدعومة في هذا المتصفح",
+        "unavailable": "غير متاحة مؤقتًا — حاول مرة أخرى لاحقًا"
+      }
+    },
+    "telegram_notifications": {
+      "title": "إشعارات تيليجرام",
+      "description": "احصل على تحديثات طلباتك في محادثة تيليجرام عبر روبوت المتجر",
+      "hints": {
+        "unavailable": "غير متاحة مؤقتًا — حاول مرة أخرى لاحقًا"
+      },
+      "link": {
+        "instructions": "أرسل /start إلى الروبوت على تيليجرام، ثم أدخل رمز التفعيل المكوّن من 6 أرقام الذي يرد به:",
+        "open_bot": "فتح الروبوت",
+        "placeholder": "رمز الربط",
+        "submit": "ربط",
+        "cancel": "إلغاء",
+        "invalid": "أدخل رمز الـ 6 أرقام الذي أرسله الروبوت إليك",
+        "success": "تم ربط تيليجرام — ستصل التحديثات إلى هناك",
+        "failed": "تعذر الربط — تحقق من الرمز وحاول مرة أخرى"
+      }
+    }
+  },
+  "notifications": {
+    "texts": {
+      "empty": "لا توجد إشعارات لديك بعد."
+    },
+    "actions": {
+      "mark_all_read": "وضع علامة مقروء على الكل",
+      "load_more": "تحميل المزيد"
+    },
+    "messages": {
+      "error": {
+        "load_failed": "تعذر تحميل إشعاراتك. يرجى المحاولة مرة أخرى."
+      }
+    }
+  },
+  "cards": {
+    "texts": {
+      "add_title": "إضافة بطاقة جديدة",
+      "empty": "لا توجد بطاقات محفوظة لديك.",
+      "empty_hint": "احفظ بطاقة لتسريع عملية الدفع."
+    },
+    "labels": {
+      "number": "رقم البطاقة"
+    },
+    "placeholders": {
+      "number": "أدخل رقم البطاقة"
+    },
+    "actions": {
+      "add": "إضافة بطاقة جديدة",
+      "delete": "حذف",
+      "confirm_delete": "نعم، احذفها",
+      "keep": "الاحتفاظ بها",
+      "cancel": "إلغاء"
+    },
+    "messages": {
+      "error": {
+        "invalid": "يرجى إدخال رقم بطاقة صالح."
+      }
+    }
+  },
+  "address": {
+    "texts": {
+      "add_title": "إضافة عنوان جديد",
+      "edit_title": "تعديل العنوان"
+    },
+    "labels": {
+      "full_name": "الاسم",
+      "phone": "رقم الهاتف المحمول",
+      "address_line": "شقة، رقم المنزل، المبنى، الشركة، العمارة",
+      "address_line_2": "المنطقة، الحي، الشارع، القطاع، القرية",
+      "city": "المدينة",
+      "postal_code": "الرمز البريدي",
+      "country": "البلد",
+      "is_default": "استخدام كعنواني الافتراضي"
+    },
+    "placeholders": {
+      "full_name": "أدخل الاسم",
+      "phone": "أدخل رقم الهاتف المحمول",
+      "city": "أدخل المدينة",
+      "postal_code": "أدخل الرمز البريدي"
+    },
+    "actions": {
+      "add": "إضافة عنوان جديد",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "confirm_delete": "نعم، احذفه",
+      "keep": "الاحتفاظ به",
+      "save": "حفظ العنوان",
+      "cancel_edit": "إلغاء"
+    },
+    "messages": {
+      "success": {
+        "saved": "تم حفظ العنوان.",
+        "deleted": "تم حذف العنوان."
+      },
+      "error": {
+        "save_failed": "فشل حفظ العنوان.",
+        "delete_failed": "فشل حذف العنوان.",
+        "country_required": "يرجى اختيار بلدًا."
+      }
+    }
+  },
+  "actions": {
+    "wishlist_continue_shopping": "متابعة التسوق",
+    "wishlist_remove_cancel": "إلغاء"
+  },
+  "tabs": {
+    "my_returns": "مرتجعاتي"
+  }
+}

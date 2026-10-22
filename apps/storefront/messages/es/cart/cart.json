@@ -1,0 +1,25 @@
+{
+  "texts": {
+    "title": "Carrito de compras",
+    "empty": "Tu carrito está vacío.",
+    "empty_hint": "Explora los productos y añade algo que te guste.",
+    "guest_checkout_hint": "Iniciarás sesión al finalizar la compra."
+  },
+  "labels": {
+    "product": "Producto",
+    "unit_price": "Precio",
+    "quantity": "Cantidad",
+    "item_total": "Total"
+  },
+  "actions": {
+    "remove": "Quitar",
+    "checkout": "Proceder al pago",
+    "continue_shopping": "Seguir comprando"
+  },
+  "messages": {
+    "error": {
+      "update_failed": "No se pudo actualizar el artículo del carrito.",
+      "remove_failed": "No se pudo quitar el artículo del carrito."
+    }
+  }
+}

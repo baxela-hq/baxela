@@ -1,0 +1,36 @@
+{
+  "texts": {
+    "anonymous": "Anonym",
+    "comments_count": "{count, plural, one {# Kommentar} other {# Kommentare}}",
+    "empty_comments": "Noch keine Kommentare. Seien Sie der Erste und teilen Sie Ihre Gedanken."
+  },
+  "related_products": {
+    "title": "Ähnliche Produkte"
+  },
+  "comments": {
+    "title": "Kommentare",
+    "form": {
+      "texts": {
+        "title": "Hinterlassen Sie einen Kommentar"
+      },
+      "labels": {
+        "comment": "Kommentar"
+      },
+      "placeholders": {
+        "comment": "Schreiben Sie Ihren Kommentar…"
+      },
+      "actions": {
+        "submit": "Kommentar senden"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Ihr Kommentar wurde eingereicht und erscheint nach der Freigabe."
+        },
+        "info": {
+          "login_required": "Bitte melden Sie sich an, um einen Kommentar zu schreiben.",
+          "login_link": "Anmelden"
+        }
+      }
+    }
+  }
+}

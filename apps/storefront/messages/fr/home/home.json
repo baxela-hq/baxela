@@ -1,0 +1,74 @@
+{
+  "hero": {
+    "texts": {
+      "eyebrow": "Nouvelle saison, nouvelles bases",
+      "title": "Des essentiels du quotidien, faits pour durer.",
+      "description": "Baskets, vêtements et accessoires intemporels fabriqués à partir de matériaux sourcés de manière responsable — conçus en petites séries, à prix juste.",
+      "image_alt": "Campagne à la une : jeune femme en veste de brocart dans une colonnade persane"
+    },
+    "actions": {
+      "primary": "Acheter maintenant",
+      "secondary": "Notre histoire"
+    }
+  },
+  "categories": {
+    "texts": {
+      "title": "Acheter par catégorie"
+    },
+    "actions": {
+      "view_all": "Tout voir"
+    }
+  },
+  "brands": {
+    "texts": {
+      "title": "Acheter par marque"
+    },
+    "actions": {
+      "view_all": "Tout voir"
+    }
+  },
+  "featured": {
+    "texts": {
+      "title": "Produits en vedette"
+    },
+    "actions": {
+      "view_all": "Tout voir"
+    }
+  },
+  "featured-posts": {
+    "texts": {
+      "title": "Articles à la une"
+    },
+    "actions": {
+      "view_all": "Tout voir"
+    }
+  },
+  "promo": {
+    "texts": {
+      "title": "Les membres bénéficient de 10% de remise sur leur première commande.",
+      "description": "Créez un compte pour un accès anticipé aux nouveautés, des retours gratuits et une remise membre permanente."
+    },
+    "actions": {
+      "create_account": "Créer un compte"
+    }
+  },
+  "newsletter": {
+    "texts": {
+      "title": "Rejoignez notre newsletter",
+      "description": "Obtenez 10% de remise sur votre première commande ainsi qu'un accès anticipé aux nouveautés."
+    },
+    "labels": {
+      "email": "Adresse e-mail"
+    },
+    "placeholders": {
+      "email": "Saisissez votre adresse e-mail"
+    },
+    "actions": {
+      "subscribe": "S'abonner"
+    },
+    "messages": {
+      "success": "Vous êtes sur la liste — vérifiez votre boîte de réception, un mot de bienvenue vous attend.",
+      "error_general": "Inscription impossible pour le moment. Veuillez réessayer plus tard."
+    }
+  }
+}

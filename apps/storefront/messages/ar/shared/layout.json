@@ -1,0 +1,135 @@
+{
+  "header": {
+    "labels": {
+      "main_navigation": "التنقل الرئيسي"
+    },
+    "nav": {
+      "home": "الرئيسية",
+      "products": "المنتجات",
+      "about": "من نحن",
+      "contact": "اتصل بنا",
+      "blog": "المدونة"
+    },
+    "actions": {
+      "search": "بحث",
+      "wishlist": "المفضلة",
+      "cart": "السلة",
+      "account": "حسابي",
+      "login": "تسجيل الدخول",
+      "open_menu": "فتح القائمة",
+      "close_menu": "إغلاق القائمة",
+      "language": "تغيير اللغة",
+      "notifications": "الإشعارات",
+      "theme": "تبديل الوضع الداكن",
+      "currency": "عملة العرض"
+    },
+    "notifications": {
+      "texts": {
+        "empty": "لا توجد إشعارات لديك."
+      },
+      "actions": {
+        "view_all": "عرض جميع الإشعارات"
+      }
+    },
+    "cart": {
+      "texts": {
+        "empty": "سلتك فارغة."
+      },
+      "labels": {
+        "subtotal": "المجموع الفرعي"
+      },
+      "actions": {
+        "view_cart": "عرض السلة",
+        "checkout": "إتمام الشراء"
+      }
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "البحث عن منتجات",
+      "input": "البحث عن منتجات"
+    },
+    "texts": {
+      "title": "البحث عن منتجات",
+      "popular_categories": "فئات شائعة"
+    },
+    "placeholders": {
+      "query": "ابحث عن منتجات…"
+    },
+    "actions": {
+      "submit": "بحث",
+      "close": "إغلاق البحث"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "تنقل الهاتف المحمول"
+    },
+    "texts": {
+      "categories": "تسوّق حسب الفئة"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "مسار التنقل"
+    },
+    "links": {
+      "home": "الرئيسية"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "أساسيات يومية، مصممة لتدوم. نصمم على دفعات صغيرة منذ 2019.",
+      "tagline_short": "أساسيات يومية، مصممة لتدوم."
+    },
+    "columns": {
+      "shop": {
+        "title": "المتجر"
+      },
+      "support": {
+        "title": "الدعم",
+        "links": {
+          "contact_us": "اتصل بنا",
+          "shipping_returns": "الشحن والإرجاع",
+          "size_guide": "دليل المقاسات",
+          "faq": "الأسئلة الشائعة"
+        }
+      },
+      "account": {
+        "title": "الحساب",
+        "links": {
+          "login": "تسجيل الدخول",
+          "create_account": "إنشاء حساب",
+          "forgot_password": "نسيت كلمة المرور"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "النشرة البريدية",
+        "description": "اشترك ليصلك جديد الوصولات والعروض."
+      },
+      "placeholders": {
+        "email": "أدخل بريدك الإلكتروني"
+      },
+      "actions": {
+        "subscribe": "اشترك"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "لقد اشتركت في النشرة البريدية بنجاح."
+        },
+        "error": {
+          "invalid_email": "يرجى إدخال بريد إلكتروني صالح."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "سياسة الخصوصية",
+      "terms_of_service": "شروط الخدمة"
+    },
+    "copyright": {
+      "text": "© {year} {company}. جميع الحقوق محفوظة."
+    }
+  }
+}

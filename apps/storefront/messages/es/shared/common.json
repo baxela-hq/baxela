@@ -1,0 +1,40 @@
+{
+  "form": {
+    "labels": {
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    },
+    "actions": {
+      "back": "Volver",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "retry": "Reintentar"
+    },
+    "placeholders": {
+      "email": "Introduce tu correo electrónico",
+      "password": "Introduce tu contraseña",
+      "select": "Selecciona una opción",
+      "search": "Buscar…"
+    },
+    "validation": {
+      "required": "Este campo es obligatorio.",
+      "email": "Introduce una dirección de correo electrónico válida.",
+      "min_length": "Debe tener al menos {min} caracteres.",
+      "password_mismatch": "Las contraseñas no coinciden."
+    }
+  },
+  "messages": {
+    "error": {
+      "general": "Algo salió mal. Inténtalo de nuevo más tarde.",
+      "network": "No se pudo conectar. Comprueba tu conexión."
+    },
+    "info": {
+      "loading": "Cargando…",
+      "not_found": "No se encontró la página que buscas.",
+      "no_results": "No se encontraron resultados."
+    }
+  }
+}

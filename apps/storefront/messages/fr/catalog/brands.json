@@ -1,0 +1,21 @@
+{
+  "texts": {
+    "title": "Marques",
+    "subtitle": "Acheter par marque",
+    "results_count": "Affichage de {from}–{to} sur {total, plural, =1 {# produit} other {# produits}}",
+    "empty": "Pas encore de produit de cette marque.",
+    "products_by": "Produits de {brand}"
+  },
+  "labels": {
+    "brand_products": "Parcourir les produits de cette marque"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "Pagination des produits de la marque"
+    },
+    "actions": {
+      "previous": "Précédent",
+      "next": "Suivant"
+    }
+  }
+}

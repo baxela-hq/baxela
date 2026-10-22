@@ -1,0 +1,88 @@
+{
+  "texts": {
+    "reviews_count": "({count, plural, one {# reseña} other {# reseñas}})",
+    "related_title": "También te puede gustar"
+  },
+  "labels": {
+    "size": "Talla",
+    "in_cart": "En el carrito",
+    "main_image": "Imagen principal de {name}",
+    "quantity_decrease": "Reducir cantidad",
+    "quantity_increase": "Aumentar cantidad",
+    "thumbnail_image": "{name} — foto {index}"
+  },
+  "actions": {
+    "add_to_cart": "Añadir al carrito",
+    "add_to_wishlist": "Añadir a la lista de deseos",
+    "remove_from_wishlist": "Quitar de la lista de deseos",
+    "added_to_cart": "Añadido al carrito",
+    "view_cart": "Ver carrito"
+  },
+  "messages": {
+    "success": {
+      "added_to_cart": "Añadido a tu carrito.",
+      "wishlist_added": "Guardado en tu lista de deseos.",
+      "wishlist_removed": "Quitado de tu lista de deseos."
+    },
+    "info": {
+      "adding": "Añadiendo…"
+    },
+    "error": {
+      "add_failed": "No se pudo añadir el artículo al carrito.",
+      "update_failed": "No se pudo actualizar el artículo en el carrito.",
+      "wishlist_failed": "No se pudo actualizar tu lista de deseos."
+    }
+  },
+  "tabs": {
+    "labels": {
+      "group": "Información del producto",
+      "description": "Descripción",
+      "specifications": "Especificaciones",
+      "reviews": "Reseñas ({count})"
+    },
+    "texts": {
+      "no_description": "Todavía no hay descripción disponible para este producto.",
+      "yes": "Sí",
+      "no": "No"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "Basado en {count, plural, one {# reseña} other {# reseñas}}",
+      "empty": "Todavía no hay reseñas. Sé el primero en compartir tu opinión.",
+      "anonymous": "Cliente"
+    },
+    "aria": {
+      "average_rating": "Calificación de {rating, number, ::.} sobre 5"
+    },
+    "actions": {
+      "like": "Útil",
+      "dislike": "No útil"
+    },
+    "form": {
+      "texts": {
+        "title": "Escribe una reseña"
+      },
+      "labels": {
+        "review": "Tu reseña",
+        "rating": "Tu calificación",
+        "rating_value": "{rating, plural, one {# estrella} other {# estrellas}}"
+      },
+      "placeholders": {
+        "review": "Comparte tu opinión"
+      },
+      "actions": {
+        "submit": "Enviar reseña"
+      },
+      "messages": {
+        "success": {
+          "submitted": "¡Gracias! Tu reseña fue enviada y aparecerá tras su aprobación."
+        },
+        "info": {
+          "login_required": "Inicia sesión para escribir una reseña.",
+          "login_link": "Iniciar sesión"
+        }
+      }
+    }
+  }
+}

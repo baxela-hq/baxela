@@ -1,0 +1,18 @@
+{
+  "texts": {
+    "title_verifying": "جارٍ تأكيد عملية الدفع…",
+    "title_paid": "تم استلام الدفع!",
+    "title_pending": "ما زلنا نؤكد عملية الدفع",
+    "title_cancelled": "تم إلغاء الدفع",
+    "order_number": "رمز الطلب: {code}",
+    "description_verifying": "يستغرق هذا عادة بضع ثوانٍ.",
+    "description_paid": "تم تأكيد طلبك وسيتم معالجته قريبًا.",
+    "description_pending": "جارٍ معالجة عملية الدفع. تحقق من طلباتك مرة أخرى بعد بضع دقائق.",
+    "description_cancelled": "لم تكتمل عملية الدفع. سيبقى طلبك معلقًا لفترة قصيرة؛ يمكنك تقديم طلب جديد من المتجر.",
+    "error_missing_code": "لم نتمكن من تحديد الطلب."
+  },
+  "actions": {
+    "view_orders": "عرض طلباتي",
+    "continue_shopping": "متابعة التسوق"
+  }
+}

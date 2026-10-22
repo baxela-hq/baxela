@@ -1,0 +1,135 @@
+{
+  "header": {
+    "labels": {
+      "main_navigation": "Navigation principale"
+    },
+    "nav": {
+      "home": "Accueil",
+      "products": "Produits",
+      "about": "À propos",
+      "contact": "Contact",
+      "blog": "Blog"
+    },
+    "actions": {
+      "search": "Rechercher",
+      "wishlist": "Favoris",
+      "cart": "Panier",
+      "account": "Mon compte",
+      "login": "Connexion",
+      "open_menu": "Ouvrir le menu",
+      "close_menu": "Fermer le menu",
+      "language": "Changer de langue",
+      "notifications": "Notifications",
+      "theme": "Activer/désactiver le mode sombre",
+      "currency": "Devise d'affichage"
+    },
+    "notifications": {
+      "texts": {
+        "empty": "Vous n'avez aucune notification."
+      },
+      "actions": {
+        "view_all": "Voir toutes les notifications"
+      }
+    },
+    "cart": {
+      "texts": {
+        "empty": "Votre panier est vide."
+      },
+      "labels": {
+        "subtotal": "Sous-total"
+      },
+      "actions": {
+        "view_cart": "Voir le panier",
+        "checkout": "Paiement"
+      }
+    }
+  },
+  "search": {
+    "labels": {
+      "dialog": "Rechercher des produits",
+      "input": "Rechercher des produits"
+    },
+    "texts": {
+      "title": "Rechercher des produits",
+      "popular_categories": "Catégories populaires"
+    },
+    "placeholders": {
+      "query": "Rechercher des produits…"
+    },
+    "actions": {
+      "submit": "Rechercher",
+      "close": "Fermer la recherche"
+    }
+  },
+  "mobile_menu": {
+    "labels": {
+      "navigation": "Navigation mobile"
+    },
+    "texts": {
+      "categories": "Acheter par catégorie"
+    }
+  },
+  "breadcrumb": {
+    "labels": {
+      "navigation": "Fil d'Ariane"
+    },
+    "links": {
+      "home": "Accueil"
+    }
+  },
+  "footer": {
+    "texts": {
+      "tagline": "Des essentiels du quotidien, faits pour durer. Conçus en petites séries depuis 2019.",
+      "tagline_short": "Des essentiels du quotidien, faits pour durer."
+    },
+    "columns": {
+      "shop": {
+        "title": "Boutique"
+      },
+      "support": {
+        "title": "Assistance",
+        "links": {
+          "contact_us": "Contactez-nous",
+          "shipping_returns": "Livraison et retours",
+          "size_guide": "Guide des tailles",
+          "faq": "FAQ"
+        }
+      },
+      "account": {
+        "title": "Compte",
+        "links": {
+          "login": "Connexion",
+          "create_account": "Créer un compte",
+          "forgot_password": "Mot de passe oublié"
+        }
+      }
+    },
+    "newsletter": {
+      "texts": {
+        "title": "Newsletter",
+        "description": "Inscrivez-vous pour les nouveautés et les offres."
+      },
+      "placeholders": {
+        "email": "Saisissez votre adresse e-mail"
+      },
+      "actions": {
+        "subscribe": "S'abonner"
+      },
+      "messages": {
+        "success": {
+          "subscribed": "Vous êtes abonné à la newsletter avec succès."
+        },
+        "error": {
+          "invalid_email": "Veuillez saisir une adresse e-mail valide."
+        }
+      }
+    },
+    "legal": {
+      "privacy_policy": "Politique de confidentialité",
+      "terms_of_service": "Conditions d'utilisation"
+    },
+    "copyright": {
+      "text": "© {year} {company}. Tous droits réservés."
+    }
+  }
+}

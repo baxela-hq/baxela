@@ -1,0 +1,18 @@
+{
+  "texts": {
+    "title_verifying": "Confirmando tu pago…",
+    "title_paid": "¡Pago recibido!",
+    "title_pending": "Seguimos confirmando tu pago",
+    "title_cancelled": "Pago cancelado",
+    "order_number": "Código del pedido: {code}",
+    "description_verifying": "Esto suele tardar unos segundos.",
+    "description_paid": "Tu pedido está confirmado y será procesado en breve.",
+    "description_pending": "Tu pago está siendo procesado. Vuelve a consultar tus pedidos en unos minutos.",
+    "description_cancelled": "El pago no se completó. Tu pedido queda pendiente por un breve periodo; puedes realizar un pedido nuevo en la tienda.",
+    "error_missing_code": "No pudimos identificar el pedido."
+  },
+  "actions": {
+    "view_orders": "Ver mis pedidos",
+    "continue_shopping": "Seguir comprando"
+  }
+}

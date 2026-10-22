@@ -1,0 +1,118 @@
+{
+  "texts": {
+    "title": "Pago",
+    "empty_cart": "Tu carrito está vacío."
+  },
+  "address": {
+    "texts": {
+      "title": "Dirección de envío"
+    },
+    "labels": {
+      "full_name": "Nombre completo",
+      "phone": "Teléfono",
+      "address_line": "Dirección",
+      "city": "Ciudad",
+      "postal_code": "Código postal",
+      "country": "País"
+    },
+    "placeholders": {
+      "full_name": "Nombre y apellidos",
+      "phone": "Número de teléfono",
+      "address_line": "Calle, número, piso",
+      "city": "Ciudad",
+      "postal_code": "Código postal"
+    },
+    "actions": {
+      "new": "Añadir una nueva dirección",
+      "save": "Guardar dirección"
+    }
+  },
+  "shipping_method": {
+    "texts": {
+      "title": "Método de envío",
+      "select_address_first": "Elige una dirección de envío para ver los métodos disponibles.",
+      "none_available": "No hay ningún método de envío disponible para la dirección seleccionada."
+    }
+  },
+  "payment": {
+    "texts": {
+      "title": "Pago",
+      "empty": "Actualmente no hay ningún método de pago disponible. Inténtalo de nuevo más tarde o contáctanos."
+    },
+    "methods": {
+      "manual": {
+        "label": "Pago manual",
+        "description": "Nuestro equipo se pondrá en contacto contigo para coordinarlo y confirmarlo."
+      },
+      "stripe": {
+        "label": "Pago con tarjeta (Stripe)",
+        "description": "Paga de forma segura con tarjeta — serás redirigido a Stripe."
+      },
+      "paypal": {
+        "label": "PayPal",
+        "description": "Paga con tu cuenta de PayPal."
+      },
+      "adyen": {
+        "label": "Pago con tarjeta (Adyen)",
+        "description": "Paga de forma segura con tu método preferido — serás redirigido a Adyen."
+      },
+      "nowpayments": {
+        "label": "Pago con criptomonedas (NowPayments)",
+        "description": "Paga con la criptomoneda que prefieras — serás redirigido a NowPayments."
+      },
+      "mercadopago": {
+        "label": "Pago local (Mercado Pago)",
+        "description": "Paga con Pix, Boleto o tarjetas locales — serás redirigido a Mercado Pago."
+      },
+      "checkoutcom": {
+        "label": "Pago con tarjeta (Checkout.com)",
+        "description": "Paga de forma segura con tu método preferido — serás redirigido a Checkout.com."
+      },
+      "razorpay": {
+        "label": "Pago con UPI / tarjeta (Razorpay)",
+        "description": "Paga con UPI, tarjetas o netbanking — serás redirigido a Razorpay."
+      }
+    }
+  },
+  "summary": {
+    "labels": {
+      "aside": "Resumen del pedido",
+      "title": "Resumen del pedido",
+      "subtotal": "Subtotal",
+      "shipping": "Envío",
+      "total": "Total",
+      "discount": "Descuento ({code})",
+      "tax": "Impuestos",
+      "tax_note": "Estimado a partir de tu dirección de envío; el importe final se calcula al realizar el pedido.",
+      "charged_in": "Precios mostrados en {display} al tipo de cambio de hoy — se te cobrará en {code}."
+    },
+    "texts": {
+      "qty": "Cant. {count}"
+    }
+  },
+  "actions": {
+    "place_order": "Realizar pedido"
+  },
+  "success": {
+    "texts": {
+      "title": "¡Pedido realizado!",
+      "order_number": "Código del pedido: {code}",
+      "description": "Tu pedido ha sido recibido y está pendiente de confirmación de pago. Nos pondremos en contacto contigo en breve."
+    },
+    "actions": {
+      "continue_shopping": "Seguir comprando"
+    }
+  },
+  "coupon": {
+    "actions": {
+      "apply": "Aplicar",
+      "remove": "Quitar"
+    },
+    "placeholders": {
+      "code": "Código de cupón"
+    },
+    "messages": {
+      "applied": "Cupón {code} aplicado"
+    }
+  }
+}

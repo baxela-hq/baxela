@@ -1,0 +1,28 @@
+{
+  "title": "Mes retours",
+  "subtitle": "Suivez vos demandes de retour — les remboursements sont émis séparément une fois le retour traité.",
+  "empty": "Aucune demande de retour pour le moment.",
+  "tracking": "Suivi",
+  "tracking_placeholder": "Numéro de suivi (facultatif)",
+  "statuses": {
+    "requested": "Demandé",
+    "approved": "Approuvé — renvoyez l'article",
+    "rejected": "Refusé",
+    "shipped": "Expédié par vous",
+    "received": "Reçu",
+    "completed": "Terminé",
+    "cancelled": "Annulé"
+  },
+  "reasons": {
+    "damaged": "Article endommagé à la réception",
+    "wrong_item": "Mauvais article reçu",
+    "not_as_described": "Non conforme à la description",
+    "other": "Autre motif"
+  },
+  "actions": {
+    "mark_shipped": "Je l'ai expédié",
+    "confirm_shipped": "Confirmer l'expédition",
+    "cancel_return": "Annuler la demande",
+    "back": "Retour"
+  }
+}

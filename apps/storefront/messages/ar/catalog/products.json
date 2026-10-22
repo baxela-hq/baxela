@@ -1,0 +1,48 @@
+{
+  "texts": {
+    "title": "جميع المنتجات",
+    "search_results_title": "نتائج البحث عن «{query}»",
+    "results_count": "عرض {from}–{to} من أصل {total} نتيجة",
+    "search_results_count": "عرض {count, plural, one {# نتيجة} other {# نتيجة}}",
+    "empty": "لم يتم العثور على منتجات.",
+    "empty_search": "لم يتم العثور على منتجات لـ «{query}». جرّب مصطلح بحث مختلفًا."
+  },
+  "filters": {
+    "labels": {
+      "aside": "فلاتر المنتجات",
+      "category": "الفئة",
+      "brand": "العلامة التجارية",
+      "size": "المقاس",
+      "price": "السعر",
+      "max_price": "الحد الأقصى للسعر"
+    },
+    "actions": {
+      "hide": "إخفاء الفلاتر",
+      "show": "الفلاتر",
+      "reset": "إعادة تعيين الفلاتر",
+      "expand_category": "إظهار الفئات الفرعية",
+      "collapse_category": "إخفاء الفئات الفرعية"
+    }
+  },
+  "sort": {
+    "labels": {
+      "by": "ترتيب حسب"
+    },
+    "options": {
+      "featured": "مميزة",
+      "newest": "الأحدث",
+      "rating": "الأعلى تقييمًا",
+      "price_low_high": "السعر: من الأقل إلى الأعلى",
+      "price_high_low": "السعر: من الأعلى إلى الأقل"
+    }
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "تنقل الصفحات"
+    },
+    "actions": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  }
+}

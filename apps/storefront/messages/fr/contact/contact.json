@@ -1,0 +1,41 @@
+{
+  "page": {
+    "title": "Contactez-nous",
+    "subtitle": "Questions, retours ou problème avec une commande — nous serons heureux de vous lire."
+  },
+  "info": {
+    "title": "Nous contacter",
+    "description": "Envoyez-nous un message et notre équipe d'assistance vous répondra dans les plus brefs délais.",
+    "response_time": "Nous répondons généralement en un jour ouvré.",
+    "email_label": "E-mail",
+    "email": "support@baxela.com",
+    "phone_label": "Téléphone",
+    "phone": "+1 (555) 000-0000",
+    "hours_label": "Horaires du support",
+    "hours": "Samedi – jeudi, 9:00 – 18:00"
+  },
+  "form": {
+    "title": "Envoyez-nous un message",
+    "labels": {
+      "name": "Nom complet",
+      "email": "E-mail",
+      "phone": "Téléphone (facultatif)",
+      "subject": "Objet",
+      "message": "Message"
+    },
+    "placeholders": {
+      "name": "Saisissez votre nom complet",
+      "email": "Saisissez votre e-mail",
+      "phone": "Saisissez votre numéro de téléphone",
+      "subject": "Comment pouvons-nous vous aider ?",
+      "message": "Dites-nous en plus sur votre demande…"
+    },
+    "actions": {
+      "submit": "Envoyer le message"
+    }
+  },
+  "messages": {
+    "success": "Votre message a été envoyé. Nous vous répondrons bientôt !",
+    "error_general": "Une erreur s'est produite. Veuillez réessayer plus tard."
+  }
+}

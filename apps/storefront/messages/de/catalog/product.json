@@ -1,0 +1,88 @@
+{
+  "texts": {
+    "reviews_count": "({count, plural, one {# Bewertung} other {# Bewertungen}})",
+    "related_title": "Das könnte Ihnen auch gefallen"
+  },
+  "labels": {
+    "size": "Größe",
+    "in_cart": "Im Warenkorb",
+    "main_image": "Hauptbild von {name}",
+    "quantity_decrease": "Menge verringern",
+    "quantity_increase": "Menge erhöhen",
+    "thumbnail_image": "{name} — Foto {index}"
+  },
+  "actions": {
+    "add_to_cart": "In den Warenkorb",
+    "add_to_wishlist": "Zur Wunschliste hinzufügen",
+    "remove_from_wishlist": "Von der Wunschliste entfernen",
+    "added_to_cart": "Zum Warenkorb hinzugefügt",
+    "view_cart": "Warenkorb ansehen"
+  },
+  "messages": {
+    "success": {
+      "added_to_cart": "Zu Ihrem Warenkorb hinzugefügt.",
+      "wishlist_added": "Auf Ihrer Wunschliste gespeichert.",
+      "wishlist_removed": "Von Ihrer Wunschliste entfernt."
+    },
+    "info": {
+      "adding": "Wird hinzugefügt…"
+    },
+    "error": {
+      "add_failed": "Der Artikel konnte nicht zum Warenkorb hinzugefügt werden.",
+      "update_failed": "Der Artikel konnte nicht im Warenkorb aktualisiert werden.",
+      "wishlist_failed": "Ihre Wunschliste konnte nicht aktualisiert werden."
+    }
+  },
+  "tabs": {
+    "labels": {
+      "group": "Produktinformationen",
+      "description": "Beschreibung",
+      "specifications": "Spezifikationen",
+      "reviews": "Bewertungen ({count})"
+    },
+    "texts": {
+      "no_description": "Für dieses Produkt liegt noch keine Beschreibung vor.",
+      "yes": "Ja",
+      "no": "Nein"
+    }
+  },
+  "reviews": {
+    "texts": {
+      "based_on": "Basierend auf {count, plural, one {# Bewertung} other {# Bewertungen}}",
+      "empty": "Noch keine Bewertungen. Seien Sie der Erste und teilen Sie Ihre Gedanken.",
+      "anonymous": "Kunde"
+    },
+    "aria": {
+      "average_rating": "Bewertet mit {rating, number, ::.} von 5"
+    },
+    "actions": {
+      "like": "Hilfreich",
+      "dislike": "Nicht hilfreich"
+    },
+    "form": {
+      "texts": {
+        "title": "Bewertung schreiben"
+      },
+      "labels": {
+        "review": "Ihre Bewertung",
+        "rating": "Ihre Sternebewertung",
+        "rating_value": "{rating, plural, one {# Stern} other {# Sterne}}"
+      },
+      "placeholders": {
+        "review": "Teilen Sie Ihre Gedanken"
+      },
+      "actions": {
+        "submit": "Bewertung senden"
+      },
+      "messages": {
+        "success": {
+          "submitted": "Danke! Ihre Bewertung wurde eingereicht und erscheint nach der Freigabe."
+        },
+        "info": {
+          "login_required": "Bitte melden Sie sich an, um eine Bewertung zu schreiben.",
+          "login_link": "Anmelden"
+        }
+      }
+    }
+  }
+}

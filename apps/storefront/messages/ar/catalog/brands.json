@@ -1,0 +1,21 @@
+{
+  "texts": {
+    "title": "العلامات التجارية",
+    "subtitle": "تسوّق حسب العلامة التجارية",
+    "results_count": "عرض {from}–{to} من أصل {total, plural, =1 {# منتج} other {# منتجًا}}",
+    "empty": "لا توجد منتجات من هذه العلامة التجارية بعد.",
+    "products_by": "منتجات {brand}"
+  },
+  "labels": {
+    "brand_products": "تصفح منتجات هذه العلامة التجارية"
+  },
+  "pagination": {
+    "labels": {
+      "navigation": "تنقل صفحات منتجات العلامة التجارية"
+    },
+    "actions": {
+      "previous": "السابق",
+      "next": "التالي"
+    }
+  }
+}
