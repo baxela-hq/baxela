@@ -12,8 +12,21 @@ import { expect, request, test } from "@playwright/test";
  */
 
 const MAILPIT = process.env.E2E_MAILPIT_URL ?? "http://localhost:8025";
+const STOREFRONT = process.env.E2E_BASE_URL ?? "http://localhost:3000";
 
 type MailpitMessage = { ID: string; To: { Address: string }[] };
+
+/** Fill and re-verify: on a cold dev server React can hydrate AFTER the
+ *  fill and reset the input — refill whatever hydration discarded. */
+async function stableFill(
+  locator: import("@playwright/test").Locator,
+  value: string
+) {
+  await locator.fill(value);
+  if ((await locator.inputValue()) !== value) {
+    await locator.fill(value);
+  }
+}
 
 /** Poll Mailpit until the activation email arrives; return its 6-digit code. */
 async function activationCode(email: string): Promise<string> {
@@ -45,22 +58,22 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
   const password = "E2eShopping!2026";
 
   await page.goto("/en/signup");
-  await page.getByPlaceholder("Enter your name").fill("E2E Shopper");
-  await page.locator('input[type="email"]').fill(email);
+  await stableFill(page.getByPlaceholder("Enter your name"), "E2E Shopper");
+  await stableFill(page.locator('input[type="email"]'), email);
   const passwords = page.locator('input[type="password"]');
-  await passwords.nth(0).fill(password);
-  await passwords.nth(1).fill(password);
+  await stableFill(passwords.nth(0), password);
+  await stableFill(passwords.nth(1), password);
   await page.getByRole("button", { name: "Signup" }).click();
 
   // -- Email-OTP activation, code read from Mailpit ---------------------------
   await expect(page).toHaveURL(/enter-otp/);
-  await page.getByPlaceholder("Enter the code").fill(await activationCode(email));
+  await stableFill(page.getByPlaceholder("Enter the code"), await activationCode(email));
   await page.getByRole("button", { name: "Verify" }).click();
   await expect(page).toHaveURL(/login/);
 
   // -- Sign in ----------------------------------------------------------------
-  await page.locator('input[type="email"]').fill(email);
-  await page.locator('input[type="password"]').fill(password);
+  await stableFill(page.locator('input[type="email"]'), email);
+  await stableFill(page.locator('input[type="password"]'), password);
   await page.getByRole("button", { name: "Login" }).click();
   await expect(page).not.toHaveURL(/login/);
 
@@ -128,5 +141,42 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
   // -- The order shows up in the customer's profile -----------------------------
   await page.goto("/en/profile/orders");
   await expect(page.getByRole("link", { name: "My Orders" })).toBeVisible();
-  await expect(page.getByText(orderCode!).first()).toBeVisible({ timeout: 30_000 });
+  // Scoped to the list: a bare getByText(orderCode) also matches the
+  // "Order … confirmed" toast, which auto-dismisses to hidden mid-wait.
+  await expect(
+    page.getByRole("listitem").filter({ hasText: orderCode }).first()
+  ).toBeVisible({ timeout: 30_000 });
+});
+
+test("first visit defaults to the locale's currency until the visitor picks one", async ({ page }) => {
+  // Fresh context → no baxela-currency cookie: European locales start on
+  // the seeded EUR default, others on the USD base; an explicit cookie
+  // always wins over the locale default.
+  const price = page.locator("p.text-2xl").first();
+
+  const openFirstProduct = async (locale: string) => {
+    await page.goto(`/${locale}`);
+    const link = page.locator(`a[href*="/${locale}/products/"]`).first();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`/${locale}/products/`));
+  };
+
+  await openFirstProduct("de");
+  await expect(price, "German PDP defaults to EUR").toContainText("€", {
+    timeout: 15_000,
+  });
+
+  await openFirstProduct("en");
+  await expect(price, "English PDP stays on the USD base").toContainText("$", {
+    timeout: 15_000,
+  });
+
+  await page.context().addCookies([
+    { name: "baxela-currency", value: "USD", url: STOREFRONT },
+  ]);
+  await openFirstProduct("de");
+  await expect(
+    price,
+    "an explicit cookie choice beats the locale default"
+  ).toContainText("$", { timeout: 15_000 });
 });

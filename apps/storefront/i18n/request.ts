@@ -91,13 +91,14 @@ export default getRequestConfig(async ({ locale }) => {
     }
   }
 
-  // The price format reflects the visitor's SELECTED display currency
-  // (baxela-currency cookie against the active list), falling back to the
-  // store default. Resolved via the plain client (not serverApiGet) — its
-  // locale injection would call getLocale() mid-request-config and
+  // The price format reflects the visitor's display currency (cookie
+  // against the active list, else the locale's first-visit default, else
+  // the store default). Resolved via the plain client (not serverApiGet) —
+  // its locale injection would call getLocale() mid-request-config and
   // recurse; currency rows carry no translated fields anyway. Same
-  // cache()d resolution the layout and header switcher use.
-  const display = await resolveDisplayCurrency();
+  // cache()d resolution the layout and header switcher use — pass the
+  // already-resolved locale so the entries dedupe.
+  const display = await resolveDisplayCurrency(locale);
 
   return {
     locale,

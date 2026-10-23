@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default async function ProductPage({
   params,
 }: PageProps<"/[locale]/products/[id]">) {
-  const { id } = await params;
+  const { id, locale } = await params;
   // The param is the product slug (linked everywhere) but numeric ids keep
   // working — the backend resolves both.
   const product = await serverApiGet<ApiProductDetail>(
@@ -37,7 +37,7 @@ export default async function ProductPage({
   const productId = product.id;
   // Display currency for this render (per-request cached) — prices arrive
   // in the base currency and convert for display only
-  const display = await resolveDisplayCurrency();
+  const display = await resolveDisplayCurrency(locale);
   const productHref = `/products/${product.slug ?? product.id}`;
 
   const [t, tLayout, format, commentsPage, relatedPage] = await Promise.all([

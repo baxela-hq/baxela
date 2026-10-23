@@ -69,10 +69,10 @@ export default async function LocaleLayout({
   // default theme. fetchSettings is per-request cached, so this dedupes with
   // the SiteHeader announcement lookup.
   const settings = await fetchSettings();
-  // Visitor's display currency (cookie + active rates) — per-request
-  // cached, deduping with the price-format resolution and the header
-  // switcher into one fetch.
-  const display = await resolveDisplayCurrency();
+  // Visitor's display currency (cookie, else the locale's first-visit
+  // default, + active rates) — per-request cached, deduping with the
+  // price-format resolution and the header switcher into one fetch.
+  const display = await resolveDisplayCurrency(locale);
   const siteTheme = resolveSiteTheme(
     settings?.find((setting) => setting.name === "storefront_theme")?.value,
   );

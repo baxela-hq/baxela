@@ -31,12 +31,26 @@ const NATIVE_NAMES: Record<string, string> = {
   ar: "العربية",
 };
 
+// First-visit display currency per locale, used before the visitor has
+// picked one (the baxela-currency cookie always wins once set). Absent
+// locales fall back to the store base currency. The mapped code must be
+// active on the backend, otherwise the base is used.
+const LOCALE_DEFAULT_CURRENCY: Record<string, string> = {
+  de: "EUR",
+  fr: "EUR",
+  es: "EUR",
+};
+
 export function localeDirection(locale: string): "ltr" | "rtl" {
   return RTL_LOCALES.has(locale) ? "rtl" : "ltr";
 }
 
 export function nativeName(locale: string): string {
   return NATIVE_NAMES[locale] ?? locale;
+}
+
+export function localeDefaultCurrency(locale: string): string | undefined {
+  return LOCALE_DEFAULT_CURRENCY[locale];
 }
 
 export const locales = routing.locales;
