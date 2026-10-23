@@ -66,9 +66,10 @@ export function applyThemeMode(mode: ThemeMode): ResolvedThemeMode {
 }
 
 /**
- * Rendered inline as the first child of <body> in the root layout: applies
- * the cookie preference to <html data-mode> before first paint so a dark
- * preference never flashes light. Kept in sync with the helpers above —
- * the layout cannot ship client JS here, so this is plain script.
+ * Injected into the SSR <head> via useServerInsertedHTML
+ * (components/theme-mode-init-script.tsx): applies the cookie preference to
+ * <html data-mode> before first paint so a dark preference never flashes
+ * light. Kept in sync with the helpers above — the script ships as raw HTML,
+ * so it must stay plain JS with no build-time syntax.
  */
 export const THEME_MODE_INIT_SCRIPT = `(function(){try{var m=document.cookie.match(/(?:^|; )theme-mode=(light|dark|system)\\b/);var p=m?m[1]:"light";var d=p==="dark"||(p==="system"&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.dataset.mode=d?"dark":"light"}catch(e){document.documentElement.dataset.mode="light"}})();`;

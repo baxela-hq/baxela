@@ -9,10 +9,11 @@ import { NotificationsProvider } from "@/context/notifications-context";
 import { ThemeModeProvider } from "@/context/theme-mode-context";
 import { CurrencyProvider } from "@/context/currency-context";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeModeInitScript } from "@/components/theme-mode-init-script";
 import { fetchSettings } from "@/lib/api/site";
 import { resolveDisplayCurrency, toDisplayCurrencyData } from "@/lib/display-currency";
 import { SITE_URL } from "@/lib/site-url";
-import { THEME_MODE_INIT_SCRIPT, resolveSiteTheme } from "@/lib/theme";
+import { resolveSiteTheme } from "@/lib/theme";
 import { routing } from "@/i18n/routing";
 import { localeDirection } from "@/lib/i18n";
 
@@ -85,12 +86,12 @@ export default async function LocaleLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${vazirmatn.variable} h-full antialiased`}
     >
-      <head>
-        {/* Applies the theme-mode cookie to <html data-mode> before first
-            paint — keep in sync with lib/theme.ts. */}
-        <script dangerouslySetInnerHTML={{ __html: THEME_MODE_INIT_SCRIPT }} />
-      </head>
       <body className="min-h-full flex flex-col">
+        {/* Applies the theme-mode cookie to <html data-mode> before first
+            paint — keep in sync with lib/theme.ts. Server-inserted into the
+            <head> so the <script> never becomes a client-rendered React
+            element (React 19.2 warns those are never executed). */}
+        <ThemeModeInitScript />
         <NextIntlClientProvider>
           <AuthProvider>
             <CartProvider>
