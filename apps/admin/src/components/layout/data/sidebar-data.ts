@@ -2,6 +2,7 @@ import {
   Boxes,
   LayoutDashboard,
   Bell,
+  Coins,
   Inbox,
   Menu as MenuIcon,
   Newspaper,
@@ -70,6 +71,11 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.settings'),
             url: '/settings/store',
             icon: Settings,
+          },
+          {
+            title: t('sidebar.currencies'),
+            url: '/core/currencies',
+            icon: Coins,
           },
           {
             title: t('sidebar.notifications-inbox'),

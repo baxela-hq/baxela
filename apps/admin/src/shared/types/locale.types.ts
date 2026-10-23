@@ -12,6 +12,10 @@ export interface Currency {
   "symbol": string,
   "is_default": boolean,
   "is_symbol_right": boolean,
+  // Display-conversion rate against the base currency (decimal string,
+  // up to 8 fraction digits); the base currency is always "1.00000000".
+  "exchange_rate": string,
+  "is_active": boolean,
   "created_at": string,
   "updated_at": string
 }

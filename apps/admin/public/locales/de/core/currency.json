@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "currency": "Währung",
+      "currencies": "Währungen",
+      "code": "Code",
+      "name": "Name",
+      "native-name": "Eigentliche Bezeichnung",
+      "symbol": "Symbol",
+      "decimal-places": "Dezimalstellen",
+      "exchange-rate": "Wechselkurs",
+      "is-symbol-right": "Symbol nach dem Betrag",
+      "is-default": "Standard",
+      "is-active": "Aktiv"
+    },
+    "help_texts": {
+      "code": "ISO-4217-Code — nach dem Seeding fest, Bearbeitung deaktiviert",
+      "decimal-places": "Angezeigte Stellen nach dem Dezimaltrennzeichen",
+      "exchange-rate": "Einheiten dieser Währung pro 1 Einheit der Standardwährung (z. B. 0.92)",
+      "exchange-rate-base": "Die Standardwährung legt die Kursskala fest und ist immer 1",
+      "is-symbol-right": "Symbol hinter dem Betrag anzeigen (z. B. 100€) statt davor"
+    },
+    "statuses": {
+      "is-default": {
+        "true": "Standard"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "currency": "Devise",
+      "currencies": "Devises",
+      "code": "Code",
+      "name": "Nom",
+      "native-name": "Nom natif",
+      "symbol": "Symbole",
+      "decimal-places": "Décimales",
+      "exchange-rate": "Taux de change",
+      "is-symbol-right": "Symbole après le montant",
+      "is-default": "Par défaut",
+      "is-active": "Actif"
+    },
+    "help_texts": {
+      "code": "Code ISO 4217 — fixé après le seed, modification désactivée",
+      "decimal-places": "Chiffres affichés après le séparateur décimal",
+      "exchange-rate": "Unités de cette devise pour 1 unité de la devise par défaut (ex. 0.92)",
+      "exchange-rate-base": "La devise par défaut définit l'échelle des taux et vaut toujours 1",
+      "is-symbol-right": "Afficher le symbole après le montant (ex. 100€) au lieu d'avant"
+    },
+    "statuses": {
+      "is-default": {
+        "true": "Par défaut"
+      }
+    }
+  }
+}

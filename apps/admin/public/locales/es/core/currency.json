@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "currency": "Moneda",
+      "currencies": "Monedas",
+      "code": "Código",
+      "name": "Nombre",
+      "native-name": "Nombre nativo",
+      "symbol": "Símbolo",
+      "decimal-places": "Decimales",
+      "exchange-rate": "Tipo de cambio",
+      "is-symbol-right": "Símbolo después del importe",
+      "is-default": "Predeterminada",
+      "is-active": "Activa"
+    },
+    "help_texts": {
+      "code": "Código ISO 4217 — fijo tras el seed; la edición está deshabilitada",
+      "decimal-places": "Dígitos mostrados tras el separador decimal",
+      "exchange-rate": "Unidades de esta moneda por 1 unidad de la moneda predeterminada (p. ej. 0.92)",
+      "exchange-rate-base": "La moneda predeterminada define la escala de tipos y siempre es 1",
+      "is-symbol-right": "Mostrar el símbolo después del importe (p. ej. 100€) en lugar de antes"
+    },
+    "statuses": {
+      "is-default": {
+        "true": "Predeterminada"
+      }
+    }
+  }
+}

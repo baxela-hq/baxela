@@ -51,6 +51,7 @@ import { Route as AuthenticatedMenuMenusIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedInventoryInventoryStocksIndexRouteImport } from './routes/_authenticated/inventory/inventory-stocks/index'
 import { Route as AuthenticatedDiscountPromotionsIndexRouteImport } from './routes/_authenticated/discount/promotions/index'
 import { Route as AuthenticatedDiscountCouponsIndexRouteImport } from './routes/_authenticated/discount/coupons/index'
+import { Route as AuthenticatedCoreCurrenciesIndexRouteImport } from './routes/_authenticated/core/currencies/index'
 import { Route as AuthenticatedContentPostsIndexRouteImport } from './routes/_authenticated/content/posts/index'
 import { Route as AuthenticatedContentPostCommentsIndexRouteImport } from './routes/_authenticated/content/post-comments/index'
 import { Route as AuthenticatedContentPostCategoriesIndexRouteImport } from './routes/_authenticated/content/post-categories/index'
@@ -320,6 +321,12 @@ const AuthenticatedDiscountCouponsIndexRoute =
     path: '/discount/coupons/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCoreCurrenciesIndexRoute =
+  AuthenticatedCoreCurrenciesIndexRouteImport.update({
+    id: '/core/currencies/',
+    path: '/core/currencies/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContentPostsIndexRoute =
   AuthenticatedContentPostsIndexRouteImport.update({
     id: '/content/posts/',
@@ -553,6 +560,7 @@ export interface FileRoutesByFullPath {
   '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
   '/content/posts': typeof AuthenticatedContentPostsIndexRoute
+  '/core/currencies': typeof AuthenticatedCoreCurrenciesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -625,6 +633,7 @@ export interface FileRoutesByTo {
   '/content/post-categories': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/content/post-comments': typeof AuthenticatedContentPostCommentsIndexRoute
   '/content/posts': typeof AuthenticatedContentPostsIndexRoute
+  '/core/currencies': typeof AuthenticatedCoreCurrenciesIndexRoute
   '/discount/coupons': typeof AuthenticatedDiscountCouponsIndexRoute
   '/discount/promotions': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/inventory/inventory-stocks': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -701,6 +710,7 @@ export interface FileRoutesById {
   '/_authenticated/content/post-categories/': typeof AuthenticatedContentPostCategoriesIndexRoute
   '/_authenticated/content/post-comments/': typeof AuthenticatedContentPostCommentsIndexRoute
   '/_authenticated/content/posts/': typeof AuthenticatedContentPostsIndexRoute
+  '/_authenticated/core/currencies/': typeof AuthenticatedCoreCurrenciesIndexRoute
   '/_authenticated/discount/coupons/': typeof AuthenticatedDiscountCouponsIndexRoute
   '/_authenticated/discount/promotions/': typeof AuthenticatedDiscountPromotionsIndexRoute
   '/_authenticated/inventory/inventory-stocks/': typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -777,6 +787,7 @@ export interface FileRouteTypes {
     | '/content/post-categories'
     | '/content/post-comments'
     | '/content/posts'
+    | '/core/currencies'
     | '/discount/coupons'
     | '/discount/promotions'
     | '/inventory/inventory-stocks'
@@ -849,6 +860,7 @@ export interface FileRouteTypes {
     | '/content/post-categories'
     | '/content/post-comments'
     | '/content/posts'
+    | '/core/currencies'
     | '/discount/coupons'
     | '/discount/promotions'
     | '/inventory/inventory-stocks'
@@ -924,6 +936,7 @@ export interface FileRouteTypes {
     | '/_authenticated/content/post-categories/'
     | '/_authenticated/content/post-comments/'
     | '/_authenticated/content/posts/'
+    | '/_authenticated/core/currencies/'
     | '/_authenticated/discount/coupons/'
     | '/_authenticated/discount/promotions/'
     | '/_authenticated/inventory/inventory-stocks/'
@@ -1263,6 +1276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDiscountCouponsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/core/currencies/': {
+      id: '/_authenticated/core/currencies/'
+      path: '/core/currencies'
+      fullPath: '/core/currencies'
+      preLoaderRoute: typeof AuthenticatedCoreCurrenciesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/content/posts/': {
       id: '/_authenticated/content/posts/'
       path: '/content/posts'
@@ -1559,6 +1579,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedContentPostCategoriesIndexRoute: typeof AuthenticatedContentPostCategoriesIndexRoute
   AuthenticatedContentPostCommentsIndexRoute: typeof AuthenticatedContentPostCommentsIndexRoute
   AuthenticatedContentPostsIndexRoute: typeof AuthenticatedContentPostsIndexRoute
+  AuthenticatedCoreCurrenciesIndexRoute: typeof AuthenticatedCoreCurrenciesIndexRoute
   AuthenticatedDiscountCouponsIndexRoute: typeof AuthenticatedDiscountCouponsIndexRoute
   AuthenticatedDiscountPromotionsIndexRoute: typeof AuthenticatedDiscountPromotionsIndexRoute
   AuthenticatedInventoryInventoryStocksIndexRoute: typeof AuthenticatedInventoryInventoryStocksIndexRoute
@@ -1626,6 +1647,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedContentPostCommentsIndexRoute:
     AuthenticatedContentPostCommentsIndexRoute,
   AuthenticatedContentPostsIndexRoute: AuthenticatedContentPostsIndexRoute,
+  AuthenticatedCoreCurrenciesIndexRoute: AuthenticatedCoreCurrenciesIndexRoute,
   AuthenticatedDiscountCouponsIndexRoute:
     AuthenticatedDiscountCouponsIndexRoute,
   AuthenticatedDiscountPromotionsIndexRoute:

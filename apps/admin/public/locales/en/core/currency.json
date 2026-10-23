@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "currency": "Currency",
+      "currencies": "Currencies",
+      "code": "Code",
+      "name": "Name",
+      "native-name": "Native Name",
+      "symbol": "Symbol",
+      "decimal-places": "Decimal Places",
+      "exchange-rate": "Exchange Rate",
+      "is-symbol-right": "Symbol After Amount",
+      "is-default": "Default",
+      "is-active": "Active"
+    },
+    "help_texts": {
+      "code": "ISO 4217 code — fixed once seeded, editing is disabled",
+      "decimal-places": "Digits shown after the decimal separator",
+      "exchange-rate": "Units of this currency per 1 unit of the default currency (e.g. 0.92)",
+      "exchange-rate-base": "The default currency defines the rate scale and is always 1",
+      "is-symbol-right": "Render the symbol after the amount (e.g. 100﷼) instead of before it"
+    },
+    "statuses": {
+      "is-default": {
+        "true": "Default"
+      }
+    }
+  }
+}
