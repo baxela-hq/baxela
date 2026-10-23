@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Modules\Core\Models\Country;
 use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
-use Modules\Core\Schemas\Country\CountrySchema;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
@@ -104,6 +103,18 @@ class CoreDatabaseSeeder extends Seeder
                 CurrencySchema::IS_SYMBOL_RIGHT => false,
                 CurrencySchema::DECIMAL_PLACES => 2,
                 CurrencySchema::EXCHANGE_RATE => '1.00000000',
+                CurrencySchema::IS_ACTIVE => true,
+            ],
+            [
+                CurrencySchema::NAME => 'Euro',
+                CurrencySchema::NATIVE_NAME => 'Euro',
+                CurrencySchema::CODE => 'EUR',
+                CurrencySchema::SYMBOL => '€',
+                CurrencySchema::IS_DEFAULT => false,
+                CurrencySchema::IS_SYMBOL_RIGHT => false,
+                CurrencySchema::DECIMAL_PLACES => 2,
+                // Demo display rate — admin-managed, no external FX source
+                CurrencySchema::EXCHANGE_RATE => '0.92000000',
                 CurrencySchema::IS_ACTIVE => true,
             ],
             [
