@@ -1,5 +1,10 @@
 # Phase 1 Plan — v0.1.0-alpha Hardening (Weeks 1–3)
 
+> **Status update 2026-10-24:** §1.3 storefront DONE (switcher, admin currency UI,
+> locale-default currency) and §1.4 DONE (de/fr/es/ar in all three apps, parity green).
+> Remaining §1.5–1.8 are executed via `docs/plans/launch-readiness.md` (Parts B–D),
+> which also adds FX auto-sync and the launch handoff.
+>
 > **Execution status 2026-10-22:** §1.1 done — throttles/OTP hardening were ALREADY
 > implemented (rate-limit tests existed too); the delivered piece is the route-audit test
 > `Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php` (green — zero
