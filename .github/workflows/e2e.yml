@@ -33,14 +33,10 @@ jobs:
           # profile).
           printf '\nMAIL_MAILER=smtp\nMAIL_HOST=mail\nMAIL_PORT=1025\n' >> apps/backend/.env.example
 
-      - name: Boot the compose stack
-        working-directory: .
-        run: docker compose --profile frontend --profile mail up -d --quiet-pull
-
-      # Node/browser tooling installs while the containers settle — the
-      # cold-runner budget goes to compose (image builds, first-boot composer
-      # install, migrations, storefront's first pnpm install + next dev
-      # compile), which routinely needs 10+ minutes on a fresh runner.
+      # Node/browser tooling installs on a fresh runner BEFORE docker builds
+      # and containers claim disk — the cold-runner budget then goes to
+      # compose (image builds, first-boot composer install, migrations,
+      # storefront's first pnpm install + next dev compile).
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 11.21.0
@@ -56,6 +52,10 @@ jobs:
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
+
+      - name: Boot the compose stack
+        working-directory: .
+        run: docker compose --profile frontend --profile mail up -d --quiet-pull
 
       - name: Wait for the API, then seed
         working-directory: .
