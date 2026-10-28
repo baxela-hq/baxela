@@ -97,6 +97,11 @@ jobs:
       - name: Run e2e tests
         run: pnpm test:e2e
 
+      - name: Capture compose logs on failure
+        if: failure()
+        working-directory: .
+        run: docker compose --profile frontend --profile mail logs --no-color --tail 400 > /tmp/compose-logs.txt || true
+
       - name: Upload test artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: failure()
@@ -105,4 +110,5 @@ jobs:
           path: |
             apps/storefront/playwright-report
             apps/storefront/test-results
+            /tmp/compose-logs.txt
           retention-days: 7
