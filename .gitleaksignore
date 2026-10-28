@@ -1,0 +1,8 @@
+# Historical test-fixture findings, reviewed 2026-10-24 — all four are
+# deliberately fake values in tests / the Bruno collection (see the
+# replacements in the same commits): Adyen-style key placeholder and a
+# zero-UUID idempotency key. Fingerprints pin them to these commits only.
+35641f3df4d591949238488494720a5b7d49311f:apps/backend/Modules/Payment/tests/Feature/User/CreatePaymentTest.php:generic-api-key:225
+35641f3df4d591949238488494720a5b7d49311f:apps/backend/Modules/Payment/tests/Unit/PaymentDriverManagerTest.php:generic-api-key:53
+35641f3df4d591949238488494720a5b7d49311f:apps/backend/Modules/Payment/tests/Unit/AdyenPaymentDriverTest.php:generic-api-key:16
+5a36624cf7b2c6be15783772b5a4795bf9f9a5a4:api/bruno/Cart/User/Cart/Checkout.bru:generic-api-key:16

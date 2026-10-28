@@ -127,8 +127,10 @@ jobs:
       - name: Build
         run: pnpm build
 
-  # Secrets scan — commits history on PRs, head on push. Findings fail the build
-  # (see SECURITY.md for the secrets policy; only known-safe fixtures are ignored).
+  # Secrets scan — full git history on every push. Runs the gitleaks
+  # binary directly (pinned image): gitleaks/gitleaks-action requires a
+  # paid license for organization accounts. Known historical test fixtures
+  # are pinned by fingerprint in .gitleaksignore (see SECURITY.md).
   secrets-scan:
     runs-on: ubuntu-latest
     steps:
@@ -136,6 +138,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run gitleaks over the full history
+        run: |
+          docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.24.3 \
+            detect --source /repo --redact --exit-code 1

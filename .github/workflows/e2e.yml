@@ -17,7 +17,6 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    continue-on-error: true
     defaults:
       run:
         working-directory: apps/storefront
