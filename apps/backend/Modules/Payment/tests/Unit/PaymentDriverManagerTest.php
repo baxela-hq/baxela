@@ -71,7 +71,7 @@ it('reports a driver configured only when its credentials are set', function () 
 
     config(['payment.stripe.secret' => 'sk_test_x']);
     config(['payment.paypal.client_id' => 'cid_test']);
-    config(['payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA']);
+    config(['payment.adyen.api_key' => 'ADYEN_TEST_KEY_PLACEHOLDER']);
     config(['payment.nowpayments.api_key' => 'NP-API-KEY']);
     config(['payment.mercadopago.access_token' => 'MP-ACCESS-TOKEN']);
     config(['payment.checkoutcom.secret_key' => 'sk_test_cko']);

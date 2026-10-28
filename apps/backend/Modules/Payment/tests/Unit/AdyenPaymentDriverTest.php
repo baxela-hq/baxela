@@ -13,7 +13,7 @@ uses(HelperTrait::class);
 
 beforeEach(function () {
     config([
-        'payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA',
+        'payment.adyen.api_key' => 'ADYEN_TEST_KEY_PLACEHOLDER',
         'payment.adyen.merchant_account' => 'BaxelaECOM',
         // The config holds the Customer Area key base64-encoded, exactly as
         // Adyen issues it; the wrapper decodes it before verifying.

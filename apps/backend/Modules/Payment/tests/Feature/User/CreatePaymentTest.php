@@ -226,7 +226,7 @@ it('creates a paypal payment and returns the hosted approval url', function () {
 
 it('creates an adyen payment and returns the hosted payment link url', function () {
     config([
-        'payment.adyen.api_key' => 'AQE1hmfxKIPuJvh5BA',
+        'payment.adyen.api_key' => 'ADYEN_TEST_KEY_PLACEHOLDER',
         'payment.adyen.merchant_account' => 'BaxelaECOM',
         'payment.adyen.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
     ]);
