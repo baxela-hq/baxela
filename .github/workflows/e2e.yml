@@ -37,33 +37,10 @@ jobs:
         working-directory: .
         run: docker compose --profile frontend --profile mail up -d --quiet-pull
 
-      - name: Wait for API, storefront, and Mailpit
-        working-directory: .
-        run: |
-          for i in $(seq 1 60); do
-            if curl -sf -o /dev/null http://localhost:8085/up \
-               && curl -sf -o /dev/null http://localhost:3000/en \
-               && curl -sf -o /dev/null http://localhost:8025/api/v1/messages; then
-              echo "stack is up"; exit 0
-            fi
-            sleep 5
-          done
-          echo "::error::stack did not become healthy in 5 minutes"
-          docker compose --profile frontend --profile mail ps
-          exit 1
-
-      - name: Seed demo data
-        working-directory: .
-        run: |
-          seed() { docker compose exec -T app php artisan db:seed --class="$1" || exit 1; }
-          seed "Modules\Core\Database\Seeders\CoreDatabaseSeeder"
-          seed "Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
-          seed "Modules\Media\Database\Seeders\MediaDatabaseSeeder"
-          seed "Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"
-          seed "Modules\Shipping\Database\Seeders\ShippingDatabaseSeeder"
-          seed "Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder"
-          seed "Modules\Tax\Database\Seeders\TaxDatabaseSeeder"
-
+      # Node/browser tooling installs while the containers settle — the
+      # cold-runner budget goes to compose (image builds, first-boot composer
+      # install, migrations, storefront's first pnpm install + next dev
+      # compile), which routinely needs 10+ minutes on a fresh runner.
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 11.21.0
@@ -79,6 +56,43 @@ jobs:
 
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
+
+      - name: Wait for the API, then seed
+        working-directory: .
+        run: |
+          for i in $(seq 1 120); do
+            curl -sf -o /dev/null http://localhost:8085/up && break
+            sleep 5
+          done
+          curl -sf -o /dev/null http://localhost:8085/up || {
+            echo "::error::API did not become healthy in 10 minutes"
+            docker compose --profile frontend --profile mail ps
+            docker compose logs app --tail 50
+            exit 1
+          }
+          seed() { docker compose exec -T app php artisan db:seed --class="$1" || exit 1; }
+          seed "Modules\Core\Database\Seeders\CoreDatabaseSeeder"
+          seed "Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
+          seed "Modules\Media\Database\Seeders\MediaDatabaseSeeder"
+          seed "Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"
+          seed "Modules\Shipping\Database\Seeders\ShippingDatabaseSeeder"
+          seed "Modules\Catalog\Database\Seeders\CatalogDatabaseSeeder"
+          seed "Modules\Tax\Database\Seeders\TaxDatabaseSeeder"
+
+      - name: Wait for the storefront and Mailpit
+        working-directory: .
+        run: |
+          for i in $(seq 1 120); do
+            if curl -sf -o /dev/null http://localhost:3000/en \
+               && curl -sf -o /dev/null http://localhost:8025/api/v1/messages; then
+              echo "stack is up"; exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::storefront/Mailpit did not become healthy in 10 minutes"
+          docker compose --profile frontend --profile mail ps
+          docker compose logs storefront --tail 50
+          exit 1
 
       - name: Run e2e tests
         run: pnpm test:e2e
