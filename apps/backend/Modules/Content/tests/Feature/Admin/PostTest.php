@@ -168,6 +168,10 @@ it('rejects a slug already taken in the same language', function () {
 it('schedules a post by storing and clearing a publish date', function () {
     $this->actingAs($this->superAdminUser());
 
+    // Freeze the clock: the exact-timestamp assertion below must not race
+    // the second boundary between the request and the assertion.
+    $this->freezeTime();
+
     $postId = $this->postJson($this->baseUrl('/admin/posts'), postPayload([
         'published_at' => now()->addDay()->toIso8601String(),
     ]))->assertCreated()->json('data.id');
