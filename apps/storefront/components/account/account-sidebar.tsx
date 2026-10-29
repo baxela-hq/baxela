@@ -7,7 +7,6 @@ import {
   BellIcon,
   BoxIcon,
   RotateCcwIcon,
-  CreditCardIcon,
   HeartIcon,
   LogoutIcon,
   MapPinIcon,
@@ -23,7 +22,6 @@ export type AccountTab =
   | "my_returns"
   | "my_wishlists"
   | "manage_addresses"
-  | "saved_cards"
   | "notifications"
   | "support_tickets"
   | "settings";
@@ -45,11 +43,6 @@ const TABS: { key: AccountTab; href: string; icon: ReactNode }[] = [
     key: "manage_addresses",
     href: "/profile/addresses",
     icon: <MapPinIcon className="size-5" />,
-  },
-  {
-    key: "saved_cards",
-    href: "/profile/cards",
-    icon: <CreditCardIcon className="size-5" />,
   },
   {
     key: "notifications",
