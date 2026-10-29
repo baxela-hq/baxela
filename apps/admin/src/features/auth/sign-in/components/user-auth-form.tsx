@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@tanstack/react-router'
 import { Loader2, LogIn } from 'lucide-react'
 import { IconFacebook, IconGithub } from '@/assets/brand-icons'
 import { cn } from '@/lib/utils'
@@ -85,12 +84,6 @@ export function UserAuthForm({
                 <PasswordInput placeholder={tPlaceHolder('password')} {...field} />
               </FormControl>
               <FormMessage />
-              <Link
-                to='/forgot-password'
-                className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
-              >
-                {tAction('forgot-password')}
-              </Link>
             </FormItem>
           )}
         />
