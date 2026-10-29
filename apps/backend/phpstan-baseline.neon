@@ -9019,6 +9019,12 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:freezeTime\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/Admin/PostTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
 			count: 1
