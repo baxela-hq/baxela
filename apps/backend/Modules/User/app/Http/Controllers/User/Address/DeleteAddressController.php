@@ -11,7 +11,7 @@ class DeleteAddressController extends Controller
 {
     public function __construct(protected DeleteAddressAction $action) {}
 
-    public function __invoke(string $id, Request $request)
+    public function __invoke(string $id, Request $request): Response
     {
         $this->action->handle($id);
 

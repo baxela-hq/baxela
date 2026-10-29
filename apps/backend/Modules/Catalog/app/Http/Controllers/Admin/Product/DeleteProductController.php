@@ -10,7 +10,7 @@ class DeleteProductController extends Controller
 {
     public function __construct(protected DeleteProductAction $action) {}
 
-    public function __invoke(string $id)
+    public function __invoke(string $id): Response
     {
         $this->action->handle($id);
 
