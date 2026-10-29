@@ -4,7 +4,6 @@ namespace Modules\Core\Actions\Public\Currency;
 
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
-use Modules\Core\Schemas\Currency\CurrencySchema;
 
 class ListActiveCurrenciesAction
 {

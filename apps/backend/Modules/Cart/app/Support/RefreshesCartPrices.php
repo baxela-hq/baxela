@@ -3,6 +3,7 @@
 namespace Modules\Cart\Support;
 
 use Illuminate\Support\Collection;
+use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\VariantSummary;
@@ -25,8 +26,8 @@ class RefreshesCartPrices
      * variant that no longer resolves keeps its snapshot (the item is
      * already unorderable — checkout re-validates stock anyway).
      *
-     * @param  Collection<int, \Modules\Cart\Models\CartItem>  $items
-     * @return Collection<int, VariantSummary>  keyed by variant id
+     * @param  Collection<int, CartItem>  $items
+     * @return Collection<int, VariantSummary> keyed by variant id
      */
     public function refresh(Collection $items): Collection
     {

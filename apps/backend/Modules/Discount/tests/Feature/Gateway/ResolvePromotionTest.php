@@ -1,9 +1,9 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use Modules\Core\Contracts\Gateways\Discount\DTOs\ProductPromotion;
 use Modules\Core\Support\Money;
 use Modules\Discount\Gateways\PromotionGateway;

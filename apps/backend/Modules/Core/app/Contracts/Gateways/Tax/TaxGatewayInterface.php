@@ -4,6 +4,7 @@ namespace Modules\Core\Contracts\Gateways\Tax;
 
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxResult;
+use Modules\Core\Exceptions\Tax\TaxConfigurationException;
 
 interface TaxGatewayInterface
 {
@@ -32,7 +33,7 @@ interface TaxGatewayInterface
      * same routine the checkout pipeline persists, so preview and order
      * figures agree by construction.
      *
-     * @throws \Modules\Core\Exceptions\Tax\TaxConfigurationException
+     * @throws TaxConfigurationException
      */
     public function calculateForItems(TaxCalculationInput $input): TaxResult;
 }

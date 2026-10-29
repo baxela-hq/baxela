@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\User;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
@@ -90,7 +91,7 @@ it('rejects malformed or out-of-range rates', function () {
 });
 
 it('denies the tax-rate endpoints without permission', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create());
+    $this->actingAs(User::factory()->create());
 
     $this->getJson($this->baseUrl('/admin/tax-rates'))->assertStatus(403);
 });

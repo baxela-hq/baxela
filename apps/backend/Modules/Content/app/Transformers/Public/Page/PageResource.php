@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PTSchema;
-use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
+use Modules\Core\Support\ResolvesPublicLanguage;
 
 class PageResource extends JsonResource
 {

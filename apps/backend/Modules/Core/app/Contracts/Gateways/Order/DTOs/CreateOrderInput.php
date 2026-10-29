@@ -58,7 +58,7 @@ class CreateOrderInput
      * only, like every other money field here. tax_amount_minor INCLUDES
      * the shipping tax; the gateway adds it to the total exactly once.
      *
-     * @var array<int, OrderItemTax>  keyed by variant id
+     * @var array<int, OrderItemTax> keyed by variant id
      */
     public int $tax_amount_minor = 0;
 

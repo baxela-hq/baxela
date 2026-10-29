@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\Permission;
 use Modules\Auth\Models\User;
 use Modules\Core\Models\Currency;
 use Modules\Core\Schemas\Currency\CurrencySchema;
@@ -40,8 +41,8 @@ it('creates a currency as super-admin and derives its permission from the route'
         ->and($currency->{CurrencySchema::EXCHANGE_RATE})->toBe('149.50000000');
 
     // the route-name-derived permission exists after a sync
-    $this->artisan("auth:sync-permissions");
-    expect(\Modules\Auth\Models\Permission::query()->where('name', 'core.admin.currencies.create')->exists())->toBeTrue();
+    $this->artisan('auth:sync-permissions');
+    expect(Permission::query()->where('name', 'core.admin.currencies.create')->exists())->toBeTrue();
 });
 
 it('rejects a duplicate currency code and a malformed rate', function () {

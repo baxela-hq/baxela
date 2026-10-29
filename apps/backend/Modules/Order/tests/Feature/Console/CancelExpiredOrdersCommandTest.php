@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Order\Models\Order;
-use Modules\Order\Models\OrderItem;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
@@ -25,7 +25,7 @@ function expiredOrder(int $userId): Order
 }
 
 it('cancels expired pending-unpaid orders and releases their stock', function () {
-    $user = \Modules\Auth\Models\User::factory()->create();
+    $user = User::factory()->create();
     $product = Product::factory()->create();
     $variant = Variant::factory()->ofProduct($product)->create();
     InventoryStock::factory()->ofVariant($variant, 2)->create();
@@ -45,7 +45,7 @@ it('cancels expired pending-unpaid orders and releases their stock', function ()
 });
 
 it('leaves fresh orders and settled expired orders untouched', function () {
-    $user = \Modules\Auth\Models\User::factory()->create();
+    $user = User::factory()->create();
 
     $fresh = Order::factory()->create([
         OrderSchema::USER_ID => $user->id,

@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductTranslation;
-use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Tests\Feature\HelperTrait;

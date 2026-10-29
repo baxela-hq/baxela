@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
-use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
+use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
 class InventoryStockResource extends JsonResource
 {

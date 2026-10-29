@@ -3,6 +3,7 @@
 namespace Modules\Payment\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentRefund;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
@@ -16,7 +17,7 @@ class PaymentRefundFactory extends Factory
     {
         return [
             PaymentRefundSchema::UUID => $params[PaymentRefundSchema::UUID]
-                ?? (string) \Illuminate\Support\Str::uuid(),
+                ?? (string) Str::uuid(),
             PaymentRefundSchema::PAYMENT_ID => $params[PaymentRefundSchema::PAYMENT_ID]
                 ?? Payment::factory(),
             PaymentRefundSchema::ORDER_ID => $params[PaymentRefundSchema::ORDER_ID]

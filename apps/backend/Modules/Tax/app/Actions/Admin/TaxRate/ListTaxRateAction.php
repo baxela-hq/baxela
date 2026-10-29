@@ -5,7 +5,6 @@ namespace Modules\Tax\Actions\Admin\TaxRate;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Utils\Pagination;
 use Modules\Tax\Models\TaxRate;
-use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;

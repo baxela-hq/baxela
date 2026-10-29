@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Actions\Admin\Featured;
 
+use Illuminate\Support\Collection;
 use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\FeaturedItem;
@@ -16,9 +17,9 @@ class ListFeaturedAction
     /**
      * All sections ordered by their featured position.
      *
-     * @return array{product: \Illuminate\Support\Collection<Product>,
-     *               category: \Illuminate\Support\Collection<Category>,
-     *               brand: \Illuminate\Support\Collection<Brand>}
+     * @return array{product: Collection<Product>,
+     *               category: Collection<Category>,
+     *               brand: Collection<Brand>}
      */
     public function handle(): array
     {

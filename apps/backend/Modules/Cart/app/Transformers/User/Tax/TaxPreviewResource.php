@@ -4,8 +4,8 @@ namespace Modules\Cart\Transformers\User\Tax;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxResult;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxedLine;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxResult;
 use Modules\Core\Support\Money;
 
 class TaxPreviewResource extends JsonResource

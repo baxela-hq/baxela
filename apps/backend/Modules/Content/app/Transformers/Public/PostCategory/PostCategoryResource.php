@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
-use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
+use Modules\Core\Support\ResolvesPublicLanguage;
 
 class PostCategoryResource extends JsonResource
 {

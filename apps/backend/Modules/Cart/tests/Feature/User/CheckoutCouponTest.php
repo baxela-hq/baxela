@@ -3,11 +3,11 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
-use Modules\Catalog\Models\Variant;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Cart\Tests\Feature\HelperTrait;
+use Modules\Catalog\Models\Variant;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Discount\Models\Coupon;
 use Modules\Discount\Models\Redemption;

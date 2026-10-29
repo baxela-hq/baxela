@@ -25,6 +25,7 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
 use Modules\Catalog\Schemas\Product\WeightUnitEnum;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
+use Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
 
@@ -55,7 +56,7 @@ class ProductRequest extends FormRequest
         $rules[Schema::TAX_CLASS_ID][] =
             fn (string $attribute, mixed $value, \Closure $fail) => (
                 ! is_null($value)
-                && ! app(\Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface::class)
+                && ! app(TaxGatewayInterface::class)
                     ->taxClassExists((int) $value)
             ) ? $fail('validation.exists')->translate() : null;
         $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =

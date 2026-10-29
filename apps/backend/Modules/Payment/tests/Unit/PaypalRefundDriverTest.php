@@ -1,8 +1,8 @@
 <?php
 
-use Mockery\MockInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\PaypalClient;
@@ -53,7 +53,7 @@ it('refuses an order without a completed capture', function () {
 })->throws(PaymentException::class, 'payment.refund.not_supported');
 
 it('fails loudly on drivers without refund support', function () {
-    $adyen = new AdyenPaymentDriver(Mockery::mock(\Modules\Payment\Gateways\AdyenCheckout::class));
+    $adyen = new AdyenPaymentDriver(Mockery::mock(AdyenCheckout::class));
 
     $adyen->refund(paypalRefundInput());
 })->throws(PaymentException::class, 'payment.refund.not_supported');

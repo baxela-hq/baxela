@@ -3,10 +3,10 @@
 namespace Modules\Order\Http\Controllers\User\OrderReturn;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Modules\Order\Actions\User\OrderReturn\CreateOrderReturnAction;
 use Modules\Order\Http\Requests\User\OrderReturn\CreateOrderReturnRequest;
 use Modules\Order\Transformers\User\OrderReturn\OrderReturnResource;
-use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateOrderReturnController extends Controller

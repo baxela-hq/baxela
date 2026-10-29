@@ -9,8 +9,8 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Transformers\Public\PostCategory\PostCategoryResource;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
-use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
+use Modules\Core\Support\ResolvesPublicLanguage;
 
 class PostResource extends JsonResource
 {

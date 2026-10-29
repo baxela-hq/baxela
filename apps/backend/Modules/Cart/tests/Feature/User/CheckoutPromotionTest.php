@@ -14,8 +14,8 @@ use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Modules\Discount\Schemas\Promotion\PromotionSchema;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
-use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 use Modules\Order\Schemas\Order\OrderSchema;
+use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);

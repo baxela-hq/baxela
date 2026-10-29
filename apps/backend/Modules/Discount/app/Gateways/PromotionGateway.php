@@ -110,6 +110,7 @@ class PromotionGateway implements PromotionGatewayInterface
         foreach ($promotions as $promotion) {
             if ($promotion->{PromotionSchema::SCOPE} === ScopeTypeEnum::ALL) {
                 $storeWide->push($promotion);
+
                 continue;
             }
 

@@ -29,7 +29,7 @@ class AppliesProductPromotions
      * need the winners (summary builders) can reuse it.
      *
      * @param  Collection<int, Product>  $products
-     * @return Collection<int, ProductPromotion>  keyed by product id
+     * @return Collection<int, ProductPromotion> keyed by product id
      */
     public function apply(Collection $products): Collection
     {
@@ -60,7 +60,7 @@ class AppliesProductPromotions
      * exactly one pivot query — never a query per product.
      *
      * @param  Collection<int, Product>  $products
-     * @return Collection<int, ProductPromotion>  keyed by product id
+     * @return Collection<int, ProductPromotion> keyed by product id
      */
     public function resolve(Collection $products): Collection
     {

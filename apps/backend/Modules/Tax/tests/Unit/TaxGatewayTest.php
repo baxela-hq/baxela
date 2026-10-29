@@ -1,17 +1,19 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem;
 use Modules\Core\Exceptions\Tax\TaxConfigurationException;
 use Modules\Tax\Gateways\TaxGateway;
-use Modules\Tax\Tests\Feature\HelperTrait;
 use Modules\Tax\Support\TaxMath;
+use Modules\Tax\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-function taxItem(int $variantId, int $amountMinor, ?int $classId = null): \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem
+function taxItem(int $variantId, int $amountMinor, ?int $classId = null): TaxCalculationItem
 {
-    return new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem(
+    return new TaxCalculationItem(
         variant_id: $variantId,
         amount_minor: $amountMinor,
         tax_class_id: $classId,
@@ -82,7 +84,7 @@ it('resolves rates: found, default fallback, inactive zero', function () {
     // an inactive rate must never apply
     $this->taxRate($inactiveOnly, 'US', '2.0', isActive: false);
 
-    $result = $gateway->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    $result = $gateway->calculateForItems(new TaxCalculationInput(
         items: [
             taxItem(1, 10000),                        // null class → default 8.5%
             taxItem(2, 10000, $reduced->id),          // explicit reduced class
@@ -105,7 +107,7 @@ it('rates a missing country as valid zero tax', function () {
     $default = $this->taxClass(isDefault: true);
     $this->taxRate($default, 'US', '8.5');
 
-    $result = app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    $result = app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000)],
         country_code: 'DE',
     ));
@@ -121,7 +123,7 @@ it('reduces the tax base by the allocated coupon discount', function () {
     $default = $this->taxClass(isDefault: true);
     $this->taxRate($default, 'US', '10.0');
 
-    $result = app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    $result = app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000)],
         country_code: 'US',
         coupon_discount_minor: 1000,
@@ -136,7 +138,7 @@ it('taxes shipping only through the flagged shipping class', function () {
     $this->taxRate($default, 'US', '8.5');
     $this->taxRate($shipping, 'US', '8.5');
 
-    $withRate = app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    $withRate = app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000)],
         country_code: 'US',
         shipping_cost_minor: 500,
@@ -149,7 +151,7 @@ it('taxes shipping only through the flagged shipping class', function () {
         ->and($withRate->total_minor)->toBe(850 + 43);
 
     // no shipping rate for the country → untaxed shipping (valid config)
-    $withoutRate = app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    $withoutRate = app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000)],
         country_code: 'DE',
         shipping_cost_minor: 500,
@@ -163,7 +165,7 @@ it('taxes shipping only through the flagged shipping class', function () {
 it('fails loudly on a dangling tax-class reference', function () {
     $this->taxClass(isDefault: true);
 
-    app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000, 999999)],
         country_code: 'US',
     ));
@@ -172,7 +174,7 @@ it('fails loudly on a dangling tax-class reference', function () {
 it('fails loudly when no default class exists', function () {
     $this->taxClass();
 
-    app(TaxGateway::class)->calculateForItems(new \Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput(
+    app(TaxGateway::class)->calculateForItems(new TaxCalculationInput(
         items: [taxItem(1, 10000)],
         country_code: 'US',
     ));

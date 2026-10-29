@@ -3,8 +3,8 @@
 namespace Modules\Tax\Gateways;
 
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
-use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxResult;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxedLine;
+use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxResult;
 use Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface;
 use Modules\Core\Exceptions\Tax\TaxConfigurationException;
 use Modules\Tax\Models\TaxClass;

@@ -11,6 +11,10 @@ use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Tests\Feature\HelperTrait;
+use Modules\Payment\Models\Payment;
+use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
+use Modules\Payment\Schemas\Payment\PaymentSchema;
+use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -92,11 +96,11 @@ it('keeps the coupon consumed when an admin refunds a paid order', function () {
     // Refund statuses are ledger-owned since the refunds feature: the
     // order PATCH no longer flips them, so the refund runs through the
     // manual-method ledger (bookkeeping-only gateway)
-    $payment = \Modules\Payment\Models\Payment::query()->create([
-        \Modules\Payment\Schemas\Payment\PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        \Modules\Payment\Schemas\Payment\PaymentSchema::METHOD => \Modules\Payment\Schemas\Payment\PaymentMethodEnum::MANUAL,
-        \Modules\Payment\Schemas\Payment\PaymentSchema::STATUS => \Modules\Payment\Schemas\Payment\PaymentStatusEnum::SUCCESS,
-        \Modules\Payment\Schemas\Payment\PaymentSchema::AMOUNT => $order->{OrderSchema::TOTAL_AMOUNT},
+    $payment = Payment::query()->create([
+        PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
+        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
+        PaymentSchema::AMOUNT => $order->{OrderSchema::TOTAL_AMOUNT},
     ]);
 
     $this->actingAs($this->superAdminUser())

@@ -18,12 +18,10 @@ class CommentReactionCounts
     public static function withCount(): array
     {
         return [
-            ProductCommentSchema::RES_REACTIONS.' as '.ProductCommentSchema::RES_LIKES_COUNT
-                => fn (Builder $query) => $query
-                    ->where(ProductCommentReactionSchema::REACTION, ProductCommentReactionEnum::LIKE),
-            ProductCommentSchema::RES_REACTIONS.' as '.ProductCommentSchema::RES_DISLIKES_COUNT
-                => fn (Builder $query) => $query
-                    ->where(ProductCommentReactionSchema::REACTION, ProductCommentReactionEnum::DISLIKE),
+            ProductCommentSchema::RES_REACTIONS.' as '.ProductCommentSchema::RES_LIKES_COUNT => fn (Builder $query) => $query
+                ->where(ProductCommentReactionSchema::REACTION, ProductCommentReactionEnum::LIKE),
+            ProductCommentSchema::RES_REACTIONS.' as '.ProductCommentSchema::RES_DISLIKES_COUNT => fn (Builder $query) => $query
+                ->where(ProductCommentReactionSchema::REACTION, ProductCommentReactionEnum::DISLIKE),
         ];
     }
 }

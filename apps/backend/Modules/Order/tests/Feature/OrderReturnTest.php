@@ -4,7 +4,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Order\Models\Order;
-use Modules\Order\Models\OrderItem;
 use Modules\Order\Models\OrderReturn;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
@@ -48,7 +47,7 @@ function shippedPaidOrder(User $user, array $overrides = []): Order
     return $order;
 }
 
-function requestReturn(Order $order, string $reason = 'damaged') 
+function requestReturn(Order $order, string $reason = 'damaged')
 {
     $user = User::query()->find($order->{OrderSchema::USER_ID});
 

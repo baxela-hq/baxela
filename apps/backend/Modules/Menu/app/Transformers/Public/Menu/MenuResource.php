@@ -4,12 +4,12 @@ namespace Modules\Menu\Transformers\Public\Menu;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as MTSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Transformers\Public\MenuLink\MenuLinkResource;
-use Modules\Core\Support\PicksTranslation;
 
 class MenuResource extends JsonResource
 {

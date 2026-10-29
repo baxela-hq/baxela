@@ -7,8 +7,6 @@ use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Catalog\Tests\Feature\HelperTrait;
 
-use function Modules\Catalog\Tests\Feature\defaultLanguage;
-
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 

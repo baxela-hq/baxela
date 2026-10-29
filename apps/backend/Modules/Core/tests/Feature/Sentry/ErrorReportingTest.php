@@ -16,7 +16,7 @@ beforeEach(function () {
     // flow through the real integration path (the reportable registered in
     // bootstrap/app.php) but never leave the process. The dummy DSN only
     // makes the client "enabled" so events are produced at all.
-    $this->transport = new RecordingTransport();
+    $this->transport = new RecordingTransport;
 
     $builder = new ClientBuilder(new Options([
         'dsn' => 'http://public@test.ingest.sentry.io/1',

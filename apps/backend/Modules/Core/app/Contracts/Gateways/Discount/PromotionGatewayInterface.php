@@ -20,7 +20,7 @@ interface PromotionGatewayInterface
      * product — promotions never stack with each other.
      *
      * @param  Collection<int, int[]>  $categoryIdsByProduct  product id => its category ids
-     * @return Collection<int, ProductPromotion>  keyed by product id; absent = no active promotion
+     * @return Collection<int, ProductPromotion> keyed by product id; absent = no active promotion
      */
     public function resolveForProducts(array $productIds, Collection $categoryIdsByProduct): Collection;
 }

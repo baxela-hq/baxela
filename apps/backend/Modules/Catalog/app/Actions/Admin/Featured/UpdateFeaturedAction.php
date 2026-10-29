@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Actions\Admin\Featured;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Catalog\Models\FeaturedItem;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
@@ -17,7 +18,7 @@ class UpdateFeaturedAction
      * @param  array<int, int>  $productIds
      * @param  array<int, int>  $categoryIds
      * @param  array<int, int>  $brandIds
-     * @return array{product: \Illuminate\Support\Collection, category: \Illuminate\Support\Collection, brand: \Illuminate\Support\Collection}
+     * @return array{product: Collection, category: Collection, brand: Collection}
      */
     public function handle(array $productIds, array $categoryIds, array $brandIds): array
     {

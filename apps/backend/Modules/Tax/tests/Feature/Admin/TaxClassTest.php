@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Tax\Models\TaxClass;
@@ -117,7 +118,7 @@ it('refuses deleting a class still referenced by products', function () {
 });
 
 it('denies the tax-class endpoints without permission', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create());
+    $this->actingAs(User::factory()->create());
 
     $this->getJson($this->baseUrl('/admin/tax-classes'))->assertStatus(403);
 });

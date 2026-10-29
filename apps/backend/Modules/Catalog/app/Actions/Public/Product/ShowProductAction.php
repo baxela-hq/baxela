@@ -22,6 +22,7 @@ class ShowProductAction extends AbstractProductAction
     {
         parent::__construct($model);
     }
+
     /**
      * Resolves the product by numeric id or by translation slug — the
      * storefront links products by slug. Numeric ids keep working for API

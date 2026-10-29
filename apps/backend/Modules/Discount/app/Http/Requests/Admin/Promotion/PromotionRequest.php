@@ -3,7 +3,6 @@
 namespace Modules\Discount\Http\Requests\Admin\Promotion;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;

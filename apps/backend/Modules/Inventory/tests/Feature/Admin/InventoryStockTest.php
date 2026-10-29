@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 use Modules\Inventory\Tests\Feature\HelperTrait;
+
 use function Modules\Inventory\Tests\Feature\defaultLanguage;
 
 uses(RefreshDatabase::class);
@@ -24,7 +26,7 @@ function stockedProduct(int $quantity, string $sku = 'SKU-001', string $title = 
         'product_id' => $product->id,
         'language_id' => defaultLanguage()->id,
         'title' => $title,
-        'slug' => Illuminate\Support\Str::slug($title).'-'.$product->id,
+        'slug' => Str::slug($title).'-'.$product->id,
         'content' => 'Content',
         'description' => null,
     ]);

@@ -23,7 +23,7 @@ it('previews the same tax the checkout would charge', function () {
     $address = $this->addressForUser($user, 'US');
     $method = $this->shippingMethodForCountry(price: 5.0);
 
-    $this->previewTax( $address, $method)->assertOk()
+    $this->previewTax($address, $method)->assertOk()
         ->assertJsonPath('data.tax_amount', '17.43')
         ->assertJsonPath('data.shipping_tax_included', true)
         ->assertJsonPath('data.shipping_tax_amount', '0.43')
@@ -63,7 +63,7 @@ it('returns a zero preview for an empty cart', function () {
     $this->actingAs($user);
     $address = $this->addressForUser($user, 'US');
 
-    $this->previewTax( $address)->assertOk()
+    $this->previewTax($address)->assertOk()
         ->assertJsonPath('data.tax_amount', '0.00')
         ->assertJsonPath('data.lines', []);
 });
@@ -101,7 +101,7 @@ it('surfaces a dangling class reference as its own error, never a fake zero', fu
 
     $this->cartWithItem($user, $variant->id, quantity: 1, price: 100);
 
-    $this->previewTax( $this->addressForUser($user, 'US'))
+    $this->previewTax($this->addressForUser($user, 'US'))
         ->assertStatus(500)
         ->assertJsonPath('code', 'tax.configuration.invalid_class');
 });

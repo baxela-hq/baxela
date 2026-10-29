@@ -17,11 +17,12 @@ use Modules\Core\Schemas\Language\LanguageSchema;
 class PicksTranslation
 {
     private const CACHE_KEY = 'core.language.default_id';
+
     private const CACHE_TTL = 300;
 
     /**
-     * @param  \Illuminate\Support\Collection<int, object>|null  $translations
-     *                                        (Eloquent collections extend it)
+     * @param  Collection<int, object>|null  $translations
+     *                                                      (Eloquent collections extend it)
      */
     public static function pick(
         ?Collection $translations,

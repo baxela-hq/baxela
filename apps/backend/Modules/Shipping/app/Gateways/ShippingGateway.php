@@ -4,10 +4,10 @@ namespace Modules\Shipping\Gateways;
 
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
-use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Contracts\Gateways\Shipping\DTOs\ShippingMethodQuoteDto;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Schemas\Country\CountrySchema;
+use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Models\Rate;
@@ -94,7 +94,6 @@ class ShippingGateway implements ShippingGatewayInterface
 
         return $quotes;
     }
-
 
     private function methodName(Method $method, ?int $languageId): string
     {

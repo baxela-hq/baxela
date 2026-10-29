@@ -76,7 +76,7 @@ class TaxMath
      * key so the outcome never depends on input ordering.
      *
      * @param  array<int, int>  $amounts  keyed by variant id
-     * @return array<int, int>  allocated discount per key (missing keys get 0)
+     * @return array<int, int> allocated discount per key (missing keys get 0)
      */
     public static function allocate(int $discountMinor, array $amounts): array
     {

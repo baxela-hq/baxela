@@ -4,6 +4,7 @@ namespace Modules\Payment\Gateways;
 
 use Modules\Payment\Exceptions\PaymentException;
 use Stripe\Checkout\Session;
+use Stripe\Refund;
 use Stripe\StripeClient;
 
 /**
@@ -25,7 +26,7 @@ class StripeCheckout
     /**
      * @param  array<string, mixed>  $params  e.g. ['payment_intent' => ..., 'amount' => ...]
      */
-    public function createRefund(array $params, ?string $idempotencyKey = null): \Stripe\Refund
+    public function createRefund(array $params, ?string $idempotencyKey = null): Refund
     {
         $options = is_null($idempotencyKey) ? [] : ['idempotency_key' => $idempotencyKey];
 

@@ -3,13 +3,15 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
-use Modules\Core\Models\Currency;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 use Modules\Cart\Tests\Feature\HelperTrait;
+use Modules\Core\Models\Currency;
+use Modules\Inventory\Models\InventoryStock;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderSchema;
+use Modules\Shipping\Models\Method;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -57,7 +59,7 @@ it('checks out a cart: order created, stock taken, cart torn down, shipping quot
         ->and((float) $order->{OrderSchema::TOTAL_AMOUNT})->toBe(305.0) // 150 × 2 + 5
         ->and($order->{OrderSchema::SHIPPING_METHOD_NAME})->toBe('Express')
         // stock reserved by the checkout
-        ->and((int) Modules\Inventory\Models\InventoryStock::query()->where('variant_id', $variant->id)->value('quantity'))->toBe(8)
+        ->and((int) InventoryStock::query()->where('variant_id', $variant->id)->value('quantity'))->toBe(8)
         // the cart and its items are gone
         ->and(Cart::query()->where(CartSchema::USER_ID, $user->id)->exists())->toBeFalse()
         ->and(CartItem::query()->where(CartItemSchema::CART_ID, $cart->id)->count())->toBe(0);
@@ -106,7 +108,7 @@ it('rejects checkout when stock no longer covers the cart', function () {
 
     expect(Order::count())->toBe(0)
         // nothing was decremented and the cart survives for a retry
-        ->and((int) Modules\Inventory\Models\InventoryStock::query()->where('variant_id', $variant->id)->value('quantity'))->toBe(3)
+        ->and((int) InventoryStock::query()->where('variant_id', $variant->id)->value('quantity'))->toBe(3)
         ->and($cart->items()->count())->toBe(1);
 });
 
@@ -118,7 +120,7 @@ it('rejects checkout with a shipping method that does not quote for the address 
     userCartWithItem($user, $variant->id);
     $address = $this->addressForUser($user);
 
-    $dormantMethod = \Modules\Shipping\Models\Method::factory()->create(['is_active' => false]);
+    $dormantMethod = Method::factory()->create(['is_active' => false]);
 
     $this->postJson($this->baseUrl('/user/checkout'), [
         'address_id' => $address->id,

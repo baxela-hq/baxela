@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductComment;
-use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 use Modules\Catalog\Support\RecalculatesProductRating;

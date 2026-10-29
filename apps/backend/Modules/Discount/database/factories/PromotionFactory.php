@@ -4,9 +4,9 @@ namespace Modules\Discount\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Discount\Models\Promotion;
+use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 use Modules\Discount\Schemas\Promotion\PromotionSchema;
 use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
-use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 
 class PromotionFactory extends Factory
 {
