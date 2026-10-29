@@ -81,3 +81,33 @@ it('hides inactive menus from the public tree', function () {
     $this->getJson($this->baseUrl('/public/menus/footer'))
         ->assertStatus(404);
 });
+
+it('updates a menu and its links, then deletes both', function () {
+    $this->actingAs($this->superAdminUser());
+    TestCase::defaultLanguage();
+
+    $menuId = $this->postJson($this->baseUrl('/admin/menus'), menuPayload('footer'))
+        ->assertCreated()->json('data.id');
+
+    $this->patchJson($this->baseUrl('/admin/menus/'.$menuId), menuPayload('footer'))
+        ->assertOk();
+
+    $linkId = $this->postJson($this->baseUrl('/admin/menus/'.$menuId.'/links'), linkPayload(null, '/about'))
+        ->assertCreated()->json('data.id');
+
+    $this->patchJson($this->baseUrl('/admin/menus/'.$menuId.'/links/'.$linkId), linkPayload(null, '/about-us'))
+        ->assertOk();
+
+    $this->deleteJson($this->baseUrl('/admin/menus/'.$menuId.'/links/'.$linkId))->assertNoContent();
+    $this->deleteJson($this->baseUrl('/admin/menus/'.$menuId))->assertNoContent();
+
+    expect(Menu::query()->whereKey($menuId)->exists())->toBeFalse();
+});
+
+it('denies menu management without permissions', function () {
+    $this->actingAs(\Modules\Auth\Models\User::factory()->create(['is_active' => true]));
+    TestCase::defaultLanguage();
+
+    $this->getJson($this->baseUrl('/admin/menus'))->assertStatus(403);
+    $this->postJson($this->baseUrl('/admin/menus'), menuPayload('sidebar'))->assertStatus(403);
+});

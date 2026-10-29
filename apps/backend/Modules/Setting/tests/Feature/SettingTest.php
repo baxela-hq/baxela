@@ -78,3 +78,11 @@ it('syncs the default language and currency flags onto the core records', functi
         ->and($newCurrency->refresh()->{CurrencySchema::IS_DEFAULT})->toBeTrue()
         ->and($oldCurrency->refresh()->{CurrencySchema::IS_DEFAULT})->toBeFalse();
 });
+
+it('denies setting writes without permissions', function () {
+    $this->actingAs(\Modules\Auth\Models\User::factory()->create(['is_active' => true]));
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'title', 'value' => 'Nope'],
+    ])->assertStatus(403);
+});
