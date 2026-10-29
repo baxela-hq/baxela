@@ -135,10 +135,11 @@ No tax provider is integrated; calculation is local and fully self-hosted:
   (storefront server, runtime) and `VITE_SENTRY_DSN` (admin, build arg).
   See [LOGGING.md](LOGGING.md) for capture policy, privacy notes and smoke
   tests. Alternatives (Bugsnag, Flare, GlitchTip) would need new integrations.
-- **Object storage (S3-compatible)** — `AWS_*` env vars, the `s3` disk config, and the
-  `S3` value in the media disk enum all exist, but the `league/flysystem-aws-s3` adapter
-  is **not installed** and media code currently writes to the local `public` disk only.
-  Options once enabled: AWS S3, Cloudflare R2, DigitalOcean Spaces, or self-hosted MinIO.
+- **Object storage (S3-compatible)** — SHIPPED (2026-10-29): the
+  `league/flysystem-aws-s3-v3` adapter is installed; uploads follow
+  `FILESYSTEM_DISK` (set `s3` + the `AWS_*` env vars) and each media row records its
+  disk, with URL resolution and deletion both disk-aware. Backends: AWS S3, Cloudflare
+  R2, DigitalOcean Spaces, or self-hosted MinIO.
 - **Google Fonts** — the admin panel loads Inter & Manrope from
   `fonts.googleapis.com` (`apps/admin/index.html`). Self-hosting the font files would
   remove this last external frontend dependency (the storefront CSP already forbids

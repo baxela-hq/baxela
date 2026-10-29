@@ -21,7 +21,9 @@ See `/docs/modules.md`
 ## 📚 Documentation
 - `/docs/modules.md` — the 19 modules
 - `/docs/flows` — order flow, order state machine, payment flow, promotion price resolution
-- Bruno API collection at the repo root (`api/bruno/`) — the de-facto API reference
+- `/docs/api` — interactive OpenAPI docs (Scramble; local-only by default), JSON at
+  `/docs/api.json`
+- Bruno API collection at the repo root (`api/bruno/`)
 
 ## 🚀 Installation
 ```bash
@@ -33,7 +35,12 @@ docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 ## ⚙️Configuration
-Development runs from the repo root (`docker-compose.yml`). For production see
+Development runs from the repo root (`docker-compose.yml`).
+
+**Media storage**: uploads go to the default filesystem disk (`public` locally). For S3,
+set `FILESYSTEM_DISK=s3` plus the `AWS_*` variables (`AWS_ACCESS_KEY_ID`,
+`AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, `AWS_BUCKET`, `AWS_URL` if fronted by a
+CDN) — each media row records its disk and URLs/deletes resolve against it. For production see
 `docker-compose.prod.yml` and [`infrastructure/docker/production/README.md`](../../infrastructure/docker/production/README.md);
 shared-hosting deploys are covered by `infrastructure/sharedhosting/`.
 

@@ -54,9 +54,18 @@ longer allowed to fail silently.
 
 Suggested commits: `ci(infra): unblock e2e first run`, `chore(monorepo): ignore known test dsn in gitleaks`
 
-## Part B — The embarrassing pages (point 4) — ~2–3 hours
+## Part B — The embarrassing pages (point 4) — DONE 2026-10-29
 
-Execute `docs/plans/phase-1-alpha-hardening.md` §1.8 exactly (keep `/catalog/attributes/*`):
+Executed per `docs/plans/phase-1-alpha-hardening.md` §1.8 (kept `/catalog/attributes/*`
+and the storefront's REAL customer auth pages — signup/forgot-password/enter-otp are
+customer features, not mocks). Removed: admin `sign-in-2`/`sign-up`/`forgot-password`/
+`otp` (all template mocks — the OTP form was `showSubmittedData` + fake redirect) and
+their features; the 5 template settings subpages (`/settings` now redirects to
+`/settings/store`); the faker-seeded `features/users` + route + `@faker-js/faker` dep;
+storefront mock saved-cards (page, component, nav entry, type member) and the orphaned
+coming-soon panel. `nav-user` dropdown re-pointed to `/settings/store` + `/notifications`
+(caught by the typed router). Storefront build green (after clearing stale `.next/dev`
+types); admin build + lint green. Original steps kept below for the record:
 
 1. Admin: remove `routes/(auth)/sign-in-2.tsx`, `sign-up.tsx`, `forgot-password.tsx`
    (+ their mock form components and link sites: `user-auth-form.tsx` forgot-password
@@ -75,7 +84,13 @@ Execute `docs/plans/phase-1-alpha-hardening.md` §1.8 exactly (keep `/catalog/at
 Suggested commits: `refactor(admin): remove template auth and settings leftovers`,
 `refactor(admin): drop faker users feature`, `refactor(storefront): remove mock saved cards`
 
-## Part C — phpstan debt, direction reversed (point 3) — ongoing, start now
+## Part C — phpstan debt, direction reversed (point 3) — CI GUARD DONE 2026-10-29
+
+`phpstan` CI job live (fails on any error the committed baseline doesn't cover — the
+baseline can only shrink now). Baseline regenerated: 3,241 patterns / 5,951 errors —
+includes one new false-positive sibling (`TestCall::freezeTime()` joining its already-
+baselined `getJson()` family). Module-by-module paydown continues at release cadence
+(smallest first: Inventory, Audit, Setting, User, Media…). Original plan below:
 
 The baseline refreshed to **3,240** entries. Target from the lifecycle doc: **< 500 by the
 beta gate**; alpha.1 ships with an honest number in the release notes.
@@ -90,7 +105,25 @@ beta gate**; alpha.1 ships with an honest number in the release notes.
 
 Suggested commits: `ci(infra): run larastan against the baseline`, `refactor(backend/{module}): clear phpstan baseline entries`
 
-## Part D — Phase 1 leftovers: Scramble, S3, Shipping/Menu tests
+## Part D — Phase 1 leftovers — DONE 2026-10-29
+
+1. **Scramble SHIPPED**: `config/scramble.php` scoped to `api/v1` + bearer via
+   `MiddlewareAuthSecurityStrategy`; `/docs/api` serves **186 paths** (verified live,
+   including the new currency endpoints); 15 untyped controllers given return types;
+   Pint run repo-wide (69 files reformatted — the tree had drifted from its own style);
+   CI exports `openapi.json` as an artifact; README/AGENTS API-docs claims restored
+   (true again). Docs access stays local-only via RestrictedDocsAccess.
+2. **S3 media SHIPPED**: `league/flysystem-aws-s3-v3` installed (and a pre-existing
+   `symfony/mime` CVE patched — composer audit clean); `MediaResource` URLs and
+   `DeleteMediaAction` now resolve against the RECORD's disk (two real bugs);
+   3 new `Storage::fake('s3')` tests; README + THIRD_PARTY_SERVICES docs updated.
+3. **Tests SHIPPED**: Shipping admin CRUD + transitions (6 tests), Menu lifecycle +
+   permissions (2), Setting permissions (1) — and they caught REAL latent bugs:
+   unguarded optional `position` in 4 zone/method actions (any client omitting it
+   500'd), unguarded optional carrier/tracking/notes keys in shipment create/update,
+   the media factory's RANDOM disk (fixture rows claiming s3 → real adapter hit),
+   and the order factory's random statuses. Full suite: **901 passed / 2,961
+   assertions**. Original steps below:
 
 Execute the phase-1 plan sections verbatim (they are still accurate):
 
@@ -156,6 +189,27 @@ Suggested commit: `docs(monorepo): honest multi-currency claim and full feature 
 
 Preconditions (all previous parts done): Phase 1 exit criteria ticked, CI green
 incl. e2e without `continue-on-error`, history scan clean.
+
+### Part G.0 — Demo redeployment (the owner's "deploy at the end" step)
+
+Owner decision 2026-10-29: the demo gets redeployed on the final alpha code as the
+LAST build step, before any launch channel fires. Current state (owner-clarified 2026-10-29): `demo.baxela.com` serves a frontend
+shell (no backend behind it — no product data renders), and the backend demo is NOT
+deployed yet; the deploy stays here at the end per the owner's decision. Until it
+ships, treat the Live Demo links as "storefront shell" — if that reads as
+overclaiming before launch, soften the README wording (truth discipline).
+
+- [ ] Deploy via `docker-compose.prod.yml` (single-server) on the alpha tag's code
+- [ ] Run the module seeders in the documented order (develop README §Seeding) or
+      carry over a curated demo dataset
+- [ ] Demo hardening: throwable admin password, `SCRAMBLE_DOCS_ENABLED=false`,
+      Sentry DSNs wired, consider a scheduled demo-DB reset (cron on the host)
+- [ ] Smoke-check on the public URL: browse → PDP → cart → checkout with the manual
+      payment method (the e2e spec proves the flow; this is the public-URL check)
+- [ ] Note: the E2E CI failures are UNRELATED to the demo — that workflow boots its
+      own compose stack on the GitHub runner and only touches localhost; the failed
+      step is the runner's own `app` container first boot (still awaiting the
+      `compose-logs.txt` artifact tail from run 40767649598 to diagnose)
 
 1. Execute `docs/plans/phase-2-launch.md` in full — tag **`v0.1.0-alpha.1`** (marked
    pre-release), assets (the launch GIF should literally be a screen recording of the
