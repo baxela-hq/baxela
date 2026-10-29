@@ -75,6 +75,38 @@ jobs:
       - name: Run tests
         run: vendor/bin/pest
 
+      - name: Export OpenAPI document
+        run: php artisan scramble:export
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: openapi
+          path: apps/backend/api.json
+          retention-days: 30
+
+  # Larastan against the committed baseline — fails on any error the
+  # baseline doesn't already cover, so the baseline only ever shrinks.
+  phpstan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/backend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, bcmath, gd
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run static analysis
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
   admin:
     runs-on: ubuntu-latest
     defaults:
