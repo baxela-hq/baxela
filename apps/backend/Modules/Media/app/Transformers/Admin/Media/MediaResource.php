@@ -19,7 +19,8 @@ class MediaResource extends JsonResource
             MediaSchema::USER_ID => $this->resource->{MediaSchema::USER_ID},
             MediaSchema::FOLDER_ID => $this->resource->{MediaSchema::FOLDER_ID},
             MediaSchema::DISK => $this->resource->{MediaSchema::DISK},
-            MediaSchema::RES_URL => Storage::url($this->resource->{MediaSchema::PATH}),
+            MediaSchema::RES_URL => Storage::disk($this->resource->{MediaSchema::DISK})
+                ->url($this->resource->{MediaSchema::PATH}),
             MediaSchema::PATH => $this->resource->{MediaSchema::PATH},
             MediaSchema::NAME => $this->resource->{MediaSchema::NAME},
             MediaSchema::FILENAME => $this->resource->{MediaSchema::FILENAME},

@@ -16,7 +16,7 @@ class DeleteMediaAction extends AbstractMediaAction
             ->findOrFail($id);
 
         try {
-            Storage::delete($record->{MediaSchema::PATH});
+            Storage::disk($record->{MediaSchema::DISK})->delete($record->{MediaSchema::PATH});
 
             $delete = $record->delete();
             if ($delete) {

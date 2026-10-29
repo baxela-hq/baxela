@@ -22,7 +22,9 @@ class MediaFactory extends Factory
     {
         return [
             MediaSchema::USER_ID => $this->faker->randomDigitNotZero(),
-            MediaSchema::DISK => $this->faker->randomElement(MediaDiskEnum::cases()),
+            // Deterministic disk: resource URLs and deletes resolve against
+            // the record's disk, so random s3 rows would hit a real adapter.
+            MediaSchema::DISK => MediaDiskEnum::PUBLIC->value,
             MediaSchema::PATH => $this->faker->filePath(),
             MediaSchema::NAME => $this->faker->words(2, true),
             MediaSchema::FILENAME => $this->faker->slug(1).'.'.$this->faker->fileExtension(),
