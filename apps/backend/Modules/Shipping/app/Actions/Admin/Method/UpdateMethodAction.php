@@ -23,7 +23,7 @@ class UpdateMethodAction
             $record->update([
                 MethodSchema::CODE => $data[MethodSchema::CODE],
                 MethodSchema::IS_ACTIVE => $data[MethodSchema::IS_ACTIVE],
-                MethodSchema::POSITION => $data[MethodSchema::POSITION],
+                MethodSchema::POSITION => $data[MethodSchema::POSITION] ?? 0,
             ]);
 
             $record->translations()->delete();

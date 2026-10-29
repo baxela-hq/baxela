@@ -21,7 +21,7 @@ class CreateMethodAction
             $record = Method::query()->create([
                 MethodSchema::CODE => $data[MethodSchema::CODE],
                 MethodSchema::IS_ACTIVE => $data[MethodSchema::IS_ACTIVE],
-                MethodSchema::POSITION => $data[MethodSchema::POSITION],
+                MethodSchema::POSITION => $data[MethodSchema::POSITION] ?? 0,
             ]);
 
             foreach ($data[MethodSchema::RES_TRANSLATIONS] as $translation) {

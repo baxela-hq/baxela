@@ -36,10 +36,10 @@ class UpdateShipmentAction
 
             $body = [
                 ShipmentSchema::ORDER_ID => $data[ShipmentSchema::ORDER_ID],
-                ShipmentSchema::CARRIER_NAME => $data[ShipmentSchema::CARRIER_NAME],
-                ShipmentSchema::TRACKING_NUMBER => $data[ShipmentSchema::TRACKING_NUMBER],
-                ShipmentSchema::TRACKING_URL => $data[ShipmentSchema::TRACKING_URL],
-                ShipmentSchema::NOTES => $data[ShipmentSchema::NOTES],
+                ShipmentSchema::CARRIER_NAME => $data[ShipmentSchema::CARRIER_NAME] ?? null,
+                ShipmentSchema::TRACKING_NUMBER => $data[ShipmentSchema::TRACKING_NUMBER] ?? null,
+                ShipmentSchema::TRACKING_URL => $data[ShipmentSchema::TRACKING_URL] ?? null,
+                ShipmentSchema::NOTES => $data[ShipmentSchema::NOTES] ?? null,
                 ShipmentSchema::STATUS => $status,
             ];
 

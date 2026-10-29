@@ -21,7 +21,7 @@ class CreateZoneAction
             $record = Zone::query()->create([
                 ZoneSchema::NAME => $data[ZoneSchema::NAME],
                 ZoneSchema::IS_ACTIVE => $data[ZoneSchema::IS_ACTIVE],
-                ZoneSchema::POSITION => $data[ZoneSchema::POSITION],
+                ZoneSchema::POSITION => $data[ZoneSchema::POSITION] ?? 0,
             ]);
 
             $record->countries()->sync($data[ZoneSchema::COUNTRY_CODES] ?? []);
