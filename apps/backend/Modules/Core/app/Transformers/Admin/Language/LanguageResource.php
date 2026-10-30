@@ -22,6 +22,9 @@ class LanguageResource extends JsonResource
             Schema::CODE3 => $this->{Schema::CODE3},
             Schema::IS_RTL => $this->{Schema::IS_RTL},
             Schema::IS_ACTIVE => $this->{Schema::IS_ACTIVE},
+            // Whether locale files ship for this code (core.implemented_locales)
+            // — the admin locks activation of languages that are not implemented.
+            'is_implemented' => in_array($this->{Schema::CODE}, config('core.implemented_locales', []), true),
             Schema::IS_DEFAULT => $this->{Schema::IS_DEFAULT},
             Schema::POSITION => $this->{Schema::POSITION},
             Schema::DATE_FORMAT => $this->{Schema::DATE_FORMAT},

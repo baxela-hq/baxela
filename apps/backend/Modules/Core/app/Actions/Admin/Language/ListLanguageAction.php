@@ -8,11 +8,18 @@ use Modules\Core\Schemas\Language\LanguageSchema;
 
 class ListLanguageAction
 {
-    public function handle(): Collection
+    /**
+     * Active languages by default (every translation tab consumes this);
+     * the management page asks for all rows to reveal inactive ones.
+     */
+    public function handle(bool $all = false): Collection
     {
-        return Language::query()
-            ->where(LanguageSchema::IS_ACTIVE, true)
-            ->orderBy(LanguageSchema::POSITION)
-            ->get();
+        $query = Language::query();
+
+        if (! $all) {
+            $query->where(LanguageSchema::IS_ACTIVE, true);
+        }
+
+        return $query->orderBy(LanguageSchema::POSITION)->get();
     }
 }

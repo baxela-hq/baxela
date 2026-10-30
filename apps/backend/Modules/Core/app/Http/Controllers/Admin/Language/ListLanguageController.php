@@ -14,6 +14,8 @@ class ListLanguageController extends Controller
 
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        return LanguageResource::collection($this->action->handle());
+        return LanguageResource::collection(
+            $this->action->handle($request->boolean('all'))
+        );
     }
 }
