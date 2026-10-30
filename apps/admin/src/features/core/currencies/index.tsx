@@ -5,6 +5,7 @@ import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
 import { SkeletonWidget } from '@/components/shared/skeleton-widget'
 import { DataTable } from './components/data-table'
+import { PrimaryButtons } from './components/primary-buttons'
 import { Dialogs } from './components/dialogs'
 import { Provider } from './components/provider'
 import { Locales } from './data/routes'
@@ -39,6 +40,7 @@ export function Currencies() {
               })}
             </p>
           </div>
+          <PrimaryButtons />
         </div>
         {isLoading && <SkeletonWidget />}
         {isSuccess && data && <DataTable data={data} />}

@@ -7,6 +7,8 @@ export type CurrencyRow = Currency
 // string with 1–8 fraction digits, non-zero (the base currency is pinned
 // to 1 server-side and is never editable from the UI).
 export const formSchema = z.object({
+  // Set at creation only — the edit drawer keeps it read-only
+  code: z.string().length(3, 'invalid-code').regex(/^[A-Z]{3}$/, 'invalid-code'),
   name: z.string().min(1, 'required').max(100),
   native_name: z.string().max(100),
   symbol: z.string().max(10),
@@ -22,6 +24,7 @@ export type CurrencyForm = z.infer<typeof formSchema>
 export function buildEditValues(currentRow?: CurrencyRow): CurrencyForm {
   if (!currentRow) {
     return {
+      code: '',
       name: '',
       native_name: '',
       symbol: '',
@@ -32,6 +35,7 @@ export function buildEditValues(currentRow?: CurrencyRow): CurrencyForm {
   }
 
   return {
+    code: currentRow.code,
     name: currentRow.name,
     native_name: currentRow.native_name ?? '',
     symbol: currentRow.symbol ?? '',

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type CurrencyRow } from '../data/schema'
 
-type CurrenciesDialogType = 'edit'
+type CurrenciesDialogType = 'add' | 'edit'
 
 type CurrenciesContextType = {
   open: CurrenciesDialogType | null

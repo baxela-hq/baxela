@@ -4,19 +4,28 @@ import { useCurrenciesDialog } from './provider'
 export function Dialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useCurrenciesDialog()
 
-  if (!currentRow) return null
-
   return (
-    <MutateDrawer
-      key={`currency-update-${currentRow.id}`}
-      open={open === 'edit'}
-      onOpenChange={() => {
-        setOpen('edit')
-        setTimeout(() => {
-          setCurrentRow(null)
-        }, 500)
-      }}
-      currentRow={currentRow}
-    />
+    <>
+      {/* create — no currentRow */}
+      <MutateDrawer
+        key='currency-create'
+        open={open === 'add'}
+        onOpenChange={() => setOpen('add')}
+      />
+
+      {currentRow && (
+        <MutateDrawer
+          key={`currency-update-${currentRow.id}`}
+          open={open === 'edit'}
+          onOpenChange={() => {
+            setOpen('edit')
+            setTimeout(() => {
+              setCurrentRow(null)
+            }, 500)
+          }}
+          currentRow={currentRow}
+        />
+      )}
+    </>
   )
 }

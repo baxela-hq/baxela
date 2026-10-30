@@ -1,4 +1,4 @@
-import { getRequest, patchRequest } from "@/shared/lib/api-client";
+import { getRequest, patchRequest, postRequest } from "@/shared/lib/api-client";
 import type { Currency } from "@/shared/types/locale.types";
 import type { AllResponse } from "@/shared/types/common.types";
 import type { CurrencyForm } from "../data/schema";
@@ -20,4 +20,7 @@ export function updateCurrency(
     `${BASE_URL}/${id}`,
     data
   );
+}
+export function createCurrency(data: Partial<CurrencyForm>) {
+  return postRequest<Currency, Partial<CurrencyForm>>(BASE_URL, data)
 }

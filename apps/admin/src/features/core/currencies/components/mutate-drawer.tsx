@@ -37,12 +37,12 @@ import {
   type CurrencyForm,
   type CurrencyRow,
 } from '../data/schema'
-import { useUpdateCurrency } from '../hooks/use-currency-mutations'
+import { useCreateCurrency, useUpdateCurrency } from '../hooks/use-currency-mutations'
 
 type MutateDrawerProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: CurrencyRow
+  currentRow?: CurrencyRow
 }
 
 export function MutateDrawer({
@@ -56,9 +56,10 @@ export function MutateDrawer({
   const { tLabel, tHelpText } = useAppTranslation(Locales.CURRENCY)
 
   const entityName = { singular: tLabel('currency') }
+  const isUpdate = !!currentRow
   // The base currency defines the rate scale — its rate is pinned to 1
   // server-side, so the field stays read-only here.
-  const isBase = currentRow.is_default
+  const isBase = currentRow?.is_default ?? false
 
   const form = useForm<CurrencyForm>({
     resolver: zodResolver(formSchema),
@@ -70,17 +71,19 @@ export function MutateDrawer({
   }, [currentRow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const updateCurrency = useUpdateCurrency()
+  const createCurrency = useCreateCurrency()
 
   const onSubmit = (data: CurrencyForm) => {
-    updateCurrency.mutate(
-      { id: currentRow.id, data },
-      {
-        onSuccess: () => {
-          onOpenChange(false)
-          form.reset()
-        },
-      }
-    )
+    const onSuccess = () => {
+      onOpenChange(false)
+      form.reset()
+    }
+
+    if (currentRow) {
+      updateCurrency.mutate({ id: currentRow.id, data }, { onSuccess })
+    } else {
+      createCurrency.mutate(data, { onSuccess })
+    }
   }
 
   return (
@@ -94,10 +97,14 @@ export function MutateDrawer({
       <SheetContent className='flex flex-col'>
         <SheetHeader className='text-start'>
           <SheetTitle>
-            {tPageTitle('form.title_edit', {
-              entity: entityName.singular,
-              id: currentRow.id?.toString(),
-            })}
+            {isUpdate
+              ? tPageTitle('form.title_edit', {
+                  entity: entityName.singular,
+                  id: currentRow.id?.toString(),
+                })
+              : tPageTitle('form.title_create', {
+                  entity: entityName.singular,
+                })}
           </SheetTitle>
           <SheetDescription>{tPageTitle('form.subtitle')}</SheetDescription>
         </SheetHeader>
@@ -107,13 +114,30 @@ export function MutateDrawer({
             onSubmit={form.handleSubmit(onSubmit)}
             className='flex-1 space-y-6 overflow-y-auto px-4'
           >
-            <FormItem>
-              <FormLabel>{tLabel('code')}</FormLabel>
-              <FormControl>
-                <Input value={currentRow.code} disabled />
-              </FormControl>
-              <FormDescription>{tHelpText('code')}</FormDescription>
-            </FormItem>
+            <FormField
+              control={form.control}
+              name='code'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{tLabel('code')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      value={field.value ?? ''}
+                      disabled={isUpdate}
+                      maxLength={3}
+                      onChange={(event) =>
+                        field.onChange(
+                          event.target.value.toUpperCase().replace(/[^A-Z]/g, '')
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormDescription>{tHelpText('code')}</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
