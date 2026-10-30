@@ -1,12 +1,27 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { Header } from '@/components/layout/header'
+import { HeaderActions } from '@/components/layout/header-actions'
+import { Main } from '@/components/layout/main'
+import { Search } from '@/components/search'
 
 /**
- * Layout shell for the settings section — subpages render through the
- * Outlet. Bare /settings relocates to the store settings via the index
- * route; the redirect must live THERE, never on this layout: a parent
- * beforeLoad runs for every child match and would loop /settings/store
- * onto itself.
+ * Settings section shell: standard app chrome (header + main) around the
+ * subpages. The template's sidebar-nav is gone — the section is a single
+ * page now — but the page must not lose the app header, which is exactly
+ * what a bare Outlet did. Bare /settings redirects to /settings/store via
+ * the index route (never redirect on a layout: a parent beforeLoad runs
+ * for every child match and would loop the child onto itself).
  */
 export const Route = createFileRoute('/_authenticated/settings')({
-  component: Outlet,
+  component: () => (
+    <>
+      <Header fixed>
+        <Search />
+        <HeaderActions />
+      </Header>
+      <Main>
+        <Outlet />
+      </Main>
+    </>
+  ),
 })
