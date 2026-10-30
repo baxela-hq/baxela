@@ -30,6 +30,7 @@ export interface Language {
   "is_rtl": boolean,
   "is_active": boolean,
   "is_default": boolean,
+  "is_implemented": boolean,
   "position": number,
   "date_format": string,
   "time_format": string,

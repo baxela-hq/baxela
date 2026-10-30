@@ -52,7 +52,8 @@
     "tax": "مالیات",
     "tax-classes": "دسته‌های مالیات",
     "tax-rates": "نرخ‌های مالیات",
-    "returns": "مرجوعی‌ها"
+    "returns": "مرجوعی‌ها",
+    "languages": "زبان‌ها"
   },
   "dialog": {
     "sign-out": {

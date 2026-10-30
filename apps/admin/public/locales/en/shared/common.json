@@ -85,7 +85,8 @@
     "placeholders": {
       "input": "Enter a value here",
       "select": "Select an option",
-      "textarea": "Write here"
+      "textarea": "Write here",
+      "search": "Search…"
     },
     "help_texts": {},
     "statuses": {},

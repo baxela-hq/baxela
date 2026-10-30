@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "language": "Langue",
+      "languages": "Langues",
+      "code": "Code",
+      "name": "Nom",
+      "native-name": "Nom natif",
+      "default": "Par défaut",
+      "active": "Actif"
+    },
+    "statuses": {
+      "rtl": "RTL",
+      "is-default": "Par défaut"
+    },
+    "help_texts": {
+      "default-lock": "La langue par défaut est toujours active — changez d’abord la langue par défaut dans les paramètres.",
+      "not-implemented": "Pas encore implémentée — cette langue n’a pas de fichiers de traduction dans cette version."
+    }
+  }
+}

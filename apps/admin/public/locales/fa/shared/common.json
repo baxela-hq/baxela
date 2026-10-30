@@ -85,7 +85,8 @@
     "placeholders": {
       "input": "مقداری وارد کنید",
       "select": "یک گزینه انتخاب کنید",
-      "textarea": "اینجا بنویسید"
+      "textarea": "اینجا بنویسید",
+      "search": "جستجو…"
     },
     "help_texts": {},
     "statuses": {},

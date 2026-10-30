@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "language": "Idioma",
+      "languages": "Idiomas",
+      "code": "Código",
+      "name": "Nombre",
+      "native-name": "Nombre nativo",
+      "default": "Predeterminado",
+      "active": "Activo"
+    },
+    "statuses": {
+      "rtl": "RTL",
+      "is-default": "Predeterminado"
+    },
+    "help_texts": {
+      "default-lock": "El idioma predeterminado siempre está activo; cambia el predeterminado en Configuración primero.",
+      "not-implemented": "Aún no implementado: este idioma no tiene archivos de traducción en esta versión."
+    }
+  }
+}

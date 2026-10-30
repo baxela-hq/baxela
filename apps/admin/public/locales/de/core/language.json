@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "language": "Sprache",
+      "languages": "Sprachen",
+      "code": "Code",
+      "name": "Name",
+      "native-name": "Nativer Name",
+      "default": "Standard",
+      "active": "Aktiv"
+    },
+    "statuses": {
+      "rtl": "RTL",
+      "is-default": "Standard"
+    },
+    "help_texts": {
+      "default-lock": "Die Standardsprache ist immer aktiv — wechsle zuerst den Shop-Standard in den Einstellungen.",
+      "not-implemented": "Noch nicht implementiert — für diese Sprache gibt es in dieser Version keine Sprachdateien."
+    }
+  }
+}

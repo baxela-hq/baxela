@@ -52,7 +52,8 @@
     "tax": "Tax",
     "tax-classes": "Tax Classes",
     "tax-rates": "Tax Rates",
-    "returns": "Returns"
+    "returns": "Returns",
+    "languages": "Languages"
   },
   "dialog": {
     "sign-out": {

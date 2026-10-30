@@ -1,4 +1,5 @@
 import {
+  Languages,
   Boxes,
   LayoutDashboard,
   Bell,
@@ -76,6 +77,11 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.currencies'),
             url: '/core/currencies',
             icon: Coins,
+          },
+          {
+            title: t('sidebar.languages'),
+            url: '/core/languages',
+            icon: Languages,
           },
           {
             title: t('sidebar.notifications-inbox'),

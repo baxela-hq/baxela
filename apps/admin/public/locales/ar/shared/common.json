@@ -85,7 +85,8 @@
     "placeholders": {
       "input": "أدخل قيمة هنا",
       "select": "اختر خيارًا",
-      "textarea": "اكتب هنا"
+      "textarea": "اكتب هنا",
+      "search": "بحث…"
     },
     "help_texts": {},
     "statuses": {},

@@ -1,0 +1,21 @@
+{
+  "form": {
+    "labels": {
+      "language": "Language",
+      "languages": "Languages",
+      "code": "Code",
+      "name": "Name",
+      "native-name": "Native Name",
+      "default": "Default",
+      "active": "Active"
+    },
+    "statuses": {
+      "rtl": "RTL",
+      "is-default": "Default"
+    },
+    "help_texts": {
+      "default-lock": "The default language is always active — switch the store default in Settings first.",
+      "not-implemented": "Not implemented yet — this language has no locale files in this release."
+    }
+  }
+}
