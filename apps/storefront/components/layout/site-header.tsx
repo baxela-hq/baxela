@@ -8,6 +8,7 @@ import { AccountMenu } from "@/components/layout/account-menu";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { CurrencySwitcher } from "@/components/layout/currency-switcher";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { fetchActiveLanguages } from "@/lib/api/site";
 import { NotificationsMenu } from "@/components/layout/notifications-menu";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { fetchMenu, fetchSettings } from "@/lib/api/site";
@@ -17,6 +18,8 @@ import { categoryItems, megaMenuColumns, navItems } from "@/lib/menu";
 import { Link } from "@/i18n/navigation";
 
 export async function SiteHeader() {
+  const languages = await fetchActiveLanguages();
+
   const t = await getTranslations("shared.layout");
   const headerMenu = await fetchMenu("header");
   const nav = (headerMenu?.links ?? []).filter((link) => link.title);
@@ -82,7 +85,7 @@ export async function SiteHeader() {
             <AccountMenu />
             <ThemeToggle />
             <CurrencySwitcher />
-            <LanguageSwitcher />
+            <LanguageSwitcher supported={languages} />
             <MobileMenu links={links} categories={categories} />
           </div>
         </div>

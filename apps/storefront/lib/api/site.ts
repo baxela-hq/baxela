@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { api } from "./client";
 import { serverApiGet } from "./server";
-import type { ApiActiveCurrency, ApiCurrency, ApiMenu, ApiSetting } from "./types";
+import type { ApiActiveCurrency, ApiActiveLanguage, ApiCurrency, ApiMenu, ApiSetting } from "./types";
 
 // Public site menus — header (nav) and footer (link columns) both come from
 // the Menu module. Returns null when the backend is unreachable so the
@@ -53,4 +53,17 @@ export const fetchActiveCurrencies = cache(
       return null;
     }
   },
+);
+
+// Languages the store actually offers (admin-controlled) — the header
+// switcher's source of truth. Empty array when the backend is unreachable;
+// the switcher then falls back to the build-time locale list.
+export const fetchActiveLanguages = cache(
+  async (): Promise<ApiActiveLanguage[]> => {
+    try {
+      return await serverApiGet<ApiActiveLanguage[]>("/core/public/languages");
+    } catch {
+      return [];
+    }
+  }
 );

@@ -494,6 +494,14 @@ export interface ApiCurrency {
  * A row of GET /core/public/currencies — the switcher's payload. The base
  * (default) currency always carries the rate it was priced in: 1.
  */
+// A language the store offers (admin-controlled active set)
+export interface ApiActiveLanguage {
+  code: string;
+  name: string;
+  native_name: string | null;
+  is_rtl: boolean;
+}
+
 export interface ApiActiveCurrency extends ApiCurrency {
   /** Decimal string with up to 8 fraction digits ("600000.00000000"). */
   exchange_rate: string;
