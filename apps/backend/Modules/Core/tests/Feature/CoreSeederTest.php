@@ -47,3 +47,17 @@ it('gives freshly-seeded inactive currencies the identity rate', function () {
     expect($gbp->{CurrencySchema::EXCHANGE_RATE})->toBe('1.00000000')
         ->and($gbp->{CurrencySchema::IS_ACTIVE})->toBeFalse();
 });
+
+it('seeds the curated six languages active on a fresh database', function () {
+    $this->seed(\Modules\Core\Database\Seeders\CoreDatabaseSeeder::class);
+
+    $active = \Modules\Core\Models\Language::query()
+        ->where(\Modules\Core\Schemas\Language\LanguageSchema::IS_ACTIVE, true)
+        ->pluck(\Modules\Core\Schemas\Language\LanguageSchema::CODE)
+        ->sort()->values()->all();
+
+    expect($active)->toBe(['ar', 'de', 'en', 'es', 'fa', 'fr'])
+        ->and(\Modules\Core\Models\Language::query()
+            ->where(\Modules\Core\Schemas\Language\LanguageSchema::IS_DEFAULT, true)
+            ->value(\Modules\Core\Schemas\Language\LanguageSchema::CODE))->toBe('en');
+});

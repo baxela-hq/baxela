@@ -22,12 +22,16 @@ class CoreDatabaseSeeder extends Seeder
         // The curated map carries the shipped demo set (all six ship with
         // full admin/storefront translations).
         $activeLanguages = [
-            'en' => [LanguageSchema::IS_DEFAULT => true, LanguageSchema::POSITION => 1],
-            'fa' => [LanguageSchema::POSITION => 2],
-            'de' => [LanguageSchema::POSITION => 3],
-            'fr' => [LanguageSchema::POSITION => 4],
-            'es' => [LanguageSchema::POSITION => 5],
-            'ar' => [LanguageSchema::POSITION => 6],
+            'en' => [
+                LanguageSchema::IS_DEFAULT => true,
+                LanguageSchema::IS_ACTIVE => true,
+                LanguageSchema::POSITION => 1,
+            ],
+            'fa' => [LanguageSchema::IS_ACTIVE => true, LanguageSchema::POSITION => 2],
+            'de' => [LanguageSchema::IS_ACTIVE => true, LanguageSchema::POSITION => 3],
+            'fr' => [LanguageSchema::IS_ACTIVE => true, LanguageSchema::POSITION => 4],
+            'es' => [LanguageSchema::IS_ACTIVE => true, LanguageSchema::POSITION => 5],
+            'ar' => [LanguageSchema::IS_ACTIVE => true, LanguageSchema::POSITION => 6],
         ];
 
         $languages = array_map(function (array $row) use ($activeLanguages) {
