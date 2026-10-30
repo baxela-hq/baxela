@@ -11,7 +11,9 @@
       "theme": "Tema",
       "themes": {
         "default": "Predeterminado (Baxela)"
-      }
+      },
+      "currency": "Moneda",
+      "languages": "Idiomas"
     },
     "statuses": {
       "name": {
@@ -21,7 +23,8 @@
         "currency_id": "Moneda predeterminada",
         "announcement_text": "Texto del anuncio",
         "announcement_bar_enabled": "Mostrar barra de anuncios",
-        "storefront-theme": "Tema de la tienda"
+        "storefront-theme": "Tema de la tienda",
+        "timezone": "Zona horaria"
       }
     },
     "tooltips": {
@@ -31,7 +34,8 @@
         "language_id": "Idioma usado para mostrar la tienda",
         "currency_id": "Moneda usada para los precios",
         "announcement_bar_enabled": "Mostrar la barra de anuncios en la tienda",
-        "storefront-theme": "Paleta aplicada a la tienda; los valores desconocidos revierten al tema predeterminado de la tienda"
+        "storefront-theme": "Paleta aplicada a la tienda; los valores desconocidos revierten al tema predeterminado de la tienda",
+        "timezone": "Zona horaria de la tienda: anula el valor del servidor para horas de pedidos y tareas programadas."
       }
     },
     "help_texts": {

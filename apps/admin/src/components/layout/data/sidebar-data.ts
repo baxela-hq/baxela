@@ -1,9 +1,8 @@
+import { hasPermission } from '@/shared/hooks/use-permissions'
 import {
-  Languages,
   Boxes,
   LayoutDashboard,
   Bell,
-  Coins,
   Inbox,
   Menu as MenuIcon,
   Newspaper,
@@ -22,16 +21,24 @@ import {
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
-import { hasPermission } from '@/shared/hooks/use-permissions'
 import { type NavItem, type SidebarData } from '../types'
 
 /** Drop nav items (and emptied collapsible groups) the user can't access. */
 function filterByPermission(items: NavItem[]): NavItem[] {
   return items
-    .filter((item) => item.permission === undefined || hasPermission(item.permission))
+    .filter(
+      (item) => item.permission === undefined || hasPermission(item.permission)
+    )
     .map((item) =>
       'items' in item && item.items
-        ? { ...item, items: item.items.filter((child) => child.permission === undefined || hasPermission(child.permission)) }
+        ? {
+            ...item,
+            items: item.items.filter(
+              (child) =>
+                child.permission === undefined ||
+                hasPermission(child.permission)
+            ),
+          }
         : item
     )
     .filter((item) => !('items' in item && item.items) || item.items.length > 0)
@@ -72,16 +79,6 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.settings'),
             url: '/settings/store',
             icon: Settings,
-          },
-          {
-            title: t('sidebar.currencies'),
-            url: '/core/currencies',
-            icon: Coins,
-          },
-          {
-            title: t('sidebar.languages'),
-            url: '/core/languages',
-            icon: Languages,
           },
           {
             title: t('sidebar.notifications-inbox'),

@@ -18,12 +18,18 @@ import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
+  SelectGroup,
+  SelectLabel,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useQuery } from '@tanstack/react-query'
+import { fetchTimezones } from './api/settings.api'
+import { CurrenciesTab } from './components/currencies-tab'
+import { LanguagesTab } from './components/languages-tab'
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
@@ -59,6 +65,12 @@ export function SettingsStore() {
 
   const { data: settings, isLoading: settingsLoading } = useSettings(search)
 
+  const { data: timezones } = useQuery({
+    queryKey: ['timezones'],
+    queryFn: fetchTimezones,
+    staleTime: Infinity,
+  })
+
   const { data: languages, isLoading: languagesLoading } = useLanguages()
 
   const { data: currencies, isLoading: currenciesLoading } = useCurrencies()
@@ -68,6 +80,7 @@ export function SettingsStore() {
   const languagesSafe = languages ?? []
   const currenciesSafe = currencies ?? []
   const settingsSafe = settings ?? []
+  const timezonesSafe = timezones ?? {}
   const isLoading = settingsLoading || languagesLoading || currenciesLoading
 
   const hasAnnouncementGroup = settingsSafe.some(
@@ -103,23 +116,26 @@ export function SettingsStore() {
       desc={tPageTitle('index.subtitle', { entity: entityName.plural })}
       contentClassName='lg:max-w-4xl'
     >
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className='space-y-8'
-        >
-          <Tabs defaultValue='general' className='w-full'>
-              <TabsList className='w-full'>
-                <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
-                {hasThemeGroup && (
-                  <TabsTrigger value='theme'>{tLabel('theme')}</TabsTrigger>
-                )}
-                {hasAnnouncementGroup && (
-                  <TabsTrigger value='announcement'>
-                    {tLabel('announcement')}
-                  </TabsTrigger>
-                )}
-              </TabsList>
+      <Tabs defaultValue='general' className='w-full'>
+          <TabsList className='w-full'>
+            <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
+            {hasThemeGroup && (
+              <TabsTrigger value='theme'>{tLabel('theme')}</TabsTrigger>
+            )}
+            {hasAnnouncementGroup && (
+              <TabsTrigger value='announcement'>
+                {tLabel('announcement')}
+              </TabsTrigger>
+            )}
+            <TabsTrigger value='currency'>{tLabel('currency')}</TabsTrigger>
+            <TabsTrigger value='languages'>{tLabel('languages')}</TabsTrigger>
+          </TabsList>
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className='space-y-8'
+            >
 
               <TabsContent value='general' className='grid gap-4'>
                 {languagesSafe.length > 0 && (
@@ -278,6 +294,51 @@ export function SettingsStore() {
                 />
               </TabsContent>
 
+              <FormField
+                control={form.control}
+                name='timezone'
+                render={({ field }) => (
+                  <FormItem className='grid gap-2'>
+                    <FormLabel htmlFor='timezone'>
+                      {tStatus('name.timezone')}
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        if (value !== '') field.onChange(value)
+                      }}
+                      value={field.value || undefined}
+                    >
+                      <FormControl>
+                        <SelectTrigger id='timezone' className='w-full'>
+                          <SelectValue placeholder={tPlaceHolder('select')} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(timezonesSafe).map(
+                          ([region, identifiers]) => (
+                            <SelectGroup key={region}>
+                              <SelectLabel>{region}</SelectLabel>
+                              {identifiers.map((identifier) => (
+                                <SelectItem
+                                  key={identifier}
+                                  value={identifier}
+                                >
+                                  {identifier}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          )
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    <FormDescription>
+                      {tTooltip('name.timezone')}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
               {hasThemeGroup && (
                 <TabsContent value='theme' className='grid gap-4'>
                   <FormField
@@ -403,25 +464,33 @@ export function SettingsStore() {
                   )}
                 </TabsContent>
               )}
-            </Tabs>
+              <div className='flex-col'>
+                <Button
+                  type='submit'
+                  className='btn'
+                  disabled={updateSettings.isPending}
+                >
+                  <LoaderIcon
+                    className={
+                      updateSettings.isPending ? 'animate-spin' : 'hidden'
+                    }
+                  />
+                  <SaveIcon />
+                  {tAction('submit')}
+                </Button>
+              </div>
+            </form>
+          </Form>
 
-            <div className='flex-col'>
-              <Button
-                type='submit'
-                className='btn'
-                disabled={updateSettings.isPending}
-              >
-                <LoaderIcon
-                  className={
-                    updateSettings.isPending ? 'animate-spin' : 'hidden'
-                  }
-                />
-                <SaveIcon />
-                {tAction('submit')}
-              </Button>
-            </div>
-        </form>
-      </Form>
+          {/* management tabs render OUTSIDE the form — their buttons must
+              never submit the settings form */}
+          <TabsContent value='currency'>
+            <CurrenciesTab />
+          </TabsContent>
+          <TabsContent value='languages'>
+            <LanguagesTab />
+          </TabsContent>
+      </Tabs>
     </ContentSection>
   )
 }

@@ -11,7 +11,9 @@
       "theme": "Design",
       "themes": {
         "default": "Standard (Baxela)"
-      }
+      },
+      "currency": "Währung",
+      "languages": "Sprachen"
     },
     "statuses": {
       "name": {
@@ -21,7 +23,8 @@
         "currency_id": "Standardwährung",
         "announcement_text": "Ankündigungstext",
         "announcement_bar_enabled": "Ankündigungsbalken anzeigen",
-        "storefront-theme": "Storefront-Design"
+        "storefront-theme": "Storefront-Design",
+        "timezone": "Zeitzone"
       }
     },
     "tooltips": {
@@ -31,7 +34,8 @@
         "language_id": "Sprache, in der die Storefront angezeigt wird",
         "currency_id": "Währung, die für Preise verwendet wird",
         "announcement_bar_enabled": "Den Ankündigungsbalken in der Storefront anzeigen",
-        "storefront-theme": "Farbpalette, die auf die Storefront angewendet wird; unbekannte Werte fallen auf den Storefront-Standard zurück"
+        "storefront-theme": "Farbpalette, die auf die Storefront angewendet wird; unbekannte Werte fallen auf den Storefront-Standard zurück",
+        "timezone": "Shop-Zeitzone — überschreibt den Server-Standard für Bestellzeiten und geplante Aufgaben."
       }
     },
     "help_texts": {

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { ApiError } from '@/shared/lib/api-error'
 import { useApplyUiLanguage } from '@/shared/hooks/use-apply-ui-language'
+import { ApiError } from '@/shared/lib/api-error'
 import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
 import { parseAndToastError } from '@/shared/lib/utils'
 import type { Currency, Language } from '@/shared/types/locale.types'

@@ -42,6 +42,7 @@ export const formSchema = z.object({
   website_description: translatableSettingSchema,
   language_id: z.string(),
   currency_id: z.string(),
+  timezone: z.string(),
   announcement_bar_enabled: z.boolean(),
   announcement_text: translatableSettingSchema,
   storefront_theme: z.enum(STOREFRONT_THEMES),
@@ -60,6 +61,7 @@ export const defaultValues: SettingsForm = {
   website_description: { value: '', translations: [] },
   language_id: '',
   currency_id: '',
+  timezone: 'UTC',
   announcement_bar_enabled: false,
   announcement_text: { value: '', translations: [] },
   storefront_theme: DEFAULT_STOREFRONT_THEME,
@@ -87,13 +89,17 @@ export function buildSettingsValues(
   const byName = new Map(settings.map((setting) => [setting.name, setting]))
 
   return {
-    website_title: buildTranslatableValues(languages, byName.get('website_title')),
+    website_title: buildTranslatableValues(
+      languages,
+      byName.get('website_title')
+    ),
     website_description: buildTranslatableValues(
       languages,
       byName.get('website_description')
     ),
     language_id: byName.get('language_id')?.value ?? '',
     currency_id: byName.get('currency_id')?.value ?? '',
+    timezone: byName.get('timezone')?.value ?? 'UTC',
     announcement_bar_enabled:
       byName.get('announcement_bar_enabled')?.value === '1' ||
       byName.get('announcement_bar_enabled')?.value === 'true',
@@ -104,7 +110,8 @@ export function buildSettingsValues(
     storefront_theme: (STOREFRONT_THEMES as readonly string[]).includes(
       byName.get('storefront_theme')?.value ?? ''
     )
-      ? (byName.get('storefront_theme')?.value as SettingsForm['storefront_theme'])
+      ? (byName.get('storefront_theme')
+          ?.value as SettingsForm['storefront_theme'])
       : DEFAULT_STOREFRONT_THEME,
   }
 }
@@ -114,7 +121,8 @@ export function buildSettingsRequest(
   languages: Language[]
 ): SettingRequest[] {
   const defaultCode =
-    (languages.find((language) => language.is_default) ?? languages[0])?.code ?? ''
+    (languages.find((language) => language.is_default) ?? languages[0])?.code ??
+    ''
 
   const resolve = (field: TranslatableSettingForm) => ({
     value:
@@ -129,7 +137,11 @@ export function buildSettingsRequest(
     { name: 'website_description', ...resolve(values.website_description) },
     { name: 'language_id', value: values.language_id },
     { name: 'currency_id', value: values.currency_id },
-    { name: 'announcement_bar_enabled', value: values.announcement_bar_enabled ? '1' : '0' },
+    { name: 'timezone', value: values.timezone || 'UTC' },
+    {
+      name: 'announcement_bar_enabled',
+      value: values.announcement_bar_enabled ? '1' : '0',
+    },
     { name: 'announcement_text', ...resolve(values.announcement_text) },
     { name: 'storefront_theme', value: values.storefront_theme },
   ]

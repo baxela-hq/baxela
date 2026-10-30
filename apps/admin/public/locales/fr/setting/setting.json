@@ -11,7 +11,9 @@
       "theme": "Thème",
       "themes": {
         "default": "Par défaut (Baxela)"
-      }
+      },
+      "currency": "Devise",
+      "languages": "Langues"
     },
     "statuses": {
       "name": {
@@ -21,7 +23,8 @@
         "currency_id": "Devise par défaut",
         "announcement_text": "Texte de l'annonce",
         "announcement_bar_enabled": "Afficher la barre d'annonce",
-        "storefront-theme": "Thème de la vitrine"
+        "storefront-theme": "Thème de la vitrine",
+        "timezone": "Fuseau horaire"
       }
     },
     "tooltips": {
@@ -31,7 +34,8 @@
         "language_id": "Langue utilisée pour afficher la vitrine",
         "currency_id": "Devise utilisée pour les prix",
         "announcement_bar_enabled": "Afficher la barre d'annonce sur la vitrine",
-        "storefront-theme": "Palette appliquée à la vitrine ; les valeurs inconnues reviennent au thème par défaut de la vitrine"
+        "storefront-theme": "Palette appliquée à la vitrine ; les valeurs inconnues reviennent au thème par défaut de la vitrine",
+        "timezone": "Fuseau horaire de la boutique — remplace la valeur serveur pour les heures de commande et les tâches planifiées."
       }
     },
     "help_texts": {

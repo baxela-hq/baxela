@@ -11,7 +11,9 @@
       "theme": "Theme",
       "themes": {
         "default": "Default (Baxela)"
-      }
+      },
+      "currency": "Currency",
+      "languages": "Languages"
     },
     "statuses": {
       "name": {
@@ -21,7 +23,8 @@
         "currency_id": "Default Currency",
         "announcement_text": "Announcement Text",
         "announcement_bar_enabled": "Show Announcement Bar",
-        "storefront-theme": "Storefront Theme"
+        "storefront-theme": "Storefront Theme",
+        "timezone": "Timezone"
       }
     },
     "tooltips": {
@@ -31,7 +34,8 @@
         "language_id": "Language used to display the storefront",
         "currency_id": "Currency used for pricing",
         "announcement_bar_enabled": "Display the announcement bar on the storefront",
-        "storefront-theme": "Palette applied to the storefront; unknown values fall back to the storefront default"
+        "storefront-theme": "Palette applied to the storefront; unknown values fall back to the storefront default",
+        "timezone": "Store timezone — applied over the server default for order times and scheduled jobs."
       }
     },
     "help_texts": {
