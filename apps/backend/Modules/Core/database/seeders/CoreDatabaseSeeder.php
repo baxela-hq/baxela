@@ -91,52 +91,52 @@ class CoreDatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }, $languages);
-        Language::query()->insert($languages);
+        // insertOrIgnore everywhere: re-running the seeder on an existing
+        // database fills gaps but never duplicates rows or overwrites
+        // admin-made changes (default flags, rates).
+        Language::query()->insertOrIgnore($languages);
 
-        $currencies = [
-            [
-                CurrencySchema::NAME => 'United States Dollar',
-                CurrencySchema::NATIVE_NAME => 'United States dollar',
-                CurrencySchema::CODE => 'USD',
-                CurrencySchema::SYMBOL => '$',
+        // Seed every world currency from the shared data file, inactive by
+        // default — the admin activates (and rates) the ones the store
+        // actually uses. The curated map below carries the demo defaults
+        // and is the ONLY place deciding what ships active.
+        $active = [
+            'USD' => [
                 CurrencySchema::IS_DEFAULT => true,
-                CurrencySchema::IS_SYMBOL_RIGHT => false,
-                CurrencySchema::DECIMAL_PLACES => 2,
-                CurrencySchema::EXCHANGE_RATE => '1.00000000',
                 CurrencySchema::IS_ACTIVE => true,
             ],
-            [
-                CurrencySchema::NAME => 'Euro',
-                CurrencySchema::NATIVE_NAME => 'Euro',
-                CurrencySchema::CODE => 'EUR',
-                CurrencySchema::SYMBOL => '€',
-                CurrencySchema::IS_DEFAULT => false,
-                CurrencySchema::IS_SYMBOL_RIGHT => false,
-                CurrencySchema::DECIMAL_PLACES => 2,
-                // Demo display rate — admin-managed, no external FX source
+            // Demo display rates — admin-managed, no external FX source
+            'EUR' => [
+                CurrencySchema::IS_ACTIVE => true,
                 CurrencySchema::EXCHANGE_RATE => '0.92000000',
-                CurrencySchema::IS_ACTIVE => true,
             ],
-            [
-                CurrencySchema::NAME => 'Iranian Rial',
-                CurrencySchema::NATIVE_NAME => 'ریال ایران',
-                CurrencySchema::CODE => 'IRR',
-                CurrencySchema::SYMBOL => '﷼',
-                CurrencySchema::IS_DEFAULT => false,
-                CurrencySchema::IS_SYMBOL_RIGHT => true,
-                CurrencySchema::DECIMAL_PLACES => 2,
-                // Demo display rate — admin-managed, no external FX source
-                CurrencySchema::EXCHANGE_RATE => '600000.00000000',
+            'IRR' => [
                 CurrencySchema::IS_ACTIVE => true,
+                CurrencySchema::EXCHANGE_RATE => '600000.00000000',
             ],
         ];
-        $currencies = array_map(function ($row) {
-            return array_merge($row, [
+
+        $currencies = array_map(function (array $row) use ($active) {
+            return array_merge([
+                CurrencySchema::NAME => $row['name'],
+                CurrencySchema::NATIVE_NAME => $row['native_name'],
+                CurrencySchema::CODE => $row['code'],
+                CurrencySchema::SYMBOL => $row['symbol'],
+                CurrencySchema::IS_SYMBOL_RIGHT => $row['is_symbol_right'],
+                CurrencySchema::DECIMAL_PLACES => $row['decimal_place'],
+                CurrencySchema::EXCHANGE_RATE => '1.00000000',
+                CurrencySchema::IS_DEFAULT => false,
+                CurrencySchema::IS_ACTIVE => false,
+            ], $active[$row['code']] ?? [], [
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }, $currencies);
-        Currency::query()->insert($currencies);
+        }, require __DIR__.'/../data/currencies.php');
+
+        // insertOrIgnore keeps the seeder idempotent and never overwrites
+        // admin-managed rates on re-runs — missing world currencies fill in.
+        Currency::query()->insertOrIgnore($currencies);
+
 
         $countries = require __DIR__.'/../data/countries.php';
 
@@ -146,6 +146,6 @@ class CoreDatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }, $countries);
-        Country::query()->insert($countries);
+        Country::query()->insertOrIgnore($countries);
     }
 }
