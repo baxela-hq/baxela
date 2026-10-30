@@ -18,6 +18,7 @@ import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
 import { Route as AuthenticatedSettingsStoreRouteImport } from './routes/_authenticated/settings/store'
@@ -118,6 +119,12 @@ const AuthenticatedSettingsRouteRoute =
     id: '/settings',
     path: '/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsIndexRoute =
+  AuthenticatedSettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
 const AuthenticatedNotificationsIndexRoute =
   AuthenticatedNotificationsIndexRouteImport.update({
@@ -463,6 +470,7 @@ export interface FileRoutesByFullPath {
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
+  '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -515,7 +523,6 @@ export interface FileRoutesByFullPath {
   '/catalog/attributes/values/$id': typeof AuthenticatedCatalogAttributesValuesIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/sign-in': typeof authSignInRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
@@ -527,6 +534,7 @@ export interface FileRoutesByTo {
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -594,6 +602,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
   '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/_authenticated/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -661,6 +670,7 @@ export interface FileRouteTypes {
     | '/settings/store'
     | '/media'
     | '/notifications'
+    | '/settings/'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -713,7 +723,6 @@ export interface FileRouteTypes {
     | '/catalog/attributes/values/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/settings'
     | '/sign-in'
     | '/401'
     | '/403'
@@ -725,6 +734,7 @@ export interface FileRouteTypes {
     | '/settings/store'
     | '/media'
     | '/notifications'
+    | '/settings'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -791,6 +801,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/store'
     | '/_authenticated/media/'
     | '/_authenticated/notifications/'
+    | '/_authenticated/settings/'
     | '/_authenticated/catalog/attributes/groups'
     | '/_authenticated/catalog/attributes/templates'
     | '/_authenticated/catalog/products/create'
@@ -917,6 +928,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/': {
+      id: '/_authenticated/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
     '/_authenticated/notifications/': {
       id: '/_authenticated/notifications/'
@@ -1308,11 +1326,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsStoreRoute: typeof AuthenticatedSettingsStoreRoute
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
 const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
   {
     AuthenticatedSettingsStoreRoute: AuthenticatedSettingsStoreRoute,
+    AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }
 
 const AuthenticatedSettingsRouteRouteWithChildren =
