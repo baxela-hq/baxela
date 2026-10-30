@@ -19,6 +19,7 @@ class ListSettingAction
             SettingNameEnum::ANNOUNCEMENT_TEXT,
             SettingNameEnum::ANNOUNCEMENT_BAR_ENABLED,
             SettingNameEnum::STOREFRONT_THEME,
+            SettingNameEnum::TIMEZONE,
         ];
 
         return $this->model

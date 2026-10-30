@@ -60,6 +60,13 @@ class SettingRequest extends FormRequest
         return [
             '*.'.SettingSchema::NAME => ['required', 'string', new Enum(SettingNameEnum::class)],
             '*.'.SettingSchema::VALUE => ['required', 'string'],
+            '*.'.SettingSchema::VALUE => ['required', 'string', function (string $attribute, mixed $value, \Closure $fail) {
+                $name = request()->input(str_replace('.'.SettingSchema::VALUE, '.'.SettingSchema::NAME, $attribute));
+                if ($name === SettingNameEnum::TIMEZONE->value
+                    && ! in_array($value, \DateTimeZone::listIdentifiers(), true)) {
+                    $fail('The timezone must be a valid timezone identifier.');
+                }
+            }],
             '*.'.SettingSchema::RES_TRANSLATIONS => ['nullable', 'array'],
             '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::LANGUAGE => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'string',
                 Rule::in(array_keys($this->languageMap))],

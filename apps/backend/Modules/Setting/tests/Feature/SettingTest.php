@@ -1,11 +1,14 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
+use Modules\Auth\Models\User;
 use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Setting\Models\Setting;
+use Modules\Setting\Support\AppliesStoreTimezone;
 use Modules\Setting\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);
@@ -80,9 +83,70 @@ it('syncs the default language and currency flags onto the core records', functi
 });
 
 it('denies setting writes without permissions', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create(['is_active' => true]));
+    $this->actingAs(User::factory()->create(['is_active' => true]));
 
     $this->patchJson($this->baseUrl('/admin/settings'), [
         ['name' => 'title', 'value' => 'Nope'],
     ])->assertStatus(403);
+});
+
+it('stores and rejects timezone settings with identifier validation', function () {
+    $this->actingAs($this->superAdminUser());
+    Setting::factory()->create(['name' => 'timezone', 'value' => 'UTC']);
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'timezone', 'value' => 'Asia/Tehran'],
+    ])->assertOk();
+
+    expect(Setting::query()
+        ->where('name', 'timezone')
+        ->value('value'))->toBe('Asia/Tehran');
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'timezone', 'value' => 'Mars/Olympus_Mons'],
+    ])->assertStatus(422);
+});
+
+it('applies the store timezone over the app default at boot', function () {
+    Setting::query()->create([
+        'name' => 'timezone',
+        'value' => 'Asia/Tehran',
+        'group' => 'general',
+        'type' => 'string',
+        'is_translatable' => false,
+    ]);
+    Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+
+    config(['app.timezone' => 'UTC']);
+
+    (new AppliesStoreTimezone)();
+
+    expect(config('app.timezone'))->toBe('Asia/Tehran')
+        ->and(date_default_timezone_get())->toBe('Asia/Tehran');
+
+    // garbage in the DB row falls back to the configured default
+    Setting::query()->where('name', 'timezone')->update(['value' => 'not-a-zone']);
+    Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+    config(['app.timezone' => 'UTC']);
+    date_default_timezone_set('UTC');
+
+    (new AppliesStoreTimezone)();
+
+    expect(config('app.timezone'))->toBe('UTC');
+});
+
+it('serves the timezone setting on the public whitelist', function () {
+    Setting::query()->create([
+        'name' => 'timezone',
+        'value' => 'UTC',
+        'group' => 'general',
+        'type' => 'string',
+        'is_translatable' => false,
+    ]);
+
+    $names = $this->getJson('api/v1/setting/public/settings')
+        ->assertOk()
+        ->collect('data')->pluck('name');
+
+    expect($names)->toContain('timezone');
 });

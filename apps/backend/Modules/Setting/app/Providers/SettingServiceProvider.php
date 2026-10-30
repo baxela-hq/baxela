@@ -4,6 +4,7 @@ namespace Modules\Setting\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Setting\Support\AppliesStoreTimezone;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -21,6 +22,9 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Store timezone overrides app.timezone when the setting exists
+        (new AppliesStoreTimezone)();
+
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();

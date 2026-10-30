@@ -3,12 +3,14 @@
 namespace Modules\Setting\Actions\Admin\Setting;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Setting\Models\Setting;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
+use Modules\Setting\Support\AppliesStoreTimezone;
 
 class UpdateSettingAction
 {
@@ -19,6 +21,9 @@ class UpdateSettingAction
 
     public function handle(array $data): Collection
     {
+        // the boot-time timezone override caches its lookup
+        Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+
         DB::beginTransaction();
 
         try {

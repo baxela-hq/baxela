@@ -35,6 +35,15 @@ class SettingDatabaseSeeder extends Seeder
                 SettingSchema::IS_TRANSLATABLE => true,
             ],
             [
+                // Store timezone — applied over Laravel's app.timezone at
+                // boot when set (see AppliesStoreTimezone). UTC default.
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::TIMEZONE,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => 'UTC',
+            ],
+            [
                 SettingSchema::GROUP => SettingGroupEnum::SEO,
                 SettingSchema::TYPE => SettingTypeEnum::TEXT,
                 SettingSchema::NAME => SettingNameEnum::WEBSITE_DESCRIPTION,
