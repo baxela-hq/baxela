@@ -17,83 +17,36 @@ class CoreDatabaseSeeder extends Seeder
     public function run(): void
     {
         // $this->call([]);
-        $languages = [
-            [
-                LanguageSchema::LOCALE => 'en-US',
-                LanguageSchema::NAME => 'English',
-                LanguageSchema::NATIVE_NAME => 'English',
-                LanguageSchema::CODE => 'en',
-                LanguageSchema::CODE3 => 'eng',
-                LanguageSchema::IS_RTL => false,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => true,
-                LanguageSchema::POSITION => 1,
-            ],
-            [
-                LanguageSchema::LOCALE => 'fa-IR',
-                LanguageSchema::NAME => 'Persian',
-                LanguageSchema::NATIVE_NAME => 'پارسی',
-                LanguageSchema::CODE => 'fa',
-                LanguageSchema::CODE3 => 'fas',
-                LanguageSchema::IS_RTL => true,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => false,
-                LanguageSchema::POSITION => 2,
-            ],
-            [
-                LanguageSchema::LOCALE => 'de-DE',
-                LanguageSchema::NAME => 'German',
-                LanguageSchema::NATIVE_NAME => 'Deutsch',
-                LanguageSchema::CODE => 'de',
-                LanguageSchema::CODE3 => 'deu',
-                LanguageSchema::IS_RTL => false,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => false,
-                LanguageSchema::POSITION => 3,
-            ],
-            [
-                LanguageSchema::LOCALE => 'fr-FR',
-                LanguageSchema::NAME => 'French',
-                LanguageSchema::NATIVE_NAME => 'Français',
-                LanguageSchema::CODE => 'fr',
-                LanguageSchema::CODE3 => 'fra',
-                LanguageSchema::IS_RTL => false,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => false,
-                LanguageSchema::POSITION => 4,
-            ],
-            [
-                LanguageSchema::LOCALE => 'es-ES',
-                LanguageSchema::NAME => 'Spanish',
-                LanguageSchema::NATIVE_NAME => 'Español',
-                LanguageSchema::CODE => 'es',
-                LanguageSchema::CODE3 => 'spa',
-                LanguageSchema::IS_RTL => false,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => false,
-                LanguageSchema::POSITION => 5,
-            ],
-            [
-                LanguageSchema::LOCALE => 'ar-SA',
-                LanguageSchema::NAME => 'Arabic',
-                LanguageSchema::NATIVE_NAME => 'العربية',
-                LanguageSchema::CODE => 'ar',
-                LanguageSchema::CODE3 => 'ara',
-                LanguageSchema::IS_RTL => true,
-                LanguageSchema::IS_ACTIVE => true,
-                LanguageSchema::IS_DEFAULT => false,
-                LanguageSchema::POSITION => 6,
-            ],
+        // Every world language from the shared data file, inactive by
+        // default — the admin activates the ones the store actually uses.
+        // The curated map carries the shipped demo set (all six ship with
+        // full admin/storefront translations).
+        $activeLanguages = [
+            'en' => [LanguageSchema::IS_DEFAULT => true, LanguageSchema::POSITION => 1],
+            'fa' => [LanguageSchema::POSITION => 2],
+            'de' => [LanguageSchema::POSITION => 3],
+            'fr' => [LanguageSchema::POSITION => 4],
+            'es' => [LanguageSchema::POSITION => 5],
+            'ar' => [LanguageSchema::POSITION => 6],
         ];
-        $languages = array_map(function ($row) {
-            return array_merge($row, [
+
+        $languages = array_map(function (array $row) use ($activeLanguages) {
+            return array_merge([
+                LanguageSchema::NAME => $row['name'],
+                LanguageSchema::NATIVE_NAME => $row['native_name'],
+                LanguageSchema::LOCALE => $row['locale'],
+                LanguageSchema::CODE => $row['code2'],
+                LanguageSchema::CODE3 => $row['code3'],
+                LanguageSchema::IS_RTL => $row['is_rtl'],
+                LanguageSchema::IS_DEFAULT => false,
+                LanguageSchema::IS_ACTIVE => false,
+                LanguageSchema::POSITION => 99,
+            ], $activeLanguages[$row['code2']] ?? [], [
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-        }, $languages);
-        // insertOrIgnore everywhere: re-running the seeder on an existing
-        // database fills gaps but never duplicates rows or overwrites
-        // admin-made changes (default flags, rates).
+        }, require __DIR__.'/../data/languages.php');
+
         Language::query()->insertOrIgnore($languages);
 
         // Seed every world currency from the shared data file, inactive by
@@ -136,7 +89,6 @@ class CoreDatabaseSeeder extends Seeder
         // insertOrIgnore keeps the seeder idempotent and never overwrites
         // admin-managed rates on re-runs — missing world currencies fill in.
         Currency::query()->insertOrIgnore($currencies);
-
 
         $countries = require __DIR__.'/../data/countries.php';
 
