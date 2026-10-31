@@ -23,6 +23,9 @@ class ActiveLanguageResource extends JsonResource
             Schema::NAME => $language->{Schema::NAME},
             Schema::NATIVE_NAME => $language->{Schema::NATIVE_NAME},
             Schema::IS_RTL => $language->{Schema::IS_RTL},
+            // Lets native clients resolve their initial language to the
+            // store's default without a second endpoint.
+            Schema::IS_DEFAULT => $language->{Schema::IS_DEFAULT},
         ];
     }
 }

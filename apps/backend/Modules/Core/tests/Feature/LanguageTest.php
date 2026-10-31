@@ -126,7 +126,8 @@ it('serves active languages publicly for the storefront switcher', function () {
         ->assertOk()
         ->assertJsonCount(1, 'data')
         ->assertJsonPath('data.0.code', 'tr')
-        ->assertJsonPath('data.0.native_name', 'Türkçe');
+        ->assertJsonPath('data.0.native_name', 'Türkçe')
+        ->assertJsonPath('data.0.is_default', false);
 });
 
 it('denies language management without permissions', function () {
