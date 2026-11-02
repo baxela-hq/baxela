@@ -1,5 +1,6 @@
 parameters:
 	ignoreErrors:
+
 		-
 			message: '#^Method Modules\\Audit\\Actions\\Admin\\AuditLog\\ListAuditLogsAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
@@ -15651,7 +15652,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 3
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
@@ -15663,25 +15664,25 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 3
+			count: 4
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 3
+			count: 4
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
@@ -15693,19 +15694,19 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$order of function adminPaymentFor expects Modules\\Order\\Models\\Order, Illuminate\\Database\\Eloquent\\Model given\.$#'
 			identifier: argument.type
-			count: 5
+			count: 6
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
-			count: 1
+			count: 2
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
-			count: 1
+			count: 2
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
@@ -15723,19 +15724,19 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 8
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 9
+			count: 10
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 5
+			count: 6
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -15747,7 +15748,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 8
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -15759,13 +15760,13 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
-			count: 5
+			count: 6
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
-			count: 5
+			count: 6
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -15861,6 +15862,12 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
 			identifier: property.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$refunded_amount\.$#'
+			identifier: property.notFound
 			count: 1
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
@@ -15871,21 +15878,27 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 15
+			count: 16
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 15
+			count: 16
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 14
+			count: 15
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
@@ -15903,6 +15916,12 @@ parameters:
 		-
 			message: '#^Function refundPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
 			count: 1
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
@@ -16841,6 +16860,18 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/NowpaymentsPaymentDriverTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Payment/tests/Unit/PaymentDriverManagerTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Payment/tests/Unit/PaymentDriverManagerTest.php
 
 		-
 			message: '#^Function paypalEvent\(\) has parameter \$resource with no value type specified in iterable type array\.$#'
