@@ -17,6 +17,9 @@
       "confirm": "Confirming registers the money as received: the payment is marked successful and its order becomes paid and moves to processing. The customer is notified.",
       "fail": "Failing marks this payment as failed. The order stays unpaid and the customer can pay it again."
     },
+    "tooltips": {
+      "refund_unsupported_driver": "This gateway's refund API isn't wired yet — issue the refund in the gateway's dashboard."
+    },
     "statuses": {
       "status": {
         "pending": "Pending",

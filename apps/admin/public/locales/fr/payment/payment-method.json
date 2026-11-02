@@ -19,13 +19,17 @@
         "active": "Active",
         "inactive": "Inactive",
         "not-configured": "Non configurée",
-        "not-registered": "Pilote manquant"
+        "not-registered": "Pilote manquant",
+        "refunds-supported": "Remboursements : intégrés",
+        "refunds-not-supported": "Remboursements : tableau de bord de la passerelle"
       }
     },
     "help_texts": {
       "active-hint": "Les méthodes actives sont proposées au paiement, ordonnées par leur position dans cette liste.",
       "not-configured": "Les identifiants manquent dans la configuration du backend ; cette méthode reste masquée au paiement jusqu'à sa configuration.",
-      "not-registered": "Aucun pilote n'est enregistré pour cette méthode dans le backend, elle ne peut donc plus être utilisée."
+      "not-registered": "Aucun pilote n'est enregistré pour cette méthode dans le backend, elle ne peut donc plus être utilisée.",
+      "refund-supported": "Les remboursements, totaux ou partiels, peuvent être émis directement depuis cette administration.",
+      "refund-not-supported": "Aucune API de remboursement n'est encore branchée pour ce pilote ; les remboursements passent par le tableau de bord de la passerelle."
     }
   }
 }

@@ -19,13 +19,17 @@
         "active": "Aktiv",
         "inactive": "Inaktiv",
         "not-configured": "Nicht konfiguriert",
-        "not-registered": "Treiber fehlt"
+        "not-registered": "Treiber fehlt",
+        "refunds-supported": "Erstattungen: integriert",
+        "refunds-not-supported": "Erstattungen: Gateway-Dashboard"
       }
     },
     "help_texts": {
       "active-hint": "Aktive Methoden werden an der Kasse angeboten, geordnet nach ihrer Position in dieser Liste.",
       "not-configured": "In der Backend-Konfiguration fehlen Zugangsdaten; diese Methode bleibt an der Kasse ausgeblendet, bis sie konfiguriert ist.",
-      "not-registered": "Für diese Methode ist im Backend kein Treiber registriert, sodass sie nicht mehr verwendet werden kann."
+      "not-registered": "Für diese Methode ist im Backend kein Treiber registriert, sodass sie nicht mehr verwendet werden kann.",
+      "refund-supported": "Vollständige und teilweise Erstattungen können direkt in dieser Administration ausgelöst werden.",
+      "refund-not-supported": "Für diesen Treiber ist noch keine Erstattungs-API angebunden; Erstattungen laufen über das Dashboard des Gateways."
     }
   }
 }

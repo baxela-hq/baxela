@@ -15,6 +15,7 @@ export const paymentMethodSchema = z.object({
   sort_order: z.number(),
   is_configured: z.boolean(),
   is_registered: z.boolean(),
+  is_refundable: z.boolean(),
 })
 export type PaymentMethod = z.infer<typeof paymentMethodSchema>
 

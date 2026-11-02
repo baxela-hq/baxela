@@ -38,6 +38,10 @@ export function MethodRow({
       ? tHelpText('not-configured')
       : tHelpText('active-hint')
 
+  const refundHint = method.is_refundable
+    ? tHelpText('refund-supported')
+    : tHelpText('refund-not-supported')
+
   return (
     <div className='flex items-center justify-between gap-4 rounded-lg border p-4 shadow-sm'>
       <div className='flex min-w-0 flex-col gap-1.5'>
@@ -47,6 +51,13 @@ export function MethodRow({
             <Badge>{tStatus('state.active')}</Badge>
           ) : (
             <Badge variant='secondary'>{tStatus('state.inactive')}</Badge>
+          )}
+          {method.is_refundable ? (
+            <Badge variant='outline'>{tStatus('state.refunds-supported')}</Badge>
+          ) : (
+            <Badge variant='secondary'>
+              {tStatus('state.refunds-not-supported')}
+            </Badge>
           )}
           {!method.is_registered && (
             <Badge variant='destructive'>
@@ -58,6 +69,7 @@ export function MethodRow({
           )}
         </div>
         <p className='text-sm text-muted-foreground'>{hint}</p>
+        <p className='text-xs text-muted-foreground'>{refundHint}</p>
       </div>
 
       <div className='flex shrink-0 items-center gap-1'>

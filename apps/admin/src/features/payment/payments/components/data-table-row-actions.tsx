@@ -21,9 +21,15 @@ type DataTableRowActionsProps = {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const { setOpen, setCurrentRow } = usePayments()
-  const { tAction } = useAppTranslation(Locales.PAYMENT)
+  const { tAction, tTooltip } = useAppTranslation(Locales.PAYMENT)
   const settleable = isSettleable(row.original.status)
   const refundable = row.original.status === 'success'
+  // Issuing needs both a successful payment and a driver with refunds wired;
+  // history stays reachable for any successful payment.
+  const canIssueRefund = refundable && row.original.is_refundable
+  const refundTooltip = refundable && !canIssueRefund
+    ? tTooltip('refund_unsupported_driver')
+    : undefined
 
   return (
     <>
@@ -66,7 +72,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            disabled={!refundable}
+            disabled={!canIssueRefund}
+            title={refundTooltip}
             onClick={() => {
               setCurrentRow(row.original)
               setOpen('refund')

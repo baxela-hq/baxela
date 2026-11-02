@@ -22,6 +22,7 @@ export const paymentSchema = z.object({
   amount: z.number(),
   currency_id: z.number().nullable(),
   status: z.enum(statuses),
+  is_refundable: z.boolean(),
   created_at: z.string(),
   updated_at: z.string(),
 })

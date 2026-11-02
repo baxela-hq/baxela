@@ -17,6 +17,9 @@
       "confirm": "Confirmar registra el dinero como recibido: el pago se marca como exitoso y su pedido pasa a pagado y se mueve a procesamiento. Se notifica al cliente.",
       "fail": "Fallar marca este pago como fallido. El pedido permanece sin pagar y el cliente puede pagarlo de nuevo."
     },
+    "tooltips": {
+      "refund_unsupported_driver": "La API de reembolsos de esta pasarela aún no está conectada; emite el reembolso desde su panel."
+    },
     "statuses": {
       "status": {
         "pending": "Pendiente",

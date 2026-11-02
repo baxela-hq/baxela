@@ -17,6 +17,9 @@
       "confirm": "Die Bestätigung registriert das Geld als erhalten: die Zahlung wird als erfolgreich markiert und ihre Bestellung wird als bezahlt markiert und in die Bearbeitung verschoben. Der Kunde wird benachrichtigt.",
       "fail": "Das Fehlschlagen markiert diese Zahlung als fehlgeschlagen. Die Bestellung bleibt unbezahlt und der Kunde kann sie erneut bezahlen."
     },
+    "tooltips": {
+      "refund_unsupported_driver": "Die Erstattungs-API dieses Gateways ist noch nicht angebunden — Erstattung im Gateway-Dashboard auslösen."
+    },
     "statuses": {
       "status": {
         "pending": "Ausstehend",

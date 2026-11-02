@@ -19,13 +19,17 @@
         "active": "Activo",
         "inactive": "Inactivo",
         "not-configured": "Sin configurar",
-        "not-registered": "Falta el controlador"
+        "not-registered": "Falta el controlador",
+        "refunds-supported": "Reembolsos: integrados",
+        "refunds-not-supported": "Reembolsos: panel de la pasarela"
       }
     },
     "help_texts": {
       "active-hint": "Los métodos activos se ofrecen en el pago, ordenados por su posición en esta lista.",
       "not-configured": "Faltan credenciales en la configuración del backend; este método permanece oculto en el pago hasta que se configure.",
-      "not-registered": "No hay ningún controlador registrado para este método en el backend, por lo que ya no se puede usar."
+      "not-registered": "No hay ningún controlador registrado para este método en el backend, por lo que ya no se puede usar.",
+      "refund-supported": "Los reembolsos, totales o parciales, se pueden emitir directamente desde esta administración.",
+      "refund-not-supported": "Este controlador aún no tiene conectada una API de reembolsos; los reembolsos se hacen desde el panel de la pasarela."
     }
   }
 }

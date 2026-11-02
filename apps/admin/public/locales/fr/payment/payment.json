@@ -17,6 +17,9 @@
       "confirm": "La confirmation enregistre l'argent comme reçu : le paiement est marqué réussi et sa commande devient payée et passe en traitement. Le client est notifié.",
       "fail": "L'échec marque ce paiement comme échoué. La commande reste non payée et le client peut la payer à nouveau."
     },
+    "tooltips": {
+      "refund_unsupported_driver": "L'API de remboursement de cette passerelle n'est pas encore branchée — effectuez le remboursement via son tableau de bord."
+    },
     "statuses": {
       "status": {
         "pending": "En attente",
