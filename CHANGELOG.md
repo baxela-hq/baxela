@@ -10,6 +10,11 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Per-driver refund capability (admin)**: drivers declare refunds via a
+  `RefundableDriver` contract marker (Stripe, PayPal, Manual today); the admin
+  methods/payments API surfaces `is_refundable`, the methods page badges it per
+  driver, and "Issue refund" disables with an explanatory tooltip on gateways
+  whose refund API isn't wired instead of failing after the click.
 - **Multi-currency groundwork (backend)**: currencies gain admin-managed
   `exchange_rate` + `is_active`; new admin create/update endpoints (permissions derive
   from route names) and public `GET /core/v1/core/public/currencies` (default-first);

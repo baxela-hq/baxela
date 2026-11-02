@@ -35,6 +35,10 @@ ambiguous gateway outcomes that an admin resolves with the verified result).
 | Manual | Bookkeeping only | Recording that the offline refund already happened |
 | Adyen, Mercado Pago, Checkout.com, NowPayments, Razorpay | Not yet | Refund attempts fail loudly (`payment.refund.not_supported`) |
 
+Capability is declared in code — drivers implement the `RefundableDriver` contract
+marker — and the admin payment-methods page shows it per driver (`is_refundable`);
+keep this table in sync with the marker, never edit one without the other.
+
 | Gateway | Env prefix | Notes |
 |---|---|---|
 | Stripe | `STRIPE_*` | Hosted Checkout; official SDK (`stripe/stripe-php`) |

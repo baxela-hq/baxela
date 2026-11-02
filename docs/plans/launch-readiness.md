@@ -178,7 +178,12 @@ Suggested commits: `feat(backend/core): add fx rate provider abstraction and syn
    don't publish — **Returns & refunds**, **8 payment gateways with webhook
    verification**, **RTL locales (fa, ar)**, **e2e + 700+ backend tests**, **Bruno
    collection (430 requests)**, **OpenAPI docs**, **shared-hosting deploys**. This is
-   point 5: claim the machinery you already own.
+   point 5: claim the machinery you already own. The gateways row carries its refund
+   footnote verbatim — never the bare claim: *"…with webhook verification; built-in
+   refunds: Stripe, PayPal, Manual — Adyen, MercadoPago, Checkout.com, Razorpay refund
+   via the gateway dashboard (driver support roadmaped); NowPayments (crypto) has no
+   provider-side refunds."* (Source of truth: the `RefundableDriver` marker, mirrored in
+   `docs/THIRD_PARTY_SERVICES.md`.)
 3. **CHANGELOG `[Unreleased]`** gains the returns/refunds + FX-sync + locales entries
    (some are under-documented today).
 4. Re-run the README truth grep from Phase 0 §0.2 — new claims must all be real.
