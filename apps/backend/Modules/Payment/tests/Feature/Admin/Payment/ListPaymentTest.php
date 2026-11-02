@@ -41,6 +41,23 @@ it('lists payments with ids and timestamps for the admin grid', function () {
         ->and($row[PaymentSchema::CREATED_AT])->not->toBeNull();
 });
 
+it('flags refund capability per payment method', function () {
+    $this->actingAs($this->superAdminUser());
+    $order = Order::factory()->create();
+    $manual = adminPaymentFor($order, PaymentStatusEnum::SUCCESS);
+    $adyen = Payment::factory()->create([
+        PaymentSchema::ORDER_ID => $order->id,
+        PaymentSchema::METHOD => PaymentMethodEnum::ADYEN,
+        PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
+        PaymentSchema::CURRENCY_ID => 2,
+    ]);
+
+    $rows = collect($this->getJson($this->baseUrl('/admin/payments'))->assertOk()->json('data'));
+
+    expect($rows->firstWhere(PaymentSchema::ID, $manual->id)[PaymentSchema::IS_REFUNDABLE])->toBeTrue()
+        ->and($rows->firstWhere(PaymentSchema::ID, $adyen->id)[PaymentSchema::IS_REFUNDABLE])->toBeFalse();
+});
+
 it('filters by status and method', function () {
     $this->actingAs($this->superAdminUser());
     $order = Order::factory()->create();

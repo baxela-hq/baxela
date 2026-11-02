@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways;
 
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 
@@ -33,6 +34,17 @@ class PaymentDriverManager
     public function isRegistered(PaymentMethodEnum $method): bool
     {
         return array_key_exists($method->value, (array) config('payment.drivers'));
+    }
+
+    /**
+     * Whether the driver's refund() is wired. Capability is declared by
+     * implementing RefundableDriver — next to the behavior itself, so the
+     * two cannot drift apart.
+     */
+    public function supportsRefund(PaymentMethodEnum $method): bool
+    {
+        return $this->isRegistered($method)
+            && $this->forMethod($method) instanceof RefundableDriver;
     }
 
     /**

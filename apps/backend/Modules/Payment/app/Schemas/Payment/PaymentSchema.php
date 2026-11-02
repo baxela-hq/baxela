@@ -31,4 +31,10 @@ class PaymentSchema
     public const string CURRENCY_ID = 'currency_id';
 
     public const string STATUS = 'status';
+
+    /**
+     * Computed wire field (no backing column): whether the payment's
+     * driver can execute refunds through the admin refund flow.
+     */
+    public const string IS_REFUNDABLE = 'is_refundable';
 }

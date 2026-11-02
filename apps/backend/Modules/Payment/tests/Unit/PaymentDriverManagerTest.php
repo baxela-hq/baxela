@@ -106,3 +106,21 @@ it('reports a driver configured only when its credentials are set', function () 
 
     expect($manager->isConfigured(PaymentMethodEnum::RAZORPAY))->toBeTrue();
 });
+
+it('reports refund support only for drivers implementing RefundableDriver', function () {
+    $manager = app(PaymentDriverManager::class);
+
+    expect($manager->supportsRefund(PaymentMethodEnum::MANUAL))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::STRIPE))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::PAYPAL))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::ADYEN))->toBeFalse()
+        ->and($manager->supportsRefund(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse()
+        ->and($manager->supportsRefund(PaymentMethodEnum::MERCADOPAGO))->toBeFalse()
+        ->and($manager->supportsRefund(PaymentMethodEnum::CHECKOUTCOM))->toBeFalse()
+        ->and($manager->supportsRefund(PaymentMethodEnum::RAZORPAY))->toBeFalse();
+
+    // An unregistered driver is never refundable, whatever its class.
+    config(['payment.drivers' => collect(config('payment.drivers'))->except('stripe')->all()]);
+
+    expect($manager->supportsRefund(PaymentMethodEnum::STRIPE))->toBeFalse();
+});

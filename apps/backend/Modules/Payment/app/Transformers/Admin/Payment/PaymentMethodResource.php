@@ -28,6 +28,7 @@ class PaymentMethodResource extends JsonResource
             PaymentMethodSchema::SORT_ORDER => $this->resource->{PaymentMethodSchema::SORT_ORDER},
             PaymentMethodSchema::IS_CONFIGURED => $manager->isRegistered($method) && $manager->isConfigured($method),
             PaymentMethodSchema::IS_REGISTERED => $manager->isRegistered($method),
+            PaymentMethodSchema::IS_REFUNDABLE => $manager->supportsRefund($method),
         ];
     }
 }

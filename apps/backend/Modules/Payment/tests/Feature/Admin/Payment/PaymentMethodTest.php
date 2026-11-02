@@ -80,6 +80,18 @@ it('flags a gateway whose credentials are missing', function () {
         ->and($stripe[PaymentMethodSchema::IS_REGISTERED])->toBeTrue();
 });
 
+it('exposes per-driver refund capability', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $rows = collect($this->getJson($this->baseUrl('/admin/methods'))->assertOk()->json('data'));
+
+    $refundable = $rows->where(PaymentMethodSchema::IS_REFUNDABLE, true)->pluck('method')->all();
+    $notRefundable = $rows->where(PaymentMethodSchema::IS_REFUNDABLE, false)->pluck('method')->all();
+
+    expect($refundable)->toEqualCanonicalizing(['manual', 'stripe', 'paypal'])
+        ->and($notRefundable)->toEqualCanonicalizing(['adyen', 'nowpayments', 'mercadopago', 'checkoutcom', 'razorpay']);
+});
+
 it('activates a method and moves its checkout position', function () {
     $this->actingAs($this->superAdminUser());
     $this->getJson($this->baseUrl('/admin/methods'))->assertOk();

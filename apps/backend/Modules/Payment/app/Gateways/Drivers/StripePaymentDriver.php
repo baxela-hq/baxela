@@ -8,7 +8,7 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
-use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
@@ -16,7 +16,7 @@ use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use UnexpectedValueException;
 
-class StripePaymentDriver implements PaymentDriverInterface
+class StripePaymentDriver implements RefundableDriver
 {
     public function __construct(protected StripeCheckout $stripe) {}
 

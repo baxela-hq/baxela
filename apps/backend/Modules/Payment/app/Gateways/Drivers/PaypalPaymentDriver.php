@@ -9,12 +9,12 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
-use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
-class PaypalPaymentDriver implements PaymentDriverInterface
+class PaypalPaymentDriver implements RefundableDriver
 {
     public function __construct(protected PaypalClient $paypal) {}
 

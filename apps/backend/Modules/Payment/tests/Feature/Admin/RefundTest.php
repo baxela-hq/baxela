@@ -63,6 +63,36 @@ it('executes a full refund through the ledger and marks the order refunded', fun
         ->and(PaymentRefund::query()->count())->toBe(1);
 });
 
+it('rejects a refund on a gateway without refund support and records the failed attempt', function () {
+    $order = Order::query()->create([
+        OrderSchema::USER_ID => 1,
+        OrderSchema::ORDER_CODE => 'RC'.uniqid(),
+        OrderSchema::STATUS => OrderStatusEnum::PROCESSING,
+        OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID,
+        OrderSchema::PAID_AT => now(),
+        OrderSchema::TOTAL_AMOUNT => 100.0,
+        OrderSchema::EXPIRES_AT => now()->addHour(),
+    ]);
+
+    $payment = Payment::query()->create([
+        PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
+        PaymentSchema::METHOD => PaymentMethodEnum::ADYEN,
+        PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
+        PaymentSchema::AMOUNT => 100.0,
+        PaymentSchema::TRANSACTION_ID => 'adyen-'.uniqid(),
+    ]);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/payments/{$payment->id}/refunds"), refundPayload(100))
+        ->assertStatus(400)
+        ->assertJsonPath('code', 'payment.refund.not_supported');
+
+    // No money moved: the ledger keeps the failed attempt, the order none the richer.
+    expect(PaymentRefund::query()->count())->toBe(1)
+        ->and(PaymentRefund::query()->first()->{PaymentRefundSchema::STATUS})->toBe(PaymentRefundStatusEnum::FAILED)
+        ->and((float) $order->refresh()->{OrderSchema::REFUNDED_AMOUNT})->toBe(0.0);
+});
+
 it('derives partially_refunded from order-level totals while remainder stays', function () {
     [$order, $payment] = paidOrderWithManualPayment(100);
 

@@ -8,10 +8,10 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
-use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 
-class ManualPaymentDriver implements PaymentDriverInterface
+class ManualPaymentDriver implements RefundableDriver
 {
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {
