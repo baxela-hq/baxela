@@ -32,7 +32,7 @@ docker compose --env-file .env.production -f docker-compose.prod.yml up -d --bui
 fpm, nginx, queue, scheduler, and the admin panel. `backend`, `queue`, and
 `scheduler` wait for `migrate` to complete, so workers never race migrations.
 
-- Backend API: `http://<host>:${BACKEND_PORT:-8080}` (health: `/up`)
+- Backend API: `http://<host>:${BACKEND_PORT:-8080}`
 - Admin panel: `http://<host>:${ADMIN_PORT:-8081}`
 - Storefront: `http://<host>:${STOREFRONT_PORT:-8082}`
 
@@ -60,6 +60,21 @@ docker compose exec mysql sh -c 'exec mysqldump -u root -p"$MYSQL_ROOT_PASSWORD"
     | gzip > backup-$(date +%F).sql.gz
 gunzip -c backup-2026-09-01.sql.gz | docker compose exec -T mysql sh -c 'exec mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
 ```
+
+## Uptime monitoring
+
+Point your monitor (UptimeRobot, healthchecks.io, a cron curl, …) at:
+
+```
+GET http://<host>:${BACKEND_PORT:-8080}/api/v1/core/public/health
+```
+
+`200` means serving (database reachable); `503` means down. The payload
+reports each component — database (critical), Redis, queue (driver, pending
+and failed counts). Redis/queue failures alone only *degrade* (still 200:
+realtime goes dark but checkout lives); append `?strict=1` if your monitor
+should page on those too. `/up` also works but only proves the framework
+booted — prefer the health endpoint.
 
 ## Notes
 

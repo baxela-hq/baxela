@@ -80,6 +80,9 @@ Suggested commit: `docs(monorepo): state per-gateway refund coverage honestly`
 
 ### A.2 Backup & restore story (a day)
 
+> **Owner decision 2026-11-03:** deferred — will be implemented later with a different
+> approach than the `spatie/laravel-backup` sketch below. Do not execute as written.
+
 Self-hosters on `docker-compose.prod.yml` and shared hosting currently have nothing. A
 store that can't be restored is a liability the README shouldn't create.
 
@@ -95,9 +98,16 @@ Suggested commit: `feat(backend/core): add scheduled backup and restore tooling`
 
 ### A.3 Health check (an hour)
 
-- [ ] Verify Laravel's `/up` passes through nginx in the prod compose stack ⚠; if not,
-      add an `api/v1/health` action checking DB + Redis + queue liveness.
-- [ ] Document an uptime-monitor setup line in the deployment docs.
+- [x] Verify Laravel's `/up` passes through nginx in the prod compose stack ⚠; if not,
+      add an `api/v1/health` action checking DB + Redis + queue liveness. *(done
+      2026-11-03 — `/up` routes fine through both nginx confs (`try_files` → index.php)
+      but only proves the framework booted, so the richer endpoint was added anyway:
+      `GET /api/v1/core/public/health` — database critical (503 on failure), Redis +
+      queue reported (degrade, not down; `?strict=1` escalates), queue exposes driver +
+      pending/failed counts)*
+- [x] Document an uptime-monitor setup line in the deployment docs. *(done 2026-11-03 —
+      "Uptime monitoring" section in `infrastructure/docker/production/README.md`;
+      Bruno request `Core/Public/Health`)*
 
 Suggested commit: `feat(backend/core): expose stack health check for uptime monitors`
 

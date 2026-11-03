@@ -10,6 +10,12 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Stack health endpoint (public)**: `GET /api/v1/core/public/health`
+  probes database (critical → HTTP 503 on failure), Redis, and the queue
+  (driver + pending/failed counts); non-critical failures degrade the
+  payload but keep 200, `?strict=1` escalates any failure to 503. For
+  uptime monitors; documented in the production README.
+
 - **Per-driver refund capability (admin)**: drivers declare refunds via a
   `RefundableDriver` contract marker (Stripe, PayPal, Manual today); the admin
   methods/payments API surfaces `is_refundable`, the methods page badges it per
