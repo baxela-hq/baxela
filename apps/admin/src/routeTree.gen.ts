@@ -18,6 +18,7 @@ import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedTransferIndexRouteImport } from './routes/_authenticated/transfer/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
@@ -117,6 +118,12 @@ const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTransferIndexRoute =
+  AuthenticatedTransferIndexRouteImport.update({
+    id: '/transfer/',
+    path: '/transfer/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSettingsIndexRoute =
@@ -464,6 +471,7 @@ export interface FileRoutesByFullPath {
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/transfer': typeof AuthenticatedTransferIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -527,6 +535,7 @@ export interface FileRoutesByTo {
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/transfer': typeof AuthenticatedTransferIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -594,6 +603,7 @@ export interface FileRoutesById {
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
   '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/transfer/': typeof AuthenticatedTransferIndexRoute
   '/_authenticated/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/_authenticated/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -661,6 +671,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/notifications'
     | '/settings/'
+    | '/transfer'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -724,6 +735,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/notifications'
     | '/settings'
+    | '/transfer'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -790,6 +802,7 @@ export interface FileRouteTypes {
     | '/_authenticated/media/'
     | '/_authenticated/notifications/'
     | '/_authenticated/settings/'
+    | '/_authenticated/transfer/'
     | '/_authenticated/catalog/attributes/groups'
     | '/_authenticated/catalog/attributes/templates'
     | '/_authenticated/catalog/products/create'
@@ -914,6 +927,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/transfer/': {
+      id: '/_authenticated/transfer/'
+      path: '/transfer'
+      fullPath: '/transfer'
+      preLoaderRoute: typeof AuthenticatedTransferIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
@@ -1351,6 +1371,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedMediaIndexRoute: typeof AuthenticatedMediaIndexRoute
   AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
+  AuthenticatedTransferIndexRoute: typeof AuthenticatedTransferIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
   AuthenticatedContentPostsCreateRoute: typeof AuthenticatedContentPostsCreateRoute
@@ -1406,6 +1427,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedMediaIndexRoute: AuthenticatedMediaIndexRoute,
   AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
+  AuthenticatedTransferIndexRoute: AuthenticatedTransferIndexRoute,
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,
   AuthenticatedContentPagesCreateRoute: AuthenticatedContentPagesCreateRoute,

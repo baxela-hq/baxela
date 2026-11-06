@@ -17,6 +17,7 @@ import {
   Percent,
   CreditCard,
   TicketPercent,
+  ArrowLeftRight,
 } from 'lucide-react'
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
@@ -90,6 +91,12 @@ export const useSidebarData = (): SidebarData => {
             url: '/audit/logs',
             icon: ScrollText,
             permission: 'audit.admin.logs.list',
+          },
+          {
+            title: t('sidebar.transfer-data'),
+            url: '/transfer',
+            icon: ArrowLeftRight,
+            permission: 'transfer.admin.capabilities.show',
           },
         ],
       },

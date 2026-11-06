@@ -1,0 +1,57 @@
+{
+    "page_titles": {
+        "title": "Data Transfer",
+        "subtitle": "Import and export module data across the platform as portable JSON transfer files."
+    },
+    "form": {
+        "labels": {
+            "import_title": "Import",
+            "import_description": "Replay a module transfer file through the owning module's own admin actions.",
+            "export_title": "Export",
+            "export_description": "Download a module's data as a transfer file: request-shaped payloads in dependency order.",
+            "choose_file": "Choose JSON file",
+            "change_file": "Change file",
+            "section": "Section",
+            "rows": "Rows",
+            "total_rows": "Total rows",
+            "exported_at": "Exported",
+            "duplicate_strategy": "Existing records with the same key",
+            "dry_run": "Validate only (dry run)",
+            "run_dry_run": "Validate",
+            "created": "Created",
+            "updated": "Updated",
+            "skipped": "Skipped",
+            "failed": "Failed",
+            "duration": "Duration",
+            "no_errors": "No row errors.",
+            "row_cap_exceeded": "The file exceeds the {{cap}} row limit.",
+            "warning_not_importable": "Export-only sections will be skipped: {{sections}}.",
+            "history": "History",
+            "history_description": "Import runs across all modules, latest first.",
+            "no_history": "No imports yet.",
+            "filename": "File",
+            "module": "Module",
+            "status": "Status",
+            "run_at": "Run at",
+            "new_import": "New import",
+            "not_supported_yet": "Not yet supported",
+            "import_only": "import only",
+            "export_only": "export only"
+        },
+        "help_texts": {
+            "import": "Pick a JSON transfer file produced by an export on this or another store. Sections are replayed in dependency order; rows matching existing records follow the duplicate strategy. Binary files never travel — media references stay identifiers.",
+            "export": "Downloads a module's data as a versioned transfer file you can re-import on any store. Ids stay source-store ids; the import remaps them.",
+            "dry_run": "Validates every row and reports the outcome without writing anything."
+        },
+        "statuses": {
+            "status": {
+                "completed": "Completed",
+                "failed": "Failed"
+            },
+            "strategy": {
+                "update": "Update existing records",
+                "skip": "Skip existing records"
+            }
+        }
+    }
+}
