@@ -49,7 +49,7 @@ class MermaidErdFormatter
             ),
             '',
             '| Module | Tables | FK edges | App-level edges | Unresolved refs |',
-            '|---|---:|---:|---:|---:|',
+            '| --- | ---: | ---: | ---: | ---: |',
             ...$moduleRows,
             '',
             '## Module dependencies (cross-module references)',
@@ -115,7 +115,7 @@ class MermaidErdFormatter
             $lines[] = '## Polymorphic relations';
             $lines[] = '';
             $lines[] = '| Table | Columns | Possible targets |';
-            $lines[] = '|---|---|---|';
+            $lines[] = '| --- | --- | --- |';
             foreach ($morphNotes as $note) {
                 $lines[] = sprintf(
                     '| `%s` | `%s`, `%s` | %s |',

@@ -323,7 +323,7 @@ erDiagram
 ## Polymorphic relations
 
 | Table | Columns | Possible targets |
-|---|---|---|
+| --- | --- | --- |
 | `catalog_featured_items` | `featuredable_type`, `featuredable_id` | brand (morph map) |
 | `catalog_featured_items` | `featuredable_type`, `featuredable_id` | category (morph map) |
 | `catalog_featured_items` | `featuredable_type`, `featuredable_id` | dynamic |

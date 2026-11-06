@@ -5,7 +5,7 @@
 105 tables across 21 modules. Regenerate with `php artisan erd:generate`.
 
 | Module | Tables | FK edges | App-level edges | Unresolved refs |
-|---|---:|---:|---:|---:|
+| --- | ---: | ---: | ---: | ---: |
 | [Audit](audit.md) | 1 | 0 | 1 | 1 |
 | [Auth](auth.md) | 7 | 4 | 0 | 0 |
 | [Cart](cart.md) | 2 | 1 | 0 | 2 |

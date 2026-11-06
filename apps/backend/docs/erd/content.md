@@ -114,7 +114,7 @@ erDiagram
 ## Polymorphic relations
 
 | Table | Columns | Possible targets |
-|---|---|---|
+| --- | --- | --- |
 | `content_featured_items` | `featuredable_type`, `featuredable_id` | dynamic |
 | `content_featured_items` | `featuredable_type`, `featuredable_id` | post (morph map) |
 
