@@ -30,7 +30,7 @@ erDiagram
     cart_cart_items }o--|| cart_carts : "cart_id"
 ```
 
-### Unresolved reference columns
+## Unresolved reference columns
 
 Reference-looking columns with neither a DB FK nor an Eloquent relation — cross-module references resolved via gateways at runtime. Targets inferred from naming, **not verified**:
 

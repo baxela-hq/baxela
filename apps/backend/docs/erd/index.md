@@ -2,7 +2,7 @@
 
 # Database ERD
 
-104 tables across 20 modules. Regenerate with `php artisan erd:generate`.
+105 tables across 21 modules. Regenerate with `php artisan erd:generate`.
 
 | Module | Tables | FK edges | App-level edges | Unresolved refs |
 |---|---:|---:|---:|---:|
@@ -24,6 +24,7 @@
 | [Shipping](shipping.md) | 6 | 4 | 1 | 2 |
 | [Support](support.md) | 2 | 0 | 1 | 2 |
 | [Tax](tax.md) | 2 | 1 | 0 | 0 |
+| [Transfer](transfer.md) | 1 | 0 | 0 | 1 |
 | [User](user.md) | 3 | 0 | 0 | 4 |
 | [Other](other.md) | 9 | 0 | 0 | 2 |
 

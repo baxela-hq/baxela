@@ -112,7 +112,7 @@ class MermaidErdFormatter
 
         if ($morphNotes !== []) {
             $lines[] = '';
-            $lines[] = '### Polymorphic relations';
+            $lines[] = '## Polymorphic relations';
             $lines[] = '';
             $lines[] = '| Table | Columns | Possible targets |';
             $lines[] = '|---|---|---|';
@@ -129,7 +129,7 @@ class MermaidErdFormatter
 
         if ($unresolved !== []) {
             $lines[] = '';
-            $lines[] = '### Unresolved reference columns';
+            $lines[] = '## Unresolved reference columns';
             $lines[] = '';
             $lines[] = 'Reference-looking columns with neither a DB FK nor an Eloquent relation — cross-module references resolved via gateways at runtime. Targets inferred from naming, **not verified**:';
             $lines[] = '';

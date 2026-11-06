@@ -320,7 +320,7 @@ erDiagram
     inventory_inventory_stocks ||..o| catalog_variants : "variant_id"
 ```
 
-### Polymorphic relations
+## Polymorphic relations
 
 | Table | Columns | Possible targets |
 |---|---|---|
@@ -329,7 +329,7 @@ erDiagram
 | `catalog_featured_items` | `featuredable_type`, `featuredable_id` | dynamic |
 | `catalog_featured_items` | `featuredable_type`, `featuredable_id` | product (morph map) |
 
-### Unresolved reference columns
+## Unresolved reference columns
 
 Reference-looking columns with neither a DB FK nor an Eloquent relation — cross-module references resolved via gateways at runtime. Targets inferred from naming, **not verified**:
 

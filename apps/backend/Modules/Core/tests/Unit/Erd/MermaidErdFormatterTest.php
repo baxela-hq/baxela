@@ -114,7 +114,7 @@ it('renders polymorphic notes and unresolved reference columns', function () {
     $page = (new MermaidErdFormatter)->formatModule('Shop', erdTestDocument());
 
     expect($page)->toContain('| `shop_featured` | `featuredable_type`, `featuredable_id` | product (morph map) |')
-        ->and($page)->toContain('### Unresolved reference columns')
+        ->and($page)->toContain('## Unresolved reference columns')
         ->and($page)->toContain('- `shop_products.tax_class_id`')
         ->and($page)->toContain('- `shop_products.user_id` → `auth_users / user_users (ambiguous)`?');
 });
