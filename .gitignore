@@ -5,6 +5,7 @@
 .idea/
 .vscode/
 .zcode/
+.codegraph/
 *.iml
 
 # --- Environment ---
