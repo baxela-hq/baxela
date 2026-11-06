@@ -5,10 +5,13 @@ namespace Modules\Core\Providers;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Console\Commands\ErdGenerateCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
+use Modules\Core\Support\Erd\ModelRelationsScanner;
+use Modules\Core\Support\Erd\ModuleTableResolver;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -51,6 +54,9 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+
+        $this->app->bind(ModelRelationsScanner::class, fn () => new ModelRelationsScanner(base_path('Modules')));
+        $this->app->bind(ModuleTableResolver::class, fn () => new ModuleTableResolver(base_path('Modules')));
     }
 
     /**
@@ -58,7 +64,9 @@ class CoreServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            ErdGenerateCommand::class,
+        ]);
     }
 
     /**
