@@ -226,6 +226,28 @@ it('records the run and exposes it in the history', function () {
     expect($list->json('data.0.id'))->toBe($record->id);
 });
 
+it('honours string booleans from multipart uploads', function () {
+    $this->seedCountries('DE');
+    $this->seedTransferTax();
+    $this->actingAs($this->superAdminUser());
+
+    $payload = $this->exportedTaxFile();
+
+    // A non-JSON (multipart) post delivers every field as a string —
+    // the shape the admin panel actually uploads. `(bool) 'false'` is
+    // true in PHP, so the flag must be normalized before validation.
+    $response = $this->post($this->baseUrl('/admin/imports'), [
+        'file' => $this->transferFile(json_encode($payload)),
+        'on_duplicate' => 'skip',
+        'dry_run' => 'false',
+    ]);
+
+    $response->assertOk();
+    expect($response->json('data.dry_run'))->toBeFalse()
+        ->and($response->json('data.skipped_count'))->toBe(3)
+        ->and(TaxClass::query()->count())->toBe(2);
+});
+
 it('denies import without permissions', function () {
     $this->actingAs(User::factory()->create(['is_active' => true]));
 

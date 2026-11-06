@@ -12,11 +12,16 @@ class TransferImportRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         // Fixed payload shape (no `sometimes`): defaults are merged so
-        // the action always sees both keys.
+        // the action always sees both keys. The import is multipart, so
+        // booleans arrive as strings — `(bool) 'false'` would be true.
+        $dryRun = $this->input(TransferImportSchema::REQ_DRY_RUN, false);
+
         $this->merge([
             TransferImportSchema::REQ_ON_DUPLICATE => $this->input(TransferImportSchema::REQ_ON_DUPLICATE)
                 ?? TransferStrategyEnum::UPDATE->value,
-            TransferImportSchema::REQ_DRY_RUN => (bool) $this->input(TransferImportSchema::REQ_DRY_RUN, false),
+            TransferImportSchema::REQ_DRY_RUN => is_bool($dryRun)
+                ? $dryRun
+                : filter_var($dryRun, FILTER_VALIDATE_BOOLEAN),
         ]);
     }
 
