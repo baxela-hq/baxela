@@ -29,6 +29,14 @@ Each app keeps its own `AGENTS.md` with app-specific conventions. Read the relev
 
 The **Git Conventions** below are monorepo-level and take precedence over per-app `AGENTS.md` sections that define their own commit-scope rules.
 
+## Module dependency graph
+
+`docs/module-dependency-graph.html` is a generated, interactive snapshot of the platform's architecture — backend modules, admin feature areas, and storefront parts with their cross-references, aggregated from the codegraph index. It is linked from the README.
+
+- **Regenerate it after each version release**, and after structural changes (a backend module or admin feature area is added, renamed, or removed): `python3 scripts/generate-module-graph.py`. Requires the `codegraph` CLI (`pnpm add -g @colbymchenry/codegraph`) — the script rebuilds the index itself.
+- Never hand-edit the page's embedded `var DATA = ...` line; it is a build artifact. Change the generator script or the page chrome instead.
+- Commit updates as `docs(monorepo): regenerate module dependency graph`.
+
 ## Git Conventions
 
 - Conventional commits: `<type>(<scope>): <subject>`, enforced by a local `commit-msg` git hook (`.githooks/commit-msg`) — `docs/COMMIT_CONVENTION.md` is the authoritative spec. Types: `feat`, `fix`, `refactor`, `perf`, `docs`, `style`, `test`, `build`, `chore`, `ci`, `revert`.

@@ -93,6 +93,7 @@ Prefer Postman? The same collection can be imported into
 ## Contributing
 
 - Follow the [commit message convention](docs/COMMIT_CONVENTION.md): `<type>(<scope>): <subject>` with a mandatory scope. A local git hook validates commit messages — enable it once after cloning with `sh scripts/install-hooks.sh`.
+- After each version release (or when a backend module / admin feature area is added, renamed, or removed), regenerate the [module dependency graph](docs/module-dependency-graph.html): `python3 scripts/generate-module-graph.py`.
 
 ## License
 
