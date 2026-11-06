@@ -53,6 +53,14 @@ baxela/
 └── README.md
 ```
 
+## Architecture at a glance
+
+An interactive [module dependency graph](docs/module-dependency-graph.html)
+maps the 20 backend modules, the admin feature areas, and the storefront parts
+with their cross-references, aggregated from the codegraph index. Open the file
+in a browser, or view it rendered on
+[htmlpreview](https://htmlpreview.github.io/?https://github.com/baxela-hq/baxela/blob/main/docs/module-dependency-graph.html).
+
 ## Quick start
 
 1. Start the dev stack from the repo root: `cp .env.example .env && docker compose up -d`
