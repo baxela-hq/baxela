@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\App;
 use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Models\Country;
+use Modules\Core\Models\Language;
 use Modules\Order\Models\Order;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Models\Rate;
@@ -20,11 +24,11 @@ beforeEach(function () {
     $this->actingAs($this->superAdminUser());
     // HelperTrait fixtures join through the countries table; method
     // validation resolves translations against active languages
-    Modules\Core\Models\Country::firstOrCreate(
+    Country::firstOrCreate(
         ['code' => 'US'],
         ['code3' => 'USA', 'name' => 'United States'],
     );
-    Modules\Core\Models\Language::firstOrCreate(
+    Language::firstOrCreate(
         ['code' => 'en'],
         ['locale' => 'en', 'name' => 'English', 'code3' => 'eng', 'is_default' => true, 'is_active' => true],
     );
@@ -64,7 +68,7 @@ it('rejects a zone without a name', function () {
 });
 
 it('creates a method with translations and refuses a duplicate code', function () {
-    $lang = \Illuminate\Support\Facades\App::make(\Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface::class)
+    $lang = App::make(CoreGatewayInterface::class)
         ->getLanguageIdByCode('en') ?? 1;
 
     $payload = [

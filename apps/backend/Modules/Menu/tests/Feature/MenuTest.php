@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\User;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Tests\Feature\HelperTrait;
 use Tests\TestCase;
@@ -105,7 +106,7 @@ it('updates a menu and its links, then deletes both', function () {
 });
 
 it('denies menu management without permissions', function () {
-    $this->actingAs(\Modules\Auth\Models\User::factory()->create(['is_active' => true]));
+    $this->actingAs(User::factory()->create(['is_active' => true]));
     TestCase::defaultLanguage();
 
     $this->getJson($this->baseUrl('/admin/menus'))->assertStatus(403);

@@ -17,5 +17,6 @@
   "Discount": true,
   "Support": true,
   "Audit": true,
-  "Tax": true
+  "Tax": true,
+  "Transfer": true
 }

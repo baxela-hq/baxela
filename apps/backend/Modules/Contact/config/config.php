@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Contact\Transfer\ContactTransfer;
+
 return [
     'name' => 'Contact',
 
@@ -9,5 +11,11 @@ return [
 
         // Newsletter sign-ups — more generous: idempotent per email anyway.
         'subscribe' => env('CONTACT_SUBSCRIBE_RATE_LIMIT', 10),
+    ],
+
+    // Data-transfer standard registration — picked up by the Transfer
+    // module's registry (see Modules/Core/.../Transfer/ModuleTransferInterface).
+    'transfer' => [
+        'class' => ContactTransfer::class,
     ],
 ];

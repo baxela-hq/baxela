@@ -1,0 +1,11 @@
+{
+    "name": "Transfer",
+    "alias": "transfer",
+    "description": "Platform-wide data import/export orchestration for module data.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Transfer\\Providers\\TransferServiceProvider"
+    ],
+    "files": []
+}

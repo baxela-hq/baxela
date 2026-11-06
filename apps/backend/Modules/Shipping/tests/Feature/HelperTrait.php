@@ -71,4 +71,46 @@ trait HelperTrait
 
         return $zone;
     }
+
+    /** The Transfer module's endpoints hosting this module's export/import. */
+    public function transferUrl(string $endpoint): string
+    {
+        return 'api/v1/transfer'.$endpoint;
+    }
+
+    /** Zone (country-coded) + method (translated) + a rate tying them. */
+    public function seedTransferShipping(string $languageId): array
+    {
+        $zone = $this->activeZone('DE');
+
+        $method = Method::factory()->create([MethodSchema::CODE => 'express', MethodSchema::IS_ACTIVE => true, MethodSchema::POSITION => 1]);
+        MethodTranslation::query()->create([
+            MethodTranslationSchema::METHOD_ID => $method->id,
+            MethodTranslationSchema::LANGUAGE_ID => $languageId,
+            MethodTranslationSchema::NAME => 'Express',
+            MethodTranslationSchema::DESCRIPTION => 'Fast',
+        ]);
+
+        $rate = Rate::factory()->create([
+            RateSchema::METHOD_ID => $method->id,
+            RateSchema::ZONE_ID => $zone->id,
+            RateSchema::PRICE => '9.99',
+        ]);
+
+        return ['zone' => $zone, 'method' => $method, 'rate' => $rate];
+    }
+
+    /**
+     * Export the (seeded) shipping data through the API and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedShippingFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->transferUrl('/admin/exports/shipping'))->assertOk()->streamedContent(),
+            true
+        );
+    }
 }
