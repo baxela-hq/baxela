@@ -1,5 +1,6 @@
 parameters:
 	ignoreErrors:
+
 		-
 			message: '#^Method Modules\\Audit\\Actions\\Admin\\AuditLog\\ListAuditLogsAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
@@ -5642,6 +5643,12 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$collection\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$media_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
@@ -12709,6 +12716,24 @@ parameters:
 			path: Modules/Media/app/Actions/Admin/Media/DeleteMediaAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$mime_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
+
+		-
 			message: '#^Method Modules\\Media\\Actions\\Admin\\Media\\ListMediaAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -12765,7 +12790,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
 			identifier: property.notFound
-			count: 1
+			count: 2
 			path: Modules/Media/app/Gateways/MediaGateway.php
 
 		-
@@ -12883,6 +12908,12 @@ parameters:
 			path: Modules/Media/app/Transformers/Admin/Folder/FolderResource.php
 
 		-
+			message: '#^Method Modules\\Media\\Transformers\\Admin\\Media\\MediaResource\:\:resolvedVariants\(\) has parameter \$disk with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Media/app/Transformers/Admin/Media/MediaResource.php
+
+		-
 			message: '#^Method Modules\\Media\\Transformers\\Admin\\Media\\MediaResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -12983,6 +13014,114 @@ parameters:
 			identifier: argument.templateType
 			count: 6
 			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Media\\Models\\Media\>\|Modules\\Media\\Models\\Media\:\:\$metadata\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$metadata\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$mime_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\Expectation\<mixed\>\:\:assertNoContent\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:withHeaders\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Function mediaWithBytes\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Function mediaWithBytes\(\) should return Modules\\Media\\Models\\Media but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Function variantsOf\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Parameter \#1 \$media of function variantsOf expects Modules\\Media\\Models\\Media, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Parameter \#1 \$media of method Modules\\Media\\Actions\\Admin\\Media\\GenerateMediaVariantsAction\:\:handle\(\) expects Modules\\Media\\Models\\Media, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'

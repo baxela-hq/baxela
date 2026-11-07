@@ -8,6 +8,7 @@ import { serverApiGet } from "@/lib/api/server";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { ApiPost, ApiPostComment, Paginated } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { variantUrl } from "@/lib/image-variants";
 import { canonicalOnlyLocaleUrls } from "@/lib/seo/entity-urls";
 import { pageSeo } from "@/lib/seo/metadata";
 import { articleLd, webPageLd } from "@/lib/seo/schema-org";
@@ -150,7 +151,7 @@ export default async function BlogPostPage({
             // need remotePatterns for every storage host, so use a plain img.
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={post.image_url}
+              src={variantUrl(post.image_variants, "large", post.image_url) ?? undefined}
               alt={post.title ?? ""}
               className="mt-8 aspect-video w-full rounded-default object-cover"
             />

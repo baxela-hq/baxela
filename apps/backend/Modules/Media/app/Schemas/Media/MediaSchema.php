@@ -33,5 +33,7 @@ class MediaSchema
 
     public const string RES_URL = 'url';
 
+    public const string RES_VARIANTS = 'variants';
+
     public const string REQ_FILE = 'file';
 }

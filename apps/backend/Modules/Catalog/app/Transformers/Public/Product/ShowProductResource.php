@@ -28,6 +28,7 @@ use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Support\PicksTranslation;
 
 class ShowProductResource extends JsonResource
@@ -84,6 +85,17 @@ class ShowProductResource extends JsonResource
             }
         }
 
+        // Batch-resolve image variants once for all images that reference
+        // a media row (gap-C3); images without one carry no variants key.
+        $variantsById = app(MediaGatewayInterface::class)->getVariantsByIds(
+            $this->resource->images
+                ->pluck(ImageSchema::MEDIA_ID)
+                ->filter()
+                ->unique()
+                ->values()
+                ->all(),
+        );
+
         return [
             'id' => $this->resource->{ProductSchema::ID},
             'title' => $translation?->{PTSchema::TITLE},
@@ -127,6 +139,9 @@ class ShowProductResource extends JsonResource
                     'url' => $image->{ImageSchema::URL},
                     'collection' => $image->{ImageSchema::COLLECTION},
                     'position' => $image->{ImageSchema::POSITION},
+                    // Completed image variants when the image references a
+                    // media row (gap-C3); absent otherwise.
+                    'variants' => (object) ($variantsById[$image->media_id] ?? []),
                 ])->all(),
             'categories' => $this->resource->categories
                 ->map(fn (Category $category): array => [

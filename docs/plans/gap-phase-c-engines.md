@@ -100,6 +100,28 @@ production. Documented as a deployment checklist item per slice.
 
 ## 3. Slice C.3 — Image variants
 
+> **DONE 2026-11-08.** Implemented per v4: `intervention/image` v4.4 (GD); presets +
+> limits config (`Modules/Media/config/images.php`, pixel budget documented against
+> PHP memory × concurrency); `GenerateMediaVariantsAction` with the per-media lock
+> (TTL 15 min ≥ 1.5× job timeout 10 min), decode-per-preset (v4's `scaleDown` **mutates
+> in place** — a shared instance shrank every subsequent preset to the first width),
+> no-upscale clamping, per-variant status, version allocation + atomic publication +
+> post-publish prune under the lock, fingerprint-based idempotency; queued listener
+> (timeout 600, re-releases on lock contention); `media:regenerate-variants --id/--all`;
+> `DeleteMediaAction` under the same lock (original + all recorded variants); exposure
+> via `MediaResource`/`MediaGatewayInterface::getVariantsByIds()`; public payload
+> attachment (ShowProduct images[], ListProduct/Post `image_variants` — only completed
+> entries, original fallback); storefront `lib/image-variants.ts` + the four render
+> sites (card srcset from intrinsic widths, gallery large/thumbs, blog card/cover);
+> admin media-card thumb + preview dimensions. **10-test ImageVariantsTest** (both
+> disks, idempotency, publication no-regression + prune, classification permanent/
+> retryable, limits, gif/svg skip, delete under lock, deleted-while-queued, forced
+> regeneration). **Verified:** Media 43, Catalog 114, Content 49 all green; production
+> storefront + admin builds green; phpstan **[OK]** (baseline spliced for the six
+> touched files only — plus a splice-tool fix: baseline messages escape single quotes
+> by NEON **doubling** (`''`), not backslashes). Deviations: `image_variants`/`variants`
+> ride existing payloads (no new endpoints); MediaResource also exposes `width/height`.
+
 ### Design decisions
 
 | # | Decision | Why |

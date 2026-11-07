@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { variantUrl } from "@/lib/image-variants";
 import type { ApiImage } from "@/lib/api/types";
 
 export function ProductGallery({
@@ -27,7 +28,7 @@ export function ProductGallery({
           // Backend-served images — see product-card for the img rationale
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={active.url}
+            src={variantUrl(active.variants, "large", active.url) ?? active.url}
             alt={title}
             className="size-full object-cover"
           />
@@ -54,7 +55,7 @@ export function ProductGallery({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={photo.url}
+                src={variantUrl(photo.variants, "thumb", photo.url) ?? photo.url}
                 alt=""
                 className="size-full object-cover"
                 loading="lazy"

@@ -13,7 +13,7 @@ import {
   formatBytes,
   getDisplayName,
   getFileIcon,
-  getMediaUrl,
+  getMediaThumbUrl,
   isImage,
   isVideo,
   type MediaItem,
@@ -34,7 +34,7 @@ export function MediaThumb({
   item: MediaItem
   className?: string
 }) {
-  const url = getMediaUrl(item)
+  const url = getMediaThumbUrl(item)
 
   if (isImage(item) && url) {
     return (

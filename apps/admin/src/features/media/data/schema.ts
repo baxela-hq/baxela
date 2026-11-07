@@ -34,6 +34,11 @@ export type MediaItem = {
   path?: string | null
   mime_type?: string | null
   size?: number | null
+  /** Source dimensions (gap-C3), present for generated images. */
+  width?: number | null
+  height?: number | null
+  /** Completed image variants keyed by preset; urls resolve per disk. */
+  variants?: Record<string, { url: string; width: number; height: number }>
   folder_id?: number | null
   created_at?: string | null
   updated_at?: string | null
@@ -105,6 +110,11 @@ export function buildMediaEditValues(item: MediaItem): MediaForm {
 /** Resolve the displayable URL of a media item (url preferred, path fallback). */
 export function getMediaUrl(item: MediaItem): string | null {
   return item.url ?? item.path ?? null
+}
+
+/** The thumb variant when generated, else the original URL. */
+export function getMediaThumbUrl(item: MediaItem): string | null {
+  return item.variants?.thumb?.url ?? getMediaUrl(item)
 }
 
 /** Suffix like ".png" built from the item's extension ('' when none). */

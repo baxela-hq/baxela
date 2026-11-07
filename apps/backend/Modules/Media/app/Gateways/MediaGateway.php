@@ -121,4 +121,39 @@ class MediaGateway implements MediaGatewayInterface
 
         return $folderId;
     }
+
+    public function getVariantsByIds(array $mediaIds): array
+    {
+        if ($mediaIds === []) {
+            return [];
+        }
+
+        $resolved = [];
+
+        Media::query()
+            ->whereIn((new Media)->getKeyName(), $mediaIds)
+            ->get()
+            ->each(function (Media $media) use (&$resolved): void {
+                $disk = Storage::disk($media->{MediaSchema::DISK});
+                $variants = [];
+
+                foreach ((array) ($media->{MediaSchema::METADATA}['variants'] ?? []) as $name => $variant) {
+                    if (($variant['status'] ?? null) !== 'completed' || empty($variant['path'])) {
+                        continue;
+                    }
+
+                    $variants[$name] = [
+                        'url' => $disk->url((string) $variant['path']),
+                        'width' => (int) ($variant['width'] ?? 0),
+                        'height' => (int) ($variant['height'] ?? 0),
+                    ];
+                }
+
+                if ($variants !== []) {
+                    $resolved[(int) $media->getKey()] = $variants;
+                }
+            });
+
+        return $resolved;
+    }
 }

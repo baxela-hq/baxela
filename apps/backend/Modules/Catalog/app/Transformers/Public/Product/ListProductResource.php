@@ -12,6 +12,7 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Support\PicksTranslation;
 
 class ListProductResource extends JsonResource
@@ -35,6 +36,14 @@ class ListProductResource extends JsonResource
             ->firstWhere(BRTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
             ?? PicksTranslation::pick($this->resource->brand?->translations, $this->resolvePublicLanguageId($request));
 
+        $firstImage = $this->resource->images->first();
+        $imageVariants = [];
+
+        if ($firstImage?->media_id !== null) {
+            $imageVariants = app(MediaGatewayInterface::class)
+                ->getVariantsByIds([$firstImage->media_id])[$firstImage->media_id] ?? [];
+        }
+
         return [
             'id' => $this->resource->{ProductSchema::ID},
             'title' => $translation?->{PTSchema::TITLE},
@@ -49,7 +58,8 @@ class ListProductResource extends JsonResource
             ] : null,
             // Attached by AppliesProductPromotions when a promotion is live
             'promotion' => PromotionPayload::from($this->resource->getAttribute(ProductSchema::ATTR_PROMOTION)),
-            'image_url' => $this->resource->images->first()?->{ImageSchema::URL},
+            'image_url' => $firstImage?->{ImageSchema::URL},
+            'image_variants' => (object) $imageVariants,
             'rating_avg' => $this->resource->{ProductSchema::RATING_AVG},
             'rating_count' => $this->resource->{ProductSchema::RATING_COUNT},
             'created_at' => $this->resource->{ProductSchema::CREATED_AT}?->toIso8601String(),

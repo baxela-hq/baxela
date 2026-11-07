@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Core\Contracts\Events\Media\MediaCreatedEvent;
 use Modules\Core\Contracts\Events\Media\MediaDeletedEvent;
 use Modules\Core\Listeners\LogAllEvents;
+use Modules\Media\Listeners\Media\GenerateImageVariantsListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        MediaCreatedEvent::class => [LogAllEvents::class],
+        MediaCreatedEvent::class => [LogAllEvents::class, GenerateImageVariantsListener::class],
         MediaDeletedEvent::class => [LogAllEvents::class],
     ];
 

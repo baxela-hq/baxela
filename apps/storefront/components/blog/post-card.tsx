@@ -1,4 +1,5 @@
 import { useFormatter } from "next-intl";
+import { variantUrl } from "@/lib/image-variants";
 
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
@@ -26,7 +27,7 @@ export default function PostCard({ post, className }: PostCardProps) {
           // need remotePatterns for every storage host, so use a plain img.
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={post.image_url}
+            src={variantUrl(post.image_variants, "thumb", post.image_url) ?? undefined}
             alt={post.title ?? ""}
             className="size-full object-cover"
             loading="lazy"

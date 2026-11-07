@@ -5,6 +5,7 @@ import { useCurrency } from "@/context/currency-context";
 
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/navigation";
+import { variantSrcSet, variantUrl } from "@/lib/image-variants";
 import type { ApiProduct } from "@/lib/api/types";
 import SaleBadge from "@/components/sale-badge";
 import { StarRating } from "@/components/star-rating";
@@ -19,6 +20,7 @@ export type ProductCardProduct = Pick<
   | "price"
   | "compare_price"
   | "image_url"
+  | "image_variants"
   | "rating_avg"
   | "rating_count"
 >;
@@ -44,7 +46,9 @@ export default function ProductCard({ product, className }: ProductCardProps) {
           // need remotePatterns for every storage host, so use a plain img.
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={product.image_url}
+            src={variantUrl(product.image_variants, "thumb", product.image_url) ?? undefined}
+            srcSet={variantSrcSet(product.image_variants, ["thumb", "medium"]) ?? undefined}
+            sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 100vw"
             alt={product.title ?? ""}
             className="size-full object-cover"
             loading="lazy"

@@ -103,6 +103,14 @@ export function PreviewSheet({
                 {formatBytes(currentRow.size)}
               </dd>
             </div>
+            {currentRow.width != null && currentRow.height != null ? (
+              <div className='flex items-center justify-between gap-4'>
+                <dt className='shrink-0 text-muted-foreground'>Dimensions</dt>
+                <dd className='truncate font-medium'>
+                  {currentRow.width} × {currentRow.height}
+                </dd>
+              </div>
+            ) : null}
             <div className='flex items-center justify-between gap-4'>
               <dt className='shrink-0 text-muted-foreground'>
                 {tLabel('created_at')}

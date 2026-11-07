@@ -60,6 +60,8 @@ export interface ApiProduct {
   rating_avg: string | null;
   rating_count: number;
   created_at: string;
+  /** Variants of image_url's image (gap-C3); absent when none exist. */
+  image_variants?: ApiImageVariants;
 }
 
 export interface ApiWishlistItem {
@@ -99,11 +101,27 @@ export interface ApiVariant {
   option_values: ApiOptionValueRef[];
 }
 
+/**
+ * A completed image variant (gap-C3): width is the variant's ACTUAL
+ * intrinsic width (presets never upscale).
+ */
+export interface ApiImageVariant {
+  url: string;
+  width: number;
+  height: number;
+}
+
+/** Preset-name keyed map (thumb/medium/large) — only completed entries. */
+export interface ApiImageVariants {
+  [preset: string]: ApiImageVariant;
+}
+
 export interface ApiImage {
   id: number;
   url: string;
   collection: string;
   position: number;
+  variants?: ApiImageVariants;
 }
 
 export interface ApiCategoryRef {
@@ -167,6 +185,8 @@ export interface ApiPost {
   created_at: string;
   updated_at: string;
   image_url: string | null;
+  /** Variants of image_url's image (gap-C3); absent when none exist. */
+  image_variants?: ApiImageVariants;
   categories?: ApiPostCategory[] | null;
   products?: ApiRelatedProduct[] | null;
 }

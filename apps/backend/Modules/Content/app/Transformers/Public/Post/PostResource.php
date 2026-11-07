@@ -9,6 +9,7 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Transformers\Public\PostCategory\PostCategoryResource;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
+use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 
@@ -26,6 +27,13 @@ class PostResource extends JsonResource
             ->firstWhere(PTSchema::LANGUAGE_ID, $this->resolvePublicLanguageId($request))
             ?? PicksTranslation::pick($this->resource->translations, $this->resolvePublicLanguageId($request));
 
+        $imageVariants = [];
+
+        if ($this->resource->{PostSchema::IMAGE_MEDIA_ID} !== null) {
+            $imageVariants = app(MediaGatewayInterface::class)
+                ->getVariantsByIds([$this->resource->{PostSchema::IMAGE_MEDIA_ID}])[$this->resource->{PostSchema::IMAGE_MEDIA_ID}] ?? [];
+        }
+
         return [
             PostSchema::ID => $this->resource->{PostSchema::ID},
             PTSchema::TITLE => $translation?->{PTSchema::TITLE},
@@ -34,6 +42,7 @@ class PostResource extends JsonResource
             PTSchema::CONTENT => $translation?->{PTSchema::CONTENT},
             PostSchema::PUBLISHED_AT => $this->resource->{PostSchema::PUBLISHED_AT},
             PostSchema::IMAGE_URL => $this->resource->{PostSchema::IMAGE_URL},
+            'image_variants' => (object) $imageVariants,
             PostSchema::CREATED_AT => $this->resource->{PostSchema::CREATED_AT},
             PostSchema::UPDATED_AT => $this->resource->{PostSchema::UPDATED_AT},
             PostSchema::RES_CATEGORIES => PostCategoryResource::collection($this->whenLoaded(PostSchema::RES_CATEGORIES)),

@@ -36,4 +36,16 @@ interface MediaGatewayInterface
      * the id of the last segment, or null when any segment is missing.
      */
     public function getFolderIdByPath(string $path): ?int;
+
+    /**
+     * Batch-resolve the completed image variants (gap-C3) for the given
+     * media ids: `[media_id => [preset => ['url' => …, 'width' => …,
+     * 'height' => …]]]`. Only completed entries appear; media without
+     * variants (or unknown ids) resolve to an empty map. Media ids that
+     * reference no media row are omitted.
+     *
+     * @param  list<int|string>  $mediaIds
+     * @return array<int, array<string, array{url: string, width: int, height: int}>>
+     */
+    public function getVariantsByIds(array $mediaIds): array;
 }
