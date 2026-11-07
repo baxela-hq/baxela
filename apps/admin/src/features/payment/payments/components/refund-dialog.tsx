@@ -101,7 +101,9 @@ export function RefundDialog({ open, onOpenChange, currentRow }: RefundDialogPro
                     <Textarea rows={3} {...field} />
                   </FormControl>
                   <FormDescription>
-                    {t('refund.dialog.manual_note')}
+                    {currentRow.method === 'manual'
+                      ? t('refund.dialog.manual_note')
+                      : t('refund.dialog.async_note')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

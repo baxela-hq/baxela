@@ -27,8 +27,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   // Issuing needs both a successful payment and a driver with refunds wired;
   // history stays reachable for any successful payment.
   const canIssueRefund = refundable && row.original.is_refundable
+  // NowPayments is provider-impossible (crypto) — say so plainly instead
+  // of implying a refund API is merely "not wired yet".
   const refundTooltip = refundable && !canIssueRefund
-    ? tTooltip('refund_unsupported_driver')
+    ? row.original.method === 'nowpayments'
+      ? tTooltip('refund_unsupported_crypto')
+      : tTooltip('refund_unsupported_driver')
     : undefined
 
   return (

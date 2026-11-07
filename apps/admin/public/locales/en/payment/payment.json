@@ -18,7 +18,8 @@
       "fail": "Failing marks this payment as failed. The order stays unpaid and the customer can pay it again."
     },
     "tooltips": {
-      "refund_unsupported_driver": "This gateway's refund API isn't wired yet — issue the refund in the gateway's dashboard."
+      "refund_unsupported_driver": "This gateway's refund API isn't wired yet — issue the refund in the gateway's dashboard.",
+      "refund_unsupported_crypto": "Crypto payments cannot be reversed by NowPayments — arrange any customer reimbursement separately outside Baxela."
     },
     "statuses": {
       "status": {
@@ -40,7 +41,9 @@
         "pending": "Pending",
         "success": "Refunded",
         "failed": "Failed",
-        "reconciliation_required": "Needs reconciliation"
+        "reconciliation_required": "Needs reconciliation",
+        "processing": "Processing",
+        "reversed": "Reversed"
       }
     },
     "actions": {
@@ -67,7 +70,8 @@
       "title": "Issue refund",
       "subtitle": "Ledger refund against payment #{id} — partial amounts allowed.",
       "manual_note": "For manual payments this records that YOU have already returned the money outside Baxela.",
-      "confirm": "Refund"
+      "confirm": "Refund",
+      "async_note": "Some gateways confirm refunds asynchronously: the refund stays processing until the gateway's webhook confirms it."
     },
     "history": {
       "title": "Refund history",

@@ -18,7 +18,8 @@
       "fail": "L'échec marque ce paiement comme échoué. La commande reste non payée et le client peut la payer à nouveau."
     },
     "tooltips": {
-      "refund_unsupported_driver": "L'API de remboursement de cette passerelle n'est pas encore branchée — effectuez le remboursement via son tableau de bord."
+      "refund_unsupported_driver": "L'API de remboursement de cette passerelle n'est pas encore branchée — effectuez le remboursement via son tableau de bord.",
+      "refund_unsupported_crypto": "Les paiements en crypto-monnaie ne peuvent pas être annulés par NowPayments — tout remboursement du client doit être organisé séparément en dehors de Baxela."
     },
     "statuses": {
       "status": {
@@ -40,7 +41,9 @@
         "pending": "En attente",
         "success": "Remboursé",
         "failed": "Échoué",
-        "reconciliation_required": "Rapprochement requis"
+        "reconciliation_required": "Rapprochement requis",
+        "processing": "En cours",
+        "reversed": "Annulé"
       }
     },
     "actions": {
@@ -67,7 +70,8 @@
       "title": "Émettre un remboursement",
       "subtitle": "Remboursement comptable sur le paiement #{id} — les montants partiels sont autorisés.",
       "manual_note": "Pour les paiements manuels, cela enregistre que VOUS avez déjà rendu l'argent en dehors de Baxela.",
-      "confirm": "Rembourser"
+      "confirm": "Rembourser",
+      "async_note": "Certaines passerelles confirment les remboursements de manière asynchrone : le remboursement reste en cours jusqu'à la confirmation par le webhook de la passerelle."
     },
     "history": {
       "title": "Historique des remboursements",

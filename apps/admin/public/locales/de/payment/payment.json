@@ -18,7 +18,8 @@
       "fail": "Das Fehlschlagen markiert diese Zahlung als fehlgeschlagen. Die Bestellung bleibt unbezahlt und der Kunde kann sie erneut bezahlen."
     },
     "tooltips": {
-      "refund_unsupported_driver": "Die Erstattungs-API dieses Gateways ist noch nicht angebunden — Erstattung im Gateway-Dashboard auslösen."
+      "refund_unsupported_driver": "Die Erstattungs-API dieses Gateways ist noch nicht angebunden — Erstattung im Gateway-Dashboard auslösen.",
+      "refund_unsupported_crypto": "Krypto-Zahlungen können von NowPayments nicht zurückgebucht werden — eine Erstattung an den Kunden muss separat außerhalb von Baxela veranlasst werden."
     },
     "statuses": {
       "status": {
@@ -40,7 +41,9 @@
         "pending": "Ausstehend",
         "success": "Erstattet",
         "failed": "Fehlgeschlagen",
-        "reconciliation_required": "Abgleich erforderlich"
+        "reconciliation_required": "Abgleich erforderlich",
+        "processing": "In Verarbeitung",
+        "reversed": "Rückgängig gemacht"
       }
     },
     "actions": {
@@ -67,7 +70,8 @@
       "title": "Erstattung ausstellen",
       "subtitle": "Kontoerstattung für Zahlung #{id} — Teilbeträge sind erlaubt.",
       "manual_note": "Bei manuellen Zahlungen wird vermerkt, dass SIE das Geld bereits außerhalb von Baxela zurückgezahlt haben.",
-      "confirm": "Erstatten"
+      "confirm": "Erstatten",
+      "async_note": "Einige Gateways bestätigen Erstattungen asynchron: Die Erstattung bleibt in Verarbeitung, bis der Webhook des Gateways sie bestätigt."
     },
     "history": {
       "title": "Erstattungsverlauf",

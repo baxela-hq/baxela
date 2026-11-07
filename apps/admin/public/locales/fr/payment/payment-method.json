@@ -29,7 +29,8 @@
       "not-configured": "Les identifiants manquent dans la configuration du backend ; cette méthode reste masquée au paiement jusqu'à sa configuration.",
       "not-registered": "Aucun pilote n'est enregistré pour cette méthode dans le backend, elle ne peut donc plus être utilisée.",
       "refund-supported": "Les remboursements, totaux ou partiels, peuvent être émis directement depuis cette administration.",
-      "refund-not-supported": "Aucune API de remboursement n'est encore branchée pour ce pilote ; les remboursements passent par le tableau de bord de la passerelle."
+      "refund-not-supported": "Aucune API de remboursement n'est encore branchée pour ce pilote ; les remboursements passent par le tableau de bord de la passerelle.",
+      "refund-crypto": "Les paiements en crypto-monnaie ne peuvent pas être annulés par le fournisseur — tout remboursement du client doit être organisé séparément par le marchand."
     }
   }
 }

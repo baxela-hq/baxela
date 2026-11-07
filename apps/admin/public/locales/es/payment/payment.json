@@ -18,7 +18,8 @@
       "fail": "Fallar marca este pago como fallido. El pedido permanece sin pagar y el cliente puede pagarlo de nuevo."
     },
     "tooltips": {
-      "refund_unsupported_driver": "La API de reembolsos de esta pasarela aún no está conectada; emite el reembolso desde su panel."
+      "refund_unsupported_driver": "La API de reembolsos de esta pasarela aún no está conectada; emite el reembolso desde su panel.",
+      "refund_unsupported_crypto": "Los pagos en criptomonedas no pueden revertirse desde NowPayments — cualquier reembolso al cliente debe gestionarse por separado fuera de Baxela."
     },
     "statuses": {
       "status": {
@@ -40,7 +41,9 @@
         "pending": "Pendiente",
         "success": "Reembolsado",
         "failed": "Fallido",
-        "reconciliation_required": "Requiere conciliación"
+        "reconciliation_required": "Requiere conciliación",
+        "processing": "Procesando",
+        "reversed": "Revertido"
       }
     },
     "actions": {
@@ -67,7 +70,8 @@
       "title": "Emitir reembolso",
       "subtitle": "Reembolso contable sobre el pago #{id} — se permiten importes parciales.",
       "manual_note": "Para pagos manuales esto registra que USTED ya devolvió el dinero fuera de Baxela.",
-      "confirm": "Reembolsar"
+      "confirm": "Reembolsar",
+      "async_note": "Algunas pasarelas confirman los reembolsos de forma asíncrona: el reembolso permanece en proceso hasta que el webhook de la pasarela lo confirme."
     },
     "history": {
       "title": "Historial de reembolsos",

@@ -38,9 +38,13 @@ export function MethodRow({
       ? tHelpText('not-configured')
       : tHelpText('active-hint')
 
+  // NowPayments is provider-impossible (crypto): say so plainly instead
+  // of implying a refund API is merely "not wired yet".
   const refundHint = method.is_refundable
     ? tHelpText('refund-supported')
-    : tHelpText('refund-not-supported')
+    : method.method === 'nowpayments'
+      ? tHelpText('refund-crypto')
+      : tHelpText('refund-not-supported')
 
   return (
     <div className='flex items-center justify-between gap-4 rounded-lg border p-4 shadow-sm'>

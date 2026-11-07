@@ -29,7 +29,8 @@
       "not-configured": "Credentials are missing in the backend configuration; this method stays hidden at checkout until configured.",
       "not-registered": "No driver is registered for this method in the backend, so it can no longer be used.",
       "refund-supported": "Full or partial refunds can be issued right from this admin.",
-      "refund-not-supported": "No refund API is wired for this driver yet — refund in the gateway's dashboard."
+      "refund-not-supported": "No refund API is wired for this driver yet — refund in the gateway's dashboard.",
+      "refund-crypto": "Crypto payments cannot be reversed by the provider — any customer reimbursement must be arranged separately by the merchant."
     }
   }
 }

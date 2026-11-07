@@ -8,7 +8,7 @@ export interface PaymentRefund {
   order_id: number
   amount: string
   reason: string
-  status: 'pending' | 'success' | 'failed' | 'reconciliation_required'
+  status: 'pending' | 'processing' | 'success' | 'failed' | 'reversed' | 'reconciliation_required'
   transaction_id: string | null
   refunded_by: number | null
   created_at: string

@@ -17,8 +17,13 @@ import { cn } from '@/lib/utils'
 
 const refundStatusVariants = new Map<string, string>([
   ['pending', 'bg-amber-100/30 text-amber-900 dark:text-amber-200 border-amber-200'],
+  [
+    'processing',
+    'bg-sky-100/30 text-sky-900 dark:text-sky-200 border-sky-200',
+  ],
   ['success', 'bg-emerald-100/30 text-emerald-900 dark:text-emerald-200 border-emerald-200'],
   ['failed', 'bg-neutral-300/40 border-neutral-300'],
+  ['reversed', 'bg-violet-100/30 text-violet-900 dark:text-violet-200 border-violet-200'],
   [
     'reconciliation_required',
     'bg-rose-100/30 text-rose-900 dark:text-rose-200 border-rose-200',
@@ -32,10 +37,12 @@ type RefundsDialogProps = {
 }
 
 /**
- * Refund history for a payment. Ambiguous rows
- * (reconciliation_required — e.g. a gateway timeout) keep their amount
- * reserved until an operator resolves them here with the verified
- * outcome.
+ * Refund history for a payment. Rows awaiting a definitive outcome —
+ * ambiguous ones (reconciliation_required, e.g. a gateway timeout) and
+ * async-accepted ones (processing, until the gateway's webhook
+ * confirms) — keep their amount reserved until an operator verifies the
+ * provider's actual outcome and resolves them here. Reservations are
+ * never released by age.
  */
 export function RefundsDialog({ open, onOpenChange, currentRow }: RefundsDialogProps) {
   const { t, tStatus } = useAppTranslation(Locales.PAYMENT)
@@ -47,8 +54,10 @@ export function RefundsDialog({ open, onOpenChange, currentRow }: RefundsDialogP
   const [transactionId, setTransactionId] = useState('')
 
   const refunds = data?.data ?? []
-  const ambiguous = refunds.filter(
-    (refund) => refund.status === 'reconciliation_required'
+  const unresolved = refunds.filter(
+    (refund) =>
+      refund.status === 'reconciliation_required' ||
+      refund.status === 'processing'
   )
 
   return (
@@ -95,7 +104,8 @@ export function RefundsDialog({ open, onOpenChange, currentRow }: RefundsDialogP
                 </p>
               )}
 
-              {refund.status === 'reconciliation_required' &&
+              {(refund.status === 'reconciliation_required' ||
+                refund.status === 'processing') &&
                 (resolving === refund.id ? (
                   <div className="space-y-2 pt-1">
                     <Input
@@ -150,7 +160,7 @@ export function RefundsDialog({ open, onOpenChange, currentRow }: RefundsDialogP
           ))}
         </ul>
 
-        {ambiguous.length > 0 && (
+        {unresolved.length > 0 && (
           <p className="text-xs text-muted-foreground">
             {t('refund.history.reserved_note')}
           </p>
