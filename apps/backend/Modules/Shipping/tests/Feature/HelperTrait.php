@@ -74,11 +74,6 @@ trait HelperTrait
         return $zone;
     }
 
-    /** The Transfer module's endpoints hosting this module's export/import. */
-    public function transferUrl(string $endpoint): string
-    {
-        return 'api/v1/transfer'.$endpoint;
-    }
 
     /** Zone (country-coded) + method (translated) + a rate tying them. */
     public function seedTransferShipping(string $languageId): array
@@ -102,19 +97,6 @@ trait HelperTrait
         return ['zone' => $zone, 'method' => $method, 'rate' => $rate];
     }
 
-    /**
-     * Export the (seeded) shipping data through the API and return the
-     * decoded envelope.
-     *
-     * @return array<string, mixed>
-     */
-    public function exportedShippingFile(): array
-    {
-        return json_decode(
-            $this->getJson($this->transferUrl('/admin/exports/shipping'))->assertOk()->streamedContent(),
-            true
-        );
-    }
 
     /**
      * Export through the module's own data endpoint and return the

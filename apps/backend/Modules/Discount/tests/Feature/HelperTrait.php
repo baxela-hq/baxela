@@ -23,11 +23,6 @@ trait HelperTrait
         return 'api/v1/discount'.$endpoint;
     }
 
-    /** The Transfer module's endpoints hosting this module's export/import. */
-    public function transferUrl(string $endpoint): string
-    {
-        return 'api/v1/transfer'.$endpoint;
-    }
 
     public function superAdminUser(): User
     {
@@ -69,19 +64,6 @@ trait HelperTrait
         return ['coupon' => $coupon, 'promotion' => $promotion, 'product' => $product, 'category' => $category, 'redemption' => $redemption];
     }
 
-    /**
-     * Export the (seeded) discount data through the API and return the
-     * decoded envelope.
-     *
-     * @return array<string, mixed>
-     */
-    public function exportedDiscountFile(): array
-    {
-        return json_decode(
-            $this->getJson($this->transferUrl('/admin/exports/discount'))->assertOk()->streamedContent(),
-            true
-        );
-    }
 
     /**
      * Export through the module's own data endpoint and return the

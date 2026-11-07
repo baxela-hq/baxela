@@ -19,11 +19,6 @@ trait HelperTrait
         return 'api/v1/menu'.$endpoint;
     }
 
-    /** The Transfer module's endpoints hosting this module's export/import. */
-    public function transferUrl(string $endpoint): string
-    {
-        return 'api/v1/transfer'.$endpoint;
-    }
 
     public function superAdminUser(): User
     {
@@ -60,19 +55,6 @@ trait HelperTrait
         return ['menu' => $menu, 'parent' => $parent, 'child' => $child];
     }
 
-    /**
-     * Export the (seeded) menu data through the API and return the
-     * decoded envelope.
-     *
-     * @return array<string, mixed>
-     */
-    public function exportedMenuFile(): array
-    {
-        return json_decode(
-            $this->getJson($this->transferUrl('/admin/exports/menu'))->assertOk()->streamedContent(),
-            true
-        );
-    }
 
     /**
      * Export through the module's own data endpoint and return the

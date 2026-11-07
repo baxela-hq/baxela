@@ -14,11 +14,6 @@ trait HelperTrait
         return 'api/v1/setting'.$endpoint;
     }
 
-    /** The Transfer module's endpoints hosting this module's export/import. */
-    public function transferUrl(string $endpoint): string
-    {
-        return 'api/v1/transfer'.$endpoint;
-    }
 
     public function superAdminUser(): User
     {
