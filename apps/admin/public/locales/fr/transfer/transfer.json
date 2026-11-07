@@ -1,0 +1,58 @@
+{
+  "page_titles": {
+    "title": "Transfert de données",
+    "subtitle": "Importez et exportez les données des modules sous forme de fichiers de transfert JSON portables."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Import",
+      "import_description": "Rejouer un fichier de transfert de module via les actions d'administration propres au module.",
+      "export_title": "Export",
+      "export_description": "Téléchargez les données d'un module sous forme de fichier de transfert : charges utiles au format requête, dans l'ordre des dépendances.",
+      "choose_file": "Choisir un fichier JSON",
+      "change_file": "Changer de fichier",
+      "section": "Section",
+      "rows": "Lignes",
+      "total_rows": "Total des lignes",
+      "exported_at": "Exporté",
+      "duplicate_strategy": "Enregistrements existants avec la même clé",
+      "dry_run": "Validation seule (essai à blanc)",
+      "run_dry_run": "Valider",
+      "created": "Créés",
+      "updated": "Mis à jour",
+      "skipped": "Ignorés",
+      "failed": "Échoués",
+      "duration": "Durée",
+      "no_errors": "Aucune erreur de ligne.",
+      "row_cap_exceeded": "Le fichier dépasse la limite de {{cap}} lignes.",
+      "warning_not_importable": "Les sections réservées à l'export seront ignorées : {{sections}}.",
+      "history": "Historique",
+      "history_description": "Exécutions d'import sur tous les modules, du plus récent au plus ancien.",
+      "no_history": "Aucun import pour le moment.",
+      "filename": "Fichier",
+      "module": "Module",
+      "status": "Statut",
+      "run_at": "Exécuté le",
+      "new_import": "Nouvel import",
+      "not_supported_yet": "Pas encore pris en charge",
+      "import_only": "import uniquement",
+      "export_only": "export uniquement",
+      "module_not_supported": "Le module de ce fichier n'est pas disponible pour l'import de données : {{module}}."
+    },
+    "help_texts": {
+      "import": "Choisissez un fichier de transfert JSON produit par un export sur cette boutique ou une autre. Les sections sont rejouées dans l'ordre des dépendances ; les lignes correspondant à des enregistrements existants suivent la stratégie de doublons. Les fichiers binaires ne circulent jamais — les médias restent des identifiants.",
+      "export": "Télécharge les données d'un module sous forme de fichier de transfert versionné, réimportable sur n'importe quelle boutique. Les ids restent ceux de la boutique source ; l'import les remappe.",
+      "dry_run": "Valide chaque ligne et rapporte le résultat sans rien écrire."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Terminé",
+        "failed": "Échoué"
+      },
+      "strategy": {
+        "update": "Mettre à jour les enregistrements existants",
+        "skip": "Ignorer les enregistrements existants"
+      }
+    }
+  }
+}

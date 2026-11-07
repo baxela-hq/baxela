@@ -53,7 +53,8 @@
     "tax-classes": "Clases de impuesto",
     "tax-rates": "Tarifas de impuesto",
     "returns": "Devoluciones",
-    "languages": "Idiomas"
+    "languages": "Idiomas",
+    "transfer-data": "Transferencia de datos"
   },
   "dialog": {
     "sign-out": {

@@ -53,7 +53,8 @@
     "tax-classes": "فئات الضريبة",
     "tax-rates": "نسب الضريبة",
     "returns": "المرتجعات",
-    "languages": "اللغات"
+    "languages": "اللغات",
+    "transfer-data": "نقل البيانات"
   },
   "dialog": {
     "sign-out": {

@@ -53,7 +53,8 @@
     "tax-classes": "Classes de taxes",
     "tax-rates": "Taux de taxe",
     "returns": "Retours",
-    "languages": "Langues"
+    "languages": "Langues",
+    "transfer-data": "Transfert de données"
   },
   "dialog": {
     "sign-out": {

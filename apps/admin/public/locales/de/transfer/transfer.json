@@ -1,0 +1,58 @@
+{
+  "page_titles": {
+    "title": "Datenübertragung",
+    "subtitle": "Moduldaten plattformweit als tragbare JSON-Transferdateien importieren und exportieren."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Import",
+      "import_description": "Eine Modul-Transferdatei über die eigenen Admin-Aktionen des Moduls einspielen.",
+      "export_title": "Export",
+      "export_description": "Daten eines Moduls als Transferdatei herunterladen: anfrageförmige Payloads in Abhängigkeitsreihenfolge.",
+      "choose_file": "JSON-Datei wählen",
+      "change_file": "Datei ändern",
+      "section": "Abschnitt",
+      "rows": "Zeilen",
+      "total_rows": "Zeilen gesamt",
+      "exported_at": "Exportiert",
+      "duplicate_strategy": "Vorhandene Datensätze mit demselben Schlüssel",
+      "dry_run": "Nur validieren (Probelauf)",
+      "run_dry_run": "Validieren",
+      "created": "Erstellt",
+      "updated": "Aktualisiert",
+      "skipped": "Übersprungen",
+      "failed": "Fehlgeschlagen",
+      "duration": "Dauer",
+      "no_errors": "Keine Zeilenfehler.",
+      "row_cap_exceeded": "Die Datei überschreitet das Limit von {{cap}} Zeilen.",
+      "warning_not_importable": "Nur exportierbare Abschnitte werden übersprungen: {{sections}}.",
+      "history": "Verlauf",
+      "history_description": "Importläufe über alle Module, neueste zuerst.",
+      "no_history": "Noch keine Imports.",
+      "filename": "Datei",
+      "module": "Modul",
+      "status": "Status",
+      "run_at": "Ausgeführt am",
+      "new_import": "Neuer Import",
+      "not_supported_yet": "Noch nicht unterstützt",
+      "import_only": "nur Import",
+      "export_only": "nur Export",
+      "module_not_supported": "Das Modul dieser Datei ist für den Datenimport nicht verfügbar: {{module}}."
+    },
+    "help_texts": {
+      "import": "Wählen Sie eine JSON-Transferdatei aus einem Export dieses oder eines anderen Shops. Abschnitte werden in Abhängigkeitsreihenfolge eingespielt; Zeilen, die bestehende Datensätze treffen, folgen der Duplikatstrategie. Binärdateien wandern nie — Mediendateien bleiben Referenzen.",
+      "export": "Lädt die Daten eines Moduls als versionierte Transferdatei herunter, die sich auf jedem Shop erneut importieren lässt. Ids bleiben Shop-Ids; der Import ordnet sie neu zu.",
+      "dry_run": "Prüft jede Zeile und meldet das Ergebnis, ohne etwas zu schreiben."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen"
+      },
+      "strategy": {
+        "update": "Bestehende Datensätze aktualisieren",
+        "skip": "Bestehende Datensätze überspringen"
+      }
+    }
+  }
+}

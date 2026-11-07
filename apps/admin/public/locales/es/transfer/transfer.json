@@ -1,0 +1,58 @@
+{
+  "page_titles": {
+    "title": "Transferencia de datos",
+    "subtitle": "Importa y exporta datos de módulos en toda la plataforma como archivos de transferencia JSON portables."
+  },
+  "form": {
+    "labels": {
+      "import_title": "Importar",
+      "import_description": "Reproduce un archivo de transferencia de módulo a través de las acciones de administración del propio módulo.",
+      "export_title": "Exportar",
+      "export_description": "Descarga los datos de un módulo como archivo de transferencia: payloads con formato de petición en orden de dependencia.",
+      "choose_file": "Elegir archivo JSON",
+      "change_file": "Cambiar archivo",
+      "section": "Sección",
+      "rows": "Filas",
+      "total_rows": "Total de filas",
+      "exported_at": "Exportado",
+      "duplicate_strategy": "Registros existentes con la misma clave",
+      "dry_run": "Solo validar (prueba en seco)",
+      "run_dry_run": "Validar",
+      "created": "Creados",
+      "updated": "Actualizados",
+      "skipped": "Omitidos",
+      "failed": "Fallidos",
+      "duration": "Duración",
+      "no_errors": "Sin errores de fila.",
+      "row_cap_exceeded": "El archivo supera el límite de {{cap}} filas.",
+      "warning_not_importable": "Las secciones de solo exportación se omitirán: {{sections}}.",
+      "history": "Historial",
+      "history_description": "Ejecuciones de importación de todos los módulos, la más reciente primero.",
+      "no_history": "Aún no hay importaciones.",
+      "filename": "Archivo",
+      "module": "Módulo",
+      "status": "Estado",
+      "run_at": "Ejecutado el",
+      "new_import": "Nueva importación",
+      "not_supported_yet": "Aún no compatible",
+      "import_only": "solo importación",
+      "export_only": "solo exportación",
+      "module_not_supported": "El módulo de este archivo no está disponible para importación de datos: {{module}}."
+    },
+    "help_texts": {
+      "import": "Elige un archivo de transferencia JSON producido por una exportación en esta u otra tienda. Las secciones se reproducen en orden de dependencia; las filas que coinciden con registros existentes siguen la estrategia de duplicados. Los archivos binarios nunca viajan: las referencias a medios permanecen como identificadores.",
+      "export": "Descarga los datos de un módulo como archivo de transferencia versionado que puedes reimportar en cualquier tienda. Los ids permanecen como ids de la tienda de origen; la importación los remapea.",
+      "dry_run": "Valida cada fila e informa del resultado sin escribir nada."
+    },
+    "statuses": {
+      "status": {
+        "completed": "Completada",
+        "failed": "Fallida"
+      },
+      "strategy": {
+        "update": "Actualizar registros existentes",
+        "skip": "Omitir registros existentes"
+      }
+    }
+  }
+}
