@@ -1,0 +1,36 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Tâches en échec",
+      "subtitle": "Tâches en file ayant épuisé leurs tentatives — inspecter, réessayer ou nettoyer"
+    }
+  },
+  "form": {
+    "labels": {
+      "failed-job": "Tâche en échec",
+      "uuid": "UUID",
+      "job": "Tâche",
+      "queue": "File",
+      "connection": "Connexion",
+      "failed-at": "Échec le",
+      "exception": "Exception",
+      "payload": "Charge utile",
+      "actions": "Actions",
+      "cancel": "Annuler",
+      "retry": "Réessayer",
+      "forget": "Supprimer",
+      "retry-title": "Réessayer la tâche en échec ?",
+      "forget-title": "Supprimer la tâche en échec ?",
+      "no-results": "Aucune tâche en échec — la file est saine."
+    },
+    "actions": {
+      "view": "Voir",
+      "retry": "Réessayer",
+      "forget": "Supprimer"
+    }
+  },
+  "messages": {
+    "retry-warning": "Réessayer remet cette tâche en file pour une nouvelle exécution. Les effets de la tâche peuvent se répéter — vérifiez l'opération d'origine avant de réessayer des tâches impliquant paiements, commandes, stocks ou services externes.",
+    "forget-warning": "Cette action supprime définitivement l'enregistrement de la tâche en échec. Irréversible."
+  }
+}

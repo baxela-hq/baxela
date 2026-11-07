@@ -22,6 +22,7 @@ import { Route as AuthenticatedTransferIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
+import { Route as AuthenticatedFailedJobsIndexRouteImport } from './routes/_authenticated/failed-jobs/index'
 import { Route as AuthenticatedSettingsStoreRouteImport } from './routes/_authenticated/settings/store'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedCatalogAttributesRouteRouteImport } from './routes/_authenticated/catalog/attributes/route'
@@ -143,6 +144,12 @@ const AuthenticatedMediaIndexRoute = AuthenticatedMediaIndexRouteImport.update({
   path: '/media/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedFailedJobsIndexRoute =
+  AuthenticatedFailedJobsIndexRouteImport.update({
+    id: '/failed-jobs/',
+    path: '/failed-jobs/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsStoreRoute =
   AuthenticatedSettingsStoreRouteImport.update({
     id: '/store',
@@ -468,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/catalog/attributes': typeof AuthenticatedCatalogAttributesRouteRouteWithChildren
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
+  '/failed-jobs': typeof AuthenticatedFailedJobsIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -532,6 +540,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
+  '/failed-jobs': typeof AuthenticatedFailedJobsIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -600,6 +609,7 @@ export interface FileRoutesById {
   '/_authenticated/catalog/attributes': typeof AuthenticatedCatalogAttributesRouteRouteWithChildren
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/store': typeof AuthenticatedSettingsStoreRoute
+  '/_authenticated/failed-jobs/': typeof AuthenticatedFailedJobsIndexRoute
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
   '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -668,6 +678,7 @@ export interface FileRouteTypes {
     | '/catalog/attributes'
     | '/errors/$error'
     | '/settings/store'
+    | '/failed-jobs'
     | '/media'
     | '/notifications'
     | '/settings/'
@@ -732,6 +743,7 @@ export interface FileRouteTypes {
     | '/'
     | '/errors/$error'
     | '/settings/store'
+    | '/failed-jobs'
     | '/media'
     | '/notifications'
     | '/settings'
@@ -799,6 +811,7 @@ export interface FileRouteTypes {
     | '/_authenticated/catalog/attributes'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/store'
+    | '/_authenticated/failed-jobs/'
     | '/_authenticated/media/'
     | '/_authenticated/notifications/'
     | '/_authenticated/settings/'
@@ -955,6 +968,13 @@ declare module '@tanstack/react-router' {
       path: '/media'
       fullPath: '/media'
       preLoaderRoute: typeof AuthenticatedMediaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/failed-jobs/': {
+      id: '/_authenticated/failed-jobs/'
+      path: '/failed-jobs'
+      fullPath: '/failed-jobs'
+      preLoaderRoute: typeof AuthenticatedFailedJobsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/store': {
@@ -1369,6 +1389,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedCatalogAttributesRouteRoute: typeof AuthenticatedCatalogAttributesRouteRouteWithChildren
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedFailedJobsIndexRoute: typeof AuthenticatedFailedJobsIndexRoute
   AuthenticatedMediaIndexRoute: typeof AuthenticatedMediaIndexRoute
   AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
   AuthenticatedTransferIndexRoute: typeof AuthenticatedTransferIndexRoute
@@ -1425,6 +1446,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCatalogAttributesRouteRoute:
     AuthenticatedCatalogAttributesRouteRouteWithChildren,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedFailedJobsIndexRoute: AuthenticatedFailedJobsIndexRoute,
   AuthenticatedMediaIndexRoute: AuthenticatedMediaIndexRoute,
   AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
   AuthenticatedTransferIndexRoute: AuthenticatedTransferIndexRoute,

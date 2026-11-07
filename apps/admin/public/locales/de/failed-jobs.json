@@ -1,0 +1,36 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Fehlgeschlagene Jobs",
+      "subtitle": "Queued-Jobs mit erschöpften Versuchen — prüfen, wiederholen oder aufräumen"
+    }
+  },
+  "form": {
+    "labels": {
+      "failed-job": "Fehlgeschlagener Job",
+      "uuid": "UUID",
+      "job": "Job",
+      "queue": "Queue",
+      "connection": "Verbindung",
+      "failed-at": "Fehlgeschlagen am",
+      "exception": "Ausnahme",
+      "payload": "Payload",
+      "actions": "Aktionen",
+      "cancel": "Abbrechen",
+      "retry": "Wiederholen",
+      "forget": "Löschen",
+      "retry-title": "Fehlgeschlagenen Job wiederholen?",
+      "forget-title": "Fehlgeschlagenen Job löschen?",
+      "no-results": "Keine fehlgeschlagenen Jobs — die Queue ist gesund."
+    },
+    "actions": {
+      "view": "Ansehen",
+      "retry": "Wiederholen",
+      "forget": "Löschen"
+    }
+  },
+  "messages": {
+    "retry-warning": "Das Wiederholen stellt den Job für einen weiteren Ausführungsversuch zurück in die Queue. Dabei können Nebeneffekte wiederholt auftreten — vor dem Wiederholen von Jobs mit Zahlungen, Beständen, Lagerbeständen oder externen Diensten die ursprüngliche Operation prüfen.",
+    "forget-warning": "Dies löscht den Datensatz des fehlgeschlagenen Jobs dauerhaft. Nicht rückgängig machbar."
+  }
+}

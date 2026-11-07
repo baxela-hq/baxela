@@ -1,0 +1,36 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Failed Jobs",
+      "subtitle": "Queued jobs that exhausted their attempts — inspect, retry or clean up"
+    }
+  },
+  "form": {
+    "labels": {
+      "failed-job": "Failed job",
+      "uuid": "UUID",
+      "job": "Job",
+      "queue": "Queue",
+      "connection": "Connection",
+      "failed-at": "Failed At",
+      "exception": "Exception",
+      "payload": "Payload",
+      "actions": "Actions",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "forget": "Delete",
+      "retry-title": "Retry failed job?",
+      "forget-title": "Delete failed job?",
+      "no-results": "No failed jobs — the queue is healthy."
+    },
+    "actions": {
+      "view": "View",
+      "retry": "Retry",
+      "forget": "Delete"
+    }
+  },
+  "messages": {
+    "retry-warning": "Retrying re-queues this job for another execution attempt. It may repeat the job's side effects — verify the original operation before retrying jobs involving payments, orders, inventory, or external services.",
+    "forget-warning": "This permanently deletes the failed job record. This cannot be undone."
+  }
+}

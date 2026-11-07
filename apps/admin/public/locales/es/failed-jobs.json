@@ -1,0 +1,36 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Trabajos fallidos",
+      "subtitle": "Trabajos en cola que agotaron sus intentos — inspeccionar, reintentar o limpiar"
+    }
+  },
+  "form": {
+    "labels": {
+      "failed-job": "Trabajo fallido",
+      "uuid": "UUID",
+      "job": "Trabajo",
+      "queue": "Cola",
+      "connection": "Conexión",
+      "failed-at": "Falló el",
+      "exception": "Excepción",
+      "payload": "Contenido",
+      "actions": "Acciones",
+      "cancel": "Cancelar",
+      "retry": "Reintentar",
+      "forget": "Eliminar",
+      "retry-title": "¿Reintentar el trabajo fallido?",
+      "forget-title": "¿Eliminar el trabajo fallido?",
+      "no-results": "No hay trabajos fallidos — la cola está sana."
+    },
+    "actions": {
+      "view": "Ver",
+      "retry": "Reintentar",
+      "forget": "Eliminar"
+    }
+  },
+  "messages": {
+    "retry-warning": "Reintentar vuelve a poner este trabajo en la cola para otro intento de ejecución. Puede repetir los efectos secundarios del trabajo — verifica la operación original antes de reintentar trabajos con pagos, pedidos, inventario o servicios externos.",
+    "forget-warning": "Esto elimina permanentemente el registro del trabajo fallido. No se puede deshacer."
+  }
+}

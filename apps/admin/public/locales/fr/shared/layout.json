@@ -49,6 +49,7 @@
     "featured": "En vedette",
     "promotions": "Promotions",
     "audit-logs": "Journaux d'audit",
+    "failed-jobs": "Tâches en échec",
     "tax": "Taxes",
     "tax-classes": "Classes de taxes",
     "tax-rates": "Taux de taxe",

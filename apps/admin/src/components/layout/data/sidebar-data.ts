@@ -18,6 +18,7 @@ import {
   CreditCard,
   TicketPercent,
   ArrowLeftRight,
+  CircleAlert,
 } from 'lucide-react'
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
@@ -97,6 +98,12 @@ export const useSidebarData = (): SidebarData => {
             url: '/transfer',
             icon: ArrowLeftRight,
             permission: 'transfer.admin.capabilities.show',
+          },
+          {
+            title: t('sidebar.failed-jobs'),
+            url: '/failed-jobs',
+            icon: CircleAlert,
+            permission: 'core.admin.failed-jobs.list',
           },
         ],
       },
