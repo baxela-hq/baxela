@@ -1369,6 +1369,12 @@ parameters:
 			path: Modules/Cart/app/Support/RefreshesCartPrices.php
 
 		-
+			message: '#^Method Modules\\Cart\\Transfer\\CartTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Cart/app/Transfer/CartTransfer.php
+
+		-
 			message: '#^Method Modules\\Cart\\Transformers\\Public\\CartItem\\CartItemResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1547,6 +1553,42 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Cart\\Models\\Cart\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedCartDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
 
 		-
 			message: '#^Trait Modules\\Cart\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -8413,6 +8455,96 @@ parameters:
 			path: Modules/Content/app/Providers/ContentServiceProvider.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\Page\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$image_media_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$image_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$published_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\PostCategory\:\:\$parent_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\PostCategory\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<array\<string, mixed\>\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 3
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
+			message: '#^Property Modules\\Content\\Transfer\\ContentTransfer\:\:\$postCategoryIdBySource type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Content/app/Transfer/ContentTransfer.php
+
+		-
 			message: '#^Method Modules\\Content\\Transformers\\Admin\\Featured\\FeaturedResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -9143,6 +9275,90 @@ parameters:
 			identifier: argument.templateType
 			count: 3
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Content\\Models\\PostCategory\:\:\$parent_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedContentDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Function seedContentTransferData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
 
 		-
 			message: '#^Trait Modules\\Content\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -10099,6 +10315,162 @@ parameters:
 			path: Modules/Core/app/Support/PicksTranslation.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$code3\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$emoji\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$native_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$phone_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$decimal_places\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_symbol_right\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$native_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$symbol\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code3\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$date_format\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_rtl\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$locale\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$native_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$time_format\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Transfer/CoreTransfer.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -10501,6 +10873,54 @@ parameters:
 			path: Modules/Core/database/factories/LanguageFactory.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedCoreFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedCoreTransferData\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
 			identifier: property.notFound
 			count: 1
@@ -10601,6 +11021,12 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Core/tests/Feature/CurrencyTest.php
+
+		-
+			message: '#^Trait Modules\\Core\\Tests\\Feature\\HelperTransferTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: Modules/Core/tests/Feature/HelperTransferTrait.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
@@ -11911,6 +12337,30 @@ parameters:
 			path: Modules/Inventory/app/Providers/InventoryServiceProvider.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Inventory\\Models\\InventoryStock\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Inventory\\Models\\InventoryStock\:\:\$variant_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
+
+		-
+			message: '#^Parameter \#1 \$array \(list\<array\<string, mixed\>\>\) of array_values is already a list, call has no effect\.$#'
+			identifier: arrayValues.list
+			count: 1
+			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
+
+		-
+			message: '#^Parameter \#1 \$variantId of method Modules\\Core\\Contracts\\Gateways\\Inventory\\InventoryGatewayInterface\:\:upsertStock\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
+
+		-
 			message: '#^Method Modules\\Inventory\\Transformers\\Admin\\InventoryStock\\InventoryStockResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -12017,6 +12467,48 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Inventory/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Function inventoryTransferStock\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
+
+		-
+			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -13903,6 +14395,18 @@ parameters:
 			path: Modules/Notification/app/Support/RecipientPreferenceFilter.php
 
 		-
+			message: '#^Method Modules\\Notification\\Transfer\\NotificationTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Notification/app/Transfer/NotificationTransfer.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: Modules/Notification/app/Transfer/NotificationTransfer.php
+
+		-
 			message: '#^Method Modules\\Notification\\Transformers\\Admin\\Notification\\NotificationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -14009,6 +14513,36 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Notification/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedNotificationDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Notification\\Models\\NotificationPreference\:\:\$audience\.$#'
@@ -15013,6 +15547,24 @@ parameters:
 			path: Modules/Order/app/Schemas/OrderReturn/OrderReturnStatusEnum.php
 
 		-
+			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/app/Transfer/OrderTransfer.php
+
+		-
+			message: '#^Method Modules\\Order\\Transfer\\OrderTransfer\:\:attributesToPayload\(\) has parameter \$record with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Order/app/Transfer/OrderTransfer.php
+
+		-
+			message: '#^Method Modules\\Order\\Transfer\\OrderTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Transfer/OrderTransfer.php
+
+		-
 			message: '#^Method Modules\\Order\\Transformers\\Admin\\Order\\OrderResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -15715,6 +16267,48 @@ parameters:
 			path: Modules/Order/tests/Feature/HelperTrait.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedOrderDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
+
+		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -16201,6 +16795,24 @@ parameters:
 			path: Modules/Payment/app/Support/FinalizesRefund.php
 
 		-
+			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/app/Transfer/PaymentTransfer.php
+
+		-
+			message: '#^Method Modules\\Payment\\Transfer\\PaymentTransfer\:\:attributesToPayload\(\) has parameter \$record with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Payment/app/Transfer/PaymentTransfer.php
+
+		-
+			message: '#^Method Modules\\Payment\\Transfer\\PaymentTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Payment/app/Transfer/PaymentTransfer.php
+
+		-
 			message: '#^Method Modules\\Payment\\Transformers\\Admin\\Payment\\PaymentMethodResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -16601,6 +17213,42 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Payment/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedPaymentDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
@@ -19345,6 +19993,18 @@ parameters:
 			path: Modules/Support/app/Models/User/Ticket.php
 
 		-
+			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/app/Transfer/SupportTransfer.php
+
+		-
+			message: '#^Method Modules\\Support\\Transfer\\SupportTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Support/app/Transfer/SupportTransfer.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$created_at\.$#'
 			identifier: property.notFound
 			count: 1
@@ -19565,6 +20225,36 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Support/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedSupportDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -20491,6 +21181,12 @@ parameters:
 			path: Modules/User/app/Providers/UserServiceProvider.php
 
 		-
+			message: '#^Method Modules\\User\\Transfer\\UserTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/User/app/Transfer/UserTransfer.php
+
+		-
 			message: '#^Method Modules\\User\\Transformers\\User\\Address\\AddressResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -20633,6 +21329,48 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/User/tests/Feature/ProfileTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedUserDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/User/tests/Feature/UserDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'

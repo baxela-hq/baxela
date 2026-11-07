@@ -3,7 +3,9 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
 use Modules\Core\Models\Currency;
+use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Currency\CurrencySchema;
+use Modules\Core\Schemas\Language\LanguageSchema;
 
 uses(RefreshDatabase::class);
 
@@ -49,15 +51,15 @@ it('gives freshly-seeded inactive currencies the identity rate', function () {
 });
 
 it('seeds the curated six languages active on a fresh database', function () {
-    $this->seed(\Modules\Core\Database\Seeders\CoreDatabaseSeeder::class);
+    $this->seed(CoreDatabaseSeeder::class);
 
-    $active = \Modules\Core\Models\Language::query()
-        ->where(\Modules\Core\Schemas\Language\LanguageSchema::IS_ACTIVE, true)
-        ->pluck(\Modules\Core\Schemas\Language\LanguageSchema::CODE)
+    $active = Language::query()
+        ->where(LanguageSchema::IS_ACTIVE, true)
+        ->pluck(LanguageSchema::CODE)
         ->sort()->values()->all();
 
     expect($active)->toBe(['ar', 'de', 'en', 'es', 'fa', 'fr'])
-        ->and(\Modules\Core\Models\Language::query()
-            ->where(\Modules\Core\Schemas\Language\LanguageSchema::IS_DEFAULT, true)
-            ->value(\Modules\Core\Schemas\Language\LanguageSchema::CODE))->toBe('en');
+        ->and(Language::query()
+            ->where(LanguageSchema::IS_DEFAULT, true)
+            ->value(LanguageSchema::CODE))->toBe('en');
 });

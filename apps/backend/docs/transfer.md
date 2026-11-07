@@ -147,12 +147,15 @@ still keep a service catalog).
 | Contact | ✅ export + import | `newsletter-subscribers`, `contact-messages` (export-only) |
 | Menu | ✅ export + import | `menus`, `menu-links` (parents-first tree) |
 | Catalog | 🔀 separate implementation | Pre-dates the standard: `catalog/admin/data/*` (JSON module transfer) + product CSV import. Migration onto the standard is possible via an adapter. |
-| Core | 📋 planned | `languages`, `currencies`, `countries` (reference data) |
-| Content | 📋 planned | `pages`, `post-categories`, `posts` (translations) |
-| User | 📋 planned | `addresses` (user refs are store-specific) |
-| Inventory | 📋 planned | `stocks` (variant refs; usually derived) |
-| Notification | 📋 planned | `preferences`, `push-subscriptions` |
-| Order / Payment / Cart / Support | 🚫 export-only candidates | Transactional history — never replayed; import would break business invariants. |
+| Core | ✅ export + import · own endpoints | `languages` (default flag demotes others), `currencies`, `countries` — upsert by code, mirroring the seeder |
+| Content | ✅ export + import · own endpoints | `pages`, `post-categories` (parents-first tree), `posts` (translations, SEO, catalog ids via gateway) |
+| Inventory | ✅ export + import · own endpoints | `stocks` (variant ids via gateway; replay through `upsertStock`) |
+| User | ✅ export-only · own endpoints | `profiles`, `addresses`, `wishlist-items` — user refs are store-specific, so no import |
+| Notification | ✅ export-only · own endpoints | `notifications`, `notification-preferences`, `push-subscriptions`, `telegram-subscriptions` — per-user/per-device state |
+| Order | ✅ export-only · own endpoints | `orders`, `order-items`, `order-addresses`, `order-returns` — faithful attribute export; replaying would forge history |
+| Payment | ✅ export-only · own endpoints | `payment-methods`, `payments`, `refunds` — the money trail never replays |
+| Cart | ✅ export-only · own endpoints | `carts`, `cart-items` — ephemeral storefront state |
+| Support | ✅ export-only · own endpoints | `tickets`, `ticket-messages` — per-user correspondence |
 | Media | 🚫 out of scope | Binary files are explicitly excluded from transfers; metadata export only, if ever. |
 | Auth | 🚫 out of scope | Users/roles/permissions are security-sensitive; no bulk import surface. |
 | Audit | 🚫 out of scope | Immutable log — export/import would forge history. |

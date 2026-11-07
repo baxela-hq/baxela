@@ -6,6 +6,8 @@ class Module
 {
     public const string NAME = 'Payment';
 
+    public const string NAME_LOWER = 'payment';
+
     public const string DB_PREFIX = 'payment_';
 
     public const string ROUTE_PREFIX = 'payment';

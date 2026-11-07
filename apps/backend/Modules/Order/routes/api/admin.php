@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Order\Http\Controllers\Admin\Data\ExportOrderDataController;
+use Modules\Order\Http\Controllers\Admin\Data\ImportOrderDataController;
+use Modules\Order\Http\Controllers\Admin\Data\ListOrderDataImportsController;
+use Modules\Order\Http\Controllers\Admin\Data\PreviewOrderDataImportController;
 use Modules\Order\Http\Controllers\Admin\Order\ListOrderController;
 use Modules\Order\Http\Controllers\Admin\Order\ShowOrderController;
 use Modules\Order\Http\Controllers\Admin\Order\UpdateOrderController;
@@ -21,4 +25,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/returns', ListOrderReturnController::class)->name('returns.list');
     Route::get('/returns/{id}', ShowOrderReturnController::class)->name('returns.show');
     Route::patch('/returns/{id}', UpdateOrderReturnController::class)->name('returns.update');
+    // The module's own data-transfer endpoints (per-module surface from
+    // the transfer standard's phase plan; the central transfer endpoints
+    // remain available).
+    Route::get('/data/export', ExportOrderDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewOrderDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportOrderDataController::class)->name('data.import');
+    Route::get('/data/imports', ListOrderDataImportsController::class)->name('data.imports.list');
 });

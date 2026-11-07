@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Content\Http\Controllers\Admin\Data\ExportContentDataController;
+use Modules\Content\Http\Controllers\Admin\Data\ImportContentDataController;
+use Modules\Content\Http\Controllers\Admin\Data\ListContentDataImportsController;
+use Modules\Content\Http\Controllers\Admin\Data\PreviewContentDataImportController;
 use Modules\Content\Http\Controllers\Admin\Featured\ListFeaturedController;
 use Modules\Content\Http\Controllers\Admin\Featured\UpdateFeaturedController;
 use Modules\Content\Http\Controllers\Admin\Page\CreatePageController;
@@ -52,4 +56,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/post-comments/{id}', ShowPostCommentController::class)->name('post-comments.show');
     Route::patch('/post-comments/{id}', UpdatePostCommentController::class)->name('post-comments.update');
     Route::delete('/post-comments/{id}', DeletePostCommentController::class)->name('post-comments.delete');
+    // The module's own data-transfer endpoints (per-module surface from
+    // the transfer standard's phase plan; the central transfer endpoints
+    // remain available).
+    Route::get('/data/export', ExportContentDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewContentDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportContentDataController::class)->name('data.import');
+    Route::get('/data/imports', ListContentDataImportsController::class)->name('data.imports.list');
 });

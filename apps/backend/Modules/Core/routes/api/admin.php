@@ -5,6 +5,10 @@ use Modules\Core\Http\Controllers\Admin\Country\ListCountryController;
 use Modules\Core\Http\Controllers\Admin\Currency\CreateCurrencyController;
 use Modules\Core\Http\Controllers\Admin\Currency\ListCurrencyController;
 use Modules\Core\Http\Controllers\Admin\Currency\UpdateCurrencyController;
+use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
+use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
+use Modules\Core\Http\Controllers\Admin\Data\ListCoreDataImportsController;
+use Modules\Core\Http\Controllers\Admin\Data\PreviewCoreDataImportController;
 use Modules\Core\Http\Controllers\Admin\Language\ListLanguageController;
 use Modules\Core\Http\Controllers\Admin\Language\UpdateLanguageController;
 use Modules\Core\Http\Controllers\Admin\Timezone\ListTimezoneController;
@@ -18,4 +22,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::post('/currencies', CreateCurrencyController::class)->name('currencies.create');
     Route::patch('/currencies/{id}', UpdateCurrencyController::class)->name('currencies.update');
     Route::get('/countries', ListCountryController::class)->name('countries.list');
+
+    // The module's own data-transfer endpoints (reference data export/import).
+    Route::get('/data/export', ExportCoreDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewCoreDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportCoreDataController::class)->name('data.import');
+    Route::get('/data/imports', ListCoreDataImportsController::class)->name('data.imports.list');
 });

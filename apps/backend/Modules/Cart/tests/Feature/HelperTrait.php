@@ -3,6 +3,7 @@
 namespace Modules\Cart\Tests\Feature;
 
 use Illuminate\Support\Str;
+use Modules\Auth\Models\User;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\Cart\CartSchema;
@@ -162,5 +163,24 @@ trait HelperTrait
         ]);
 
         return $method;
+    }
+
+    /**
+     * Export through the module's own data endpoint and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedCartDataFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->baseUrl('/admin/data/export'))->assertOk()->streamedContent(),
+            true
+        );
+    }
+
+    public function superAdminUser(): User
+    {
+        return User::factory()->superAdmin()->create();
     }
 }

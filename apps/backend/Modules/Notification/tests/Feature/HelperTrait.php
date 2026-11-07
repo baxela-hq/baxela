@@ -15,4 +15,18 @@ trait HelperTrait
     {
         return User::factory()->superAdmin()->create();
     }
+
+    /**
+     * Export through the module's own data endpoint and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedNotificationDataFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->baseUrl('/admin/data/export'))->assertOk()->streamedContent(),
+            true
+        );
+    }
 }

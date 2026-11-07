@@ -28,11 +28,14 @@ it('lists every enabled module with its transfer support', function () {
             ->json('data')
     )->pluck('supported', 'module');
 
-    // The Transfer module is only meaningful with at least one
-    // participant; Tax is the reference implementation.
+    // Ten modules are wired onto the standard; catalog/media/auth/audit
+    // deliberately are not.
     expect($modules['tax'])->toBeTrue()
         ->and($modules['transfer'])->toBeFalse()
-        ->and($modules['order'])->toBeFalse();
+        ->and($modules['catalog'])->toBeFalse()
+        ->and($modules['media'])->toBeFalse()
+        ->and($modules['auth'])->toBeFalse()
+        ->and($modules['audit'])->toBeFalse();
 });
 
 it('declares the participating module sections with their flags', function () {
@@ -75,6 +78,6 @@ it('publishes the wired module data endpoints and none for the others', function
     }
 
     // ...and modules that did not opt in publish none.
-    expect($modules->firstWhere('module', 'order')['endpoints'])->toBeNull()
+    expect($modules->firstWhere('module', 'catalog')['endpoints'])->toBeNull()
         ->and($modules->firstWhere('module', 'transfer')['endpoints'])->toBeNull();
 });

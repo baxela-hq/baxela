@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Core\Transfer\CoreTransfer;
+
 return [
     'name' => 'Core',
     /*
@@ -14,4 +16,10 @@ return [
     |
     */
     'log_requests' => env('CORE_LOG_REQUESTS', false),
+
+    // Data-transfer standard registration — picked up by the Transfer
+    // module's registry (see docs/transfer.md).
+    'transfer' => [
+        'class' => CoreTransfer::class,
+    ],
 ];

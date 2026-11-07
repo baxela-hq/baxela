@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Inventory\Transfer\InventoryTransfer;
+
 return [
     'name' => 'Inventory',
 
@@ -9,4 +11,10 @@ return [
      * for depleted stock fire independently at zero.
      */
     'low_stock_threshold' => 5,
+
+    // Data-transfer standard registration — picked up by the Transfer
+    // module's registry (see docs/transfer.md).
+    'transfer' => [
+        'class' => InventoryTransfer::class,
+    ],
 ];

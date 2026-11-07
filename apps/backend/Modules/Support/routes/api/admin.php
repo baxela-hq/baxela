@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Support\Http\Controllers\Admin\Data\ExportSupportDataController;
+use Modules\Support\Http\Controllers\Admin\Data\ImportSupportDataController;
+use Modules\Support\Http\Controllers\Admin\Data\ListSupportDataImportsController;
+use Modules\Support\Http\Controllers\Admin\Data\PreviewSupportDataImportController;
 use Modules\Support\Http\Controllers\Admin\Ticket\DeleteTicketController;
 use Modules\Support\Http\Controllers\Admin\Ticket\ListTicketController;
 use Modules\Support\Http\Controllers\Admin\Ticket\ShowTicketController;
@@ -15,4 +19,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::delete('/tickets/{id}', DeleteTicketController::class)->name('tickets.delete');
 
     Route::post('/tickets/{id}/messages', CreateTicketMessageController::class)->name('ticket-messages.create');
+    // The module's own data-transfer endpoints (export-only surface; the
+    // central transfer endpoints remain available).
+    Route::get('/data/export', ExportSupportDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewSupportDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportSupportDataController::class)->name('data.import');
+    Route::get('/data/imports', ListSupportDataImportsController::class)->name('data.imports.list');
 });
