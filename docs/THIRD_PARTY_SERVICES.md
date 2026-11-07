@@ -38,7 +38,9 @@ refundable balance.
 | Manual | Bookkeeping only | Recording that the offline refund already happened |
 | Adyen | Yes — accepted async, webhook-confirmed | `POST /payments/{psp}/refunds` (`Idempotency-Key`); `REFUND` / `REFUND_FAILED` / `REFUNDED_REVERSED` webhooks confirm; correlate via the ledger uuid echoed as `reference` |
 | Checkout.com | Yes — accepted async, webhook-confirmed | `POST /payments/{id}/refunds` (`Cko-Idempotency-Key`); `payment_refunded` / `payment_refund_declined` events confirm |
-| Mercado Pago, Razorpay, NowPayments | Not yet | Refund attempts fail loudly (`payment.refund.not_supported`) |
+| Mercado Pago | Yes — response decides; notifications reconcile | `POST /v1/payments/{id}/refunds` (`X-Idempotency-Key` mandatory); an `approved` refund response is definitive — non-terminal responses and edge cases reconcile via the payment notification's `refunds[]`, matched per refund id |
+| Razorpay | Yes — accepted async, webhook-confirmed | `POST /v1/payments/{pay_id}/refund` (`X-Refund-Idempotency`); `refund.processed` / `refund.failed` webhooks confirm — **enable refund events on the dashboard webhook**; ledger uuid rides in the refund's `notes` |
+| NowPayments | No — provider-impossible | Crypto payments cannot be reversed provider-side; any customer reimbursement is arranged separately by the merchant. The admin surfaces state this plainly |
 
 Capability is declared in code — drivers implement the `RefundableDriver` contract
 marker — and the admin payment-methods page shows it per driver (`is_refundable`);
@@ -46,10 +48,12 @@ keep this table in sync with the marker, never edit one without the other.
 
 Two boundaries worth knowing as an operator:
 
-- **Async refunds:** Adyen/Checkout.com accept a refund over the API and confirm it
-  via webhook; the ledger row stays reserved in `processing` until then. Reservations
-  are never released by age — an admin verifies the provider's actual outcome before
-  resolving a stale row.
+- **Async refunds:** Adyen, Checkout.com and Razorpay accept a refund over the API
+  and confirm it via webhook; Mercado Pago decides in the response and reconciles
+  edge cases via its payment notifications. The ledger row stays reserved in
+  `processing` until the definitive outcome arrives. Reservations are never released
+  by age — an admin verifies the provider's actual outcome before resolving a stale
+  row.
 - **Dashboard-issued refunds do not update Baxela's accounting.** A refund issued in
   the gateway console (no ledger row) is acknowledged and logged, but order totals
   stay unchanged — the same is true for Stripe today. Issue refunds through the admin

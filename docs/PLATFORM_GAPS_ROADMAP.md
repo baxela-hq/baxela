@@ -197,12 +197,31 @@ or `feat(backend/core): failed jobs admin surface`
 
 ### B.4 Gateway refund coverage (staged: ~2 drivers per release, beta → v0.2)
 
-- [ ] Adyen + Checkout.com refunds via their REST APIs (`Http::fake` tests, mirror the
-      Stripe driver's two-phase refund flow).
-- [ ] MercadoPago + Razorpay refunds likewise.
-- [ ] NowPayments: document as provider-impossible (crypto) — admin UI states it plainly
-      instead of a generic failure.
-- [ ] When each lands: shrink the A.1 footnote; release note the driver name.
+- [x] Adyen + Checkout.com refunds via their REST APIs (`Http::fake` tests, mirror the
+      Stripe driver's two-phase refund flow). *(done 2026-11-07 — plus the hard parts
+      the one-liner missed: a gateway-side payment identifier persisted at webhook
+      settle time (the refund APIs key on it), honest async semantics (`processing`
+      ledger state — a 2xx is an acceptance, not a completed refund), webhook-confirmed
+      outcomes correlated by the echoed ledger uuid with payment/amount/currency
+      validation, and a terminal `reversed` state that restores order accounting
+      atomically in any webhook order. Driver tests Mockery-mock the clients per repo
+      convention; `Http::fake` covers the new client methods' contract. Plan + review
+      trail in `docs/plans/gap-b4-refund-drivers.md`)*
+- [x] MercadoPago + Razorpay refunds likewise. *(done 2026-11-07 — MP: response-decided
+      (`approved` = definitive) with notification-driven reconciliation through the
+      payment resource's `refunds[]`, matched per refund id; mandatory
+      `X-Idempotency-Key`. Razorpay: refunds target the captured `pay_` id persisted
+      from `payment_link.paid`, ledger uuid in the refund's `notes`,
+      `X-Refund-Idempotency` header, `refund.processed`/`refund.failed` confirm —
+      dashboard must enable refund events)*
+- [x] NowPayments: document as provider-impossible (crypto) — admin UI states it plainly
+      instead of a generic failure. *(done 2026-11-07 — both admin surfaces carry
+      crypto-specific copy in 6 locales: provider-side refunds are impossible; customer
+      reimbursement is the merchant's to arrange; THIRD_PARTY_SERVICES row states it)*
+- [x] When each lands: shrink the A.1 footnote; release note the driver name.
+      *(done 2026-11-07 — footnote at final form: built-in refunds Stripe, PayPal,
+      Manual, Adyen, Checkout.com, Mercado Pago, Razorpay — NowPayments (crypto) has
+      no provider-side refunds; CHANGELOG entry covers all five drivers)*
 
 Suggested commit: `feat(backend/payment): adyen and checkoutcom refund drivers`
 
