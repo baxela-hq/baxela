@@ -8,4 +8,10 @@ return [
     '429' => 'درخواست‌های شما بیش از حد مجاز است. لطفاً کمی بعد دوباره تلاش کنید',
     '500' => 'مشکلی پیش آمده است',
     'internal_server_error' => 'مشکلی پیش آمده است',
+
+    // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
+    'failed_jobs' => [
+        'not_found' => 'کار ناموفق یافت نشد',
+        'search_too_short' => 'جست‌وجوی متن خطا باید حداقل :min نویسه باشد',
+    ],
 ];

@@ -1,0 +1,33 @@
+meta {
+  name: List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/core/admin/failed-jobs
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~page: 1
+  ~per_page: 15
+  ~sort: -failed_at
+  ~filter[queue]: default
+  ~filter[exception_search]: timeout
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

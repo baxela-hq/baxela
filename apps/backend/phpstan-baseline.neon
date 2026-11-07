@@ -21786,3 +21786,63 @@ parameters:
 			identifier: method.notFound
 			count: 5
 			path: Modules/User/tests/Feature/WishlistTest.php
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 19
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 11
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Function\ failedJobRow\(\)\ has\ parameter\ \$overrides\ with\ no\ value\ type\ specified\ in\ iterable\ type\ array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Function\ failedJobRow\(\)\ return\ type\ has\ no\ value\ type\ specified\ in\ iterable\ type\ array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Trait\ Modules\\Core\\Tests\\Feature\\HelperTrait\ is\ used\ zero\ times\ and\ is\ not\ analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: Modules/Core/tests/Feature/HelperTrait.php
+

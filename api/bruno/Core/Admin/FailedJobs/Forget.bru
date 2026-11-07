@@ -1,0 +1,25 @@
+meta {
+  name: Forget
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/core/admin/failed-jobs/:uuid
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

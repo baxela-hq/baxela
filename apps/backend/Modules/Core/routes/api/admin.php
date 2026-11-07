@@ -9,6 +9,10 @@ use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ListCoreDataImportsController;
 use Modules\Core\Http\Controllers\Admin\Data\PreviewCoreDataImportController;
+use Modules\Core\Http\Controllers\Admin\FailedJob\ForgetFailedJobController;
+use Modules\Core\Http\Controllers\Admin\FailedJob\ListFailedJobsController;
+use Modules\Core\Http\Controllers\Admin\FailedJob\RetryFailedJobController;
+use Modules\Core\Http\Controllers\Admin\FailedJob\ShowFailedJobController;
 use Modules\Core\Http\Controllers\Admin\Language\ListLanguageController;
 use Modules\Core\Http\Controllers\Admin\Language\UpdateLanguageController;
 use Modules\Core\Http\Controllers\Admin\Timezone\ListTimezoneController;
@@ -28,4 +32,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::post('/data/import/preview', PreviewCoreDataImportController::class)->name('data.import.preview');
     Route::post('/data/import', ImportCoreDataController::class)->name('data.import');
     Route::get('/data/imports', ListCoreDataImportsController::class)->name('data.imports.list');
+
+    // Failed-jobs visibility surface (gap-B3): route names derive the
+    // permissions core.admin.failed-jobs.{list,show,retry,delete} verbatim.
+    Route::get('/failed-jobs', ListFailedJobsController::class)->name('failed-jobs.list');
+    Route::get('/failed-jobs/{uuid}', ShowFailedJobController::class)->name('failed-jobs.show');
+    Route::post('/failed-jobs/{uuid}/retry', RetryFailedJobController::class)->name('failed-jobs.retry');
+    Route::delete('/failed-jobs/{uuid}', ForgetFailedJobController::class)->name('failed-jobs.delete');
 });
