@@ -1,26 +1,30 @@
-# Phase C — Engine work: tax engine, outbound webhooks + tokens, image variants (v3)
+# Phase C — Engine work: tax engine, outbound webhooks + tokens, image variants (v4)
 
 > **Purpose of this document:** Self-contained execution plan for **Phase C** of
 > `docs/PLATFORM_GAPS_ROADMAP.md` — the three engine workstreams, split into five
 > implementation slices. Like gap-b1/gap-b2, this document stands alone: verified
 > state, design decisions, build order, edge cases and tests — readable without
-> conversation history and handable to an external review.
+> conversation history.
 >
-> **Created:** 2026-11-07 · **Owner:** solo maintainer · **Status:** v3 — the second
-> external review (8.5/10: "good architecture, request one more focused revision")
-> is incorporated; see the review trail (§10) for the verdict-per-slice table and
-> where every correction landed. Facts verified 2026-11-07 by three parallel code
-> explorations.
+> **Created:** 2026-11-07 · **Owner:** solo maintainer · **Status:** **v4 — approved
+> for implementation** (third external review, 9/10: "close to implementation-ready…
+> make the focused corrections above, then start C.3"). All review corrections are
+> incorporated; the review trail (§10) carries the per-slice verdict history.
+> Facts verified 2026-11-07 by three parallel code explorations.
 >
 > **Execution order (owner-confirmed, unchanged):** **C.3 → C.2 → C.1a → C.1b →
 > C.1c**. Slices are strictly sequential: each lands green and committed before the
-> next starts. **Size estimates are initial estimates, not release commitments**
-> (the reviewer's caution is adopted verbatim): C.3 ≈ 2 d, C.2 ≈ 4–5 d, C.1a ≈ 2–3 d,
-> C.1b ≈ 2 d, C.1c ≈ 1 d.
+> next starts. **Size estimates are initial estimates, not release commitments:**
+> C.3 ≈ 2 d, C.2 ≈ 4–5 d, C.1a ≈ 2–3 d, C.1b ≈ 2 d, C.1c ≈ 1 d. The target-release
+> column in §1 is planning information — it never splits a slice before its
+> accounting or reliability requirements are complete (review §8).
 >
 > **How to use:** Re-verify ⚠-marked facts before relying on them. Conventional
 > commits; never commit unless asked. Heavy commands `nice -n 10`. Tests scoped per
-> module during work, full suite once per slice.
+> module during work, full suite once per slice. **The engine principle for this
+> phase (review §8): a successful happy-path test is not a reliable engine — the
+> acceptance tests target concurrent workers, process crashes, retries, configuration
+> changes and historical snapshots.**
 
 ---
 
@@ -29,22 +33,26 @@
 | Slice | Content | Impl. order | Target release | Why then |
 |---|---|---|---|---|
 | C.3 | Image variants (queued, idempotent, concurrency-safe) | 1st | v0.2 | Smallest, fully independent of checkout; immediate LCP win |
-| C.2 | Outbound webhooks (outbox + claims) + S2S API tokens | 2nd | v0.3 | Unlocks ERP/mobile integrations early; builds on the existing event system only |
+| C.2 | Outbound webhooks (outbox + claim tokens) + S2S API tokens | 2nd | v0.3 | Unlocks ERP/mobile integrations early; builds on the existing event system only |
 | C.1a | Regional tax rates (ISO 3166-2) | 3rd | v0.2–v0.3 | The strategic gap; touches checkout + addresses |
-| C.1b | Tax-inclusive pricing (store-level mode, full accounting model) | 4th | v0.3 | Builds directly on C.1a's engine work |
+| C.1b | Tax-inclusive pricing (store-level mode, full accounting model) | 4th | v0.3 | Builds directly on C.1a's engine work; **accounting invariants are acceptance criteria** |
 | C.1c | VAT ID collection + offline validation | 5th | v0.3 | Completes VAT collection; automatic reverse charge defers to a verification policy (§7) |
 
-**Clarification (review §3-A):** "Target release" is where the feature becomes
-**available** (release availability); the "Impl. order" column is when it is
-**built**. They intentionally differ — C.1a ships in v0.2–v0.3 even though it is
-built after C.2 (which targets v0.3).
+**Clarification:** "Target release" is where a feature becomes **available**;
+"Impl. order" is when it is **built**. They intentionally differ. Release labels
+never influence the implementation sequence.
 
 **Handoffs:** B.1 Phase 3 will add `RefundFinalizedEvent` — it slots into the C.2
-webhook catalog as `refund.finalized` the day it lands (C.2 v1 ships with the
-existing `PaymentRefundedEvent`). B.1 Phase 2's invoice `buyer_identity` copies the
-VAT ID **from the frozen order snapshot at invoice creation** — never from the
-customer's current address. Phase C's additive-only schema discipline is bound by the
-marketplace roadmap §5.2 the moment a third-party extension exists.
+webhook catalog as `refund.finalized` the day it lands. B.1 Phase 2's invoice
+`buyer_identity` copies the VAT ID **from the frozen order snapshot at invoice
+creation**. Phase C's additive-only schema discipline is bound by the marketplace
+roadmap §5.2 the moment a third-party extension exists.
+
+**Queue infrastructure is a dependency, not a detail (review §6-A):** before C.3 and
+C.2 start, verify that production queue workers run the relevant connections, carry
+suitable timeouts, and restart correctly after deployment — and that the scheduled
+sweeps (`webhooks:dispatch-deliveries`, `webhooks:dispatch-outbox`) actually run in
+production. Documented as a deployment checklist item per slice.
 
 ## 2. Verified state register (2026-11-07)
 
@@ -70,25 +78,25 @@ marketplace roadmap §5.2 the moment a third-party extension exists.
 |---|---|---|
 | Event inventory | ✅ rich, exact payloads known | `Modules/Core/app/Contracts/Events/**` — Order/Payment/Shipment/OrderReturn families; `AbstractBaseEvent` + `fill()`/`toArray()`; refund catalog event = `PaymentRefundedEvent` (`amount`, `full`, `transaction_id`); **`RefundFinalizedEvent` does not exist yet** (B.1 Phase 3) |
 | Dispatch timing | ⚠ **inconsistent** | Several events fire **inside** open transactions (`OrderGateway::createFromCart/markAsPaid/applyRefund`, `CancelOrderAction`); others after commit (refund actions, shipment actions, `HandleWebhookAction`); `queue.after_commit => false`; no `$afterCommit` usage anywhere |
-| Listener registration | ✅ canonical pattern | Module `EventServiceProvider` `$listen` maps (Notification ~19 keys; Audit ~40 → one generic listener, discovery off there); queued listeners = `ShouldQueue` + `Queueable` |
-| Sanctum | ⚠ abilities never used; **session hybrid possible** | Tokens always `['*']`; no ability middleware wired; no token-management surface; `auth:sanctum` can authenticate first-party **session cookies** too — machine routes need explicit bearer-token enforcement (review §2-F) |
+| Listener registration | ✅ canonical pattern | Module `EventServiceProvider` `$listen` maps; queued listeners = `ShouldQueue` + `Queueable` |
+| Sanctum | ⚠ abilities never used; **session hybrid possible** | Tokens always `['*']`; no ability middleware wired; no token-management surface; `auth:sanctum` can authenticate first-party **session cookies** too — machine routes need explicit bearer-token enforcement |
 | Rate limiting | ✅ pattern established | `RateLimiter::for('<name>', fn (Request $r) => Limit::perMinute(config(...))->by(...))` in module providers + `throttle:<name>` routes |
-| HTTP client conventions | ✅ thin wrappers + raw-body HMAC precedent | Payment `*Client` classes ("tests only ever mock this class"); inbound verification: Razorpay `hash_hmac` over **raw bytes**, Stripe SDK constructEvent, Telegram constant-time compare; `->timeout()` only in TelegramClient (15s); `Http::withOptions(['curl' => …])` is available for cURL-level control |
+| HTTP client conventions | ✅ thin wrappers + raw-body HMAC precedent | Payment `*Client` classes; inbound verification: Razorpay `hash_hmac` over **raw bytes**, Stripe SDK constructEvent, Telegram constant-time compare; `->timeout()` only in TelegramClient (15s); `Http::withOptions(['curl' => …])` available for cURL-level control |
 | Module scaffold | ✅ Audit precedent | `Modules/Audit` layout + `module.json` + `modules_statuses.json`, `Nwidart ModuleServiceProvider` with Event/Route sub-providers |
-| Scheduler | ✅ live in prod | Prod compose runs `schedule:work`; per-module `registerCommandSchedules()` precedent (`order:cancel-expired` every five minutes, `sanctum:prune-expired` daily) |
+| Scheduler | ✅ live in prod | Prod compose runs `schedule:work`; per-module `registerCommandSchedules()` precedent |
 
 ### C.1 — Tax, addresses, seeds
 
 | Fact | State | Evidence |
 |---|---|---|
-| Rate scoping | ❌ country-only | `tax_rates`: `country_code char(2)` + unique `(country_code, tax_class_id)`; **no region column anywhere** (grep clean across Tax/User/Order) |
-| Resolution | ✅ exact-match, integer-exact | `TaxGateway::calculateForItems`: all classes keyed, rates `where(country)->where(is_active)->keyBy(class_id)`; missing/inactive rate = **valid zero**; dangling class = loud failure; coupon allocated largest-remainder BEFORE rates; shipping taxed only via the `is_shipping` class |
-| Accounting model | ✅ exclusive-only today | `Total = Subtotal − Discount + Shipping + Tax`; C.1b must define the inclusive counterpart (§6) without re-adding embedded tax |
-| Checkout wiring | ✅ single call site | `Cart/CheckoutAction` builds `TaxCalculationInput` (items + `country_code` from the customer address + coupon + shipping) inside the checkout transaction; **tax preview reuses the same calculator** — preview/checkout parity is a property to preserve |
-| Address chain | ❌ **no region field** | `user_addresses` + `order_addresses` + `AddressDto`: `full_name, phone, address_line, city, postal_code, country_code` only; storefront `address-manager.tsx` comment: the design's State select "is the backend's required country select" — a built-but-unwired assumption |
-| Seed pattern | ✅ + one cautionary tale | `countries.php` flat rows → `insertOrIgnore` in `CoreDatabaseSeeder`; **`time_zones.php` is dead data** (no consumer) — the regions seed must be consumed, not just shipped |
+| Rate scoping | ❌ country-only | `tax_rates`: `country_code char(2)` + unique `(country_code, tax_class_id)`; **no region column anywhere** |
+| Resolution | ✅ exact-match, integer-exact | `TaxGateway::calculateForItems`: rates `where(country)->where(is_active)->keyBy(class_id)`; missing/inactive rate = **valid zero**; dangling class = loud failure; coupon allocated largest-remainder BEFORE rates; shipping taxed only via the `is_shipping` class |
+| Accounting model | ✅ exclusive-only today | `Total = Subtotal − Discount + Shipping + Tax`; C.1b defines the inclusive counterpart (§6) |
+| Checkout wiring | ✅ single call site | `Cart/CheckoutAction` inside the checkout transaction; **tax preview reuses the same calculator** — parity is an acceptance criterion |
+| Address chain | ❌ **no region field** | `user_addresses` + `order_addresses` + `AddressDto` lack region; the storefront design's State select "is the backend's required country select" — built but unwired |
+| Seed pattern | ✅ + one cautionary tale | `countries.php` flat rows → `insertOrIgnore`; **`time_zones.php` is dead data** — the regions seed must be consumed |
 | VAT/company fields | ❌ none | No vat/company identifier anywhere in backend or storefront |
-| Tax admin surface | ✅ complete pattern to extend | Routes/controllers/actions/`TaxRateRequest` (unique per country×class)/`TaxRateResource`/`TaxTransfer::rateRules`/`tax-rate.json` i18n ×6/`tax-rates/data/schema.ts` |
+| Tax admin surface | ✅ complete pattern to extend | Routes/controllers/actions/`TaxRateRequest`/`TaxRateResource`/`TaxTransfer::rateRules`/i18n ×6/`schema.ts` |
 
 ## 3. Slice C.3 — Image variants
 
@@ -97,92 +105,97 @@ marketplace roadmap §5.2 the moment a third-party extension exists.
 | # | Decision | Why |
 |---|---|---|
 | D1 | **`intervention/image` v3, GD driver** — pure PHP, no system binaries. | Shared-hosting path stays viable; GD already present in CI + both Dockerfiles. |
-| D2 | **Presets in `Modules/Media/config/images.php`:** `thumb 400w`, `medium 800w`, `large 1600w`, quality 82. Applied to jpeg/png/webp sources only; **gif, svg and non-images skipped**. | Deterministic, config-driven; the skip-list avoids animated-gif corruption and rasterizing vectors. |
-| D3 | **Input security limits before decode** (external inputs are untrusted): read dimensions from the stored file first; reject decode when width or height > 8000 px or total pixels > **`max_pixels` (config, default 20 MP — memory-aware, not assumed-safe: GD decodes at ~4.6 bytes/px plus intermediate copies, and jobs may run concurrently)**; treat undecodable/corrupt files as a **permanent** failure — log + report, original still serves. Upload-size is already capped at 20 MB by `MediaRequest`. | A technically valid image can consume unbounded memory during decode; limits must precede `make()`, and the pixel budget must respect PHP memory limits. |
-| D4 | **Failure classification (review P1-C):** corrupt/undecodable source or unsupported type → **permanent** (variant marked failed, no retry); storage/S3 outage → **retryable** (listener re-entrant, nothing marked permanently failed); individual preset encode failure → **partial** (other presets stand, the failed one is repairable by regeneration). | A temporary storage problem must never be recorded as a permanently failed variant. |
-| D5 | **Idempotent generation, versioned sibling paths on the SAME disk:** `{dirname}/{filename}-{preset}-v{N}.{extension}` where `v{N}` is the generation version recorded in `metadata`. Re-running with the same version overwrites deterministically and rebuilds `metadata` wholesale; **regeneration bumps `N`**, writes the new set, then deletes the previous version's files — new URLs invalidate browser/CDN caches naturally (review P1-A). Originals untouched. | Deterministic paths AND cache-safe regeneration, without re-uploading originals. |
-| D6 | **Concurrency-safe (review P0-5):** a **per-media atomic lock** (`Cache::lock("media-variants:{id}")`, TTL 5 min, non-blocking acquire) wraps generation **and** deletion — `DeleteMediaAction` acquires the same lock, so generate-vs-delete and concurrent double-generation cannot interleave; a job that cannot acquire the lock re-releases itself (delay 60s); generation re-checks the media row **inside** the lock (deleted-while-queued → no-op); lock loss/TTL expiry → the sweep or a retry regenerates idempotently. | Sequential idempotency alone does not survive concurrent workers; the lock serializes the per-media lifecycle. |
-| D7 | **Per-variant status in `metadata`** (no migration): `{"version": N, "width": W, "height": H, "variants": {"thumb": {"status": "completed", "path": …, "width": …}, "large": {"status": "failed", "reason": …}}}` — partial failures are visible; consumers use only `completed` entries; permanent vs retryable is distinguishable (D4). | A partially generated image remains understandable; repair is explicit. |
-| D8 | **Regeneration path:** artisan `media:regenerate-variants {--id=} {--all}` — bumps the version, re-runs generation from the original, prunes old-version files. Documented for preset changes; not an admin button in v1. | Preset changes must not require re-uploading originals. |
-| D9 | **Exposure:** `MediaResource` gains `width/height/variants`; new `MediaGatewayInterface::getVariantsByIds(array $mediaIds): array` serves Catalog's loose `media_id` refs; public payloads attach `variants` where the media row resolves — **only `completed` variants are ever advertised; failed/missing entries fall back to the original URL** (asserted by serialization tests). | Correctness over coverage; incomplete variants are never advertised as usable. |
-| D10 | **`DeleteMediaAction` enumerates all variant paths for the current version (and any prior versions still on disk) under the D6 lock.** | The one place variants could orphan. |
-| D11 | **Storefront:** `ApiImage`/`ApiProduct`/`ApiPost` gain `variants?: {thumb?, medium?, large?}` each carrying `{url, width}`; product card renders `srcset` from **actual intrinsic widths** (a 300-px original's thumb is 300 px — never claim 400) with a `sizes` attribute; gallery main = largest completed variant, thumbnails = thumb; blog card/cover likewise; JSON-LD keeps the largest/original. Admin `media-card` uses thumb; `preview-sheet` shows dimensions + per-variant status. | srcset descriptors must match reality, not the preset name. |
+| D2 | **Presets in `Modules/Media/config/images.php`:** `thumb 400w`, `medium 800w`, `large 1600w`, quality 82. jpeg/png/webp sources only; **gif, svg and non-images skipped**. **Source format is preserved end-to-end**: variants keep the source's extension/MIME and are never claimed as another format. | Deterministic presets; no silent format transmutation. |
+| D3 | **Input security limits before decode:** read dimensions from the stored file first; reject decode when width or height > 8000 px or total pixels > **`max_pixels` (config, default 20 MP)**. **The limit is stated against aggregate worker memory, not just one image** (GD ≈ 4.6 bytes/px decoded plus intermediate copies): the config documents the relationship between `max_pixels`, PHP `memory_limit`, and the worker's `--max-jobs`-style concurrency, and operators sizing the stack must account for concurrent jobs (review P1-B). Undecodable/corrupt files = **permanent** failure — log + report, original still serves. | A valid image can consume unbounded memory; the budget must respect PHP limits × concurrency. |
+| D4 | **Failure classification:** corrupt/undecodable source or unsupported type → **permanent**; storage/S3 outage → **retryable** (nothing marked permanently failed); individual preset encode failure → **partial**. | A temporary storage problem must never become a permanently failed variant. |
+| D5 | **Concurrency: per-media atomic lock with an explicit TTL/timeout relationship (review P0-A):** `Cache::lock("media-variants:{id}", ttl: 15 minutes)`, non-blocking acquire, **and the generation job carries a hard timeout of 10 minutes** — the lock TTL is always ≥ 1.5× the job timeout, so a live worker cannot be lock-expired mid-write (the reviewer's simplest option, adopted); a job that cannot acquire the lock re-releases itself (delay 60s); generation re-checks the media row **inside** the lock. `DeleteMediaAction` acquires the same lock, so generate-vs-delete and double-generation cannot interleave. The 15-minute TTL also covers a stalled S3 read bounded by the client timeout. | Sequential idempotency alone does not survive concurrent workers; TTL > timeout closes the expiry race. |
+| D6 | **Idempotent generation with an atomic publication protocol (review P0-B):** generation versions are **allocated inside the lock** (`version = metadata.version + 1` — two concurrent regenerations cannot both claim v4). Sibling paths: `{dirname}/{filename}-{preset}-v{N}.{extension}`. **Publication is the commit point:** (1) allocate version under lock → (2) write all new variant files → (3) build candidate metadata → (4) **atomically publish** the metadata → (5) prune previous-version files. **A failed regeneration never replaces the currently published set:** if the attempt ends with zero completed variants, nothing is published (old version stays live, failure recorded); if some presets complete, the published metadata **merges per preset — completed presets take the new entry, failed presets keep their previous published entry, and absent-before presets appear only when completed** (no variant ever regresses; partial publication is explicit, satisfying both review rounds). Old-version files are pruned only after successful publication. | Deterministic paths + cache-safe regeneration + no-regression publication, with version allocation inside the critical section. |
+| D7 | **Per-variant status in `metadata`:** `{"version": N, "width": W, "height": H, "variants": {"thumb": {"status": "completed", "path": …, "width": …}, "large": {"status": "failed", "reason": …}}}` — partial failures visible; consumers read only `completed` entries. | Partial generation remains understandable; repair is explicit. |
+| D8 | **Regeneration path:** artisan `media:regenerate-variants {--id=} {--all}` — allocates the next version under the lock and runs the D6 protocol. Documented for preset changes; not an admin button in v1. | Preset changes must not require re-uploading originals. |
+| D9 | **Exposure:** `MediaResource` gains `width/height/variants`; `MediaGatewayInterface::getVariantsByIds()` serves Catalog's loose `media_id` refs; public payloads attach `variants` where the media row resolves — **only `completed` variants advertised; failed/missing fall back to the original URL** (serialization-tested). | Correctness over coverage. |
+| D10 | **`DeleteMediaAction`** acquires the D5 lock, enumerates all variant paths across **all versions still on disk** plus the original, deletes them, and marks the metadata so a queued generation re-check finds the row gone. | Orphan-proof lifecycle. |
+| D11 | **Storefront:** `ApiImage`/`ApiProduct`/`ApiPost` gain `variants?: {thumb?, medium?, large?}` each `{url, width}`; product card `srcset` from **actual intrinsic widths** with `sizes`; gallery main = largest completed, thumbnails = thumb; blog card/cover likewise; JSON-LD keeps the largest/original. Admin `media-card` thumb; `preview-sheet` dimensions + per-variant status. | srcset descriptors match reality. |
 
 ### Work items
-- [ ] composer: `intervention/image`; `Modules/Media/config/images.php` presets + limits (D1–D3).
-- [ ] `GenerateMediaVariantsAction` (limits → classification → presets → versioned sibling
-      writes → metadata rebuild; lock-guarded, row re-check inside the lock) + queued
-      listener (D4–D7).
-- [ ] `media:regenerate-variants` command (D8); `DeleteMediaAction` under lock (D10);
+- [ ] composer: `intervention/image`; config presets + limits + documented TTL/timeout
+      relationship (D1–D3, D5).
+- [ ] `GenerateMediaVariantsAction` (limits → classification → version allocation
+      under lock → presets → **atomic publication protocol** → prune) + queued listener
+      with hard job timeout (D4–D7).
+- [ ] `media:regenerate-variants` (D8); `DeleteMediaAction` under lock (D10);
       `MediaResource` exposure (D9).
 - [ ] `MediaGatewayInterface::getVariantsByIds()` + Catalog/Content payload attachment.
-- [ ] Storefront: types + the four render sites with honest srcset (D11); admin media
-      card/preview.
-- [ ] Pest: both disks (mirror `MediaDiskTest`); idempotency (run twice → identical
-      state) **and concurrency** (lock excludes a second worker); versioned-path
-      cache-busting on regeneration; per-variant partial-failure state; permanent vs
-      retryable classification; oversized/corrupt rejection; gif/svg skip; delete
-      enumeration under lock; deleted-while-queued no-op; regeneration command; only-
-      completed-variants serialization. Admin i18n ×6.
+- [ ] Storefront: types + four render sites with honest srcset (D11); admin card/preview.
+- [ ] Pest: both disks; idempotency + **concurrency** (lock excludes a second worker;
+      version allocation under lock — two concurrent regenerations, one version); the
+      publication protocol (failed attempt → old set stays live; merge semantics; prune
+      after publish); per-variant partial-failure state; permanent vs retryable;
+      oversized/corrupt rejection; gif/svg skip; delete under lock; deleted-while-queued
+      no-op; regeneration; serialization guarantees. Admin i18n ×6.
 
 ### Edge cases
-Legacy media rows (no `media_id` linkage or missing metadata) → original URL only ·
-corrupt image → permanent `failed` status, original serves · S3 outage → retryable,
-nothing marked permanent · media deleted while the job waits → no-op under lock ·
-preset widths larger than the original → preset skipped, intrinsic width advertised ·
-two regeneration runs with different presets → newest version wins, old files pruned.
+Legacy rows → original URL only · corrupt image → permanent `failed`, original serves ·
+S3 outage → retryable · media deleted mid-queue → no-op under lock · preset larger than
+the original → skipped, intrinsic width advertised · lock lost to a stalled operation →
+TTL(15 min) > timeout(10 min) keeps the worker owner · aggregate memory across
+concurrent jobs → documented sizing rule.
 
-## 4. Slice C.2 — Outbound webhooks (transactional outbox + claim-based delivery) + S2S API tokens
+## 4. Slice C.2 — Outbound webhooks (transactional outbox + claim-token delivery) + S2S API tokens
 
 ### Design decisions
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | **New `Modules/Webhooks` module** (Audit scaffold + a `Jobs/` dir — justified below). | Smallest coherent home; Audit proves the layout. |
-| D2 | **Transactional outbox with a durable source-event identity:** `webhook_events` (`event_id` uuid PK, **`source_key` string unique** — the deterministic business identity, e.g. `order.paid:1024:{payment_id}`, derived per event type; a repeated listener invocation for the same business event **insert-or-ignores** instead of creating a second outbox row), `event_type`, `payload` JSON (the **public** payload), `created_at`, `processed_at` nullable. **Synchronous** catalog listeners insert-or-ignore in the firing transaction (crash-before-commit rolls back event + outbox atomically). | Review P0-2's identity requirement: a fresh UUID per invocation deduplicates nothing; `source_key` is the stable business identity. |
-| D3 | **Two separated responsibilities (review P0-2):** **(A) Outbox processing** — `ProcessOutboxEventJob(event_id)`: resolves subscribed endpoints (subscription evaluation happens **here**, at delivery-creation time — deterministic single point), creates delivery rows, marks `processed_at` — all in one transaction, guarded by the `(endpoint_id, event_id)` unique. **(B) Delivery scheduling** — the **delivery table is the durable source of truth** for pending work: a scheduled `webhooks:dispatch-deliveries` (every 5 min) finds claimable deliveries and enqueues their jobs. Fast path: processing also enqueues delivery jobs (a lost enqueue is harmless — the sweep recovers). | A crash between "processed" and "enqueued" can no longer lose deliveries: the delivery rows exist and the sweep claims them. |
-| D4 | **Claim-based delivery lifecycle (review P0-2):** `webhook_deliveries.status ∈ pending → processing → succeeded | failed_retryable | failed_permanent`, with `claimed_at`/`claimed_by` as a **lease**: `DeliverWebhookJob` claims atomically (`UPDATE … SET status='processing', claimed_at=now() WHERE id=? AND status IN ('pending','failed_retryable')` — exactly one worker wins), so **no two jobs ever HTTP-deliver the same record concurrently**; a lease older than 10 minutes is reclaimable by the sweep (crashed worker recovery); every attempt appends to the delivery's attempt history. | The unique constraint prevents duplicate *records*, not duplicate *HTTP requests*; the lease closes that gap. |
-| D5 | **Stable identifiers, two levels:** `event_id` (shared by all of an event's deliveries) and `delivery_id` (per endpoint, stable across retries); headers `X-Baxela-Event-Id` + `X-Baxela-Delivery`. | Correlation across endpoints; dedupe at the delivery-record level. |
-| D6 | **Public payload schema — explicit serializers, never `event->toArray()`:** one `WebhookPayload` builder per event type producing the documented, versioned envelope `{"api_version": "v1", "type": …, "occurred_at": …, "data": {…}}`; `data` carries ids, codes, amounts, statuses — **no customer PII** (no addresses, emails, names) and **no VAT IDs**. Internal event classes can change without breaking integrations. | Internal serialization is not an integration contract. |
-| D7 | **SSRF guard with IP-pinned connections (review P0-3):** a dedicated `UrlGuard` validates at endpoint create/update **and resolves at every delivery**: HTTPS-only (production), reject userinfo/credentials in URLs, non-HTTP(S) ports (allow-list, default 443), malformed hosts, and non-canonical IP-literal encodings; resolve DNS (with a resolution timeout) and validate **all A and AAAA** results — public only, **IPv4-mapped IPv6 (`::ffff:0:0/96`) and unusual representations normalized before checks**; then **pin the connection** via cURL `CURLOPT_RESOLVE` (`host:port:validated-ip`, rotated across retry attempts) so the HTTP client connects to the validated address while TLS hostname verification stays intact — the rebind race is closed, not merely narrowed. Redirects disabled (3xx = permanent failure). Connection/total timeouts + response-size cap. An outbound network policy where infrastructure permits is documented as defense in depth. | The reviewer's preferred mechanism is implementable through Guzzle cURL options; the feature may then be described as SSRF-pinned, not merely SSRF-checked. |
-| D8 | **Canonical signing input — metadata is authenticated (review P1-A):** `signed_payload = "{timestamp}.{event_id}.{delivery_id}.{raw_body}"`, `X-Baxela-Signature: sha256=<hex(HMAC_SHA256(secret, signed_payload))>`; `X-Baxela-Timestamp` carries the timestamp; receivers verify constant-time + timestamp tolerance (config, default 5 min); the documented receiver-side algorithm ships with a **worked test vector**. Secrets: **encrypted at rest** (Laravel crypt), **displayed once**, rotation = regenerate (old secret invalid immediately, documented). | Replay and metadata-tampering are both covered by the signature. |
-| D9 | **Response classification (explicit):** 2xx → success · 3xx → permanent failure (redirects disabled) · 400/401/403 → permanent failure · 408/429/5xx/connection-timeout → retryable. **Delay = max(backoff step, Retry-After), capped at 24 h; invalid/negative Retry-After ignored** (resolves the v2 D8/edge-case contradiction). `$tries = 5`: first attempt immediate + four backoff steps `[30, 120, 600, 3600]` (documented); Laravel job attempts and persisted delivery attempts are synchronized by incrementing the delivery row inside the job itself (the job is the only writer). | Explicit, testable semantics; the reviewer's table verbatim. |
-| D10 | **Auto-disable, precisely defined:** `consecutive_failures` is updated **inside an endpoint-level lock** when a delivery reaches a terminal state (success resets to zero; failure increments), so concurrent completions apply in a defined order; the endpoint disables at **10 consecutive failures** (9 failures + 1 success + 1 failure = 1). | Review Problem F, including the concurrency case. |
-| D11 | **Archival semantics (review §3-B, contradiction resolved):** deleting an endpoint **archives** it (`is_archived`, hidden from lists, never hard-deleted); an **in-flight (processing) delivery completes**; a **pending, not-yet-claimed delivery is cancelled** (`failed_permanent`, reason `endpoint_archived`); **no new deliveries** are created for archived endpoints. Scheduled prune: deliveries older than **90 days** and outbox events older than 90 days **whose deliveries are all terminal** are removed (FK: deliveries reference the outbox event; retention deletes events only after their deliveries are gone). | Deterministic lifecycle; observability history retained with a stated policy. |
-| D12 | **Admin surface:** endpoints CRUD (secret shown **once**) + `regenerate-secret` + `test` (synthetic `test` event through the real pipeline) + deliveries list (filters: endpoint/status/event) + show. Route-name permissions; i18n ×6; Bruno. | Audit/Tax CRUD pattern; deliveries are read-only. |
-| D13 | **S2S tokens — ownership + enforcement explicit:** tokens are minted **only** to a designated machine/service user chosen by an admin; creation/revocation **audit-logged**; plaintext shown **once**; abilities **explicit and default-deny** (`orders.read`, `products.read`); expiration supported; revocation immediate. The `api/v1/machine/...` group is read-only (orders list/show, products list/show reusing existing actions), rate-limited per token, and guarded by a dedicated middleware that **requires a bearer personal-access token and explicitly rejects session-authenticated requests** (`$request->bearerToken()` present and `user()->currentAccessToken()` instanceof the Sanctum token) **plus an ability check on every route**. PII note: machine tokens read the merchant's **own** store data through the owning user — documented as in-scope for an ERP integration. | Review §2-F: `auth:sanctum` alone does not guarantee bearer-only; the middleware closes the session hybrid. |
+| D1 | **New `Modules/Webhooks` module** (Audit scaffold + `Jobs/`). | Smallest coherent home. |
+| D2 | **Transactional outbox with per-transition source identity (review P0-D):** `webhook_events` (`event_id` uuid PK, **`source_key` string unique**, `event_type`, `payload` JSON — public, `created_at`, `processed_at` nullable). **`source_key` rules are defined per event type from the business transition, not the aggregate:** `order.created:{order_id}` · `order.paid:{payment_id}` (each successful payment confirmation transition emits once — a reversed-then-collected payment is a new transition with a new settled id) · `order.cancelled:{order_id}:{cancelled_at_unix}` · `order.shipped:{order_id}:{shipment_id}` · `shipment.shipped:{shipment_id}` · `refund.processed:{refund_uuid}` · `return.requested:{return_id}`. Synchronous catalog listeners insert-or-ignore in the firing transaction (rollback-safe). | A legitimate later transition must never be suppressed by an aggregate-level key; each business transition emits exactly once. |
+| D3 | **Two separated responsibilities:** **(A) Outbox processing** — `ProcessOutboxEventJob(event_id)`: resolves subscribed endpoints (evaluation happens **here** — deterministic), creates delivery rows, marks `processed_at` — one transaction, `(endpoint_id, event_id)` unique guards double-processing. **(B) Delivery scheduling** — the delivery table is the durable source of truth: `webhooks:dispatch-deliveries` (every 5 min) finds claimable deliveries and enqueues jobs. Fast path: processing also enqueues (a lost enqueue is harmless). **The sweep itself claims atomically** (review §2-C): it selects claimable deliveries `WHERE status IN ('pending','failed_retryable') AND (claim_token IS NULL OR claimed_at < now() - lease)` with an atomic `UPDATE … SET claim_token = ?` so two scheduler instances cannot repeatedly enqueue the same deliveries — duplicates become an efficiency footnote, not a correctness issue. | Crash between "processed" and "enqueued" loses nothing; duplicate enqueues are reclaimed idempotently. |
+| D4 | **Claim-token delivery lifecycle (review P0-A):** `webhook_deliveries.status ∈ pending → processing → succeeded | failed_retryable | failed_permanent`; claiming generates a **unique `claim_token`** and sets `claimed_at`; **every subsequent state update is conditional on the claim token still being current** (`UPDATE … WHERE id=? AND claim_token=?`) — the classic stale-worker problem is closed: worker A stalls, its lease expires, worker B claims with token B, A's late completion **fails its conditional update** and is discarded. Lease TTL 10 minutes, reclaimed by the sweep; every attempt appends to an **attempt history** (see D9). | The lease alone does not prevent stale-worker overwrites; the ownership token does. |
+| D5 | **Stable identifiers, two levels:** `event_id` (shared by all deliveries of an event) and `delivery_id` (per endpoint, stable across retries); headers `X-Baxela-Event-Id` + `X-Baxela-Delivery`. | Correlation across endpoints. |
+| D6 | **Public payload schema — explicit serializers, never `event->toArray()`:** per-event-type builders producing `{"api_version": "v1", "type": …, "occurred_at": …, "data": {…}}`; ids, codes, amounts, statuses only — **no customer PII, no VAT IDs**; **serializers never dump a whole AddressDto** (explicit field lists). Internal events can change without breaking integrations. | Integration contract control. |
+| D7 | **SSRF guard — IP-pinned delivery with the reviewer's hardening details (review P1-E):** `UrlGuard` validates at create/update **and resolves at every attempt**: HTTPS-only (production); reject userinfo/credentials, non-allow-list ports (default 443), malformed hosts, non-canonical IP-literal encodings; resolve **the full CNAME chain to the final A/AAAA records and validate every resolved address** (public only); **IPv6 zone identifiers stripped and mapped-IPv6 (`::ffff:0:0/96`) normalized** before checks; **pin via `CURLOPT_RESOLVE`** (`host:port:validated-ip`, rotated across attempts) with TLS verification intact; **the delivery client runs without any configured proxy** (an environment proxy could bypass pinning — proxy support is explicitly disabled for this client); **no connection reuse across deliveries** (a fresh client per attempt — a pooled connection could silently reuse a pre-validation address); **DNS re-resolved and re-validated on every retry attempt** (answers may change between attempts). Redirects disabled (3xx permanent). Connection/total timeouts + response-size cap. A curl-level integration test (not `Http::fake`) proves the pin — `Http::fake` cannot demonstrate that cURL connects to the pinned IP while preserving TLS verification. An outbound network policy is documented as defense in depth. | The reviewer's five-point hardening list, adopted in full; the feature may be described as SSRF-pinned. |
+| D8 | **Canonical signing — metadata authenticated:** `signed_payload = "{timestamp}.{event_id}.{delivery_id}.{raw_body}"`, `X-Baxela-Signature: sha256=<hex>`; `X-Baxela-Timestamp`/`X-Baxela-Event-Id`/`X-Baxela-Delivery` carry the values; receivers verify constant-time + timestamp tolerance (default 5 min) — **the documented receiver-side algorithm ships with a worked test vector**. Since IDs are inside the signature, headers are authenticated rather than merely informational. Secrets: **encrypted at rest**, **displayed once**, rotation = regenerate (old invalid immediately, documented). | Replay + metadata tampering covered. |
+| D9 | **Attempts = real HTTP attempts (review P1-B):** a persisted **attempt-history record is created before the request is sent and finalized after the response or transport failure** — one record per actual HTTP attempt (timestamps, status or sanitized error category, duration); Laravel job attempts and delivery attempts are kept consistent because the job is the only writer and the history row is the unit of bookkeeping. **At-least-once is documented:** if the process dies after the request reaches the receiver but before persistence, the next claim resends — the stable `delivery_id` and receiver-side deduplication are therefore essential and stated in the integration docs. `$tries = 5` (first attempt immediate + four backoff steps `[30, 120, 600, 3600]`). | Counting a dispatch as an HTTP attempt would corrupt the ledger; the review's caveat is explicit. |
+| D10 | **Response classification:** 2xx success · 3xx permanent (redirects disabled) · 400/401/403 permanent · 408/429/5xx/timeout retryable. **Delay = max(backoff step, Retry-After), capped at 24 h; invalid/negative Retry-After ignored** (v2's contradiction resolved). | Review table, verbatim. |
+| D11 | **Auto-disable with defined ordering (review P1-F):** terminal-state transitions apply `consecutive_failures` **inside the endpoint lock**; **"consecutive" means the order in which attempts reach terminal state** (serialized by the lock), documented as *not necessarily event chronology* — a sequence-number semantics is explicitly deferred. Success resets to zero; disable at 10. | The reviewer's v1 definition, adopted. |
+| D12 | **Archival + retention (review P1-D):** delete = **archive** (in-flight delivery completes; **pending unclaimed delivery is cancelled** (`failed_permanent`, reason `endpoint_archived`); no new deliveries); **outbox retention:** an outbox event is deletable only when **all its deliveries are terminal** and the event is older than 90 days — the scheduled prune removes deliveries then their events (FK ordered); **failed deliveries receive the same 90-day retention**; archival is not deletion. | Deterministic lifecycle; history retained with a stated policy. |
+| D13 | **Admin + CLI surface:** endpoints CRUD (secret shown once) + `regenerate-secret` + `test` event + deliveries list/show with **diagnostics fields (attempt timestamps, HTTP status, sanitized error category, duration, scheduled retry)** — never secrets or full sensitive response bodies; **`webhooks:retry-delivery {delivery_id}`** (review §6-B): retries only eligible terminal failures, preserves event/delivery IDs, records the initiating admin; route-name permissions; i18n ×6; Bruno. | Operators can recover from exhausted retries without database surgery. |
+| D14 | **S2S tokens — ownership + full enforcement:** minted **only** to a designated machine/service user (audit-logged creation/revocation, plaintext once, explicit default-deny abilities `orders.read`/`products.read`, expiration, immediate revocation). `api/v1/machine/...` is read-only, per-token rate-limited, and guarded by middleware that **requires a bearer personal-access token, rejects session-authenticated requests, rejects wildcard-ability (`['*']`) tokens, verifies the token is unexpired/unrevoked and its machine user is active**, and applies **an explicit ability check on every route**. **The ownership boundary is enforced in the query/action layer** — machine orders reads are scoped to the owning account's data, not just at authentication. PII: machine tokens read the merchant's **own** store data — documented as in-scope for an ERP integration. | Review P1-F's final safeguard list, adopted item by item. |
 
 ### Work items
-- [ ] Scaffold `Modules/Webhooks`; migrations: `webhook_events` (outbox, source_key
-      unique), `webhook_endpoints` (encrypted secret, is_archived),
-      `webhook_deliveries` (status enum, lease, unique `(endpoint_id, event_id)`);
-      models + schemas.
-- [ ] Public payload serializers (D6); synchronous outbox listeners with `source_key`
-      (D2); `ProcessOutboxEventJob` (D3); `webhooks:dispatch-deliveries` sweep (D3).
-- [ ] `UrlGuard` with DNS resolution + IP classification + `CURLOPT_RESOLVE` pinning
-      (D7); `DeliverWebhookJob` with atomic claim/lease (D4) + canonical signing (D8) +
-      classification (D9) + endpoint lock and auto-disable (D10).
-- [ ] Archival semantics + retention commands (D11); admin CRUD + secret regeneration +
-      test event + deliveries log (D12); `auth:sync-permissions`; i18n ×6; Bruno.
-- [ ] S2S tokens: Auth admin minting endpoints (D13); `machine` route group + the
-      bearer-only middleware + ability checks + per-token rate limiter; scope docs.
-- [ ] Pest: outbox atomicity + `source_key` dedupe; payload serializer shape + PII/VAT
-      absence; UrlGuard matrix (private/loopback/reserved/mapped-IPv6, non-HTTPS,
-      credentials, odd ports, DNS-rebind pinned-connection test with `Http::fake`
-      + a curl-level integration check ⚠); signing vector; claim exclusivity (two
-      workers, one HTTP call); lease expiry reclaim; response classification; backoff
-      + Retry-After max rule; atomic counter + auto-disable (9-1-1 case); archival
-      lifecycle (in-flight completes / pending cancelled / new prohibited); retention;
-      ability enforcement + **session rejection**; rate limit; token lifecycle audit.
+- [ ] Scaffold `Modules/Webhooks`; migrations (`webhook_events` with `source_key`,
+      `webhook_endpoints` encrypted secret + archive, `webhook_deliveries` with claim
+      token/lease/attempt history); models + schemas.
+- [ ] Public payload serializers (D6); sync outbox listeners with per-transition
+      `source_key` (D2); `ProcessOutboxEventJob` (D3); `webhooks:dispatch-deliveries`
+      sweep with atomic claim (D3).
+- [ ] `UrlGuard` (CNAME chain, zone-id/mapped-IPv6 normalization, port/userinfo rules)
+      + `CURLOPT_RESOLVE` pinning + fresh-client-per-attempt (D7); `DeliverWebhookJob`
+      with claim-token lifecycle (D4) + canonical signing + test vector (D8) +
+      classification (D10) + attempt history (D9) + endpoint-lock auto-disable (D11).
+- [ ] Archival + retention commands (D12); admin CRUD + `webhooks:retry-delivery` (D13);
+      `auth:sync-permissions`; i18n ×6; Bruno.
+- [ ] S2S tokens: Auth admin minting (D14); `machine` group + bearer-only/ability
+      middleware + ownership-scoped queries + rate limiter; scope docs.
+- [ ] Pest: outbox atomicity + per-transition `source_key` (the reviewer's four cases:
+      multiple partial payments, reversed-then-collected, multiple shipments, multiple
+      refunds); serializer shape + PII/VAT absence + no AddressDto dumps; UrlGuard
+      matrix (CNAME-to-private, mapped-IPv6, credentials, odd ports, non-HTTPS) +
+      **curl-level pinning integration test** (TLS verification intact); signing vector;
+      **claim-token stale-worker test** (A's late write rejected); claim exclusivity
+      (two workers, one HTTP call); lease-expiry reclaim; sweep atomic claim; response
+      classification; Retry-After max/invalid; attempt history vs job attempts;
+      endpoint-lock auto-disable (9-1-1); archival lifecycle; retention; ability
+      enforcement + **session + wildcard-token rejection**; ownership-scoped queries;
+      rate limit; token lifecycle audit; retry CLI eligibility.
 
 ### Edge cases
-Event fires inside a transaction that rolls back → outbox row rolls back too (no
-phantom webhook) · duplicate listener invocation → `source_key` insert-or-ignore keeps
-one event · processed event whose enqueue was lost → sweep claims the pending
-deliveries · receiver 429 with huge Retry-After → capped at 24 h · receiver 429 with
-invalid Retry-After → backoff step applies · endpoint archived mid-flight → in-flight
-completes, pending cancelled, none new · endpoint deleted by mistake → archive
-restores.
+Transaction rollback → outbox row rolls back (no phantom webhook) · duplicate listener
+invocation → `source_key` dedupe · lost enqueue → sweep claims · receiver 429 with
+huge Retry-After → 24 h cap · invalid Retry-After → backoff step · process dies
+post-send pre-persist → resend (at-least-once), receiver dedupes on `X-Baxela-Delivery`
+· endpoint archived mid-flight → in-flight completes, pending cancelled, none new ·
+DNS answers change between retries → re-resolved and re-pinned per attempt · endpoint
+deleted by mistake → archive restores.
 
 ## 5. Slice C.1a — Regional tax rates
 
@@ -190,128 +203,121 @@ restores.
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | **Uniqueness via a NOT NULL scope key:** `region_code` is **`string(10) NOT NULL DEFAULT ''`** — the **empty string is the country-wide scope** — with unique `(country_code, region_code, tax_class_id)`. A real value (unlike NULL, which v1 got backwards) makes the database enforce: one country-wide rate per country × class, one rate per region × class, many regions — **on both MySQL and SQLite**, with a Pest test proving the duplicate country-wide insert is rejected on the test engine. | The reviewer's normalized-key recommendation in its most portable form; '' never reaches the API — actions normalize omitted region to ''. |
-| D2 | **Resolution precedence + explicit inactive semantics:** for each class, the region-specific rate if present **and active**; else the country-wide rate if present **and active**; else valid zero. **Deactivating a regional rate removes it from consideration — the country-wide rate applies again** (documented in the gateway docblock + `docs/tax.md`; the blocking alternative is rejected as an administrator trap). | `is_active` means one thing everywhere. |
-| D3 | **Missing-region loudness (review P0-4) — the zero-tax ambiguity resolved with four explicit rules:** (1) **no rates configured for the country at all** → valid zero (the existing documented intentional behavior); (2) **the country has regional rates configured, but the checkout address lacks a region** → **loud failure** (`TaxConfigurationException('tax.configuration.region_required')` aborting checkout — the same philosophy as the missing-default-class failure; the storefront surfaces a region-required state on the address form); (3) a regional rate is inactive → country-wide fallback; (4) an unknown region → rejected at address validation. | Under-collection by silent zero is exactly what the "loud failures" policy forbids; rule 2 closes the reviewer's California hole. |
-| D4 | **Jurisdiction address is explicit (review P0-4):** the tax jurisdiction is the **shipping destination** (physical goods); billing is used only when no shipping address exists. `CheckoutAction` and the tax preview both resolve the address the same way — preview/checkout parity preserved. | Not left to implementation interpretation. |
-| D5 | **Limited regional model, documented:** one regional rate per region × class; **no county/city/special-district layers, no Canadian tax-component splits** — ISO 3166-2 is the scope foundation, not a complete jurisdiction engine (review P1-A). | v1 honesty about coverage. |
-| D6 | **Canonical region-code representation `US-CA` / `CA-ON` / `DE-BY` everywhere** — address validation, tax-rate administration, API responses, tax resolution — via one normalizer helper (review P1-B). **Canonical naming: `core_regions` throughout.** Data source & update policy: hand-maintained seed from ISO 3166-2 (US 51, CA 13, DE 16), updated via PRs; **no admin CRUD for regions in v1**. | One representation, one name, a stated update policy. |
-| D7 | **Region flows through the address chain:** additive `region_code` on `user_addresses` + `order_addresses` (checkout snapshot), `AddressDto`, `UserGateway::getAddress`, `AddressRequest` (nullable, pair-validated by `RegionCodeRule`), checkout passing region into the tax input. Storefront: address-manager + checkout inline form gain a region select (visible only when the country has regions; options from `GET /core/public/regions?country_code=…`), types ×6 locales. | The verified missing plumbing. |
-| D8 | **Migration is a schema alteration, not purely additive (review P1-C):** the old unique `(country_code, tax_class_id)` is replaced by `(country_code, region_code, tax_class_id)` — the pre-existing index guarantees no duplicates exist before the change (dedup check included in the migration for safety), rollback restores the old index (documented: rollback drops region-specific rates, acceptable pre-v0.3); **migration tested against seeded data on MySQL and SQLite**. Tax admin + transfer: `TaxRateRequest` (region nullable → normalized ''), actions, `TaxRateResource`, `TaxTransfer::rateRules` + section data, admin `tax-rate.json` ×6 + `schema.ts` + drawer + columns. | The reviewer's migration checklist, explicitly. |
+| D1 | **Uniqueness via a NOT NULL scope key:** `region_code` **`string(10) NOT NULL DEFAULT ''`** ('' = country-wide) with unique `(country_code, region_code, tax_class_id)` — duplicate country-wide inserts rejected on both engines, proven by a Pest test. | v2 correction, reviewer-endorsed. |
+| D2 | **Resolution precedence + inactive semantics:** region-specific (present + active) → country-wide (present + active) → valid zero. **Deactivating a regional rate = it stops being considered; the country rate applies again** (documented in the gateway docblock + `docs/tax.md`). | One meaning for `is_active`. |
+| D3 | **Missing-region loudness:** (1) no rates for the country → valid zero (intentional); (2) **regional rates exist + address lacks a region → loud `tax.configuration.region_required` failure** aborting checkout (storefront surfaces a region-required state); (3) inactive regional → country fallback; (4) unknown region → address validation rejects. | The California under-collection hole, closed. |
+| D4 | **Jurisdiction = the shipping destination** (billing only when no shipping address exists); `CheckoutAction` and tax preview resolve identically — parity preserved. | Explicit, not interpretive. |
+| D5 | **Seed drift never breaks stored data (review P1-A):** rejection is limited to **submission-time validation** of new/edited addresses; **already-stored customer addresses and historical snapshots are not re-validated against the seed** — checkout with a stored address whose region is no longer seeded keeps the stored region code, and tax resolution falls back per D2 (region lookup misses → country rate). The public regions endpoint returns **all seeded regions for the country** (deterministic: all, for the initial US/CA/DE scope). | Stored customer data must survive seed updates. |
+| D6 | **Migration rollback warning (review P1-B):** the unique-index replacement's rollback **drops regional rates** — the migration docblock and `docs/tax.md` carry a deployment warning: *do not roll back after regional rates exist in production unless they were exported or the operator accepts the loss.* Tested against seeded data on MySQL and SQLite (dedup pre-check included). | The reviewer's operational note, made unmissable. |
+| D7 | **Limited model + honest docs:** one regional rate per region × class; **no county/city/district layers, no Canadian tax-component splits** — the public documentation states this is a limited regional-tax model, not a complete jurisdiction engine (review P1, final note). | Public honesty matches the non-goals. |
+| D8 | **Canonical representation `US-CA` / `CA-ON` / `DE-BY` everywhere** (validation, admin, API, resolution) via one normalizer; **`core_regions` naming throughout**; seed updated via PRs; no region admin CRUD in v1. Address chain: `user_addresses`/`order_addresses` migrations, `AddressDto`, `AddressRequest` + `RegionCodeRule`, storefront region select + types. Tax admin + `TaxTransfer` extended. | One representation, one name. |
 
 ### Work items
-- [ ] Migration (dedup-safe unique replacement, both engines) + schema/model constants.
-- [ ] Core: `core_regions` migration + `regions.php` seed (US/CA/DE) + seeder + model +
-      public list endpoint + `RegionCodeRule` + the region normalizer helper.
-- [ ] `TaxGateway` precedence + inactive rule + **region-required loud failure** (D2–D3)
-      + `TaxCalculationInput.region_code`; `CheckoutAction` resolves the shipping
-      destination (D4) and passes region.
-- [ ] Address chain: `user_addresses`/`order_addresses` migrations, `AddressDto`,
-      gateway mapping, `AddressRequest` + rule, storefront region select + types, ×6 locales.
-- [ ] Tax admin surface + `TaxTransfer` + Bruno; i18n ×6.
-- [ ] Pest: the reviewer's matrix — region + regional rate → regional; region + absent
-      regional → country; no region → **country if none configured, else loud
-      region-required failure**; unknown region → address 422; regional inactive →
-      country; country inactive → zero; duplicate country-wide insert → unique
-      violation; jurisdiction = shipping destination (billing only as fallback);
-      migration against seeded data (both engines ⚠); checkout region snapshot;
+- [ ] Migration (dedup-safe unique replacement, dual-engine tests, rollback warning) +
+      schema/model constants.
+- [ ] Core: `core_regions` + `regions.php` seed + seeder + model + public endpoint
+      (all seeded regions per country) + `RegionCodeRule` + normalizer.
+- [ ] `TaxGateway` precedence/inactive/region-required rules (D2–D3) +
+      `TaxCalculationInput.region_code`; `CheckoutAction` shipping-destination
+      resolution (D4).
+- [ ] Address chain migrations + DTO + `AddressRequest` + storefront region select
+      (×6 locales).
+- [ ] Tax admin + `TaxTransfer` + Bruno; i18n ×6.
+- [ ] Pest: the §5 D2–D4 matrix (incl. loud region-required failure; jurisdiction =
+      shipping destination; **stored-address seed-drift behavior**); duplicate-insert
+      rejection; migration against seeded data (both engines ⚠); checkout snapshot;
       transfer round-trip; admin CRUD.
 
 ### Edge cases
-Country with no seeded regions → no select, '' region, unchanged behavior · seed drift
-→ new checkouts reject the address; historical `order_addresses` snapshots stay valid
-and untouched (frozen region = what was actually taxed) · multiple regions per class
-coexist with the single country-wide rate.
+No seeded regions for a country → no select, '' region, unchanged behavior · seed drift
+→ stored addresses keep working; new submissions validated · regional rate inactive →
+country fallback · multiple regions per class coexist with the single country-wide rate.
 
-## 6. Slice C.1b — Tax-inclusive pricing (store-level mode, full accounting model)
+## 6. Slice C.1b — Tax-inclusive pricing (store-level mode, complete accounting)
 
 ### Design decisions
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | **Store-level pricing mode (owner + review): `prices_include_tax` is a Setting** (admin settings UI, i18n ×6) — the merchant's pricing policy, store-wide. The per-rate flag stays dropped. | Jurisdiction and stored price semantics are different concepts; one mode makes every snapshot unambiguous. |
-| D2 | **The complete accounting model (review P0-1) — column meanings per mode.** The customer's payable (gross) is authoritative in both modes; the extracted tax is **informational in inclusive mode and never added again**: | The v2 formula alone would have double-charged (110 + 10); the model below is what makes inclusive mode correct. |
-| | • **Exclusive:** `total = subtotal − discount + shipping + tax` (today's model, unchanged). | |
-| | • **Inclusive:** `total = subtotal − discount + shipping` — subtotal/shipping/discount stay **gross** (what the price tags say); `tax_amount` = the extracted portion **already inside** those figures. | |
-| | • Per line: `gross = net + tax` (extraction: net = ⌊gross × 10⁶ ÷ (10⁶ + rateUnits)⌋, **tax = gross − net** — the remainder lands in the tax; **extraction once per extended line amount** (price × qty), never per unit); shipping: `shipping_gross = shipping_net + shipping_tax` through its class rate. | |
-| | • **Reconciliation invariants, asserted in tests:** exclusive → `total = subtotal − discount + shipping + tax`; inclusive → `total = subtotal − discount + shipping` **and** `subtotal = Σ net_i + tax_i` **and** `shipping = shipping_net + shipping_tax`. | |
-| D3 | **Rounding policy — deliberate and consistent with the per-line model (review Problem C):** exclusive keeps `taxOf` half-up per line; inclusive floors the net per extended line so the remainder lands in the tax. Test vectors assert **both net and tax** on fractional-minor-unit cases (e.g. gross 1001 minor at 10% → net 910, tax 91), plus discounts (allocated against gross before extraction), multiple quantities (single extended-line extraction — no per-unit rounding), multiple classes, shipping extraction verified separately, zero-rated lines, and refunds: **refunds operate on recorded gross amounts; the net/tax split of a refunded amount follows the original line's ratio** (informational, tested). | The reviewer required justification, consistency, and vectors on both outputs across the whole lifecycle. |
-| D4 | **Snapshots:** orders gain `prices_contain_tax` (bool, **migration default false** — the historical exclusive model, documented); invoices copy the flag from the order at issuance; historical invoices never recalculate. **Mixed inclusive/exclusive lines cannot occur** (store-wide mode). | Review Problem B/D resolved by construction; policy (d) honored. |
-| D5 | **Storefront + preview:** tax preview and PDP price block surface an "incl. VAT"-style marker (i18n ×6) when the store mode is inclusive; the displayed price remains the gross figure the customer pays. Preview receives the **same inputs as checkout** (region, pricing mode, class, discount allocation) — parity preserved. | Display parity; review §6D. |
+| D1 | **Store-level mode: `prices_include_tax` Setting** (admin UI, i18n ×6). The per-rate flag stays dropped; **mixed inclusive/exclusive lines cannot occur**. | Owner + reviews; one mode → unambiguous snapshots. |
+| D2 | **Accounting model with discount reconciliation (review P0-1 + P1-A) — definitions first:** **`subtotal` = Σ gross line amounts *before* discount** (gross = displayed price × qty); `discount` = the coupon allocated across gross line amounts (existing largest-remainder logic, operating on the correct gross base); **`line_gross_after_discount` = gross − allocated discount**; per line in inclusive mode the extraction then applies to the **after-discount** amount: `net_after = ⌊gross_after × 10⁶ ÷ (10⁶ + rateUnits)⌋`, **`tax_after = gross_after − net_after`** (remainder to the tax). **Line invariant: `gross_after_discount = net_after_discount + tax_after_discount`** — asserted per line, closing the v3 gap the reviewer identified. | The v2 invariant described undiscounted lines only; discounts are now inside the reconciliation. |
+| D3 | **Column meanings per mode (complete):** `subtotal` (gross before discount), `discount` (allocated), `shipping` (gross), `tax_amount` (extracted, informational in inclusive mode), and the totals: **exclusive `total = subtotal − discount + shipping + tax`; inclusive `total = subtotal − discount + shipping`** — the customer never pays more than the displayed gross figures imply. | The reviewer's table, made normative. |
+| D4 | **Extraction + rounding (justified):** extraction **once per extended after-discount line amount** (never per unit); net = ⌊…⌋ floor, tax = remainder (exclusive keeps `taxOf` half-up — the asymmetry is deliberate and vector-tested on **both** outputs, e.g. gross 1001 minor at 10% → net 910, tax 91). Shipping: gross in both modes; **shipping discounts do not exist in v1 — stated explicitly**; if ever added, they must be allocated before shipping-tax extraction (documented seam). | Review P1-B's checklist. |
+| D5 | **Snapshots:** orders gain `prices_contain_tax` (default **false**, the historical model — documented); **invoice line items carry the order's frozen figures** (gross, discount, tax — already copied by B.1's snapshot) and the **net-after-discount is derived exactly** (`gross_after − tax`), never inferred from the mode flag; **invoice lines never recalculate**. Mixed lines impossible (store-wide mode). | Review P1-D: invoices must not infer from the flag. |
+| D6 | **Refund split rule (review P1-C):** refund gross is authoritative (ledger unchanged); for a partial refund of a line, **refund net = ⌊refund_gross × (frozen net_after ÷ frozen gross_after)⌋ and refund tax = refund_gross − refund_net**; **a full refund returns the exact original frozen net/tax amounts** (no accumulated rounding drift); the split is never recomputed from current rates. | Fractional minor units get an exact rule. |
+| D7 | **Storefront + preview:** "incl. VAT"-style marker (i18n ×6) when the store mode is inclusive; preview receives the same inputs as checkout (jurisdiction, mode, classes, discount allocation) — the calculator remains the single source of truth for preview, checkout, invoices and storefront display. | Review §6-C. |
 
 ### Work items
-- [ ] Setting: `SettingNameEnum::PRICES_INCLUDE_TAX` (default false) + admin settings UI
-      + i18n ×6.
-- [ ] `TaxMath` extraction + `TaxGateway` mode path + input/result mode flags;
-      `CheckoutAction` resolves the setting, snapshots it, and the **total formula
-      switches by mode** (D2).
-- [ ] Orders + `order_invoices` additive `prices_contain_tax` columns (default false);
-      B.1 kernel schemas updated.
-- [ ] Tax preview marker + inclusive reconciliation assertions; storefront i18n ×6;
-      Bruno; transfer rules.
-- [ ] Pest: the D2 invariant pair (both modes, asserted per order); extraction vectors
-      on net AND tax (fractional cases); discounts before extraction; shipping
-      extraction separately; multiple quantities/classes; zero-rated; refund gross +
-      ratio split; historical default false; preview/checkout parity.
+- [ ] Setting enum + admin settings UI + i18n ×6.
+- [ ] `TaxMath` extraction + `TaxGateway` mode path + input/result flags;
+      `CheckoutAction` resolves the setting, snapshots it, switches the total formula
+      by mode (D3).
+- [ ] Orders + `order_invoices` additive `prices_contain_tax`; B.1 kernel schemas
+      updated; invoice line derivation documented (D5).
+- [ ] Tax preview marker + reconciliation assertions; storefront i18n ×6; Bruno;
+      transfer rules.
+- [ ] Pest: per-line invariant (`gross_after = net_after + tax_after`) with discounts;
+      order-level invariants in both modes; extraction vectors on net AND tax
+      (fractional cases); shipping extraction; zero-rated; **partial-refund rounding
+      rule + full-refund exactness**; historical default false; preview/checkout
+      parity; mode-flip immutability.
 
 ### Edge cases
-Mode flip mid-life → historical orders/invoices keep frozen figures (policy d) ·
-zero-rate + inclusive → tax 0, flag still snapshots the mode · exclusive mode →
-bit-for-bit today's behavior · refund of a fully refunded line → ratio split yields
-exactly the recorded net/tax (pinned).
+Mode flip mid-life → frozen figures stand (policy d) · zero-rate + inclusive → tax 0,
+flag snapshots the mode · exclusive → bit-for-bit today · 100% rate inclusive →
+net = gross ÷ 2 (pinned) · refund of a fully refunded line → exact original split.
 
 ## 7. Slice C.1c — VAT ID collection + offline validation (v1 scope)
 
-> **Scope (unchanged from v2, endorsed by the review at 9/10):** v1 ships VAT
-> **collection + offline format validation + evidence snapshotting**. Automatic
-> reverse charge defers until a verification policy exists (VIES extension or manual
-> admin verification with audit trail); the eligibility seam is documented at
-> `TaxGatewayInterface`.
+> **Scope (unchanged since v2; 9/10 from the reviewer):** VAT **collection + offline
+> format validation + evidence snapshotting**. Automatic reverse charge defers to a
+> verification policy; the seam is documented at `TaxGatewayInterface`.
 
 ### Design decisions
 
 | # | Decision | Why |
 |---|---|---|
-| D1 | **`vat_id` (string, nullable) on `user_addresses` + `order_addresses` (snapshot) + `AddressDto`; collected in the storefront address forms, labeled for business customers.** Billing governs the submitted VAT ID; shipping never overrides it; the order snapshots the actually submitted identity; later changes never rewrite historical orders. | The canonical business-identity entity remains a documented future abstraction. |
-| D2 | **Offline validation only, v1 semantics (review P1):** `VatIdRule` + a `Tax`-module format validator (per-country regex, EU set first, **including exceptional prefixes — EL for Greece**; prefix must match the billing country); input **normalized before storage** (trimmed, uppercased, spaces/hyphens removed) and the normalized value is what's stored; for countries with no rule, the value is **stored without a validation claim** (option 1 — no status field). Exposed via `TaxGatewayInterface::validateVatId(country, vat): bool`; the docblock states format validity is **not** registration verification. **VAT IDs are excluded from logs and webhook payloads.** The order snapshot is immutable. | The reviewer's option 1; PII/credential-grade handling for the identifier. |
-| D3 | **No automatic tax zeroing in v1.** The tax calculation is untouched by this slice; the VAT ID is collected, validated, and frozen as evidence for the future eligibility decision. | Review verdict: approve collection + validation; reject format-based automatic reverse charge. |
-| D4 | **Evidence frozen on the order:** additive `buyer_vat_id` (nullable) on orders, persisted by `CheckoutAction` from the billing address; B.1 Phase 2's invoice `buyer_identity` copies it **from the order snapshot at invoice creation**. | Snapshot discipline. |
+| D1 | **`vat_id` on `user_addresses` + `order_addresses` (snapshot) + `AddressDto`**; storefront forms label it for business customers; billing governs (shipping never overrides); order snapshots the submitted identity; later changes never rewrite history. | Established in v2, endorsed. |
+| D2 | **Offline validation, isolated per country (review §5):** `VatIdRule` + a `Tax`-module validator with **country-specific normalizer/validator classes behind one interface** (so rules are replaceable/extendable); EU set first, **EL for Greece**, prefix must match the billing country; input **normalized before storage** (trimmed, uppercased, separators removed); countries without a rule → stored without a validation claim (option 1, no status field); docblock: format validity ≠ registration verification. **Privacy: VAT IDs never appear in exception messages, validation errors never echo the submitted value, API resources expose the identifier only where required, and logs/audit/webhook serializers never serialize a whole AddressDto.** | Review §5's checklist, adopted. |
+| D3 | **No automatic tax zeroing in v1;** the calculation is untouched; the VAT ID is collected, validated, and frozen as evidence. | Reviewer-endorsed scope. |
+| D4 | **Evidence frozen on the order:** additive `buyer_vat_id` on orders, persisted from billing; B.1 Phase 2's invoice `buyer_identity` copies it from the order snapshot at creation. | Snapshot discipline. |
 
 ### Work items
-- [ ] `user_addresses`/`order_addresses` migrations + schema constants + `AddressDto` +
-      gateway mapping + `AddressRequest` rule.
-- [ ] `VatIdRule` + `Tax`-module format validator (country table incl. EL) +
+- [ ] Migrations + schema constants + DTO + gateway mapping + `AddressRequest` rule.
+- [ ] `VatIdRule` + per-country validator classes (isolated, replaceable) +
       `TaxGatewayInterface::validateVatId()` + implementation.
-- [ ] Orders additive `buyer_vat_id` + `CheckoutAction` persistence; store-address forms
-      (conditional VAT input per country, i18n ×6); types; Bruno; transfer rules.
-- [ ] Pest: format matrix (valid/invalid/normalized/EL); prefix-vs-billing-country
-      mismatch → invalid; snapshot on order; billing-governs rule; historical
-      immutability; preview unaffected; VAT ID absent from log/webhook payloads.
+- [ ] Orders `buyer_vat_id` + persistence; store-address forms (conditional input,
+      i18n ×6); types; Bruno; transfer rules.
+- [ ] Pest: format matrix (valid/invalid/normalized/EL); prefix-vs-billing mismatch;
+      snapshot; billing-governs; historical immutability; **error-message and log
+      hygiene (no VAT echo)**; preview unaffected.
 
 ### Edge cases
-VAT ID on shipping but not billing → billing governs · unknown country → stored
-without a validation claim (no status field) · future reverse charge → joins at the
-documented seam with its own verification-policy slice.
+Shipping-side VAT ignored (billing governs) · unknown country → stored without a
+validation claim · future reverse charge → joins at the documented seam.
 
 ## 8. Cross-cutting verification & policies
 
 1. **Per slice:** scoped Pest during work; full backend suite + phpstan neutral
    (baseline-splice pattern) + Pint once per slice; storefront/admin builds when those
-   apps change; i18n parity ×6 whenever admin surfaces change; live-compose spot check
-   at slice end (dev stack + Bruno).
-2. **Schema discipline:** additive wherever possible; the one deliberate alteration
-   (C.1a's unique-index replacement) ships with dedup detection, rollback semantics and
-   dual-engine migration tests.
-3. **Policies this phase writes down:**
-   (a) *catalogs are events, endpoints are subscriptions* — new events join the webhook
-   catalog by adding one map entry;
-   (b) *tax configuration failures are loud* — extended by C.1a's region-required rule;
+   apps change; i18n parity ×6 when admin surfaces change; live-compose spot check at
+   slice end.
+2. **Schema discipline:** additive wherever possible; C.1a's unique-index replacement
+   ships with dedup detection, dual-engine migration tests and the rollback warning.
+3. **Policies:**
+   (a) *catalogs are events, endpoints are subscriptions*;
+   (b) *tax configuration failures are loud*;
    (c) *unavailable data is omitted, never fabricated*;
    (d) *money calculations are reproducible* — historical orders, invoices and refunds
-   never depend on current tax rates, region seeds, or store settings;
-   (e) *external inputs are untrusted* — image uploads, webhook URLs, VAT identifiers
-   and machine API requests are validated at their respective boundaries.
-4. **Suggested commits:** one per phase within each slice — e.g.
+   never depend on current rates, seeds, or settings;
+   (e) *external inputs are untrusted* — validated at their boundaries;
+   (f) *the tax calculator is the single source of truth* — preview, checkout,
+   invoices and storefront display all consume the same calculation path with the same
+   jurisdiction, pricing mode, discount allocation and rounding rules.
+4. **Queue/scheduler readiness (review §6-A):** each of C.3/C.2 ends with a deployment
+   checklist item verifying prod workers, timeouts, post-deploy restarts, and that the
+   scheduled sweeps run in production.
+5. **Suggested commits:** one per phase within each slice — e.g.
    `feat(backend/media): queued idempotent image variant generation`,
    `feat(storefront): responsive image variants`,
    `feat(backend/webhooks): transactional outbox and signed webhook delivery`,
@@ -322,51 +328,48 @@ documented seam with its own verification-policy slice.
 
 ## 9. Explicit non-goals (restated; silence reads as oversight)
 
-- **Automatic reverse charge** — deferred until a verification policy exists (VIES
-  extension or manual admin verification with audit trail); the seam is documented.
+- **Automatic reverse charge** — deferred until a verification policy exists; seam
+  documented.
 - **AvaTax / TaxJar** — future `tax-engine` extensions.
-- **Full jurisdiction layers** (county/city/districts, Canadian tax components) — the
-  C.1a model is deliberately limited (D5); broader engines are extensions.
+- **Full jurisdiction layers** (county/city/districts, Canadian tax components) —
+  documented limitation of the C.1a model (D7); public docs equally honest.
 - **Carrier APIs / labels / live tracking** — the `shipping-carrier` extension type.
 - **Multi-warehouse / stock reservations** — unchanged single-stock model.
-- **Per-currency price lists** — display conversion stays display-only (B.2 D5 rule).
+- **Per-currency price lists** — display conversion stays display-only.
 - **Webhook replay UI, event transformations, per-endpoint payload templates, image
   format conversion (webp/avif outputs)** — extension territory.
-- **E-invoicing formats** (Factur-X, Moadian) — extensions (gap roadmap §5).
-- **Region admin CRUD** — seed-only in v1 (D6); admin management follows demand.
+- **E-invoicing formats** (Factur-X, Moadian) — extensions.
+- **Region admin CRUD** — seed-only in v1.
 
 ## 10. Review trail
 
 - v1 (2026-11-07): authored from three parallel code explorations; owner confirmed
-  seed scope (US+CA+DE), execution order, machine-route-group token design.
-- v2 (2026-11-07): first external review (7.5/10) incorporated — C.1a uniqueness
-  corrected (NOT NULL '' scope key), transactional outbox adopted, SSRF guard added,
-  C.1b moved to a store-level pricing mode, C.1c rescoped to collection + validation
-  (auto-RC removed), plus the full P1 set; policies (d)/(e) added.
-- v3 (2026-11-07): second external review (8.5/10 — per-slice verdicts: C.3 8.5,
-  C.2 8, C.1a 8.5, C.1b 7.5, C.1c 9) incorporated: **P0-1** C.1b complete accounting
-  model (column meanings per mode, reconciliation invariants, per-extended-line
-  extraction, refund ratio rule — §6 D2/D3); **P0-2** outbox→delivery recovery split
-  (outbox processing vs delivery scheduling; delivery table as durable source of
-  truth; claim/lease lifecycle; `source_key` event identity; subscription evaluation
-  point fixed) — §4 D2–D4; **P0-3** SSRF upgraded to IP-pinned connections via
-  `CURLOPT_RESOLVE` + URL-parsing hardening — §4 D7; **P0-4** C.1a missing-region
-  loudness (region-required failure when regional rates exist) + explicit shipping-
-  destination jurisdiction — §5 D3/D4; **P0-5** C.3 per-media lock for concurrency +
-  deletion coordination — §3 D6. **P1:** versioned variant paths for cache-busting,
-  memory-aware pixel limits, failure classification, serialization guarantees;
-  signing covers metadata, Retry-After = max(backoff, Retry-After) with cap,
-  endpoint-level failure-counter lock, outbox/delivery retention, subscription model,
-  bearer-only middleware for machine routes; C.1a limited-model + canonical-region
-  documentation + migration dual-engine tests; C.1b extraction-once-per-line +
-  refund ratio; C.1c normalization + EL prefix + no-flag option 1 + VAT IDs excluded
-  from logs/payloads; version-target clarification (§1); archival contradiction
-  resolved (§4 D11); estimates restated as initial estimates.
+  seed scope (US+CA+DE), execution order, machine-route-group tokens.
+- v2 (2026-11-07): first external review (7.5/10) — C.1a uniqueness corrected,
+  transactional outbox adopted, SSRF guard added, C.1b store-level mode, C.1c
+  rescoped, P1 set, policies (d)/(e).
+- v3 (2026-11-07): second external review (8.5/10) — C.1b accounting model,
+  outbox→delivery split + claim lifecycle, IP-pinned SSRF, region-required loudness +
+  shipping-destination jurisdiction, per-media locks, plus the full P1 set and
+  policies (f)-precursor.
+- v4 (2026-11-07): third external review (9/10 — "make the focused corrections above,
+  then start C.3") incorporated: **P0** C.3 lock-TTL/timeout relationship + version
+  allocation under lock + no-regression publication protocol (§3 D5/D6); C.2
+  claim-token ownership rejecting stale-worker writes (§4 D4); per-transition
+  `source_key` rules (§4 D2). **P1** real HTTP attempt history + at-least-once
+  documentation (D9); CNAME/zone-id/proxy/connection-reuse pinning hardening +
+  curl-level test (D7); consecutive-failure ordering semantics + ownership-scoped
+  machine queries + wildcard-token rejection (D11/D14); destructive-rollback warning +
+  seed-drift stored-address behavior + deterministic regions endpoint (§5 D5/D6);
+  discount-reconciliation invariant + subtotal definition + shipping-discount statement
+  + partial-refund rounding + invoice-line derivation (§6 D2/D4/D6); VAT rule
+  isolation + privacy hygiene (§7 D2); retry CLI + diagnostics + queue-readiness
+  checklist (D13, §8-4); calculator-as-single-source accepted criterion (§6 D7,
+  §8-3f).
 
 ## 11. Related docs
 
-- `docs/PLATFORM_GAPS_ROADMAP.md` §Phase C — the seed section this plan elaborates;
-  §1 placement table and §6 policies bind the slices.
+- `docs/PLATFORM_GAPS_ROADMAP.md` §Phase C — the seed section this plan elaborates.
 - `docs/plans/gap-b1-invoices.md` — `RefundFinalizedEvent` (Phase 3) and invoice
   `buyer_identity` (Phase 2) are the two C.2/C.1c handoffs.
 - `docs/EXTENSION_MARKETPLACE_ROADMAP.md` §5 — additive-migrations + semver-surface
