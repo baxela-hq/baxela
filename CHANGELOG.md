@@ -10,6 +10,35 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Gateway refund coverage, stage 1 (gap-B4)**: Adyen and Checkout.com
+  payments are now refundable (full or partial) from the admin, on top of
+  the existing two-phase refund ledger. The ledger gained honest async
+  semantics: a 2xx from an async gateway is an *acceptance*, not a
+  completed refund — rows move to a new `processing` state (amount still
+  reserved) until the gateway's webhook confirms (`REFUND` /
+  `payment_refunded` → success, `REFUND_FAILED` / `payment_refund_declined`
+  → failed) or rejects. Refund webhooks correlate via the ledger uuid sent
+  as the gateway merchant reference and echoed back, after signature
+  verification and validation of payment association, amount and currency;
+  dashboard-issued refunds are acknowledged but never touch Baxela's
+  accounting. A new terminal `reversed` state handles gateway-initiated
+  reversals (Adyen `REFUNDED_REVERSED`, a late `REFUND_FAILED` on a
+  finalized refund) in any webhook order — from a finalized refund the
+  order's refunded amount is recomputed from the ledger's success-only rows
+  and the payment status restored, atomically; from a pre-terminal row no
+  accounting was ever applied. Refundable-balance reservations are never
+  released by age: stale `processing` rows are resolved only by an
+  operator who verified the provider's actual outcome. All four wired
+  gateways now send idempotency keys on refunds; a gateway-side payment
+  identifier (Adyen pspReference, Checkout.com payment id) is persisted at
+  webhook settle time as the refund target — payments settled before this
+  release refuse gateway refunds explicitly. Admin surfaces label the new
+  states, offer operator resolution for stale rows, and the payments page
+  explains async confirmation; NowPayments now states plainly on both admin
+  surfaces that crypto payments cannot be reversed provider-side (i18n,
+  6 locales). Mercado Pago and Razorpay refund drivers follow in stage 2 —
+  see `docs/plans/gap-b4-refund-drivers.md`.
+
 - **Queue visibility (gap-B3)**: failed queued jobs are now operable.
   Core-module admin endpoints (`api/v1/core/admin/failed-jobs`) with
   separately-permissioned list/show/retry/delete (view never implies retry or

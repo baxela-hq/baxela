@@ -25,19 +25,35 @@ themselves automatically via `isConfigured()`.
 ### Refunds
 
 Refunds run through the `payment_refunds` ledger (partial + full, two-phase with
-row locks, gateway idempotency keys, and a `reconciliation_required` state for
-ambiguous gateway outcomes that an admin resolves with the verified result).
+row locks, gateway idempotency keys, a `processing` state for async-accepted
+refunds, and `reconciliation_required` for ambiguous gateway outcomes that an
+admin resolves with the verified result). A gateway-initiated reversal
+(Adyen `REFUNDED_REVERSED`) restores the order accounting and re-opens the
+refundable balance.
 
 | Gateway | Refund support | Notes |
 |---|---|---|
 | Stripe | Yes | Checkout Session → PaymentIntent → `refunds` API, idempotency-keyed |
 | PayPal | Yes | Orders v2 capture refund (`PayPal-Request-Id` idempotency) |
 | Manual | Bookkeeping only | Recording that the offline refund already happened |
-| Adyen, Mercado Pago, Checkout.com, NowPayments, Razorpay | Not yet | Refund attempts fail loudly (`payment.refund.not_supported`) |
+| Adyen | Yes — accepted async, webhook-confirmed | `POST /payments/{psp}/refunds` (`Idempotency-Key`); `REFUND` / `REFUND_FAILED` / `REFUNDED_REVERSED` webhooks confirm; correlate via the ledger uuid echoed as `reference` |
+| Checkout.com | Yes — accepted async, webhook-confirmed | `POST /payments/{id}/refunds` (`Cko-Idempotency-Key`); `payment_refunded` / `payment_refund_declined` events confirm |
+| Mercado Pago, Razorpay, NowPayments | Not yet | Refund attempts fail loudly (`payment.refund.not_supported`) |
 
 Capability is declared in code — drivers implement the `RefundableDriver` contract
 marker — and the admin payment-methods page shows it per driver (`is_refundable`);
 keep this table in sync with the marker, never edit one without the other.
+
+Two boundaries worth knowing as an operator:
+
+- **Async refunds:** Adyen/Checkout.com accept a refund over the API and confirm it
+  via webhook; the ledger row stays reserved in `processing` until then. Reservations
+  are never released by age — an admin verifies the provider's actual outcome before
+  resolving a stale row.
+- **Dashboard-issued refunds do not update Baxela's accounting.** A refund issued in
+  the gateway console (no ledger row) is acknowledged and logged, but order totals
+  stay unchanged — the same is true for Stripe today. Issue refunds through the admin
+  so the ledger stays the source of truth.
 
 | Gateway | Env prefix | Notes |
 |---|---|---|

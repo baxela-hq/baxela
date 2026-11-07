@@ -71,7 +71,8 @@ multi-currency wording: never the bare claim without the footnote.
       via merchant dashboard (driver support roadmaped); NowPayments (crypto) has no
       provider-side refund." *(done 2026-11-03 — footnote wording baked into
       launch-readiness Part F §2; THIRD_PARTY_SERVICES already accurate, gained the
-      code-link note; root README had no bare claim to fix)*
+      code-link note; root README had no bare claim to fix. 2026-11-07 — B.4 stage 1
+      shrank the footnote: Adyen and Checkout.com moved into the built-in list.)*
 - [x] Admin payment-methods page: show refund capability per driver (i18n, 6 locales).
       *(done 2026-11-03 — plus the payments page: "Issue refund" now disables with a
       tooltip on non-refundable drivers; see `docs/plans/gap-a1-refund-claims.md`)*
