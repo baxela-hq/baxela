@@ -26,6 +26,8 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Support\PromotionPayload;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Modules\Core\Support\PicksTranslation;
 
 class ShowProductResource extends JsonResource
@@ -51,6 +53,37 @@ class ShowProductResource extends JsonResource
             ->firstWhere(BRTSchema::LANGUAGE_ID, $languageId)
             ?? PicksTranslation::pick($this->resource->brand?->translations, $languageId);
 
+        // Structured-data surface (gap-B2): purchase availability derived
+        // from what a customer can actually buy — untracked variants are
+        // purchasable, tracked ones need quantity on the shelf.
+        $inventory = app(InventoryGatewayInterface::class);
+        $purchasable = false;
+        foreach ($this->resource->variants as $variantModel) {
+            $quantity = $inventory->availableQuantity((string) $variantModel->{VariantSchema::ID});
+
+            if ($quantity === null || $quantity > 0) {
+                $purchasable = true;
+                break;
+            }
+        }
+
+        // Per-locale slug map feeding the storefront's hreflang alternates
+        // (only locales the store actually offers).
+        $codeById = [];
+        foreach (app(CoreGatewayInterface::class)->getActiveLanguages() as $language) {
+            $codeById[(int) $language->id] = $language->code;
+        }
+
+        $slugs = [];
+        foreach ($this->resource->translations as $productTranslation) {
+            $code = $codeById[(int) $productTranslation->{PTSchema::LANGUAGE_ID}] ?? null;
+            $slug = $productTranslation->{PTSchema::SLUG};
+
+            if ($code !== null && $slug !== null) {
+                $slugs[$code] = $slug;
+            }
+        }
+
         return [
             'id' => $this->resource->{ProductSchema::ID},
             'title' => $translation?->{PTSchema::TITLE},
@@ -59,6 +92,8 @@ class ShowProductResource extends JsonResource
             'content' => $translation?->{PTSchema::CONTENT},
             'price' => $variant?->{VariantSchema::PRICE},
             'compare_price' => $variant?->{VariantSchema::COMPARE_PRICE},
+            'availability' => $purchasable ? 'in_stock' : 'out_of_stock',
+            'slugs' => $slugs,
             'brand' => $this->resource->brand ? [
                 'id' => $this->resource->brand->{BrandSchema::ID},
                 'title' => $brandTranslation?->{BRTSchema::TITLE},
