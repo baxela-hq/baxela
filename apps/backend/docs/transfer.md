@@ -124,7 +124,7 @@ still keep a service catalog).
 ### Phase plan
 
 1. [x] Move envelope support to Core; add Core base export/import controllers; wire **Tax as the pilot** (`tax/admin/data/*`), keeping the central endpoints working. *(Done 2026-11-07: envelope, run model, resources, requests and exceptions live in Core now, with `ModuleTransferRunner` as the shared file plane and `core.transfer.*` as the policy config.)*
-2. [ ] Roll the base out to the remaining Wave-1 modules (mechanical).
+2. [x] Roll the base out to the remaining Wave-1 modules (mechanical). *(Done 2026-11-07: Setting, Shipping, Discount, Contact and Menu all expose `{module}/admin/data/*` with `data.imports` history scoping.)*
 3. [ ] Capabilities payload publishes per-module `endpoints`; the admin UI's transfer page switches to those URLs.
 4. [ ] Mark the central Transfer file endpoints deprecated (shims or removal once unused).
 

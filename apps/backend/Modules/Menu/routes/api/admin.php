@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Menu\Http\Controllers\Admin\Data\ExportMenuDataController;
+use Modules\Menu\Http\Controllers\Admin\Data\ImportMenuDataController;
+use Modules\Menu\Http\Controllers\Admin\Data\ListMenuDataImportsController;
+use Modules\Menu\Http\Controllers\Admin\Data\PreviewMenuDataImportController;
 use Modules\Menu\Http\Controllers\Admin\Menu\CreateMenuController;
 use Modules\Menu\Http\Controllers\Admin\Menu\DeleteMenuController;
 use Modules\Menu\Http\Controllers\Admin\Menu\ListMenuController;
@@ -25,4 +29,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/menus/{id}/links/{linkId}', ShowMenuLinkController::class)->name('menu-links.show');
     Route::patch('/menus/{id}/links/{linkId}', UpdateMenuLinkController::class)->name('menu-links.update');
     Route::delete('/menus/{id}/links/{linkId}', DeleteMenuLinkController::class)->name('menu-links.delete');
+    // The module's own data-transfer endpoints (per-module surface from
+    // the transfer standard's phase plan; the central transfer endpoints
+    // remain available).
+    Route::get('/data/export', ExportMenuDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewMenuDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportMenuDataController::class)->name('data.import');
+    Route::get('/data/imports', ListMenuDataImportsController::class)->name('data.imports.list');
 });

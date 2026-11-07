@@ -3,10 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Modules\Setting\Schemas\Setting\SettingGroupEnum;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
-use Modules\Setting\Schemas\Setting\SettingTypeEnum;
 
 return new class extends Migration
 {

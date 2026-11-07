@@ -7555,6 +7555,54 @@ parameters:
 			path: Modules/Contact/database/factories/NewsletterSubscriberFactory.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedContactDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferContact\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
+
+		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Contact\\Models\\ContactMessage\>\|Modules\\Contact\\Models\\ContactMessage\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 1
@@ -11707,6 +11755,54 @@ parameters:
 			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedDiscountDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferDiscount\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_count\.$#'
 			identifier: property.notFound
 			count: 1
@@ -13145,6 +13241,84 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Menu/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Menu\\Models\\Menu\:\:\$location\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$menu_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$parent_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedMenuDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferMenu\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
@@ -17890,6 +18064,78 @@ parameters:
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedSettingDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferSettings\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -19019,6 +19265,84 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Shipping/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$method_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$zone_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedShippingDataFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferShipping\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<array\<mixed\>\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'

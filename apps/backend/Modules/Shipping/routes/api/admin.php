@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Shipping\Http\Controllers\Admin\Data\ExportShippingDataController;
+use Modules\Shipping\Http\Controllers\Admin\Data\ImportShippingDataController;
+use Modules\Shipping\Http\Controllers\Admin\Data\ListShippingDataImportsController;
+use Modules\Shipping\Http\Controllers\Admin\Data\PreviewShippingDataImportController;
 use Modules\Shipping\Http\Controllers\Admin\Method\CreateMethodController;
 use Modules\Shipping\Http\Controllers\Admin\Method\DeleteMethodController;
 use Modules\Shipping\Http\Controllers\Admin\Method\ListMethodController;
@@ -45,4 +49,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::post('/shipments', CreateShipmentController::class)->name('shipments.create');
     Route::get('/shipments/{id}', ShowShipmentController::class)->name('shipments.show');
     Route::patch('/shipments/{id}', UpdateShipmentController::class)->name('shipments.update');
+    // The module's own data-transfer endpoints (per-module surface from
+    // the transfer standard's phase plan; the central transfer endpoints
+    // remain available).
+    Route::get('/data/export', ExportShippingDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewShippingDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportShippingDataController::class)->name('data.import');
+    Route::get('/data/imports', ListShippingDataImportsController::class)->name('data.imports.list');
 });

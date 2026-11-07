@@ -2,6 +2,8 @@
 
 namespace Modules\Discount\Tests\Feature;
 
+use Illuminate\Http\Testing\File;
+use Illuminate\Http\UploadedFile;
 use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Product;
@@ -79,5 +81,25 @@ trait HelperTrait
             $this->getJson($this->transferUrl('/admin/exports/discount'))->assertOk()->streamedContent(),
             true
         );
+    }
+
+    /**
+     * Export through the module's own data endpoint and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedDiscountDataFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->baseUrl('/admin/data/export'))->assertOk()->streamedContent(),
+            true
+        );
+    }
+
+    /** The multipart file field for the data-import endpoints. */
+    public function transferFile(string $content, string $name = 'transfer.json'): File
+    {
+        return UploadedFile::fake()->createWithContent($name, $content);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Menu\Tests\Feature;
 
+use Illuminate\Http\Testing\File;
+use Illuminate\Http\UploadedFile;
 use Modules\Auth\Models\User;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Models\MenuLink;
@@ -70,5 +72,25 @@ trait HelperTrait
             $this->getJson($this->transferUrl('/admin/exports/menu'))->assertOk()->streamedContent(),
             true
         );
+    }
+
+    /**
+     * Export through the module's own data endpoint and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedMenuDataFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->baseUrl('/admin/data/export'))->assertOk()->streamedContent(),
+            true
+        );
+    }
+
+    /** The multipart file field for the data-import endpoints. */
+    public function transferFile(string $content, string $name = 'transfer.json'): File
+    {
+        return UploadedFile::fake()->createWithContent($name, $content);
     }
 }
