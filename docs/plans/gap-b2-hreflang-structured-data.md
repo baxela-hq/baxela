@@ -113,6 +113,22 @@
   adopted: stable `@id` entity graph (D7), Organization from store settings,
   `lib/seo/` architecture + safe JSON-LD serialization (D8), SEO-layer-transforms-
   never-invents discipline (D9), canonical redirect/query-param rules.
+- v2.1 (2026-11-07): final review — 9.4/10, **approved** with clarifications, folded
+  in directly. Critical: **deterministic crawler pricing** (D5 — store default
+  currency for the indexable representation; display conversion is cosmetic and
+  never changes SEO output; original-price markup only via the documented
+  `StrikethroughPrice` `UnitPriceSpecification`); **group availability never
+  propagates to variants** — omit per-variant availability when unreliable, ratings
+  at the correct group/variant level (D4). High: ProductGroup details (stable
+  `productGroupID`, `variesBy` mapped only from variant-identifying axes, SKUs never
+  invented, variant URLs only when URL-selection exists, `hasVariant` nesting
+  without `isVariantOf`) (D4); per-parameter-type canonical policy — filters
+  configurable, pagination keeps per-page canonicals (§4). Medium: `WebPage` node
+  in the entity graph with `isPartOf`/`mainEntity`/`breadcrumb` (D7);
+  Organization/WebSite/Offer.seller role separation for marketplace-readiness;
+  Organization built from full store settings (D7); expanded noindex audit (cart,
+  checkout, search, wishlist, order tracking) (§3 Phase A). Low: estimate
+  recalibrated to 2–3 focused days.
 
 ## 7. Related docs
 
