@@ -142,13 +142,23 @@ Suggested commits: `feat(backend/order): invoice and credit note documents`,
 
 ### B.2 hreflang + structured data (cheap, high-leverage)
 
-- [ ] Storefront `generateMetadata`: canonical + `alternates.languages` for all 6 locales
-      on every static route, PDP, category, brand, blog post.
-- [ ] JSON-LD: `Product` (offers, `aggregateRating` from the existing
+- [x] Storefront `generateMetadata`: canonical + `alternates.languages` for all 6 locales
+      on every static route, PDP, category, brand, blog post. *(done 2026-11-07 —
+      `lib/seo/` layer; entity alternates built from per-locale slug maps where the API
+      exposes them, self-canonical-only where it doesn't; see
+      `docs/plans/gap-b2-hreflang-structured-data.md` for the three-review arc)*
+- [x] JSON-LD: `Product` (offers, `aggregateRating` from the existing
       `rating_avg`/`rating_count`), `BreadcrumbList`, `Organization`, blog `Article`.
-- [ ] Sitemap: per-URL `xhtml:link` hreflang alternates ⚠ (verify sitemap shape first).
-- [ ] Validation: Rich Results test on the demo PDP added to launch-QA checks; a small
-      assertion script or e2e step so it can't silently regress.
+      *(done 2026-11-07 — plus `ProductGroup`/`hasVariant` for variable products,
+      `WebPage` node, stable `@id` entity graph; availability via a new public
+      purchase-availability field)*
+- [x] Sitemap: per-URL `xhtml:link` hreflang alternates ⚠ (verify sitemap shape first).
+      *(verified 2026-11-07: already implemented — `lib/sitemap.ts`)*
+- [x] Validation: Rich Results test on the demo PDP added to launch-QA checks; a small
+      assertion script or e2e step so it can't silently regress. *(done 2026-11-07 —
+      `e2e/seo.spec.ts` asserts hreflang reciprocity, canonical hygiene, noindex and
+      JSON-LD shape; the Rich Results / schema.org validator run on the deployed demo
+      remains the manual launch-QA gate)*
 
 Suggested commit: `feat(storefront): hreflang alternates and product structured data`
 

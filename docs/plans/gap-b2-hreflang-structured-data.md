@@ -54,6 +54,27 @@
 
 ## 3. Work items
 
+> **DONE 2026-11-07 (all three phases).** Implemented per v2.1: `lib/seo/` layer
+> (urls/alternates/entity-urls/metadata/schema-org + `components/json-ld.tsx` with safe
+> serialization); PDP `generateMetadata` with slug canonical + per-locale slug-map
+> alternates; static routes (home from store settings, products/brands/blog/contact);
+> detail pages self-canonical without alternates where per-locale slugs aren't exposed
+> (brands/posts/pages — documented v1 limitation); noindex across auth, cart, checkout,
+> payment/return, and the whole profile surface (server `layout.tsx` per segment —
+> client pages cannot export metadata; profile pages moved into a `(account)` route
+> group, URLs unchanged); `Product`/`ProductGroup`+`hasVariant` PDP graph with
+> breadcrumb + webpage nodes; settings-driven `Organization`/`WebSite`; `Article` on
+> posts; backend `availability` + `slugs` on the public show payload (3 Pest tests;
+> verified live against the compose API — the slug map correctly omits locales with no
+> translation). `variesBy` omitted: variant option values carry no axis codes in the
+> API yet — unmappable axes are omitted, never guessed (D9). Verified: production
+> build green (type-check + compile of all routes); Catalog suite **114 passed**;
+> phpstan **[OK]** (baseline spliced for the two touched files only); i18n parity
+> unaffected. `e2e/seo.spec.ts` asserts hreflang reciprocity/canonicals/noindex/
+> JSON-LD shape (runs in CI's compose stack; a local runtime curl of the head tags was
+> starved by machine load — the Rich Results validator run on the deployed demo stays
+> the manual launch-QA gate).
+
 ### Phase A — Metadata & international SEO (storefront only)
 - [ ] `lib/seo/` scaffolding (D8): `urls.ts`, `alternates.ts` (D1 v2 — per-locale URL maps), `canonical.ts`, `metadata.ts` (OG + Twitter cards + fallbacks).
 - [ ] PDP `generateMetadata` (D2): title/description (SEO translation ⚠ else product fields), canonical = **slug** form, alternates from the entity's per-locale slugs, OG + Twitter, absolute image URLs.

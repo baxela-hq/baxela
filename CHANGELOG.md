@@ -10,6 +10,22 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **International SEO + structured data (gap-B2)**: every indexable
+  storefront page emits canonical + six-locale hreflang alternates
+  (`x-default` → default locale, mirroring the sitemap); the PDP gains
+  per-product metadata with slug-form canonicals built from a new per-locale
+  `slugs` map, and JSON-LD — `Product` for simple products,
+  `ProductGroup`/`hasVariant` for variable ones (per-variant SKU + offer
+  price), `BreadcrumbList` mirroring the visible breadcrumbs, `WebPage`,
+  and store-settings-driven `Organization`/`WebSite` with stable `@id`s.
+  Public product API adds purchase `availability` (in stock / out of stock,
+  derived through the inventory gateway). Utility and account surfaces
+  (auth, cart, checkout, profile, payment return) are `noindex`. Pricing in
+  structured data uses the store default currency — deterministic for
+  crawlers; display conversion never changes SEO output. Correctness over
+  coverage: unavailable data is omitted, never fabricated.
+
+
 - **Stack health endpoint (public)**: `GET /api/v1/core/public/health`
   probes database (critical → HTTP 503 on failure), Redis, and the queue
   (driver + pending/failed counts); non-critical failures degrade the
