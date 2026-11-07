@@ -54,6 +54,13 @@ don't participate.
 
 ## Transfer module API (admin audience, permission-derived from route names)
 
+> **Transitional surface.** These central endpoints are how the standard
+> ships today. The target architecture (see the architecture decision
+> below) moves export/import into each module's own routes; the central
+> endpoints then shrink to discovery (and optionally the audit table),
+> with the file endpoints kept as deprecated shims until the admin UI
+> stops using them.
+
 | Route | Purpose |
 |---|---|
 | `GET api/v1/transfer/admin/capabilities` | Coverage matrix: every enabled module, its sections and export/import flags. |
@@ -81,6 +88,45 @@ One JSON file per module — `baxela.module-export` v1:
 
 Row cap: 5000 total rows per file (imports and exports both enforce it,
 keeping runs synchronous and memory-bounded). Upload cap: 20 MB.
+
+## Architecture decision: per-module endpoints (microservice readiness)
+
+> **Decided 2026-11-07 · not started.** Each module exposes its own
+> import/export HTTP surface, so extracting a module to a microservice
+> carries its data, its transfer logic *and* its endpoints — no central
+> dependency beyond the shared format contract.
+
+### Why
+
+- The data plane (`{Name}Transfer`) already lives inside each module;
+  the HTTP surface is the remaining coupling to the central Transfer
+  module.
+- Per-module routes yield granular permissions (`tax.admin.data.export`
+  grantable without import) and self-documenting Scramble surfaces under
+  each module's own prefix. Catalog already proves the shape with its
+  pre-standard `catalog/admin/data/*` endpoints.
+
+### Target shape
+
+| Concern | Home |
+|---|---|
+| Envelope encode/decode (`TransferFormat`, `TransferFile`) | `Modules/Core/app/Support/Transfer/` — format-level, shared; graduates into the `baxela/contracts` package per the extension roadmap |
+| Export/import/preview/history controllers | Core base controllers doing the whole file plane; each module ships ~15-line subclasses binding `module()` + `transfer()` |
+| Routes | Each module's `routes/api/admin.php` — `data.export`, `data.import`, `data.imports.*`; permissions derive as `api.{module}.admin.data.*` |
+| Capabilities matrix | Stays central in the Transfer module, extended with each module's endpoint base URLs so the admin UI stays one page |
+| Run history | Central `transfer_imports` as the audit plane for now; an extracted service posts its runs there (or keeps its own) |
+
+Deliberately **not** done: duplicating envelope/history machinery per
+module (the Core base layer prevents it), and moving discovery into the
+modules (a registry is inherently cross-cutting — microservice estates
+still keep a service catalog).
+
+### Phase plan
+
+1. [ ] Move envelope support to Core; add Core base export/import controllers; wire **Tax as the pilot** (`tax/admin/data/*`), keeping the central endpoints working.
+2. [ ] Roll the base out to the remaining Wave-1 modules (mechanical).
+3. [ ] Capabilities payload publishes per-module `endpoints`; the admin UI's transfer page switches to those URLs.
+4. [ ] Mark the central Transfer file endpoints deprecated (shims or removal once unused).
 
 ## Rollout status
 
