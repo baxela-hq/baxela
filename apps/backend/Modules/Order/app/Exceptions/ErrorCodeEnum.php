@@ -15,4 +15,10 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case RETURN_INELIGIBLE = 'order.return.ineligible';
 
     case RETURN_INVALID_TRANSITION = 'order.return.invalid_transition';
+
+    case INVOICE_NOT_FOUND = 'order.invoice.not_found';
+
+    case INVOICE_INELIGIBLE = 'order.invoice.ineligible';
+
+    case INVOICE_INVALID_TRANSITION = 'order.invoice.invalid_transition';
 }

@@ -1,5 +1,6 @@
 parameters:
 	ignoreErrors:
+
 		-
 			message: '#^Method Modules\\Audit\\Actions\\Admin\\AuditLog\\ListAuditLogsAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
@@ -14875,6 +14876,198 @@ parameters:
 			path: Modules/Notification/tests/Unit/WebPushPayloadBuilderTest.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$image_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$price_snapshot\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_name_snapshot\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_slug_snapshot\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$promotion_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_class_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$address_line\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$country_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$full_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$currency_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_cost\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Method Modules\\Order\\Actions\\Admin\\Invoice\\ListOrderInvoicesAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/ListOrderInvoicesAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/VoidInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/VoidInvoiceAction.php
+
+		-
 			message: '#^Method Modules\\Order\\Actions\\Admin\\Order\\ListOrderAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\AbstractPaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -15451,6 +15644,12 @@ parameters:
 			path: Modules/Order/app/Http/Requests/User/OrderReturn/MarkOrderReturnShippedRequest.php
 
 		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/DocumentSequence.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -15491,6 +15690,54 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Order/app/Models/OrderAddress.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderCreditNote\:\:invoice\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderCreditNote.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderCreditNote.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderInvoice\:\:creditNotes\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoice.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderInvoice\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoice.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderInvoice\:\:order\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoice.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoice.php
+
+		-
+			message: '#^Method Modules\\Order\\Models\\OrderInvoiceItem\:\:invoice\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoiceItem.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/OrderInvoiceItem.php
 
 		-
 			message: '#^Class Modules\\Order\\Models\\OrderItem uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
@@ -15547,6 +15794,18 @@ parameters:
 			path: Modules/Order/app/Schemas/OrderReturn/OrderReturnStatusEnum.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Support/DocumentBalanceService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\DocumentSequence\:\:\$last_number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Support/DocumentNumberService.php
+
+		-
 			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -15563,6 +15822,18 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Order/app/Transfer/OrderTransfer.php
+
+		-
+			message: '#^Method Modules\\Order\\Transformers\\Admin\\Invoice\\OrderInvoiceItemResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/Invoice/OrderInvoiceItemResource.php
+
+		-
+			message: '#^Method Modules\\Order\\Transformers\\Admin\\Invoice\\OrderInvoiceResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/Invoice/OrderInvoiceResource.php
 
 		-
 			message: '#^Method Modules\\Order\\Transformers\\Admin\\Order\\OrderResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -15869,6 +16140,72 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 9
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 11
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 12
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 10
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'

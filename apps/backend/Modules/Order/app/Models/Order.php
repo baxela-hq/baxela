@@ -34,9 +34,13 @@ class Order extends Model
         OrderSchema::SHIPPING_METHOD_ID,
         OrderSchema::SHIPPING_METHOD_NAME,
         OrderSchema::SHIPPING_COST,
+        OrderSchema::SHIPPING_TAX_AMOUNT,
+        OrderSchema::SHIPPING_TAX_RATE,
+        OrderSchema::SHIPPING_TAX_CLASS_ID,
         OrderSchema::COUPON_ID,
         OrderSchema::COUPON_CODE,
         OrderSchema::DISCOUNT_AMOUNT,
+        OrderSchema::TAX_AMOUNT,
         OrderSchema::EXPIRES_AT,
     ];
 

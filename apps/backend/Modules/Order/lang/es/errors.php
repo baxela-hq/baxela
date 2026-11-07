@@ -6,4 +6,7 @@ return [
     'return.not_found' => 'No se encontró el pedido o la devolución',
     'return.ineligible' => 'Este pedido no es elegible para una devolución en este momento',
     'return.invalid_transition' => 'El estado de la devolución no puede cambiar al valor solicitado',
+    'invoice.not_found' => 'No se encontró la factura',
+    'invoice.ineligible' => 'Este pedido aún no es elegible para una factura',
+    'invoice.invalid_transition' => 'El estado de la factura no puede cambiar al valor solicitado',
 ];

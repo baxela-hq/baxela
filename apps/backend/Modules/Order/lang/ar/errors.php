@@ -6,4 +6,7 @@ return [
     'return.not_found' => 'لم يتم العثور على الطلب أو الإرجاع',
     'return.ineligible' => 'هذا الطلب غير مؤهل للإرجاع في الوقت الحالي',
     'return.invalid_transition' => 'لا يمكن تغيير حالة الإرجاع إلى القيمة المطلوبة',
+    'invoice.not_found' => 'لم يتم العثور على الفاتورة',
+    'invoice.ineligible' => 'هذا الطلب غير مؤهل بعد لإصدار فاتورة',
+    'invoice.invalid_transition' => 'لا يمكن تغيير حالة الفاتورة إلى القيمة المطلوبة',
 ];

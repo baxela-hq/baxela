@@ -6,4 +6,7 @@ return [
     'return.not_found' => 'Die Bestellung oder Rücksendung wurde nicht gefunden',
     'return.ineligible' => 'Diese Bestellung ist derzeit nicht für eine Rücksendung berechtigt',
     'return.invalid_transition' => 'Der Status der Rücksendung kann nicht auf den angeforderten Wert geändert werden',
+    'invoice.not_found' => 'Die Rechnung wurde nicht gefunden',
+    'invoice.ineligible' => 'Diese Bestellung ist noch nicht für eine Rechnung berechtigt',
+    'invoice.invalid_transition' => 'Der Rechnungsstatus kann nicht auf den angeforderten Wert geändert werden',
 ];

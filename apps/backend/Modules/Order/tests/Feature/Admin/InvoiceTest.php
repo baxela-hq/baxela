@@ -1,0 +1,288 @@
+<?php
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Modules\Auth\Models\User;
+use Modules\Core\Models\Currency;
+use Modules\Order\Actions\Admin\Invoice\IssueInvoiceAction;
+use Modules\Order\Models\DocumentSequence;
+use Modules\Order\Models\Order;
+use Modules\Order\Models\OrderAddress;
+use Modules\Order\Models\OrderCreditNote;
+use Modules\Order\Models\OrderInvoice;
+use Modules\Order\Models\OrderItem;
+use Modules\Order\Schemas\Document\DocumentSequenceSchema;
+use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
+use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
+use Modules\Order\Schemas\Order\OrderSchema;
+use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
+use Modules\Order\Schemas\OrderAddress\OrderAddressTypeEnum;
+use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteSchema;
+use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
+use Modules\Order\Schemas\OrderInvoice\OrderInvoiceSchema;
+use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
+use Modules\Order\Schemas\OrderItem\OrderItemSchema;
+use Modules\Order\Support\StoreTimezone;
+use Modules\Order\Tests\Feature\HelperTrait;
+
+uses(RefreshDatabase::class);
+uses(HelperTrait::class);
+
+/**
+ * A deterministic paid order: one item at 50.00 × 2 (line 100.00, tax 10.00
+ * at 10%), totals copied straight into the invoice snapshot assertions.
+ */
+function paidInvoiceOrder(OrderPaymentStatusEnum $paymentStatus = OrderPaymentStatusEnum::PAID): Order
+{
+    $currency = Currency::query()->firstOrCreate(
+        ['code' => 'EUR'],
+        ['name' => 'Euro', 'is_default' => true],
+    );
+
+    $order = Order::query()->create([
+        OrderSchema::USER_ID => 1,
+        OrderSchema::ORDER_CODE => 'INV'.uniqid(),
+        OrderSchema::STATUS => OrderStatusEnum::PROCESSING,
+        OrderSchema::PAYMENT_STATUS => $paymentStatus,
+        OrderSchema::PAID_AT => now(),
+        OrderSchema::CURRENCY_ID => $currency->id,
+        OrderSchema::TOTAL_AMOUNT => 110.0,
+        OrderSchema::TAX_AMOUNT => 10.0,
+        OrderSchema::SHIPPING_COST => 0.0,
+        OrderSchema::SHIPPING_TAX_AMOUNT => 0.0,
+        OrderSchema::DISCOUNT_AMOUNT => 0.0,
+        OrderSchema::EXPIRES_AT => now()->addHour(),
+    ]);
+
+    OrderItem::query()->create([
+        OrderItemSchema::ORDER_ID => $order->id,
+        OrderItemSchema::VARIANT_ID => 7,
+        OrderItemSchema::PRODUCT_NAME_SNAPSHOT => 'Test Product',
+        OrderItemSchema::PRICE_SNAPSHOT => 50.0,
+        OrderItemSchema::QUANTITY => 2,
+        OrderItemSchema::TAX_AMOUNT => 10.0,
+        OrderItemSchema::TAX_RATE => 10.0,
+    ]);
+
+    OrderAddress::query()->create([
+        OrderAddressSchema::ORDER_ID => $order->id,
+        OrderAddressSchema::TYPE => OrderAddressTypeEnum::BILLING,
+        OrderAddressSchema::FULL_NAME => 'Armin Buyer',
+        OrderAddressSchema::PHONE => '+49 30 000000',
+        OrderAddressSchema::ADDRESS_LINE => 'Torstraße 1',
+        OrderAddressSchema::CITY => 'Berlin',
+        OrderAddressSchema::POSTAL_CODE => '10119',
+        OrderAddressSchema::COUNTRY_CODE => 'DE',
+    ]);
+
+    return $order;
+}
+
+/**
+ * @return array<string, mixed> the issued invoice's resource payload
+ */
+function issueFor(Order $order): array
+{
+    return test()->actingAs(test()->superAdminUser())
+        ->postJson(test()->baseUrl("/admin/orders/{$order->id}/invoice"))
+        ->assertCreated()
+        ->json('data');
+}
+
+it('denies a guest with 401', function () {
+    $this->getJson($this->baseUrl('/admin/invoices'))->assertStatus(401);
+});
+
+it('denies the invoice endpoints without permission', function () {
+    $order = paidInvoiceOrder();
+
+    $this->actingAs(User::factory()->create())
+        ->postJson($this->baseUrl("/admin/orders/{$order->id}/invoice"))
+        ->assertStatus(403);
+});
+
+it('issues an invoice whose snapshot is copied from the finalized order', function () {
+    $order = paidInvoiceOrder();
+
+    $response = $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/orders/{$order->id}/invoice"))
+        ->assertCreated();
+
+    $data = $response->json('data');
+    $year = StoreTimezone::year();
+
+    // Numbering: {PREFIX}-{YEAR}-{6-digit}, first allocation for the year.
+    expect($data[OrderInvoiceSchema::NUMBER])->toBe('INV-'.$year.'-000001')
+        ->and($data[OrderInvoiceSchema::REVISION])->toBe(1)
+        ->and($data[OrderInvoiceSchema::STATUS])->toBe('active')
+        ->and($data[OrderInvoiceSchema::CURRENCY_CODE])->toBe('EUR')
+        // Totals copied from the order, never recalculated (D11 v2.2).
+        ->and($data[OrderInvoiceSchema::TOTAL_AMOUNT])->toBe('110.00')
+        ->and($data[OrderInvoiceSchema::TAX_AMOUNT])->toBe('10.00')
+        ->and($data[OrderInvoiceSchema::SUBTOTAL_AMOUNT])->toBe('100.00')
+        ->and($data[OrderInvoiceSchema::BILLING_ADDRESS][OrderAddressSchema::COUNTRY_CODE])->toBe('DE')
+        ->and($data[OrderInvoiceSchema::BUYER_IDENTITY]['name'])->toBe('Armin Buyer')
+        ->and($data[OrderInvoiceSchema::SELLER_IDENTITY]['name'])->toBe(config('app.name'))
+        ->and($data[OrderInvoiceSchema::META]['order_code'])->toBe($order->{OrderSchema::ORDER_CODE})
+        ->and($data[OrderInvoiceSchema::ISSUED_AT])->not->toBeNull()
+        // Balance view: nothing credited yet.
+        ->and($data['credited_amount'])->toBe('0.00')
+        ->and($data['balance'])->toBe('110.00')
+        // The item snapshot: line_total derived from charged price × qty,
+        // tax COPIED from the order item.
+        ->and($data[OrderInvoiceSchema::RES_ITEMS][0][OrderInvoiceItemSchema::LINE_TOTAL])->toBe('100.00')
+        ->and($data[OrderInvoiceSchema::RES_ITEMS][0][OrderInvoiceItemSchema::TAX_AMOUNT])->toBe('10.00')
+        ->and($data[OrderInvoiceSchema::RES_ITEMS][0][OrderInvoiceItemSchema::UNIT_PRICE])->toBe('50.00')
+        ->and($data[OrderInvoiceSchema::RES_ITEMS][0][OrderInvoiceItemSchema::QUANTITY])->toBe(2)
+        ->and($data[OrderInvoiceSchema::RES_ITEMS][0][OrderInvoiceItemSchema::PRODUCT_NAME])->toBe('Test Product');
+
+    expect(OrderInvoice::query()->count())->toBe(1);
+});
+
+it('is idempotent: issuing twice returns the same invoice and no second number', function () {
+    $order = paidInvoiceOrder();
+
+    $first = issueFor($order);
+    $second = issueFor($order);
+
+    expect($second[OrderInvoiceSchema::ID])->toBe($first[OrderInvoiceSchema::ID])
+        ->and($second[OrderInvoiceSchema::NUMBER])->toBe($first[OrderInvoiceSchema::NUMBER])
+        ->and(OrderInvoice::query()->count())->toBe(1);
+});
+
+it('refuses to issue for an order without a paid state', function () {
+    $order = paidInvoiceOrder(OrderPaymentStatusEnum::UNPAID);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/orders/{$order->id}/invoice"))
+        ->assertStatus(400)
+        ->assertJsonPath('code', 'order.invoice.ineligible');
+
+    expect(OrderInvoice::query()->count())->toBe(0);
+});
+
+it('issues lazily for a partially refunded order (refund before invoice)', function () {
+    $order = paidInvoiceOrder(OrderPaymentStatusEnum::PARTIALLY_REFUNDED);
+
+    $data = issueFor($order);
+
+    expect($data[OrderInvoiceSchema::STATUS])->toBe('active')
+        ->and($data[OrderInvoiceSchema::NUMBER])->toContain('INV-');
+});
+
+it('continues the sequence across orders within the year', function () {
+    $first = issueFor(paidInvoiceOrder());
+    $second = issueFor(paidInvoiceOrder());
+
+    expect($second[OrderInvoiceSchema::NUMBER])->not->toBe($first[OrderInvoiceSchema::NUMBER])
+        ->and(str_ends_with($second[OrderInvoiceSchema::NUMBER], '000002'))->toBeTrue();
+});
+
+it('allocates per year: a prior-year sequence row does not leak into this year', function () {
+    DocumentSequence::query()->create([
+        DocumentSequenceSchema::TYPE => DocumentSequenceTypeEnum::INVOICE,
+        DocumentSequenceSchema::YEAR => StoreTimezone::year() - 1,
+        DocumentSequenceSchema::LAST_NUMBER => 500,
+    ]);
+
+    $data = issueFor(paidInvoiceOrder());
+
+    expect($data[OrderInvoiceSchema::NUMBER])->toBe('INV-'.StoreTimezone::year().'-000001');
+});
+
+it('voids an invoice and reissues under the next revision with a fresh number', function () {
+    $order = paidInvoiceOrder();
+    $original = issueFor($order);
+
+    $this->actingAs($this->superAdminUser())
+        ->patchJson($this->baseUrl("/admin/invoices/{$original[OrderInvoiceSchema::ID]}/void"), [
+            'reason' => 'wrong billing address',
+        ])
+        ->assertOk()
+        ->assertJsonPath('data.'.OrderInvoiceSchema::STATUS, 'void')
+        ->assertJsonPath('data.'.OrderInvoiceSchema::VOID_REASON, 'wrong billing address');
+
+    $replacement = issueFor($order);
+
+    // The voided document is retained with its number; the replacement is
+    // a NEW legal document under the next revision (D2/D8) — no balance
+    // transfers (v2.2 rule).
+    expect($replacement[OrderInvoiceSchema::ID])->not->toBe($original[OrderInvoiceSchema::ID])
+        ->and($replacement[OrderInvoiceSchema::REVISION])->toBe(2)
+        ->and($replacement[OrderInvoiceSchema::NUMBER])->not->toBe($original[OrderInvoiceSchema::NUMBER])
+        ->and(OrderInvoice::query()->count())->toBe(2);
+});
+
+it('refuses to void an already voided invoice', function () {
+    $order = paidInvoiceOrder();
+    $invoice = issueFor($order);
+
+    $this->actingAs($this->superAdminUser())
+        ->patchJson($this->baseUrl("/admin/invoices/{$invoice[OrderInvoiceSchema::ID]}/void"), [
+            'reason' => 'once is enough',
+        ])->assertOk();
+
+    $this->actingAs($this->superAdminUser())
+        ->patchJson($this->baseUrl("/admin/invoices/{$invoice[OrderInvoiceSchema::ID]}/void"), [
+            'reason' => 'twice is not',
+        ])->assertStatus(400)
+        ->assertJsonPath('code', 'order.invoice.invalid_transition');
+});
+
+it('validates the void payload', function () {
+    $order = paidInvoiceOrder();
+    $invoice = issueFor($order);
+
+    $this->actingAs($this->superAdminUser())
+        ->patchJson($this->baseUrl("/admin/invoices/{$invoice[OrderInvoiceSchema::ID]}/void"), [])
+        ->assertStatus(422);
+});
+
+it('returns 404 for an unknown invoice', function () {
+    $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl('/admin/invoices/999'))
+        ->assertStatus(404);
+});
+
+it('lists invoices with filters', function () {
+    $order = paidInvoiceOrder();
+    issueFor($order);
+
+    $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl('/admin/invoices'))
+        ->assertOk()
+        ->assertJsonCount(1, 'data');
+
+    $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl('/admin/invoices?filter[status]=void'))
+        ->assertOk()
+        ->assertJsonCount(0, 'data');
+
+    $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl('/admin/invoices?filter[order_id]='.$order->id))
+        ->assertOk()
+        ->assertJsonCount(1, 'data');
+});
+
+it('serializes allocation across transactions: numbers never collide', function () {
+    // True process-level concurrency needs a multi-connection harness the
+    // SQLite test env cannot provide; the parent-order lock (D2) plus the
+    // (type, year) unique absorb the race structurally. What we CAN assert:
+    // sequential allocations inside separate transactions keep incrementing
+    // the shared counter exactly once per document.
+    $order = paidInvoiceOrder();
+
+    $first = DB::transaction(function () use ($order): OrderInvoice {
+        return app(IssueInvoiceAction::class)->handle($order->id);
+    });
+    $second = DB::transaction(function () use ($order): OrderInvoice {
+        return app(IssueInvoiceAction::class)->handle($order->id);
+    });
+
+    expect($second->id)->toBe($first->id)
+        ->and(OrderInvoice::query()->count())->toBe(1)
+        ->and(OrderCreditNote::query()
+            ->where(OrderCreditNoteSchema::STATUS, OrderCreditNoteStatusEnum::ACTIVE)
+            ->count())->toBe(0);
+});

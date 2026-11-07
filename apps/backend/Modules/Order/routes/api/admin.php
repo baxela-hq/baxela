@@ -6,6 +6,10 @@ use Modules\Order\Http\Controllers\Admin\Data\ExportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ImportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ListOrderDataImportsController;
 use Modules\Order\Http\Controllers\Admin\Data\PreviewOrderDataImportController;
+use Modules\Order\Http\Controllers\Admin\Invoice\IssueInvoiceController;
+use Modules\Order\Http\Controllers\Admin\Invoice\ListOrderInvoiceController;
+use Modules\Order\Http\Controllers\Admin\Invoice\ShowOrderInvoiceController;
+use Modules\Order\Http\Controllers\Admin\Invoice\VoidInvoiceController;
 use Modules\Order\Http\Controllers\Admin\Order\ListOrderController;
 use Modules\Order\Http\Controllers\Admin\Order\ShowOrderController;
 use Modules\Order\Http\Controllers\Admin\Order\UpdateOrderController;
@@ -25,6 +29,12 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/returns', ListOrderReturnController::class)->name('returns.list');
     Route::get('/returns/{id}', ShowOrderReturnController::class)->name('returns.show');
     Route::patch('/returns/{id}', UpdateOrderReturnController::class)->name('returns.update');
+
+    // Financial documents (gap-B1): issued invoices and their lifecycle.
+    Route::get('/invoices', ListOrderInvoiceController::class)->name('invoices.list');
+    Route::get('/invoices/{id}', ShowOrderInvoiceController::class)->name('invoices.show');
+    Route::post('/orders/{id}/invoice', IssueInvoiceController::class)->name('orders.invoice.issue');
+    Route::patch('/invoices/{id}/void', VoidInvoiceController::class)->name('invoices.void');
     // The module's own data-transfer endpoints (per-module surface from
     // the transfer standard's phase plan; the central transfer endpoints
     // remain available).

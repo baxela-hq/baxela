@@ -34,4 +34,23 @@ class OrderException extends BaseException
     {
         return new self(ErrorCodeEnum::RETURN_INVALID_TRANSITION->value);
     }
+
+    public static function invoiceNotFound(): OrderException
+    {
+        return new self(ErrorCodeEnum::INVOICE_NOT_FOUND->value, 404);
+    }
+
+    /**
+     * The order does not qualify for invoice issuance: its payment status
+     * is not one of the paid states (paid, partially refunded, refunded).
+     */
+    public static function invoiceIneligible(): OrderException
+    {
+        return new self(ErrorCodeEnum::INVOICE_INELIGIBLE->value);
+    }
+
+    public static function invoiceInvalidTransition(): OrderException
+    {
+        return new self(ErrorCodeEnum::INVOICE_INVALID_TRANSITION->value);
+    }
 }
