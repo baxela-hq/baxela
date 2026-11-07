@@ -304,6 +304,41 @@ class OrderGateway implements OrderGatewayInterface
         return true;
     }
 
+    public function reverseRefund(int $orderId, int $refundedTotalMinor, int $paidTotalMinor): bool
+    {
+        $order = Order::query()
+            ->where(OrderSchema::ID, $orderId)
+            ->lockForUpdate()
+            ->first();
+
+        if (is_null($order)) {
+            return false;
+        }
+
+        // Mirror of applyRefund for gateway-initiated reversals: the
+        // refunded total is recomputed by the caller from the ledger's
+        // success-only rows; the status re-derives downward from those
+        // sums — nothing left refunded returns the order to PAID.
+        if ($refundedTotalMinor <= 0) {
+            $status = OrderPaymentStatusEnum::PAID;
+        } elseif ($paidTotalMinor > 0 && $refundedTotalMinor >= $paidTotalMinor) {
+            $status = OrderPaymentStatusEnum::REFUNDED;
+        } else {
+            $status = OrderPaymentStatusEnum::PARTIALLY_REFUNDED;
+        }
+
+        $order->{OrderSchema::REFUNDED_AMOUNT} = Money::toDecimal($refundedTotalMinor);
+
+        if ($order->{OrderSchema::PAYMENT_STATUS} !== $status
+            && $order->{OrderSchema::PAYMENT_STATUS}->canTransitionTo($status)) {
+            $order->{OrderSchema::PAYMENT_STATUS} = $status;
+        }
+
+        $order->save();
+
+        return true;
+    }
+
     public function markAsShipped(int $orderId): bool
     {
         return $this->applyFulfillmentStatus($orderId, OrderStatusEnum::SHIPPED, OrderShippedEvent::class);

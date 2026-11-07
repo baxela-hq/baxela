@@ -18,6 +18,26 @@ class CheckoutcomClient
     }
 
     /**
+     * Refund a captured payment, full or partial. The request's
+     * `reference` echoes back on the refund webhook events — Baxela
+     * passes its ledger row's uuid so the webhook correlates directly to
+     * the refund. Cko-Idempotency-Key makes a retried call return the
+     * original action instead of creating a second refund.
+     *
+     * @param  array<string, mixed>  $params
+     */
+    public function createRefund(string $paymentId, array $params, ?string $idempotencyKey = null): object
+    {
+        $request = $this->request();
+
+        if ($idempotencyKey !== null && $idempotencyKey !== '') {
+            $request = $request->withHeaders(['Cko-Idempotency-Key' => $idempotencyKey]);
+        }
+
+        return $request->post("/payments/{$paymentId}/refunds", $params)->throw()->object();
+    }
+
+    /**
      * Webhook signature check, verifiable locally: cko-signature is the
      * HMAC-SHA256 of the RAW request body signed with the webhook signing
      * secret — a separate secret from the API key. Hashing re-serialized

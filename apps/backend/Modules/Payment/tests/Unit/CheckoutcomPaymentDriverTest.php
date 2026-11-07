@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Gateways\Drivers\CheckoutcomPaymentDriver;
@@ -215,8 +216,121 @@ it('rejects non-terminal events so the payment stays pending', function (string 
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(['type' => $type])));
 })->throws(PaymentException::class)->with([
     'approved is authorised, not captured' => ['payment_approved'],
-    'refunded is out of scope' => ['payment_refunded'],
 ]);
+
+function checkoutcomRefundInput(array $overrides = []): PaymentRefundInput
+{
+    $base = [
+        'payment_id' => 1,
+        'order_id' => 2,
+        'transaction_id' => '1',
+        'amount' => 10.0,
+        'currency' => 'USD',
+        'currency_decimal_places' => 2,
+        'idempotency_key' => 'refund-uuid-1',
+        'gateway_transaction_id' => 'pay_mbabxz242c5syclbu3swqk43ea',
+    ];
+
+    return new PaymentRefundInput(...array_values(array_merge($base, $overrides)));
+}
+
+it('refunds through the payment id with the echoed reference and the idempotency key', function () {
+    $captured = [];
+    $driver = checkoutcomDriver(function (MockInterface $client) use (&$captured): void {
+        $client->shouldReceive('createRefund')
+            ->once()
+            ->with(
+                'pay_mbabxz242c5syclbu3swqk43ea',
+                Mockery::on(function (array $params) use (&$captured): bool {
+                    $captured = $params;
+
+                    return true;
+                }),
+                'refund-uuid-1',
+            )
+            ->andReturn((object) ['action_id' => 'act_jclzjykecuuu7mmesbk63alzoa', 'status' => 'Pending']);
+    });
+
+    $result = $driver->refund(checkoutcomRefundInput());
+
+    // Acceptance is asynchronous — never completed money movement.
+    expect($result->transaction_id)->toBe('act_jclzjykecuuu7mmesbk63alzoa')
+        ->and($result->accepted_pending)->toBeTrue()
+        ->and($captured['reference'])->toBe('refund-uuid-1')
+        ->and($captured['amount'])->toBe(1000);
+});
+
+it('reports an acceptance without a refund id instead of inventing one', function () {
+    $driver = checkoutcomDriver(function (MockInterface $client): void {
+        $client->shouldReceive('createRefund')->once()->andReturn((object) ['status' => 'Pending']);
+    });
+
+    $result = $driver->refund(checkoutcomRefundInput());
+
+    expect($result->transaction_id)->toBeNull()
+        ->and($result->accepted_pending)->toBeTrue();
+});
+
+it('refuses to refund a payment without a persisted payment id', function () {
+    $driver = checkoutcomDriver(function (MockInterface $client): void {
+        $client->shouldNotReceive('createRefund');
+    });
+
+    $driver->refund(checkoutcomRefundInput(['gateway_transaction_id' => null]));
+})->throws(PaymentException::class, 'payment.refund.not_supported');
+
+it('routes a refunded event to the refund ledger', function () {
+    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+        ->handleWebhook(checkoutcomEvent([
+            'id' => 'evt_refund_1',
+            'type' => 'payment_refunded',
+            'data' => [
+                'action_id' => 'act_jclzjykecuuu7mmesbk63alzoa',
+                'reference' => 'refund-uuid-1',
+                'amount' => 1000,
+                'currency' => 'USD',
+            ],
+        ]));
+
+    expect($result->refund_outcome)->not->toBeNull()
+        ->and($result->refund_outcome->reference)->toBe('refund-uuid-1')
+        ->and($result->refund_outcome->gateway_refund_id)->toBe('act_jclzjykecuuu7mmesbk63alzoa')
+        ->and($result->refund_outcome->status)->toBe('success')
+        ->and($result->refund_outcome->amount_minor)->toBe(1000)
+        ->and($result->refund_outcome->currency)->toBe('USD');
+});
+
+it('routes a refund declined event as a definitive failure', function () {
+    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+        ->handleWebhook(checkoutcomEvent([
+            'id' => 'evt_refund_2',
+            'type' => 'payment_refund_declined',
+            'data' => [
+                'action_id' => 'act_jclzjykecuuu7mmesbk63alzoa',
+                'reference' => 'refund-uuid-1',
+                'amount' => 1000,
+            ],
+        ]));
+
+    expect($result->refund_outcome->status)->toBe('failed');
+});
+
+it('rejects a refund event without a reference', function () {
+    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+        ->handleWebhook(checkoutcomEvent([
+            'id' => 'evt_refund_3',
+            'type' => 'payment_refunded',
+            'data' => ['action_id' => 'act_x', 'amount' => 1000],
+        ]));
+})->throws(PaymentException::class);
+
+it('still persists the payment id from a captured event', function () {
+    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+        ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload()));
+
+    expect($result->refund_outcome)->toBeNull()
+        ->and($result->gateway_transaction_id)->toBe('pay_mbabxz242c5syclbu3swqk43ea');
+});
 
 it('rejects a webhook whose body was modified after signing', function () {
     $tampered = json_encode(checkoutcomEventPayload(['data' => ['id' => 'pay_other', 'reference' => '10', 'status' => 'Captured', 'amount' => 1, 'currency' => 'USD']]), JSON_THROW_ON_ERROR);

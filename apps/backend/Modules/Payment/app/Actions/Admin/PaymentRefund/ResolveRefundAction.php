@@ -15,11 +15,15 @@ use Modules\Payment\Support\FinalizesRefund;
 class ResolveRefundAction
 {
     /**
-     * Close a RECONCILIATION_REQUIRED ledger row: the gateway outcome was
-     * ambiguous (timeout) and an operator has since verified what actually
-     * happened. Confirming success runs the same order-accounting
+     * Close an unresolved ledger row: the gateway outcome was ambiguous
+     * (timeout on reconciliation_required) or is still pending at the
+     * gateway (a stale processing row — reservations are never
+     * age-released, so an operator verifies the provider's actual outcome
+     * before resolving). Confirming success runs the same order-accounting
      * finalization as the live flow; confirming failure frees the
-     * reserved amount.
+     * reserved amount. Late webhooks cannot contradict a resolution:
+     * terminal rows transition to nothing, and a contradicting delivery
+     * is reported for deliberate reconciliation.
      *
      * @param  array{status: string, transaction_id?: string|null}  $data
      *
@@ -43,9 +47,11 @@ class ResolveRefundAction
             [$full] = FinalizesRefund::success($refund, $data[PaymentRefundSchema::TRANSACTION_ID] ?? null);
 
             event(PaymentRefundedEvent::fill([
-                PaymentRefundSchema::ID => (int) $refund->{PaymentRefundSchema::ID},
-                PaymentSchema::ID => (int) $refund->{PaymentRefundSchema::PAYMENT_ID},
-                PaymentSchema::ORDER_ID => (int) $refund->{PaymentRefundSchema::ORDER_ID},
+                // Explicit keys: PaymentRefundSchema::ID and PaymentSchema::ID
+                // are both 'id' and would collide in the fill map.
+                'id' => (int) $refund->{PaymentRefundSchema::ID},
+                'payment_id' => (int) $refund->{PaymentRefundSchema::PAYMENT_ID},
+                'order_id' => (int) $refund->{PaymentRefundSchema::ORDER_ID},
                 PaymentSchema::AMOUNT => (float) $refund->{PaymentRefundSchema::AMOUNT},
                 'full' => $full,
                 PaymentRefundSchema::TRANSACTION_ID => (string) $refund->refresh()->{PaymentRefundSchema::TRANSACTION_ID},

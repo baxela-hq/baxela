@@ -5,17 +5,18 @@ namespace Modules\Payment\Gateways\Drivers;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\RefundWebhookOutcome;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
-use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class AdyenPaymentDriver implements PaymentDriverInterface
+class AdyenPaymentDriver implements RefundableDriver
 {
-    use CannotRefund;
-
     public function __construct(protected AdyenCheckout $adyen) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
@@ -100,7 +101,37 @@ class AdyenPaymentDriver implements PaymentDriverInterface
         // the order (see payment-flow.md).
         $success = ($item['success'] ?? false) === true || ($item['success'] ?? false) === 'true';
 
-        $status = match ($item['eventCode'] ?? null) {
+        $eventCode = $item['eventCode'] ?? null;
+
+        // Refund lifecycle: the outcome routes to the refund ledger. The
+        // refund request's reference (the ledger row's uuid) echoes back
+        // as merchantReference; the refund's own pspReference identifies
+        // the refund and originalReference the original payment. Verify
+        // per event against sandbox payloads that the uuid is actually
+        // echoed — the settle path falls back to the stored gateway
+        // refund id when it is not.
+        if (in_array($eventCode, ['REFUND', 'REFUND_FAILED', 'REFUNDED_REVERSED'], true)) {
+            $amount = is_array($item['amount'] ?? null) ? $item['amount'] : null;
+
+            return new WebhookResult(
+                transaction_id: '',
+                status: PaymentStatusEnum::FAILED->value, // unused on the refund branch
+                refund_outcome: new RefundWebhookOutcome(
+                    reference: $reference,
+                    gateway_refund_id: (string) ($item['pspReference'] ?? ''),
+                    gateway_payment_id: (string) ($item['originalReference'] ?? ''),
+                    status: match ($eventCode) {
+                        'REFUND' => $success ? 'success' : 'failed',
+                        'REFUND_FAILED' => 'failed',
+                        'REFUNDED_REVERSED' => 'reversed',
+                    },
+                    amount_minor: $amount !== null && isset($amount['value']) ? (int) $amount['value'] : null,
+                    currency: $amount !== null && isset($amount['currency']) ? (string) $amount['currency'] : null,
+                ),
+            );
+        }
+
+        $status = match ($eventCode) {
             'AUTHORISATION' => $success
                 ? PaymentStatusEnum::SUCCESS->value
                 : PaymentStatusEnum::FAILED->value,
@@ -110,6 +141,46 @@ class AdyenPaymentDriver implements PaymentDriverInterface
         return new WebhookResult(
             transaction_id: $reference,
             status: $status,
+            // The pspReference is what Adyen's refund API keys on — persist
+            // it at settle time (it never appears on the payment link).
+            gateway_transaction_id: (string) ($item['pspReference'] ?? ''),
+        );
+    }
+
+    public function refund(PaymentRefundInput $input): PaymentRefundResult
+    {
+        // Refunds key on the payment's pspReference, persisted from the
+        // AUTHORISATION webhook. Payments settled before the column
+        // shipped (or an account whose webhook never carried it) have
+        // nothing to refund through the API — refuse instead of guessing.
+        $pspReference = (string) ($input->gateway_transaction_id ?? '');
+
+        if ($pspReference === '') {
+            throw PaymentException::refundNotSupported();
+        }
+
+        $refund = $this->adyen->createRefund($pspReference, [
+            // Echoed back as the REFUND webhook's merchantReference: the
+            // whole bridge back to this ledger row.
+            'reference' => (string) $input->idempotency_key,
+            'merchantAccount' => (string) config('payment.adyen.merchant_account'),
+            'amount' => [
+                'currency' => strtoupper((string) $input->currency),
+                // Adyen wants integer minor units (cents), built from the
+                // payment currency's decimal places.
+                'value' => $this->minorUnits($input->amount, $input->currency_decimal_places ?? 2),
+            ],
+        ], $input->idempotency_key);
+
+        // Acceptance is asynchronous: the definitive outcome arrives via
+        // the REFUND webhook, so this is never treated as completed money
+        // movement. A response without a parseable refund id is still an
+        // acceptance — reconciliation correlates through the echoed uuid.
+        $refundId = (string) ($refund->id ?? $refund->pspReference ?? '');
+
+        return new PaymentRefundResult(
+            transaction_id: $refundId !== '' ? $refundId : null,
+            accepted_pending: true,
         );
     }
 

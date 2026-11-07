@@ -113,10 +113,13 @@ it('reports refund support only for drivers implementing RefundableDriver', func
     expect($manager->supportsRefund(PaymentMethodEnum::MANUAL))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::STRIPE))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::PAYPAL))->toBeTrue()
-        ->and($manager->supportsRefund(PaymentMethodEnum::ADYEN))->toBeFalse()
+        // Adyen and Checkout.com gained refund drivers in gap-B4 (accepted
+        // async, webhook-confirmed); Mercado Pago and Razorpay follow in
+        // stage 2.
+        ->and($manager->supportsRefund(PaymentMethodEnum::ADYEN))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::CHECKOUTCOM))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse()
         ->and($manager->supportsRefund(PaymentMethodEnum::MERCADOPAGO))->toBeFalse()
-        ->and($manager->supportsRefund(PaymentMethodEnum::CHECKOUTCOM))->toBeFalse()
         ->and($manager->supportsRefund(PaymentMethodEnum::RAZORPAY))->toBeFalse();
 
     // An unregistered driver is never refundable, whatever its class.

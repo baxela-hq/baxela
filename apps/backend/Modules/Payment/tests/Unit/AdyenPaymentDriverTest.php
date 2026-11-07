@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
@@ -264,3 +265,139 @@ it('rejects a webhook whose body is not valid json', function () {
     new AdyenPaymentDriver(app(AdyenCheckout::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/adyen', 'POST', [], [], [], [], 'not-json'));
 })->throws(PaymentException::class);
+
+function adyenRefundInput(array $overrides = []): PaymentRefundInput
+{
+    $base = [
+        'payment_id' => 1,
+        'order_id' => 2,
+        'transaction_id' => '1',
+        'amount' => 10.0,
+        'currency' => 'USD',
+        'currency_decimal_places' => 2,
+        'idempotency_key' => 'refund-uuid-1',
+        'gateway_transaction_id' => '8515131751004933',
+    ];
+
+    return new PaymentRefundInput(...array_values(array_merge($base, $overrides)));
+}
+
+it('refunds through the payment psp reference with the echoed reference and the idempotency key', function () {
+    $captured = [];
+    $driver = adyenDriver(function (MockInterface $checkout) use (&$captured): void {
+        $checkout->shouldReceive('createRefund')
+            ->once()
+            ->with(
+                '8515131751004933',
+                Mockery::on(function (array $params) use (&$captured): bool {
+                    $captured = $params;
+
+                    return true;
+                }),
+                'refund-uuid-1',
+            )
+            ->andReturn((object) ['id' => '8515131751004934', 'status' => 'received']);
+    });
+
+    $result = $driver->refund(adyenRefundInput());
+
+    // Acceptance is asynchronous — never completed money movement.
+    expect($result->transaction_id)->toBe('8515131751004934')
+        ->and($result->accepted_pending)->toBeTrue()
+        ->and($captured['reference'])->toBe('refund-uuid-1')
+        ->and($captured['amount'])->toBe(['currency' => 'USD', 'value' => 1000])
+        ->and($captured['merchantAccount'])->toBe('BaxelaECOM');
+});
+
+it('falls back to the psp reference field when the refund response carries no id', function () {
+    $driver = adyenDriver(function (MockInterface $checkout): void {
+        $checkout->shouldReceive('createRefund')
+            ->once()
+            ->andReturn((object) ['pspReference' => '8515131751004935']);
+    });
+
+    $result = $driver->refund(adyenRefundInput());
+
+    expect($result->transaction_id)->toBe('8515131751004935')
+        ->and($result->accepted_pending)->toBeTrue();
+});
+
+it('reports an acceptance without a refund id instead of inventing one', function () {
+    $driver = adyenDriver(function (MockInterface $checkout): void {
+        $checkout->shouldReceive('createRefund')->once()->andReturn((object) ['status' => 'received']);
+    });
+
+    $result = $driver->refund(adyenRefundInput());
+
+    expect($result->transaction_id)->toBeNull()
+        ->and($result->accepted_pending)->toBeTrue();
+});
+
+it('refuses to refund a payment without a persisted psp reference', function () {
+    $driver = adyenDriver(function (MockInterface $checkout): void {
+        $checkout->shouldNotReceive('createRefund');
+    });
+
+    $driver->refund(adyenRefundInput(['gateway_transaction_id' => null]));
+})->throws(PaymentException::class, 'payment.refund.not_supported');
+
+it('routes a successful refund notification to the refund ledger', function () {
+    $result = new AdyenPaymentDriver(app(AdyenCheckout::class))
+        ->handleWebhook(adyenWebhook(adyenItem([
+            'eventCode' => 'REFUND',
+            'merchantReference' => 'refund-uuid-1',
+            'originalReference' => '8515131751004933',
+            'pspReference' => '8515131751004934',
+            'amount' => ['currency' => 'USD', 'value' => 1000],
+        ])));
+
+    expect($result->refund_outcome)->not->toBeNull()
+        ->and($result->refund_outcome->reference)->toBe('refund-uuid-1')
+        ->and($result->refund_outcome->gateway_refund_id)->toBe('8515131751004934')
+        ->and($result->refund_outcome->gateway_payment_id)->toBe('8515131751004933')
+        ->and($result->refund_outcome->status)->toBe('success')
+        ->and($result->refund_outcome->amount_minor)->toBe(1000)
+        ->and($result->refund_outcome->currency)->toBe('USD');
+});
+
+it('routes a failed refund notification as a definitive failure', function () {
+    $result = new AdyenPaymentDriver(app(AdyenCheckout::class))
+        ->handleWebhook(adyenWebhook(adyenItem([
+            'eventCode' => 'REFUND_FAILED',
+            'merchantReference' => 'refund-uuid-1',
+            'originalReference' => '8515131751004933',
+        ])));
+
+    expect($result->refund_outcome->status)->toBe('failed');
+});
+
+it('routes a rejected refund notification as a failure', function () {
+    $result = new AdyenPaymentDriver(app(AdyenCheckout::class))
+        ->handleWebhook(adyenWebhook(adyenItem([
+            'eventCode' => 'REFUND',
+            'success' => false,
+            'merchantReference' => 'refund-uuid-1',
+            'originalReference' => '8515131751004933',
+        ])));
+
+    expect($result->refund_outcome->status)->toBe('failed');
+});
+
+it('routes a reversed refund notification as a reversal', function () {
+    $result = new AdyenPaymentDriver(app(AdyenCheckout::class))
+        ->handleWebhook(adyenWebhook(adyenItem([
+            'eventCode' => 'REFUNDED_REVERSED',
+            'merchantReference' => 'refund-uuid-1',
+            'originalReference' => '8515131751004933',
+        ])));
+
+    expect($result->refund_outcome->status)->toBe('reversed');
+});
+
+it('still persists the payment psp reference from an authorisation webhook', function () {
+    $result = new AdyenPaymentDriver(app(AdyenCheckout::class))
+        ->handleWebhook(adyenWebhook(adyenItem()));
+
+    expect($result->refund_outcome)->toBeNull()
+        ->and($result->gateway_transaction_id)->toBe('8515131751004933');
+});

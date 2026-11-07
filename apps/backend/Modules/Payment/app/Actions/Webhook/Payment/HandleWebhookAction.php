@@ -13,6 +13,7 @@ use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
+use RuntimeException;
 
 class HandleWebhookAction
 {
@@ -27,12 +28,38 @@ class HandleWebhookAction
             ->forName($driver)
             ->handleWebhook($request);
 
+        // A refund-lifecycle outcome routes to the refund ledger, never to
+        // payment settlement — the two branches never touch each other's
+        // rows.
+        if ($result->refund_outcome !== null) {
+            app(ConfirmRefundOutcomeAction::class)->handle($result);
+
+            return;
+        }
+
         $payment = $this->model->query()
             ->where(PaymentSchema::TRANSACTION_ID, $result->transaction_id)
             ->first();
 
         if (is_null($payment)) {
             throw PaymentException::webhookInvalid();
+        }
+
+        // Persist the gateway-side payment identifier the refund APIs key
+        // on — the authoritative id arrives with the settling webhook. A
+        // conflicting value on a re-delivery is an integrity warning, not
+        // a reason to reject the (already idempotent) settle.
+        if ($result->gateway_transaction_id !== null) {
+            $stored = $payment->{PaymentSchema::GATEWAY_TRANSACTION_ID};
+
+            if ((string) $stored === '') {
+                $payment->update([PaymentSchema::GATEWAY_TRANSACTION_ID => $result->gateway_transaction_id]);
+            } elseif ((string) $stored !== $result->gateway_transaction_id) {
+                report(new RuntimeException(
+                    "payment {$payment->id} gateway transaction id mismatch:"
+                    ." stored {$stored}, webhook announced {$result->gateway_transaction_id}",
+                ));
+            }
         }
 
         // Idempotent: gateway retries for a settled payment are acked as no-ops

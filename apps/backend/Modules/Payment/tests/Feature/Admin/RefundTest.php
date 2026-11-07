@@ -1,12 +1,19 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
+use Mockery\MockInterface;
 use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Events\Payment\PaymentRefundedEvent;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
+use Modules\Payment\Actions\Admin\PaymentRefund\ReverseRefundAction;
+use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentRefund;
 use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
@@ -40,6 +47,22 @@ function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides
     ]);
 
     return [$order, $payment];
+}
+
+/**
+ * Same as above but for a gateway method, carrying the gateway-side
+ * payment id the refund APIs key on.
+ */
+function paidOrderWithGatewayPayment(float $amount = 100.0, PaymentMethodEnum $method = PaymentMethodEnum::MANUAL): array
+{
+    [$order, $payment] = paidOrderWithManualPayment($amount);
+
+    $payment->update([
+        PaymentSchema::METHOD => $method,
+        PaymentSchema::GATEWAY_TRANSACTION_ID => 'psp-'.uniqid(),
+    ]);
+
+    return [$order->refresh(), $payment->refresh()];
 }
 
 function refundPayload(float $amount, string $reason = 'customer return'): array
@@ -76,10 +99,13 @@ it('rejects a refund on a gateway without refund support and records the failed 
 
     $payment = Payment::query()->create([
         PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        PaymentSchema::METHOD => PaymentMethodEnum::ADYEN,
+        // NowPayments is the remaining non-refundable driver: crypto
+        // payments cannot be reversed provider-side. (Adyen grew a refund
+        // driver in gap-B4.)
+        PaymentSchema::METHOD => PaymentMethodEnum::NOWPAYMENTS,
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => 100.0,
-        PaymentSchema::TRANSACTION_ID => 'adyen-'.uniqid(),
+        PaymentSchema::TRANSACTION_ID => 'nowpayments-'.uniqid(),
     ]);
 
     $this->actingAs($this->superAdminUser())
@@ -91,6 +117,68 @@ it('rejects a refund on a gateway without refund support and records the failed 
     expect(PaymentRefund::query()->count())->toBe(1)
         ->and(PaymentRefund::query()->first()->{PaymentRefundSchema::STATUS})->toBe(PaymentRefundStatusEnum::FAILED)
         ->and((float) $order->refresh()->{OrderSchema::REFUNDED_AMOUNT})->toBe(0.0);
+});
+
+it('holds an async-accepted refund in processing without firing the refunded event', function () {
+    Event::fake();
+
+    [$order, $payment] = paidOrderWithGatewayPayment(100, PaymentMethodEnum::PAYPAL);
+
+    $this->mock(PaypalPaymentDriver::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('refund')->once()->andReturn(new PaymentRefundResult(
+            transaction_id: 'rf-async-1',
+            accepted_pending: true,
+        ));
+    });
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/payments/{$payment->id}/refunds"), refundPayload(100))
+        ->assertCreated()
+        ->assertJsonPath('data.status', PaymentRefundStatusEnum::PROCESSING->value);
+
+    // Accepted is not completed: no refunded event, no order accounting,
+    // and the reserved amount still fences the refundable balance.
+    Event::assertNotDispatched(PaymentRefundedEvent::class);
+
+    expect((float) $order->refresh()->{OrderSchema::REFUNDED_AMOUNT})->toBe(0.0)
+        ->and($order->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/payments/{$payment->id}/refunds"), refundPayload(1))
+        ->assertStatus(400)
+        ->assertJsonPath('code', 'payment.refund.exceeds_refundable');
+});
+
+it('keeps the webhook outcome when it beats the accept response home', function () {
+    [$order, $payment] = paidOrderWithGatewayPayment(100, PaymentMethodEnum::PAYPAL);
+
+    $this->mock(PaypalPaymentDriver::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('refund')->once()->andReturnUsing(
+            function (PaymentRefundInput $input): PaymentRefundResult {
+                // Simulate the gateway webhook arriving before the accept
+                // HTTP response: the row is reversed out from under the
+                // still-running accept path.
+                $refund = PaymentRefund::query()
+                    ->where(PaymentRefundSchema::UUID, $input->idempotency_key)
+                    ->first();
+
+                app(ReverseRefundAction::class)->handle($refund);
+
+                return new PaymentRefundResult(transaction_id: 'rf-raced', accepted_pending: true);
+            },
+        );
+    });
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/payments/{$payment->id}/refunds"), refundPayload(100))
+        ->assertCreated()
+        ->assertJsonPath('data.status', PaymentRefundStatusEnum::REVERSED->value);
+
+    // The conditional accept-path update must not overwrite the reversal:
+    // no accounting was ever applied and the reservation is released.
+    expect((float) $order->refresh()->{OrderSchema::REFUNDED_AMOUNT})->toBe(0.0)
+        ->and($order->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID)
+        ->and(PaymentRefund::query()->first()->{PaymentRefundSchema::TRANSACTION_ID})->toBeNull();
 });
 
 it('derives partially_refunded from order-level totals while remainder stays', function () {

@@ -21,6 +21,15 @@ class PaymentSchema
 
     public const string TRANSACTION_ID = 'transaction_id';
 
+    /**
+     * The gateway-side payment identifier (Adyen pspReference, Checkout/MP
+     * payment id, Razorpay pay_ id), persisted by the webhook settle path
+     * — refund APIs key on it, unlike TRANSACTION_ID which stays the
+     * internal webhook match key. Payments settled before the column
+     * shipped carry NULL and refuse gateway refunds explicitly.
+     */
+    public const string GATEWAY_TRANSACTION_ID = 'gateway_transaction_id';
+
     public const string METHOD = 'method';
 
     public const string AMOUNT = 'amount';

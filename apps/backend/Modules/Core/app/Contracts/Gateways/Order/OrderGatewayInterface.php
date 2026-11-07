@@ -38,6 +38,17 @@ interface OrderGatewayInterface
      */
     public function applyRefund(int $orderId, int $refundedTotalMinor, int $paidTotalMinor): bool;
 
+    /**
+     * The gateway reversed a previously successful refund: restore the
+     * order's refunded_amount from the SUCCESS-only refund sums (passed
+     * precomputed by the caller) and re-derive the payment status — PAID
+     * when nothing remains refunded, PARTIALLY_REFUNDED while
+     * 0 < refunded < paid. The downward legs on OrderPaymentStatusEnum
+     * exist for this restore; the forward-only applyRefund is untouched.
+     * Both arguments are integer minor units.
+     */
+    public function reverseRefund(int $orderId, int $refundedTotalMinor, int $paidTotalMinor): bool;
+
     public function markAsShipped(int $orderId): bool;
 
     public function markAsDelivered(int $orderId): bool;

@@ -18,6 +18,26 @@ class AdyenCheckout
     }
 
     /**
+     * Refund a captured payment, full or partial. The request's
+     * `reference` echoes back as the REFUND webhook's merchantReference —
+     * Baxela passes its ledger row's uuid so the webhook correlates
+     * directly to the refund. The Idempotency-Key makes a retried call
+     * return the original refund instead of creating a second one.
+     *
+     * @param  array<string, mixed>  $params
+     */
+    public function createRefund(string $paymentPspReference, array $params, ?string $idempotencyKey = null): object
+    {
+        $request = $this->request();
+
+        if ($idempotencyKey !== null && $idempotencyKey !== '') {
+            $request = $request->withHeaders(['Idempotency-Key' => $idempotencyKey]);
+        }
+
+        return $request->post("/payments/{$paymentPspReference}/refunds", $params)->throw()->object();
+    }
+
+    /**
      * Standard-webhook HMAC check, verifiable locally (unlike PayPal's
      * certificate check): Adyen signs the canonical string
      * pspReference:originalReference:merchantAccountCode:merchantReference:

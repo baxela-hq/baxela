@@ -149,14 +149,36 @@ acked as no-ops).
   Adyen webhooks never carry the link id — the `AUTHORISATION`
   notification matches back via `merchantReference` — so the
   merchant-chosen reference (our payment id, not a gateway id) is what
-  doubles as the stored `transaction_id`. The link id and pspReference
-  are not persisted; find them in the Customer Area by merchantReference.
+  doubles as the stored `transaction_id`; the pspReference arriving on
+  that notification is persisted as `gateway_transaction_id`, because
+  the refund API keys on it. The link id is not persisted; find it in
+  the Customer Area by merchantReference.
 - `handleWebhook` verifies the standard-webhook HMAC locally (canonical
   string `pspReference:originalReference:merchantAccountCode:
   merchantReference:success`, `\` and `:` escaped, key base64-decoded —
   no API call, unlike PayPal) and maps `AUTHORISATION` success →
-  success, failure → failed. Subscribe the webhook to `AUTHORISATION`
-  only, at `POST /api/v1/payment/webhook/adyen`, and ack with 200.
+  success, failure → failed, and the refund lifecycle (`REFUND`,
+  `REFUND_FAILED`, `REFUNDED_REVERSED`) to the refund ledger. Subscribe
+  the webhook to the standard events at
+  `POST /api/v1/payment/webhook/adyen` and ack with 200. Acceptance
+  gate: verify per event against sandbox payloads that the refund's
+  correlation field is echoed (`merchantReference` = the refund
+  request's `reference`) — a reversal never associates with the wrong
+  refund; the fallback key is the stored gateway refund id.
+- **Refunds:** `refund` calls `POST /payments/{psp}/refunds` with the
+  ledger uuid as both `reference` (echoed back as the webhook's
+  `merchantReference`) and `Idempotency-Key`, and integer minor units.
+  A 2xx means accepted, not completed: the ledger row moves to
+  `processing` and stays reserved until the `REFUND` webhook confirms
+  (success) or rejects (`REFUND_FAILED` → failed; on an already
+  finalized refund → the reversal path restores the accounting;
+  `REFUNDED_REVERSED` reverses a completed refund in either webhook
+  order — from a pre-terminal row no accounting was ever applied, from
+  a `success` row the order's refunded total is recomputed from the
+  ledger's success-only rows). A refund on a payment without a
+  persisted pspReference (settled before the column shipped) refuses
+  explicitly with `payment.refund.not_supported` — refund it in the
+  Customer Area.
 - Single-item deliveries only: `WebhookResult` settles exactly one
   payment per request, so multi-item batches are rejected rather than
   half-processed — an architectural boundary of the driver contract, not
@@ -256,8 +278,9 @@ acked as no-ops).
   the stored `transaction_id`; integer minor-units `amount`; a
   `{order_code}`-templated `return_url`). The hosted URL is read from
   the response `_links` map (`payment-link` relation); its absence fails
-  loudly. The link id and `pay_…` id are not persisted; find them in the
-  Hub by reference.
+  loudly. The `pay_…` id arriving on `payment_captured` (`data.id`) is
+  persisted as `gateway_transaction_id` — the refund API keys on it. The
+  link id is not persisted; find it in the Hub by reference.
 - `handleWebhook` verifies `cko-signature` — HMAC-SHA256 over the
   **exact raw request bytes** (hex or base64 encoded, both accepted) —
   locally, like Stripe's raw-body HMAC. Hashing a re-serialized payload
@@ -269,8 +292,19 @@ acked as no-ops).
   `payment_declined`/`payment_capture_declined`/`payment_canceled`/
   `payment_expired` → failed; everything else stays PENDING until the
   terminal event (the deferred-payment pattern). Subscribe the webhook
-  to exactly that event set at
+  to exactly that event set **plus the refund events** at
   `POST /api/v1/payment/webhook/checkoutcom`.
+- **Refunds:** `refund` calls `POST /payments/{pay_…}/refunds` with the
+  ledger uuid as both `reference` (echoed back on the refund events) and
+  `Cko-Idempotency-Key`, and integer minor units. A 2xx means accepted,
+  not completed: the ledger row moves to `processing` and stays reserved
+  until `payment_refunded` (success) or `payment_refund_declined`
+  (failure; on an already finalized refund → the reversal path restores
+  the accounting) confirms. A refund on a payment without a persisted
+  `pay_` id (settled before the column shipped) refuses explicitly with
+  `payment.refund.not_supported` — refund it in the Hub. Acceptance
+  gate: verify the refund events' payload fields (`data.reference`,
+  `data.action_id`, payment association) against sandbox deliveries.
 - Local dev note: same as the others — tunnel the backend and register
   the URL as the webhook endpoint in the Hub sandbox.
 
