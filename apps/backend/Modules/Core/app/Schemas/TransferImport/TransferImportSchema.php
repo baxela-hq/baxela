@@ -1,15 +1,14 @@
 <?php
 
-namespace Modules\Transfer\Schemas\TransferImport;
+namespace Modules\Core\Schemas\TransferImport;
 
 use Modules\Core\Schemas\Shared\PkAndTimestampsTrait;
-use Modules\Transfer\Schemas\Module;
 
 class TransferImportSchema
 {
     use PkAndTimestampsTrait;
 
-    public const string TABLE = Module::DB_PREFIX.'imports';
+    public const string TABLE = 'transfer_imports';
 
     public const string USER_ID = 'user_id';
 

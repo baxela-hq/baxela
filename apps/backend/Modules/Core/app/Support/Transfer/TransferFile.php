@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transfer\Support;
+namespace Modules\Core\Support\Transfer;
 
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use RuntimeException;

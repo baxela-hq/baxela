@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transfer\Http\Requests\Admin;
+namespace Modules\Core\Http\Requests\Transfer;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 
 class TransferPreviewRequest extends FormRequest
 {
@@ -13,7 +13,7 @@ class TransferPreviewRequest extends FormRequest
             TransferImportSchema::REQ_FILE => [
                 'required',
                 'file',
-                'max:'.(int) config('transfer.max_upload_kb'),
+                'max:'.(int) config('core.transfer.max_upload_kb'),
                 'extensions:json',
             ],
         ];

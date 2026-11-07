@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transfer\Exceptions;
+namespace Modules\Core\Exceptions\Transfer;
 
 use Modules\Core\Exceptions\ErrorCodeInterface;
 

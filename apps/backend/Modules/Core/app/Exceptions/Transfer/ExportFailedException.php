@@ -1,9 +1,8 @@
 <?php
 
-namespace Modules\Transfer\Exceptions\Transfer;
+namespace Modules\Core\Exceptions\Transfer;
 
 use Modules\Core\Exceptions\BaseException;
-use Modules\Transfer\Exceptions\ErrorCodeEnum;
 use Throwable;
 
 class ExportFailedException extends BaseException

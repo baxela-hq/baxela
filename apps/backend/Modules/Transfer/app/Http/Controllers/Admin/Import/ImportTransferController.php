@@ -4,11 +4,11 @@ namespace Modules\Transfer\Http\Controllers\Admin\Import;
 
 use App\Http\Controllers\Controller;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Http\Requests\Transfer\TransferImportRequest;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Transformers\Transfer\TransferImportResultResource;
 use Modules\Transfer\Actions\Admin\Import\ImportTransferAction;
 use Modules\Transfer\Exceptions\Transfer\ImportFailedException;
-use Modules\Transfer\Http\Requests\Admin\TransferImportRequest;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
-use Modules\Transfer\Transformers\Admin\TransferImportResultResource;
 
 class ImportTransferController extends Controller
 {

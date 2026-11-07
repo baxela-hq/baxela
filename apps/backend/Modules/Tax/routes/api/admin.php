@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Tax\Http\Controllers\Admin\Data\ExportTaxDataController;
+use Modules\Tax\Http\Controllers\Admin\Data\ImportTaxDataController;
+use Modules\Tax\Http\Controllers\Admin\Data\ListTaxDataImportsController;
+use Modules\Tax\Http\Controllers\Admin\Data\PreviewTaxDataImportController;
 use Modules\Tax\Http\Controllers\Admin\TaxClass\CreateTaxClassController;
 use Modules\Tax\Http\Controllers\Admin\TaxClass\DeleteTaxClassController;
 use Modules\Tax\Http\Controllers\Admin\TaxClass\ListTaxClassController;
@@ -25,4 +29,12 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/tax-rates/{id}', ShowTaxRateController::class)->name('tax-rates.show');
     Route::patch('/tax-rates/{id}', UpdateTaxRateController::class)->name('tax-rates.update');
     Route::delete('/tax-rates/{id}', DeleteTaxRateController::class)->name('tax-rates.delete');
+
+    // The module's own data-transfer endpoints (per-module surface from
+    // the transfer standard's phase plan; the central transfer endpoints
+    // remain available).
+    Route::get('/data/export', ExportTaxDataController::class)->name('data.export');
+    Route::post('/data/import/preview', PreviewTaxDataImportController::class)->name('data.import.preview');
+    Route::post('/data/import', ImportTaxDataController::class)->name('data.import');
+    Route::get('/data/imports', ListTaxDataImportsController::class)->name('data.imports.list');
 });

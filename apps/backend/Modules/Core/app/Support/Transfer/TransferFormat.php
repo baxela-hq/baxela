@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transfer\Support;
+namespace Modules\Core\Support\Transfer;
 
 /**
  * Contract of the platform module data-transfer file (the import/export

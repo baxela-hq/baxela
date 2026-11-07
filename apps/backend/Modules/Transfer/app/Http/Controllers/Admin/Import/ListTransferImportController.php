@@ -4,8 +4,8 @@ namespace Modules\Transfer\Http\Controllers\Admin\Import;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Core\Transformers\Transfer\TransferImportResource;
 use Modules\Transfer\Actions\Admin\Import\ListTransferImportAction;
-use Modules\Transfer\Transformers\Admin\TransferImportResource;
 
 class ListTransferImportController extends Controller
 {

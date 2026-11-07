@@ -2,10 +2,10 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
+use Modules\Core\Models\TransferImport;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Models\TaxRate;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
-use Modules\Transfer\Models\TransferImport;
 use Modules\Transfer\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);

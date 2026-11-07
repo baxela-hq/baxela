@@ -9799,6 +9799,42 @@ parameters:
 			path: Modules/Core/app/Exceptions/Tax/TaxConfigurationException.php
 
 		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ExportFailedException.php
+
+		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ExportFailedException.php
+
+		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ImportFailedException.php
+
+		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ImportFailedException.php
+
+		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ModuleNotSupportedException.php
+
+		-
+			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Exceptions/Transfer/ModuleNotSupportedException.php
+
+		-
 			message: '#^Method Modules\\Core\\Gateways\\CoreGateway\:\:getActiveCurrencies\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -9829,6 +9865,12 @@ parameters:
 			path: Modules/Core/app/Gateways/CoreGateway.php
 
 		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Core\\Models\\TransferImport\>\:\:allowedSorts\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/app/Http/Controllers/Transfer/ModuleTransferImportsListController.php
+
+		-
 			message: '#^Method Modules\\Core\\Http\\Middleware\\AssignRequestId\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -9851,6 +9893,18 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: Modules/Core/app/Http/Middleware/PermissionMiddleware.php
+
+		-
+			message: '#^Method Modules\\Core\\Http\\Requests\\Transfer\\TransferImportRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Http/Requests/Transfer/TransferImportRequest.php
+
+		-
+			message: '#^Method Modules\\Core\\Http\\Requests\\Transfer\\TransferPreviewRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Http/Requests/Transfer/TransferPreviewRequest.php
 
 		-
 			message: '#^Method Modules\\Core\\Listeners\\LogAllEvents\:\:handle\(\) has parameter \$event with no type specified\.$#'
@@ -10409,6 +10463,42 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
+
+		-
+			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportPreviewResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportPreviewResource.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportPreviewResource.php
+
+		-
+			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportResource.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(TransferImport  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 87 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportResource.php
+
+		-
+			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportResultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportResultResource.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: Modules/Core/app/Transformers/Transfer/TransferImportResultResource.php
 
 		-
 			message: '#^Instanceof between Illuminate\\Http\\Request and Illuminate\\Http\\Request will always evaluate to true\.$#'
@@ -20191,6 +20281,90 @@ parameters:
 			path: Modules/Tax/tests/Feature/HelperTrait.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$tax_class_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedTaxFile\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedCountries\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferTax\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
 			identifier: method.notFound
 			count: 9
@@ -20203,52 +20377,22 @@ parameters:
 			path: Modules/Tax/tests/Unit/TaxGatewayTest.php
 
 		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^PHPDoc tag @throws with type Modules\\Transfer\\Exceptions\\Transfer\\ExportFailedException\|Modules\\Transfer\\Exceptions\\Transfer\\ModuleNotSupportedException is not subtype of Throwable$#'
+			identifier: throws.notThrowable
 			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ExportFailedException.php
+			path: Modules/Transfer/app/Http/Controllers/Admin/Export/ExportTransferController.php
 
 		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^PHPDoc tag @throws with type Modules\\Transfer\\Exceptions\\Transfer\\ImportFailedException is not subtype of Throwable$#'
+			identifier: throws.notThrowable
 			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ExportFailedException.php
+			path: Modules/Transfer/app/Http/Controllers/Admin/Import/ImportTransferController.php
 
 		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
+			message: '#^PHPDoc tag @throws with type Modules\\Transfer\\Exceptions\\Transfer\\ImportFailedException is not subtype of Throwable$#'
+			identifier: throws.notThrowable
 			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ImportFailedException.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ImportFailedException.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ModuleNotSupportedException.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Exceptions/Transfer/ModuleNotSupportedException.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Http\\Requests\\Admin\\TransferImportRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Http/Requests/Admin/TransferImportRequest.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Http\\Requests\\Admin\\TransferPreviewRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Http/Requests/Admin/TransferPreviewRequest.php
+			path: Modules/Transfer/app/Http/Controllers/Admin/Import/PreviewTransferImportController.php
 
 		-
 			message: '#^Method Modules\\Transfer\\Providers\\TransferServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
@@ -20261,42 +20405,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Transfer/app/Providers/TransferServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Transformers\\Admin\\TransferImportPreviewResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportPreviewResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportPreviewResource.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Transformers\\Admin\\TransferImportResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(TransferImport  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 87 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportResource.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Transformers\\Admin\\TransferImportResultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferImportResultResource.php
 
 		-
 			message: '#^Method Modules\\Transfer\\Transformers\\Admin\\TransferModuleResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -20409,25 +20517,31 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 9
+			count: 10
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 15
+			count: 16
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedTaxFile\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
+			path: Modules/Transfer/tests/Feature/TransferImportTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:post\(\)\.$#'
+			identifier: method.notFound
+			count: 1
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
@@ -20439,25 +20553,25 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedCountries\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 8
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferTax\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 8
+			count: 9
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
 			identifier: method.notFound
-			count: 13
+			count: 14
 			path: Modules/Transfer/tests/Feature/TransferImportTest.php
 
 		-

@@ -2,16 +2,17 @@
 
 namespace Modules\Transfer\Actions\Admin\Import;
 
-use Modules\Transfer\Exceptions\Transfer\ImportFailedException;
-use Modules\Transfer\Support\TransferFile;
-use Modules\Transfer\Support\TransferFormat;
+use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
+use Modules\Core\Exceptions\Transfer\ImportFailedException;
+use Modules\Core\Support\Transfer\ModuleTransferRunner;
+use Modules\Core\Support\Transfer\TransferFile;
 use Modules\Transfer\Support\TransferRegistry;
 use RuntimeException;
 
 /**
- * Structure check of an uploaded transfer file: envelope, the owning
- * module's declared sections, per-section row counts, the row cap and
- * which sections would be skipped because they are export-only.
+ * Structure check of an uploaded transfer file against the module the
+ * file declares. The file plane lives in the Core runner; this action
+ * resolves the owning module through the registry.
  */
 class PreviewTransferImportAction
 {
@@ -24,6 +25,18 @@ class PreviewTransferImportAction
      */
     public function handle(string $filename, string $content): array
     {
+        [$module, $transfer] = $this->resolve($content);
+
+        return app(ModuleTransferRunner::class)->preview($filename, $content, $module, $transfer);
+    }
+
+    /**
+     * @return array{string, ModuleTransferInterface}
+     *
+     * @throws ImportFailedException with an `unknown_module:{name}` reason
+     */
+    private function resolve(string $content): array
+    {
         try {
             $file = TransferFile::decode($content);
         } catch (RuntimeException $e) {
@@ -31,58 +44,12 @@ class PreviewTransferImportAction
         }
 
         $module = TransferFile::module($file);
-        $transfer = $this->registry->forModule($module);
 
+        $transfer = $this->registry->forModule($module);
         if ($transfer === null) {
             throw new ImportFailedException(meta: ['reason' => 'unknown_module:'.$module]);
         }
 
-        try {
-            $sections = TransferFile::orderedSections($file, $transfer);
-        } catch (RuntimeException $e) {
-            throw new ImportFailedException(meta: ['reason' => $e->getMessage()]);
-        }
-
-        $rowCap = (int) config('transfer.row_cap');
-        $declared = [];
-        foreach ($transfer->sections() as $section) {
-            $declared[$section->key] = $section;
-        }
-
-        $sectionRows = [];
-        $totalRows = 0;
-        $warnings = [];
-        foreach ($transfer->sections() as $section) {
-            if (! isset($sections[$section->key])) {
-                continue;
-            }
-
-            $count = count($sections[$section->key]);
-            $totalRows += $count;
-            $sectionRows[] = [
-                TransferFormat::KEY_ENTITY => $section->key,
-                'rows' => $count,
-            ];
-
-            if (! $section->importable) {
-                $warnings[] = 'not_importable:'.$section->key;
-            }
-        }
-
-        if ($totalRows > $rowCap) {
-            $warnings[] = 'row_cap_exceeded';
-        }
-
-        return [
-            'filename' => $filename,
-            'format' => $file[TransferFormat::KEY_FORMAT],
-            'module' => $module,
-            'version' => (int) $file[TransferFormat::KEY_VERSION],
-            'exported_at' => $file[TransferFormat::KEY_EXPORTED_AT] ?? null,
-            'sections' => $sectionRows,
-            'total_rows' => $totalRows,
-            'row_cap' => $rowCap,
-            'warnings' => $warnings,
-        ];
+        return [$module, $transfer];
     }
 }

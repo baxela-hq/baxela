@@ -4,11 +4,11 @@ namespace Modules\Transfer\Http\Controllers\Admin\Import;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Modules\Core\Http\Requests\Transfer\TransferPreviewRequest;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Transformers\Transfer\TransferImportPreviewResource;
 use Modules\Transfer\Actions\Admin\Import\PreviewTransferImportAction;
 use Modules\Transfer\Exceptions\Transfer\ImportFailedException;
-use Modules\Transfer\Http\Requests\Admin\TransferPreviewRequest;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
-use Modules\Transfer\Transformers\Admin\TransferImportPreviewResource;
 
 class PreviewTransferImportController extends Controller
 {

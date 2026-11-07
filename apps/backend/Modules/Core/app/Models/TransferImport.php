@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transfer\Models;
+namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
-use Modules\Transfer\Schemas\TransferImport\TransferImportStatusEnum;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
 
 class TransferImport extends Model
 {

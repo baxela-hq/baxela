@@ -2,7 +2,7 @@
 
 namespace Modules\Transfer\Actions\Admin\Import;
 
-use Modules\Transfer\Models\TransferImport;
+use Modules\Core\Models\TransferImport;
 
 class ShowTransferImportAction
 {

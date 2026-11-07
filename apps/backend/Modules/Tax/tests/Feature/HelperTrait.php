@@ -2,6 +2,8 @@
 
 namespace Modules\Tax\Tests\Feature;
 
+use Illuminate\Http\Testing\File;
+use Illuminate\Http\UploadedFile;
 use Modules\Auth\Models\User;
 use Modules\Core\Models\Country;
 use Modules\Tax\Models\TaxClass;
@@ -53,5 +55,49 @@ trait HelperTrait
             TaxRateSchema::RATE => $rate,
             TaxRateSchema::IS_ACTIVE => $isActive,
         ]);
+    }
+
+    /** Compact but complete tax data: two classes, one rate. */
+    public function seedTransferTax(): array
+    {
+        $default = TaxClass::query()->create([
+            TaxClassSchema::NAME => 'standard',
+            TaxClassSchema::IS_DEFAULT => true,
+            TaxClassSchema::IS_SHIPPING => false,
+        ]);
+        $reduced = TaxClass::query()->create([
+            TaxClassSchema::NAME => 'reduced',
+            TaxClassSchema::IS_DEFAULT => false,
+            TaxClassSchema::IS_SHIPPING => true,
+        ]);
+        $rate = TaxRate::query()->create([
+            TaxRateSchema::NAME => 'VAT',
+            TaxRateSchema::COUNTRY_CODE => 'DE',
+            TaxRateSchema::TAX_CLASS_ID => $default->id,
+            TaxRateSchema::RATE => '19.0000',
+            TaxRateSchema::IS_ACTIVE => true,
+        ]);
+
+        return ['default' => $default, 'reduced' => $reduced, 'rate' => $rate];
+    }
+
+    /**
+     * Export through the module's own data endpoint and return the
+     * decoded envelope.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportedTaxFile(): array
+    {
+        return json_decode(
+            $this->getJson($this->baseUrl('/admin/data/export'))->assertOk()->streamedContent(),
+            true
+        );
+    }
+
+    /** The multipart file field for the data-import endpoints. */
+    public function transferFile(string $content, string $name = 'transfer.json'): File
+    {
+        return UploadedFile::fake()->createWithContent($name, $content);
     }
 }

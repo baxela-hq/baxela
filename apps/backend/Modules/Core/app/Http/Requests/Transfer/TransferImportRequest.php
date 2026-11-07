@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transfer\Http\Requests\Admin;
+namespace Modules\Core\Http\Requests\Transfer;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 
 class TransferImportRequest extends FormRequest
 {
@@ -31,7 +31,7 @@ class TransferImportRequest extends FormRequest
             TransferImportSchema::REQ_FILE => [
                 'required',
                 'file',
-                'max:'.(int) config('transfer.max_upload_kb'),
+                'max:'.(int) config('core.transfer.max_upload_kb'),
                 'extensions:json',
             ],
             TransferImportSchema::REQ_ON_DUPLICATE => ['required', Rule::in([

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transfer\Schemas\TransferImport;
+namespace Modules\Core\Schemas\TransferImport;
 
 enum TransferImportStatusEnum: string
 {

@@ -4,8 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
-use Modules\Transfer\Schemas\TransferImport\TransferImportStatusEnum;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
 
 return new class extends Migration
 {

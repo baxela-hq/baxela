@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transfer\Transformers\Admin;
+namespace Modules\Core\Transformers\Transfer;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Transfer\Models\TransferImport;
-use Modules\Transfer\Schemas\TransferImport\TransferImportSchema;
+use Modules\Core\Models\TransferImport;
+use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 
 /** @mixin TransferImport */
 class TransferImportResource extends JsonResource
