@@ -1,0 +1,30 @@
+meta {
+  name: Void Invoice
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/order/admin/invoices/1/void
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "reason": "wrong billing address"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

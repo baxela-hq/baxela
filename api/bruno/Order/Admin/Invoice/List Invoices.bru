@@ -1,0 +1,30 @@
+meta {
+  name: List Invoices
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/order/admin/invoices
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~filter[status]: active
+  ~filter[order_id]: 1
+  ~filter[number]: INV-2026
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
