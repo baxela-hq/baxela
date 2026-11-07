@@ -136,6 +136,12 @@ php artisan queue:flush           # drop all
 
 Automated alerting for repeated failures is a tracked follow-up (below).
 
+The admin surface (**Admin → Failed Jobs**, gap-B3) wraps the same operations
+with permissions: list/filter/show, retry, and forget, plus a synchronous
+admin alert on every final failure and a scheduled queue-depth monitor. See
+`apps/backend/docs/flows/queue-visibility.md` for the lifecycle, retry
+semantics, and the alerting caveats.
+
 ## Staging smoke tests (after configuring DSNs)
 
 Run these against a staging environment, not production customers:

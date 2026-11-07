@@ -76,6 +76,23 @@ realtime goes dark but checkout lives); append `?strict=1` if your monitor
 should page on those too. `/up` also works but only proves the framework
 booted — prefer the health endpoint.
 
+## Failed jobs and queue schedules
+
+Failed queued jobs surface in the admin panel under **Failed Jobs** (inspect,
+retry, delete — each with its own permission) and every final job failure (or
+queue-depth threshold crossing) alerts the admin inbox plus the configured
+notification channels. Retry re-queues the job for another attempt and may
+repeat its side effects — verify the original operation first. See
+`apps/backend/docs/flows/queue-visibility.md`.
+
+Verify the scheduler actually executes the registered schedules:
+
+```sh
+docker compose -f docker-compose.prod.yml exec scheduler php artisan schedule:list
+# expect: core:queue-check-backlog (every 5 minutes, without-overlapping)
+#         queue:prune-failed --hours=720 (daily, permanent deletion)
+```
+
 ## Notes
 
 - **TLS is not terminated here.** Put a reverse proxy (Caddy, Traefik, nginx,

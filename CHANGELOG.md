@@ -10,6 +10,26 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Queue visibility (gap-B3)**: failed queued jobs are now operable.
+  Core-module admin endpoints (`api/v1/core/admin/failed-jobs`) with
+  separately-permissioned list/show/retry/delete (view never implies retry or
+  delete) and an admin panel page (**Admin → Failed Jobs**) — server-side
+  300-char exception excerpts in list rows, full exception + redacted payload
+  in the detail view (the serialized job command is never displayed or
+  unserialized; secret-ish payload keys are masked). Retry re-queues the job
+  for another attempt with an explicit side-effects warning; delete is
+  permanent. Every final job failure alerts the admin audience
+  synchronously — best-effort, fully exception-isolated, database inbox
+  primary, external channels (email/telegram/webpush) carry identifiers only.
+  A scheduled queue-depth monitor (`core:queue-check-backlog`, every 5
+  minutes with overlap protection) alerts on threshold crossings with
+  cache-based deduplication and recovery clearing, and fails open if the
+  cache is unavailable. Nightly `queue:prune-failed` retains 30 days
+  (configurable via `core.queue.failed_jobs.retention_days`). SMTP delivery
+  is now bounded (`MAIL_TIMEOUT`, default 15s) so a stalled relay cannot hang
+  sync alert paths. Horizon is consciously deferred (Redis-only; re-addable
+  later) — see `docs/plans/gap-b3-queue-visibility.md`.
+
 - **International SEO + structured data (gap-B2)**: every indexable
   storefront page emits canonical + six-locale hreflang alternates
   (`x-default` → default locale, mirroring the sitemap); the PDP gains

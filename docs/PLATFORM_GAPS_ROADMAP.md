@@ -164,14 +164,32 @@ Suggested commit: `feat(storefront): hreflang alternates and product structured 
 
 ### B.3 Queue visibility (half a day)
 
-- [ ] Switch prod compose queue connection to `redis` (Redis already runs for
-      Reverb/cache); dev may stay on `database`.
-- [ ] Install Horizon, add a service to dev + prod compose, protect its dashboard
-      (admin-auth gate or bind to localhost-only behind nginx — decide at implementation).
-- [ ] Prune/monitor: `queue:prune-failed` schedule, failed-job alert into the Notification
-      module.
-- [ ] Fallback if Horizon feels heavy: a failed-jobs table + minimal admin page reusing
-      the AuditLog list pattern. Pick one, don't build both.
+> **Decision 2026-11-07:** the **minimal failed-jobs surface** was chosen over Horizon
+> (recorded per the "pick one" rule). Horizon is consciously deferred: Redis-only
+> (shared hosting excluded by design), a new daemon + protected dashboard for a
+> single-queue workload of ~20 listeners, re-addable later without rework —
+> see `docs/plans/gap-b3-queue-visibility.md` D8. Prod was already configured for
+> `QUEUE_CONNECTION=redis`, so the "switch" below was verification-only.
+
+- [x] Switch prod compose queue connection to `redis` (Redis already runs for
+      Reverb/cache); dev may stay on `database`. *(verified 2026-11-07 —
+      `.env.production(.example)` already set `QUEUE_CONNECTION=redis` + phpredis in
+      both Docker images; dev stays `database`)*
+- [x] ~~Install Horizon~~ → **minimal failed-jobs surface instead** *(implemented
+      2026-11-07 — Core-module admin endpoints (`api/v1/core/admin/failed-jobs`,
+      separately-permissioned list/show/retry/delete, AuditLog pattern), admin panel
+      page in the General group with confirmation dialogs + side-effects warnings,
+      payload redaction (serialized command never displayed, secret-ish keys masked);
+      plan + review trail in `docs/plans/gap-b3-queue-visibility.md`)*
+- [x] Prune/monitor: `queue:prune-failed` schedule, failed-job alert into the Notification
+      module. *(implemented 2026-11-07 — `queue:prune-failed --hours=720` daily +
+      `core:queue-check-backlog` every 5 min with overlap protection (depth monitor,
+      dedup via cache-state key, recovery clears state); synchronous best-effort
+      `JobFailed`/backlog alerts to the admin audience, database inbox primary,
+      external channels identifiers-only; bounded SMTP timeout)*
+- [x] Fallback if Horizon feels heavy: a failed-jobs table + minimal admin page reusing
+      the AuditLog list pattern. Pick one, don't build both. *(this IS the shipped
+      surface — see the decision note above)*
 
 Suggested commits: `feat(infra): run horizon on redis queue with alerting`,
 or `feat(backend/core): failed jobs admin surface`
