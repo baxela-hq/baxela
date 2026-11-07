@@ -20,8 +20,8 @@ import { FeatureRoutes, Locales } from '../data/routes'
 
 /**
  * The coverage matrix: every enabled module with the sections it
- * exposes for export/import. Empty sections for modules that have not
- * opted into the standard yet.
+ * exposes for export/import and its own data-endpoint URLs — null for
+ * modules that have not opted into the standard yet.
  */
 export function useTransferCapabilities() {
   return useQuery<TransferCapability[]>({
@@ -30,12 +30,17 @@ export function useTransferCapabilities() {
   })
 }
 
-/** Validate an uploaded transfer file and list its sections. */
+/** Validate an uploaded transfer file on the target module's endpoint. */
 export function useTransferImportPreview() {
   const { tAction, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
-  return useMutation<TransferImportPreview, Error, File>({
-    mutationFn: (file: File) => previewTransferImport(file),
+  return useMutation<
+    TransferImportPreview,
+    Error,
+    { file: File; previewUrl: string }
+  >({
+    mutationFn: ({ file, previewUrl }) =>
+      previewTransferImport(file, previewUrl),
     onError: (error) =>
       error instanceof ApiError
         ? parseAndToastError(error)
@@ -43,7 +48,7 @@ export function useTransferImportPreview() {
   })
 }
 
-/** Run the import (or dry run) and refresh the history. */
+/** Run the import on the module's own endpoint and refresh the history. */
 export function useTransferImport() {
   const queryClient = useQueryClient()
   const { tAction, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
@@ -68,7 +73,7 @@ export function useTransferImport() {
   })
 }
 
-/** Import history across all modules, latest first. */
+/** Import history across all modules, latest first (central audit plane). */
 export function useTransferImportsList() {
   return useQuery<PaginatedResponse<TransferImport>>({
     queryKey: [FeatureRoutes.CACHE_KEY, FeatureRoutes.IMPORTS_KEY],
@@ -76,13 +81,13 @@ export function useTransferImportsList() {
   })
 }
 
-/** Download a module's transfer file with success/error toasts. */
+/** Download a module's transfer file from its own export endpoint. */
 export function useTransferExport() {
   const { tAction, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
-  return useMutation<void, Error, string>({
-    mutationFn: (module: string) => downloadTransferExport(module),
-    onSuccess: (_result, module) =>
+  return useMutation<void, Error, { module: string; exportUrl: string }>({
+    mutationFn: ({ exportUrl }) => downloadTransferExport(exportUrl),
+    onSuccess: (_result, { module }) =>
       toast.success(
         tMessage('success.default', { name: module, action: tAction('export') })
       ),

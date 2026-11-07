@@ -17,11 +17,13 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import {
+  type TransferEndpoints,
   type TransferImportPreview,
   type TransferImportResult,
 } from '../api/transfer.api'
 import { Locales } from '../data/routes'
 import {
+  useTransferCapabilities,
   useTransferImport,
   useTransferImportPreview,
 } from '../hooks/use-transfer'
@@ -32,9 +34,11 @@ export function ImportCard() {
   const { tLabel, tStatus, tHelpText } = useAppTranslation(Locales.TRANSFER)
   const { tAction, tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
+  const capabilitiesQuery = useTransferCapabilities()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [step, setStep] = useState<Step>('file')
   const [file, setFile] = useState<File | null>(null)
+  const [endpoints, setEndpoints] = useState<TransferEndpoints | null>(null)
   const [preview, setPreview] = useState<TransferImportPreview | null>(null)
   const [onDuplicate, setOnDuplicate] = useState<'update' | 'skip'>('update')
   const [dryRun, setDryRun] = useState(true)
@@ -46,6 +50,7 @@ export function ImportCard() {
   const resetFlow = () => {
     setStep('file')
     setFile(null)
+    setEndpoints(null)
     setPreview(null)
     setOnDuplicate('update')
     setDryRun(true)
@@ -61,7 +66,9 @@ export function ImportCard() {
     fileInputRef.current?.click()
   }
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const selected = event.target.files?.[0]
     if (!selected) return
 
@@ -72,19 +79,42 @@ export function ImportCard() {
       return
     }
 
+    // The envelope declares its module — read it client-side to route
+    // the upload to that module's own data endpoints.
+    const text = await selected.text()
+    const declared = /"module"\s*:\s*"([^"]+)"/.exec(text.slice(0, 4096))?.[1]
+    const capability = declared
+      ? capabilitiesQuery.data?.find((item) => item.module === declared)
+      : undefined
+
+    if (!declared || !capability?.endpoints) {
+      toast.error(tLabel('module_not_supported', { module: declared ?? '?' }))
+      event.target.value = ''
+      return
+    }
+
     setFile(selected)
-    previewMutation.mutate(selected, {
-      onSuccess: (data) => {
-        setPreview(data)
-        setStep('review')
-      },
-    })
+    setEndpoints(capability.endpoints)
+    previewMutation.mutate(
+      { file: selected, previewUrl: capability.endpoints.import_preview },
+      {
+        onSuccess: (data) => {
+          setPreview(data)
+          setStep('review')
+        },
+      }
+    )
   }
 
   const handleRun = () => {
-    if (!file || !preview) return
+    if (!file || !preview || !endpoints) return
     importMutation.mutate(
-      { file, on_duplicate: onDuplicate, dry_run: dryRun },
+      {
+        file,
+        on_duplicate: onDuplicate,
+        dry_run: dryRun,
+        importUrl: endpoints.import,
+      },
       {
         onSuccess: (data) => {
           setResult(data)
@@ -345,8 +375,14 @@ export function ImportCard() {
                 disabled={importMutation.isPending}
                 onClick={() =>
                   file &&
+                  endpoints &&
                   importMutation.mutate(
-                    { file, on_duplicate: onDuplicate, dry_run: false },
+                    {
+                      file,
+                      on_duplicate: onDuplicate,
+                      dry_run: false,
+                      importUrl: endpoints.import,
+                    },
                     { onSuccess: (data) => setResult(data) }
                   )
                 }

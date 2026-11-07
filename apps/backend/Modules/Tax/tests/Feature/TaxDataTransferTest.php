@@ -10,17 +10,20 @@ use Modules\Tax\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-it('exports tax data through the module endpoint', function () {
+it('exports tax data through the module endpoint as a json attachment', function () {
     $this->seedCountries('DE');
     $seeded = $this->seedTransferTax();
     $this->actingAs($this->superAdminUser());
 
-    $file = $this->exportedTaxFile();
+    $response = $this->getJson($this->baseUrl('/admin/data/export'));
+    $file = json_decode($response->streamedContent(), true);
 
     expect($file['format'])->toBe('baxela.module-export')
         ->and($file['module'])->toBe('tax')
         ->and(array_column($file['sections'], 'entity'))->toBe(['tax-classes', 'tax-rates'])
-        ->and($file['sections'][1]['rows'][0]['payload']['tax_class_id'])->toBe($seeded['default']->id);
+        ->and($file['sections'][1]['rows'][0]['payload']['tax_class_id'])->toBe($seeded['default']->id)
+        ->and($response->headers->get('Content-Disposition'))->toContain('attachment; filename=transfer-tax-')
+        ->and($response->headers->get('Content-Type'))->toBe('application/json; charset=UTF-8');
 });
 
 it('previews an uploaded file through the module endpoint', function () {
@@ -83,6 +86,44 @@ it('rejects a transfer file that declares another module', function () {
         'on_duplicate' => 'update',
         'dry_run' => false,
     ])->assertStatus(422);
+});
+
+it('rejects malformed files with stable reasons', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $this->postJson($this->baseUrl('/admin/data/import'), [
+        'file' => $this->transferFile('{not json'),
+        'on_duplicate' => 'update',
+        'dry_run' => false,
+    ])->assertStatus(422)->assertJsonPath('code', 'transfer.import.failed')
+        ->assertJsonPath('meta.reason', 'invalid_json');
+
+    $this->postJson($this->baseUrl('/admin/data/import'), [
+        'file' => $this->transferFile(json_encode([
+            'format' => 'other', 'module' => 'tax', 'version' => 1, 'sections' => [],
+        ])),
+        'on_duplicate' => 'update',
+        'dry_run' => false,
+    ])->assertStatus(422)->assertJsonPath('meta.reason', 'unknown_format');
+});
+
+it('skips existing rows with the skip strategy', function () {
+    $this->seedCountries('DE');
+    $this->seedTransferTax();
+    $this->actingAs($this->superAdminUser());
+
+    $payload = $this->exportedTaxFile();
+
+    $response = $this->postJson($this->baseUrl('/admin/data/import'), [
+        'file' => $this->transferFile(json_encode($payload)),
+        'on_duplicate' => 'skip',
+        'dry_run' => false,
+    ]);
+
+    $response->assertOk();
+    expect($response->json('data.skipped_count'))->toBe(3)
+        ->and(TaxClass::query()->count())->toBe(2)
+        ->and(TaxRate::query()->count())->toBe(1);
 });
 
 it('scopes the module history endpoint to tax runs', function () {

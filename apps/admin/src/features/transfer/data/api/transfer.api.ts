@@ -14,9 +14,18 @@ export type TransferSection = {
   importable: boolean
 }
 
+/** The module's own data-endpoint URLs, relative to the API root. */
+export type TransferEndpoints = {
+  export: string
+  import_preview: string
+  import: string
+  imports: string
+}
+
 export type TransferCapability = {
   module: string
   supported: boolean
+  endpoints: TransferEndpoints | null
   sections: TransferSection[]
 }
 
@@ -96,11 +105,14 @@ export type TransferImportPayload = {
   file: File
   on_duplicate: 'update' | 'skip'
   dry_run: boolean
+  /** The module's own import endpoint, from its published capabilities. */
+  importUrl: string
 }
 
 /** Structure check of an uploaded transfer file (multipart, JSON only). */
 export async function previewTransferImport(
-  file: File
+  file: File,
+  previewUrl: string
 ): Promise<TransferImportPreview> {
   const formData = new FormData()
   formData.append('file', file)
@@ -110,7 +122,7 @@ export async function previewTransferImport(
   const { data } = await postRequest<
     SingleResponse<TransferImportPreview>,
     FormData
-  >(`${BASE_URL}/imports/preview`, formData, {
+  >(previewUrl, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
   return data as TransferImportPreview
@@ -128,13 +140,13 @@ export async function importTransferData(
   const { data } = await postRequest<
     SingleResponse<TransferImportResult>,
     FormData
-  >(`${BASE_URL}/imports`, formData, {
+  >(payload.importUrl, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
   return data as TransferImportResult
 }
 
-/** Import history, latest first. */
+/** Cross-module run history — the central audit plane. */
 export function fetchTransferImports(queryParams = {}) {
   return getRequest<PaginatedResponse<TransferImport>>(
     `${BASE_URL}/imports`,
@@ -143,19 +155,20 @@ export function fetchTransferImports(queryParams = {}) {
 }
 
 /**
- * Download a module's transfer file. The export lives behind auth, so it
- * is fetched as a blob through the shared axios client; the filename
- * comes from the Content-Disposition header the backend sets.
+ * Download a module's transfer file from its own export endpoint. The
+ * export lives behind auth, so it is fetched as a blob through the
+ * shared axios client; the filename comes from the Content-Disposition
+ * header the backend sets.
  */
-export async function downloadTransferExport(module: string): Promise<void> {
-  const response = await apiClient.get<Blob>(`${BASE_URL}/exports/${module}`, {
+export async function downloadTransferExport(exportUrl: string): Promise<void> {
+  const response = await apiClient.get<Blob>(exportUrl, {
     responseType: 'blob',
   })
 
   const disposition =
     (response.headers['content-disposition'] as string | undefined) ?? ''
   const match = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposition)
-  const filename = match?.[1] ?? `transfer-${module}.json`
+  const filename = match?.[1] ?? 'transfer.json'
 
   const url = URL.createObjectURL(response.data)
   const link = document.createElement('a')

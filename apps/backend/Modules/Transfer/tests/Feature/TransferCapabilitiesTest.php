@@ -51,3 +51,30 @@ it('declares the participating module sections with their flags', function () {
         ->and($tax['sections'][0]['importable'])->toBeTrue()
         ->and($tax['sections'][1]['key'])->toBe('tax-rates');
 });
+
+it('publishes the wired module data endpoints and none for the others', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $modules = collect(
+        $this->getJson($this->baseUrl('/admin/capabilities'))
+            ->assertOk()
+            ->json('data')
+    );
+
+    $tax = $modules->firstWhere('module', 'tax');
+    expect($tax['endpoints'])->toBe([
+        'export' => 'tax/admin/data/export',
+        'import_preview' => 'tax/admin/data/import/preview',
+        'import' => 'tax/admin/data/import',
+        'imports' => 'tax/admin/data/imports',
+    ]);
+
+    // Every wired wave-1 module publishes the full surface...
+    foreach (['setting', 'shipping', 'discount', 'contact', 'menu'] as $name) {
+        expect($modules->firstWhere('module', $name)['endpoints'])->not->toBeNull();
+    }
+
+    // ...and modules that did not opt in publish none.
+    expect($modules->firstWhere('module', 'order')['endpoints'])->toBeNull()
+        ->and($modules->firstWhere('module', 'transfer')['endpoints'])->toBeNull();
+});

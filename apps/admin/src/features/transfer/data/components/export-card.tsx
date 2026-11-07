@@ -90,14 +90,21 @@ export function ExportCard() {
               </span>
               <SectionBadges sections={capability.sections} />
             </div>
-            <Button
-              variant='outline'
-              size='sm'
-              disabled={exportMutation.isPending}
-              onClick={() => exportMutation.mutate(capability.module)}
-            >
-              <ArrowDownToLine size={16} /> {tAction('export')}
-            </Button>
+            {capability.endpoints && (
+              <Button
+                variant='outline'
+                size='sm'
+                disabled={exportMutation.isPending}
+                onClick={() =>
+                  exportMutation.mutate({
+                    module: capability.module,
+                    exportUrl: capability.endpoints!.export,
+                  })
+                }
+              >
+                <ArrowDownToLine size={16} /> {tAction('export')}
+              </Button>
+            )}
           </div>
         ))}
 
