@@ -1,0 +1,11 @@
+{
+    "name": "Webhooks",
+    "alias": "webhooks",
+    "description": "Outbound webhooks (transactional outbox) \u2014 gap-C2",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Webhooks\\Providers\\WebhooksServiceProvider"
+    ],
+    "files": []
+}

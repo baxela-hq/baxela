@@ -416,6 +416,12 @@ parameters:
 			path: Modules/Auth/app/Http/Requests/Admin/Role/RoleRequest.php
 
 		-
+			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\Token\\MachineTokenRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/app/Http/Requests/Admin/Token/MachineTokenRequest.php
+
+		-
 			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\User\\UserRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -22338,3 +22344,468 @@ parameters:
 			identifier: method.notFound
 			count: 5
 			path: Modules/User/tests/Feature/WishlistTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$events\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$event_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$processed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$endpoint_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/RecordDeliveryOutcomeAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$consecutive_failures\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/RecordDeliveryOutcomeAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
+
+		-
+			message: '#^Access to constant ID on an unknown class Modules\\Webhooks\\Actions\\Webhooks\\WebhookDeliverySchema\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
+
+		-
+			message: '#^Missing parameter \$data \(array\) in call to method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\)\.$#'
+			identifier: argument.missing
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
+
+		-
+			message: '#^Unknown parameter \$payload in call to method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\)\.$#'
+			identifier: argument.unknown
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\) has parameter \$data with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Webhooks/app/Actions/Webhooks/WriteOutboxEventAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Console/Commands/RetryWebhookDeliveryCommand.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookDelivery\>\:\:jsonPaginate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/ListWebhookDeliveryController.php
+
+		-
+			message: '#^Access to constant CLAIM_TOKEN on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
+
+		-
+			message: '#^Access to constant ID on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
+
+		-
+			message: '#^Access to constant NEXT_ATTEMPT_AT on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
+
+		-
+			message: '#^Access to constant STATUS on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
+			identifier: class.notFound
+			count: 2
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
+
+		-
+			message: '#^Parameter \$request of method Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\RetryWebhookDeliveryController\:\:__invoke\(\) has invalid type Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\Request\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookEndpoint\>\:\:allowedSorts\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookEndpoint/ListWebhookEndpointController.php
+
+		-
+			message: '#^Call to static method query\(\) on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookEndpoint\\WebhookEndpoint\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookEndpoint/TestWebhookEndpointController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Order\\Models\\Order\>\:\:jsonPaginate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Machine/ListMachineOrdersController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Catalog\\Models\\Product\>\:\:jsonPaginate\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Webhooks/app/Http/Controllers/Machine/ListMachineProductsController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: Modules/Webhooks/app/Http/Middleware/EnsureMachineToken.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Http\\Requests\\Admin\\WebhookEndpoint\\WebhookEndpointRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Webhooks/app/Http/Requests/Admin/WebhookEndpoint/WebhookEndpointRequest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Webhooks\\Models\\WebhookEvent\>\|Modules\\Webhooks\\Models\\WebhookEvent\:\:\$payload\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$secret\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$event_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$event_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Jobs\\DeliverWebhookJob\:\:appendAttempt\(\) has parameter \$startedAt with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordOrderCancelledListener.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordOrderCreatedListener.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordOrderPaidListener.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordOrderReturnRequestedListener.php
+
+
+
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordOrderShippedListener.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordPaymentRefundedListener.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Listeners/RecordShipmentShippedListener.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookDelivery.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Models\\WebhookDelivery\:\:endpoint\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookDelivery.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Models\\WebhookDelivery\:\:event\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookDelivery.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookDelivery.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookEndpoint.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookEvent.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Models\\WebhookEvent\:\:deliveries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookEvent.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Webhooks/app/Models/WebhookEvent.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Transformers\\Admin\\WebhookDelivery\\WebhookDeliveryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Webhooks/app/Transformers/Admin/WebhookDelivery/WebhookDeliveryResource.php
+
+		-
+			message: '#^Method Modules\\Webhooks\\Transformers\\Admin\\WebhookEndpoint\\WebhookEndpointResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Webhooks/app/Transformers/Admin/WebhookEndpoint/WebhookEndpointResource.php
+
+		-
+			message: '#^Trait Modules\\Webhooks\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: Modules/Webhooks/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$attempt_count\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$claim_token\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$error_category\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$next_attempt_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$response_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$event_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:webhookEndpoint\(\)\.$#'
+			identifier: method.notFound
+			count: 8
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Function deliveryFor\(\) has parameter \$endpoint with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 7
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 4
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:webhookEndpoint\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$endpoint_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$payload\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$processed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:webhookEndpoint\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Parameter \#1 \$event of method Modules\\Webhooks\\Listeners\\RecordOrderPaidListener\:\:handle\(\) expects Modules\\Core\\Contracts\\Events\\Order\\OrderPaidEvent, Modules\\Core\\Contracts\\Events\\AbstractBaseEvent given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Result of static method Illuminate\\Support\\Testing\\Fakes\\QueueFake\:\:assertPushed\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php

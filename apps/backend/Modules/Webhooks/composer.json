@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/webhooks",
+    "description": "Outbound webhooks (transactional outbox) \u2014 gap-C2",
+    "authors": [
+        {
+            "name": "Baxela"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {}
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Webhooks\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Webhooks\\Tests\\": "tests/"
+        }
+    }
+}

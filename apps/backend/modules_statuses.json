@@ -18,5 +18,6 @@
   "Support": true,
   "Audit": true,
   "Tax": true,
-  "Transfer": true
+  "Transfer": true,
+  "Webhooks": true
 }

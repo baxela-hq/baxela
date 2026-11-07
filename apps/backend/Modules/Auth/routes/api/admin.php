@@ -8,6 +8,9 @@ use Modules\Auth\Http\Controllers\Admin\Role\DeleteRoleController;
 use Modules\Auth\Http\Controllers\Admin\Role\ListRolesController;
 use Modules\Auth\Http\Controllers\Admin\Role\UpdateRoleController;
 use Modules\Auth\Http\Controllers\Admin\Stats\ShowStatsController;
+use Modules\Auth\Http\Controllers\Admin\Token\CreateMachineTokenController;
+use Modules\Auth\Http\Controllers\Admin\Token\ListMachineTokensController;
+use Modules\Auth\Http\Controllers\Admin\Token\RevokeMachineTokenController;
 use Modules\Auth\Http\Controllers\Admin\User\CreateUserController;
 use Modules\Auth\Http\Controllers\Admin\User\DeleteUserController;
 use Modules\Auth\Http\Controllers\Admin\User\ListUserController;
@@ -33,5 +36,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::delete('/users/{id}', DeleteUserController::class)->name('users.delete');
     Route::get('/users/{id}', ShowUserController::class)->name('users.show');
     Route::patch('/users/{id}', UpdateUserController::class)->name('users.update');
+
+    // Machine tokens (gap-C2 D14): mint/list/revoke for S2S integrations.
+    Route::get('/machine-tokens', ListMachineTokensController::class)->name('machine-tokens.list');
+    Route::post('/machine-tokens', CreateMachineTokenController::class)->name('machine-tokens.create');
+    Route::delete('/machine-tokens/{id}', RevokeMachineTokenController::class)->name('machine-tokens.revoke');
 
 });
