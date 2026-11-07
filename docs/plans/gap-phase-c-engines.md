@@ -164,6 +164,26 @@ concurrent jobs → documented sizing rule.
 
 ## 4. Slice C.2 — Outbound webhooks (transactional outbox + claim-token delivery) + S2S API tokens
 
+> **DONE 2026-11-08.** Implemented per v4: new `Modules/Webhooks` module (Audit
+> scaffold); transactional outbox (`webhook_events` with per-transition `source_key`
+> dedupe; sync listeners join the firing transaction — rollback-atomicity test-proven);
+> claim-token delivery lifecycle (`pending → processing → terminal`, stale-worker
+> writes rejected by conditional update — test-proven); scheduled dispatch sweep
+> (every minute) as the recovery path; HMAC-SHA256 signing over
+> `timestamp.event_id.delivery.body` (worked test vector; secrets encrypted at rest,
+> shown once, rotation endpoint); SSRF guard with per-attempt DNS re-validation and
+> `CURLOPT_RESOLVE` IP pinning (proxies off, redirects = permanent failure, private
+> blocks test-proven); response classification with `Retry-After = max(backoff, ra)`
+> capped 24h; endpoint auto-disable at 10 consecutive failures under a lock (9-1-1
+> test-proven); archive-not-delete + 90-day retention; delivery log with attempt
+> history + `webhooks:retry-delivery`; admin endpoints CRUD under route-name
+> permissions; i18n ×6. S2S tokens: Auth minting (explicit abilities, wildcard
+> rejected at mint AND in middleware, audit-logged, plaintext once) + read-only
+> `api/v1/machine/*` orders/products routes (bearer-only middleware rejects sessions,
+> per-token rate limit, ownership-scoped queries). **20 Pest tests; full backend
+> suite 1,122 passed; phpstan OK.** Handoff note: `refund.finalized` joins the
+> catalog when B.1 Phase 3 lands `RefundFinalizedEvent`.
+
 ### Design decisions
 
 | # | Decision | Why |
