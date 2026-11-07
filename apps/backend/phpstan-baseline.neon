@@ -21846,3 +21846,22 @@ parameters:
 			count: 1
 			path: Modules/Core/tests/Feature/HelperTrait.php
 
+
+
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Core/tests/Feature/QueueBacklogMonitorTest.php
+
+
+
+
+
+		-
+			message: '#^Static\ method\ Illuminate\\Support\\Testing\\Fakes\\EventFake::assertDispatched\(\)\ invoked\ with\ 3\ parameters,\ 1\-2\ required\.$#'
+			identifier: arguments.count
+			count: 2
+			path: Modules/Core/tests/Feature/QueueBacklogMonitorTest.php
+
+

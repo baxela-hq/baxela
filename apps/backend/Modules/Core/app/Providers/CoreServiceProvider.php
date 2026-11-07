@@ -2,10 +2,12 @@
 
 namespace Modules\Core\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Console\Commands\ErdGenerateCommand;
+use Modules\Core\Console\Commands\QueueCheckBacklogCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
@@ -66,6 +68,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->commands([
             ErdGenerateCommand::class,
+            QueueCheckBacklogCommand::class,
         ]);
     }
 
@@ -74,10 +77,18 @@ class CoreServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+
+            // Queue-depth monitor (gap-B3 D6): withoutOverlapping guards the
+            // check-then-act workflow; the cache-state key dedups crossings.
+            $schedule->command('core:queue-check-backlog')->everyFiveMinutes()->withoutOverlapping();
+
+            // Prune failed jobs past the configured retention (gap-B3 D7) —
+            // permanent deletion, and what keeps exception search cheap.
+            $retentionHours = max(1, (int) config('core.queue.failed_jobs.retention_days', 30)) * 24;
+            $schedule->command('queue:prune-failed --hours='.$retentionHours)->daily();
+        });
     }
 
     /**
