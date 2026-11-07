@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
@@ -10,6 +11,8 @@ import type {
   Paginated,
 } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
 
 // URL sort value -> backend allowed sort
 const SORT_MAP: Record<string, string> = {
@@ -24,9 +27,19 @@ function firstParam(value: string | string[] | undefined): string {
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
 }
 
-export const metadata = {
-  title: "Products — Baxela Storefront",
-};
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/products">): Promise<Metadata> {
+  const { locale } = await params;
+
+  // Listing canonical stays the clean path — sorting/filtering/pagination
+  // params never vary it (gap-B2 canonical policy).
+  return pageSeo({
+    title: "Products — Baxela Storefront",
+    locale: locale as Locale,
+    path: "/products",
+  });
+}
 
 export default async function ProductsPage({
   searchParams,

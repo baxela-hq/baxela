@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/json-ld";
 import NotFoundContent from "@/components/not-found-content";
 import { PostComments } from "@/components/blog/post-comments";
 import ProductCard from "@/components/product-card";
@@ -7,34 +8,44 @@ import { serverApiGet } from "@/lib/api/server";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { ApiPost, ApiPostComment, Paginated } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { canonicalOnlyLocaleUrls } from "@/lib/seo/entity-urls";
+import { pageSeo } from "@/lib/seo/metadata";
+import { articleLd, webPageLd } from "@/lib/seo/schema-org";
+import { absoluteAssetUrl, absoluteUrl, type Locale } from "@/lib/seo/urls";
 
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/blog/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale: localeParam } = await params;
+  const locale = localeParam as Locale;
   const post = await serverApiGet<ApiPost>(`/content/public/posts/${slug}`).catch(
     () => null,
   );
-  return {
-    title: post?.title ? `${post.title} — Blog` : "Blog — Baxela Storefront",
-    description: post?.description ?? undefined,
-    // The missing-post body renders inline (HTTP 200) — keep it out of
-    // the index.
-    ...(post ? {} : { robots: { index: false } }),
-    openGraph: post
-      ? {
-          title: post.title ?? undefined,
-          description: post.description ?? undefined,
-          images: post.image_url ? [{ url: post.image_url }] : undefined,
-        }
-      : undefined,
-  };
+
+  // The missing-post body renders inline (HTTP 200) — keep it out of
+  // the index.
+  if (!post) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  // Post slugs are locale-scoped but the show payload carries only the
+  // current locale's — v1 emits a self-canonical without alternates
+  // rather than asserting URLs that may not resolve (gap-B2 D1 v2).
+  return pageSeo({
+    title: post.title ? `${post.title} — Blog` : "Blog — Baxela Storefront",
+    description: post.description,
+    locale,
+    localeUrls: canonicalOnlyLocaleUrls("/blog", post.slug ?? slug, locale),
+    imageUrl: post.image_url,
+    ogType: "article",
+  });
 }
 
 export default async function BlogPostPage({
   params,
 }: PageProps<"/[locale]/blog/[slug]">) {
-  const { slug } = await params;
+  const { slug, locale: localeParam } = await params;
+  const locale = localeParam as Locale;
   const [tLayout, tRelated, format] = await Promise.all([
     getTranslations("shared.layout"),
     getTranslations("blog.post.related_products"),
@@ -58,9 +69,27 @@ export default async function BlogPostPage({
   const commentsTotal = commentsPage?.meta.total ?? 0;
   const date = post.published_at ?? post.created_at;
   const postPath = `/blog/${post.slug ?? post.id}`;
+  const postUrl = absoluteUrl(postPath, locale as Locale);
+
+  const postGraph = [
+    articleLd({
+      url: postUrl,
+      name: post.title ?? "Post",
+      description: post.description,
+      image: absoluteAssetUrl(post.image_url),
+      datePublished: post.published_at,
+      dateModified: post.updated_at,
+    }),
+    webPageLd({
+      url: postUrl,
+      name: post.title ?? "Post",
+      mainEntityId: `${postUrl}#webpage`,
+    }),
+  ];
 
   return (
     <>
+      <JsonLd data={postGraph} />
       <nav
         aria-label={tLayout("breadcrumb.labels.navigation")}
         className="border-b border-border-light bg-muted"

@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ContactForm } from "@/components/contact/contact-form";
 import { MailIcon, PhoneIcon } from "@/components/ui/icons";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/contact">): Promise<Metadata> {
+  const { locale } = await params;
+
+  return pageSeo({
+    title: "Contact — Baxela Storefront",
+    locale: locale as Locale,
+    path: "/contact",
+  });
+}
 
 export default async function ContactPage() {
   const t = await getTranslations("contact.contact");

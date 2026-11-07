@@ -4,21 +4,32 @@ import { serverApiGet } from "@/lib/api/server";
 import NotFoundContent from "@/components/not-found-content";
 import type { ApiPage } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { canonicalOnlyLocaleUrls } from "@/lib/seo/entity-urls";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
 
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/pages/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale: localeParam } = await params;
+  const locale = localeParam as Locale;
   const page = await serverApiGet<ApiPage>(`/content/public/pages/${slug}`).catch(
     () => null,
   );
-  return {
-    title: page?.title || "Pages — Baxela Storefront",
-    description: page?.description ?? undefined,
-    // The missing-page body renders inline (HTTP 200) — keep it out of
-    // the index.
-    ...(page ? {} : { robots: { index: false } }),
-  };
+
+  // The missing-page body renders inline (HTTP 200) — keep it out of
+  // the index. CMS slugs are locale-scoped and the payload carries only
+  // the current one — self-canonical, no alternates (gap-B2 D1 v2).
+  if (!page) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  return pageSeo({
+    title: page.title || "Pages — Baxela Storefront",
+    description: page.description,
+    locale,
+    localeUrls: canonicalOnlyLocaleUrls("/pages", page.slug ?? slug, locale),
+  });
 }
 
 export default async function CmsPage({

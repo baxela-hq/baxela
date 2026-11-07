@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/json-ld";
 import ProductCard from "@/components/product-card";
 import { ProductActions } from "@/components/product-actions";
 import { ProductGallery } from "@/components/product-gallery";
@@ -8,6 +9,7 @@ import { ProductTabs } from "@/components/product-tabs";
 import { StarRating } from "@/components/star-rating";
 import { StarSolidIcon } from "@/components/ui/icons";
 import SaleBadge from "@/components/sale-badge";
+import { fetchCurrency } from "@/lib/api/site";
 import { serverApiGet } from "@/lib/api/server";
 import { resolveDisplayCurrency } from "@/lib/display-currency";
 import type {
@@ -17,10 +19,50 @@ import type {
   Paginated,
 } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { slugsToLocaleUrls } from "@/lib/seo/entity-urls";
+import { pageSeo } from "@/lib/seo/metadata";
+import {
+  breadcrumbLd,
+  productGroupLd,
+  productLd,
+  validAggregateRating,
+  webPageLd,
+} from "@/lib/seo/schema-org";
+import { absoluteAssetUrl, absoluteUrl, type Locale } from "@/lib/seo/urls";
 
-export const metadata: Metadata = {
-  title: "Product — Baxela Storefront",
-};
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/products/[id]">): Promise<Metadata> {
+  const { id, locale } = await params;
+  const product = await serverApiGet<ApiProductDetail>(
+    `/catalog/public/products/${id}`,
+  ).catch(() => null);
+
+  // Missing products render a real 404 — keep that out of the index.
+  if (!product) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  // The canonical is always the slug form (never the numeric id); the
+  // alternate set comes from the product's per-locale slug map, so a set
+  // never contains a URL that doesn't resolve to this product.
+  const canonicalSlug = product.slug ?? product.id.toString();
+  const localeUrls = {
+    ...slugsToLocaleUrls("/products", product.slugs),
+    [locale as Locale]: absoluteUrl(
+      `/products/${encodeURIComponent(canonicalSlug)}`,
+      locale as Locale,
+    ),
+  };
+
+  return pageSeo({
+    title: product.title ?? "Product",
+    description: product.description,
+    locale: locale as Locale,
+    localeUrls,
+    imageUrl: product.images[0]?.url,
+  });
+}
 
 export default async function ProductPage({
   params,
@@ -59,8 +101,76 @@ export default async function ProductPage({
 
   const photos = product.images.filter((image) => image.collection === "photos");
 
+  // Structured data (gap-B2): the indexable offer carries the store's
+  // DEFAULT currency — the display conversion below is cosmetic and never
+  // reaches the JSON-LD (D5 v2.1). Variable products emit ProductGroup +
+  // per-variant offers; per-variant availability isn't exposed yet, so it
+  // is omitted there rather than inherited from the product (D4 v2.1).
+  const productUrl = absoluteUrl(
+    `/products/${encodeURIComponent(product.slug ?? product.id)}`,
+    locale as Locale,
+  );
+  const currencyCode = (await fetchCurrency())?.code ?? "USD";
+  const imageUrls = photos
+    .map((photo) => absoluteAssetUrl(photo.url))
+    .filter((url): url is string => Boolean(url));
+
+  const productGraph: object[] = [];
+  if (product.variants.length > 1) {
+    productGraph.push(
+      productGroupLd({
+        url: productUrl,
+        name: product.title ?? "Product",
+        description: product.description,
+        image: imageUrls,
+        brandName: product.brand?.title ?? null,
+        productGroupId: String(product.id),
+        variants: product.variants.map((variant) =>
+          productLd({
+            url: productUrl,
+            name: product.title ?? "Product",
+            sku: variant.sku,
+            price: variant.price,
+            currency: currencyCode,
+          }),
+        ),
+        groupRating: validAggregateRating(product.rating_avg, product.rating_count),
+      }),
+    );
+  } else {
+    productGraph.push(
+      productLd({
+        url: productUrl,
+        name: product.title ?? "Product",
+        description: product.description,
+        image: imageUrls,
+        sku: product.variants[0]?.sku ?? null,
+        brandName: product.brand?.title ?? null,
+        price: product.price,
+        currency: currencyCode,
+        availability: product.availability ?? null,
+        ratingAvg: product.rating_avg,
+        ratingCount: product.rating_count,
+      }),
+    );
+  }
+  productGraph.push(
+    breadcrumbLd(productUrl, [
+      { name: tLayout("breadcrumb.links.home"), url: absoluteUrl("/", locale as Locale) },
+      { name: tLayout("header.nav.products"), url: absoluteUrl("/products", locale as Locale) },
+      { name: product.title ?? "Product", url: productUrl },
+    ]),
+    webPageLd({
+      url: productUrl,
+      name: product.title ?? "Product",
+      mainEntityId: `${productUrl}#product`,
+      breadcrumbId: `${productUrl}#breadcrumb`,
+    }),
+  );
+
   return (
     <>
+      <JsonLd data={productGraph} />
       <nav
         aria-label={tLayout("breadcrumb.labels.navigation")}
         className="border-b border-border-light bg-muted"

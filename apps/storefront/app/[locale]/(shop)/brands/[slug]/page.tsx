@@ -3,6 +3,9 @@ import NotFoundContent from "@/components/not-found-content";
 import BrandProducts from "@/components/brand-products";
 import { serverApiGet } from "@/lib/api/server";
 import type { ApiBrand } from "@/lib/api/types";
+import { canonicalOnlyLocaleUrls } from "@/lib/seo/entity-urls";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
 
 function fetchBrand(slug: string) {
   return serverApiGet<ApiBrand>(
@@ -13,14 +16,22 @@ function fetchBrand(slug: string) {
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/brands/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale: localeParam } = await params;
+  const locale = localeParam as Locale;
   const brand = await fetchBrand(slug);
-  return {
-    title: brand?.title ? `${brand.title} — Baxela Storefront` : "Brands — Baxela Storefront",
-    // The missing-brand body renders inline (HTTP 200) — keep it out of
-    // the index.
-    ...(brand ? {} : { robots: { index: false } }),
-  };
+
+  // The missing-brand body renders inline (HTTP 200) — keep it out of
+  // the index. Brand slugs are locale-scoped and the payload carries only
+  // the current one — self-canonical, no alternates (gap-B2 D1 v2).
+  if (!brand) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  return pageSeo({
+    title: brand.title ? `${brand.title} — Baxela Storefront` : "Brands — Baxela Storefront",
+    locale,
+    localeUrls: canonicalOnlyLocaleUrls("/brands", brand.slug ?? slug, locale),
+  });
 }
 
 function firstParam(value: string | string[] | undefined): string {

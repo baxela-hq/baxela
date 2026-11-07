@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ProductCard from "@/components/product-card";
 import PostCard from "@/components/blog/post-card";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { fetchSettings } from "@/lib/api/site";
 import { serverApiGet } from "@/lib/api/server";
 import type {
   ApiBrand,
@@ -13,6 +15,26 @@ import type {
   Paginated,
 } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  // The merchant's own title/description (store settings), not the
+  // platform brand — same identity rule as the JSON-LD graph.
+  const settings = await fetchSettings();
+  const setting = (name: string) =>
+    settings?.find((row) => row.name === name)?.value?.trim() || null;
+
+  return pageSeo({
+    title: setting("website_title") ?? "Baxela Storefront",
+    description: setting("website_description"),
+    locale: locale as Locale,
+    path: "/",
+  });
+}
 
 export default async function HomePage() {
   const t = await getTranslations("home.home");

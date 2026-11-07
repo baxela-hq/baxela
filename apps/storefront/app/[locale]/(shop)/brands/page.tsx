@@ -1,11 +1,22 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { serverApiGet } from "@/lib/api/server";
 import type { ApiBrand, Paginated } from "@/lib/api/types";
 import { Link } from "@/i18n/navigation";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
 
-export const metadata = {
-  title: "Brands — Baxela Storefront",
-};
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/brands">): Promise<Metadata> {
+  const { locale } = await params;
+
+  return pageSeo({
+    title: "Brands — Baxela Storefront",
+    locale: locale as Locale,
+    path: "/brands",
+  });
+}
 
 export default async function BrandsPage() {
   const [t, tCommon, tLayout] = await Promise.all([

@@ -212,6 +212,13 @@ export interface ApiProductDetail {
   /** Denormalized review aggregate — null until an approved rated review exists. */
   rating_avg: string | null;
   rating_count: number;
+  /**
+   * Purchase availability (gap-B2): what a customer can actually buy —
+   * "in_stock" | "out_of_stock"; untracked variants are purchasable.
+   */
+  availability?: "in_stock" | "out_of_stock";
+  /** Every offered locale's slug for this product — hreflang map source. */
+  slugs?: Record<string, string>;
 }
 
 export interface ApiPublicCategory {

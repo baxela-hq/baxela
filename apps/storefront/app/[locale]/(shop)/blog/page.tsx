@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
 import BlogListing from "@/components/blog/blog-listing";
+import { pageSeo } from "@/lib/seo/metadata";
+import type { Locale } from "@/lib/seo/urls";
 
-export const metadata = {
-  title: "Blog — Baxela Storefront",
-};
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/blog">): Promise<Metadata> {
+  const { locale } = await params;
+
+  return pageSeo({
+    title: "Blog — Baxela Storefront",
+    locale: locale as Locale,
+    path: "/blog",
+  });
+}
 
 function firstParam(value: string | string[] | undefined): string {
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
