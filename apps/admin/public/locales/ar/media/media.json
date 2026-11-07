@@ -23,7 +23,8 @@
       "size": "الحجم",
       "type": "النوع",
       "created_at": "تاريخ الإنشاء",
-      "url": "URL"
+      "url": "URL",
+      "dimensions": "الأبعاد"
     },
     "actions": {
       "upload": "رفع",

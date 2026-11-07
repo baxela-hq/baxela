@@ -23,7 +23,8 @@
       "size": "Taille",
       "type": "Type",
       "created_at": "Créé le",
-      "url": "URL"
+      "url": "URL",
+      "dimensions": "Dimensions"
     },
     "actions": {
       "upload": "Téléverser",

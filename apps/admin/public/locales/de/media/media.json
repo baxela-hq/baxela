@@ -23,7 +23,8 @@
       "size": "Größe",
       "type": "Typ",
       "created_at": "Erstellt am",
-      "url": "URL"
+      "url": "URL",
+      "dimensions": "Abmessungen"
     },
     "actions": {
       "upload": "Hochladen",

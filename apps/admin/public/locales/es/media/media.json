@@ -23,7 +23,8 @@
       "size": "Tamaño",
       "type": "Tipo",
       "created_at": "Creado el",
-      "url": "URL"
+      "url": "URL",
+      "dimensions": "Dimensiones"
     },
     "actions": {
       "upload": "Cargar",

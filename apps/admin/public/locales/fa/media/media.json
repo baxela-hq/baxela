@@ -23,7 +23,8 @@
       "size": "حجم",
       "type": "نوع",
       "created_at": "تاریخ ایجاد",
-      "url": "آدرس"
+      "url": "آدرس",
+      "dimensions": "ابعاد"
     },
     "actions": {
       "upload": "بارگذاری",
