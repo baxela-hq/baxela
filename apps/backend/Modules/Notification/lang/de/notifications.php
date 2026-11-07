@@ -126,5 +126,20 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'admin' => [
+                'queue' => [
+                    'job_failed' => [
+                        'subject' => 'Queue-Job fehlgeschlagen',
+                        'body' => 'Job :job ist auf Queue „:queue“ (Verbindung :connection) am :failed_at fehlgeschlagen. UUID :uuid. Ausnahme: :exception_excerpt — siehe Admin → Fehlgeschlagene Jobs.',
+                    ],
+                    'backlog' => [
+                        'subject' => 'Queue-Rückstand über dem Schwellwert',
+                        'body' => 'Die Queue „:queue“ auf Verbindung :connection enthält :size Jobs — über dem Warnschwellwert von :threshold. Siehe Admin → Fehlgeschlagene Jobs.',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];

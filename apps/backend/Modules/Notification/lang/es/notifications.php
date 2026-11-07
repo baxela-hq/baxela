@@ -126,5 +126,20 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'admin' => [
+                'queue' => [
+                    'job_failed' => [
+                        'subject' => 'Falló un trabajo de la cola',
+                        'body' => 'El trabajo :job falló en la cola «:queue» (conexión :connection) el :failed_at. UUID :uuid. Excepción: :exception_excerpt — revísalo en Admin → Trabajos fallidos.',
+                    ],
+                    'backlog' => [
+                        'subject' => 'Acumulación de cola por encima del umbral',
+                        'body' => 'La cola «:queue» en la conexión :connection contiene :size trabajos, por encima del umbral de alerta de :threshold. Revísalo en Admin → Trabajos fallidos.',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];

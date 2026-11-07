@@ -21846,7 +21846,17 @@ parameters:
 			count: 1
 			path: Modules/Core/tests/Feature/HelperTrait.php
 
+		-
+			message: '#^Access\ to\ an\ undefined\ property\ Modules\\Notification\\Models\\Notification::\$body\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
+		-
+			message: '#^Access\ to\ an\ undefined\ property\ Modules\\Notification\\Models\\Notification::\$meta\.$#'
+			identifier: property.notFound
+			count: 5
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
 		-
 			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::artisan\(\)\.$#'
@@ -21854,9 +21864,29 @@ parameters:
 			count: 9
 			path: Modules/Core/tests/Feature/QueueBacklogMonitorTest.php
 
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::instance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
+		-
+			message: '#^Call\ to\ an\ undefined\ method\ Pest\\PendingCalls\\TestCall::superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
+		-
+			message: '#^Method\ Modules\\Notification\\Services\\Notification\\Contracts\\NotificationDispatcherInterface@anonymous/Modules/Notification/tests/Feature/QueueVisibilityAlertsTest\.php:68::dispatch\(\)\ has\ parameter\ \$message\ with\ no\ type\ specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
 		-
 			message: '#^Static\ method\ Illuminate\\Support\\Testing\\Fakes\\EventFake::assertDispatched\(\)\ invoked\ with\ 3\ parameters,\ 1\-2\ required\.$#'
@@ -21864,4 +21894,14 @@ parameters:
 			count: 2
 			path: Modules/Core/tests/Feature/QueueBacklogMonitorTest.php
 
+		-
+			message: '#^Unable\ to\ resolve\ the\ template\ type\ TAndValue\ in\ call\ to\ method\ Pest\\Expectation<mixed>::and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
+		-
+			message: '#^Unable\ to\ resolve\ the\ template\ type\ TValue\ in\ call\ to\ function\ expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php

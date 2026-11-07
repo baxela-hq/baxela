@@ -126,5 +126,20 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'admin' => [
+                'queue' => [
+                    'job_failed' => [
+                        'subject' => 'Échec d’une tâche de file',
+                        'body' => 'La tâche :job a échoué sur la file « :queue » (connexion :connection) le :failed_at. UUID :uuid. Exception : :exception_excerpt — à consulter dans Admin → Tâches en échec.',
+                    ],
+                    'backlog' => [
+                        'subject' => 'Encombrement de file au-dessus du seuil',
+                        'body' => 'La file « :queue » sur la connexion :connection contient :size tâches, au-dessus du seuil d’alerte de :threshold. À consulter dans Admin → Tâches en échec.',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];

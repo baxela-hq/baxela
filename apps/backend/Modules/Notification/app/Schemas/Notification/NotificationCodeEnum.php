@@ -68,4 +68,8 @@ enum NotificationCodeEnum: string
 
     // User
     case USER_PROFILE_UPDATED = 'user.profile.updated';
+
+    // System (queue visibility, gap-B3)
+    case SYSTEM_QUEUE_JOB_FAILED = 'system.queue.job_failed';
+    case SYSTEM_QUEUE_BACKLOG = 'system.queue.backlog';
 }

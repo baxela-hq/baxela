@@ -3,6 +3,7 @@
 namespace Modules\Notification\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Queue\Events\JobFailed;
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
@@ -22,6 +23,7 @@ use Modules\Core\Contracts\Events\Payment\PaymentFailedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
 use Modules\Core\Contracts\Events\Support\TicketCreatedEvent;
 use Modules\Core\Contracts\Events\Support\TicketMessageCreatedEvent;
+use Modules\Core\Contracts\Events\System\QueueBacklogDetectedEvent;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 use Modules\Notification\Listeners\Content\PostCommentApproved\SendPostCommentApprovedToUserListener;
@@ -41,6 +43,8 @@ use Modules\Notification\Listeners\Order\OrderShipped\SendOrderShippedNotificati
 use Modules\Notification\Listeners\Payment\PaymentFailed\NotifyAdminPaymentFailedListener;
 use Modules\Notification\Listeners\Payment\PaymentFailed\SendPaymentFailedNotificationToUserListener;
 use Modules\Notification\Listeners\Payment\PaymentSucceeded\NotifyAdminPaymentSucceededListener;
+use Modules\Notification\Listeners\Queue\BacklogDetected\NotifyAdminQueueBacklogListener;
+use Modules\Notification\Listeners\Queue\JobFailed\NotifyAdminJobFailedListener;
 use Modules\Notification\Listeners\Support\TicketCreated\NotifyAdminSupportTicketCreatedListener;
 use Modules\Notification\Listeners\Support\TicketMessageCreated\NotifyAdminSupportTicketRepliedListener;
 use Modules\Notification\Listeners\Support\TicketMessageCreated\SendTicketAnsweredNotificationToUserListener;
@@ -112,6 +116,14 @@ class EventServiceProvider extends ServiceProvider
         TicketMessageCreatedEvent::class => [
             NotifyAdminSupportTicketRepliedListener::class,
             SendTicketAnsweredNotificationToUserListener::class,
+        ],
+        // Queue-visibility ops alerts (gap-B3): deliberately synchronous
+        // listeners — an alert about a broken queue cannot ride the queue.
+        JobFailed::class => [
+            NotifyAdminJobFailedListener::class,
+        ],
+        QueueBacklogDetectedEvent::class => [
+            NotifyAdminQueueBacklogListener::class,
         ],
     ];
 

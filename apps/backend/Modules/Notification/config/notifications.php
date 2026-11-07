@@ -94,6 +94,19 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'queue' => [
+                // Queue-visibility ops alerts (gap-B3). The listener passes
+                // explicit per-channel data keys; the database key carries the
+                // exception excerpt, every external key carries identifiers only.
+                'job_failed' => [
+                    'admin' => ['database', 'email', 'webpush', 'telegram'],
+                ],
+                'backlog' => [
+                    'admin' => ['database', 'email', 'webpush', 'telegram'],
+                ],
+            ],
+        ],
     ],
 
     // Recipients for audience="admin" email notifications; a comma-separated

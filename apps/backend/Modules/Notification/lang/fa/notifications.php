@@ -126,5 +126,20 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'admin' => [
+                'queue' => [
+                    'job_failed' => [
+                        'subject' => 'کار صف ناموفق شد',
+                        'body' => 'کار :job روی صف «:queue» (اتصال :connection) در :failed_at ناموفق شد. شناسه :uuid. متن خطا: :exception_excerpt — بررسی در بخش مدیریت ← کارهای ناموفق.',
+                    ],
+                    'backlog' => [
+                        'subject' => 'انباشت صف از آستانه گذشت',
+                        'body' => 'صف «:queue» روی اتصال :connection دربرگیرنده :size کار است؛ بیش از آستانه هشدار :threshold. بررسی در بخش مدیریت ← کارهای ناموفق.',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];

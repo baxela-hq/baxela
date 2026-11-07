@@ -126,5 +126,20 @@ return [
                 ],
             ],
         ],
+        'system' => [
+            'admin' => [
+                'queue' => [
+                    'job_failed' => [
+                        'subject' => 'Queue job failed',
+                        'body' => 'Job :job failed on queue ":queue" (connection :connection) at :failed_at. UUID :uuid. Exception: :exception_excerpt — inspect it under Admin → Failed Jobs.',
+                    ],
+                    'backlog' => [
+                        'subject' => 'Queue backlog above threshold',
+                        'body' => 'Queue ":queue" on connection :connection holds :size jobs, above the alert threshold of :threshold. Inspect it under Admin → Failed Jobs.',
+                    ],
+                ],
+            ],
+        ],
+
     ],
 ];
