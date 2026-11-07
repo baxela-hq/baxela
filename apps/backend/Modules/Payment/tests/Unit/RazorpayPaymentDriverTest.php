@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\RazorpayPaymentDriver;
 use Modules\Payment\Gateways\RazorpayClient;
@@ -234,3 +235,131 @@ it('rejects a webhook whose body is not valid json even when correctly signed', 
             'HTTP_X_RAZORPAY_SIGNATURE' => razorpaySignature($rawBody, 'rzp-webhook-test'),
         ], $rawBody));
 })->throws(PaymentException::class);
+
+function razorpayRefundInput(array $overrides = []): PaymentRefundInput
+{
+    $base = [
+        'payment_id' => 1,
+        'order_id' => 2,
+        'transaction_id' => '1',
+        'amount' => 10.0,
+        'currency' => 'INR',
+        'currency_decimal_places' => 2,
+        'idempotency_key' => 'refund-uuid-1',
+        'gateway_transaction_id' => 'pay_NUuTZZFtuv7zxa',
+    ];
+
+    return new PaymentRefundInput(...array_values(array_merge($base, $overrides)));
+}
+
+it('refunds the captured payment with paise, notes and the refund idempotency key', function () {
+    $captured = [];
+    $driver = razorpayDriver(function (MockInterface $client) use (&$captured): void {
+        $client->shouldReceive('createRefund')
+            ->once()
+            ->with(
+                'pay_NUuTZZFtuv7zxa',
+                Mockery::on(function (array $params) use (&$captured): bool {
+                    $captured = $params;
+
+                    return true;
+                }),
+                'refund-uuid-1',
+            )
+            ->andReturn((object) ['id' => 'rfnd_1', 'status' => 'pending']);
+    });
+
+    $result = $driver->refund(razorpayRefundInput());
+
+    // Normal refunds go pending → processed — never completed money
+    // movement until refund.processed confirms.
+    expect($result->transaction_id)->toBe('rfnd_1')
+        ->and($result->accepted_pending)->toBeTrue()
+        ->and($captured['amount'])->toBe(1000)
+        ->and($captured['notes'])->toBe(['baxela_refund_uuid' => 'refund-uuid-1']);
+});
+
+it('treats an already processed refund response as definitive', function () {
+    $driver = razorpayDriver(function (MockInterface $client): void {
+        $client->shouldReceive('createRefund')
+            ->once()
+            ->andReturn((object) ['id' => 'rfnd_2', 'status' => 'processed']);
+    });
+
+    $result = $driver->refund(razorpayRefundInput());
+
+    expect($result->transaction_id)->toBe('rfnd_2')
+        ->and($result->accepted_pending)->toBeFalse();
+});
+
+it('refuses to refund a payment without a persisted pay id', function () {
+    $driver = razorpayDriver(function (MockInterface $client): void {
+        $client->shouldNotReceive('createRefund');
+    });
+
+    $driver->refund(razorpayRefundInput(['gateway_transaction_id' => null]));
+})->throws(PaymentException::class, 'payment.refund.not_supported');
+
+it('routes a refund processed webhook to the refund ledger via the echoed notes', function () {
+    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+        ->handleWebhook(razorpayEvent([
+            'event' => 'refund.processed',
+            'payload' => [
+                'refund' => [
+                    'entity' => [
+                        'id' => 'rfnd_1',
+                        'payment_id' => 'pay_NUuTZZFtuv7zxa',
+                        'amount' => 1000,
+                        'status' => 'processed',
+                        'notes' => ['baxela_refund_uuid' => 'refund-uuid-1'],
+                    ],
+                ],
+            ],
+        ]));
+
+    expect($result->refund_outcome)->not->toBeNull()
+        ->and($result->refund_outcome->reference)->toBe('refund-uuid-1')
+        ->and($result->refund_outcome->gateway_refund_id)->toBe('rfnd_1')
+        ->and($result->refund_outcome->gateway_payment_id)->toBe('pay_NUuTZZFtuv7zxa')
+        ->and($result->refund_outcome->status)->toBe('success')
+        ->and($result->refund_outcome->amount_minor)->toBe(1000);
+});
+
+it('routes a refund failed webhook as a definitive failure', function () {
+    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+        ->handleWebhook(razorpayEvent([
+            'event' => 'refund.failed',
+            'payload' => [
+                'refund' => [
+                    'entity' => [
+                        'id' => 'rfnd_2',
+                        'payment_id' => 'pay_NUuTZZFtuv7zxa',
+                        'amount' => 1000,
+                        'notes' => ['baxela_refund_uuid' => 'refund-uuid-1'],
+                    ],
+                ],
+            ],
+        ]));
+
+    expect($result->refund_outcome->status)->toBe('failed');
+});
+
+it('rejects a refund webhook without any correlation key', function () {
+    new RazorpayPaymentDriver(app(RazorpayClient::class))
+        ->handleWebhook(razorpayEvent([
+            'event' => 'refund.processed',
+            'payload' => [
+                'refund' => [
+                    'entity' => ['amount' => 1000],
+                ],
+            ],
+        ]));
+})->throws(PaymentException::class);
+
+it('still persists the captured pay id from a paid link webhook', function () {
+    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+        ->handleWebhook(razorpayEvent(razorpayEventPayload()));
+
+    expect($result->refund_outcome)->toBeNull()
+        ->and($result->gateway_transaction_id)->toBe('pay_NUuTZZFtuv7zxa');
+});

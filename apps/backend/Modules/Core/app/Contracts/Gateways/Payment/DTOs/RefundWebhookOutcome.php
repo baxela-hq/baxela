@@ -7,13 +7,18 @@ namespace Modules\Core\Contracts\Gateways\Payment\DTOs;
  * merchant reference (Baxela's ledger uuid) and the gateway's own refund
  * id are deliberately separate properties — they are different
  * identifiers and must never overload each other (the echoed uuid is the
- * correlation key; the gateway refund id is reconciliation metadata).
+ * correlation key; the gateway refund id is the documented fallback and
+ * reconciliation metadata).
  */
 class RefundWebhookOutcome
 {
     public function __construct(
-        /** Baxela's refund ledger uuid, echoed by the gateway. */
-        public readonly string $reference,
+        /**
+         * Baxela's refund ledger uuid, echoed by the gateway. Gateways
+         * without a reference echo (Mercado Pago notifications) leave it
+         * null — correlation then goes through the gateway refund id.
+         */
+        public readonly ?string $reference,
         /** One of: success, failed, reversed. */
         public readonly string $status,
         /** The gateway's refund id, when the event carries one. */

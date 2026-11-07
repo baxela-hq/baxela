@@ -255,7 +255,25 @@ acked as no-ops).
   → failed. Pix vouchers and Boleto slips sit in `pending`/`in_process`
   for hours — non-terminal statuses are rejected so the payment stays
   PENDING until the terminal notification (the deferred-payment pattern
-  shared with Stripe/NowPayments).
+  shared with Stripe/NowPayments). The MP payment id (`payment->id`) is
+  persisted as `gateway_transaction_id` on every fetch — the refund API
+  keys on it.
+- **Refunds:** `refund` calls `POST /v1/payments/{mp_id}/refunds` with
+  the **mandatory** `X-Idempotency-Key` (the ledger uuid — since 2024-01
+  MP rejects refunds without it) and the explicit decimal amount. The
+  explicit amount is always sent: omitting it asks MP to refund the
+  payment's ORIGINAL total, which fails once a partial refund exists.
+  An `approved` refund response is definitive (sync, like Stripe);
+  anything else moves the ledger row to `processing`. There is no
+  merchant-reference echo — reconciliation correlates through the
+  gateway refund id: a `refunded`/`partially_refunded` notification
+  re-announces every definitive `refunds[]` entry on the resource, and
+  the ledger's transition guards make re-announced entries no-ops. A
+  refund on a payment without a persisted MP id (settled before the
+  column shipped) refuses explicitly with
+  `payment.refund.not_supported` — refund it in the MP dashboard.
+  Acceptance gate: verify the terminal refund-status value and the
+  `refunds[]` entry shape against sandbox responses.
 - Local dev note: same as the others — tunnel the backend and register
   the URL in the dashboard webhook config, or use the sandbox test
   cards.
@@ -324,8 +342,10 @@ acked as no-ops).
   `payment_link.entity`, which is why it doubles as the stored
   `transaction_id`; integer minor-units `amount` in paise; a
   `{order_code}`-templated `callback_url` return page). The `short_url`
-  is the redirect; its absence fails loudly. The `plink_…` id is not
-  persisted; find it in the dashboard by reference.
+  is the redirect; its absence fails loudly. The captured `pay_…` id
+  arriving on `payment_link.paid` (`payload.payment.entity.id`) is
+  persisted as `gateway_transaction_id` — the refund API keys on it. The
+  `plink_…` id is not persisted; find it in the dashboard by reference.
 - `handleWebhook` verifies `x-razorpay-signature` — hex HMAC-SHA256 over
   the **exact raw request bytes** with the dashboard webhook secret —
   locally before decoding (re-serialization breaks verification, the
@@ -334,9 +354,23 @@ acked as no-ops).
   (the amount is fully paid) and `payment_link.cancelled` → failed.
   Failed payment attempts (`payment.failed`) leave the link payable and
   the payment PENDING until a terminal event (the deferred-payment
-  pattern). Subscribe the webhook to exactly `payment_link.paid` and
-  `payment_link.cancelled` at
-  `POST /api/v1/payment/webhook/razorpay`.
+  pattern). Subscribe the webhook to `payment_link.paid`,
+  `payment_link.cancelled` **and the refund events** at
+  `POST /api/v1/payment/webhook/razorpay` — refund events must be
+  enabled explicitly in the dashboard webhook config, and delivery is
+  unordered: a `refund.processed` may arrive after a create-call timeout
+  and resolve the row the timeout left in `reconciliation_required`.
+- **Refunds:** `refund` calls `POST /v1/payments/{pay_…}/refund` with
+  paise, the ledger uuid as `X-Refund-Idempotency` (Razorpay's
+  refund-specific idempotency header) and in the refund's `notes` —
+  echoed back on the refund entity, so `refund.processed` /
+  `refund.failed` correlate through it (fallback: the refund's own id).
+  A `processed` response is definitive (instant refunds); a `pending`
+  response moves the ledger row to `processing` until the webhook
+  confirms. A refund on a payment without a persisted `pay_` id
+  (settled before the column shipped) refuses explicitly with
+  `payment.refund.not_supported` — a link with several captured
+  payments is never refunded arbitrarily; refund it in the dashboard.
 - Local dev note: same as the others — tunnel the backend and register
   the URL under Settings → Webhooks in the dashboard.
 

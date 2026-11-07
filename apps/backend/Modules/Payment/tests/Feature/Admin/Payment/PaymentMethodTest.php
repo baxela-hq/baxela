@@ -88,8 +88,8 @@ it('exposes per-driver refund capability', function () {
     $refundable = $rows->where(PaymentMethodSchema::IS_REFUNDABLE, true)->pluck('method')->all();
     $notRefundable = $rows->where(PaymentMethodSchema::IS_REFUNDABLE, false)->pluck('method')->all();
 
-    expect($refundable)->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen', 'checkoutcom'])
-        ->and($notRefundable)->toEqualCanonicalizing(['nowpayments', 'mercadopago', 'razorpay']);
+    expect($refundable)->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen', 'checkoutcom', 'mercadopago', 'razorpay'])
+        ->and($notRefundable)->toEqualCanonicalizing(['nowpayments']);
 });
 
 it('activates a method and moves its checkout position', function () {

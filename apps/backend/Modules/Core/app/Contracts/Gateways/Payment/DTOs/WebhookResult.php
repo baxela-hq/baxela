@@ -20,5 +20,12 @@ class WebhookResult
          * each other's rows.
          */
         public readonly ?RefundWebhookOutcome $refund_outcome = null,
+        /**
+         * Multiple refund-lifecycle outcomes from one delivery — used by
+         * gateways whose notifications announce a resource (e.g. a
+         * Mercado Pago payment) carrying several refund entries; the
+         * ledger's transition guards make re-announced entries no-ops.
+         */
+        public readonly ?array $refund_outcomes = null,
     ) {}
 }

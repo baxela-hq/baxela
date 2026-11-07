@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Transformers\Admin\FailedJob;
 
+use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Schemas\FailedJob\FailedJobSchema;
@@ -18,7 +19,7 @@ use Modules\Core\Support\FailedJob\FailedJobPayloadPresenter;
  * @property string $queue
  * @property string $payload
  * @property string $exception
- * @property \Carbon\CarbonInterface|null $failed_at
+ * @property CarbonInterface|null $failed_at
  */
 class FailedJobResource extends JsonResource
 {

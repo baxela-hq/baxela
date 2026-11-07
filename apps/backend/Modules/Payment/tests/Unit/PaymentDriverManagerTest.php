@@ -113,14 +113,13 @@ it('reports refund support only for drivers implementing RefundableDriver', func
     expect($manager->supportsRefund(PaymentMethodEnum::MANUAL))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::STRIPE))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::PAYPAL))->toBeTrue()
-        // Adyen and Checkout.com gained refund drivers in gap-B4 (accepted
-        // async, webhook-confirmed); Mercado Pago and Razorpay follow in
-        // stage 2.
+        // Every gateway except NowPayments has a refund driver now
+        // (gap-B4); NowPayments is provider-impossible (crypto).
         ->and($manager->supportsRefund(PaymentMethodEnum::ADYEN))->toBeTrue()
         ->and($manager->supportsRefund(PaymentMethodEnum::CHECKOUTCOM))->toBeTrue()
-        ->and($manager->supportsRefund(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse()
-        ->and($manager->supportsRefund(PaymentMethodEnum::MERCADOPAGO))->toBeFalse()
-        ->and($manager->supportsRefund(PaymentMethodEnum::RAZORPAY))->toBeFalse();
+        ->and($manager->supportsRefund(PaymentMethodEnum::MERCADOPAGO))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::RAZORPAY))->toBeTrue()
+        ->and($manager->supportsRefund(PaymentMethodEnum::NOWPAYMENTS))->toBeFalse();
 
     // An unregistered driver is never refundable, whatever its class.
     config(['payment.drivers' => collect(config('payment.drivers'))->except('stripe')->all()]);

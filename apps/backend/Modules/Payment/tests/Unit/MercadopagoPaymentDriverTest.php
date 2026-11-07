@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\MercadopagoClient;
@@ -97,7 +98,7 @@ function mercadopagoSignature(string $dataId, string $requestId, string $secret,
 /**
  * Payment resource as GET /v1/payments/{id} returns it.
  */
-function mercadopagoPaymentResource(string $status, string $reference = '9'): object
+function mercadopagoPaymentResource(string $status, string $reference = '9', array $refunds = []): object
 {
     return (object) [
         'id' => 123456789,
@@ -105,6 +106,7 @@ function mercadopagoPaymentResource(string $status, string $reference = '9'): ob
         'external_reference' => $reference,
         'transaction_amount' => 305,
         'currency_id' => 'BRL',
+        'refunds' => $refunds,
     ];
 }
 
@@ -299,8 +301,112 @@ it('rejects non-terminal payment statuses so the payment stays pending', functio
     'pending' => ['pending'],
     'in process' => ['in_process'],
     'authorized' => ['authorized'],
-    'refunded' => ['refunded'],
 ]);
+
+function mercadopagoRefundInput(array $overrides = []): PaymentRefundInput
+{
+    $base = [
+        'payment_id' => 1,
+        'order_id' => 2,
+        'transaction_id' => '1',
+        'amount' => 10.0,
+        'currency' => 'BRL',
+        'currency_decimal_places' => 2,
+        'idempotency_key' => 'refund-uuid-1',
+        'gateway_transaction_id' => '123456789',
+    ];
+
+    return new PaymentRefundInput(...array_values(array_merge($base, $overrides)));
+}
+
+it('refunds with a decimal amount and the mandatory idempotency key', function () {
+    $captured = [];
+    $driver = mercadopagoDriver(function (MockInterface $client) use (&$captured): void {
+        $client->shouldReceive('createRefund')
+            ->once()
+            ->with('123456789', Mockery::on(function (float $amount) use (&$captured): bool {
+                $captured['amount'] = $amount;
+
+                return true;
+            }), 'refund-uuid-1')
+            ->andReturn((object) ['id' => 'ref-111', 'status' => 'approved']);
+    });
+
+    $result = $driver->refund(mercadopagoRefundInput());
+
+    // An approved refund response is definitive — MP is a sync driver.
+    expect($result->transaction_id)->toBe('ref-111')
+        ->and($result->accepted_pending)->toBeFalse()
+        ->and($captured['amount'])->toBe(10.0);
+});
+
+it('holds a non-approved refund response as accepted-pending', function () {
+    $driver = mercadopagoDriver(function (MockInterface $client): void {
+        $client->shouldReceive('createRefund')
+            ->once()
+            ->andReturn((object) ['id' => 'ref-112', 'status' => 'pending']);
+    });
+
+    $result = $driver->refund(mercadopagoRefundInput());
+
+    expect($result->transaction_id)->toBe('ref-112')
+        ->and($result->accepted_pending)->toBeTrue();
+});
+
+it('reports an acceptance without a refund id instead of inventing one', function () {
+    $driver = mercadopagoDriver(function (MockInterface $client): void {
+        $client->shouldReceive('createRefund')->once()->andReturn((object) ['status' => 'approved']);
+    });
+
+    $result = $driver->refund(mercadopagoRefundInput());
+
+    expect($result->transaction_id)->toBeNull()
+        ->and($result->accepted_pending)->toBeFalse();
+});
+
+it('refuses to refund a payment without a persisted payment id', function () {
+    $driver = mercadopagoDriver(function (MockInterface $client): void {
+        $client->shouldNotReceive('createRefund');
+    });
+
+    $driver->refund(mercadopagoRefundInput(['gateway_transaction_id' => null]));
+})->throws(PaymentException::class, 'payment.refund.not_supported');
+
+it('re-announces every definitive refund entry on a refunded notification', function () {
+    $result = mercadopagoFetchingDriver(mercadopagoPaymentResource('refunded', '9', [
+        (object) ['id' => 'ref-1', 'amount' => 10.5, 'status' => 'approved'],
+        (object) ['id' => 'ref-2', 'amount' => 4.0, 'status' => 'approved'],
+    ]))->handleWebhook(mercadopagoNotification('123456789'));
+
+    expect($result->refund_outcomes)->toBeArray()
+        ->and(count($result->refund_outcomes))->toBe(2)
+        ->and($result->refund_outcomes[0]->gateway_refund_id)->toBe('ref-1')
+        ->and($result->refund_outcomes[0]->reference)->toBeNull()
+        ->and($result->refund_outcomes[0]->status)->toBe('success')
+        ->and($result->refund_outcomes[0]->gateway_payment_id)->toBe('123456789')
+        ->and($result->refund_outcomes[0]->currency)->toBe('BRL')
+        ->and($result->refund_outcomes[1]->gateway_refund_id)->toBe('ref-2');
+});
+
+it('skips non-definitive refund entries and empty ones', function () {
+    $result = mercadopagoFetchingDriver(mercadopagoPaymentResource('partially_refunded', '9', [
+        (object) ['id' => 'ref-1', 'amount' => 10.5, 'status' => 'pending'],
+        (object) ['amount' => 4.0],
+        (object) ['id' => 'ref-2', 'amount' => 4.0],
+    ]))->handleWebhook(mercadopagoNotification('123456789'));
+
+    expect(count($result->refund_outcomes))->toBe(1)
+        ->and($result->refund_outcomes[0]->gateway_refund_id)->toBe('ref-2');
+});
+
+it('still persists the mp payment id from an approved notification', function () {
+    $result = mercadopagoFetchingDriver(mercadopagoPaymentResource('approved'))
+        ->handleWebhook(mercadopagoNotification('123456789'));
+
+    expect($result->refund_outcome)->toBeNull()
+        ->and($result->refund_outcomes)->toBeNull()
+        ->and($result->gateway_transaction_id)->toBe('123456789');
+});
 
 it('accepts the older query-string notification style', function () {
     $result = mercadopagoFetchingDriver(mercadopagoPaymentResource('approved'))

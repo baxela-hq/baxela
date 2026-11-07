@@ -25,6 +25,22 @@ class MercadopagoClient
     }
 
     /**
+     * Refund a payment, full or partial. The explicit decimal amount is
+     * always sent — omitting it asks MP to refund the payment's ORIGINAL
+     * total, which fails once a partial refund exists, while an explicit
+     * amount refunds exactly what the ledger reserved. X-Idempotency-Key
+     * is mandatory on refunds since 2024-01: a retried call returns the
+     * originally created refund instead of creating a second one.
+     */
+    public function createRefund(string $paymentId, float $amount, string $idempotencyKey): object
+    {
+        return $this->request()
+            ->withHeaders(['X-Idempotency-Key' => $idempotencyKey])
+            ->post("/v1/payments/{$paymentId}/refunds", ['amount' => $amount])
+            ->throw()->object();
+    }
+
+    /**
      * Webhook signature check, verifiable locally: x-signature carries
      * ts=…,v1=…, where v1 is the hex HMAC-SHA256 of the manifest
      * id:{data.id};request-id:{x-request-id};ts:{ts}; signed with the

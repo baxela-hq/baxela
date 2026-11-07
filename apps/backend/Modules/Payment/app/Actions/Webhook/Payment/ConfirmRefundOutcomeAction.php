@@ -42,9 +42,36 @@ class ConfirmRefundOutcomeAction
     {
         $outcome = $result->refund_outcome;
 
-        $refund = PaymentRefund::query()
-            ->where(PaymentRefundSchema::UUID, $outcome->reference)
-            ->first();
+        if ($outcome !== null) {
+            $this->handleOutcome($outcome);
+        }
+    }
+
+    /**
+     * Route a verified refund-lifecycle webhook outcome into the ledger.
+     * Correlation and validation come before any transition:
+     *
+     * 1. The echoed ledger uuid (Baxela's merchant reference, committed
+     *    before the gateway call) resolves the row — the gateway refund
+     *    id is the documented fallback for lifecycle events that don't
+     *    echo it (verified per event against sandbox payloads).
+     * 2. When the event carries the gateway payment id it must match the
+     *    payment's stored one; amount and currency must match the ledger
+     *    row when carried. Any mismatch is reported at error level with
+     *    the identifiers and the delivery is acked — never finalized.
+     * 3. Unknown references (refunds issued from the gateway dashboard)
+     *    are acked at notice level — they were never reserved, so there
+     *    is nothing to free and nothing to account.
+     */
+    public function handleOutcome(RefundWebhookOutcome $outcome): void
+    {
+        $refund = null;
+
+        if ($outcome->reference !== null && $outcome->reference !== '') {
+            $refund = PaymentRefund::query()
+                ->where(PaymentRefundSchema::UUID, $outcome->reference)
+                ->first();
+        }
 
         if (is_null($refund) && $outcome->gateway_refund_id !== null) {
             // Documented fallback: a lifecycle event without the echoed

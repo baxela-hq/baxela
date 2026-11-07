@@ -5,17 +5,18 @@ namespace Modules\Payment\Gateways\Drivers;
 use Illuminate\Http\Request;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\RefundWebhookOutcome;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
-use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
+use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class RazorpayPaymentDriver implements PaymentDriverInterface
+class RazorpayPaymentDriver implements RefundableDriver
 {
-    use CannotRefund;
-
     public function __construct(protected RazorpayClient $razorpay) {}
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
@@ -64,9 +65,42 @@ class RazorpayPaymentDriver implements PaymentDriverInterface
 
         $event = json_decode($request->getContent(), true);
 
-        $reference = is_array($event)
-            ? (string) ($event['payload']['payment_link']['entity']['reference_id'] ?? '')
-            : '';
+        if (! is_array($event)) {
+            throw PaymentException::webhookInvalid();
+        }
+
+        // Refund lifecycle: the outcome routes to the refund ledger. The
+        // ledger uuid rides in the refund's notes (attached at creation
+        // and echoed back); the refund entity's own id is the documented
+        // fallback correlation key. Delivery is unordered — a
+        // refund.processed may resolve a row the create-call timeout left
+        // in reconciliation_required.
+        if (in_array($event['event'] ?? null, ['refund.processed', 'refund.failed'], true)) {
+            $entity = is_array($event['payload']['refund']['entity'] ?? null)
+                ? $event['payload']['refund']['entity']
+                : [];
+
+            $uuid = (string) ($entity['notes']['baxela_refund_uuid'] ?? '');
+            $refundId = (string) ($entity['id'] ?? '');
+
+            if ($uuid === '' && $refundId === '') {
+                throw PaymentException::webhookInvalid();
+            }
+
+            return new WebhookResult(
+                transaction_id: '',
+                status: PaymentStatusEnum::FAILED->value, // unused on the refund branch
+                refund_outcome: new RefundWebhookOutcome(
+                    reference: $uuid !== '' ? $uuid : null,
+                    status: $event['event'] === 'refund.processed' ? 'success' : 'failed',
+                    gateway_refund_id: $refundId !== '' ? $refundId : null,
+                    gateway_payment_id: (string) ($entity['payment_id'] ?? ''),
+                    amount_minor: isset($entity['amount']) ? (int) $entity['amount'] : null,
+                ),
+            );
+        }
+
+        $reference = (string) ($event['payload']['payment_link']['entity']['reference_id'] ?? '');
 
         if ($reference === '') {
             throw PaymentException::webhookInvalid();
@@ -84,6 +118,44 @@ class RazorpayPaymentDriver implements PaymentDriverInterface
         return new WebhookResult(
             transaction_id: $reference,
             status: $status,
+            // The captured pay_ id is what Razorpay's refund API keys on —
+            // persist it at settle time (the link's reference_id we store
+            // cannot be resolved back to a payment reliably).
+            gateway_transaction_id: (string) ($event['payload']['payment']['entity']['id'] ?? ''),
+        );
+    }
+
+    public function refund(PaymentRefundInput $input): PaymentRefundResult
+    {
+        // Refunds key on the captured pay_ id, persisted from the
+        // payment_link.paid webhook. Payments settled before the column
+        // shipped have nothing to refund through the API — refuse instead
+        // of guessing which payment on the link to refund (a link with
+        // several captures is never refunded arbitrarily).
+        $payId = (string) ($input->gateway_transaction_id ?? '');
+
+        if ($payId === '') {
+            throw PaymentException::refundNotSupported();
+        }
+
+        $refund = $this->razorpay->createRefund($payId, [
+            // Razorpay wants integer minor units (paise), built from the
+            // payment currency's decimal places.
+            'amount' => $this->minorUnits($input->amount, $input->currency_decimal_places ?? 2),
+            // Echoed back on the refund entity in webhook deliveries: the
+            // whole bridge back to this ledger row.
+            'notes' => ['baxela_refund_uuid' => (string) $input->idempotency_key],
+        ], (string) $input->idempotency_key);
+
+        // Normal refunds go pending → processed (5–7 working days);
+        // instant refunds arrive processed. Only a processed refund is
+        // definitive — everything else awaits the refund.processed
+        // webhook (enable refund events on the dashboard webhook).
+        $processed = ($refund->status ?? null) === 'processed';
+
+        return new PaymentRefundResult(
+            transaction_id: isset($refund->id) ? (string) $refund->id : null,
+            accepted_pending: ! $processed,
         );
     }
 

@@ -30,7 +30,17 @@ class HandleWebhookAction
 
         // A refund-lifecycle outcome routes to the refund ledger, never to
         // payment settlement — the two branches never touch each other's
-        // rows.
+        // rows. Gateways whose notifications announce several refund
+        // entries at once (Mercado Pago) deliver a list; the ledger's
+        // transition guards make re-announced entries no-ops.
+        if ($result->refund_outcomes !== null) {
+            foreach ($result->refund_outcomes as $outcome) {
+                app(ConfirmRefundOutcomeAction::class)->handleOutcome($outcome);
+            }
+
+            return;
+        }
+
         if ($result->refund_outcome !== null) {
             app(ConfirmRefundOutcomeAction::class)->handle($result);
 
