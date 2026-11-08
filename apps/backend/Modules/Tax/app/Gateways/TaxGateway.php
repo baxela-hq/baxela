@@ -30,11 +30,38 @@ class TaxGateway implements TaxGatewayInterface
             throw new TaxConfigurationException('tax.configuration.no_default');
         }
 
+        // Regional resolution (gap-C1a D2/D3): every active rate for the
+        // country, keyed per class with the region-specific row winning
+        // over the country-wide ('') row.
         $rates = TaxRate::query()
             ->where(TaxRateSchema::COUNTRY_CODE, $input->country_code)
             ->where(TaxRateSchema::IS_ACTIVE, true)
             ->get()
-            ->keyBy(TaxRateSchema::TAX_CLASS_ID);
+            ->groupBy(TaxRateSchema::TAX_CLASS_ID);
+
+        // Rule 2 — the missing-region hole: when the country has
+        // region-specific rates configured but the checkout address
+        // carries no region, refusing loudly beats silently zero- or
+        // country-rating the basket (California must not fall through).
+        $hasRegionalRates = $rates
+            ->flatten()
+            ->contains(fn (TaxRate $rate): bool => $rate->{TaxRateSchema::REGION_CODE} !== '');
+
+        if ($input->region_code === '' && $hasRegionalRates && $input->items !== []) {
+            throw new TaxConfigurationException('tax.configuration.region_required', meta: [
+                TaxRateSchema::COUNTRY_CODE => $input->country_code,
+            ]);
+        }
+
+        // Per class: the region-specific rate when present+active, else
+        // the country-wide rate (deactivation removes a rate from
+        // consideration — the fallback applies again, D2).
+        $resolved = $rates->mapWithKeys(function ($group) use ($input): array {
+            $regional = $group->firstWhere(TaxRateSchema::REGION_CODE, $input->region_code);
+            $rate = $regional ?? $group->firstWhere(TaxRateSchema::REGION_CODE, '');
+
+            return $rate === null ? [] : [(int) $rate->{TaxRateSchema::TAX_CLASS_ID} => $rate];
+        });
 
         // Seller-funded coupon discount leaves the taxable base first —
         // allocated across the post-promotion line amounts
@@ -59,7 +86,7 @@ class TaxGateway implements TaxGatewayInterface
                 ]);
             }
 
-            $rate = $rates->get($classId);
+            $rate = $resolved->get($classId);
 
             $base = max(0, $item->amount_minor - ($allocations[$item->variant_id] ?? 0));
 
@@ -81,7 +108,7 @@ class TaxGateway implements TaxGatewayInterface
         $shippingClass = $classes->firstWhere(TaxClassSchema::IS_SHIPPING, true);
         $shippingRate = is_null($shippingClass)
             ? null
-            : $rates->get((int) $shippingClass->{TaxClassSchema::ID});
+            : $resolved->get((int) $shippingClass->{TaxClassSchema::ID});
 
         $shippingTaxMinor = ($input->shipping_cost_minor > 0 && ! is_null($shippingRate))
             ? TaxMath::taxOf(

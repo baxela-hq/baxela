@@ -209,9 +209,13 @@ class CheckoutAction
                     tax_class_id: $item->getAttribute(CartItemSchema::ATTR_VARIANT_SUMMARY)?->tax_class_id,
                 ))->all();
 
+                // The checkout (destination) address is the tax
+                // jurisdiction (gap-C1a D4) — the same address the
+                // shipping quote rates; preview resolves it identically.
                 $tax = app(TaxGatewayInterface::class)->calculateForItems(new TaxCalculationInput(
                     items: $taxItems,
                     country_code: (string) $address->country_code,
+                    region_code: strtoupper((string) ($address->region_code ?? '')),
                     coupon_discount_minor: $input->discount_minor,
                     shipping_cost_minor: Money::fromDecimal(number_format($input->shipping_cost, 2, '.', '')),
                 ));

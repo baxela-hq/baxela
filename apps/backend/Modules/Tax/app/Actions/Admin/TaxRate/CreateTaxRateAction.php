@@ -18,6 +18,7 @@ class CreateTaxRateAction
             $record = TaxRate::query()->create([
                 TaxRateSchema::NAME => $data[TaxRateSchema::NAME],
                 TaxRateSchema::COUNTRY_CODE => $data[TaxRateSchema::COUNTRY_CODE],
+                TaxRateSchema::REGION_CODE => strtoupper(trim((string) ($data[TaxRateSchema::REGION_CODE] ?? ''))) ?: '',
                 TaxRateSchema::TAX_CLASS_ID => $data[TaxRateSchema::TAX_CLASS_ID],
                 TaxRateSchema::RATE => $data[TaxRateSchema::RATE],
                 TaxRateSchema::IS_ACTIVE => $data[TaxRateSchema::IS_ACTIVE],

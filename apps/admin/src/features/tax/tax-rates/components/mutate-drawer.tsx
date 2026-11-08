@@ -23,6 +23,7 @@ import {
   buildEditValues,
 } from '../data/schema'
 import { useCountries } from '@/features/core/countries/hooks/use-countries'
+import { useRegions } from '@/features/core/regions/hooks/use-regions'
 import { useTaxClassOptions } from '@/features/tax/tax-classes/hooks/use-tax-classes'
 import { useSaveTaxRate } from '../hooks/use-tax-rate-mutations'
 
@@ -55,6 +56,10 @@ export function MutateDrawer({
     resolver: zodResolver(formSchema),
     defaultValues: { ...defaultValues },
   })
+
+  const watchedCountry = form.watch('country_code') ?? ''
+  const { data: regions } = useRegions(watchedCountry)
+  const regionsSafe = regions ?? []
 
   useEffect(() => {
     form.reset(buildEditValues(currentRow))
@@ -144,6 +149,39 @@ export function MutateDrawer({
                 </FormItem>
               )}
             />
+
+            {regionsSafe.length > 0 ? (
+              <FormField
+                control={form.control}
+                name='region_code'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{tLabel('region_code')}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ?? ''}
+                    >
+                      <FormControl>
+                        <SelectTrigger className='w-full'>
+                          <SelectValue placeholder={tPlaceHolder('select')} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value=''>
+                          {tHelpText('country_wide')}
+                        </SelectItem>
+                        {regionsSafe.map((region) => (
+                          <SelectItem key={region.code} value={region.code}>
+                            {region.name} ({region.code})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : null}
 
             <FormField
               control={form.control}

@@ -4,6 +4,8 @@ export const taxRateSchema = z.object({
   id: z.number(),
   name: z.string(),
   country_code: z.string(),
+  // null = the country-wide scope (gap-C1a); '' never reaches the API.
+  region_code: z.string().nullable().optional(),
   tax_class_id: z.number(),
   rate: z.string(),
   is_active: z.boolean(),
@@ -22,6 +24,8 @@ export type TaxRate = z.infer<typeof taxRateSchema>
 export const formSchema = z.object({
   name: z.string().min(1, 'required').max(255),
   country_code: z.string().min(1, 'required').max(2),
+  // '' = country-wide; validated as a pair server-side.
+  region_code: z.string().max(10).optional(),
   tax_class_id: z.number({ message: 'required' }).int().positive(),
   // percentage 0–100 with at most 4 fraction digits, matching decimal(7,4)
   rate: z
@@ -35,6 +39,7 @@ export type TaxRateForm = z.infer<typeof formSchema>
 export const defaultValues: TaxRateForm = {
   name: '',
   country_code: '',
+  region_code: '',
   tax_class_id: 0,
   rate: '',
   is_active: true,
@@ -46,6 +51,7 @@ export function buildEditValues(currentRow?: TaxRate): TaxRateForm {
   return {
     name: currentRow.name,
     country_code: currentRow.country_code,
+    region_code: currentRow.region_code ?? '',
     tax_class_id: currentRow.tax_class_id,
     rate: currentRow.rate.replace(/0+$/, '').replace(/\.$/, '') || '0',
     is_active: currentRow.is_active,

@@ -103,6 +103,7 @@ class ShowTaxPreviewAction
         $result = app(TaxGatewayInterface::class)->calculateForItems(new TaxCalculationInput(
             items: $taxItems,
             country_code: (string) $address->country_code,
+            region_code: strtoupper((string) ($address->region_code ?? '')),
             coupon_discount_minor: $couponDiscountMinor,
             shipping_cost_minor: $shippingCostMinor,
         ));

@@ -80,6 +80,9 @@ export const Columns = (): ColumnDef<TaxRate>[] => {
       cell: ({ row }) => (
         <div className='w-fit ps-3'>
           <Badge variant='outline'>{row.getValue('country_code')}</Badge>
+          {row.original.region_code ? (
+            <Badge variant='secondary'>{row.original.region_code}</Badge>
+          ) : null}
         </div>
       ),
       enableSorting: true,

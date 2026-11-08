@@ -5,6 +5,7 @@ namespace Modules\User\Http\Requests\User\Address;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Rules\CountryCodeRule;
+use Modules\Core\Rules\RegionCodeRule;
 use Modules\User\Schemas\Address\AddressSchema;
 use Modules\User\Schemas\Address\AddressTypeEnum;
 
@@ -23,6 +24,14 @@ class AddressRequest extends FormRequest
             AddressSchema::CITY => ['required', 'string', 'max:255'],
             AddressSchema::POSTAL_CODE => ['required', 'string', 'max:255'],
             AddressSchema::COUNTRY_CODE => ['required', 'string', 'size:2', new CountryCodeRule],
+            // Pair-validated against the submitted country (gap-C1a D4);
+            // stored addresses are never re-validated.
+            AddressSchema::REGION_CODE => [
+                'nullable',
+                'string',
+                'max:10',
+                new RegionCodeRule($this->input(AddressSchema::COUNTRY_CODE) ?? ''),
+            ],
             AddressSchema::IS_DEFAULT => ['required', 'boolean'],
         ];
     }

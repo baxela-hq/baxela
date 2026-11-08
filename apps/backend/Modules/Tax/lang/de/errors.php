@@ -13,6 +13,7 @@ return [
     ],
     'configuration' => [
         'invalid_class' => 'Ein Produkt verweist auf eine Steuerklasse, die nicht mehr existiert; der Checkout kann nicht fortgesetzt werden',
+        'region_required' => 'Dieses Land besteuert regional — die Adresse benötigt eine Region',
         'no_default' => 'Es ist keine Standard-Steuerklasse konfiguriert',
     ],
 ];

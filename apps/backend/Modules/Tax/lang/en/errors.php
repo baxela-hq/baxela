@@ -13,6 +13,7 @@ return [
     ],
     'configuration' => [
         'invalid_class' => 'A product references a tax class that no longer exists; the checkout cannot proceed',
+        'region_required' => 'This country taxes by region — the address needs a region',
         'no_default' => 'No default tax class is configured',
     ],
 ];

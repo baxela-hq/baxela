@@ -244,6 +244,7 @@
       "city": "شهر",
       "postal_code": "کد پستی",
       "country": "کشور",
+      "region": "استان / منطقه",
       "is_default": "استفاده به‌عنوان آدرس پیش‌فرض من"
     },
     "placeholders": {

@@ -13,7 +13,8 @@
       "address_line": "Dirección",
       "city": "Ciudad",
       "postal_code": "Código postal",
-      "country": "País"
+      "country": "País",
+      "region": "Provincia / Región"
     },
     "placeholders": {
       "full_name": "Nombre y apellidos",

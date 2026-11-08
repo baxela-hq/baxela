@@ -13,6 +13,7 @@ return [
     ],
     'configuration' => [
         'invalid_class' => 'Un produit référence une classe de taxe qui n’existe plus ; le paiement ne peut pas aboutir',
+        'region_required' => 'Ce pays applique des taxes régionales — l\'adresse nécessite une région',
         'no_default' => 'Aucune classe de taxe par défaut n’est configurée',
     ],
 ];

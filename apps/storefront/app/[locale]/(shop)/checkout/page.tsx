@@ -17,6 +17,7 @@ import type {
   ApiProfile,
   ApiShippingMethod,
   ApiTaxPreview,
+  ApiRegion,
 } from "@/lib/api/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +32,7 @@ const EMPTY_ADDRESS_FORM = {
   city: "",
   postal_code: "",
   country_code: "",
+  region_code: "",
 };
 
 /**
@@ -52,6 +54,7 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<ApiCartItem[]>([]);
   const [addresses, setAddresses] = useState<ApiAddress[]>([]);
   const [countries, setCountries] = useState<ApiCountry[]>([]);
+  const [regions, setRegions] = useState<ApiRegion[]>([]);
   const [addressId, setAddressId] = useState<number | null>(null);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [addressForm, setAddressForm] = useState({ ...EMPTY_ADDRESS_FORM });
@@ -182,6 +185,24 @@ export default function CheckoutPage() {
     }
   }, [addressId, methodId, appliedCoupon, loadMethods, loadTaxPreview]);
 
+  // Regions for a country (gap-C1a): loaded on country change; empty
+  // for countries without seeded regions (no select rendered).
+  const loadRegionOptions = async (countryCode: string) => {
+    if (!countryCode) {
+      setRegions([]);
+      return;
+    }
+    try {
+      setRegions(
+        await api.get<ApiRegion[]>(
+          `/core/public/regions?country_code=${countryCode}`,
+        ),
+      );
+    } catch {
+      setRegions([]);
+    }
+  };
+
   const onCreateAddress = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setPending(true);
@@ -189,7 +210,12 @@ export default function CheckoutPage() {
     try {
       const created = await api.post<ApiAddress>(
         "/user/user/addresses",
-        { ...addressForm, type: "shipping", is_default: addresses.length === 0 },
+        {
+          ...addressForm,
+          ...(addressForm.region_code ? {} : { region_code: null }),
+          type: "shipping",
+          is_default: addresses.length === 0,
+        },
         { token },
       );
       setAddresses((previous) => [...previous, created]);
@@ -532,12 +558,14 @@ export default function CheckoutPage() {
                         id="country"
                         required
                         value={addressForm.country_code}
-                        onChange={(event) =>
+                        onChange={(event) => {
                           setAddressForm((form) => ({
                             ...form,
                             country_code: event.target.value,
-                          }))
-                        }
+                            region_code: "",
+                          }));
+                          void loadRegionOptions(event.target.value);
+                        }}
                         className="h-14 w-full rounded-default border border-border bg-background px-4 text-base text-foreground focus:border-primary focus:outline-none"
                       >
                         <option value="">
@@ -550,6 +578,36 @@ export default function CheckoutPage() {
                         ))}
                       </select>
                     </div>
+                    {regions.length > 0 ? (
+                      <div>
+                        <label
+                          htmlFor="region"
+                          className="mb-2 block text-sm text-secondary-text rtl:normal-case rtl:tracking-normal"
+                        >
+                          {t("address.labels.region")}
+                        </label>
+                        <select
+                          id="region"
+                          value={addressForm.region_code}
+                          onChange={(event) =>
+                            setAddressForm((form) => ({
+                              ...form,
+                              region_code: event.target.value,
+                            }))
+                          }
+                          className="h-14 w-full rounded-default border border-border bg-background px-4 text-base text-foreground focus:border-primary focus:outline-none"
+                        >
+                          <option value="">
+                            {tCommon("form.placeholders.select")}
+                          </option>
+                          {regions.map((region) => (
+                            <option key={region.code} value={region.code}>
+                              {region.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : null}
                     <div className="flex items-end">
                       <Button type="submit" variant="primary" fullWidth={false}>
                         {t("address.actions.save")}

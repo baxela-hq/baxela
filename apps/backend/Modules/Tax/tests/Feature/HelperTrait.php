@@ -6,6 +6,7 @@ use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 use Modules\Auth\Models\User;
 use Modules\Core\Models\Country;
+use Modules\Core\Models\Region;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Models\TaxRate;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
@@ -46,15 +47,25 @@ trait HelperTrait
         ]);
     }
 
-    public function taxRate(TaxClass $class, string $country, string $rate, bool $isActive = true): TaxRate
+    public function taxRate(TaxClass $class, string $country, string $rate, bool $isActive = true, string $region = ''): TaxRate
     {
         return TaxRate::query()->create([
             TaxRateSchema::NAME => uniqid('rate-'),
             TaxRateSchema::COUNTRY_CODE => $country,
+            TaxRateSchema::REGION_CODE => $region,
             TaxRateSchema::TAX_CLASS_ID => $class->id,
             TaxRateSchema::RATE => $rate,
             TaxRateSchema::IS_ACTIVE => $isActive,
         ]);
+    }
+
+    /** A core_regions row (gap-C1a) — RegionCodeRule/endpoint source. */
+    public function seedRegion(string $country, string $code): void
+    {
+        Region::query()->firstOrCreate(
+            ['code' => $code],
+            ['country_code' => $country, 'name' => 'Region '.$code],
+        );
     }
 
     /** Compact but complete tax data: two classes, one rate. */

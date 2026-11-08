@@ -13,7 +13,8 @@
       "address_line": "نشانی",
       "city": "شهر",
       "postal_code": "کد پستی",
-      "country": "کشور"
+      "country": "کشور",
+      "region": "استان / منطقه"
     },
     "placeholders": {
       "full_name": "نام و نام خانوادگی",

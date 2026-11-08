@@ -6,6 +6,7 @@
       "id": "ID",
       "name": "Nombre",
       "country_code": "País",
+      "region_code": "Región",
       "tax_class": "Clase de impuesto",
       "rate": "Tasa (%)",
       "is_active": "Activo",
@@ -13,7 +14,8 @@
       "updated_at": "Actualizado el"
     },
     "help_texts": {
-      "rate": "Porcentaje entre 0 y 100 con hasta 4 decimales (p. ej. 8.5 o 5.125); una tarifa por país y clase"
+      "rate": "Porcentaje entre 0 y 100 con hasta 4 decimales (p. ej. 8.5 o 5.125); una tarifa por país y clase",
+      "country_wide": "Tasa nacional"
     },
     "placeholders": {
       "rate": "8.5"

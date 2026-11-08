@@ -5,6 +5,8 @@ namespace Modules\Tax\Http\Requests\Admin\TaxRate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Core\Rules\CountryCodeRule;
+use Modules\Core\Rules\RegionCodeRule;
+use Modules\Tax\Rules\ScopedRateUniqueRule;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 
@@ -25,11 +27,28 @@ class TaxRateRequest extends FormRequest
                 'string',
                 'size:2',
                 new CountryCodeRule,
-                // one rate per country × class
-                Rule::unique(TaxRateSchema::TABLE, TaxRateSchema::COUNTRY_CODE)
-                    ->where(TaxRateSchema::TAX_CLASS_ID, $this->input(TaxRateSchema::TAX_CLASS_ID))
-                    ->ignore($id),
             ],
+            // '' = the country-wide scope; a real value is pair-validated
+            // against the submitted country (gap-C1a D1/D4). One rate per
+            // (country, region, class) — the scope-keyed unique.
+            // '' (normalized from null below) = the country-wide scope;
+            // the unique rule only fires on non-null values, hence the
+            // normalization instead of a nullable rule (gap-C1a D1).
+            // '' (normalized below) = the country-wide scope. The
+            // scope-keyed uniqueness (country, region, class) lives in
+            // ScopedRateUniqueRule — an IMPLICIT rule, because Laravel
+            // skips ordinary rules for empty-string values and '' is a
+            // real scope here, not an absence (gap-C1a D1).
+            TaxRateSchema::REGION_CODE => [
+                'max:10',
+                new RegionCodeRule($this->input(TaxRateSchema::COUNTRY_CODE) ?? ''),
+                new ScopedRateUniqueRule(
+                    country: $this->input(TaxRateSchema::COUNTRY_CODE) ?? '',
+                    taxClassId: (int) ($this->input(TaxRateSchema::TAX_CLASS_ID) ?? 0),
+                    ignoreId: $id !== null ? (int) $id : null,
+                ),
+            ],
+
             TaxRateSchema::TAX_CLASS_ID => [
                 'required',
                 'integer',
@@ -46,6 +65,17 @@ class TaxRateRequest extends FormRequest
             ],
             TaxRateSchema::IS_ACTIVE => ['required', 'boolean'],
         ];
+    }
+
+    /**
+     * Normalize an omitted region to the country-wide scope ('') so the
+     * unique rule fires on duplicates of the '' row.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            TaxRateSchema::REGION_CODE => strtoupper(trim((string) $this->input(TaxRateSchema::REGION_CODE))) ?: '',
+        ]);
     }
 
     /**

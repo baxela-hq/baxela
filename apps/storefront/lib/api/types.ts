@@ -415,9 +415,17 @@ export interface ApiAddress {
   postal_code: string | null;
   // Nullable in the database: rows created before the column existed.
   country_code: string | null;
+  /** ISO 3166-2 region ('US-CA') — the regional-tax jurisdiction (gap-C1a). */
+  region_code: string | null;
   is_default: boolean;
   created_at: string;
   updated_at: string;
+}
+
+/** A seeded ISO 3166-2 subdivision, from /core/public/regions. */
+export interface ApiRegion {
+  code: string;
+  name: string;
 }
 
 export interface ApiShippingMethod {

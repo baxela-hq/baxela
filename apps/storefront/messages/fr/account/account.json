@@ -244,6 +244,7 @@
       "city": "Ville",
       "postal_code": "Code postal",
       "country": "Pays",
+      "region": "Région / État",
       "is_default": "Utiliser comme adresse par défaut"
     },
     "placeholders": {

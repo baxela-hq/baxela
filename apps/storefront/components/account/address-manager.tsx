@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { api, ApiError } from "@/lib/api/client";
-import type { ApiAddress, ApiCountry } from "@/lib/api/types";
+import type { ApiAddress, ApiCountry, ApiRegion } from "@/lib/api/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   PencilIcon,
@@ -29,6 +29,7 @@ const EMPTY_FORM = {
   city: "",
   postal_code: "",
   country_code: "",
+  region_code: "",
   is_default: false,
 };
 
@@ -47,6 +48,7 @@ export function AddressManager() {
 
   const [addresses, setAddresses] = useState<ApiAddress[] | null>(null);
   const [countries, setCountries] = useState<ApiCountry[]>([]);
+  const [regions, setRegions] = useState<ApiRegion[]>([]);
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -56,6 +58,22 @@ export function AddressManager() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [countryError, setCountryError] = useState<string | null>(null);
+
+  // Regions for the currently selected country (gap-C1a): loaded once
+  // per country change; countries without seeded regions show no select.
+  const loadRegions = useCallback(async (countryCode?: string) => {
+    const code = countryCode ?? form.country_code;
+    if (!code) {
+      setRegions([]);
+      return;
+    }
+    try {
+      setRegions(await api.get<ApiRegion[]>(`/core/public/regions?country_code=${code}`));
+    } catch {
+      setRegions([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.country_code]);
 
   const load = useCallback(async () => {
     if (!token) return;
@@ -67,6 +85,7 @@ export function AddressManager() {
       setAddresses(savedAddresses);
       setCountries(countryList);
       setError(null);
+      await loadRegions();
     } catch (cause) {
       setError(
         cause instanceof ApiError
@@ -103,6 +122,7 @@ export function AddressManager() {
       city: address.city,
       postal_code: address.postal_code ?? "",
       country_code: address.country_code ?? "",
+      region_code: address.region_code ?? "",
       is_default: address.is_default,
     });
     setCountryError(null);
@@ -157,6 +177,7 @@ export function AddressManager() {
         city: form.city,
         postal_code: form.postal_code,
         country_code: form.country_code,
+        ...(form.region_code ? { region_code: form.region_code } : {}),
         type: "shipping",
         is_default: isFirstAddress || form.is_default,
       };
@@ -424,10 +445,25 @@ export function AddressManager() {
                   disabled={pending}
                   error={countryError}
                   onChange={(country_code) => {
-                    setForm((current) => ({ ...current, country_code }));
+                    setForm((current) => ({ ...current, country_code, region_code: "" }));
                     setCountryError(null);
+                    void loadRegions(country_code);
                   }}
                 />
+                {regions.length > 0 ? (
+                  <SearchableSelect
+                    label={t("address.labels.region")}
+                    options={regions.map((region) => ({
+                      value: region.code,
+                      label: region.name,
+                    }))}
+                    value={form.region_code}
+                    disabled={pending}
+                    onChange={(region_code) => {
+                      setForm((current) => ({ ...current, region_code }));
+                    }}
+                  />
+                ) : null}
                 <Checkbox
                   label={t("address.labels.is_default")}
                   checked={form.is_default}

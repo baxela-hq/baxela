@@ -13,7 +13,8 @@
       "address_line": "Ligne d'adresse",
       "city": "Ville",
       "postal_code": "Code postal",
-      "country": "Pays"
+      "country": "Pays",
+      "region": "Région / État"
     },
     "placeholders": {
       "full_name": "Prénom et nom",

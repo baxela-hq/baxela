@@ -15,6 +15,14 @@ class TaxRateSchema
 
     public const string COUNTRY_CODE = 'country_code';
 
+    /**
+     * ISO 3166-2 subdivision code ('US-CA'), NOT NULL with '' as the
+     * country-wide scope — the scope key of the uniqueness constraint
+     * (gap-C1a D1). '' never reaches the API: actions normalize an
+     * omitted region to '', resources expose null for ''.
+     */
+    public const string REGION_CODE = 'region_code';
+
     public const string TAX_CLASS_ID = 'tax_class_id';
 
     /**

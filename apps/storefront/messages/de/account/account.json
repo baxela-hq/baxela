@@ -244,6 +244,7 @@
       "city": "Stadt",
       "postal_code": "Postleitzahl",
       "country": "Land",
+      "region": "Bundesland / Region",
       "is_default": "Als Standardadresse verwenden"
     },
     "placeholders": {

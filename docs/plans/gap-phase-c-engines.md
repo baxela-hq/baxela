@@ -241,6 +241,29 @@ deleted by mistake → archive restores.
 
 ## 5. Slice C.1a — Regional tax rates
 
+> **DONE 2026-11-08.** Implemented per v4: `region_code` NOT NULL DEFAULT '' scope key
+> on `tax_rates` (unique `(country, region, class)` swapped dedup-safe, rollback warning
+> in the migration; duplicate-''-insert rejection test-proven); `core_regions` table +
+> US 51/CA 13/DE 16 seed consumed by the seeder (live consumer: `RegionCodeRule` +
+> `GET /core/public/regions?country_code=`, cached); `TaxGateway` precedence
+> (region-specific → country-wide, inactive = removed from consideration) + the
+> **region_required loud failure** (regional rates configured + no region on the input
+> → `TaxConfigurationException`, closing the California hole); region through the
+> address chain (`user_addresses`/`order_addresses` nullable columns — stored rows
+> never re-validated, `AddressDto`, `AddressRequest` pair-validated via
+> `RegionCodeRule`), checkout + tax preview pass the destination region; tax admin
+> surface (request with the **implicit `ScopedRateUniqueRule`** — Laravel skips
+> ordinary rules for '' values, so scope-key uniqueness needed an implicit rule;
+> actions normalize to ''; resource exposes null for ''), `TaxTransfer` region joins
+> the natural key; storefront region selects (address-manager + checkout inline form,
+> rendered only when the country has seeded regions) + i18n ×6; admin tax-rates
+> region field + column badge + `use-regions` hook + i18n ×6. **10-test
+> RegionalTaxTest** (precedence matrix, loud failure, inactive fallback, DB-level
+> duplicate rejection, resource null-vs-code, pair validation, endpoint, seed counts).
+> **Verified:** Tax 47, full backend **1,132 passed**, both production builds green,
+> phpstan **[OK]**, i18n parity green. Note: the recurring container-owned daily log
+> file blocked the first full-suite run (removed; owner may want a uid/umask fix).
+
 ### Design decisions
 
 | # | Decision | Why |

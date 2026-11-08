@@ -13,7 +13,8 @@
       "address_line": "سطر العنوان",
       "city": "المدينة",
       "postal_code": "الرمز البريدي",
-      "country": "البلد"
+      "country": "البلد",
+      "region": "الولاية / المنطقة"
     },
     "placeholders": {
       "full_name": "الاسم الأول والعائلة",

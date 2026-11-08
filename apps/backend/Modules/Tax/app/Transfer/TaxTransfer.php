@@ -11,6 +11,7 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Rules\CountryCodeRule;
+use Modules\Core\Rules\RegionCodeRule;
 use Modules\Tax\Actions\Admin\TaxClass\CreateTaxClassAction;
 use Modules\Tax\Actions\Admin\TaxClass\UpdateTaxClassAction;
 use Modules\Tax\Actions\Admin\TaxRate\CreateTaxRateAction;
@@ -119,6 +120,11 @@ class TaxTransfer implements ModuleTransferInterface
                         self::KEY_PAYLOAD => [
                             TaxRateSchema::NAME => $rate->{TaxRateSchema::NAME},
                             TaxRateSchema::COUNTRY_CODE => $rate->{TaxRateSchema::COUNTRY_CODE},
+                            // '' exports as null (country-wide scope) —
+                            // the API shape, exact round-trip (gap-C1a).
+                            TaxRateSchema::REGION_CODE => $rate->{TaxRateSchema::REGION_CODE} !== ''
+                                ? $rate->{TaxRateSchema::REGION_CODE}
+                                : null,
                             // Source-store class id; remapped on import.
                             TaxRateSchema::TAX_CLASS_ID => (int) $rate->{TaxRateSchema::TAX_CLASS_ID},
                             // decimal:4 string — exact round-trip, never a float
@@ -242,6 +248,7 @@ class TaxTransfer implements ModuleTransferInterface
                 $existing = TaxRate::query()
                     ->where([
                         [TaxRateSchema::COUNTRY_CODE, $payload[TaxRateSchema::COUNTRY_CODE] ?? null],
+                        [TaxRateSchema::REGION_CODE, strtoupper(trim((string) ($payload[TaxRateSchema::REGION_CODE] ?? '')))],
                         [TaxRateSchema::TAX_CLASS_ID, $localClassId],
                     ])
                     ->first();
@@ -319,8 +326,16 @@ class TaxTransfer implements ModuleTransferInterface
                 'string',
                 'size:2',
                 new CountryCodeRule,
-                // one rate per country × class
-                Rule::unique(TaxRateSchema::TABLE, TaxRateSchema::COUNTRY_CODE)
+            ],
+            // One rate per (country, region, class) — region joins the
+            // natural key (gap-C1a D8).
+            TaxRateSchema::REGION_CODE => [
+                'nullable',
+                'string',
+                'max:10',
+                new RegionCodeRule($payload[TaxRateSchema::COUNTRY_CODE] ?? ''),
+                Rule::unique(TaxRateSchema::TABLE, TaxRateSchema::REGION_CODE)
+                    ->where(TaxRateSchema::COUNTRY_CODE, $payload[TaxRateSchema::COUNTRY_CODE] ?? '')
                     ->where(TaxRateSchema::TAX_CLASS_ID, $payload[TaxRateSchema::TAX_CLASS_ID])
                     ->ignore($ignoreId),
             ],

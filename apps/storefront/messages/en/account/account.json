@@ -244,6 +244,7 @@
       "city": "City",
       "postal_code": "Pin Code",
       "country": "Country",
+      "region": "State / Region",
       "is_default": "Use as my default address"
     },
     "placeholders": {

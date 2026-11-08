@@ -6,6 +6,7 @@
       "id": "ID",
       "name": "Name",
       "country_code": "Country",
+      "region_code": "Region",
       "tax_class": "Tax Class",
       "rate": "Rate (%)",
       "is_active": "Active",
@@ -13,7 +14,8 @@
       "updated_at": "Updated At"
     },
     "help_texts": {
-      "rate": "Percentage between 0 and 100 with up to 4 decimal places (e.g. 8.5 or 5.125); one rate per country and class"
+      "rate": "Percentage between 0 and 100 with up to 4 decimal places (e.g. 8.5 or 5.125); one rate per country and class",
+      "country_wide": "Country-wide rate"
     },
     "placeholders": {
       "rate": "8.5"

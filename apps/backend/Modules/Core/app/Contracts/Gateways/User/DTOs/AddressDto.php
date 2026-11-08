@@ -22,6 +22,8 @@ class AddressDto
 
     public ?string $country_code = null;
 
+    public ?string $region_code = null;
+
     public bool $is_default;
 
     public static function fill(array $input): self

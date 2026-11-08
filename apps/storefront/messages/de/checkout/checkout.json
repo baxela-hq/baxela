@@ -13,7 +13,8 @@
       "address_line": "Adresszeile",
       "city": "Stadt",
       "postal_code": "Postleitzahl",
-      "country": "Land"
+      "country": "Land",
+      "region": "Bundesland / Region"
     },
     "placeholders": {
       "full_name": "Vor- und Nachname",

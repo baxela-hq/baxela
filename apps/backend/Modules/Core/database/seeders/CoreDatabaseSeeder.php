@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Modules\Core\Models\Country;
 use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
+use Modules\Core\Models\Region;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
@@ -103,5 +104,17 @@ class CoreDatabaseSeeder extends Seeder
             ]);
         }, $countries);
         Country::query()->insertOrIgnore($countries);
+
+        // ISO 3166-2 subdivisions (gap-C1a) — insertOrIgnore keeps the
+        // seeder idempotent; the live consumer is RegionCodeRule + the
+        // public regions endpoint (never ship dead seed data).
+        $regions = require __DIR__.'/../data/regions.php';
+
+        Region::query()->insertOrIgnore(array_map(function ($row) {
+            return array_merge($row, [
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }, $regions));
     }
 }

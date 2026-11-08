@@ -13,6 +13,7 @@ return [
     ],
     'configuration' => [
         'invalid_class' => 'Un producto hace referencia a una clase de impuesto que ya no existe; el checkout no puede continuar',
+        'region_required' => 'Este país aplica impuestos regionales — la dirección necesita una región',
         'no_default' => 'No hay ninguna clase de impuesto predeterminada configurada',
     ],
 ];

@@ -6,6 +6,7 @@
       "id": "ID",
       "name": "Name",
       "country_code": "Land",
+      "region_code": "Region",
       "tax_class": "Steuerklasse",
       "rate": "Satz (%)",
       "is_active": "Aktiv",
@@ -13,7 +14,8 @@
       "updated_at": "Aktualisiert am"
     },
     "help_texts": {
-      "rate": "Prozentsatz zwischen 0 und 100 mit bis zu 4 Dezimalstellen (z. B. 8.5 oder 5.125); ein Satz pro Land und Klasse"
+      "rate": "Prozentsatz zwischen 0 und 100 mit bis zu 4 Dezimalstellen (z. B. 8.5 oder 5.125); ein Satz pro Land und Klasse",
+      "country_wide": "Landesweiter Satz"
     },
     "placeholders": {
       "rate": "8.5"

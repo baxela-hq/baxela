@@ -23,6 +23,7 @@ class Address extends Model
         AddressSchema::CITY,
         AddressSchema::POSTAL_CODE,
         AddressSchema::COUNTRY_CODE,
+        AddressSchema::REGION_CODE,
         AddressSchema::IS_DEFAULT,
     ];
 

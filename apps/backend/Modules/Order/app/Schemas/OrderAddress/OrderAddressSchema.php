@@ -26,4 +26,7 @@ class OrderAddressSchema
     public const string POSTAL_CODE = 'postal_code';
 
     public const string COUNTRY_CODE = 'country_code';
+
+    /** Frozen tax-jurisdiction region at checkout (gap-C1a). */
+    public const string REGION_CODE = 'region_code';
 }

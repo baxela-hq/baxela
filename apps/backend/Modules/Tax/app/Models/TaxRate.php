@@ -21,6 +21,7 @@ class TaxRate extends Model
     protected $fillable = [
         TaxRateSchema::NAME,
         TaxRateSchema::COUNTRY_CODE,
+        TaxRateSchema::REGION_CODE,
         TaxRateSchema::TAX_CLASS_ID,
         TaxRateSchema::RATE,
         TaxRateSchema::IS_ACTIVE,

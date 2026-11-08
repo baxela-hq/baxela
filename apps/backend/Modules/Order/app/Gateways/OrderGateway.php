@@ -96,6 +96,8 @@ class OrderGateway implements OrderGatewayInterface
                     OrderAddressSchema::CITY => $input->address->city,
                     OrderAddressSchema::POSTAL_CODE => $input->address->postal_code,
                     OrderAddressSchema::COUNTRY_CODE => $input->address->country_code,
+                    // Frozen tax-jurisdiction region at checkout (gap-C1a).
+                    OrderAddressSchema::REGION_CODE => $input->address->region_code,
                 ]);
             }
 

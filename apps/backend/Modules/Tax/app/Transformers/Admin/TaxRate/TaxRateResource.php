@@ -17,7 +17,11 @@ class TaxRateResource extends JsonResource
         return [
             TaxRateSchema::ID => $this->{TaxRateSchema::ID},
             TaxRateSchema::NAME => $this->{TaxRateSchema::NAME},
-            TaxRateSchema::COUNTRY_CODE => $this->{TaxRateSchema::COUNTRY_CODE},
+            TaxRateSchema::COUNTRY_CODE => $this->resource->{TaxRateSchema::COUNTRY_CODE},
+            // '' (the country-wide scope) never reaches the API — gap-C1a D1.
+            TaxRateSchema::REGION_CODE => $this->resource->{TaxRateSchema::REGION_CODE} !== ''
+                ? $this->resource->{TaxRateSchema::REGION_CODE}
+                : null,
             TaxRateSchema::TAX_CLASS_ID => $this->{TaxRateSchema::TAX_CLASS_ID},
             // storage-format decimal string ('8.5000') — the exact rate,
             // never a float

@@ -27,5 +27,8 @@ class AddressSchema
 
     public const string COUNTRY_CODE = 'country_code';
 
+    /** ISO 3166-2 ('US-CA'); nullable — only new input is validated. */
+    public const string REGION_CODE = 'region_code';
+
     public const string IS_DEFAULT = 'is_default';
 }
