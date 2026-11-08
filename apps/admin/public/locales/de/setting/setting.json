@@ -24,7 +24,8 @@
         "announcement_text": "Ankündigungstext",
         "announcement_bar_enabled": "Ankündigungsbalken anzeigen",
         "storefront-theme": "Storefront-Design",
-        "timezone": "Zeitzone"
+        "timezone": "Zeitzone",
+        "prices_include_tax": "Preise enthalten die Steuer"
       }
     },
     "tooltips": {
@@ -39,7 +40,8 @@
       }
     },
     "help_texts": {
-      "announcement_text": "Der Text kann gespeichert werden, während der Balken deaktiviert ist"
+      "announcement_text": "Der Text kann gespeichert werden, während der Balken deaktiviert ist",
+      "prices_include_tax": "Angezeigte Preise enthalten die Steuer; die extrahierte Steuer ist informativ und wird nie zu Summen addiert."
     }
   }
 }

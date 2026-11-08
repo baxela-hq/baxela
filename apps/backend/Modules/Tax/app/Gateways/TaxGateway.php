@@ -12,12 +12,20 @@ use Modules\Tax\Models\TaxRate;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 use Modules\Tax\Support\TaxMath;
+use Modules\Tax\Support\VatIdValidator;
 
 class TaxGateway implements TaxGatewayInterface
 {
+    public function __construct(private readonly VatIdValidator $vatValidator) {}
+
     public function taxClassExists(int $taxClassId): bool
     {
         return TaxClass::query()->whereKey($taxClassId)->exists();
+    }
+
+    public function validateVatId(string $countryCode, string $vatId): ?bool
+    {
+        return $this->vatValidator->plausibleFormat($countryCode, $vatId);
     }
 
     public function calculateForItems(TaxCalculationInput $input): TaxResult
@@ -88,11 +96,23 @@ class TaxGateway implements TaxGatewayInterface
 
             $rate = $resolved->get($classId);
 
+            // The after-discount GROSS base in both modes: the coupon
+            // allocation happens on gross amounts before any tax math
+            // (gap-C1b D2).
             $base = max(0, $item->amount_minor - ($allocations[$item->variant_id] ?? 0));
 
-            $taxMinor = is_null($rate)
-                ? 0
-                : TaxMath::taxOf($base, TaxMath::rateUnits((string) $rate->{TaxRateSchema::RATE}));
+            $taxMinor = 0;
+
+            if (! is_null($rate)) {
+                $units = TaxMath::rateUnits((string) $rate->{TaxRateSchema::RATE});
+
+                // Inclusive mode: the line amount IS gross — extract the
+                // tax, never add it (the double-charge trap). Exclusive
+                // mode: the half-up tax on top, unchanged.
+                $taxMinor = $input->prices_include_tax
+                    ? TaxMath::extractInclusive($base, $units)['tax_minor']
+                    : TaxMath::taxOf($base, $units);
+            }
 
             $lines[$item->variant_id] = new TaxedLine(
                 tax_minor: $taxMinor,
@@ -110,11 +130,15 @@ class TaxGateway implements TaxGatewayInterface
             ? null
             : $resolved->get((int) $shippingClass->{TaxClassSchema::ID});
 
+        $shippingUnits = is_null($shippingRate) ? 0 : TaxMath::rateUnits((string) $shippingRate->{TaxRateSchema::RATE});
+
+        // Shipping is GROSS in inclusive mode too — its tax extracts
+        // through the same routine (gap-C1b D4); shipping discounts do
+        // not exist in v1 (documented seam).
         $shippingTaxMinor = ($input->shipping_cost_minor > 0 && ! is_null($shippingRate))
-            ? TaxMath::taxOf(
-                $input->shipping_cost_minor,
-                TaxMath::rateUnits((string) $shippingRate->{TaxRateSchema::RATE})
-            )
+            ? ($input->prices_include_tax
+                ? TaxMath::extractInclusive($input->shipping_cost_minor, $shippingUnits)['tax_minor']
+                : TaxMath::taxOf($input->shipping_cost_minor, $shippingUnits))
             : 0;
 
         return new TaxResult(
@@ -123,6 +147,7 @@ class TaxGateway implements TaxGatewayInterface
             shipping_tax_minor: $shippingTaxMinor,
             shipping_rate: is_null($shippingRate) ? null : (string) $shippingRate->{TaxRateSchema::RATE},
             shipping_tax_class_id: is_null($shippingRate) ? null : (int) $shippingClass->{TaxClassSchema::ID},
+            prices_contain_tax: $input->prices_include_tax,
         );
     }
 }

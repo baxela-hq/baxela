@@ -9,7 +9,7 @@ import { ProductTabs } from "@/components/product-tabs";
 import { StarRating } from "@/components/star-rating";
 import { StarSolidIcon } from "@/components/ui/icons";
 import SaleBadge from "@/components/sale-badge";
-import { fetchCurrency } from "@/lib/api/site";
+import { fetchCurrency, fetchSettings } from "@/lib/api/site";
 import { serverApiGet } from "@/lib/api/server";
 import { resolveDisplayCurrency } from "@/lib/display-currency";
 import type {
@@ -111,6 +111,10 @@ export default async function ProductPage({
     locale as Locale,
   );
   const currencyCode = (await fetchCurrency())?.code ?? "USD";
+  // Store pricing mode (gap-C1b D7): the "incl. VAT" marker source.
+  const settings = await fetchSettings();
+  const pricesIncludeTax =
+    settings?.find((setting) => setting.name === "prices_include_tax")?.value === "1";
   const imageUrls = photos
     .map((photo) => absoluteAssetUrl(photo.url))
     .filter((url): url is string => Boolean(url));
@@ -265,6 +269,11 @@ export default async function ProductPage({
                 }
               />
             </div>
+            {pricesIncludeTax ? (
+              <p className="mt-2 text-xs text-secondary-text rtl:normal-case rtl:tracking-normal">
+                {t("texts.price_includes_tax")}
+              </p>
+            ) : null}
             {product.description ? (
               <p className="mt-4 text-sm leading-6 text-secondary-text rtl:normal-case rtl:tracking-normal">
                 {product.description}

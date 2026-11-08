@@ -338,6 +338,8 @@ export interface ApiTaxPreview {
   shipping_tax_included: boolean;
   shipping_tax_amount: string;
   currency_id: number | null;
+  /** Store pricing mode (gap-C1b): the "incl. VAT" marker key. */
+  prices_contain_tax: boolean;
   lines: {
     variant_id: number;
     tax_amount: string;
@@ -417,6 +419,8 @@ export interface ApiAddress {
   country_code: string | null;
   /** ISO 3166-2 region ('US-CA') — the regional-tax jurisdiction (gap-C1a). */
   region_code: string | null;
+  /** Business VAT identifier (gap-C1c) — offline format-validated only. */
+  vat_id: string | null;
   is_default: boolean;
   created_at: string;
   updated_at: string;

@@ -14,5 +14,7 @@ class TaxResult
         public readonly int $shipping_tax_minor = 0,
         public readonly ?string $shipping_rate = null,
         public readonly ?int $shipping_tax_class_id = null,
+        /** The pricing mode the calculation ran in (gap-C1b D5). */
+        public readonly bool $prices_contain_tax = false,
     ) {}
 }

@@ -87,6 +87,62 @@ it('creates an order from a cart with item snapshots, address, expiry and total'
         ->and($order->addresses()->first()->{OrderAddressSchema::FULL_NAME})->toBe('Jane Doe');
 });
 
+it('switches the totals formula by pricing mode and snapshots it (gap-C1b)', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+    $variant = Variant::factory()->ofProduct($product)->create();
+
+    // Inclusive input: 300 gross items + 5 gross shipping, 47.40
+    // extracted tax — the total must NOT add it (the double-charge trap).
+    $input = createInputFor($variant);
+    $input->prices_contain_tax = true;
+    $input->tax_amount_minor = 4740;
+
+    $orderCode = app(OrderGateway::class)->createFromCart($input);
+
+    $order = Order::query()->where(OrderSchema::ORDER_CODE, $orderCode)->first();
+
+    expect((bool) $order->{OrderSchema::PRICES_CONTAIN_TAX})->toBeTrue()
+        // total = 300 + 5 (gross already contains the tax)
+        ->and((float) $order->{OrderSchema::TOTAL_AMOUNT})->toBe(305.0)
+        // the extracted tax is snapshotted as INFORMATIONAL
+        ->and((float) $order->{OrderSchema::TAX_AMOUNT})->toBe(47.40);
+
+    // Exclusive on the same input shape: tax adds exactly once.
+    $exclusive = createInputFor($variant);
+    $exclusive->tax_amount_minor = 4740;
+    $exclusiveCode = app(OrderGateway::class)->createFromCart($exclusive);
+    $exclusiveOrder = Order::query()->where(OrderSchema::ORDER_CODE, $exclusiveCode)->first();
+
+    expect((bool) $exclusiveOrder->{OrderSchema::PRICES_CONTAIN_TAX})->toBeFalse()
+        ->and((float) $exclusiveOrder->{OrderSchema::TOTAL_AMOUNT})->toBe(352.40)
+        ->and((float) $exclusiveOrder->{OrderSchema::TAX_AMOUNT})->toBe(47.40);
+});
+
+it('freezes the VAT id and region evidence on the order (gap-C1c)', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+    $variant = Variant::factory()->ofProduct($product)->create();
+
+    $input = createInputFor($variant);
+    $input->address->region_code = 'US-CA';
+    $input->address->vat_id = 'DE123456789';
+
+    $orderCode = app(OrderGateway::class)->createFromCart($input);
+    $order = Order::query()->where(OrderSchema::ORDER_CODE, $orderCode)->first();
+
+    expect($order->{OrderSchema::BUYER_VAT_ID})->toBe('DE123456789');
+
+    $address = $order->addresses()->first();
+
+    expect($address->{OrderAddressSchema::REGION_CODE})->toBe('US-CA')
+        ->and($address->{OrderAddressSchema::VAT_ID})->toBe('DE123456789');
+});
+
 it('marks an order as paid exactly once and starts fulfilment', function () {
     $user = User::factory()->create();
     $order = Order::factory()->create([

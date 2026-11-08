@@ -245,13 +245,15 @@
       "postal_code": "Postleitzahl",
       "country": "Land",
       "region": "Bundesland / Region",
+      "vat_id": "USt-IdNr. (optional, Geschäftskunden)",
       "is_default": "Als Standardadresse verwenden"
     },
     "placeholders": {
       "full_name": "Namen eingeben",
       "phone": "Mobilnummer eingeben",
       "city": "Stadt eingeben",
-      "postal_code": "Postleitzahl eingeben"
+      "postal_code": "Postleitzahl eingeben",
+      "vat_id": "z. B. DE123456789"
     },
     "actions": {
       "add": "Neue Adresse hinzufügen",

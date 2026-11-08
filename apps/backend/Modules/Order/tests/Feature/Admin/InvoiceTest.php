@@ -140,6 +140,15 @@ it('issues an invoice whose snapshot is copied from the finalized order', functi
     expect(OrderInvoice::query()->count())->toBe(1);
 });
 
+it('copies the frozen VAT id into the invoice buyer identity (gap-C1c)', function () {
+    $order = paidInvoiceOrder();
+    $order->update([OrderSchema::BUYER_VAT_ID => 'DE123456789']);
+
+    $data = issueFor($order);
+
+    expect($data[OrderInvoiceSchema::BUYER_IDENTITY]['vat_id'])->toBe('DE123456789');
+});
+
 it('is idempotent: issuing twice returns the same invoice and no second number', function () {
     $order = paidInvoiceOrder();
 

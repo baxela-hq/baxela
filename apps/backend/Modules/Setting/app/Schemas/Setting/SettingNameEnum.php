@@ -16,4 +16,11 @@ enum SettingNameEnum: string
     case STOREFRONT_THEME = 'storefront_theme';
 
     case TIMEZONE = 'timezone';
+
+    /**
+     * Store-level pricing mode (gap-C1b D1): whether displayed product
+     * prices contain tax. The merchant's pricing policy — jurisdiction
+     * semantics live on the tax rates, this is the price-tag contract.
+     */
+    case PRICES_INCLUDE_TAX = 'prices_include_tax';
 }

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\RegionCodeRule;
+use Modules\User\Rules\VatIdRule;
 use Modules\User\Schemas\Address\AddressSchema;
 use Modules\User\Schemas\Address\AddressTypeEnum;
 
@@ -33,7 +34,30 @@ class AddressRequest extends FormRequest
                 new RegionCodeRule($this->input(AddressSchema::COUNTRY_CODE) ?? ''),
             ],
             AddressSchema::IS_DEFAULT => ['required', 'boolean'],
+            // Business VAT id (gap-C1c): optional, offline format check
+            // only; countries without a rule store it unvalidated.
+            AddressSchema::VAT_ID => [
+                'nullable',
+                'string',
+                'max:32',
+                new VatIdRule($this->input(AddressSchema::COUNTRY_CODE) ?? ''),
+            ],
         ];
+    }
+
+    /**
+     * VAT ids store in normalized form (uppercased, separators
+     * stripped) — the same form the format check runs against.
+     */
+    protected function prepareForValidation(): void
+    {
+        $vat = $this->input(AddressSchema::VAT_ID);
+
+        if (is_string($vat) && trim($vat) !== '') {
+            $this->merge([
+                AddressSchema::VAT_ID => strtoupper(preg_replace('/[\s-]/', '', trim($vat))),
+            ]);
+        }
     }
 
     /**

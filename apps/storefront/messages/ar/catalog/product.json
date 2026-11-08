@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count, plural, one {# تقييم} other {# تقييم}})",
-    "related_title": "قد يعجبك أيضًا"
+    "related_title": "قد يعجبك أيضًا",
+    "price_includes_tax": "الأسعار شاملة ضريبة القيمة المضافة/ضريبة المبيعات"
   },
   "labels": {
     "size": "المقاس",

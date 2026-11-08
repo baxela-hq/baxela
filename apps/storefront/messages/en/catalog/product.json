@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count, plural, one {# review} other {# reviews}})",
-    "related_title": "You may also like"
+    "related_title": "You may also like",
+    "price_includes_tax": "Prices include VAT/sales tax"
   },
   "labels": {
     "size": "Size",

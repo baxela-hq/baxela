@@ -14,7 +14,8 @@
       "city": "Ciudad",
       "postal_code": "Código postal",
       "country": "País",
-      "region": "Provincia / Región"
+      "region": "Provincia / Región",
+      "vat_id": "N.º de IVA (opcional, empresa)"
     },
     "placeholders": {
       "full_name": "Nombre y apellidos",
@@ -84,6 +85,7 @@
       "total": "Total",
       "discount": "Descuento ({code})",
       "tax": "Impuestos",
+      "tax_included": "(impuestos incluidos)",
       "tax_note": "Estimado a partir de tu dirección de envío; el importe final se calcula al realizar el pedido.",
       "charged_in": "Precios mostrados en {display} al tipo de cambio de hoy — se te cobrará en {code}."
     },

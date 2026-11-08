@@ -245,13 +245,15 @@
       "postal_code": "Pin Code",
       "country": "Country",
       "region": "State / Region",
+      "vat_id": "VAT number (optional, business)",
       "is_default": "Use as my default address"
     },
     "placeholders": {
       "full_name": "Enter Name",
       "phone": "Enter Mobile Number",
       "city": "Enter City",
-      "postal_code": "Enter Pin Code"
+      "postal_code": "Enter Pin Code",
+      "vat_id": "e.g. DE123456789"
     },
     "actions": {
       "add": "Add New Address",

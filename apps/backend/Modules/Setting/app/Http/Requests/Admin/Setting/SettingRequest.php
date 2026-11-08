@@ -66,6 +66,10 @@ class SettingRequest extends FormRequest
                     && ! in_array($value, \DateTimeZone::listIdentifiers(), true)) {
                     $fail('The timezone must be a valid timezone identifier.');
                 }
+                if ($name === SettingNameEnum::PRICES_INCLUDE_TAX->value
+                    && ! in_array($value, ['0', '1'], true)) {
+                    $fail('The pricing mode must be 0 or 1.');
+                }
             }],
             '*.'.SettingSchema::RES_TRANSLATIONS => ['nullable', 'array'],
             '*.'.SettingSchema::RES_TRANSLATIONS.'.*.'.TSchema::LANGUAGE => ['required_with:*.'.SettingSchema::RES_TRANSLATIONS, 'string',

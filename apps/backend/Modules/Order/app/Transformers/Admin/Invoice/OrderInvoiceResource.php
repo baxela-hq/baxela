@@ -43,6 +43,7 @@ class OrderInvoiceResource extends JsonResource
             OrderInvoiceSchema::SHIPPING_AMOUNT => $money($this->resource->{OrderInvoiceSchema::SHIPPING_AMOUNT}),
             OrderInvoiceSchema::SHIPPING_TAX_AMOUNT => $money($this->resource->{OrderInvoiceSchema::SHIPPING_TAX_AMOUNT}),
             OrderInvoiceSchema::TAX_AMOUNT => $money($this->resource->{OrderInvoiceSchema::TAX_AMOUNT}),
+            OrderInvoiceSchema::PRICES_CONTAIN_TAX => $this->resource->{OrderInvoiceSchema::PRICES_CONTAIN_TAX},
             OrderInvoiceSchema::TOTAL_AMOUNT => $money($this->resource->{OrderInvoiceSchema::TOTAL_AMOUNT}),
             'credited_amount' => $amounts['credited'],
             'balance' => $amounts['balance'],

@@ -11,6 +11,7 @@ use Modules\Setting\Models\Setting;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Support\AppliesStoreTimezone;
+use Modules\Setting\Support\ResolvesPricingMode;
 
 class UpdateSettingAction
 {
@@ -23,6 +24,7 @@ class UpdateSettingAction
     {
         // the boot-time timezone override caches its lookup
         Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+        Cache::forget(ResolvesPricingMode::CACHE_KEY);
 
         DB::beginTransaction();
 

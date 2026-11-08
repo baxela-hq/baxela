@@ -4,13 +4,19 @@ namespace Modules\Setting\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
 use Modules\Setting\Support\AppliesStoreTimezone;
+use Modules\Setting\Support\ResolvesPricingMode;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 class SettingServiceProvider extends ServiceProvider
 {
+    public $bindings = [
+        PricingModeResolverInterface::class => ResolvesPricingMode::class,
+    ];
+
     use PathNamespace;
 
     protected string $name = 'Setting';

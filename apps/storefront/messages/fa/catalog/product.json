@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count} دیدگاه)",
-    "related_title": "شاید این‌ها را هم بپسندید"
+    "related_title": "شاید این‌ها را هم بپسندید",
+    "price_includes_tax": "قیمت‌ها شامل مالیات بر ارزش افزوده/مالیات فروش است"
   },
   "labels": {
     "size": "سایز",

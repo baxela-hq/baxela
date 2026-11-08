@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count, plural, one {# reseña} other {# reseñas}})",
-    "related_title": "También te puede gustar"
+    "related_title": "También te puede gustar",
+    "price_includes_tax": "Precios con IVA/impuestos incluidos"
   },
   "labels": {
     "size": "Talla",

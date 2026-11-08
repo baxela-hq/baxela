@@ -24,7 +24,8 @@
         "announcement_text": "Announcement Text",
         "announcement_bar_enabled": "Show Announcement Bar",
         "storefront-theme": "Storefront Theme",
-        "timezone": "Timezone"
+        "timezone": "Timezone",
+        "prices_include_tax": "Prices include tax"
       }
     },
     "tooltips": {
@@ -39,7 +40,8 @@
       }
     },
     "help_texts": {
-      "announcement_text": "Text can be saved while the bar is disabled"
+      "announcement_text": "Text can be saved while the bar is disabled",
+      "prices_include_tax": "Displayed prices contain tax; the extracted tax is informational and never added to totals."
     }
   }
 }

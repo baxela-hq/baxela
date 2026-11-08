@@ -33,6 +33,7 @@ const EMPTY_ADDRESS_FORM = {
   postal_code: "",
   country_code: "",
   region_code: "",
+  vat_id: "",
 };
 
 /**
@@ -213,6 +214,7 @@ export default function CheckoutPage() {
         {
           ...addressForm,
           ...(addressForm.region_code ? {} : { region_code: null }),
+          ...(addressForm.vat_id ? {} : { vat_id: null }),
           type: "shipping",
           is_default: addresses.length === 0,
         },
@@ -578,6 +580,26 @@ export default function CheckoutPage() {
                         ))}
                       </select>
                     </div>
+                    <div>
+                      <label
+                        htmlFor="vat_id"
+                        className="mb-2 block text-sm text-secondary-text rtl:normal-case rtl:tracking-normal"
+                      >
+                        {t("address.labels.vat_id")}
+                      </label>
+                      <input
+                        id="vat_id"
+                        type="text"
+                        value={addressForm.vat_id}
+                        onChange={(event) =>
+                          setAddressForm((form) => ({
+                            ...form,
+                            vat_id: event.target.value,
+                          }))
+                        }
+                        className="h-14 w-full rounded-default border border-border bg-background px-4 text-base text-foreground focus:border-primary focus:outline-none"
+                      />
+                    </div>
                     {regions.length > 0 ? (
                       <div>
                         <label
@@ -821,7 +843,14 @@ export default function CheckoutPage() {
                   </span>
                 </p>
                 <p className="flex items-center justify-between text-secondary-text rtl:normal-case rtl:tracking-normal">
-                  <span>{t("summary.labels.tax")}</span>
+                  <span>
+                    {t("summary.labels.tax")}
+                    {taxPreview?.prices_contain_tax ? (
+                      <span className="ml-1 text-xs">
+                        ({t("summary.labels.tax_included")})
+                      </span>
+                    ) : null}
+                  </span>
                   <span className="font-medium text-foreground">
                     {taxPreview ? format.number(convert(taxAmount), "price") : "—"}
                   </span>

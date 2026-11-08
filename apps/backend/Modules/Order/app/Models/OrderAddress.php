@@ -25,6 +25,8 @@ class OrderAddress extends Model
         OrderAddressSchema::CITY,
         OrderAddressSchema::POSTAL_CODE,
         OrderAddressSchema::COUNTRY_CODE,
+        OrderAddressSchema::REGION_CODE,
+        OrderAddressSchema::VAT_ID,
     ];
 
     public static function boot(): void

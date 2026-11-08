@@ -245,13 +245,15 @@
       "postal_code": "Código postal",
       "country": "País",
       "region": "Provincia / Región",
+      "vat_id": "N.º de IVA (opcional, empresa)",
       "is_default": "Usar como dirección predeterminada"
     },
     "placeholders": {
       "full_name": "Introduce el nombre",
       "phone": "Introduce el número de móvil",
       "city": "Introduce la ciudad",
-      "postal_code": "Introduce el código postal"
+      "postal_code": "Introduce el código postal",
+      "vat_id": "p. ej. ES12345678X"
     },
     "actions": {
       "add": "Añadir nueva dirección",

@@ -50,6 +50,8 @@ class OrderGateway implements OrderGatewayInterface
                 OrderSchema::COUPON_ID => $input->coupon_id,
                 OrderSchema::COUPON_CODE => $input->coupon_code,
                 OrderSchema::DISCOUNT_AMOUNT => Money::toDecimal($input->discount_minor),
+                OrderSchema::PRICES_CONTAIN_TAX => $input->prices_contain_tax,
+                OrderSchema::BUYER_VAT_ID => $input->address?->vat_id,
                 OrderSchema::EXPIRES_AT => now()->addMinutes(30),
             ]);
 
@@ -98,6 +100,8 @@ class OrderGateway implements OrderGatewayInterface
                     OrderAddressSchema::COUNTRY_CODE => $input->address->country_code,
                     // Frozen tax-jurisdiction region at checkout (gap-C1a).
                     OrderAddressSchema::REGION_CODE => $input->address->region_code,
+                    // Frozen VAT evidence (gap-C1c D4).
+                    OrderAddressSchema::VAT_ID => $input->address->vat_id,
                 ]);
             }
 
@@ -123,9 +127,13 @@ class OrderGateway implements OrderGatewayInterface
 
             $totalAmountMinor += Money::fromDecimal(number_format($input->shipping_cost, 2, '.', ''));
 
-            // Tax enters the total exactly once: tax_amount_minor already
-            // includes the shipping tax
-            $totalAmountMinor += $input->tax_amount_minor;
+            // Tax enters the total exactly once — EXCLUSIVE mode only.
+            // In inclusive mode the line amounts and shipping are already
+            // gross and tax_amount_minor is the extracted (informational)
+            // portion: adding it would double-charge (gap-C1b D3).
+            if (! $input->prices_contain_tax) {
+                $totalAmountMinor += $input->tax_amount_minor;
+            }
 
             $order->{OrderSchema::TAX_AMOUNT} = Money::toDecimal($input->tax_amount_minor);
             $order->{OrderSchema::SHIPPING_TAX_AMOUNT} = Money::toDecimal($input->shipping_tax_minor);

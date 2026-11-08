@@ -29,4 +29,7 @@ class OrderAddressSchema
 
     /** Frozen tax-jurisdiction region at checkout (gap-C1a). */
     public const string REGION_CODE = 'region_code';
+
+    /** Frozen VAT identifier at checkout (gap-C1c). */
+    public const string VAT_ID = 'vat_id';
 }

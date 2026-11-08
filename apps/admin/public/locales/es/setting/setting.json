@@ -24,7 +24,8 @@
         "announcement_text": "Texto del anuncio",
         "announcement_bar_enabled": "Mostrar barra de anuncios",
         "storefront-theme": "Tema de la tienda",
-        "timezone": "Zona horaria"
+        "timezone": "Zona horaria",
+        "prices_include_tax": "Los precios incluyen impuestos"
       }
     },
     "tooltips": {
@@ -39,7 +40,8 @@
       }
     },
     "help_texts": {
-      "announcement_text": "El texto se puede guardar mientras la barra está desactivada"
+      "announcement_text": "El texto se puede guardar mientras la barra está desactivada",
+      "prices_include_tax": "Los precios mostrados contienen impuestos; el impuesto extraído es informativo y nunca se suma a los totales."
     }
   }
 }

@@ -411,6 +411,29 @@ export function SettingsStore() {
                     )}
                   />
 
+                  <FormField
+                    control={form.control}
+                    name='prices_include_tax'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='prices_include_tax'>
+                          {tStatus('name.prices_include_tax')}
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            id='prices_include_tax'
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription>
+                          {tStatus('help_texts.prices_include_tax')}
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+
                   {languagesSafe.length > 0 && (
                     <Tabs
                       defaultValue={languagesSafe[0]?.code}

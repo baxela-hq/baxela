@@ -69,6 +69,12 @@ class OrderSchema
      */
     public const string TAX_AMOUNT = 'tax_amount';
 
+    /** Pricing-mode snapshot at checkout (gap-C1b); false = historical exclusive. */
+    public const string PRICES_CONTAIN_TAX = 'prices_contain_tax';
+
+    /** Submitted VAT evidence frozen at purchase (gap-C1c D4). */
+    public const string BUYER_VAT_ID = 'buyer_vat_id';
+
     public const string SHIPPING_TAX_AMOUNT = 'shipping_tax_amount';
 
     public const string SHIPPING_TAX_RATE = 'shipping_tax_rate';

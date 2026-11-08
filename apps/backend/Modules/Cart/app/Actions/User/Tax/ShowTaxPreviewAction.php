@@ -11,6 +11,7 @@ use Modules\Cart\Support\CartSubtotal;
 use Modules\Cart\Support\RefreshesCartPrices;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
+use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem;
@@ -104,6 +105,7 @@ class ShowTaxPreviewAction
             items: $taxItems,
             country_code: (string) $address->country_code,
             region_code: strtoupper((string) ($address->region_code ?? '')),
+            prices_include_tax: app(PricingModeResolverInterface::class)->pricesIncludeTax(),
             coupon_discount_minor: $couponDiscountMinor,
             shipping_cost_minor: $shippingCostMinor,
         ));

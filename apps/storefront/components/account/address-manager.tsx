@@ -30,6 +30,7 @@ const EMPTY_FORM = {
   postal_code: "",
   country_code: "",
   region_code: "",
+  vat_id: "",
   is_default: false,
 };
 
@@ -123,6 +124,7 @@ export function AddressManager() {
       postal_code: address.postal_code ?? "",
       country_code: address.country_code ?? "",
       region_code: address.region_code ?? "",
+      vat_id: address.vat_id ?? "",
       is_default: address.is_default,
     });
     setCountryError(null);
@@ -178,6 +180,7 @@ export function AddressManager() {
         postal_code: form.postal_code,
         country_code: form.country_code,
         ...(form.region_code ? { region_code: form.region_code } : {}),
+        ...(form.vat_id ? { vat_id: form.vat_id } : {}),
         type: "shipping",
         is_default: isFirstAddress || form.is_default,
       };
@@ -464,6 +467,19 @@ export function AddressManager() {
                     }}
                   />
                 ) : null}
+                <Input
+                  id="vat_id"
+                  label={t("address.labels.vat_id")}
+                  placeholder={t("address.placeholders.vat_id")}
+                  value={form.vat_id}
+                  disabled={pending}
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      vat_id: event.target.value,
+                    }))
+                  }
+                />
                 <Checkbox
                   label={t("address.labels.is_default")}
                   checked={form.is_default}

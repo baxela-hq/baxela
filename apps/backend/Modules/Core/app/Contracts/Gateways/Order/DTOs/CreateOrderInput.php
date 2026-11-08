@@ -30,6 +30,13 @@ class CreateOrderInput
 
     public float $shipping_cost = 0.0;
 
+    /**
+     * Store pricing mode at checkout time (gap-C1b): snapshot onto the
+     * order; the totals formula switches on it (inclusive totals never
+     * add the extracted tax).
+     */
+    public bool $prices_contain_tax = false;
+
     public ?int $currency_id = null;
 
     /**

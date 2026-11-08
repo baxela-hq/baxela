@@ -300,6 +300,20 @@ country fallback · multiple regions per class coexist with the single country-w
 
 ## 6. Slice C.1b — Tax-inclusive pricing (store-level mode, complete accounting)
 
+> **DONE 2026-11-08.** Implemented per v4: `prices_include_tax` Setting (enum migration +
+> '0'/'1' validation + cached `ResolvesPricingMode` bound to a Core contract, flushed on
+> settings write); `TaxMath::extractInclusive` (net ⌊gross×10⁶÷(10⁶+units)⌋, tax = remainder)
+> + `splitInclusiveRefund` (frozen-ratio partial, exact full); gateway inclusive path
+> (extraction on the after-discount GROSS per line + shipping through its class rate;
+> exclusive bit-for-bit unchanged); `TaxCalculationInput.prices_include_tax` /
+> `TaxResult.prices_contain_tax` / preview `prices_contain_tax`; orders + order_invoices
+> additive `prices_contain_tax` (default false = historical); OrderGateway switches the
+> totals formula — inclusive NEVER adds the extracted tax (double-charge closed);
+> IssueInvoiceAction copies the flag; admin settings toggle + i18n ×6; checkout tax-row
+> marker + PDP "incl. VAT" marker (public settings list) + i18n ×6. **7 InclusivePricingTest
+> + the order-formula test** (both modes asserted; 305.00 vs 352.40 on identical input).
+> Affected suites 238 green; full backend **1,152 passed**; builds + parity + phpstan OK.
+
 ### Design decisions
 
 | # | Decision | Why |
@@ -333,6 +347,21 @@ flag snapshots the mode · exclusive → bit-for-bit today · 100% rate inclusiv
 net = gross ÷ 2 (pinned) · refund of a fully refunded line → exact original split.
 
 ## 7. Slice C.1c — VAT ID collection + offline validation (v1 scope)
+
+> **DONE 2026-11-08.** Implemented per v4: `vat_id` on `user_addresses` +
+> `order_addresses` (frozen) + `buyer_vat_id` on orders; `VatIdValidator` (27 per-country
+> EU patterns + the EL-for-Greece exception via prefix mapping; rule-less countries store
+> without a validation claim — option 1, no status field); `TaxGatewayInterface::
+> validateVatId()` (docblock: format ≠ registration); `VatIdRule` in the User module (no
+> value echo in failures); AddressRequest normalization (uppercase, separators stripped)
+> before validation and storage; OrderGateway freezes region + vat on the order address and
+> buyer_vat_id on the order (fillable gap found by the test — region from C.1a had been
+> silently dropped too, now fixed); IssueInvoiceAction copies vat_id from the frozen order
+> into `buyer_identity`; storefront VAT inputs (address manager + checkout inline form,
+> optional) + `ApiAddress.vat_id` + i18n ×6. **11-test VatIdTest** (format matrix incl.
+> EL + normalization + no-echo, normalized storage, rule-less storage) + order-freeze and
+> invoice-identity tests. No automatic tax zeroing anywhere — the reverse-charge seam
+> stays documented.
 
 > **Scope (unchanged since v2; 9/10 from the reviewer):** VAT **collection + offline
 > format validation + evidence snapshotting**. Automatic reverse charge defers to a

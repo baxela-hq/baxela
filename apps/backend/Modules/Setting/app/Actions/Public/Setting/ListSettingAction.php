@@ -20,6 +20,7 @@ class ListSettingAction
             SettingNameEnum::ANNOUNCEMENT_BAR_ENABLED,
             SettingNameEnum::STOREFRONT_THEME,
             SettingNameEnum::TIMEZONE,
+            SettingNameEnum::PRICES_INCLUDE_TAX,
         ];
 
         return $this->model

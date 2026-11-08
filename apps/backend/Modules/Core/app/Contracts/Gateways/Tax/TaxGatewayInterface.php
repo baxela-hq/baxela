@@ -16,6 +16,15 @@ interface TaxGatewayInterface
     public function taxClassExists(int $taxClassId): bool;
 
     /**
+     * Offline VAT-identifier FORMAT check (gap-C1c D2): true when the
+     * value is a plausible format for the country, false when it is not,
+     * NULL when the country has no rule (stored without a validation
+     * claim). Format validity is NEVER registration verification —
+     * automatic reverse charge defers to a future verification policy.
+     */
+    public function validateVatId(string $countryCode, string $vatId): ?bool;
+
+    /**
      * Tax-exclusive calculation for a set of order lines. Semantics:
      *
      *   - A line with a null tax class resolves to the default class.

@@ -245,13 +245,15 @@
       "postal_code": "Code postal",
       "country": "Pays",
       "region": "Région / État",
+      "vat_id": "N° de TVA (facultatif, professionnel)",
       "is_default": "Utiliser comme adresse par défaut"
     },
     "placeholders": {
       "full_name": "Saisissez le nom",
       "phone": "Saisissez le numéro de mobile",
       "city": "Saisissez la ville",
-      "postal_code": "Saisissez le code postal"
+      "postal_code": "Saisissez le code postal",
+      "vat_id": "p. ex. FR12345678901"
     },
     "actions": {
       "add": "Ajouter une nouvelle adresse",

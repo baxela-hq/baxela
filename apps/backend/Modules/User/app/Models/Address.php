@@ -24,6 +24,7 @@ class Address extends Model
         AddressSchema::POSTAL_CODE,
         AddressSchema::COUNTRY_CODE,
         AddressSchema::REGION_CODE,
+        AddressSchema::VAT_ID,
         AddressSchema::IS_DEFAULT,
     ];
 

@@ -30,5 +30,8 @@ class AddressSchema
     /** ISO 3166-2 ('US-CA'); nullable — only new input is validated. */
     public const string REGION_CODE = 'region_code';
 
+    /** Business VAT identifier (gap-C1c); offline format-validated only. */
+    public const string VAT_ID = 'vat_id';
+
     public const string IS_DEFAULT = 'is_default';
 }

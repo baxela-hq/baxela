@@ -14,7 +14,8 @@
       "city": "Ville",
       "postal_code": "Code postal",
       "country": "Pays",
-      "region": "Région / État"
+      "region": "Région / État",
+      "vat_id": "N° de TVA (facultatif, professionnel)"
     },
     "placeholders": {
       "full_name": "Prénom et nom",
@@ -84,6 +85,7 @@
       "total": "Total",
       "discount": "Remise ({code})",
       "tax": "Taxes",
+      "tax_included": "(TTC)",
       "tax_note": "Estimées d'après votre adresse de livraison ; le montant final est calculé lors de la commande.",
       "charged_in": "Prix affichés en {display} au taux du jour — vous serez débité en {code}."
     },

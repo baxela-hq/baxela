@@ -23,6 +23,9 @@ class TaxPreviewResource extends JsonResource
             'shipping_tax_included' => $this->resource['shipping_tax_included'],
             'shipping_tax_amount' => Money::toDecimal($result->shipping_tax_minor),
             'currency_id' => $this->resource['currency_id'],
+            // Store pricing mode (gap-C1b D7): the storefront's
+            // "incl. VAT" marker key.
+            'prices_contain_tax' => $result->prices_contain_tax,
             'lines' => collect($result->lines)
                 ->map(fn (TaxedLine $line, $variantId): array => [
                     'variant_id' => (int) $variantId,

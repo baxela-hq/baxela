@@ -14,7 +14,8 @@
       "city": "Stadt",
       "postal_code": "Postleitzahl",
       "country": "Land",
-      "region": "Bundesland / Region"
+      "region": "Bundesland / Region",
+      "vat_id": "USt-IdNr. (optional, Geschäftskunden)"
     },
     "placeholders": {
       "full_name": "Vor- und Nachname",
@@ -84,6 +85,7 @@
       "total": "Gesamt",
       "discount": "Rabatt ({code})",
       "tax": "Steuern",
+      "tax_included": "(inkl. Steuer)",
       "tax_note": "Basierend auf Ihrer Lieferadresse geschätzt; der endgültige Betrag wird bei der Bestellung berechnet.",
       "charged_in": "Preise in {display} zum heutigen Kurs angezeigt — abgerechnet wird in {code}."
     },

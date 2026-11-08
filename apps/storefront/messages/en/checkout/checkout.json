@@ -14,7 +14,8 @@
       "city": "City",
       "postal_code": "Postal code",
       "country": "Country",
-      "region": "State / Region"
+      "region": "State / Region",
+      "vat_id": "VAT number (optional, business)"
     },
     "placeholders": {
       "full_name": "First and last name",
@@ -84,6 +85,7 @@
       "total": "Total",
       "discount": "Discount ({code})",
       "tax": "Tax",
+      "tax_included": "(tax included)",
       "tax_note": "Estimated from your shipping address; the final amount is calculated at order placement.",
       "charged_in": "Prices shown in {display} at today's rate — you will be charged in {code}."
     },

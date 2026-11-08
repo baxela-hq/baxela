@@ -35,6 +35,63 @@ class TaxMath
     private const int MAX_ALLOCATABLE_MINOR = 2 ** 31 - 1;
 
     /**
+     * Inclusive extraction (gap-C1b D4): given a GROSS after-discount line
+     * amount, net = ⌊gross × 10^6 ÷ (10^6 + rateUnits)⌋ and tax = gross −
+     * net — the fractional remainder lands in the tax (deliberate: the
+     * exclusive mode rounds tax half-up; the asymmetry is pinned by test
+     * vectors asserting BOTH outputs). Extraction happens once per
+     * extended after-discount line amount, never per unit.
+     *
+     * @return array{net_minor: int, tax_minor: int}
+     */
+    public static function extractInclusive(int $grossMinor, int $rateUnits): array
+    {
+        if ($grossMinor < 0) {
+            throw new InvalidArgumentException('Gross amount cannot be negative.');
+        }
+
+        if ($rateUnits < 0 || $rateUnits > self::MAX_RATE_UNITS) {
+            throw new InvalidArgumentException(sprintf('Rate units %d out of range.', $rateUnits));
+        }
+
+        if ($grossMinor > self::MAX_BASE_MINOR) {
+            throw new InvalidArgumentException('Gross amount exceeds the supported maximum.');
+        }
+
+        $netMinor = intdiv($grossMinor * self::RATE_DIVISOR, self::RATE_DIVISOR + $rateUnits);
+
+        return ['net_minor' => $netMinor, 'tax_minor' => $grossMinor - $netMinor];
+    }
+
+    /**
+     * Informational refund split of an inclusive line (gap-C1b D6): the
+     * refund GROSS is authoritative (the ledger is amount-based); the
+     * net/tax split follows the original line's frozen ratio. A FULL
+     * refund (refundGross == frozenGross) returns the exact original
+     * frozen amounts — never recomputed from current rates, never
+     * accumulating rounding drift.
+     *
+     * @return array{net_minor: int, tax_minor: int}
+     */
+    public static function splitInclusiveRefund(
+        int $refundGrossMinor,
+        int $frozenNetMinor,
+        int $frozenGrossMinor,
+    ): array {
+        if ($frozenGrossMinor <= 0 || $refundGrossMinor < 0 || $refundGrossMinor > $frozenGrossMinor) {
+            throw new InvalidArgumentException('Refund split amounts out of range.');
+        }
+
+        if ($refundGrossMinor === $frozenGrossMinor) {
+            return ['net_minor' => $frozenNetMinor, 'tax_minor' => $frozenGrossMinor - $frozenNetMinor];
+        }
+
+        $netMinor = intdiv($refundGrossMinor * $frozenNetMinor, $frozenGrossMinor);
+
+        return ['net_minor' => $netMinor, 'tax_minor' => $refundGrossMinor - $netMinor];
+    }
+
+    /**
      * '8.5', '8.50', '8.5000' → 85000. Accepts 0–4 fraction digits.
      */
     public static function rateUnits(string $rateDecimal): int

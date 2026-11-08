@@ -134,11 +134,16 @@ class IssueInvoiceAction
                 OrderInvoiceSchema::SHIPPING_AMOUNT => $order->{OrderSchema::SHIPPING_COST},
                 OrderInvoiceSchema::SHIPPING_TAX_AMOUNT => $order->{OrderSchema::SHIPPING_TAX_AMOUNT},
                 OrderInvoiceSchema::TAX_AMOUNT => $order->{OrderSchema::TAX_AMOUNT},
+                OrderInvoiceSchema::PRICES_CONTAIN_TAX => (bool) $order->{OrderSchema::PRICES_CONTAIN_TAX},
                 OrderInvoiceSchema::TOTAL_AMOUNT => $order->{OrderSchema::TOTAL_AMOUNT},
                 OrderInvoiceSchema::BILLING_ADDRESS => $billingSnapshot,
                 OrderInvoiceSchema::BUYER_IDENTITY => [
                     'name' => $billingSnapshot[OrderAddressSchema::FULL_NAME] ?? null,
                     'email' => $buyerEmail,
+                    // Copied from the FROZEN order snapshot at issuance —
+                    // a later registration change can never alter an old
+                    // invoice (gap-C1c D4 / the B.1 handoff).
+                    'vat_id' => $order->{OrderSchema::BUYER_VAT_ID},
                 ],
                 OrderInvoiceSchema::SELLER_IDENTITY => [
                     // Phase 2 upgrades this from real store settings; the

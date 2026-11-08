@@ -43,6 +43,7 @@ export const formSchema = z.object({
   language_id: z.string(),
   currency_id: z.string(),
   timezone: z.string(),
+  prices_include_tax: z.boolean(),
   announcement_bar_enabled: z.boolean(),
   announcement_text: translatableSettingSchema,
   storefront_theme: z.enum(STOREFRONT_THEMES),
@@ -62,6 +63,7 @@ export const defaultValues: SettingsForm = {
   language_id: '',
   currency_id: '',
   timezone: 'UTC',
+  prices_include_tax: false,
   announcement_bar_enabled: false,
   announcement_text: { value: '', translations: [] },
   storefront_theme: DEFAULT_STOREFRONT_THEME,
@@ -100,6 +102,7 @@ export function buildSettingsValues(
     language_id: byName.get('language_id')?.value ?? '',
     currency_id: byName.get('currency_id')?.value ?? '',
     timezone: byName.get('timezone')?.value ?? 'UTC',
+    prices_include_tax: byName.get('prices_include_tax')?.value === '1',
     announcement_bar_enabled:
       byName.get('announcement_bar_enabled')?.value === '1' ||
       byName.get('announcement_bar_enabled')?.value === 'true',
@@ -138,6 +141,10 @@ export function buildSettingsRequest(
     { name: 'language_id', value: values.language_id },
     { name: 'currency_id', value: values.currency_id },
     { name: 'timezone', value: values.timezone || 'UTC' },
+    {
+      name: 'prices_include_tax',
+      value: values.prices_include_tax ? '1' : '0',
+    },
     {
       name: 'announcement_bar_enabled',
       value: values.announcement_bar_enabled ? '1' : '0',

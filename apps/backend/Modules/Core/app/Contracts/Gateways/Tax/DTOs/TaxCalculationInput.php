@@ -18,5 +18,11 @@ class TaxCalculationInput
         /** Cart-wide coupon discount in minor units, allocated across lines before rating. */
         public readonly int $coupon_discount_minor = 0,
         public readonly int $shipping_cost_minor = 0,
+        /**
+         * Store-level pricing mode (gap-C1b): when true, line amounts and
+         * shipping are GROSS and the tax is EXTRACTED (informational),
+         * never added to a total.
+         */
+        public readonly bool $prices_include_tax = false,
     ) {}
 }

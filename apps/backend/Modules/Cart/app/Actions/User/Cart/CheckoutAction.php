@@ -27,6 +27,7 @@ use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\Order\DTOs\OrderItemPromotion;
 use Modules\Core\Contracts\Gateways\Order\DTOs\OrderItemTax;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
 use Modules\Core\Contracts\Gateways\Shipping\ShippingGatewayInterface;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationInput;
 use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem;
@@ -212,12 +213,19 @@ class CheckoutAction
                 // The checkout (destination) address is the tax
                 // jurisdiction (gap-C1a D4) — the same address the
                 // shipping quote rates; preview resolves it identically.
+                // Store pricing mode (gap-C1b): one resolution shared by
+                // the calculation, the totals formula and the snapshot —
+                // preview resolves it identically.
+                $pricesIncludeTax = app(PricingModeResolverInterface::class)->pricesIncludeTax();
+                $input->prices_contain_tax = $pricesIncludeTax;
+
                 $tax = app(TaxGatewayInterface::class)->calculateForItems(new TaxCalculationInput(
                     items: $taxItems,
                     country_code: (string) $address->country_code,
                     region_code: strtoupper((string) ($address->region_code ?? '')),
                     coupon_discount_minor: $input->discount_minor,
                     shipping_cost_minor: Money::fromDecimal(number_format($input->shipping_cost, 2, '.', '')),
+                    prices_include_tax: $pricesIncludeTax,
                 ));
 
                 $input->tax_amount_minor = $tax->total_minor;

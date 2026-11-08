@@ -41,6 +41,8 @@ class Order extends Model
         OrderSchema::COUPON_CODE,
         OrderSchema::DISCOUNT_AMOUNT,
         OrderSchema::TAX_AMOUNT,
+        OrderSchema::PRICES_CONTAIN_TAX,
+        OrderSchema::BUYER_VAT_ID,
         OrderSchema::EXPIRES_AT,
     ];
 

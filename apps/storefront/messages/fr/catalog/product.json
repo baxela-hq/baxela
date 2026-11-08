@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count, plural, one {# avis} other {# avis}})",
-    "related_title": "Vous aimerez aussi"
+    "related_title": "Vous aimerez aussi",
+    "price_includes_tax": "Prix TTC (toutes taxes comprises)"
   },
   "labels": {
     "size": "Taille",

@@ -24,7 +24,8 @@
         "announcement_text": "Texte de l'annonce",
         "announcement_bar_enabled": "Afficher la barre d'annonce",
         "storefront-theme": "Thème de la vitrine",
-        "timezone": "Fuseau horaire"
+        "timezone": "Fuseau horaire",
+        "prices_include_tax": "Les prix incluent la taxe"
       }
     },
     "tooltips": {
@@ -39,7 +40,8 @@
       }
     },
     "help_texts": {
-      "announcement_text": "Le texte peut être enregistré pendant que la barre est désactivée"
+      "announcement_text": "Le texte peut être enregistré pendant que la barre est désactivée",
+      "prices_include_tax": "Les prix affichés contiennent la taxe ; la taxe extraite est informative et n'est jamais ajoutée aux totaux."
     }
   }
 }

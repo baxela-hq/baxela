@@ -1,7 +1,8 @@
 {
   "texts": {
     "reviews_count": "({count, plural, one {# Bewertung} other {# Bewertungen}})",
-    "related_title": "Das könnte Ihnen auch gefallen"
+    "related_title": "Das könnte Ihnen auch gefallen",
+    "price_includes_tax": "Preise inklusive MwSt./Umsatzsteuer"
   },
   "labels": {
     "size": "Größe",

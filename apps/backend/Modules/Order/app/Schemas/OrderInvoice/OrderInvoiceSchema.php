@@ -48,6 +48,9 @@ class OrderInvoiceSchema
 
     public const string TAX_AMOUNT = 'tax_amount';
 
+    /** Copied from the order at issuance (gap-C1b D5). */
+    public const string PRICES_CONTAIN_TAX = 'prices_contain_tax';
+
     public const string TOTAL_AMOUNT = 'total_amount';
 
     public const string BILLING_ADDRESS = 'billing_address';

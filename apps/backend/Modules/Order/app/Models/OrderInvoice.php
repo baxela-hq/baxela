@@ -39,6 +39,7 @@ class OrderInvoice extends Model
         OrderInvoiceSchema::SHIPPING_AMOUNT,
         OrderInvoiceSchema::SHIPPING_TAX_AMOUNT,
         OrderInvoiceSchema::TAX_AMOUNT,
+        OrderInvoiceSchema::PRICES_CONTAIN_TAX,
         OrderInvoiceSchema::TOTAL_AMOUNT,
         OrderInvoiceSchema::BILLING_ADDRESS,
         OrderInvoiceSchema::BUYER_IDENTITY,
