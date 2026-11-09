@@ -4,11 +4,13 @@
 > and its marketplace. Captures all decisions and build order from the planning discussion —
 > readable later without conversation history, or handable to an agent session.
 >
-> **Created:** 2026-11-01 · **Owner:** solo maintainer · **Status:** planning complete, not started
+> **Created:** 2026-11-01 · **Revised:** 2026-11-08 — Phase 2 is now a throwaway-proof sample
+> extension; Zarinpal deferred to Phase 6 · **Owner:** solo maintainer · **Status:** Phase 0
+> done (2026-11-09); Phases 1–7 planned
 >
-> **How to use:** Work phases strictly in order (0 → 6). Phase 0 is the hard prerequisite —
-> nothing else works without it. The marketplace is deliberately last: it is worthless until
-> the extension system is proven side-loaded. Tick checkboxes and note dates as tasks complete.
+> **How to use:** Work phases strictly in order (0 → 7). Phase 0 is the hard prerequisite —
+> nothing else works without it. The marketplace waits until the extension system is proven
+> side-loaded by the Phase 2 sample. Tick checkboxes and note dates as tasks complete.
 
 ---
 
@@ -27,7 +29,7 @@
 ## 2. Architecture at a glance
 
 ```
-┌─ This monorepo (baxela) ──────────────┐   ┌─ baxela/zarinpal (repo #2) ──┐
+┌─ This monorepo (baxela) ──────────────┐   ┌─ Extension repos (#2 onward) ─┐
 │  apps/backend:                        │   │  Composer package            │
 │   - baxela:install/remove/update/     │   │  type: baxela-extension      │
 │     list/enable/disable commands      │◄──┤  PaymentDriverInterface impl │
@@ -78,10 +80,10 @@ The hard blocker. `PaymentMethodEnum` is closed and threaded through actions, re
 models, seeders, and `PaymentDriverManager` — no external payment extension can exist while
 methods are enum cases.
 
-- [ ] Make the `payment_methods` table the source of truth for which methods exist (name, slug, driver, enabled).
-- [ ] Drop `PaymentMethodEnum` from public surfaces; key everything off the string driver name (`PaymentDriverManager::forName()` already exists).
-- [ ] Seed the 8 built-ins (manual, stripe, paypal, adyen, nowpayments, mercadopago, checkoutcom, razorpay).
-- [ ] `isConfigured()` logic becomes data-driven / per-driver contract instead of a hardcoded `match`.
+- [x] Make the `payment_methods` table the source of truth for which methods exist (name, slug, driver, enabled). *(done 2026-11-09 — E.0)*
+- [x] Drop `PaymentMethodEnum` from public surfaces; key everything off the string driver name (`PaymentDriverManager::forName()` already exists). *(done 2026-11-09 — enum deleted; manager string-first; validation accepts registry ∪ stored rows so unknown → 422, registered-no-row → `method_inactive`, stale-row-unregistered → `method_not_supported`)*
+- [x] Seed the 8 built-ins (manual, stripe, paypal, adyen, nowpayments, mercadopago, checkoutcom, razorpay). *(done 2026-11-09 — manual+stripe seed active as before; the rest appear as disabled rows via the admin list's lazy creation over `config('payment.drivers')` — same mechanism, now registry-driven)*
+- [x] `isConfigured()` logic becomes capability-driven instead of a hardcoded `match` — follow the pattern the refund drivers landed on 2026-11-08 (`supportsRefund()` checks `instanceof RefundableDriver`): e.g. a per-driver credential declaration, so built-ins and extensions declare their own config keys. *(done 2026-11-09 — `ConfigurableDriver::credentialKeys()` contract in Core; all 8 drivers declare lifecycle-complete keys incl. the webhook-verification credentials the old match missed on stripe/paypal/adyen; unregistered/undeclaring drivers fail closed)*
 
 ### Phase 1 — Extension system (in this monorepo, `apps/backend`)
 
@@ -92,11 +94,24 @@ methods are enum cases.
 - [ ] Disabled extension = inert: registered driver keys removed, payment method hidden, webhook routes return clean "method disabled" response.
 - [ ] Admin-facing API endpoints for the extensions page (list, enable, disable).
 
-### Phase 2 — Zarinpal extension (repo #2: `baxela/zarinpal`)
+### Phase 2 — Sample extension: prove the system (repo #2: `baxela/baxela-sandbox-gateway`)
 
-- [ ] Scaffold package: `composer.json` (type + manifest), `src/ZarinpalServiceProvider.php` (extends `Baxela\Extension`), `config/zarinpal.php`, webhook route under `api/v1/payment/webhook/zarinpal` (signature-verified, no auth), lang errors, tests.
-- [ ] `ZarinpalPaymentDriver` implements `Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface`.
-- [ ] Dev-mount via Composer `path` repository while both repos are local; verify full flow side-loaded: install → sandbox payment → webhook → refund.
+Deliberately **not** Zarinpal — a minimal fake payment gateway ("Sandbox Gateway") with zero
+external API calls. Isolating extension-system bugs from payment-provider bugs is the whole
+point: if the flow breaks here, the cause is the system. It also permanently earns its keep
+three ways: a dev/testing gateway for checkout flows without real credentials, the reference
+implementation for marketplace authors, and the first package the marketplace ingests (Phase 3).
+
+- [ ] Scaffold package: `composer.json` (type + manifest with `compat.core`), `src/SandboxServiceProvider.php` (extends `Baxela\Extension`), `config/sandbox.php`, lang errors, tests. **No webhook route registration needed** — verified 2026-11-08: the parameterized `POST api/v1/payment/webhook/{driver}` route already resolves any registered driver; the driver just implements `handleWebhook()`.
+- [ ] `SandboxPaymentDriver` implements `PaymentDriverInterface` + `RefundableDriver` (refund is a local no-op that settles the refund record), registers itself via `config(['payment.drivers.sandbox' => SandboxPaymentDriver::class])`.
+- [ ] Dev-mount via Composer `path` repository while repos are local.
+- [ ] **System-proof checklist — all must pass before Phase 3:**
+  - `baxela:install` from the local path repo → row in `extensions`, shows in `baxela:list`, sandbox method appears in checkout
+  - checkout completes with the sandbox driver; its webhook endpoint fires and settles an order
+  - `baxela:disable` / `baxela:enable` flips it at runtime; core untouched
+  - tag `v0.0.2` with a trivial change → `baxela:update` applies cleanly, version row refreshes
+  - compat test: declare `compat.core` above the current core version → install blocked with a clear error; runtime guard no-ops a force-installed copy
+  - `baxela:remove` unregisters everything cleanly
 - [ ] **End-to-end proof without any marketplace.** Do not start Phase 3 before this passes.
 
 ### Phase 3 — Marketplace app (repo #3: `baxela-marketplace`)
@@ -124,10 +139,19 @@ Public face of the marketplace app; linked from the home site nav, not embedded.
 ### Phase 5 — Admin panel integration (`apps/admin`)
 
 - [ ] Extensions settings page: installed list, enable/disable toggles, per-driver credential forms.
-- [ ] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product.
+- [ ] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08).
 - [ ] "Update available" badge via the updates endpoint; changelog link. Notification only — merchant pulls.
 
-### Phase 6 — Ecosystem maturity (only when there are real third-party extensions)
+### Phase 6 — First production extension: Zarinpal (repo #4: `baxela/baxela-zarinpal`)
+
+Timing is flexible relative to Phases 3–5 — the build itself can start once Phase 2 passes;
+the marketplace (Phase 3) is only needed for the publish step at the end.
+
+- [ ] Same scaffold as the sample; `ZarinpalPaymentDriver` implements `PaymentDriverInterface` + `RefundableDriver` (Zarinpal's API supports refunds).
+- [ ] `config/zarinpal.php`: merchant ID, sandbox flag, callback/return URLs; `handleWebhook()` implementation — served by the existing parameterized `api/v1/payment/webhook/{driver}` route, signature-verified in the driver.
+- [ ] Publish through the marketplace as its first real third-party-shaped package — exercising submission validation, ingestion, and update-check against it.
+
+### Phase 7 — Ecosystem maturity (only when there are real third-party extensions)
 
 - [ ] Extract `Modules\Core\Contracts` into a real `baxela/contracts` Composer package → Composer natively enforces compat, replaces the custom checker. Also the future home of the base `Extension` class and shared schema traits.
 - [ ] Paid extensions / licensing (license key as Composer auth against the registry).
@@ -140,9 +164,11 @@ Public face of the marketplace app; linked from the home site nav, not embedded.
 2. **End of pre-v1 migration rewriting** the day a third-party extension is listed. Core schema changes become additive migrations only — schema is a promise.
 3. **Extensions update up, never down.** Migrations don't roll back; same as every Composer package. Document once, don't fight it.
 4. **Compatibility has three layers:** install/update check (hard stop + `--ignore-compat`), marketplace filtering (incompatible releases never offered), runtime guard (incompatible = disabled, never fatal). Core-upgrade pre-flight reports per-extension: compatible version exists / none exists (will be disabled) / update after upgrade.
-5. **First-party-only while pre-v1 migration rewriting still applies** — Zarinpal and core are updated together until the additive-migrations policy kicks in.
+5. **First-party-only while pre-v1 migration rewriting still applies** — first-party extensions (the sandbox sample, later Zarinpal) and core are updated together until the additive-migrations policy kicks in.
 
 ## 6. Related docs
 
+- `docs/plans/extension-e0-e2.md` — **detailed execution plan for Phases 0–2** (prefer it over §4's outline; verified state, design decisions, edge cases, acceptance tests).
 - `docs/ROADMAP.md` — public-launch roadmap (separate initiative; launch phases come first — this doc's phases are blocked until launch work frees capacity, except Phase 0–1 which can start anytime).
+- `docs/PLATFORM_GAPS_ROADMAP.md` — gap roadmap between launch and the extension system (phases lettered A–D to avoid collision with the numbered phases here).
 - `apps/backend/AGENTS.md` — module conventions the extension system must respect (schemas, actions, webhook conventions).
