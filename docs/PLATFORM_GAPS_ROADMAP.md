@@ -83,19 +83,19 @@ Suggested commit: `docs(monorepo): state per-gateway refund coverage honestly`
 
 > **Owner decision 2026-11-03:** deferred — will be implemented later with a different
 > approach than the `spatie/laravel-backup` sketch below. Do not execute as written.
+>
+> **Owner decision 2026-11-10: resolved** — via the **Transfer module** (`Modules/Transfer`
+> + the per-module data-transfer standard): every module registers a `{Name}Transfer`
+> implementation, exports its data as portable JSON, and replays imports **through its own
+> admin Actions** so invariants, remapping and events behave like manual saves (wipe/skip
+> strategies; per-row failure isolation). The admin data-transfer cockpit drives
+> download/upload — application-level backup and restore, deploy-target-agnostic.
+> Standard and payload rules: `apps/backend/docs/transfer.md`. The spatie sketch below is
+> history — do not build it. (The infra-level `mysqldump` procedure in the production
+> README remains as a complement for raw database recovery.)
 
-Self-hosters on `docker-compose.prod.yml` and shared hosting currently have nothing. A
-store that can't be restored is a liability the README shouldn't create.
-
-- [ ] Install `spatie/laravel-backup` (battle-tested; pruning; failure alerts — routes
-      alerts into the existing Notification channels rather than inventing new ones).
-- [ ] `baxela:backup` / `baxela:restore` command docs; nightly schedule **opt-in** via a
-      setting, disabled by default (don't surprise small hosts with disk fill).
-- [ ] Store backups on the configured media disk (local or S3) with retention config.
-- [ ] Docs: restore drill for prod compose AND shared hosting (file + DB steps).
-- [ ] Test: backup runs against `Storage::fake`, fails loudly when DB unreachable.
-
-Suggested commit: `feat(backend/core): add scheduled backup and restore tooling`
+- [x] Backup & restore story. *(resolved 2026-11-10 — Transfer module standard + admin
+      cockpit, per the note above; superseded the packaged-tooling sketch entirely)*
 
 ### A.3 Health check (an hour)
 
