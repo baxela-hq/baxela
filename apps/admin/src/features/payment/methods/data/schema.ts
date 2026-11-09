@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
 /**
- * Method keys mirror PaymentMethodEnum on the backend. The runtime list
- * comes from the admin API (which reflects the backend driver registry),
- * so unknown keys of future gateways are preserved rather than rejected.
+ * Built-in method slugs, for i18n label lookup only — never an
+ * authoritative registry. The runtime list comes from the admin API
+ * (which reflects the backend driver registry), so unknown keys of
+ * extension-registered gateways are preserved rather than rejected.
  */
 export const methodKeys = ['manual', 'paypal', 'stripe', 'adyen', 'nowpayments', 'mercadopago', 'checkoutcom', 'razorpay'] as const
 export type MethodKey = (typeof methodKeys)[number]
