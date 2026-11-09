@@ -9,6 +9,7 @@ use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ListCoreDataImportsController;
 use Modules\Core\Http\Controllers\Admin\Data\PreviewCoreDataImportController;
+use Modules\Core\Http\Controllers\Admin\Extension\ListExtensionController;
 use Modules\Core\Http\Controllers\Admin\FailedJob\ForgetFailedJobController;
 use Modules\Core\Http\Controllers\Admin\FailedJob\ListFailedJobsController;
 use Modules\Core\Http\Controllers\Admin\FailedJob\RetryFailedJobController;
@@ -39,4 +40,8 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/failed-jobs/{uuid}', ShowFailedJobController::class)->name('failed-jobs.show');
     Route::post('/failed-jobs/{uuid}/retry', RetryFailedJobController::class)->name('failed-jobs.retry');
     Route::delete('/failed-jobs/{uuid}', ForgetFailedJobController::class)->name('failed-jobs.delete');
+
+    // Extension runtime surface (E.1): read-only — enabling/disabling
+    // stays CLI-only until the roadmap Phase 5 admin page.
+    Route::get('/extensions', ListExtensionController::class)->name('extensions.list');
 });

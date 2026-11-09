@@ -6,9 +6,16 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Console\Commands\BaxelaDisableCommand;
+use Modules\Core\Console\Commands\BaxelaEnableCommand;
+use Modules\Core\Console\Commands\BaxelaInstallCommand;
+use Modules\Core\Console\Commands\BaxelaListCommand;
+use Modules\Core\Console\Commands\BaxelaRemoveCommand;
+use Modules\Core\Console\Commands\BaxelaUpdateCommand;
 use Modules\Core\Console\Commands\ErdGenerateCommand;
 use Modules\Core\Console\Commands\QueueCheckBacklogCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
@@ -59,6 +66,10 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->app->bind(ModelRelationsScanner::class, fn () => new ModelRelationsScanner(base_path('Modules')));
         $this->app->bind(ModuleTableResolver::class, fn () => new ModuleTableResolver(base_path('Modules')));
+
+        // Extension runtime state (extension plan §4): singleton so the
+        // per-request state cache and skip-reason map are shared.
+        $this->app->singleton(ExtensionManager::class);
     }
 
     /**
@@ -67,6 +78,12 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
+            BaxelaDisableCommand::class,
+            BaxelaEnableCommand::class,
+            BaxelaInstallCommand::class,
+            BaxelaListCommand::class,
+            BaxelaRemoveCommand::class,
+            BaxelaUpdateCommand::class,
             ErdGenerateCommand::class,
             QueueCheckBacklogCommand::class,
         ]);

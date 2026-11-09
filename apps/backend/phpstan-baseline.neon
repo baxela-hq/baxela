@@ -10982,6 +10982,48 @@ parameters:
 			path: Modules/Core/database/factories/LanguageFactory.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Core/tests/Feature/BaxelaCommandsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/BaxelaCommandsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionBootGuardTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 2
