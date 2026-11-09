@@ -8,6 +8,12 @@
         "framework"
     ],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "extensions/*"
+        }
+    ],
     "require": {
         "php": "^8.3",
         "composer/semver": "^3.6",

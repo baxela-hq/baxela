@@ -15,7 +15,9 @@ use Tests\TestCase;
 
 pest()->extend(TestCase::class)
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
-    ->in('../Modules/*/tests/*');
+    // Dev-mounted extension packages run their suites through this
+    // binary too (extensions/ is gitignored; the glob no-ops when empty).
+    ->in('../Modules/*/tests/*', '../extensions/*/tests/*');
 
 /*
 |--------------------------------------------------------------------------

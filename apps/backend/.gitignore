@@ -23,3 +23,6 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 .zcode
+
+# Dev-mounted extension packages (baxela:install resolves them from here)
+/extensions/
