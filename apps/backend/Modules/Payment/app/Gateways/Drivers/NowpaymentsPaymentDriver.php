@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
@@ -12,11 +13,18 @@ use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class NowpaymentsPaymentDriver implements PaymentDriverInterface
+class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInterface
 {
     use CannotRefund;
 
     public function __construct(protected NowpaymentsClient $nowpayments) {}
+
+    public function credentialKeys(): array
+    {
+        // The API key creates invoices; the IPN secret verifies the
+        // x-nowpayments-sig callbacks that settle them.
+        return ['api_key', 'ipn_secret'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

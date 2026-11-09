@@ -4,7 +4,6 @@ namespace Modules\Payment\Actions\User\Payment;
 
 use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 
 class ListPaymentMethodsAction
@@ -15,7 +14,7 @@ class ListPaymentMethodsAction
      * methods can be offered at checkout, in the admin-set order. A
      * method without a row (a newly added driver) counts as disabled.
      *
-     * @return array<int, PaymentMethodEnum>
+     * @return array<int, string>
      */
     public function handle(): array
     {
@@ -25,8 +24,8 @@ class ListPaymentMethodsAction
             ->where(PaymentMethodSchema::IS_ACTIVE, true)
             ->orderBy(PaymentMethodSchema::SORT_ORDER)
             ->get()
-            ->map(fn (PaymentMethod $row): PaymentMethodEnum => $row->{PaymentMethodSchema::METHOD})
-            ->filter(fn (PaymentMethodEnum $method): bool => $manager->isRegistered($method)
+            ->map(fn (PaymentMethod $row): string => (string) $row->{PaymentMethodSchema::METHOD})
+            ->filter(fn (string $method): bool => $manager->isRegistered($method)
                 && $manager->isConfigured($method))
             ->values()
             ->all();

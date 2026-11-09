@@ -4,11 +4,7 @@ namespace Modules\Payment\Transformers\User\Payment;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 
-/**
- * @mixin PaymentMethodEnum
- */
 class PaymentMethodResource extends JsonResource
 {
     /**
@@ -17,7 +13,7 @@ class PaymentMethodResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'method' => $this->resource->value,
+            'method' => $this->resource,
         ];
     }
 }

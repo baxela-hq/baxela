@@ -2,9 +2,7 @@
 
 namespace Modules\Payment\Actions\Admin\Payment;
 
-use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 
 class ListPaymentMethodAction
@@ -20,15 +18,9 @@ class ListPaymentMethodAction
      */
     public function handle(): array
     {
-        $manager = app(PaymentDriverManager::class);
-
-        foreach (PaymentMethodEnum::cases() as $method) {
-            if (! $manager->isRegistered($method)) {
-                continue;
-            }
-
+        foreach (array_keys((array) config('payment.drivers')) as $method) {
             $this->model->query()->firstOrCreate(
-                [PaymentMethodSchema::METHOD => $method->value],
+                [PaymentMethodSchema::METHOD => $method],
                 [
                     PaymentMethodSchema::IS_ACTIVE => false,
                     PaymentMethodSchema::SORT_ORDER => 0,

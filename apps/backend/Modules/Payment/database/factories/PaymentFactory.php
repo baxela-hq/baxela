@@ -4,7 +4,6 @@ namespace Modules\Payment\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Payment\Models\Payment;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
@@ -23,7 +22,10 @@ class PaymentFactory extends Factory
         return [
             PaymentSchema::ORDER_ID => $this->faker->numberBetween(1, 50),
             PaymentSchema::TRANSACTION_ID => null,
-            PaymentSchema::METHOD => $this->faker->randomElement(PaymentMethodEnum::cases()),
+            PaymentSchema::METHOD => $this->faker->randomElement([
+                'paypal', 'stripe', 'adyen', 'nowpayments',
+                'mercadopago', 'checkoutcom', 'razorpay', 'manual',
+            ]),
             PaymentSchema::AMOUNT => $this->faker->randomNumber(),
             PaymentSchema::STATUS => $this->faker->randomElement(PaymentStatusEnum::cases()),
         ];

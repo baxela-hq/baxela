@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -15,9 +16,16 @@ use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class MercadopagoPaymentDriver implements RefundableDriver
+class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected MercadopagoClient $mercadopago) {}
+
+    public function credentialKeys(): array
+    {
+        // The access token drives the API; the webhook secret verifies
+        // the x-signature notifications that settle payments.
+        return ['access_token', 'webhook_secret'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

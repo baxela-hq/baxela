@@ -16,7 +16,6 @@ use Modules\Payment\Actions\Admin\PaymentRefund\ReverseRefundAction;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentRefund;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
@@ -40,7 +39,7 @@ function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides
 
     $payment = Payment::query()->create([
         PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => $amount,
         PaymentSchema::TRANSACTION_ID => 'offline-'.uniqid(),
@@ -53,7 +52,7 @@ function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides
  * Same as above but for a gateway method, carrying the gateway-side
  * payment id the refund APIs key on.
  */
-function paidOrderWithGatewayPayment(float $amount = 100.0, PaymentMethodEnum $method = PaymentMethodEnum::MANUAL): array
+function paidOrderWithGatewayPayment(float $amount = 100.0, string $method = 'manual'): array
 {
     [$order, $payment] = paidOrderWithManualPayment($amount);
 
@@ -102,7 +101,7 @@ it('rejects a refund on a gateway without refund support and records the failed 
         // NowPayments is the remaining non-refundable driver: crypto
         // payments cannot be reversed provider-side. (Adyen grew a refund
         // driver in gap-B4.)
-        PaymentSchema::METHOD => PaymentMethodEnum::NOWPAYMENTS,
+        PaymentSchema::METHOD => 'nowpayments',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => 100.0,
         PaymentSchema::TRANSACTION_ID => 'nowpayments-'.uniqid(),
@@ -122,7 +121,7 @@ it('rejects a refund on a gateway without refund support and records the failed 
 it('holds an async-accepted refund in processing without firing the refunded event', function () {
     Event::fake();
 
-    [$order, $payment] = paidOrderWithGatewayPayment(100, PaymentMethodEnum::PAYPAL);
+    [$order, $payment] = paidOrderWithGatewayPayment(100, 'paypal');
 
     $this->mock(PaypalPaymentDriver::class, function (MockInterface $mock): void {
         $mock->shouldReceive('refund')->once()->andReturn(new PaymentRefundResult(
@@ -150,7 +149,7 @@ it('holds an async-accepted refund in processing without firing the refunded eve
 });
 
 it('keeps the webhook outcome when it beats the accept response home', function () {
-    [$order, $payment] = paidOrderWithGatewayPayment(100, PaymentMethodEnum::PAYPAL);
+    [$order, $payment] = paidOrderWithGatewayPayment(100, 'paypal');
 
     $this->mock(PaypalPaymentDriver::class, function (MockInterface $mock): void {
         $mock->shouldReceive('refund')->once()->andReturnUsing(
@@ -231,7 +230,7 @@ it('derives order refund status from aggregate totals across payments', function
     // a second successful payment on the same order (retry scenario)
     $second = Payment::query()->create([
         PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => 40,
         PaymentSchema::TRANSACTION_ID => 'offline-2',

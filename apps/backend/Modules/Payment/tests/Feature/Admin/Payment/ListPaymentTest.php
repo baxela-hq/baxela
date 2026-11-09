@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Order\Models\Order;
 use Modules\Payment\Models\Payment;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
@@ -15,7 +14,7 @@ function adminPaymentFor(Order $order, PaymentStatusEnum $status): Payment
 {
     return Payment::factory()->create([
         PaymentSchema::ORDER_ID => $order->id,
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => $status,
         PaymentSchema::CURRENCY_ID => 2,
     ]);
@@ -47,13 +46,13 @@ it('flags refund capability per payment method', function () {
     $manual = adminPaymentFor($order, PaymentStatusEnum::SUCCESS);
     $adyen = Payment::factory()->create([
         PaymentSchema::ORDER_ID => $order->id,
-        PaymentSchema::METHOD => PaymentMethodEnum::ADYEN,
+        PaymentSchema::METHOD => 'adyen',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::CURRENCY_ID => 2,
     ]);
     $nowpayments = Payment::factory()->create([
         PaymentSchema::ORDER_ID => $order->id,
-        PaymentSchema::METHOD => PaymentMethodEnum::NOWPAYMENTS,
+        PaymentSchema::METHOD => 'nowpayments',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::CURRENCY_ID => 2,
     ]);

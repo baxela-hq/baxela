@@ -12,7 +12,6 @@ use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Http\Requests\User\Payment\PaymentRequest;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
@@ -38,13 +37,13 @@ class CreatePaymentAction
             throw PaymentException::processInvalidOrder();
         }
 
-        $method = PaymentMethodEnum::from($request->input(PaymentSchema::METHOD));
-        $driver = app(PaymentDriverManager::class)->forMethod($method);
+        $method = (string) $request->input(PaymentSchema::METHOD);
+        $driver = app(PaymentDriverManager::class)->forName($method);
 
         // The checkout picker only offers active methods, but a stale page
         // could still submit a method an admin just disabled.
         $methodRow = PaymentMethod::query()
-            ->where(PaymentMethodSchema::METHOD, $method->value)
+            ->where(PaymentMethodSchema::METHOD, $method)
             ->first();
 
         if (! $methodRow?->{PaymentMethodSchema::IS_ACTIVE}) {
@@ -68,7 +67,7 @@ class CreatePaymentAction
             payment_id: $payment->{PaymentSchema::ID},
             order_id: $orderId,
             amount: $order->total_amount,
-            method: $method->value,
+            method: $method,
             order_code: $order->order_code,
             currency: $order->currency_code,
             currency_decimal_places: $order->currency_decimal_places,
@@ -83,7 +82,7 @@ class CreatePaymentAction
             PaymentSchema::ID => $payment->{PaymentSchema::ID},
             PaymentSchema::ORDER_ID => $orderId,
             PaymentSchema::AMOUNT => $payment->{PaymentSchema::AMOUNT},
-            PaymentSchema::METHOD => $method->value,
+            PaymentSchema::METHOD => $method,
             PaymentSchema::STATUS => PaymentStatusEnum::PENDING->value,
         ]));
 

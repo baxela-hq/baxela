@@ -12,7 +12,6 @@ use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Tests\Feature\HelperTrait;
 use Modules\Payment\Models\Payment;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
@@ -98,7 +97,7 @@ it('keeps the coupon consumed when an admin refunds a paid order', function () {
     // manual-method ledger (bookkeeping-only gateway)
     $payment = Payment::query()->create([
         PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => $order->{OrderSchema::TOTAL_AMOUNT},
     ]);

@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -15,9 +16,16 @@ use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class AdyenPaymentDriver implements RefundableDriver
+class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected AdyenCheckout $adyen) {}
+
+    public function credentialKeys(): array
+    {
+        // api_key/merchant_account drive payments; the standard-webhook
+        // HMAC key verifies the notifications that settle them.
+        return ['api_key', 'merchant_account', 'hmac_key'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

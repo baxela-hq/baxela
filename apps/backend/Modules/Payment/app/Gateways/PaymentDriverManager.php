@@ -2,21 +2,13 @@
 
 namespace Modules\Payment\Gateways;
 
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 
 class PaymentDriverManager
 {
-    /**
-     * @throws PaymentException
-     */
-    public function forMethod(PaymentMethodEnum $method): PaymentDriverInterface
-    {
-        return $this->forName($method->value);
-    }
-
     /**
      * @throws PaymentException
      */
@@ -31,9 +23,9 @@ class PaymentDriverManager
         return app($driver);
     }
 
-    public function isRegistered(PaymentMethodEnum $method): bool
+    public function isRegistered(string $driver): bool
     {
-        return array_key_exists($method->value, (array) config('payment.drivers'));
+        return array_key_exists($driver, (array) config('payment.drivers'));
     }
 
     /**
@@ -41,35 +33,46 @@ class PaymentDriverManager
      * implementing RefundableDriver — next to the behavior itself, so the
      * two cannot drift apart.
      */
-    public function supportsRefund(PaymentMethodEnum $method): bool
+    public function supportsRefund(string $driver): bool
     {
-        return $this->isRegistered($method)
-            && $this->forMethod($method) instanceof RefundableDriver;
+        return $this->isRegistered($driver)
+            && $this->forName($driver) instanceof RefundableDriver;
     }
 
     /**
-     * A registered driver without its credentials cannot serve payments —
-     * hide it rather than offer a method that fails on every attempt.
+     * Whether the driver carries the credentials its full payment
+     * lifecycle needs — checkout initiation and webhook verification
+     * alike, per its own ConfigurableDriver declaration. False for
+     * unregistered drivers and for registered ones that declare no
+     * contract (fail closed); a driver declaring no keys counts as
+     * configured. Only this policy answer is boolean: unexpected
+     * driver-resolution failures propagate, never silently become
+     * "unconfigured".
      */
-    public function isConfigured(PaymentMethodEnum $method): bool
+    public function isConfigured(string $driver): bool
     {
-        return match ($method) {
-            PaymentMethodEnum::MANUAL => true,
-            PaymentMethodEnum::STRIPE => (bool) config('payment.stripe.secret'),
-            PaymentMethodEnum::PAYPAL => (bool) config('payment.paypal.client_id')
-                && (bool) config('payment.paypal.client_secret'),
-            PaymentMethodEnum::ADYEN => (bool) config('payment.adyen.api_key')
-                && (bool) config('payment.adyen.merchant_account'),
-            PaymentMethodEnum::NOWPAYMENTS => (bool) config('payment.nowpayments.api_key')
-                && (bool) config('payment.nowpayments.ipn_secret'),
-            PaymentMethodEnum::MERCADOPAGO => (bool) config('payment.mercadopago.access_token')
-                && (bool) config('payment.mercadopago.webhook_secret'),
-            PaymentMethodEnum::CHECKOUTCOM => (bool) config('payment.checkoutcom.secret_key')
-                && (bool) config('payment.checkoutcom.webhook_secret'),
-            PaymentMethodEnum::RAZORPAY => (bool) config('payment.razorpay.key_id')
-                && (bool) config('payment.razorpay.key_secret')
-                && (bool) config('payment.razorpay.webhook_secret'),
-            default => false,
-        };
+        if (! $this->isRegistered($driver)) {
+            return false;
+        }
+
+        $instance = $this->forName($driver);
+
+        if (! $instance instanceof ConfigurableDriver) {
+            return false;
+        }
+
+        $keys = $instance->credentialKeys();
+
+        if ($keys === []) {
+            return true;
+        }
+
+        foreach ($keys as $key) {
+            if (! config("payment.{$driver}.{$key}")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

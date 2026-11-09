@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -16,9 +17,17 @@ use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use UnexpectedValueException;
 
-class StripePaymentDriver implements RefundableDriver
+class StripePaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected StripeCheckout $stripe) {}
+
+    public function credentialKeys(): array
+    {
+        // The API secret creates checkout sessions; the webhook secret
+        // verifies the notifications that settle them. A driver that
+        // can initiate but not verify payments is not operational.
+        return ['secret', 'webhook_secret'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

@@ -88,7 +88,7 @@ class CreateRefundAction
 
         try {
             $result = $this->driverManager
-                ->forMethod($payment->{PaymentSchema::METHOD})
+                ->forName($payment->{PaymentSchema::METHOD})
                 ->refund(new PaymentRefundInput(
                     payment_id: (int) $payment->{PaymentSchema::ID},
                     order_id: (int) $payment->{PaymentSchema::ORDER_ID},

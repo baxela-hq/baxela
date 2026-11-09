@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -11,8 +12,14 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
 use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 
-class ManualPaymentDriver implements RefundableDriver
+class ManualPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
+    public function credentialKeys(): array
+    {
+        // Offline settlement needs no gateway credentials.
+        return [];
+    }
+
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {
         // Offline flow: no hosted checkout to redirect to. The payment is

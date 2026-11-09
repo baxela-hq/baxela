@@ -1,8 +1,15 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
+use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
+use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Tests\Feature\HelperTrait;
 
@@ -16,10 +23,13 @@ it('denies a guest with 401', function () {
 it('lazily creates disabled rows for every registered driver', function () {
     config([
         'payment.stripe.secret' => 'sk_test_x',
+        'payment.stripe.webhook_secret' => 'whsec_test_x',
         'payment.paypal.client_id' => null,
         'payment.paypal.client_secret' => null,
+        'payment.paypal.webhook_id' => null,
         'payment.adyen.api_key' => null,
         'payment.adyen.merchant_account' => null,
+        'payment.adyen.hmac_key' => null,
         'payment.nowpayments.api_key' => null,
         'payment.nowpayments.ipn_secret' => null,
         'payment.mercadopago.access_token' => null,
@@ -64,8 +74,49 @@ it('does not create rows for drivers without an implementation', function () {
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
     expect(collect($response->json('data'))->pluck('method')->all())
-        ->not->toContain(PaymentMethodEnum::PAYPAL->value)
+        ->not->toContain('paypal')
         ->and(PaymentMethod::count())->toBe(7);
+});
+
+it('lazily creates an inactive row for a driver an extension registers', function () {
+    // How an extension-provided driver appears: config registration only,
+    // no core change — the admin list picks it up as disabled.
+    $driver = new class implements ConfigurableDriver, PaymentDriverInterface
+    {
+        public function credentialKeys(): array
+        {
+            return ['api_key'];
+        }
+
+        public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
+        {
+            throw new RuntimeException('never called');
+        }
+
+        public function handleWebhook(Request $request): WebhookResult
+        {
+            throw new RuntimeException('never called');
+        }
+
+        public function refund(PaymentRefundInput $input): PaymentRefundResult
+        {
+            throw new RuntimeException('never called');
+        }
+    };
+    config([
+        'payment.drivers.sandbox' => $driver::class,
+        'payment.sandbox.api_key' => null,
+    ]);
+    $this->actingAs($this->superAdminUser());
+
+    $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
+
+    $sandbox = collect($response->json('data'))->firstWhere('method', 'sandbox');
+
+    expect($sandbox)->not->toBeNull()
+        ->and($sandbox[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
+        ->and($sandbox[PaymentMethodSchema::IS_REGISTERED])->toBeTrue()
+        ->and($sandbox[PaymentMethodSchema::IS_CONFIGURED])->toBeFalse();
 });
 
 it('flags a gateway whose credentials are missing', function () {
@@ -97,7 +148,7 @@ it('activates a method and moves its checkout position', function () {
     $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
     $method = PaymentMethod::query()
-        ->where(PaymentMethodSchema::METHOD, PaymentMethodEnum::STRIPE->value)
+        ->where(PaymentMethodSchema::METHOD, 'stripe')
         ->first();
 
     $this->patchJson($this->baseUrl('/admin/methods/'.$method->id), [
@@ -115,7 +166,7 @@ it('refuses updating a method whose driver is no longer registered', function ()
     config(['payment.drivers' => collect(config('payment.drivers'))->except('paypal')->all()]);
     $this->actingAs($this->superAdminUser());
     $method = PaymentMethod::query()->create([
-        PaymentMethodSchema::METHOD => PaymentMethodEnum::PAYPAL,
+        PaymentMethodSchema::METHOD => 'paypal',
         PaymentMethodSchema::IS_ACTIVE => false,
         PaymentMethodSchema::SORT_ORDER => 30,
     ]);

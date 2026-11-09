@@ -13,7 +13,6 @@ use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentRefund;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
@@ -47,7 +46,7 @@ function paidGatewayOrder(float $amount = 100.0, array $paymentOverrides = []): 
 
     $payment = Payment::query()->create(array_merge([
         PaymentSchema::ORDER_ID => $order->{OrderSchema::ID},
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
         PaymentSchema::AMOUNT => $amount,
         PaymentSchema::TRANSACTION_ID => 'gw-'.uniqid(),

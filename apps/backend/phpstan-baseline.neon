@@ -17516,12 +17516,6 @@ parameters:
 			path: Modules/Payment/app/Gateways/NowpaymentsClient.php
 
 		-
-			message: '#^Match arm comparison between Modules\\Payment\\Schemas\\Payment\\PaymentMethodEnum\:\:RAZORPAY and Modules\\Payment\\Schemas\\Payment\\PaymentMethodEnum\:\:RAZORPAY is always true\.$#'
-			identifier: match.alwaysTrue
-			count: 1
-			path: Modules/Payment/app/Gateways/PaymentDriverManager.php
-
-		-
 			message: '#^Method Modules\\Payment\\Gateways\\PaypalClient\:\:createOrder\(\) has parameter \$params with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -17836,19 +17830,19 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 8
+			count: 9
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 10
+			count: 11
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -17860,7 +17854,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 8
+			count: 9
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -17872,13 +17866,13 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
@@ -18148,7 +18142,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
 			identifier: property.notFound
-			count: 19
+			count: 21
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
@@ -18160,19 +18154,19 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 19
+			count: 21
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 19
+			count: 21
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
-			count: 19
+			count: 21
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
@@ -18214,31 +18208,31 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 8
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 8
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 7
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-

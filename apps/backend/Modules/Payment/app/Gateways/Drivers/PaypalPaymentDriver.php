@@ -4,6 +4,7 @@ namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -14,9 +15,17 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
-class PaypalPaymentDriver implements RefundableDriver
+class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected PaypalClient $paypal) {}
+
+    public function credentialKeys(): array
+    {
+        // client_id/secret drive the Orders v2 API; the webhook ID is
+        // what signature verification keys on — without it captures
+        // can never settle an order.
+        return ['client_id', 'client_secret', 'webhook_id'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

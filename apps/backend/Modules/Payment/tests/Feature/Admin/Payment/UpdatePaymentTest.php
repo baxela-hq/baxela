@@ -9,7 +9,6 @@ use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Payment\Models\Payment;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
@@ -29,7 +28,7 @@ function adminPendingPayment(Order $order): Payment
 {
     return Payment::factory()->create([
         PaymentSchema::ORDER_ID => $order->id,
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::PENDING,
     ]);
 }
@@ -81,7 +80,7 @@ it('rejects settling an already settled payment', function () {
     $order = adminUnpaidOrder();
     $payment = Payment::factory()->create([
         PaymentSchema::ORDER_ID => $order->id,
-        PaymentSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentSchema::METHOD => 'manual',
         PaymentSchema::STATUS => PaymentStatusEnum::SUCCESS,
     ]);
 

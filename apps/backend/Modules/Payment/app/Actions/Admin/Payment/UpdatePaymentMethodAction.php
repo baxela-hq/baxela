@@ -21,11 +21,11 @@ class UpdatePaymentMethodAction
     public function handle(string $id, array $data): PaymentMethod
     {
         $method = $this->model->query()->findOrFail($id);
-        $methodEnum = $method->{PaymentMethodSchema::METHOD};
+        $driver = $method->{PaymentMethodSchema::METHOD};
 
         // A row whose driver was removed can never reach the storefront;
         // refuse to pretend activating it does anything.
-        if (! app(PaymentDriverManager::class)->isRegistered($methodEnum)) {
+        if (! app(PaymentDriverManager::class)->isRegistered($driver)) {
             throw PaymentException::methodNotSupported();
         }
 

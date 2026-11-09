@@ -10,8 +10,10 @@ use Modules\Payment\Gateways\Drivers\RazorpayPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 
 return [
-    // Key: PaymentMethodEnum value. Drivers without an entry fail with
-    // payment.process.method_not_supported.
+    // Registry keys are the drivers' public slugs — the identity
+    // checkout, webhooks, and payment method rows all key on. Extensions
+    // merge themselves in here at boot; a slug without an entry fails
+    // with payment.process.method_not_supported.
     'drivers' => [
         'manual' => ManualPaymentDriver::class,
         'stripe' => StripePaymentDriver::class,

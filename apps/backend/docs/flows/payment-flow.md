@@ -6,18 +6,27 @@ Checkout and payment are two steps: checkout creates an UNPAID order
 
 ## Drivers
 
-Payment behavior is a driver registry: `PaymentMethodEnum` supplies the
-case, `config('payment.drivers')` maps it to a `PaymentDriverInterface`
-implementation, and `PaymentDriverManager` resolves it (and exposes
-`isRegistered()` / `isConfigured()`).
+Payment behavior is an open driver registry: the slug key in
+`config('payment.drivers')` **is** the method's identity (no enum —
+extensions merge their own entries in at boot), the value is a
+`PaymentDriverInterface` implementation, and `PaymentDriverManager`
+resolves it by string (`forName()`, also what the parameterized webhook
+route uses) while exposing `isRegistered()` / `isConfigured()` /
+`supportsRefund()`. Capabilities are declared next to the behavior, via
+marker interfaces on the driver: `RefundableDriver` wires refund support,
+`ConfigurableDriver::credentialKeys()` declares the config keys (relative
+to `payment.{driver}.`) the full payment lifecycle needs — checkout
+initiation **and** webhook verification.
 
 Which methods customers see is state, not code: the `payment_methods`
 table holds one row per method with `is_active` and `sort_order`, managed
 by admins via `GET/PATCH /payment/admin/methods` (the list lazily creates
 a disabled row for every registered driver, so a new gateway appears in
-the admin without seeding; a method without a row counts as disabled).
+the admin without seeding; a method without a row counts as disabled, and
+a row whose driver vanished is refused with `method_not_supported`).
 A method is offerable only when its driver is registered **and**
-configured (credentials present) **and** its row is active —
+configured (every declared credential key present — unregistered or
+undeclaring drivers fail closed to false) **and** its row is active —
 `GET /payment/user/methods` returns exactly that set, in the admin-set
 order, and is the storefront's source of truth for the checkout picker.
 `CreatePaymentAction` re-checks activation and rejects a disabled method
@@ -376,15 +385,18 @@ acked as no-ops).
 
 ## Adding a payment driver
 
-1. Add the case to `PaymentMethodEnum` (values are public API).
-2. Implement `PaymentDriverInterface` (`initiate` + `handleWebhook`) under
+1. Implement `PaymentDriverInterface` (`initiate` + `handleWebhook`) under
    `Modules/Payment/app/Gateways/Drivers/`; verify the webhook signature
    inside `handleWebhook` and return the stored `transaction_id`.
-3. Register it under its enum value in `Modules/Payment/config/payment.php`
-   plus a config block for its env-driven credentials, and add the method to
-   `PaymentDriverManager::isConfigured()` so it stays hidden until the
-   credentials exist (throw `gatewayUnconfigured()` inside the driver as the
-   backstop).
+2. Declare its capabilities on the driver itself: implement
+   `ConfigurableDriver::credentialKeys()` (the `payment.{driver}.` keys its
+   full lifecycle needs — it stays hidden from checkout until they exist;
+   throw `gatewayUnconfigured()` inside the driver as the backstop) and
+   `RefundableDriver` when `refund()` is wired.
+3. Register the slug → class mapping in
+   `Modules/Payment/config/payment.php` plus a config block for its
+   env-driven credentials. No manager edit, ever — `isConfigured()` reads
+   the driver's own declaration.
 4. Point the gateway's webhook at `POST /api/v1/payment/webhook/{driver}` —
    `HandleWebhookAction` handles matching, idempotent settling, order
    `markAsPaid` and events generically.
@@ -392,9 +404,10 @@ acked as no-ops).
    (disabled) the first time an admin opens the page; flipping it active
    and ordering it there is all it takes — no seeding, no storefront
    deploy.
-6. Sync the storefront: extend `ApiPaymentMethod` in
-   `lib/api/types.ts` and add checkout labels under
-   `payment.methods.*` in `messages/{en,fa}/checkout/checkout.json`.
+6. Storefront labels are optional: `ApiPaymentMethod` is an open type and
+   checkout falls back to the raw slug, so add entries under
+   `payment.methods.*` in `messages/{en,fa}/checkout/checkout.json` only
+   for built-ins worth naming.
 7. Cover the driver with unit tests (signature + event mapping) mirroring
    `StripePaymentDriverTest`.
 

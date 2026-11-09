@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -15,9 +16,16 @@ use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class CheckoutcomPaymentDriver implements RefundableDriver
+class CheckoutcomPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected CheckoutcomClient $checkoutcom) {}
+
+    public function credentialKeys(): array
+    {
+        // The secret key creates payment links; the webhook signing
+        // secret verifies the cko-signature notifications that settle them.
+        return ['secret_key', 'webhook_secret'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

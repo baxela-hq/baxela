@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 
@@ -22,8 +21,8 @@ class PaymentDatabaseSeeder extends Seeder
         // Both existing methods start active so a seeded store keeps taking
         // payments; gateways added later appear in the admin list disabled.
         foreach ([
-            [PaymentMethodEnum::MANUAL, 10],
-            [PaymentMethodEnum::STRIPE, 20],
+            ['manual', 10],
+            ['stripe', 20],
         ] as [$method, $sortOrder]) {
             PaymentMethod::query()->firstOrCreate(
                 [PaymentMethodSchema::METHOD => $method],

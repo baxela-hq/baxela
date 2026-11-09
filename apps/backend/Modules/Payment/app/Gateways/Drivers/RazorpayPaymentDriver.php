@@ -3,6 +3,7 @@
 namespace Modules\Payment\Gateways\Drivers;
 
 use Illuminate\Http\Request;
+use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
@@ -15,9 +16,16 @@ use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
 
-class RazorpayPaymentDriver implements RefundableDriver
+class RazorpayPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
     public function __construct(protected RazorpayClient $razorpay) {}
+
+    public function credentialKeys(): array
+    {
+        // The key pair drives the API; the webhook secret verifies the
+        // x-razorpay-signature notifications that settle payments.
+        return ['key_id', 'key_secret', 'webhook_secret'];
+    }
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {

@@ -17,7 +17,6 @@ use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
-use Modules\Payment\Schemas\Payment\PaymentMethodEnum;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
@@ -39,7 +38,7 @@ function payableOrder(User $user): Order
     ]);
 }
 
-function activeMethod(PaymentMethodEnum $method): PaymentMethod
+function activeMethod(string $method): PaymentMethod
 {
     return PaymentMethod::query()->create([
         PaymentMethodSchema::METHOD => $method,
@@ -49,7 +48,7 @@ function activeMethod(PaymentMethodEnum $method): PaymentMethod
 }
 
 it('creates a pending manual payment for a payable order', function () {
-    activeMethod(PaymentMethodEnum::MANUAL);
+    activeMethod('manual');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -66,7 +65,7 @@ it('creates a pending manual payment for a payable order', function () {
         ->and($payment)->not->toBeNull()
         ->and((int) $payment->{PaymentSchema::ORDER_ID})->toBe($order->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::MANUAL)
+        ->and($payment->{PaymentSchema::METHOD})->toBe('manual')
         ->and((float) $payment->{PaymentSchema::AMOUNT})->toBe(305.0)
         ->and($payment->{PaymentSchema::CURRENCY_ID})->toBe(2);
 });
@@ -109,7 +108,7 @@ it('rejects paying another user\'s order', function () {
 
 it('rejects a method an admin deactivated', function () {
     PaymentMethod::query()->create([
-        PaymentMethodSchema::METHOD => PaymentMethodEnum::MANUAL,
+        PaymentMethodSchema::METHOD => 'manual',
         PaymentMethodSchema::IS_ACTIVE => false,
         PaymentMethodSchema::SORT_ORDER => 10,
     ]);
@@ -125,10 +124,30 @@ it('rejects a method an admin deactivated', function () {
     expect(Payment::count())->toBe(0);
 });
 
-it('rejects a method with no configured driver', function () {
-    // paypal is registered by default; drop it from the registry to cover
-    // the enum-case-without-driver gap.
+it('rejects a registered method that has no row (a new driver) as inactive', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    // stripe is registered but no payment_methods row exists: the admin
+    // never activated it, so checkout refuses it.
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'stripe',
+    ])->assertStatus(400)->assertJsonPath('code', 'payment.process.method_inactive');
+
+    expect(Payment::count())->toBe(0);
+});
+
+it('rejects a stale row whose driver was removed with a clear error', function () {
+    // A row left behind by a removed extension must fail at the driver
+    // resolution layer (method_not_supported), not as an unknown method.
     config(['payment.drivers' => collect(config('payment.drivers'))->except('paypal')->all()]);
+    PaymentMethod::query()->create([
+        PaymentMethodSchema::METHOD => 'paypal',
+        PaymentMethodSchema::IS_ACTIVE => true,
+        PaymentMethodSchema::SORT_ORDER => 10,
+    ]);
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -139,8 +158,21 @@ it('rejects a method with no configured driver', function () {
     ])->assertStatus(400)->assertJsonPath('code', 'payment.process.method_not_supported');
 });
 
+it('rejects a method unknown to both the registry and the database', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    $order = payableOrder($user);
+
+    $this->postJson($this->baseUrl('/user/process'), [
+        'order_code' => $order->{OrderSchema::ORDER_CODE},
+        'method' => 'crypto',
+    ])->assertStatus(422);
+
+    expect(Payment::count())->toBe(0);
+});
+
 it('creates a stripe payment and returns the hosted checkout url', function () {
-    activeMethod(PaymentMethodEnum::STRIPE);
+    activeMethod('stripe');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -168,12 +200,12 @@ it('creates a stripe payment and returns the hosted checkout url', function () {
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('cs_test_9')
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::STRIPE);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('stripe');
 });
 
 it('rejects a stripe payment when the gateway is not configured', function () {
     config(['payment.stripe.secret' => null]);
-    activeMethod(PaymentMethodEnum::STRIPE);
+    activeMethod('stripe');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -189,7 +221,7 @@ it('creates a paypal payment and returns the hosted approval url', function () {
         'payment.paypal.client_id' => 'cid_test',
         'payment.paypal.client_secret' => 'secret_test',
     ]);
-    activeMethod(PaymentMethodEnum::PAYPAL);
+    activeMethod('paypal');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -221,7 +253,7 @@ it('creates a paypal payment and returns the hosted approval url', function () {
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe('5O190127TN3647153')
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::PAYPAL);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('paypal');
 });
 
 it('creates an adyen payment and returns the hosted payment link url', function () {
@@ -230,7 +262,7 @@ it('creates an adyen payment and returns the hosted payment link url', function 
         'payment.adyen.merchant_account' => 'BaxelaECOM',
         'payment.adyen.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
     ]);
-    activeMethod(PaymentMethodEnum::ADYEN);
+    activeMethod('adyen');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -260,7 +292,7 @@ it('creates an adyen payment and returns the hosted payment link url', function 
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::ADYEN);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('adyen');
 });
 
 it('rejects an adyen payment when the gateway is not configured', function () {
@@ -268,7 +300,7 @@ it('rejects an adyen payment when the gateway is not configured', function () {
         'payment.adyen.api_key' => null,
         'payment.adyen.merchant_account' => null,
     ]);
-    activeMethod(PaymentMethodEnum::ADYEN);
+    activeMethod('adyen');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -286,7 +318,7 @@ it('creates a nowpayments payment and returns the hosted invoice url', function 
         'payment.nowpayments.success_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
         'payment.nowpayments.cancel_url' => 'https://shop.test/en/payment/return?order_code={order_code}&status=cancel',
     ]);
-    activeMethod(PaymentMethodEnum::NOWPAYMENTS);
+    activeMethod('nowpayments');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -316,7 +348,7 @@ it('creates a nowpayments payment and returns the hosted invoice url', function 
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::NOWPAYMENTS);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('nowpayments');
 });
 
 it('rejects a nowpayments payment when the gateway is not configured', function () {
@@ -324,7 +356,7 @@ it('rejects a nowpayments payment when the gateway is not configured', function 
         'payment.nowpayments.api_key' => null,
         'payment.nowpayments.ipn_secret' => null,
     ]);
-    activeMethod(PaymentMethodEnum::NOWPAYMENTS);
+    activeMethod('nowpayments');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -343,7 +375,7 @@ it('creates a mercadopago payment and returns the hosted preference url', functi
         'payment.mercadopago.pending_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
         'payment.mercadopago.failure_url' => 'https://shop.test/en/payment/return?order_code={order_code}&status=cancel',
     ]);
-    activeMethod(PaymentMethodEnum::MERCADOPAGO);
+    activeMethod('mercadopago');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -373,7 +405,7 @@ it('creates a mercadopago payment and returns the hosted preference url', functi
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::MERCADOPAGO);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('mercadopago');
 });
 
 it('rejects a mercadopago payment when the gateway is not configured', function () {
@@ -381,7 +413,7 @@ it('rejects a mercadopago payment when the gateway is not configured', function 
         'payment.mercadopago.access_token' => null,
         'payment.mercadopago.webhook_secret' => null,
     ]);
-    activeMethod(PaymentMethodEnum::MERCADOPAGO);
+    activeMethod('mercadopago');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -398,7 +430,7 @@ it('creates a checkoutcom payment and returns the hosted link url', function () 
         'payment.checkoutcom.webhook_secret' => 'cko-webhook-test',
         'payment.checkoutcom.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
     ]);
-    activeMethod(PaymentMethodEnum::CHECKOUTCOM);
+    activeMethod('checkoutcom');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -429,7 +461,7 @@ it('creates a checkoutcom payment and returns the hosted link url', function () 
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::CHECKOUTCOM);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('checkoutcom');
 });
 
 it('rejects a checkoutcom payment when the gateway is not configured', function () {
@@ -437,7 +469,7 @@ it('rejects a checkoutcom payment when the gateway is not configured', function 
         'payment.checkoutcom.secret_key' => null,
         'payment.checkoutcom.webhook_secret' => null,
     ]);
-    activeMethod(PaymentMethodEnum::CHECKOUTCOM);
+    activeMethod('checkoutcom');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
@@ -454,7 +486,7 @@ it('creates a razorpay payment and returns the hosted link url', function () {
         'payment.razorpay.key_secret' => 'rzp_secret_test',
         'payment.razorpay.return_url' => 'https://shop.test/en/payment/return?order_code={order_code}',
     ]);
-    activeMethod(PaymentMethodEnum::RAZORPAY);
+    activeMethod('razorpay');
     $user = User::factory()->create();
     $this->actingAs($user);
     Currency::factory()->create([
@@ -484,7 +516,7 @@ it('creates a razorpay payment and returns the hosted link url', function () {
         ->and($payment)->not->toBeNull()
         ->and($payment->{PaymentSchema::TRANSACTION_ID})->toBe((string) $payment->id)
         ->and($payment->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::PENDING)
-        ->and($payment->{PaymentSchema::METHOD})->toBe(PaymentMethodEnum::RAZORPAY);
+        ->and($payment->{PaymentSchema::METHOD})->toBe('razorpay');
 });
 
 it('rejects a razorpay payment when the gateway is not configured', function () {
@@ -493,7 +525,7 @@ it('rejects a razorpay payment when the gateway is not configured', function () 
         'payment.razorpay.key_secret' => null,
         'payment.razorpay.webhook_secret' => null,
     ]);
-    activeMethod(PaymentMethodEnum::RAZORPAY);
+    activeMethod('razorpay');
     $user = User::factory()->create();
     $this->actingAs($user);
     $order = payableOrder($user);
