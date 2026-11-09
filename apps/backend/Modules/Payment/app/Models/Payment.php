@@ -17,6 +17,7 @@ class Payment extends Model
     protected $fillable = [
         PaymentSchema::ORDER_ID,
         PaymentSchema::TRANSACTION_ID,
+        PaymentSchema::GATEWAY_TRANSACTION_ID,
         PaymentSchema::METHOD,
         PaymentSchema::AMOUNT,
         PaymentSchema::CURRENCY_ID,
