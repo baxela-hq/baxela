@@ -102,17 +102,17 @@ point: if the flow breaks here, the cause is the system. It also permanently ear
 three ways: a dev/testing gateway for checkout flows without real credentials, the reference
 implementation for marketplace authors, and the first package the marketplace ingests (Phase 3).
 
-- [ ] Scaffold package: `composer.json` (type + manifest with `compat.core`), `src/SandboxServiceProvider.php` (extends `Baxela\Extension`), `config/sandbox.php`, lang errors, tests. **No webhook route registration needed** — verified 2026-11-08: the parameterized `POST api/v1/payment/webhook/{driver}` route already resolves any registered driver; the driver just implements `handleWebhook()`.
-- [ ] `SandboxPaymentDriver` implements `PaymentDriverInterface` + `RefundableDriver` (refund is a local no-op that settles the refund record), registers itself via `config(['payment.drivers.sandbox' => SandboxPaymentDriver::class])`.
-- [ ] Dev-mount via Composer `path` repository while repos are local.
-- [ ] **System-proof checklist — all must pass before Phase 3:**
-  - `baxela:install` from the local path repo → row in `extensions`, shows in `baxela:list`, sandbox method appears in checkout
-  - checkout completes with the sandbox driver; its webhook endpoint fires and settles an order
-  - `baxela:disable` / `baxela:enable` flips it at runtime; core untouched
-  - tag `v0.0.2` with a trivial change → `baxela:update` applies cleanly, version row refreshes
-  - compat test: declare `compat.core` above the current core version → install blocked with a clear error; runtime guard no-ops a force-installed copy
-  - `baxela:remove` unregisters everything cleanly
-- [ ] **End-to-end proof without any marketplace.** Do not start Phase 3 before this passes.
+- [x] Scaffold package: `composer.json` (type + manifest with `compat.core`), `src/SandboxServiceProvider.php` (extends `Baxela\Extension`), `config/sandbox.php`, lang errors, tests. **No webhook route registration needed** — verified 2026-11-08: the parameterized `POST api/v1/payment/webhook/{driver}` route already resolves any registered driver; the driver just implements `handleWebhook()`. *(done 2026-11-10 — local git repo at `apps/backend/extensions/baxela-sandbox-gateway`, tags v0.0.1/v0.0.2; manifest slug = the composer package name, the checkout driver key 'sandbox' is separate; package tests run from the host backend binary per its README)*
+- [x] `SandboxPaymentDriver` implements `PaymentDriverInterface` + `RefundableDriver` (refund is a local no-op that settles the refund record), registers itself via `config(['payment.drivers.sandbox' => SandboxPaymentDriver::class])`. *(done 2026-11-10 — also `ConfigurableDriver` with `['webhook_secret']`; real HMAC-SHA256 over the raw body with constant-time compare; env-backed config merged in `extensionBoot()` so a disabled extension leaves nothing in the payment namespace)*
+- [x] Dev-mount via Composer `path` repository while repos are local. *(done 2026-11-10 — committable `repositories` entry + gitignored `extensions/`; package declares an explicit `version` field because composer's stability gate does not guess from git tags on path repos)*
+- [x] **System-proof checklist — all must pass before Phase 3:** *(all green 2026-11-10, run live against the dev compose stack; the proof found and fixed three real system bugs — see the plan doc §5 execution notes)*
+  - [x] `baxela:install` from the local path repo → row in `extensions`, shows in `baxela:list`, sandbox method appears in checkout
+  - [x] checkout completes with the sandbox driver; its webhook endpoint fires and settles an order *(unsigned + replay also verified: 400 invalid, idempotent ack)*
+  - [x] `baxela:disable` / `baxela:enable` flips it at runtime; core untouched *(fresh-boot checks: method gone from storefront, webhook `method_not_supported`, skip reason `disabled`)*
+  - [x] tag `v0.0.2` with a trivial change → `baxela:update` applies cleanly, version row refreshes *(read live from composer — no row to refresh)*
+  - [x] compat test: declare `compat.core` above the current core version → install blocked with a clear error; runtime guard no-ops a force-installed copy *(skip reason names the required range)*
+  - [x] `baxela:remove` unregisters everything cleanly *(row, method row via uninstall hook, vendor package, driver)*
+- [x] **End-to-end proof without any marketplace.** Do not start Phase 3 before this passes. *(passed 2026-11-10; steady state is mountable-not-installed — install is one command, and an always-installed dev extension would change registry-derived test expectations per machine)*
 
 ### Phase 3 — Marketplace app (repo #3: `baxela-marketplace`)
 

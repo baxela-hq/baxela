@@ -7,9 +7,10 @@
 > verified state, design decisions, build order, edge cases, tests — readable without
 > conversation history.
 >
-> **Created:** 2026-11-08 · **Owner:** solo maintainer · **Status:** **E.0 executed
-> 2026-11-09, E.1 executed 2026-11-10** (green suite, larastan clean); E.2 awaiting
-> execution. Original sequencing constraint satisfied: Phase C landed 2026-11-08.
+> **Created:** 2026-11-08 · **Owner:** solo maintainer · **Status:** **E.0–E.2 executed
+> (2026-11-09/10). The E.2 system-proof gate PASSED — the marketplace plan (roadmap
+> Phase 3) may be written next.** Original sequencing constraint satisfied: Phase C
+> landed 2026-11-08.
 >
 > **Execution order (strict):** **E.0 → E.1 → E.2**. Each slice lands green and committed
 > before the next starts. Size estimates are initial, not commitments: E.0 ≈ 2 d,
@@ -349,40 +350,84 @@ chunk and both substrings share the table-row chunk — the test captures full o
 
 ### Work items (~1–2 d)
 
-- [ ] New repo `baxela-sandbox-gateway`: `composer.json` (`name`, `type: baxela-extension`,
+- [x] New repo `baxela-sandbox-gateway`: `composer.json` (`name`, `type: baxela-extension`,
       `extra.laravel.providers`, `extra.baxela` manifest with `compat.core`), license, README,
-      semver tag `v0.0.1`.
-- [ ] `src/SandboxServiceProvider.php` extends `Modules\Core\Extensions\Extension`;
+      semver tag `v0.0.1`. *(executed 2026-11-10 — local git repo (no remote; the marketplace
+      ingest is the first remote consumer), tags v0.0.1/v0.0.2; the package declares an
+      explicit `version` field because composer's stability gate does not guess versions from
+      git tags on path repositories — kept in sync with the tag, README documents it)*
+- [x] `src/SandboxServiceProvider.php` extends `Modules\Core\Extensions\Extension`;
       config publish tag; `install()` seeds the `payment_payment_methods` row
       (`firstOrCreate`, inactive-by-default like other drivers); lang errors file; Pest tests.
-- [ ] **System-proof checklist — the E.2 gate, all green before the marketplace plan:**
-  - `baxela:install` → row in `core_extensions`, visible in `baxela:list`, sandbox method
+      *(no publish tag needed — env-backed defaults merge inside `extensionBoot()`, so a
+      disabled extension leaves nothing in the payment namespace; `uninstall()` drops the
+      method row; tests run from the host backend binary — picked and documented in the
+      README, wired via the root `tests/Pest.php` TestCase scope)*
+- [x] **System-proof checklist — the E.2 gate, all green before the marketplace plan:**
+  *(run live 2026-11-10 against the dev compose stack, through the front door — every
+  request went through the HTTP kernel, every mutation through a baxela:* command)*
+  - [x] `baxela:install` → row in `core_extensions`, visible in `baxela:list`, sandbox method
     appears in storefront methods (active + configured).
-  - Checkout completes with the sandbox driver; `POST api/v1/payment/webhook/sandbox`
-    settles an order end-to-end; refund flow settles.
-  - `baxela:disable` → method vanishes from storefront, webhook returns
+  - [x] Checkout completes with the sandbox driver; `POST api/v1/payment/webhook/sandbox`
+    settles an order end-to-end; refund flow settles. *(plus unsigned → 400 invalid,
+    signed replay → idempotent ack, refund definitive + order `partially_refunded`)*
+  - [x] `baxela:disable` → method vanishes from storefront, webhook returns
     `method_not_supported`, `baxela:enable` restores — no cache-persisted ghosts.
-  - Tag `v0.0.2` (trivial change) → `baxela:update` applies and `baxela:list` shows
+  - [x] Tag `v0.0.2` (trivial change) → `baxela:update` applies and `baxela:list` shows
     the new version (read live — stronger proof than a refreshed stored copy).
-  - Compat: temporarily declare `compat.core` above `App\Baxela::VERSION` → install
+  - [x] Compat: temporarily declare `compat.core` above `App\Baxela::VERSION` → install
     blocked with a clear error; force-installed (`--ignore-compat`) copy boots inert.
-  - `baxela:remove` → row gone, driver unregistered, core untouched (`composer show`
+  - [x] `baxela:remove` → row gone, driver unregistered, core untouched (`composer show`
     confirms).
+
+**The proof found and fixed three real system bugs — exactly its purpose:**
+
+1. **`baxela:install` could not discover the provider it had just required.** The running
+   artisan process holds the bootstrap-time autoloader, so the freshly installed provider
+   class failed `is_a(..., Extension::class, true)` and the install hook never ran. Fix:
+   `ComposerPackages::registerAutoloader()` adds the new package's PSR-4 mappings (paths
+   resolved via `InstalledVersions::getInstallPath` — installed.json paths are relative to
+   the package root, not vendor/) into the live autoloader before provider resolution.
+2. **`baxela:install` pinned the root constraint to the install-time version.** Bare
+   `composer require pkg` wrote `^0.0.1` into the backend's composer.json, which then
+   forbade 0.0.2. Fix: require with an explicit `:*` constraint — the lock file (never the
+   root constraint) is what pins versions deliberately; `baxela:update` moves within it.
+3. **Webhook gateway-transaction-ids were never persisted** — `gateway_transaction_id`
+   was missing from `Payment::$fillable` since the B.4 column shipped, so the settle
+   path's `update()` silently dropped it (mass-assignment's classic silent failure). The
+   sandbox proof was the first live webhook settle since. Fix: one fillable line.
+4. *(hardening found by the package tests)* **The boot guard queried `core_extensions`
+   before fresh databases migrate.** A discovered extension's provider boots during the
+   initial artisan call — on a test run (sqlite pre-migration) or a prod cold start, the
+   table may not exist. Fix: `ExtensionManager::state()` catches `QueryException` and
+   fails closed to "no extensions" — boot never dies over extension state; covered by a
+   dedicated test.
+
+**Steady state:** mountable, not installed. The checklist ends at `baxela:remove` by
+design, and an always-installed dev extension would change registry-derived test
+expectations per machine (a machine with the sandbox mounted would see 9 payment
+drivers where CI sees 8). Reinstall is one command when the sandbox gateway is wanted.
 
 ### Edge cases
 
 - Path-repo symlink + `optimize-autoloader` interplay: if class discovery misbehaves
   after install, run `composer dump-autoload` once and note it in the sandbox README
-  (dev-only caveat; dist installs use real zips later).
+  (dev-only caveat; dist installs use real zips later). *(documented in the README;
+  never hit during the proof — the registerAutoloader fix covers in-process discovery)*
 - Return-URL flow must go through the same `WebhookResult`-shaped settling used by real
-  gateways — no private shortcuts, or the proof proves nothing.
+  gateways — no private shortcuts, or the proof proves nothing. *(it did: the settle
+  went through HandleWebhookAction like any gateway, which is how the fillable bug surfaced)*
 
 ### Verification (end of slice)
 
 - Full suite green (sandbox's own tests run from the extension repo's suite or are wired
-  into the backend suite — pick one, document in its README); analyse clean.
+  into the backend suite — pick one, document in its README); analyse clean. *(host-binary
+  run picked and documented; suite green with the sandbox in the removed steady state,
+  package suite green while installed)*
 - Commits: `feat(backend/compose): mount local extension path repository` +
-  the sandbox repo's own history.
+  the sandbox repo's own history. *(plus `fix(backend/payment)`: the fillable bug, and
+  the E.1 command hardening rides the E.2 commit or splits as
+  `fix(backend/core): install-time autoloader and constraint hardening`)*
 
 ## 6. Cross-cutting policies (restated from roadmap §5, binding during this plan)
 
