@@ -691,28 +691,40 @@ export default function CheckoutPage() {
                       {t("payment.texts.empty")}
                     </p>
                   ) : (
-                    paymentMethods.map((info) => (
-                      <label
-                        key={info.method}
-                        className="flex cursor-pointer items-start gap-3 rounded-default border border-border px-4 py-4 transition-colors hover:bg-muted"
-                      >
-                        <input
-                          type="radio"
-                          name="payment"
-                          checked={paymentMethod === info.method}
-                          onChange={() => setPaymentMethod(info.method)}
-                          className="mt-1 size-4 accent-accent"
-                        />
-                        <span className="text-sm text-foreground rtl:normal-case rtl:tracking-normal">
-                          <span className="block font-medium">
-                            {t(`payment.methods.${info.method}.label`)}
+                    paymentMethods.map((info) => {
+                      // Extension-registered methods have no built-in
+                      // translation: fall back to the raw slug instead of
+                      // rendering the key path.
+                      const labelKey = `payment.methods.${info.method}.label`;
+                      const descriptionKey = `payment.methods.${info.method}.description`;
+                      const label = t.has(labelKey) ? t(labelKey) : info.method;
+                      const description = t.has(descriptionKey)
+                        ? t(descriptionKey)
+                        : "";
+
+                      return (
+                        <label
+                          key={info.method}
+                          className="flex cursor-pointer items-start gap-3 rounded-default border border-border px-4 py-4 transition-colors hover:bg-muted"
+                        >
+                          <input
+                            type="radio"
+                            name="payment"
+                            checked={paymentMethod === info.method}
+                            onChange={() => setPaymentMethod(info.method)}
+                            className="mt-1 size-4 accent-accent"
+                          />
+                          <span className="text-sm text-foreground rtl:normal-case rtl:tracking-normal">
+                            <span className="block font-medium">{label}</span>
+                            {description ? (
+                              <span className="mt-1 block text-secondary-text">
+                                {description}
+                              </span>
+                            ) : null}
                           </span>
-                          <span className="mt-1 block text-secondary-text">
-                            {t(`payment.methods.${info.method}.description`)}
-                          </span>
-                        </span>
-                      </label>
-                    ))
+                        </label>
+                      );
+                    })
                   )}
                 </div>
               </div>

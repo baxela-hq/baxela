@@ -309,7 +309,12 @@ export type ApiOrderPaymentStatus =
   | "partially_refunded"
   | "refunded";
 
-/** Payment methods the backend can serve (values of PaymentMethodEnum). */
+/**
+ * Payment method slugs the backend can serve. Built-ins are listed for
+ * autocomplete, but the backend driver registry — not a closed catalog —
+ * is the source of truth: extension-registered methods arrive as
+ * arbitrary slugs, so the type stays open.
+ */
 export type ApiPaymentMethod =
   | "manual"
   | "stripe"
@@ -318,7 +323,8 @@ export type ApiPaymentMethod =
   | "nowpayments"
   | "mercadopago"
   | "checkoutcom"
-  | "razorpay";
+  | "razorpay"
+  | (string & {});
 
 /** Entry of GET /payment/user/methods — only registered drivers are listed. */
 export interface ApiPaymentMethodInfo {
