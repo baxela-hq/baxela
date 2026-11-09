@@ -38,7 +38,11 @@ class BaxelaInstallCommand extends Command
 
         $this->info("Requiring {$slug}…");
 
-        if (! $this->composer(['require', $slug])) {
+        // A bare require would pin the root constraint to the current
+        // version's caret (^0.0.1 then forbids 0.0.2); the lock file is
+        // what pins versions deliberately — the root constraint stays
+        // permissive so baxela:update can move within the lock's rules.
+        if (! $this->composer(['require', $slug.':*'])) {
             // Composer's own output (stderr included) has streamed
             // verbatim; nothing has been recorded to clean up.
             return self::FAILURE;
@@ -63,6 +67,10 @@ class BaxelaInstallCommand extends Command
         }
 
         $this->call('migrate', ['--force' => true]);
+
+        // The running process predates the require: teach this process's
+        // autoloader the new package before resolving its provider.
+        $packages->registerAutoloader($slug);
 
         $manager->install($slug);
 

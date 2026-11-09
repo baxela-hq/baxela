@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Models\Extension as ExtensionRow;
 use Modules\Core\Schemas\Extension\ExtensionSchema;
@@ -65,4 +66,16 @@ it('installs idempotently and removes cleanly', function () {
 
 it('answers enabled=false for a slug with no row', function () {
     expect(app(ExtensionManager::class)->enabled('baxela/never-installed'))->toBeFalse();
+});
+
+it('fails closed when the extensions table does not exist yet', function () {
+    // A database being built (fresh test boot, prod cold start before
+    // the first migrate): every extension is inert and boot survives.
+    Schema::drop(ExtensionSchema::TABLE);
+    ExtensionManager::flush();
+
+    $manager = app(ExtensionManager::class);
+
+    expect($manager->enabled('baxela/sandbox'))->toBeFalse()
+        ->and($manager->all())->toBe([]);
 });

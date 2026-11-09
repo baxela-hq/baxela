@@ -4,6 +4,7 @@ namespace Modules\Core\Extensions;
 
 use App\Baxela;
 use Composer\Semver\Semver;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Models\Extension;
 use Modules\Core\Schemas\Extension\ExtensionSchema;
@@ -170,10 +171,19 @@ class ExtensionManager
     protected function state(): array
     {
         if (static::$state === null) {
-            static::$state = Extension::query()
-                ->get()
-                ->keyBy(ExtensionSchema::SLUG)
-                ->all();
+            try {
+                static::$state = Extension::query()
+                    ->get()
+                    ->keyBy(ExtensionSchema::SLUG)
+                    ->all();
+            } catch (QueryException) {
+                // The table does not exist yet: a database being built
+                // (fresh test run, prod cold start before the first
+                // migrate). Fail closed — every extension counts as
+                // row-missing until the table exists; boot never dies
+                // over extension state.
+                static::$state = [];
+            }
         }
 
         return static::$state;

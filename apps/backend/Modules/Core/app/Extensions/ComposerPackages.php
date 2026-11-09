@@ -112,6 +112,36 @@ class ComposerPackages
         return $slugs;
     }
 
+    /**
+     * Register a freshly required package's PSR-4 mappings into the
+     * running process. Composer regenerates the autoloader on disk
+     * during require, but this process still holds the bootstrap-time
+     * loader — without this, the package's provider class cannot load
+     * in-process and install-time discovery finds nothing.
+     */
+    public function registerAutoloader(string $slug): void
+    {
+        $psr4 = $this->package($slug)['autoload']['psr-4'] ?? null;
+
+        if (! is_array($psr4) || ! InstalledVersions::isInstalled($slug)) {
+            return;
+        }
+
+        $installPath = InstalledVersions::getInstallPath($slug);
+        $loader = require base_path('vendor/autoload.php');
+
+        foreach ($psr4 as $namespace => $relativePaths) {
+            // installed.json's paths are relative to the package root,
+            // not to vendor/.
+            foreach ((array) $relativePaths as $relativePath) {
+                $loader->addPsr4(
+                    (string) $namespace,
+                    rtrim($installPath.'/'.trim((string) $relativePath, '/'), '/').'/',
+                );
+            }
+        }
+    }
+
     /** @return list<array<string, mixed>> */
     protected function installed(): array
     {
