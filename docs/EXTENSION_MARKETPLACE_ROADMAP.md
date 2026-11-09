@@ -5,8 +5,8 @@
 > readable later without conversation history, or handable to an agent session.
 >
 > **Created:** 2026-11-01 · **Revised:** 2026-11-08 — Phase 2 is now a throwaway-proof sample
-> extension; Zarinpal deferred to Phase 6 · **Owner:** solo maintainer · **Status:** Phase 0
-> done (2026-11-09); Phases 1–7 planned
+> extension; Zarinpal deferred to Phase 6 · **Owner:** solo maintainer · **Status:** Phases 0–1
+> done (2026-11-09/10); Phase 2 next, then the marketplace phases
 >
 > **How to use:** Work phases strictly in order (0 → 7). Phase 0 is the hard prerequisite —
 > nothing else works without it. The marketplace waits until the extension system is proven
@@ -87,12 +87,12 @@ methods are enum cases.
 
 ### Phase 1 — Extension system (in this monorepo, `apps/backend`)
 
-- [ ] `extensions` table migration: slug, version, enabled, settings JSON, installed_at.
-- [ ] Base `Baxela\Extension` ServiceProvider class: metadata accessors, `install()/uninstall()` hooks, boot-time compat check (`Semver::satisfies` vs `Baxela::VERSION`) → no-op + warning when incompatible. **Fail closed, never fatal.**
-- [ ] Core version constant (`Baxela::VERSION`), maintained per release.
-- [ ] Commands: `baxela:install` (validate slug → `composer require` via `Process` → migrate → `vendor:publish` → install hook → DB row), `baxela:remove` (disable → uninstall hook → `composer remove`), `baxela:list`, `baxela:enable/disable`, `baxela:update` (composer update → migrate → refresh row → caches). `--ignore-compat` escape hatch documented.
-- [ ] Disabled extension = inert: registered driver keys removed, payment method hidden, webhook routes return clean "method disabled" response.
-- [ ] Admin-facing API endpoints for the extensions page (list, enable, disable).
+- [x] `extensions` table migration: slug, enabled, timestamps — the only state not derivable from Composer (version is read live; settings go through the Setting module in Phase 5). *(done 2026-11-10 — `core_extensions`, E.1)*
+- [x] Base `Baxela\Extension` ServiceProvider class: metadata accessors, `install()/uninstall()` hooks, boot-time compat check (`Semver::satisfies` vs `Baxela::VERSION`) → no-op + warning when incompatible. **Fail closed, never fatal.** *(done 2026-11-10 — `Modules\Core\Extensions\Extension`, final `boot()` with the three guards in order: missing row → disabled → compat)*
+- [x] Core version constant (`Baxela::VERSION`), maintained per release. *(done 2026-11-10 — `app/Baxela.php`, starts at `0.1.0`)*
+- [x] Commands: `baxela:install` (validate slug → `composer require` via `Process` → migrate → `vendor:publish` → install hook → DB row), `baxela:remove` (disable → uninstall hook → `composer remove`), `baxela:list`, `baxela:enable/disable`, `baxela:update` (composer update → migrate → refresh row → caches). `--ignore-compat` escape hatch documented. *(done 2026-11-10 — six commands; version never stored so update has no row to refresh; `--ignore-compat` bypasses only the install hard stop, the runtime guard re-evaluates live)*
+- [x] Disabled extension = inert: registered driver keys removed, payment method hidden, webhook routes return clean "method disabled" response. *(done 2026-11-10 — a skipped boot never merges the driver; the webhook answers `payment.process.method_not_supported`, proven in `ExtensionBootGuardTest`)*
+- [x] Admin-facing API endpoints for the extensions page (list, enable, disable). *(list done 2026-11-10 — `GET api/v1/core/admin/extensions` with live version + skip reason; write endpoints stay CLI-only until Phase 5 per the E.0–E.2 plan)*
 
 ### Phase 2 — Sample extension: prove the system (repo #2: `baxela/baxela-sandbox-gateway`)
 

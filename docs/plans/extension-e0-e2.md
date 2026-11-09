@@ -8,7 +8,7 @@
 > conversation history.
 >
 > **Created:** 2026-11-08 · **Owner:** solo maintainer · **Status:** **E.0 executed
-> 2026-11-09** (green suite, larastan clean, frontend types opened); E.1–E.2 awaiting
+> 2026-11-09, E.1 executed 2026-11-10** (green suite, larastan clean); E.2 awaiting
 > execution. Original sequencing constraint satisfied: Phase C landed 2026-11-08.
 >
 > **Execution order (strict):** **E.0 → E.1 → E.2**. Each slice lands green and committed
@@ -200,8 +200,24 @@ removed, Pest-closure counts bumped for the added tests).
 
 1. **State: a `core_extensions` table in the Core module** (schema constants per
    conventions, `Modules/Core/app/Schemas/Extension/ExtensionSchema.php` + migration):
-   `slug` (string, unique — the composer name), `version` (string), `enabled` (bool,
-   default true), `settings` (nullable json), timestamps. No per-extension tables in core.
+   `slug` (string, unique — the composer name), `enabled` (bool, default true),
+   timestamps (`created_at` doubles as installed-at). Nothing else. *(Revised
+   2026-11-10 after the owner challenged the original fat row: `version` is read
+   live from `Composer\InstalledVersions` — a stored copy drifts the moment anyone
+   runs raw `composer update` on a side-loaded install — and the `settings` column
+   was cut because roadmap Phase 5 routes extension credentials/settings through
+   the Setting module, so it had no consumer. The table holds exactly the one bit
+   that isn't derivable from Composer: the merchant's enabled/disabled choice.)*
+   No per-extension tables in core.
+
+   **Why a table and not an nwidart-style `extensions_statuses.json` flat file:**
+   the file works for E.1's CLI-only surface, but Phase 5's admin toggles write
+   state from the web container — a row update is atomic and flows into the
+   existing Audit-log/Permission machinery, a web-process file rewrite is not;
+   and the approved multi-tenancy plan (`tenant_id` row scoping) turns per-tenant
+   enablement into a one-column additive migration instead of a rewrite. Reads
+   are hidden behind `ExtensionManager` either way, so the choice is about where
+   writes can go later, not about E.1's reads.
 2. **Base provider: `Modules\Core\Extensions\Extension`** (abstract, extends
    `ServiceProvider`) with a `final public function boot()`. Extensions must never
    override `boot()`; they implement:
@@ -233,37 +249,61 @@ removed, Pest-closure counts bumped for the added tests).
      `^[a-z0-9][a-z0-9_.-]*/baxela-[a-z0-9][a-z0-9_.-]*$` → stream
      `composer require <pkg> --no-interaction` via Symfony Process → `php artisan migrate
      --force` → discover the provider (read `vendor/composer/installed.json` for the
-     package's `extra`), upsert the `extensions` row (version via
-     `Composer\InstalledVersions`), call `install()` hook via the resolved provider →
+     package's `extra`), create the `core_extensions` row (enabled; no version stored —
+     read live), call `install()` hook via the resolved provider →
      bust caches. Refuses packages whose `type` ≠ `baxela-extension`. `--ignore-compat`
-     installs past a compat mismatch but records the skip so the runtime guard still
-     no-ops it.
+     only bypasses the install-time hard stop; the runtime guard still no-ops the
+     extension by re-evaluating semver live at every boot — nothing is persisted.
    - `baxela:remove {package}` — disable → `uninstall()` hook → stream `composer remove`
      → delete row → bust caches.
    - `baxela:update {package}` — stream `composer update <pkg>` → `migrate --force` →
-     refresh row version → bust caches. **No downgrade support** (roadmap policy §5.3).
+     bust caches. No version refresh needed — the new version is live the moment
+     Composer finishes. **No downgrade support** (roadmap policy §5.3).
    - `baxela:enable {package}` / `baxela:disable {package}` — toggle + bust caches.
-   - `baxela:list` — table of slug, version, enabled, compat, skip-reason (when inert).
+   - `baxela:list` — table of slug, version (read live from
+     `Composer\InstalledVersions`), enabled, compat, skip-reason (when inert).
 7. **Composer runs via `Process`, never in-process** — streamed to the console; the app
    container already ships the composer binary; `post-autoload-dump → package:discover`
    keeps provider registration automatic.
 
 ### Work items (~3–4 d)
 
-- [ ] `composer require composer/semver` (explicit dependency).
-- [ ] `app/Baxela.php` + release-process docblock note.
-- [ ] `ExtensionSchema` + migration (`core_extensions`), Core module.
-- [ ] `Modules\Core\Extensions\Extension` base provider (final `boot()`, guards, hook call).
-- [ ] `ExtensionManager` (state load/write-through, skip-reason map).
-- [ ] Five commands per decision 6, sharing a `Concerns\InteractsWithComposer` (Process streaming).
-- [ ] Admin-facing read API: `GET api/v1/core/admin/extensions` (list with state +
+- [x] `composer require composer/semver` (explicit dependency). *(done 2026-11-10, pinned
+      `^3.6` — installed via a scratch `COMPOSER_HOME` because the machine's global GitHub
+      OAuth token is dead and poisoned dist downloads; renew or remove it before E.2's
+      front-door install, which shells composer for real)*
+- [x] `app/Baxela.php` + release-process docblock note.
+- [x] `ExtensionSchema` + migration (`core_extensions` — `slug` + `enabled` +
+      timestamps only, per decision 1), Core module.
+- [x] `Modules\Core\Extensions\Extension` base provider (final `boot()`, guards, hook call).
+- [x] `ExtensionManager` (state load/write-through, skip-reason map).
+- [x] Five commands per decision 6, sharing a `Concerns\InteractsWithComposer` (Process streaming).
+      *(executed as six classes — `baxela:enable`/`baxela:disable` are separate commands per
+      the plan's signatures; they live in `Modules/Core/app/Console/Commands/` like every
+      other command, not a new global `app/Console/Commands/` — the repo has no such
+      directory and house convention is module placement)*
+- [x] Admin-facing read API: `GET api/v1/core/admin/extensions` (list with state +
       skip-reason) behind `PermissionMiddleware` route naming (`api.core.admin.extensions.index`),
       ready for the Phase 5 admin page. No write endpoints yet — enabling/disabling via CLI only.
-- [ ] Tests (hybrid level per backend AGENTS.md): guard unit tests (missing row / disabled /
+      *(route name follows house convention: `extensions.list`, like `failed-jobs.list` —
+      permission `core.admin.extensions.list`)*
+- [x] Tests (hybrid level per backend AGENTS.md): guard unit tests (missing row / disabled /
       compat fail each produce the inert behavior with a stub provider); manager
       state-cache test; command tests for slug validation and row upsert (composer steps
       mocked — no shelling in tests); feature test that a disabled driver's webhook returns
       the `method_not_supported` error and its method disappears from the storefront list.
+      *(4 files, 22 tests: `ExtensionBootGuardTest` incl. the webhook-inert case,
+      `ExtensionManagerTest`, `BaxelaCommandsTest` via `Process::fake` + container-mocked
+      `ComposerPackages`, `ExtensionAdminApiTest` incl. permission grant on its own)*
+
+**Executed 2026-11-10.** Deviations found during verification, all folded back: the
+state-cache test originally asserted staleness before any read had snapshotted the state
+(fixed: read → out-of-band write → still stale → flush); `ComposerPackages::version()`
+initially threw for unknown packages (`InstalledVersions` throws — now guarded by
+`isInstalled()`); and `baxela:list`'s output test cannot use two
+`expectsOutputToContain` calls (the framework matches one Mockery expectation per output
+chunk and both substrings share the table-row chunk — the test captures full output via
+`Artisan::call()` instead).
 
 ### Edge cases
 
@@ -322,7 +362,8 @@ removed, Pest-closure counts bumped for the added tests).
     settles an order end-to-end; refund flow settles.
   - `baxela:disable` → method vanishes from storefront, webhook returns
     `method_not_supported`, `baxela:enable` restores — no cache-persisted ghosts.
-  - Tag `v0.0.2` (trivial change) → `baxela:update` applies, row version refreshes.
+  - Tag `v0.0.2` (trivial change) → `baxela:update` applies and `baxela:list` shows
+    the new version (read live — stronger proof than a refreshed stored copy).
   - Compat: temporarily declare `compat.core` above `App\Baxela::VERSION` → install
     blocked with a clear error; force-installed (`--ignore-compat`) copy boots inert.
   - `baxela:remove` → row gone, driver unregistered, core untouched (`composer show`
@@ -378,6 +419,12 @@ multi-extension driver-collision detection.
   infrastructure exceptions propagate; validation keeps `string` + `max` constraints on
   top of the registry-or-row rule. Both folded in; E.0 executed the same day (see §3
   work-item notes).
+- 2026-11-10 — owner design challenge on the `core_extensions` row: table slimmed to
+  `slug` + `enabled` + timestamps (the only state not derivable from Composer);
+  `version` read live from `InstalledVersions`; `settings` column cut (Phase 5's
+  Setting module owns extension settings); `--ignore-compat` persists nothing — the
+  runtime guard re-evaluates live. Flat-file alternative rejected with rationale
+  recorded in §4 decision 1.
 
 ## 9. Related docs
 
