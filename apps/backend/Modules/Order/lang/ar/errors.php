@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'ملف PDF للفاتورة غير جاهز بعد',
     'invoice.pdf_not_retryable' => 'يمكن إعادة محاولة توليد PDF الفاشل فقط',
     'not_found' => 'لم يتم العثور على الطلب',
+    'credit_note.exceeds_balance' => 'مبلغ الإشعار الدائن يتجاوز الرصيد المتبقي للفاتورة',
 ];

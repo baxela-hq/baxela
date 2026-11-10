@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'The invoice PDF is not ready yet',
     'invoice.pdf_not_retryable' => 'Only a failed PDF generation can be retried',
     'not_found' => 'Order not found',
+    'credit_note.exceeds_balance' => 'The credit note amount exceeds the invoice remaining balance',
 ];

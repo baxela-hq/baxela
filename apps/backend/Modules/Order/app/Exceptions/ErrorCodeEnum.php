@@ -27,4 +27,6 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case INVOICE_PDF_NOT_READY = 'order.invoice.pdf_not_ready';
 
     case INVOICE_PDF_NOT_RETRYABLE = 'order.invoice.pdf_not_retryable';
+
+    case CREDIT_NOTE_EXCEEDS_BALANCE = 'order.credit_note.exceeds_balance';
 }

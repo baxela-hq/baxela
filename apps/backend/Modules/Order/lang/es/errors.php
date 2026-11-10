@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'El PDF de la factura aún no está listo',
     'invoice.pdf_not_retryable' => 'Solo una generación PDF fallida puede reintentarse',
     'not_found' => 'Pedido no encontrado',
+    'credit_note.exceeds_balance' => 'El monto de la nota de crédito excede el saldo restante de la factura',
 ];

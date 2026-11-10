@@ -10,8 +10,10 @@ use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
 use Modules\Core\Contracts\Events\Order\OrderPendingEvent;
 use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+use Modules\Core\Contracts\Events\Payment\RefundFinalizedEvent;
 use Modules\Core\Listeners\LogAllEvents;
 use Modules\Order\Listeners\OrderPaid\IssueInvoiceOnOrderPaid;
+use Modules\Order\Listeners\PaymentRefundFinalized\IssueCreditNoteOnRefundFinalized;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -29,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
             // Auto-issue (gap-B1 D9): idempotent, failure-isolated from
             // the paid pipeline itself.
             IssueInvoiceOnOrderPaid::class,
+        ],
+        // gap-B1 Phase 4 (D5): one credit note per finalized refund.
+        RefundFinalizedEvent::class => [
+            IssueCreditNoteOnRefundFinalized::class,
         ],
         OrderPendingEvent::class => [LogAllEvents::class],
         OrderRefundedEvent::class => [LogAllEvents::class],

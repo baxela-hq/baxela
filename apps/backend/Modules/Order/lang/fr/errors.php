@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'Le PDF de la facture n\'est pas encore prêt',
     'invoice.pdf_not_retryable' => 'Seule une génération PDF échouée peut être relancée',
     'not_found' => 'Commande introuvable',
+    'credit_note.exceeds_balance' => 'Le montant de l avoir dépasse le solde restant de la facture',
 ];

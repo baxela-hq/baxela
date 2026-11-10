@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'Das Rechnungs-PDF ist noch nicht bereit',
     'invoice.pdf_not_retryable' => 'Nur eine fehlgeschlagene PDF-Generierung kann wiederholt werden',
     'not_found' => 'Bestellung nicht gefunden',
+    'credit_note.exceeds_balance' => 'Der Gutschriftbetrag übersteigt den verbleibenden Rechnungssaldo',
 ];

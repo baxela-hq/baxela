@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Order\DocumentRendererInterface;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Order\Console\Commands\CancelExpiredOrdersCommand;
+use Modules\Order\Console\Commands\ReconcileRefundCreditNotesCommand;
 use Modules\Order\Console\Commands\SweepGeneratingDocumentsCommand;
 use Modules\Order\Documents\MpdfRenderer;
 use Modules\Order\Gateways\OrderGateway;
@@ -60,6 +61,7 @@ class OrderServiceProvider extends ServiceProvider
         $this->commands([
             CancelExpiredOrdersCommand::class,
             SweepGeneratingDocumentsCommand::class,
+            ReconcileRefundCreditNotesCommand::class,
         ]);
     }
 
@@ -75,6 +77,10 @@ class OrderServiceProvider extends ServiceProvider
             // D7: release expired PDF generation leases so a crashed
             // worker cannot wedge a document in `generating`.
             $schedule->command('order:sweep-generating-documents')->everyFifteenMinutes();
+
+            // D15: close the refund-event crash window — one credit
+            // note per finalized refund, eventually.
+            $schedule->command('order:reconcile-refund-credit-notes')->daily();
         });
     }
 

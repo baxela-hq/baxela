@@ -81,4 +81,14 @@ class OrderException extends BaseException
     {
         return new self(ErrorCodeEnum::INVOICE_PDF_NOT_RETRYABLE->value, 409);
     }
+
+    /**
+     * D14's second line of defense: Σ active CNs + the new amount would
+     * exceed the invoice total. The refund ledger prevents this
+     * upstream — reaching this guard means an accounting anomaly.
+     */
+    public static function creditNoteExceedsBalance(): OrderException
+    {
+        return new self(ErrorCodeEnum::CREDIT_NOTE_EXCEEDS_BALANCE->value);
+    }
 }

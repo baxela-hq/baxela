@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
+use Modules\Order\Http\Controllers\Admin\CreditNote\DownloadCreditNotePdfController;
+use Modules\Order\Http\Controllers\Admin\CreditNote\ListCreditNoteController;
 use Modules\Order\Http\Controllers\Admin\Data\ExportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ImportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ListOrderDataImportsController;
@@ -42,6 +44,10 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     // ops-only artisan.
     Route::get('/invoices/{id}/pdf', DownloadInvoicePdfController::class)->name('invoices.pdf.download');
     Route::post('/invoices/{id}/pdf/retry', RetryInvoicePdfController::class)->name('invoices.pdf.retry');
+    // Credit notes (Phase 4): the refund-backed adjustments, their own
+    // sequence and downloads.
+    Route::get('/credit-notes', ListCreditNoteController::class)->name('credit-notes.list');
+    Route::get('/credit-notes/{id}/pdf', DownloadCreditNotePdfController::class)->name('credit-notes.pdf.download');
     // The module's own data-transfer endpoints (per-module surface from
     // the transfer standard's phase plan; the central transfer endpoints
     // remain available).

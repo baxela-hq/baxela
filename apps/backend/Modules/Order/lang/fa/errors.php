@@ -12,4 +12,5 @@ return [
     'invoice.pdf_not_ready' => 'فایل PDF صورتحساب هنوز آماده نیست',
     'invoice.pdf_not_retryable' => 'فقط تولید ناموفق PDF قابل تکرار است',
     'not_found' => 'سفارش یافت نشد',
+    'credit_note.exceeds_balance' => 'مبلغ قبض بازگشتی از مانده صورتحساب بیشتر است',
 ];
