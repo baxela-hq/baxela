@@ -75,6 +75,11 @@ class Order extends Model
         return $this->hasMany(OrderAddress::class);
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(OrderInvoice::class);
+    }
+
     protected static function newFactory(): OrderFactory
     {
         return OrderFactory::new();

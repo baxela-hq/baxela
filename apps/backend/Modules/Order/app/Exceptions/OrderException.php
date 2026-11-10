@@ -22,6 +22,16 @@ class OrderException extends BaseException
     }
 
     /**
+     * A user-surface order lookup that must not reveal existence:
+     * another customer's order/invoice and a missing one are the same
+     * answer (404), never a 403 that confirms the id exists.
+     */
+    public static function orderNotFound(): OrderException
+    {
+        return new self(ErrorCodeEnum::ORDER_NOT_FOUND->value, 404);
+    }
+
+    /**
      * The order does not meet the return eligibility rules (payment state,
      * fulfillment state, window elapsed, or another return already open).
      */

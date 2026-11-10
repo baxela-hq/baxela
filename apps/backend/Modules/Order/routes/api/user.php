@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Order\Http\Controllers\User\Invoice\DownloadOrderInvoicePdfUserController;
+use Modules\Order\Http\Controllers\User\Invoice\ListOrderInvoiceUserController;
 use Modules\Order\Http\Controllers\User\Order\CancelOrderController;
 use Modules\Order\Http\Controllers\User\Order\ListOrderController;
 use Modules\Order\Http\Controllers\User\Order\ShowOrderController;
@@ -15,6 +17,11 @@ Route::middleware('auth:sanctum')->prefix('user')->name('user.')->group(function
     Route::get('/orders/{code}', ShowOrderController::class)->name('orders.show');
     Route::patch('/orders/{code}/cancel', CancelOrderController::class)->name('orders.cancel');
     Route::get('/orders/{code}/items', ListOrderItemController::class)->name('order-items.list');
+
+    // Financial documents (gap-B1): the customer's own invoices —
+    // ownership by order, ready artifacts only.
+    Route::get('/orders/{code}/invoices', ListOrderInvoiceUserController::class)->name('order-invoices.list');
+    Route::get('/invoices/{id}/pdf', DownloadOrderInvoicePdfUserController::class)->name('order-invoices.pdf.download');
 
     Route::get('/returns', ListOrderReturnController::class)->name('returns.list');
     Route::post('/orders/{code}/returns', CreateOrderReturnController::class)->name('returns.create');

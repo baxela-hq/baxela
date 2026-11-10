@@ -4,14 +4,17 @@ namespace Modules\Order\Actions\Admin\Invoice;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Events\Order\InvoiceReadyEvent;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Support\Money;
+use Modules\Core\Utils\Locale;
 use Modules\Order\Documents\DocumentPdfService;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderAddress;
 use Modules\Order\Models\OrderInvoice;
 use Modules\Order\Models\OrderInvoiceItem;
+use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
@@ -174,7 +177,27 @@ class IssueInvoiceAction
         // snapshot; re-issuing an already-ready document no-ops here.
         app(DocumentPdfService::class)->generate($invoice);
 
-        return $invoice->refresh();
+        $invoice = $invoice->refresh();
+
+        // The email attaches the STORED artifact, so it can only fire
+        // once generation actually reached ready (gap-B1 Phase 3).
+        if ($invoice->pdf_status === DocumentPdfStatusEnum::READY) {
+            $order = $invoice->order()->firstOrFail();
+
+            DB::afterCommit(function () use ($invoice, $order): void {
+                event(InvoiceReadyEvent::fill([
+                    'invoice_id' => (int) $invoice->id,
+                    'user_id' => (int) $order->user_id,
+                    'order_code' => (string) $order->order_code,
+                    'invoice_number' => (string) $invoice->number,
+                    'pdf_disk' => (string) $invoice->pdf_disk,
+                    'pdf_path' => (string) $invoice->pdf_path,
+                    'locale' => Locale::fromRequest(),
+                ]));
+            });
+        }
+
+        return $invoice;
     }
 
     /**

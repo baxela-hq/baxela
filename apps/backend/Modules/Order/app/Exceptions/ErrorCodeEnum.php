@@ -10,6 +10,8 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
 
     case UPDATE_INVALID_PAYMENT_STATUS_TRANSITION = 'order.update.invalid_payment_status_transition';
 
+    case ORDER_NOT_FOUND = 'order.not_found';
+
     case RETURN_NOT_FOUND = 'order.return.not_found';
 
     case RETURN_INELIGIBLE = 'order.return.ineligible';
