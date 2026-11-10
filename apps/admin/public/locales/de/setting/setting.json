@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "Ankündigungsbalken anzeigen",
         "storefront-theme": "Storefront-Design",
         "timezone": "Zeitzone",
-        "prices_include_tax": "Preise enthalten die Steuer"
+        "prices_include_tax": "Preise enthalten die Steuer",
+        "store_legal_name": "Rechtlicher Name",
+        "store_legal_address": "Rechtliche Adresse",
+        "store_tax_id": "Steuernummer",
+        "store_contact": "Kontakt"
       }
     },
     "tooltips": {

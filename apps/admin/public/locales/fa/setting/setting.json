@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "نمایش نوار اعلان",
         "storefront-theme": "پوسته فروشگاه",
         "timezone": "منطقه زمانی",
-        "prices_include_tax": "قیمت‌ها شامل مالیات است"
+        "prices_include_tax": "قیمت‌ها شامل مالیات است",
+        "store_legal_name": "نام قانونی",
+        "store_legal_address": "آدرس قانونی",
+        "store_tax_id": "شناسه مالیاتی",
+        "store_contact": "اطلاعات تماس"
       }
     },
     "tooltips": {

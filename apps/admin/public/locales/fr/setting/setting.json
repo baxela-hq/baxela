@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "Afficher la barre d'annonce",
         "storefront-theme": "Thème de la vitrine",
         "timezone": "Fuseau horaire",
-        "prices_include_tax": "Les prix incluent la taxe"
+        "prices_include_tax": "Les prix incluent la taxe",
+        "store_legal_name": "Nom légal",
+        "store_legal_address": "Adresse légale",
+        "store_tax_id": "N° fiscal",
+        "store_contact": "Contact"
       }
     },
     "tooltips": {

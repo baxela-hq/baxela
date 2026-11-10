@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "Show Announcement Bar",
         "storefront-theme": "Storefront Theme",
         "timezone": "Timezone",
-        "prices_include_tax": "Prices include tax"
+        "prices_include_tax": "Prices include tax",
+        "store_legal_name": "Legal Name",
+        "store_legal_address": "Legal Address",
+        "store_tax_id": "Tax ID",
+        "store_contact": "Contact"
       }
     },
     "tooltips": {

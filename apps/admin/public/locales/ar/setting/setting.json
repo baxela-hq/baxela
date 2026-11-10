@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "إظهار شريط الإعلان",
         "storefront-theme": "مظهر واجهة المتجر",
         "timezone": "المنطقة الزمنية",
-        "prices_include_tax": "الأسعار شاملة الضريبة"
+        "prices_include_tax": "الأسعار شاملة الضريبة",
+        "store_legal_name": "الاسم القانوني",
+        "store_legal_address": "العنوان القانوني",
+        "store_tax_id": "الرقم الضريبي",
+        "store_contact": "التواصل"
       }
     },
     "tooltips": {

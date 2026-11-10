@@ -55,7 +55,8 @@
     "tax-rates": "نسب الضريبة",
     "returns": "المرتجعات",
     "languages": "اللغات",
-    "transfer-data": "نقل البيانات"
+    "transfer-data": "نقل البيانات",
+    "invoices": "الفواتير"
   },
   "dialog": {
     "sign-out": {

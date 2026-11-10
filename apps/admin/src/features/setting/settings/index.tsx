@@ -434,6 +434,88 @@ export function SettingsStore() {
                     )}
                   />
 
+                  {/* Store legal identity — the seller block frozen onto
+                      invoices at issue time (gap-B1 D4). */}
+                  <FormField
+                    control={form.control}
+                    name='store_legal_name'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='store_legal_name'>
+                          {tStatus('name.store_legal_name')}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id='store_legal_name'
+                            placeholder={tPlaceHolder('store_legal_name')}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='store_legal_address'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='store_legal_address'>
+                          {tStatus('name.store_legal_address')}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id='store_legal_address'
+                            placeholder={tPlaceHolder('store_legal_address')}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='store_tax_id'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='store_tax_id'>
+                          {tStatus('name.store_tax_id')}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id='store_tax_id'
+                            placeholder={tPlaceHolder('store_tax_id')}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='store_contact'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='store_contact'>
+                          {tStatus('name.store_contact')}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            id='store_contact'
+                            placeholder={tPlaceHolder('store_contact')}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   {languagesSafe.length > 0 && (
                     <Tabs
                       defaultValue={languagesSafe[0]?.code}

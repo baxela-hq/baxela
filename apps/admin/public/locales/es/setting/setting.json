@@ -25,7 +25,11 @@
         "announcement_bar_enabled": "Mostrar barra de anuncios",
         "storefront-theme": "Tema de la tienda",
         "timezone": "Zona horaria",
-        "prices_include_tax": "Los precios incluyen impuestos"
+        "prices_include_tax": "Los precios incluyen impuestos",
+        "store_legal_name": "Nombre legal",
+        "store_legal_address": "Dirección legal",
+        "store_tax_id": "NIF",
+        "store_contact": "Contacto"
       }
     },
     "tooltips": {

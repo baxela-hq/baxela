@@ -55,7 +55,8 @@
     "tax-rates": "Tax Rates",
     "returns": "Returns",
     "languages": "Languages",
-    "transfer-data": "Data Transfer"
+    "transfer-data": "Data Transfer",
+    "invoices": "Invoices"
   },
   "dialog": {
     "sign-out": {

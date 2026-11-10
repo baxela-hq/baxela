@@ -47,6 +47,10 @@ export const formSchema = z.object({
   announcement_bar_enabled: z.boolean(),
   announcement_text: translatableSettingSchema,
   storefront_theme: z.enum(STOREFRONT_THEMES),
+  store_legal_name: z.string(),
+  store_legal_address: z.string(),
+  store_tax_id: z.string(),
+  store_contact: z.string(),
 })
 export type SettingsForm = z.infer<typeof formSchema>
 
@@ -67,6 +71,10 @@ export const defaultValues: SettingsForm = {
   announcement_bar_enabled: false,
   announcement_text: { value: '', translations: [] },
   storefront_theme: DEFAULT_STOREFRONT_THEME,
+  store_legal_name: '',
+  store_legal_address: '',
+  store_tax_id: '',
+  store_contact: '',
 }
 
 function buildTranslatableValues(
@@ -116,6 +124,10 @@ export function buildSettingsValues(
       ? (byName.get('storefront_theme')
           ?.value as SettingsForm['storefront_theme'])
       : DEFAULT_STOREFRONT_THEME,
+    store_legal_name: byName.get('store_legal_name')?.value ?? '',
+    store_legal_address: byName.get('store_legal_address')?.value ?? '',
+    store_tax_id: byName.get('store_tax_id')?.value ?? '',
+    store_contact: byName.get('store_contact')?.value ?? '',
   }
 }
 
@@ -151,5 +163,9 @@ export function buildSettingsRequest(
     },
     { name: 'announcement_text', ...resolve(values.announcement_text) },
     { name: 'storefront_theme', value: values.storefront_theme },
+    { name: 'store_legal_name', value: values.store_legal_name },
+    { name: 'store_legal_address', value: values.store_legal_address },
+    { name: 'store_tax_id', value: values.store_tax_id },
+    { name: 'store_contact', value: values.store_contact },
   ]
 }
