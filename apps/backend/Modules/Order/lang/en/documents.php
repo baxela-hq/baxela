@@ -1,0 +1,33 @@
+<?php
+
+// Agent-drafted locale strings (house rule: owner reviews before release).
+return [
+    'title_invoice' => 'Invoice',
+    'title_credit_note' => 'Credit Note',
+    'number' => 'Document No.',
+    'issue_date' => 'Issue Date',
+    'order_code' => 'Order Code',
+    'seller' => 'Seller',
+    'buyer' => 'Buyer',
+    'tax_id' => 'Tax ID',
+    'vat_id' => 'VAT ID',
+    'items' => 'Items',
+    'product' => 'Product',
+    'sku' => 'SKU',
+    'qty' => 'Qty',
+    'unit_price' => 'Unit Price',
+    'discount' => 'Discount',
+    'tax_rate' => 'Tax',
+    'tax_amount' => 'Tax Amount',
+    'line_total' => 'Total',
+    'subtotal' => 'Subtotal',
+    'order_discount' => 'Order Discount',
+    'shipping' => 'Shipping',
+    'shipping_tax' => 'Shipping Tax',
+    'tax_total' => 'Tax Total',
+    'grand_total' => 'Grand Total',
+    'prices_include_tax_note' => 'All prices include applicable tax.',
+    'original_invoice' => 'Original Invoice',
+    'reason' => 'Reason',
+    'credited_amount' => 'Credited Amount',
+];

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Auth\Models\User;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Support\Money;
+use Modules\Order\Documents\DocumentPdfService;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderAddress;
@@ -38,7 +39,7 @@ class IssueInvoiceAction
      */
     public function handle(int $orderId): OrderInvoice
     {
-        return DB::transaction(function () use ($orderId): OrderInvoice {
+        $invoice = DB::transaction(function () use ($orderId): OrderInvoice {
             $order = Order::query()->lockForUpdate()->findOrFail($orderId);
 
             $active = OrderInvoice::query()
@@ -146,11 +147,13 @@ class IssueInvoiceAction
                     'vat_id' => $order->{OrderSchema::BUYER_VAT_ID},
                 ],
                 OrderInvoiceSchema::SELLER_IDENTITY => [
-                    // Phase 2 upgrades this from real store settings; the
-                    // snapshot is frozen at issue time either way (D4).
-                    'name' => (string) config('app.name'),
-                    'tax_id' => null,
-                    'address' => null,
+                    // Frozen at issue time (D4) from the store identity
+                    // settings — Setting module's boot applier keeps
+                    // config('store.*') current.
+                    'name' => (string) config('store.legal_name', config('app.name')),
+                    'tax_id' => config('store.tax_id'),
+                    'address' => config('store.legal_address'),
+                    'contact' => config('store.contact'),
                 ],
                 OrderInvoiceSchema::META => [
                     'order_code' => $order->{OrderSchema::ORDER_CODE},
@@ -164,6 +167,14 @@ class IssueInvoiceAction
 
             return $invoice;
         });
+
+        // D7: generation is separate from issuance — synchronous for v1,
+        // after the commit. A render/storage failure lands in
+        // generation_failed and a retry reuses the same number and
+        // snapshot; re-issuing an already-ready document no-ops here.
+        app(DocumentPdfService::class)->generate($invoice);
+
+        return $invoice->refresh();
     }
 
     /**

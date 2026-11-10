@@ -23094,3 +23094,284 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/RetryInvoicePdfAction.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderCreditNote\>\|Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$line_total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$sku\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$unit_price\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$currency_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$issued_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$coupon_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$currency_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$issued_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$prices_contain_tax\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$subtotal_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Using nullsafe property access "\?\-\>decimal_places" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_checksum\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$seller_identity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$template_version\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 7
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 8
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$app\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php

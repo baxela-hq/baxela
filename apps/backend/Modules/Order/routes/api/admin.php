@@ -6,8 +6,10 @@ use Modules\Order\Http\Controllers\Admin\Data\ExportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ImportOrderDataController;
 use Modules\Order\Http\Controllers\Admin\Data\ListOrderDataImportsController;
 use Modules\Order\Http\Controllers\Admin\Data\PreviewOrderDataImportController;
+use Modules\Order\Http\Controllers\Admin\Invoice\DownloadInvoicePdfController;
 use Modules\Order\Http\Controllers\Admin\Invoice\IssueInvoiceController;
 use Modules\Order\Http\Controllers\Admin\Invoice\ListOrderInvoiceController;
+use Modules\Order\Http\Controllers\Admin\Invoice\RetryInvoicePdfController;
 use Modules\Order\Http\Controllers\Admin\Invoice\ShowOrderInvoiceController;
 use Modules\Order\Http\Controllers\Admin\Invoice\VoidInvoiceController;
 use Modules\Order\Http\Controllers\Admin\Order\ListOrderController;
@@ -35,6 +37,11 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/invoices/{id}', ShowOrderInvoiceController::class)->name('invoices.show');
     Route::post('/orders/{id}/invoice', IssueInvoiceController::class)->name('orders.invoice.issue');
     Route::patch('/invoices/{id}/void', VoidInvoiceController::class)->name('invoices.void');
+    // PDF artifact surface (D7): downloads serve ready documents only;
+    // retry is for failed generations — ready-artifact regeneration is
+    // ops-only artisan.
+    Route::get('/invoices/{id}/pdf', DownloadInvoicePdfController::class)->name('invoices.pdf.download');
+    Route::post('/invoices/{id}/pdf/retry', RetryInvoicePdfController::class)->name('invoices.pdf.retry');
     // The module's own data-transfer endpoints (per-module surface from
     // the transfer standard's phase plan; the central transfer endpoints
     // remain available).

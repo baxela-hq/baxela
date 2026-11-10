@@ -25,6 +25,7 @@
         "laravel/tinker": "^3.0",
         "league/flysystem-aws-s3-v3": "^3.35",
         "minishlink/web-push": "^11.0",
+        "mpdf/mpdf": "^8.3",
         "nwidart/laravel-modules": "^12.0",
         "sentry/sentry-laravel": "^4.29",
         "spatie/laravel-permission": "^8.3",

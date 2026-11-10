@@ -1,0 +1,24 @@
+meta {
+  name: Retry Invoice PDF Generation
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/v1/order/admin/invoices/1/pdf/retry
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

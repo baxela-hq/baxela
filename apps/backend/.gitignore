@@ -26,3 +26,6 @@ Thumbs.db
 
 # Dev-mounted extension packages (baxela:install resolves them from here)
 /extensions/
+
+# mPDF runtime temp files
+/storage/framework/mpdf/

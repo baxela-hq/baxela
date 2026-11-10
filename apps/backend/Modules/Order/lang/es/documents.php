@@ -1,0 +1,33 @@
+<?php
+
+// Agent-drafted locale strings (house rule: owner reviews before release).
+return [
+    'title_invoice' => 'Factura',
+    'title_credit_note' => 'Nota de crédito',
+    'number' => 'N.º de documento',
+    'issue_date' => 'Fecha de emisión',
+    'order_code' => 'Código de pedido',
+    'seller' => 'Vendedor',
+    'buyer' => 'Comprador',
+    'tax_id' => 'NIF',
+    'vat_id' => 'N.º IVA',
+    'items' => 'Artículos',
+    'product' => 'Producto',
+    'sku' => 'SKU',
+    'qty' => 'Cant.',
+    'unit_price' => 'Precio unit.',
+    'discount' => 'Descuento',
+    'tax_rate' => 'Imp.',
+    'tax_amount' => 'Importe imp.',
+    'line_total' => 'Total',
+    'subtotal' => 'Subtotal',
+    'order_discount' => 'Descuento pedido',
+    'shipping' => 'Envío',
+    'shipping_tax' => 'Imp. envío',
+    'tax_total' => 'Impuestos totales',
+    'grand_total' => 'Total',
+    'prices_include_tax_note' => 'Todos los precios incluyen los impuestos aplicables.',
+    'original_invoice' => 'Factura original',
+    'reason' => 'Motivo',
+    'credited_amount' => 'Importe acreditado',
+];

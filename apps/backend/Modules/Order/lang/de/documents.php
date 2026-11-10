@@ -1,0 +1,33 @@
+<?php
+
+// Agent-drafted locale strings (house rule: owner reviews before release).
+return [
+    'title_invoice' => 'Rechnung',
+    'title_credit_note' => 'Gutschrift',
+    'number' => 'Dokument-Nr.',
+    'issue_date' => 'Ausstellungsdatum',
+    'order_code' => 'Bestellcode',
+    'seller' => 'Verkäufer',
+    'buyer' => 'Käufer',
+    'tax_id' => 'Steuernummer',
+    'vat_id' => 'USt-IdNr.',
+    'items' => 'Positionen',
+    'product' => 'Produkt',
+    'sku' => 'Artikelnr.',
+    'qty' => 'Menge',
+    'unit_price' => 'Einzelpreis',
+    'discount' => 'Rabatt',
+    'tax_rate' => 'MwSt.',
+    'tax_amount' => 'MwSt.-Betrag',
+    'line_total' => 'Gesamt',
+    'subtotal' => 'Zwischensumme',
+    'order_discount' => 'Bestarrabatt',
+    'shipping' => 'Versand',
+    'shipping_tax' => 'Versand-MwSt.',
+    'tax_total' => 'MwSt. gesamt',
+    'grand_total' => 'Gesamtbetrag',
+    'prices_include_tax_note' => 'Alle Preise enthalten die gesetzliche Steuer.',
+    'original_invoice' => 'Originalrechnung',
+    'reason' => 'Grund',
+    'credited_amount' => 'Gutschriftbetrag',
+];

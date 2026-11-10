@@ -1,0 +1,33 @@
+<?php
+
+// Agent-drafted locale strings (house rule: owner reviews before release).
+return [
+    'title_invoice' => 'فاتورة مبيعات',
+    'title_credit_note' => 'إشعار دائن',
+    'number' => 'رقم المستند',
+    'issue_date' => 'تاريخ الإصدار',
+    'order_code' => 'رمز الطلب',
+    'seller' => 'البائع',
+    'buyer' => 'المشتري',
+    'tax_id' => 'الرقم الضريبي',
+    'vat_id' => 'رقم ضريبة القيمة المضافة',
+    'items' => 'البنود',
+    'product' => 'المنتج',
+    'sku' => 'رمز المنتج',
+    'qty' => 'الكمية',
+    'unit_price' => 'سعر الوحدة',
+    'discount' => 'الخصم',
+    'tax_rate' => 'الضريبة',
+    'tax_amount' => 'مبلغ الضريبة',
+    'line_total' => 'الإجمالي',
+    'subtotal' => 'المجموع الفرعي',
+    'order_discount' => 'خصم الطلب',
+    'shipping' => 'الشحن',
+    'shipping_tax' => 'ضريبة الشحن',
+    'tax_total' => 'إجمالي الضريبة',
+    'grand_total' => 'المبلغ الإجمالي',
+    'prices_include_tax_note' => 'جميع الأسعار تشمل الضرائب المعمول بها.',
+    'original_invoice' => 'الفاتورة الأصلية',
+    'reason' => 'السبب',
+    'credited_amount' => 'المبلغ المُقيَّد',
+];

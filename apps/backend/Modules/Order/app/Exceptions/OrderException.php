@@ -53,4 +53,22 @@ class OrderException extends BaseException
     {
         return new self(ErrorCodeEnum::INVOICE_INVALID_TRANSITION->value);
     }
+
+    /**
+     * The PDF artifact has not finished generating (D7): downloads serve
+     * ready documents only — never an incomplete file.
+     */
+    public static function invoicePdfNotReady(): OrderException
+    {
+        return new self(ErrorCodeEnum::INVOICE_PDF_NOT_READY->value, 409);
+    }
+
+    /**
+     * Only a failed generation can be retried through the admin surface
+     * (D7 v2.2); regeneration of a ready artifact is ops-only artisan.
+     */
+    public static function invoicePdfNotRetryable(): OrderException
+    {
+        return new self(ErrorCodeEnum::INVOICE_PDF_NOT_RETRYABLE->value, 409);
+    }
 }

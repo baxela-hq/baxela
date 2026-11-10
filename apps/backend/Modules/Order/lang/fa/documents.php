@@ -1,0 +1,33 @@
+<?php
+
+// Agent-drafted locale strings (house rule: owner reviews before release).
+return [
+    'title_invoice' => 'صورتحساب فروش',
+    'title_credit_note' => 'قبض بازگشتی',
+    'number' => 'شماره سند',
+    'issue_date' => 'تاریخ صدور',
+    'order_code' => 'کد سفارش',
+    'seller' => 'فروشنده',
+    'buyer' => 'خریدار',
+    'tax_id' => 'شناسه مالیاتی',
+    'vat_id' => 'شماره ارزش افزوده',
+    'items' => 'اقلام',
+    'product' => 'محصول',
+    'sku' => 'کد کالا',
+    'qty' => 'تعداد',
+    'unit_price' => 'قیمت واحد',
+    'discount' => 'تخفیف',
+    'tax_rate' => 'مالیات',
+    'tax_amount' => 'مبلغ مالیات',
+    'line_total' => 'جمع کل',
+    'subtotal' => 'جمع اقلام',
+    'order_discount' => 'تخفیف سفارش',
+    'shipping' => 'ارسال',
+    'shipping_tax' => 'مالیات ارسال',
+    'tax_total' => 'جمع مالیات',
+    'grand_total' => 'مبلغ نهایی',
+    'prices_include_tax_note' => 'تمامی قیمت‌ها شامل مالیات قانونی است.',
+    'original_invoice' => 'صورتحساب اصلی',
+    'reason' => 'علت',
+    'credited_amount' => 'مبلغ اعتبار داده‌شده',
+];

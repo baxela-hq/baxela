@@ -1,10 +1,16 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Gateways\Order\DocumentRendererInterface;
+use Modules\Core\Contracts\Gateways\Order\DocumentView;
+use Modules\Core\Contracts\Gateways\Order\PdfArtifact;
 use Modules\Core\Models\Currency;
 use Modules\Order\Actions\Admin\Invoice\IssueInvoiceAction;
+use Modules\Order\Documents\MpdfRenderer;
 use Modules\Order\Models\DocumentSequence;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderAddress;
@@ -294,4 +300,160 @@ it('serializes allocation across transactions: numbers never collide', function 
         ->and(OrderCreditNote::query()
             ->where(OrderCreditNoteSchema::STATUS, OrderCreditNoteStatusEnum::ACTIVE)
             ->count())->toBe(0);
+});
+
+// ---------------------------------------------------------------------------
+// PDF artifact lifecycle (Phase 2, D7): issuance stays render-free; the
+// artifact exists through an explicit, retryable, lease-guarded lifecycle.
+// ---------------------------------------------------------------------------
+
+it('issues an invoice whose PDF reaches ready with verified stored bytes', function () {
+    Storage::fake('local');
+    $order = paidInvoiceOrder();
+
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+
+    $invoice = OrderInvoice::query()->findOrFail($invoice->id);
+    $bytes = Storage::disk('local')->get($invoice->pdf_path);
+
+    expect($invoice->pdf_status->value)->toBe('ready')
+        ->and($bytes)->not->toBeNull()
+        ->and(substr((string) $bytes, 0, 5))->toBe('%PDF-')
+        ->and($invoice->pdf_checksum)->toBe(hash('sha256', (string) $bytes))
+        ->and($invoice->template_version)->toBe(MpdfRenderer::TEMPLATE_VERSION)
+        // the seller identity snapshot comes from the store settings
+        ->and($invoice->seller_identity['name'])->toBe(config('app.name'));
+});
+
+it('renders the fa locale invoice RTL without exceptions', function () {
+    Storage::fake('local');
+    // Locale::fromRequest() reads the request's preferred language —
+    // bind one so the document renders in fa.
+    $this->app->instance(
+        'request',
+        Request::create('/', 'GET', [], [], [], ['HTTP_ACCEPT_LANGUAGE' => 'fa']),
+    );
+    $order = paidInvoiceOrder();
+
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+
+    $bytes = (string) Storage::disk('local')->get($invoice->pdf_path);
+
+    expect($invoice->pdf_status->value)->toBe('ready')
+        ->and(substr($bytes, 0, 5))->toBe('%PDF-');
+});
+
+it('multi-page: many items paginate with a valid pdf', function () {
+    Storage::fake('local');
+    $currency = Currency::query()->firstOrCreate(
+        ['code' => 'EUR'],
+        ['name' => 'Euro', 'is_default' => true],
+    );
+
+    $order = Order::query()->create([
+        OrderSchema::USER_ID => 1,
+        OrderSchema::ORDER_CODE => 'INV'.uniqid(),
+        OrderSchema::STATUS => OrderStatusEnum::PROCESSING,
+        OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID,
+        OrderSchema::PAID_AT => now(),
+        OrderSchema::CURRENCY_ID => $currency->id,
+        OrderSchema::TOTAL_AMOUNT => 3000.0,
+        OrderSchema::TAX_AMOUNT => 0.0,
+        OrderSchema::SHIPPING_COST => 0.0,
+        OrderSchema::SHIPPING_TAX_AMOUNT => 0.0,
+        OrderSchema::DISCOUNT_AMOUNT => 0.0,
+        OrderSchema::EXPIRES_AT => now()->addHour(),
+    ]);
+
+    for ($i = 0; $i < 60; $i++) {
+        OrderItem::query()->create([
+            OrderItemSchema::ORDER_ID => $order->id,
+            OrderItemSchema::VARIANT_ID => $i + 1,
+            OrderItemSchema::PRODUCT_NAME_SNAPSHOT => 'Item number '.$i.' with a reasonably long product name for wrapping',
+            OrderItemSchema::PRICE_SNAPSHOT => 50.0,
+            OrderItemSchema::QUANTITY => 1,
+            OrderItemSchema::TAX_AMOUNT => 0.0,
+            OrderItemSchema::TAX_RATE => 0.0,
+        ]);
+    }
+
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+    $bytes = (string) Storage::disk('local')->get($invoice->pdf_path);
+
+    expect(substr($bytes, 0, 5))->toBe('%PDF-')
+        ->and(substr_count($bytes, '/Type /Page'))->toBeGreaterThan(1);
+});
+
+it('a failed generation never touches the number, and a retry reuses both number and snapshot', function () {
+    Storage::fake('local');
+    $order = paidInvoiceOrder();
+
+    // First generation blows up inside the renderer seam.
+    $this->app->bind(DocumentRendererInterface::class, function () {
+        return new class implements DocumentRendererInterface
+        {
+            public function render(DocumentView $view): PdfArtifact
+            {
+                throw new RuntimeException('renderer exploded');
+            }
+        };
+    });
+
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+    $number = $invoice->number;
+    $snapshotTotal = $invoice->total_amount;
+
+    expect($invoice->refresh()->pdf_status->value)->toBe('generation_failed');
+
+    // The retry (real renderer rebound) must reuse number and snapshot.
+    $this->app->bind(DocumentRendererInterface::class, MpdfRenderer::class);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf/retry"))
+        ->assertOk();
+
+    $fresh = OrderInvoice::query()->findOrFail($invoice->id);
+
+    expect($fresh->pdf_status->value)->toBe('ready')
+        ->and($fresh->number)->toBe($number)
+        ->and((float) $fresh->total_amount)->toBe((float) $snapshotTotal)
+        ->and(Storage::disk('local')->get($fresh->pdf_path))->not->toBeNull();
+});
+
+it('downloads serve ready documents only, with auth and not-ready guards', function () {
+    Storage::fake('local');
+    $order = paidInvoiceOrder();
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+
+    // guest
+    $this->getJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf"))->assertUnauthorized();
+
+    // ready: bytes stream back as the stored artifact
+    $response = $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf"));
+    $bytes = (string) Storage::disk('local')->get($invoice->pdf_path);
+
+    $response->assertOk()
+        ->assertHeader('Content-Type', 'application/pdf');
+    expect($response->streamedContent())->toBe($bytes);
+
+    // not ready: 409, never an incomplete document
+    OrderInvoice::query()->where('id', $invoice->id)
+        ->update([OrderInvoiceSchema::PDF_STATUS => 'pending_generation']);
+
+    $this->actingAs($this->superAdminUser())
+        ->getJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf"))
+        ->assertStatus(409)
+        ->assertJsonPath('code', 'order.invoice.pdf_not_ready');
+});
+
+it('retry refuses anything that is not a failed generation', function () {
+    Storage::fake('local');
+    $order = paidInvoiceOrder();
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf/retry"))
+        ->assertStatus(409)
+        ->assertJsonPath('code', 'order.invoice.pdf_not_retryable');
 });

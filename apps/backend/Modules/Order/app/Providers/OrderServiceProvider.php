@@ -5,8 +5,11 @@ namespace Modules\Order\Providers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Order\DocumentRendererInterface;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Order\Console\Commands\CancelExpiredOrdersCommand;
+use Modules\Order\Console\Commands\SweepGeneratingDocumentsCommand;
+use Modules\Order\Documents\MpdfRenderer;
 use Modules\Order\Gateways\OrderGateway;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -22,6 +25,9 @@ class OrderServiceProvider extends ServiceProvider
 
     public array $bindings = [
         OrderGatewayInterface::class => OrderGateway::class,
+        // B.1 D12: the renderer seam — one core provider today; country
+        // document providers arrive as extensions on this same binding.
+        DocumentRendererInterface::class => MpdfRenderer::class,
     ];
 
     /**
@@ -53,6 +59,7 @@ class OrderServiceProvider extends ServiceProvider
     {
         $this->commands([
             CancelExpiredOrdersCommand::class,
+            SweepGeneratingDocumentsCommand::class,
         ]);
     }
 
@@ -64,6 +71,10 @@ class OrderServiceProvider extends ServiceProvider
         $this->app->booted(function (): void {
             $schedule = $this->app->make(Schedule::class);
             $schedule->command('order:cancel-expired')->everyFiveMinutes();
+
+            // D7: release expired PDF generation leases so a crashed
+            // worker cannot wedge a document in `generating`.
+            $schedule->command('order:sweep-generating-documents')->everyFifteenMinutes();
         });
     }
 
