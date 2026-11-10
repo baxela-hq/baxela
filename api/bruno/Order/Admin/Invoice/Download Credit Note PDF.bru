@@ -1,0 +1,24 @@
+meta {
+  name: Download Credit Note PDF
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/v1/order/admin/credit-notes/1/pdf
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/pdf
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

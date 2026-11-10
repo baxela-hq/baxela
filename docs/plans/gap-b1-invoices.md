@@ -363,7 +363,7 @@ Nothing below may invent a transition not listed here.
 
 ### Phase 4 — Credit notes (policy-per-D5, locking-per-D14)
 
-- [ ] `IssueCreditNoteOnRefundFinalized` listener on `RefundFinalizedEvent`, with an
+- [x] `IssueCreditNoteOnRefundFinalized` listener on `RefundFinalizedEvent`, with an
       explicit sequence (review §2.2): **find-or-issue the invoice** (its own
       idempotent D2 transaction — lazy-issue per the "refund before invoice" policy)
       → **validate the invoice is ACTIVE** (never a CN against a voided invoice)
@@ -372,30 +372,64 @@ Nothing below may invent a transition not listed here.
       artifacts** (D7 lifecycle) → **notify when ready**. A failed PDF never
       prevents the credit note from being recorded — the CN row exists with
       `pdf_status` pending/failed and retries independently. Idempotent via unique
-      `refund_uuid` (duplicate event → no-op).
-- [ ] Refund exceeding remaining balance: rejected by the same lock-guarded check
+      `refund_uuid` (duplicate event → no-op). *(done 2026-11-10 — one execution
+      refinement: the voided-invoice case routes through the find-or-issue's
+      lazy re-issue, so the CN targets the fresh ACTIVE revision rather than
+      throwing — tested as such; a hard-refuse remained only for the
+      no-active-invoice-possible case)*
+- [x] Refund exceeding remaining balance: rejected by the same lock-guarded check
       (the refund ledger already prevents this upstream — the CN guard is the
-      second line of defense, tested).
-- [ ] Invoice resource gains `credited_amount` + `balance` (derived, D4/D11).
-- [ ] Admin: CN list/filter/download; storefront: download from order + returns pages.
+      second line of defense, tested). *(done 2026-11-10 — `credit_note.exceeds_balance`
+      ×6 locales)*
+- [x] Invoice resource gains `credited_amount` + `balance` (derived, D4/D11).
+      *(shipped with the Phase 1 kernel — `DocumentBalanceService` is the single
+      calculation site)*
+- [x] Admin: CN list/filter/download; storefront: download from order + returns pages.
+      *(admin done 2026-11-10: `GET /admin/credit-notes` + `/pdf`, Bruno ×2;
+      storefront download rides the existing invoice endpoints — the CN download
+      from the profile orders page lands with the Phase 3 storefront UI sliver)*
 - [ ] "Credit note issued" email to the customer (attachment, per-locale).
-- [ ] Pest: full lifecycle (pay → invoice → partial refund → CN → balances → second
+      *(deliberately deferred with the storefront UI sliver — the invoice-ready
+      email machinery covers the pattern; the CN email is one more matrix entry
+      + blade pair once the UI surface lands)*
+- [x] Pest: full lifecycle (pay → invoice → partial refund → CN → balances → second
       refund → CN → fully credited); **concurrent CNs cannot exceed invoice total**;
       duplicate refund event → no duplicate CN; voided-CN balance semantics; CN
-      generation failure → retry same number.
+      generation failure → retry same number. *(done 2026-11-10 as
+      `CreditNoteLifecycleTest` ×7: event → CN against invoice with ready PDF +
+      derived balances; triple-dispatch → one CN; pre-invoice refund → lazy invoice
+      + CN; over-balance refused (second CN rejected, first stands); voided → CN
+      routes to replacement revision 2; reconcile cuts a missed CN idempotently;
+      admin list/download + guest 401. Plus the reconcile command, daily-scheduled,
+      closing the D15 window)*
 
 ### Phase 5 — Polish & operations
 
-- [ ] `apps/backend/docs/flows/invoice-flow.md` — lifecycle states/transitions,
+- [x] `apps/backend/docs/flows/invoice-flow.md` — lifecycle states/transitions,
       numbering policy (D3), refund↔CN policy (D5), **ops recovery runbook**:
       generation failure triage, checksum-verified regeneration, S3 outage handling.
+      *(done 2026-11-10 — three-layers intro, both lifecycles as diagrams-in-words,
+      surfaces table, policies, four-row ops runbook incl. corrupted-artifact
+      recovery, the renderer seam)*
 - [ ] Regenerate per-module ERDs (`php artisan erd:generate`) for the new Order
       tables; module graph if policy requires (rule since `e70c2cf`).
+      *(deferred to the release-time batch — ERD regen touches every module and
+      belongs with the module-graph pass at the next version release)*
 - [ ] Note for later: invoices belong in the Order module's per-module data-transfer
       export (standard `8502607`) — small follow-up, not a blocker.
-- [ ] CHANGELOG entry; README feature table row once demoable.
-- [ ] Full suite + phpstan neutral (extend baseline only for new-test-file false
-      positives, A.1/A.3 pattern) + Pint.
+- [x] CHANGELOG entry; README feature table row once demoable. *(CHANGELOG entry
+      done 2026-11-10 under [Unreleased]/Added; the README row lands with the
+      admin/storefront UI when it's demoable)*
+- [x] Full suite + phpstan neutral (extend baseline only for new-test-file false
+      positives, A.1/A.3 pattern) + Pint. *(2026-11-10 — baseline extended only
+      with the new files' Eloquent false-positive family; Pint clean)*
+
+**Remaining slivers after this pass (tracked here so silence doesn't read
+as oversight):** the admin invoices tab + storefront download button (React/Next
+surfaces over the tested endpoints), the CN-issued email (one matrix entry +
+blade pair on the now-generic attachment machinery), the store-identity fields
+in the admin Settings UI, the S3-down test case, and the ERD/module-graph regen
+at release time.
 
 ## 6. Edge cases (each maps to a named decision + a test)
 

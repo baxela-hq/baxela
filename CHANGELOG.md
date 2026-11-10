@@ -10,6 +10,27 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **Invoices & credit notes with PDF documents (gap-B1)**: every paid
+  order now produces a legal invoice — sequentially numbered per type
+  per store-timezone year, snapshot-frozen at issue, auto-issued on
+  payment (webhook settle, manual confirm, and free orders all funnel
+  through one paid-transition point; the automation is
+  `INVOICES_AUTO_ISSUE`-gated, default on). PDFs render through an
+  mPDF-backed renderer seam (RTL-capable: fa/ar shaping verified;
+  shared-hosting-safe pure PHP) behind a lease-guarded artifact
+  lifecycle with SHA-256 checksums — generation failures retry on the
+  same number and never touch the immutable record. Customers receive
+  a per-locale "invoice ready" email with the stored PDF attached
+  (notification channel gained generic attachment support), and
+  download their own invoices from the profile API (ownership enforced
+  as 404-on-foreign). Finalized refunds — direct, webhook-confirmed,
+  or resolved — each cut one credit note against the order's active
+  invoice (balance-validated under a row lock; a daily reconcile
+  command closes the event-loss window). Admin surface: invoice
+  list/issue/void/PDF download/failed-generation retry, credit note
+  list and PDF download. Store legal identity (name, address, tax id,
+  contact) becomes settings frozen into the seller block at issue.
+
 - **Gateway refund coverage (gap-B4)**: every gateway except NowPayments
   can now execute refunds (full or partial) from the admin, on top of the
   existing two-phase refund ledger. Adyen and Checkout.com accept

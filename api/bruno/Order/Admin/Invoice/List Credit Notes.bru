@@ -1,0 +1,28 @@
+meta {
+  name: List Credit Notes
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/v1/order/admin/credit-notes
+  body: none
+  auth: bearer
+}
+
+query {
+  filter[status]: active
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
