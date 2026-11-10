@@ -5,6 +5,7 @@ namespace Modules\Setting\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
+use Modules\Setting\Support\AppliesStoreIdentity;
 use Modules\Setting\Support\AppliesStoreTimezone;
 use Modules\Setting\Support\ResolvesPricingMode;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -30,6 +31,10 @@ class SettingServiceProvider extends ServiceProvider
     {
         // Store timezone overrides app.timezone when the setting exists
         (new AppliesStoreTimezone)();
+
+        // Store legal identity snapshots onto config('store.*') — the
+        // seller block invoices freeze at issue time (gap-B1 D4)
+        (new AppliesStoreIdentity)();
 
         $this->registerCommands();
         $this->registerCommandSchedules();
