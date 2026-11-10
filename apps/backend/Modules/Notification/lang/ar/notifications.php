@@ -80,6 +80,12 @@ return [
                         'body' => 'اكتمل إرجاعك للطلب :order_code.',
                     ],
                 ],
+                    'invoice' => [
+                        'ready' => [
+                            'subject' => 'الفاتورة :invoice_number للطلب :order_code جاهزة',
+                            'body' => 'فاتورتك :invoice_number للطلب :order_code جاهزة ومرفقة بهذا البريد.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

@@ -14,5 +14,7 @@ class EmailMessage implements MessageInterface
         public string $subject,
         public string $body,
         public array $meta = [],
+        /** @var list<array{data: string, name: string, mime: string}> */
+        public array $attachments = [],
     ) {}
 }

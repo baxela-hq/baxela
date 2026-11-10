@@ -80,6 +80,12 @@ return [
                         'body' => 'Votre retour pour :order_code est terminé.',
                     ],
                 ],
+                    'invoice' => [
+                        'ready' => [
+                            'subject' => 'La facture :invoice_number pour la commande :order_code est prête',
+                            'body' => 'Votre facture :invoice_number pour la commande :order_code est prête et jointe à cet e-mail.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

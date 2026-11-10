@@ -30,6 +30,7 @@ class EmailChannel implements NotificationChannelInterface
                 subject: $message->subject,
                 body: $message->body,
                 meta: $message->meta,
+                attachedDocuments: $message->attachments,
             ));
         } catch (Throwable $e) {
             report($e);

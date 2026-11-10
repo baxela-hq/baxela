@@ -80,6 +80,12 @@ return [
                         'body' => 'فرآیند مرجوعی سفارش :order_code تکمیل شد.',
                     ],
                 ],
+                    'invoice' => [
+                        'ready' => [
+                            'subject' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است',
+                            'body' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است و به این ایمیل پیوست شده است.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

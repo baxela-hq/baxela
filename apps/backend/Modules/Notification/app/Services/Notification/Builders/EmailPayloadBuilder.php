@@ -27,6 +27,7 @@ class EmailPayloadBuilder implements ChannelPayloadBuilderInterface
             subject: $rendered->subject,
             body: $rendered->body,
             meta: $message->meta,
+            attachments: $message->attachments,
         );
     }
 }

@@ -8,6 +8,7 @@ use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentCreatedEvent;
+use Modules\Core\Contracts\Events\Order\InvoiceReadyEvent;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
@@ -28,6 +29,7 @@ use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 use Modules\Notification\Listeners\Content\PostCommentApproved\SendPostCommentApprovedToUserListener;
 use Modules\Notification\Listeners\Content\PostCommentCreated\NotifyAdminPostCommentCreatedListener;
+use Modules\Notification\Listeners\Order\InvoiceReady\SendInvoiceReadyToUserListener;
 use Modules\Notification\Listeners\Order\OrderCancelled\SendOrderCancelledNotificationToUserListener;
 use Modules\Notification\Listeners\Order\OrderCompleted\SendOrderCompletedNotificationToUserListener;
 use Modules\Notification\Listeners\Order\OrderCreated\NotifyAdminNewOrderListener;
@@ -75,6 +77,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPaidEvent::class => [
             SendPaymentReceivedNotificationToUserListener::class,
+        ],
+        InvoiceReadyEvent::class => [
+            SendInvoiceReadyToUserListener::class,
         ],
         OrderRefundedEvent::class => [
             SendOrderRefundedNotificationToUserListener::class,

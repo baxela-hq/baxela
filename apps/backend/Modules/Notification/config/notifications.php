@@ -69,6 +69,13 @@ return [
                     'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
             ],
+            // The email carries the stored PDF as an attachment; the
+            // database row lands in the recipient's inbox (gap-B1 Phase 3).
+            'invoice' => [
+                'ready' => [
+                    'user' => ['database', 'email'],
+                ],
+            ],
         ],
         'payment' => [
             'payment' => [

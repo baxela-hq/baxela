@@ -24,6 +24,8 @@ class NotificationMessage implements MessageInterface
          * app locale when null.
          */
         public readonly ?string $locale = null,
+        /** @var list<array{data: string, name: string, mime: string}> binary attachments (email channel) */
+        public readonly array $attachments = [],
     ) {}
 
     /**
@@ -42,6 +44,7 @@ class NotificationMessage implements MessageInterface
             bodyOverride: $this->bodyOverride,
             meta: $this->meta,
             locale: $this->locale,
+            attachments: $this->attachments,
         );
     }
 }

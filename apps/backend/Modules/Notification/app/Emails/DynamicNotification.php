@@ -12,11 +12,14 @@ class DynamicNotification extends Mailable
 
     /**
      * Create a new message instance.
+     *
+     * @param  list<array{data: string, name: string, mime: string}>  $attachedDocuments  raw attachments; deliberately NOT named $attachments — that property already exists on Mailable
      */
     public function __construct(
         public $subject,
         public $body,
         public $meta,
+        public array $attachedDocuments = [],
     ) {}
 
     /**
@@ -24,8 +27,16 @@ class DynamicNotification extends Mailable
      */
     public function build(): self
     {
-        return $this
+        $message = $this
             ->subject($this->subject)
             ->html($this->body);
+
+        foreach ($this->attachedDocuments as $document) {
+            $message->attachData($document['data'], $document['name'], [
+                'mime' => $document['mime'],
+            ]);
+        }
+
+        return $message;
     }
 }

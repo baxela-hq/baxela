@@ -80,6 +80,12 @@ return [
                         'body' => 'Ihre Rücksendung für :order_code ist abgeschlossen.',
                     ],
                 ],
+                    'invoice' => [
+                        'ready' => [
+                            'subject' => 'Rechnung :invoice_number für Bestellung :order_code ist bereit',
+                            'body' => 'Ihre Rechnung :invoice_number für Bestellung :order_code ist fertig und dieser E-Mail beigefügt.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

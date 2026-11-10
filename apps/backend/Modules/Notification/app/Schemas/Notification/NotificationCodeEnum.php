@@ -43,6 +43,9 @@ enum NotificationCodeEnum: string
 
     case ORDER_ORDER_REFUNDED = 'order.order.refunded';
 
+    // Financial documents (gap-B1): fired once the stored PDF is ready.
+    case ORDER_INVOICE_READY = 'order.invoice.ready';
+
     case ORDER_RETURN_REQUESTED = 'order.return.requested';
 
     case ORDER_RETURN_APPROVED = 'order.return.approved';
