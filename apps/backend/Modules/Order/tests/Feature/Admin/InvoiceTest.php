@@ -457,3 +457,29 @@ it('retry refuses anything that is not a failed generation', function () {
         ->assertStatus(409)
         ->assertJsonPath('code', 'order.invoice.pdf_not_retryable');
 });
+
+it('a storage outage lands the document in generation_failed, and a later retry recovers', function () {
+    // The S3-down case from the plan's Phase 2 test list: the storage
+    // write throws inside the service's try/catch — same state machine
+    // as the renderer failure, exercised at the real seam.
+    $order = paidInvoiceOrder();
+
+    // Point at a disk that doesn't exist in the filesystems config —
+    // the write inside DocumentPdfService throws.
+    config(['order.documents.disk' => 's3_outage']);
+    $invoice = app(IssueInvoiceAction::class)->handle($order->id);
+
+    expect($invoice->refresh()->pdf_status->value)->toBe('generation_failed');
+
+    // Storage recovers (local fake disk), the retry reaches ready on
+    // the same number.
+    Storage::fake('local');
+    config(['order.documents.disk' => 'local']);
+
+    $this->actingAs($this->superAdminUser())
+        ->postJson($this->baseUrl("/admin/invoices/{$invoice->id}/pdf/retry"))
+        ->assertOk();
+
+    expect($invoice->refresh()->pdf_status->value)->toBe('ready')
+        ->and($invoice->refresh()->number)->toBe($invoice->number);
+});

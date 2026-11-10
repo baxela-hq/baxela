@@ -8,6 +8,7 @@ use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentCreatedEvent;
+use Modules\Core\Contracts\Events\Order\CreditNoteReadyEvent;
 use Modules\Core\Contracts\Events\Order\InvoiceReadyEvent;
 use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
@@ -29,6 +30,7 @@ use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 use Modules\Notification\Listeners\Content\PostCommentApproved\SendPostCommentApprovedToUserListener;
 use Modules\Notification\Listeners\Content\PostCommentCreated\NotifyAdminPostCommentCreatedListener;
+use Modules\Notification\Listeners\Order\CreditNoteReady\SendCreditNoteReadyToUserListener;
 use Modules\Notification\Listeners\Order\InvoiceReady\SendInvoiceReadyToUserListener;
 use Modules\Notification\Listeners\Order\OrderCancelled\SendOrderCancelledNotificationToUserListener;
 use Modules\Notification\Listeners\Order\OrderCompleted\SendOrderCompletedNotificationToUserListener;
@@ -80,6 +82,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         InvoiceReadyEvent::class => [
             SendInvoiceReadyToUserListener::class,
+        ],
+        CreditNoteReadyEvent::class => [
+            SendCreditNoteReadyToUserListener::class,
         ],
         OrderRefundedEvent::class => [
             SendOrderRefundedNotificationToUserListener::class,

@@ -86,6 +86,12 @@ return [
                             'body' => 'فاتورتك :invoice_number للطلب :order_code جاهزة ومرفقة بهذا البريد.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'إشعار دائن :credit_note_number للطلب :order_code',
+                            'body' => 'تم إصدار إشعار دائن :credit_note_number للفاتورة :invoice_number للطلب :order_code.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

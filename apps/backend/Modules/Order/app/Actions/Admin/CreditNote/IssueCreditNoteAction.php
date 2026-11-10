@@ -3,12 +3,15 @@
 namespace Modules\Order\Actions\Admin\CreditNote;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Core\Contracts\Events\Order\CreditNoteReadyEvent;
 use Modules\Core\Support\Money;
+use Modules\Core\Utils\Locale;
 use Modules\Order\Actions\Admin\Invoice\IssueInvoiceAction;
 use Modules\Order\Documents\DocumentPdfService;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Models\OrderCreditNote;
 use Modules\Order\Models\OrderInvoice;
+use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteSchema;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
@@ -103,6 +106,27 @@ class IssueCreditNoteAction
             report($exception);
         }
 
-        return $creditNote->refresh();
+        $creditNote = $creditNote->refresh();
+
+        // The email can only fire after generation reached ready.
+        if ($creditNote->pdf_status === DocumentPdfStatusEnum::READY) {
+            $order = $invoice->order()->firstOrFail();
+            $invoice = $invoice->refresh();
+
+            DB::afterCommit(function () use ($creditNote, $order, $invoice): void {
+                event(CreditNoteReadyEvent::fill([
+                    'credit_note_id' => (int) $creditNote->id,
+                    'user_id' => (int) $order->user_id,
+                    'order_code' => (string) $order->order_code,
+                    'credit_note_number' => (string) $creditNote->number,
+                    'invoice_number' => (string) $invoice->number,
+                    'pdf_disk' => (string) $creditNote->pdf_disk,
+                    'pdf_path' => (string) $creditNote->pdf_path,
+                    'locale' => Locale::fromRequest(),
+                ]));
+            });
+        }
+
+        return $creditNote;
     }
 }

@@ -86,6 +86,12 @@ return [
                             'body' => 'Su factura :invoice_number del pedido :order_code está lista y adjunta a este correo.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'Nota de crédito :credit_note_number del pedido :order_code',
+                            'body' => 'Se ha emitido una nota de crédito :credit_note_number para la factura :invoice_number del pedido :order_code.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

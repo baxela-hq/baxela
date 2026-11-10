@@ -46,6 +46,8 @@ enum NotificationCodeEnum: string
     // Financial documents (gap-B1): fired once the stored PDF is ready.
     case ORDER_INVOICE_READY = 'order.invoice.ready';
 
+    case ORDER_CREDIT_NOTE_READY = 'order.credit_note.ready';
+
     case ORDER_RETURN_REQUESTED = 'order.return.requested';
 
     case ORDER_RETURN_APPROVED = 'order.return.approved';

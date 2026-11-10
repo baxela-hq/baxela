@@ -76,6 +76,11 @@ return [
                     'user' => ['database', 'email'],
                 ],
             ],
+            'credit_note' => [
+                'ready' => [
+                    'user' => ['database', 'email'],
+                ],
+            ],
         ],
         'payment' => [
             'payment' => [

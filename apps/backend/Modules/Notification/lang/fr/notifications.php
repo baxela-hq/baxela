@@ -86,6 +86,12 @@ return [
                             'body' => 'Votre facture :invoice_number pour la commande :order_code est prête et jointe à cet e-mail.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'Avoir :credit_note_number pour la commande :order_code',
+                            'body' => 'Un avoir :credit_note_number a été émis pour la facture :invoice_number de la commande :order_code.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

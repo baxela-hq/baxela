@@ -86,6 +86,12 @@ return [
                             'body' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است و به این ایمیل پیوست شده است.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'قبض بازگشتی :credit_note_number برای سفارش :order_code صادر شد',
+                            'body' => 'قبض بازگشتی :credit_note_number برای صورتحساب :invoice_number سفارش :order_code صادر شد.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

@@ -23802,3 +23802,84 @@ parameters:
 			identifier: argument.templateType
 			count: 3
 			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php

@@ -86,6 +86,12 @@ return [
                             'body' => 'Your invoice :invoice_number for order :order_code is ready and attached to this email.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'Credit note :credit_note_number issued for order :order_code',
+                            'body' => 'A credit note :credit_note_number was issued against invoice :invoice_number for order :order_code.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [

@@ -86,6 +86,12 @@ return [
                             'body' => 'Ihre Rechnung :invoice_number für Bestellung :order_code ist fertig und dieser E-Mail beigefügt.',
                         ],
                     ],
+                    'credit_note' => [
+                        'ready' => [
+                            'subject' => 'Gutschrift :credit_note_number für Bestellung :order_code ausgestellt',
+                            'body' => 'Eine Gutschrift :credit_note_number wurde für Rechnung :invoice_number (Bestellung :order_code) ausgestellt.',
+                        ],
+                    ],
             ],
         ],
         'payment' => [
