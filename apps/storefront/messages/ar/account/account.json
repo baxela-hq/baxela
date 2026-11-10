@@ -83,7 +83,9 @@
       "continue_shopping": "متابعة التسوق",
       "prev_page": "الصفحة السابقة",
       "next_page": "الصفحة التالية",
-      "request_return": "طلب إرجاع"
+      "request_return": "طلب إرجاع",
+      "download_invoice": "تحميل الفاتورة",
+      "downloading": "جارٍ التحميل…"
     },
     "filters": {
       "all": "جميع الحالات",
@@ -119,7 +121,9 @@
         "cancel_failed": "فشل إلغاء الطلب.",
         "load_failed": "فشل تحميل طلباتك.",
         "return_failed": "تعذر إرسال طلب الإرجاع."
-      }
+      },
+      "invoice_not_ready": "فاتورتك لا تزال قيد الإنشاء — تحقق مرة أخرى قريبًا.",
+      "invoice_download_failed": "فشل تحميل الفاتورة."
     },
     "return_form": {
       "title": "طلب إرجاع لهذا الطلب",

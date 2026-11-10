@@ -83,7 +83,9 @@
       "continue_shopping": "Continuer mes achats",
       "prev_page": "Page précédente",
       "next_page": "Page suivante",
-      "request_return": "Demander un retour"
+      "request_return": "Demander un retour",
+      "download_invoice": "Télécharger la facture",
+      "downloading": "Téléchargement…"
     },
     "filters": {
       "all": "Tous les statuts",
@@ -119,7 +121,9 @@
         "cancel_failed": "Échec de l'annulation de la commande.",
         "load_failed": "Échec du chargement de vos commandes.",
         "return_failed": "Impossible d'envoyer la demande de retour."
-      }
+      },
+      "invoice_not_ready": "Votre facture est encore en cours de génération — revenez dans un instant.",
+      "invoice_download_failed": "Échec du téléchargement de la facture."
     },
     "return_form": {
       "title": "Demander un retour pour cette commande",

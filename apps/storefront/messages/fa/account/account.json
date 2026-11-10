@@ -83,7 +83,9 @@
       "continue_shopping": "ادامه خرید",
       "prev_page": "صفحه قبل",
       "next_page": "صفحه بعد",
-      "request_return": "درخواست مرجوعی"
+      "request_return": "درخواست مرجوعی",
+      "download_invoice": "دانلود صورتحساب",
+      "downloading": "در حال دانلود…"
     },
     "filters": {
       "all": "همه وضعیت‌ها",
@@ -119,7 +121,9 @@
         "cancel_failed": "لغو سفارش ناموفق بود.",
         "load_failed": "بارگذاری سفارش‌ها ناموفق بود.",
         "return_failed": "ثبت درخواست مرجوعی ناموفق بود."
-      }
+      },
+      "invoice_not_ready": "صورتحساب شما هنوز در حال تولید است — به زودی دوباره بررسی کنید.",
+      "invoice_download_failed": "دانلود صورتحساب ناموفق بود."
     },
     "return_form": {
       "title": "ثبت درخواست مرجوعی برای این سفارش",

@@ -11,7 +11,7 @@ import {
 import { useCurrency } from "@/context/currency-context";
 import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
-import { api, ApiError } from "@/lib/api/client";
+import { api, ApiError, API_BASE_URL } from "@/lib/api/client";
 import type {
   ApiOrder,
   ApiOrderItem,
@@ -121,6 +121,7 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const [returnReason, setReturnReason] = useState("damaged");
   const [returnNote, setReturnNote] = useState("");
   const [returning, setReturning] = useState(false);
+  const [downloadingInvoiceCode, setDownloadingInvoiceCode] = useState<string | null>(null);
   const [confirmingCancelCode, setConfirmingCancelCode] = useState<string | null>(
     null,
   );
@@ -128,6 +129,45 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
   const [error, setError] = useState<string | null>(null);
 
 
+
+  const handleDownloadInvoice = useCallback(
+    async (orderCode: string) => {
+      if (!token) return;
+      setDownloadingInvoiceCode(orderCode);
+      try {
+        const invoices = await api.get<
+          { id: number; number: string; pdf_ready: boolean }[]
+        >(`/order/user/orders/${orderCode}/invoices`, { token });
+        const ready = invoices.find((inv) => inv.pdf_ready);
+        if (!ready) {
+          toast.info(t("orders.messages.invoice_not_ready"));
+          return;
+        }
+        const response = await fetch(
+          `${API_BASE_URL}/order/user/invoices/${ready.id}/pdf`,
+          {
+            headers: {
+              Accept: "application/pdf",
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        if (!response.ok) throw new Error("download failed");
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${ready.number}.pdf`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch {
+        toast.error(t("orders.messages.invoice_download_failed"));
+      } finally {
+        setDownloadingInvoiceCode(null);
+      }
+    },
+    [token, t],
+  );
 
   const load = useCallback(
     async (nextPage: number) => {
@@ -296,6 +336,10 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
             (order.status === "shipped" || order.status === "completed") &&
             (order.payment_status === "paid" ||
               order.payment_status === "partially_refunded");
+          const paid =
+            order.payment_status === "paid" ||
+            order.payment_status === "partially_refunded" ||
+            order.payment_status === "refunded";
 
           return (
             <li key={order.order_code} className="py-8 first:pt-0 last:pb-0">
@@ -473,6 +517,18 @@ export function OrderList({ search, statusFilter }: OrderListProps) {
                           className="inline-flex h-10 items-center justify-center rounded-default bg-red-500 px-5 text-sm font-medium text-white transition-colors hover:bg-red-600 rtl:normal-case rtl:tracking-normal"
                         >
                           {t("orders.actions.cancel_order")}
+                        </button>
+                      ) : null}
+                      {paid ? (
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadInvoice(order.order_code)}
+                          disabled={downloadingInvoiceCode === order.order_code}
+                          className="inline-flex h-10 items-center justify-center rounded-default border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted disabled:opacity-50 rtl:normal-case rtl:tracking-normal"
+                        >
+                          {downloadingInvoiceCode === order.order_code
+                            ? t("orders.actions.downloading")
+                            : t("orders.actions.download_invoice")}
                         </button>
                       ) : null}
                     </>

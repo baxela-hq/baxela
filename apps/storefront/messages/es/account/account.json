@@ -83,7 +83,9 @@
       "continue_shopping": "Seguir comprando",
       "prev_page": "Página anterior",
       "next_page": "Página siguiente",
-      "request_return": "Solicitar devolución"
+      "request_return": "Solicitar devolución",
+      "download_invoice": "Descargar factura",
+      "downloading": "Descargando…"
     },
     "filters": {
       "all": "Todos los estados",
@@ -119,7 +121,9 @@
         "cancel_failed": "No se pudo cancelar el pedido.",
         "load_failed": "No se pudieron cargar tus pedidos.",
         "return_failed": "No se pudo enviar la solicitud de devolución."
-      }
+      },
+      "invoice_not_ready": "Tu factura aún se está generando — vuelve en un momento.",
+      "invoice_download_failed": "Error al descargar la factura."
     },
     "return_form": {
       "title": "Solicitar una devolución de este pedido",

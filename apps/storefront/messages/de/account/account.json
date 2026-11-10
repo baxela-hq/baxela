@@ -83,7 +83,9 @@
       "continue_shopping": "Weiter einkaufen",
       "prev_page": "Vorherige Seite",
       "next_page": "Nächste Seite",
-      "request_return": "Retoure beantragen"
+      "request_return": "Retoure beantragen",
+      "download_invoice": "Rechnung herunterladen",
+      "downloading": "Wird heruntergeladen…"
     },
     "filters": {
       "all": "Alle Status",
@@ -119,7 +121,9 @@
         "cancel_failed": "Das Stornieren der Bestellung ist fehlgeschlagen.",
         "load_failed": "Das Laden Ihrer Bestellungen ist fehlgeschlagen.",
         "return_failed": "Die Retourenanfrage konnte nicht gesendet werden."
-      }
+      },
+      "invoice_not_ready": "Ihre Rechnung wird noch erstellt — bitte versuchen Sie es später erneut.",
+      "invoice_download_failed": "Die Rechnung konnte nicht heruntergeladen werden."
     },
     "return_form": {
       "title": "Für diese Bestellung eine Retoure beantragen",

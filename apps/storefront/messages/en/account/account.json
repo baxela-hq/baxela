@@ -83,7 +83,9 @@
       "continue_shopping": "Continue shopping",
       "prev_page": "Previous page",
       "next_page": "Next page",
-      "request_return": "Request return"
+      "request_return": "Request return",
+      "download_invoice": "Download Invoice",
+      "downloading": "Downloading…"
     },
     "filters": {
       "all": "All statuses",
@@ -119,7 +121,9 @@
         "cancel_failed": "Cancelling the order failed.",
         "load_failed": "Loading your orders failed.",
         "return_failed": "Could not submit the return request."
-      }
+      },
+      "invoice_not_ready": "Your invoice is still being generated — check back shortly.",
+      "invoice_download_failed": "Failed to download the invoice."
     },
     "return_form": {
       "title": "Request a return for this order",
