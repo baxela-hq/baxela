@@ -16,6 +16,7 @@ use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 use Modules\Payment\Support\FinalizesRefund;
+use Modules\Payment\Support\FiresRefundFinalizedEvent;
 use RuntimeException;
 
 class ConfirmRefundOutcomeAction
@@ -176,6 +177,10 @@ class ConfirmRefundOutcomeAction
             'status' => PaymentRefundStatusEnum::SUCCESS->value,
             'locale' => Locale::fromRequest(),
         ]));
+
+        // Per-refund accounting signal (gap-B1 D10): fires after commit
+        // through the shared dispatcher.
+        FiresRefundFinalizedEvent::from($refund->refresh());
     }
 
     private function confirmFailure(PaymentRefund $refund, RefundWebhookOutcome $outcome): void

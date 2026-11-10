@@ -11,6 +11,7 @@ use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 use Modules\Payment\Support\FinalizesRefund;
+use Modules\Payment\Support\FiresRefundFinalizedEvent;
 
 class ResolveRefundAction
 {
@@ -58,6 +59,10 @@ class ResolveRefundAction
                 PaymentRefundSchema::STATUS => PaymentRefundStatusEnum::SUCCESS->value,
                 'locale' => Locale::fromRequest(),
             ]));
+
+            // Per-refund accounting signal (gap-B1 D10): fires after
+            // commit through the shared dispatcher.
+            FiresRefundFinalizedEvent::from($refund->refresh());
 
             return $refund->refresh();
         }

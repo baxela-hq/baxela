@@ -22,6 +22,7 @@ use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 use Modules\Payment\Support\FinalizesRefund;
+use Modules\Payment\Support\FiresRefundFinalizedEvent;
 use RuntimeException;
 use Stripe\Exception\ApiConnectionException as StripeConnectionException;
 use Throwable;
@@ -164,6 +165,10 @@ class CreateRefundAction
             PaymentRefundSchema::STATUS => PaymentRefundStatusEnum::SUCCESS->value,
             'locale' => Locale::fromRequest(),
         ]));
+
+        // Per-refund accounting signal (gap-B1 D10): fires after commit
+        // through the shared dispatcher.
+        FiresRefundFinalizedEvent::from($refund->refresh());
 
         return $refund->refresh();
     }
