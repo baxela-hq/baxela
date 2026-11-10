@@ -54,16 +54,27 @@ Gift cards, carrier APIs → gap §5 non-goals.
   in the prod compose entrypoint. Consider a full-page CDN layer later.
 
 ### H.2 Sentry installed but unwired
-- **Verdict:** ABSENT — `sentry/sentry-laravel` is in composer.json but no
-  DSN config, no error-handler registration in bootstrap, no traces.
-- **Impact:** Production errors go to `storage/logs` only; no aggregation,
-  no alerting, no performance monitoring.
-- **Sketch:** Register the Sentry service provider, wire the DSN from env,
-  verify exception capture on a deliberate test throw. Add performance
-  traces for the checkout orchestrator and the payment webhook path.
+- **Verdict:** PARTIAL *(revised 2026-11-10 after code verification)* — the
+  SDK's exception handler was already wired (`bootstrap/app.php:28`,
+  `SentryIntegration::handles()`), the config file was complete, and the
+  prod compose passes the DSN through. The real gap was **missing context
+  enrichment**: captured errors arrived without request ID, user, route,
+  or breadcrumbs. Now wired: `SentryContextServiceProvider` tags every
+  capture with the request ID + route + user ID (no PII), adds a request
+  breadcrumb, and domain breadcrumbs on the checkout orchestrator and
+  payment webhook handler. Tracing remains opt-in via
+  `SENTRY_TRACES_SAMPLE_RATE` (currently 0). Inert without a DSN.
+- **Remaining:** performance spans on checkout + webhook (flip the sample
+  rate when you create the account).
 
 ### H.3 Image srcset not consumed
-- **Verdict:** PARTIAL — the Media module generates responsive variants
+- **Verdict:** MOSTLY DONE *(revised 2026-11-10 after code verification)* —
+  the product card already renders `srcSet` from variants (gap C.3's
+  consumer), the product gallery uses variant-specific URLs, and the blog
+  cards use srcset. The real remaining gap: cart/checkout page thumbnails
+  use the original `image_url` (the Cart API doesn't expose
+  `image_variants` on items — a small backend transformer change). Minor
+  performance impact: thumbnails are lazy-loaded and displayed at 64px.
   (gap C.3, landed 2026-11-08) but the storefront's `<img>` tags don't
   render `srcset` from them. The variants exist on disk; nobody fetches them.
 - **Impact:** Mobile LCP suffering for nothing — the bandwidth savings are

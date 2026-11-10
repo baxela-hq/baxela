@@ -34,6 +34,7 @@ use Modules\Core\Contracts\Gateways\Tax\DTOs\TaxCalculationItem;
 use Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface;
 use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Exceptions\Discount\RedemptionRefusedException;
+use Modules\Core\Providers\SentryContextServiceProvider;
 use Modules\Core\Support\Money;
 use Modules\Core\Utils\Auth;
 use RuntimeException;
@@ -136,6 +137,15 @@ class CheckoutAction
         // unlocked: a concurrent admin edit may interleave, but one
         // checkout is always internally coherent.
         try {
+            // Sentry breadcrumb (H.2): the checkout is the most complex
+            // orchestrator — when something fails downstream, this trail
+            // shows the path that led there. Inert without a DSN.
+            SentryContextServiceProvider::breadcrumb(
+                'checkout',
+                'checkout started',
+                ['user_id' => Auth::id(), 'cart_items' => $cart?->items()->count() ?? 0],
+            );
+
             $orderCode = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $address): ?string {
                 $cart = Cart::query()
                     ->where(CartSchema::USER_ID, Auth::id())

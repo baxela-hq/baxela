@@ -63,6 +63,7 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(SentryContextServiceProvider::class);
 
         $this->app->bind(ModelRelationsScanner::class, fn () => new ModelRelationsScanner(base_path('Modules')));
         $this->app->bind(ModuleTableResolver::class, fn () => new ModuleTableResolver(base_path('Modules')));

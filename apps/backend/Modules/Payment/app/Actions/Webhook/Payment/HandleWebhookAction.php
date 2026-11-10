@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Payment\PaymentFailedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
+use Modules\Core\Providers\SentryContextServiceProvider;
 use Modules\Core\Utils\Locale;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaymentDriverManager;
@@ -24,6 +25,15 @@ class HandleWebhookAction
      */
     public function handle(string $driver, Request $request): void
     {
+        // Sentry breadcrumb (H.2): webhook deliveries are the other
+        // critical path — settle failures need the driver + transaction
+        // id context to reproduce. Inert without a DSN.
+        SentryContextServiceProvider::breadcrumb(
+            'webhook',
+            "webhook received: {$driver}",
+            ['driver' => $driver],
+        );
+
         $result = app(PaymentDriverManager::class)
             ->forName($driver)
             ->handleWebhook($request);
