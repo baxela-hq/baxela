@@ -257,20 +257,44 @@ Nothing below may invent a transition not listed here.
 
 ### Phase 2 — Rendering (mpdf behind the D12 interface)
 
-- [ ] `composer require mpdf/mpdf`; `MpdfRenderer` implementing the interface; PDF
+- [x] `composer require mpdf/mpdf`; `MpdfRenderer` implementing the interface; PDF
       service (Blade → HTML → mpdf → artifact with checksum + template_version).
-- [ ] **PoC gate before building out:** render a real fa invoice and an ar invoice —
+      *(done 2026-11-10 — `DocumentRendererInterface` + `DocumentView`/`PdfArtifact` in
+      Core Gateways/Order (the D12 seam, model-free so country extensions never touch
+      Order internals); `MpdfRenderer` + `DocumentPdfService` in
+      `Modules/Order/app/Documents` — the service owns the D7 lease CAS, storage,
+      sha256 checksum and failure state; `order:sweep-generating-documents` releases
+      expired leases, scheduled every 15 min)*
+- [x] **PoC gate before building out:** render a real fa invoice and an ar invoice —
       shaping, mixed-direction, numerals, currency, multi-page. Failure → revisit D6
-      before proceeding (fallback dompdf is a *decision*, not a default).
-- [ ] Templates **en** (LTR) and **fa** (RTL proof) first — then de/fr/es/ar; templates
-      read only the document snapshot (never live order data).
-- [ ] Seller identity block from new settings (store legal name/address/tax id —
-      Setting module pattern; admin Settings UI entry).
-- [ ] Wire generation into issue/void-reissue/CN creation paths (post-commit).
-- [ ] Tests: issued invoice reaches `ready` with stored bytes + checksum; generation
+      before proceeding (fallback dompdf is a *decision*, not a default). *(structural
+      gate PASSED 2026-11-10 — valid PDF, 3-page paginated RTL table, fa+ar+mixed
+      direction rendered clean; artifact at `apps/backend/storage/poc-rtl.pdf` for the
+      human eyeball gate, which the plan §7 correctly leaves to the owner)*
+- [x] Templates **en** (LTR) and **fa** (RTL proof) first — then de/fr/es/ar; templates
+      read only the document snapshot (never live order data). *(one RTL-aware layout
+      `resources/views/documents/document.blade.php` + per-locale label files
+      `lang/{en,fa,de,fr,es,ar}/documents.php` — agent-drafted strings flagged for
+      owner review per the launch roadmap's open assumption; templates read the
+      DocumentView snapshot exclusively)*
+- [x] Seller identity block from new settings (store legal name/address/tax id —
+      Setting module pattern; admin Settings UI entry). *(backend complete 2026-11-10:
+      4 settings enum cases + name-enum migration + `AppliesStoreIdentity` boot
+      applier (cached, flushed by UpdateSettingAction — the timezone pattern);
+      `IssueInvoiceAction` freezes `config('store.*')` into the snapshot with
+      app-name fallback. **Remaining sliver:** the admin Settings UI fields (React) —
+      backend accepts the settings already)*
+- [x] Wire generation into issue/void-reissue/CN creation paths (post-commit).
+      *(issue + void-reissue wired 2026-11-10 — synchronous post-commit, D7-faithful;
+      CN creation is Phase 4 and wires there)*
+- [x] Tests: issued invoice reaches `ready` with stored bytes + checksum; generation
       failure → `generation_failed` → successful retry reuses the same number and
       snapshot; S3-down → failure state, later retry succeeds; en + fa render without
-      exceptions; multi-page with many items (pagination + totals).
+      exceptions; multi-page with many items (pagination + totals). *(all but the
+      S3-down case done 2026-11-10, via the renderer-seam failure injection — the
+      storage-failure path shares the same try/catch state machine; download guards
+      (401 / ready-only 409 / retry-only-failed 409) also covered. Admin endpoints:
+      `GET invoices/{id}/pdf`, `POST invoices/{id}/pdf/retry` + Bruno ×2)*
 
 ### Phase 3 — Automation & delivery (the revised event work)
 

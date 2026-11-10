@@ -169,6 +169,7 @@ the marketplace (Phase 3) is only needed for the publish step at the end.
 ## 6. Related docs
 
 - `docs/plans/extension-e0-e2.md` — **detailed execution plan for Phases 0–2** (prefer it over §4's outline; verified state, design decisions, edge cases, acceptance tests).
+- `docs/plans/marketplace-phase3.md` — **detailed execution plan for Phase 3** (slices M.0–M.5; same standing — prefer it over §4's outline).
 - `docs/ROADMAP.md` — public-launch roadmap (separate initiative; launch phases come first — this doc's phases are blocked until launch work frees capacity, except Phase 0–1 which can start anytime).
 - `docs/PLATFORM_GAPS_ROADMAP.md` — gap roadmap between launch and the extension system (phases lettered A–D to avoid collision with the numbered phases here).
 - `apps/backend/AGENTS.md` — module conventions the extension system must respect (schemas, actions, webhook conventions).
