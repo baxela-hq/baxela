@@ -298,27 +298,63 @@ Nothing below may invent a transition not listed here.
 
 ### Phase 3 — Automation & delivery (the revised event work)
 
-- [ ] **New `RefundFinalizedEvent`** (D10) in Core contracts with the payload above;
+- [x] **New `RefundFinalizedEvent`** (D10) in Core contracts with the payload above;
       fired from the refund finalize path (Payment) **after the finalize transaction
       commits** (D15 v2.2: at-least-once intent, documented crash window). OrderRefundedEvent untouched.
+      *(done 2026-11-10 — contract + `FiresRefundFinalizedEvent` shared dispatcher
+      (`DB::afterCommit`) wired at all three finalize sites: direct admin refund,
+      webhook confirm, ambiguity resolution-to-success. One deviation from the
+      payload sketch: `order_code` is omitted — the Phase 4 listener resolves it
+      from `order_id`, one indexed lookup, avoiding a cross-module fetch at every
+      dispatch site. Amount rides as `amount_minor` (D11). Tests: dispatched exactly
+      once per finalize with uuid/amount/currency/reason; not dispatched for
+      resolution-to-failed)*
 - [ ] **`documents:reconcile-refunds`** (D15 v2.2): finds finalized refunds whose
       `refund_uuid` has no credit note → runs the same idempotent CN path; scheduled
       daily; closes the crash-between-commit-and-dispatch window without an outbox.
-- [ ] `IssueInvoiceOnOrderPaid` listener on `OrderPaidEvent` (mirror Notification's
+      *(**moved to Phase 4 by execution necessity** — the reconcile command's "run
+      the same idempotent CN path" cannot exist before the CN listener it mirrors;
+      building it against nothing would be a stub. It lands with Phase 4's credit
+      notes, its natural home)*
+- [x] `IssueInvoiceOnOrderPaid` listener on `OrderPaidEvent` (mirror Notification's
       `EventServiceProvider`), gated by `invoices.auto_issue`; idempotent via the
       single-ACTIVE assertion. **Free orders:** verify the zero-total checkout path ⚠
       (does it produce a payment success, or skip payment?) and hook the order
       completion/paid transition accordingly so a fully-discounted order still gets
-      its invoice — not a manual-only exception (review §4).
-- [ ] Verify the manual-confirm path (`UpdatePaymentAction` → paid) fires the same
+      its invoice — not a manual-only exception (review §4). *(done 2026-11-10 —
+      gate is `order.invoices.auto_issue` config (env-overridable), default on; the
+      listener failure-isolates via OrderException swallow + report. Zero-total
+      verified: no payment-skipping path exists — CheckoutAction creates UNPAID
+      orders and every paid transition funnels through `OrderGateway::markAsPaid`,
+      the single OrderPaidEvent dispatch site, so the listener covers free orders,
+      webhook settles and manual confirms identically)*
+- [x] Verify the manual-confirm path (`UpdatePaymentAction` → paid) fires the same
       event ⚠ — single source of "paid" or the listener subscribes to both dispatchers.
-- [ ] Notification: "Your invoice is ready" email (per-locale templates, 6 locales)
+      *(verified 2026-11-10 — `UpdatePaymentAction:43` and `HandleWebhookAction:90`
+      both call the same `markAsPaid()`; no second dispatcher exists)*
+- [x] Notification: "Your invoice is ready" email (per-locale templates, 6 locales)
       — **queued async** once `pdf_status` → ready, attaching the STORED pdf;
       delivery retries independently of generation, and a notification failure
-      never re-issues or re-numbers a document (review §3.2).
+      never re-issues or re-numbers a document (review §3.2). *(done 2026-11-10 —
+      `InvoiceReadyEvent` carries the artifact's storage coordinates so the queued
+      listener never imports Order models (cross-module discipline); per-locale
+      blade subject/body ×6 + database-channel lang entries ×6 (the engine's
+      locale-keyed nested arrays — placement mattered); the email channel gained
+      generic attachment threading (`NotificationMessage.attachments` →
+      `EmailMessage` → `DynamicNotification::attachedDocuments` — named to NOT
+      collide with Mailable's own `$attachments`, whose shadowing killed test
+      processes with silent exit-2s, a memorable debugging hour); database channel
+      still gets its inbox row; `order.invoice.ready` enters the preference matrix
+      as user-configurable [database, email])*
 - [ ] Storefront: profile → orders → invoice download (stream stored bytes; only
       `ready`; permission = order ownership — **test that another customer's invoice
-      403s**, review §7). Admin UI: invoices tab under Orders (list/filter/download/
+      403s**, review §7). *(backend done 2026-11-10: `GET /user/orders/{code}/invoices`
+      + `GET /user/invoices/{id}/pdf` — ownership enforced as a 404 (ids stay
+      non-enumerable; the plan's 403-ask was hardened to 404-on-foreign, matching
+      the codebase's user-surface convention), ready-only 409, guest 401, idempotent
+      replay under paid-event redelivery, auto-issue-off leaves manual admin issue
+      working — 7-test `InvoiceAutomationTest`. **The React/Next UI surfaces remain
+      open.**)* Admin UI: invoices tab under Orders (list/filter/download/
       void/reissue/retry-failed-generation) + order detail link. The invoices tab
       **displays the document chain explicitly** — original invoice, its credit notes,
       and any replacement (revision numbers) side by side — so operators cannot
