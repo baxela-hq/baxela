@@ -31,10 +31,10 @@ export const invoiceSchema = z.object({
   total_amount: z.string().nullable(),
   credited_amount: z.string(),
   balance: z.string(),
-  billing_address: z.record(z.unknown()).nullable().optional(),
-  buyer_identity: z.record(z.unknown()).nullable().optional(),
-  seller_identity: z.record(z.unknown()).nullable().optional(),
-  meta: z.record(z.unknown()).nullable().optional(),
+  billing_address: z.record(z.string(), z.unknown()).nullable().optional(),
+  buyer_identity: z.record(z.string(), z.unknown()).nullable().optional(),
+  seller_identity: z.record(z.string(), z.unknown()).nullable().optional(),
+  meta: z.record(z.string(), z.unknown()).nullable().optional(),
   pdf_status: pdfStatusSchema,
 })
 export type Invoice = z.infer<typeof invoiceSchema>

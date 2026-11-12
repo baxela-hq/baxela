@@ -20,11 +20,17 @@ export function voidInvoice(id: number, reason: string) {
 }
 
 export function issueInvoice(orderId: number) {
-  return postRequest<SingleResponse<Invoice>, Record<string, never>>(`${BASE_URL}/orders/${orderId}/invoice`)
+  return postRequest<SingleResponse<Invoice>, Record<string, never>>(
+    `${BASE_URL}/orders/${orderId}/invoice`,
+    {}
+  )
 }
 
 export function retryPdfGeneration(id: number) {
-  return postRequest<SingleResponse<Invoice>, Record<string, never>>(`${BASE_URL}/invoices/${id}/pdf/retry`)
+  return postRequest<SingleResponse<Invoice>, Record<string, never>>(
+    `${BASE_URL}/invoices/${id}/pdf/retry`,
+    {}
+  )
 }
 
 export function fetchCreditNotes(queryParams = {}) {

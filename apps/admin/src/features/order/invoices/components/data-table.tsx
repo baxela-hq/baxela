@@ -146,10 +146,7 @@ export function DataTable({ data, search, navigate }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination
-        table={table}
-        paginationInfo={data.meta}
-      />
+      <DataTablePagination table={table} />
     </div>
   )
 }
