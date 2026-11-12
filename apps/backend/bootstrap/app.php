@@ -6,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Modules\Core\Exceptions\BaseException;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
+use Modules\Core\Http\Middleware\SetSecurityHeaders;
+use Modules\Core\Http\Middleware\TrustProxies;
 use Modules\Core\Support\SupportedLocales;
 use Sentry\Laravel\Integration as SentryIntegration;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -18,7 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // S.3: config-driven trust boundary (default trusts nobody) —
+        // replaces the stock middleware, which is boot-time-only and
+        // untestable at runtime.
+        $middleware->replace(Illuminate\Http\Middleware\TrustProxies::class, TrustProxies::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Sentry captures reported exceptions via a reportable callback, so
@@ -56,6 +61,14 @@ return Application::configure(basePath: dirname(__DIR__))
             // Keep protocol headers (e.g. Retry-After from throttling) on the envelope.
             if ($e instanceof HttpExceptionInterface) {
                 $response->withHeaders($e->getHeaders());
+            }
+
+            // S.3: unmatched /api/* routes never enter the api middleware
+            // group, so the JSON envelopes rendered here need the security
+            // headers attached directly (matched-route exceptions already
+            // flow back through the middleware).
+            if ($request->is('api/*')) {
+                $response = SetSecurityHeaders::apply($response, $request);
             }
 
             return $response;

@@ -1,6 +1,5 @@
 parameters:
 	ignoreErrors:
-
 		-
 			message: '#^Method Modules\\Audit\\Actions\\Admin\\AuditLog\\ListAuditLogsAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
@@ -224,6 +223,18 @@ parameters:
 			path: Modules/Auth/app/Actions/Admin/User/ListUserAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Admin/User/RevokeAllUserSessionsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Admin/User/RevokeUserSessionAction.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
 			identifier: property.notFound
 			count: 1
@@ -260,10 +271,82 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+
+		-
+			message: '#^Offset ''device_name'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+
+		-
+			message: '#^Offset ''remember'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<mixed\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
+			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: staticMethod.unresolvableReturnType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email_verified_at\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Auth/app/Actions/Public/Auth/RequestPasswordResetAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$created_at\.$#'
@@ -278,6 +361,24 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/SignUpAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+
+		-
+			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+
+		-
+			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: staticMethod.unresolvableReturnType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+
+		-
 			message: '#^Argument of an invalid type Illuminate\\Routing\\RouteCollectionInterface supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -288,6 +389,30 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: Modules/Auth/app/Actions/User/Account/MeAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 6
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
 
 		-
 			message: '#^Method Modules\\Auth\\Exceptions\\AccountAlreadyActivatedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
@@ -404,6 +529,36 @@ parameters:
 			path: Modules/Auth/app/Http/Controllers/User/Account/MeController.php
 
 		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:confirm\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorConfirmController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:disable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorDisableController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:enable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorEnableController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:regenerateRecoveryCodes\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorRecoveryCodesController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:status\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorStatusController.php
+
+		-
 			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\Role\\RoleRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -440,6 +595,60 @@ parameters:
 			path: Modules/Auth/app/Models/OtpCode.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$expires_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
 			identifier: property.notFound
 			count: 1
@@ -468,6 +677,36 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Providers/AuthServiceProvider.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
+
+		-
+			message: '#^Method Modules\\Auth\\Support\\TwoFactor\\TwoFactorChallengeService\:\:issue\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_last_used_step\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
 
 		-
 			message: '#^Method Modules\\Auth\\Transformers\\Admin\\Account\\AccountResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -788,6 +1027,120 @@ parameters:
 			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Audit\\Models\\AuditLog\:\:\$action\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Audit\\Models\\AuditLog\:\:\$module\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Audit\\Models\\AuditLog\:\:\$properties\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Audit\\Models\\AuditLog\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 5
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Function s2JsonAs\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 4
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
+
+		-
 			message: '#^Trait Modules\\Auth\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
@@ -1004,6 +1357,90 @@ parameters:
 			path: Modules/Auth/tests/Feature/SessionTest.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 37
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 28
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:superAdminRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Function enrolledUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Function forcedEnrollmentChallenge\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Function twoFactorUser\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 4
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Cart\\Models\\Cart\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -1088,8 +1525,20 @@ parameters:
 			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
 
 		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
+
+		-
 			message: '#^Parameter \#1 \$items of method Modules\\Cart\\Support\\RefreshesCartPrices\:\:refresh\(\) expects Illuminate\\Support\\Collection\<int, Modules\\Cart\\Models\\CartItem\>, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\>\|null given\.$#'
 			identifier: argument.type
+			count: 1
+			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Modules\\Cart\\Models\\Cart\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
 
@@ -10244,6 +10693,12 @@ parameters:
 			path: Modules/Core/app/Providers/CoreServiceProvider.php
 
 		-
+			message: '#^Method Modules\\Core\\Providers\\SentryContextServiceProvider\:\:breadcrumb\(\) has parameter \$metadata with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/app/Providers/SentryContextServiceProvider.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Core\\Repositories\\Base\\BaseRepository\:\:\$model\.$#'
 			identifier: property.notFound
 			count: 6
@@ -10948,7 +11403,7 @@ parameters:
 		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 1
+			count: 2
 			path: Modules/Core/config/config.php
 
 		-
@@ -10986,36 +11441,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Core/tests/Feature/BaxelaCommandsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionBootGuardTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -11170,6 +11595,36 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionBootGuardTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
 			count: 9
 			path: Modules/Core/tests/Feature/FailedJobTest.php
 
@@ -11292,6 +11747,48 @@ parameters:
 			identifier: method.notFound
 			count: 3
 			path: Modules/Core/tests/Feature/Http/Middleware/PermissionMiddlewareTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:withServerVariables\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_active\.$#'
@@ -15272,6 +15769,132 @@ parameters:
 			path: Modules/Notification/tests/Unit/WebPushPayloadBuilderTest.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$currency_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
+
+		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$email\.$#'
 			identifier: property.notFound
 			count: 1
@@ -15279,6 +15902,12 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$image_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$order_code\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
@@ -15332,49 +15961,13 @@ parameters:
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$address_line\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$city\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$country_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$full_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$phone\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$postal_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
@@ -15458,10 +16051,82 @@ parameters:
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$address_line\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$country_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$full_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderAddress\:\:\$postal_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
 			message: '#^Method Modules\\Order\\Actions\\Admin\\Invoice\\ListOrderInvoicesAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Invoice/ListOrderInvoicesAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/RetryInvoicePdfAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$order_id\.$#'
@@ -15636,6 +16301,84 @@ parameters:
 			identifier: method.unresolvableReturnType
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Stats/ShowStatsAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$issued_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$revision\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Method Modules\\Order\\Actions\\User\\Invoice\\ListOrderInvoicesUserAction\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{id\: int, number\: string, revision\: int, status\: mixed, issued_at\: mixed, pdf_ready\: bool\}, Closure\(Modules\\Order\\Models\\OrderInvoice\)\: array\{id\: int, number\: string, revision\: int, status\: mixed, issued_at\: mixed, pdf_ready\: bool\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
@@ -15824,22 +16567,226 @@ parameters:
 			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
+
+		-
+			message: '#^Dead catch \- Modules\\Order\\Exceptions\\OrderException is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
+			count: 1
+			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderCreditNote\>\|Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$line_total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$sku\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$unit_price\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$currency_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$issued_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$coupon_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$currency_code\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$discount_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$issued_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$prices_contain_tax\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$subtotal_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$tax_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
+			identifier: method.unresolvableReturnType
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>decimal_places" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: Modules/Order/app/Documents/DocumentPdfService.php
+
+		-
 			message: '#^Method Modules\\Order\\Gateways\\DTOs\\GetOrderOutput\:\:__construct\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/app/Gateways/DTOs/GetOrderOutput.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$quantity\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$variant_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
@@ -15911,6 +16858,18 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 4
+			path: Modules/Order/app/Gateways/OrderGateway.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/app/Gateways/OrderGateway.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$variant_id\.$#'
+			identifier: property.notFound
+			count: 1
 			path: Modules/Order/app/Gateways/OrderGateway.php
 
 		-
@@ -16076,6 +17035,12 @@ parameters:
 			path: Modules/Order/app/Models/Order.php
 
 		-
+			message: '#^Method Modules\\Order\\Models\\Order\:\:invoices\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Order/app/Models/Order.php
+
+		-
 			message: '#^Method Modules\\Order\\Models\\Order\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -16230,6 +17195,12 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Order/app/Transfer/OrderTransfer.php
+
+		-
+			message: '#^Method Modules\\Order\\Transformers\\Admin\\CreditNote\\OrderCreditNoteResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/app/Transformers/Admin/CreditNote/OrderCreditNoteResource.php
 
 		-
 			message: '#^Method Modules\\Order\\Transformers\\Admin\\Invoice\\OrderInvoiceItemResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -16412,6 +17383,12 @@ parameters:
 			path: Modules/Order/app/Transformers/User/OrderReturn/OrderReturnResource.php
 
 		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 1
+			path: Modules/Order/config/config.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -16550,9 +17527,51 @@ parameters:
 			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_checksum\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$seller_identity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$template_version\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 9
+			count: 17
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
@@ -16564,31 +17583,61 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 11
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$app\.$#'
+			identifier: property.notFound
+			count: 3
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 11
+			count: 16
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 12
+			count: 18
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 1
+			count: 2
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 10
+			count: 15
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
@@ -16606,6 +17655,18 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 3
+			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
+			identifier: argument.templateType
 			count: 1
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
@@ -16752,6 +17813,126 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 5
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$invoice_id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$revision\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 9
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Function cnOrderWithInvoice\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 3
+			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -17040,6 +18221,66 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Order/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pdf_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pdf_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 10
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
@@ -17654,6 +18895,48 @@ parameters:
 			path: Modules/Payment/app/Support/FinalizesRefund.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
+
+		-
 			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -18132,6 +19415,72 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Function refundablePaidOrderWithManualPayment\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
@@ -22100,6 +23449,12 @@ parameters:
 			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedCountries\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -22109,12 +23464,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedRegion\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
-			identifier: method.notFound
-			count: 1
 			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
 
 		-
@@ -22916,12 +24265,6 @@ parameters:
 			path: Modules/Webhooks/app/Transformers/Admin/WebhookEndpoint/WebhookEndpointResource.php
 
 		-
-			message: '#^Trait Modules\\Webhooks\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
-			identifier: trait.unused
-			count: 1
-			path: Modules/Webhooks/tests/Feature/HelperTrait.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$attempt_count\.$#'
 			identifier: property.notFound
 			count: 2
@@ -23090,1013 +24433,7 @@ parameters:
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
+			message: '#^Trait Modules\\Webhooks\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
 			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/DownloadInvoicePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/RetryInvoicePdfAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderCreditNote\>\|Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$line_total\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$sku\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$unit_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$currency_code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$issued_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\|Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$coupon_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$currency_code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$issued_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$prices_contain_tax\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$shipping_tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$subtotal_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Using nullsafe property access "\?\-\>decimal_places" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: Modules/Order/app/Documents/DocumentPdfService.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_checksum\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$seller_identity\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$template_version\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 8
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Pest\\PendingCalls\\TestCall\:\:\$app\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<string\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$issued_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$revision\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Method Modules\\Order\\Actions\\User\\Invoice\\ListOrderInvoicesUserAction\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{id\: int, number\: string, revision\: int, status\: mixed, issued_at\: mixed, pdf_ready\: bool\}, Closure\(Modules\\Order\\Models\\OrderInvoice\)\: array\{id\: int, number\: string, revision\: int, status\: mixed, issued_at\: mixed, pdf_ready\: bool\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-		-
-			message: '#^Method Modules\\Order\\Models\\Order\:\:invoices\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Order/app/Models/Order.php
-		-
-			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
-			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 1
-			path: Modules/Order/config/config.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 10
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Function refundablePaidOrderWithManualPayment\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/DownloadCreditNotePdfAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$currency_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-		-
-			message: '#^Dead catch \- Modules\\Order\\Exceptions\\OrderException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-		-
-			message: '#^Method Modules\\Order\\Transformers\\Admin\\CreditNote\\OrderCreditNoteResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Order/app/Transformers/Admin/CreditNote/OrderCreditNoteResource.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$invoice_id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$revision\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 9
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Function cnOrderWithInvoice\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$number\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$pdf_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Expression on left side of \?\? is not nullable\.$#'
-			identifier: nullCoalesce.expr
-			count: 1
-			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
-		-
-			message: '#^Using nullsafe method call on non\-nullable type Modules\\Cart\\Models\\Cart\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: Modules/Cart/app/Actions/User/Cart/CheckoutAction.php
-		-
-			message: '#^Method Modules\\Core\\Providers\\SentryContextServiceProvider\:\:breadcrumb\(\) has parameter \$metadata with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Providers/SentryContextServiceProvider.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-		-
-			message: '#^Offset ''device_name'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-		-
-			message: '#^Offset ''remember'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
-		-
-			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
-		-
-			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: staticMethod.unresolvableReturnType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
-		-
-			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:confirm\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorConfirmController.php
-		-
-			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:disable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorDisableController.php
-		-
-			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:enable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorEnableController.php
-		-
-			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:regenerateRecoveryCodes\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorRecoveryCodesController.php
-		-
-			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:status\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorStatusController.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$expires_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
-		-
-			message: '#^Method Modules\\Auth\\Support\\TwoFactor\\TwoFactorChallengeService\:\:issue\(\) has parameter \$context with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_last_used_step\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 28
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Function enrolledUser\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Function twoFactorUser\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+			path: Modules/Webhooks/tests/Feature/HelperTrait.php

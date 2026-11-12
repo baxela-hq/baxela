@@ -3,6 +3,7 @@
 namespace Modules\Auth\Actions\Admin\User;
 
 use Modules\Auth\Models\User;
+use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Core\Contracts\Events\Auth\UserSessionRevokedEvent;
 use Modules\Core\Utils\Auth;
 
@@ -23,7 +24,7 @@ class RevokeUserSessionAction extends AbstractUserAction
 
         event(new UserSessionRevokedEvent(
             id: $user->id,
-            email: $user->email,
+            email: $user->{UserSchema::EMAIL},
             session_id: (int) $tokenId,
             revoked_by: Auth::id(),
         ));

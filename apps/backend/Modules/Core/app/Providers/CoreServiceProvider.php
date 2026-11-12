@@ -19,6 +19,7 @@ use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
+use Modules\Core\Http\Middleware\SetSecurityHeaders;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
 use Modules\Core\Support\Erd\ModuleTableResolver;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -43,6 +44,7 @@ class CoreServiceProvider extends ServiceProvider
     public function boot(Router $router): void
     {
         $router->pushMiddlewareToGroup('api', AssignRequestId::class);
+        $router->pushMiddlewareToGroup('api', SetSecurityHeaders::class);
 
         if (config('core.log_requests')) {
             $router->pushMiddlewareToGroup('api', RequestLogger::class);
