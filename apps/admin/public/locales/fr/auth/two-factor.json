@@ -1,0 +1,46 @@
+{
+  "page-title": "Sécurité",
+  "page-description": "Gérez l'authentification à deux facteurs de votre compte.",
+  "enrollment": {
+    "title": "Authentification à deux facteurs",
+    "description": "Scannez le code QR avec votre application d'authentification, puis saisissez le code à six chiffres affiché pour confirmer.",
+    "forced-description": "Votre compte doit être protégé par une authentification à deux facteurs. Configurez-la pour terminer la connexion.",
+    "scan": "Code QR",
+    "or-enter-key": "Ou saisissez cette clé manuellement :",
+    "copy-secret": "Copier la clé",
+    "copied": "Copié",
+    "code-label": "Code de l'authentificateur",
+    "confirm": "Confirmer et activer",
+    "confirm-sign-in": "Confirmer et se connecter",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "loading": "Génération de votre code QR…",
+    "codes-title": "Enregistrez vos codes de récupération",
+    "codes-description": "Chaque code fonctionne une fois si vous perdez l'accès à votre application d'authentification. Ils ne seront plus affichés.",
+    "copy-codes": "Copier les codes",
+    "download-codes": "Télécharger",
+    "done": "J'ai enregistré mes codes",
+    "error-secret": "Impossible de démarrer la configuration. Veuillez revenir et réessayer.",
+    "error-generic": "Une erreur est survenue. Veuillez réessayer."
+  },
+  "management": {
+    "status-enabled": "Activée depuis le {{date}}",
+    "status-disabled": "Désactivée",
+    "recovery-remaining": "{{count}} codes de récupération restants",
+    "description": "Ajoutez un second facteur à votre compte. Après l'activation, la connexion demandera un code de votre application d'authentification en plus du mot de passe.",
+    "enable": "Activer l'authentification à deux facteurs",
+    "disable": "Désactiver",
+    "regenerate": "Régénérer les codes de récupération",
+    "disable-title": "Désactiver l'authentification à deux facteurs",
+    "disable-description": "Saisissez un code d'authentification ou de récupération valide pour désactiver la 2FA. Votre compte ne sera protégé que par son mot de passe.",
+    "regenerate-title": "Régénérer les codes de récupération",
+    "regenerate-description": "Saisissez un code d'authentification ou de récupération valide. Vos codes de récupération actuels cesseront de fonctionner.",
+    "code-label": "Code d'authentification ou de récupération",
+    "codes-description": "Voici vos nouveaux codes de récupération. Chacun fonctionne une fois ; ils ne seront plus affichés.",
+    "codes-done": "Terminé"
+  },
+  "messages": {
+    "error-generic": "Une erreur est survenue. Veuillez réessayer.",
+    "disabled-success": "Authentification à deux facteurs désactivée"
+  }
+}

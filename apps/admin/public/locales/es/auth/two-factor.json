@@ -1,0 +1,46 @@
+{
+  "page-title": "Seguridad",
+  "page-description": "Gestione la autenticación de dos factores de su cuenta.",
+  "enrollment": {
+    "title": "Autenticación de dos factores",
+    "description": "Escanee el código QR con su aplicación de autenticación y luego introduzca el código de seis dígitos que muestra para confirmar.",
+    "forced-description": "Su cuenta debe estar protegida con autenticación de dos factores. Configúrela para terminar de iniciar sesión.",
+    "scan": "Código QR",
+    "or-enter-key": "O introduzca esta clave manualmente:",
+    "copy-secret": "Copiar clave",
+    "copied": "Copiado",
+    "code-label": "Código del autenticador",
+    "confirm": "Confirmar y activar",
+    "confirm-sign-in": "Confirmar e iniciar sesión",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "loading": "Generando su código QR…",
+    "codes-title": "Guarde sus códigos de recuperación",
+    "codes-description": "Cada código funciona una vez si pierde el acceso a su aplicación de autenticación. No se volverán a mostrar.",
+    "copy-codes": "Copiar códigos",
+    "download-codes": "Descargar",
+    "done": "He guardado mis códigos",
+    "error-secret": "No se pudo iniciar la configuración. Vuelva atrás e inténtelo de nuevo.",
+    "error-generic": "Algo salió mal. Inténtelo de nuevo."
+  },
+  "management": {
+    "status-enabled": "Activado desde {{date}}",
+    "status-disabled": "Desactivado",
+    "recovery-remaining": "Quedan {{count}} códigos de recuperación",
+    "description": "Añada un segundo factor a su cuenta. Tras activarlo, iniciar sesión pedirá un código de su aplicación de autenticación además de la contraseña.",
+    "enable": "Activar la autenticación de dos factores",
+    "disable": "Desactivar",
+    "regenerate": "Regenerar códigos de recuperación",
+    "disable-title": "Desactivar la autenticación de dos factores",
+    "disable-description": "Introduzca un código de autenticación o recuperación válido para desactivar la 2FA. Su cuenta quedará protegida solo por la contraseña.",
+    "regenerate-title": "Regenerar códigos de recuperación",
+    "regenerate-description": "Introduzca un código de autenticación o recuperación válido. Sus códigos de recuperación actuales dejarán de funcionar.",
+    "code-label": "Código de autenticación o recuperación",
+    "codes-description": "Estos son sus nuevos códigos de recuperación. Cada uno funciona una vez; no se volverán a mostrar.",
+    "codes-done": "Hecho"
+  },
+  "messages": {
+    "error-generic": "Algo salió mal. Inténtelo de nuevo.",
+    "disabled-success": "Autenticación de dos factores desactivada"
+  }
+}

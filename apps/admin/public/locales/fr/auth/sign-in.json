@@ -23,5 +23,11 @@
       "password-required": "Veuillez saisir votre mot de passe",
       "password-min-length": "Le mot de passe doit contenir au moins 7 caractères"
     }
+  },
+  "2fa": {
+    "enter_code": "Saisissez le code à 6 chiffres de votre application d'authentification. Vous pouvez aussi utiliser un code de récupération.",
+    "code_label": "Code d'authentification",
+    "verify_button": "Vérifier",
+    "back_to_sign_in": "Retour à la connexion"
   }
 }

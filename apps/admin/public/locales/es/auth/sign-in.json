@@ -23,5 +23,11 @@
       "password-required": "Introduzca su contraseña",
       "password-min-length": "La contraseña debe tener al menos 7 caracteres"
     }
+  },
+  "2fa": {
+    "enter_code": "Introduzca el código de 6 dígitos de su aplicación de autenticación. También puede usar un código de recuperación.",
+    "code_label": "Código de autenticación",
+    "verify_button": "Verificar",
+    "back_to_sign_in": "Volver a iniciar sesión"
   }
 }

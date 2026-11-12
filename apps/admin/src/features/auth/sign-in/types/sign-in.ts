@@ -19,6 +19,12 @@ export interface SignInResponse {
     token: string;
     user: UserModel;
     settings: Settings;
+    /** Present when 2FA is enrolled — no bearer token in this response. */
+    two_factor_required?: boolean;
+    /** Present when a super-admin must enroll — no bearer token. */
+    two_factor_enrollment_required?: boolean;
+    /** The challenge token (bridge to the verify/enrollment endpoints). */
+    challenge_token?: string;
 }
 
 

@@ -1,0 +1,46 @@
+{
+  "page-title": "Security",
+  "page-description": "Manage two-factor authentication for your account.",
+  "enrollment": {
+    "title": "Two-factor authentication",
+    "description": "Scan the QR code with your authenticator app, then enter the six-digit code it shows to confirm.",
+    "forced-description": "Your account must be protected with two-factor authentication. Set it up to finish signing in.",
+    "scan": "QR code",
+    "or-enter-key": "Or enter this key manually:",
+    "copy-secret": "Copy key",
+    "copied": "Copied",
+    "code-label": "Authenticator code",
+    "confirm": "Confirm and enable",
+    "confirm-sign-in": "Confirm and sign in",
+    "cancel": "Cancel",
+    "back": "Back",
+    "loading": "Generating your QR code…",
+    "codes-title": "Save your recovery codes",
+    "codes-description": "Each code works once if you lose access to your authenticator app. They will not be shown again.",
+    "copy-codes": "Copy codes",
+    "download-codes": "Download",
+    "done": "I've saved my codes",
+    "error-secret": "Could not start enrollment. Please go back and try again.",
+    "error-generic": "Something went wrong. Please try again."
+  },
+  "management": {
+    "status-enabled": "Enabled since {{date}}",
+    "status-disabled": "Disabled",
+    "recovery-remaining": "{{count}} recovery codes remaining",
+    "description": "Add a second factor to your account. After enrolling, signing in asks for a code from your authenticator app in addition to your password.",
+    "enable": "Enable two-factor authentication",
+    "disable": "Disable",
+    "regenerate": "Regenerate recovery codes",
+    "disable-title": "Disable two-factor authentication",
+    "disable-description": "Enter a valid authenticator or recovery code to disable 2FA. Your account will be protected by its password only.",
+    "regenerate-title": "Regenerate recovery codes",
+    "regenerate-description": "Enter a valid authenticator or recovery code. Your existing recovery codes will stop working.",
+    "code-label": "Authenticator or recovery code",
+    "codes-description": "These are your new recovery codes. Each works once; they will not be shown again.",
+    "codes-done": "Done"
+  },
+  "messages": {
+    "error-generic": "Something went wrong. Please try again.",
+    "disabled-success": "Two-factor authentication disabled"
+  }
+}

@@ -56,7 +56,8 @@
     "returns": "Devoluciones",
     "languages": "Idiomas",
     "transfer-data": "Transferencia de datos",
-    "invoices": "Facturas"
+    "invoices": "Facturas",
+    "security": "Seguridad"
   },
   "dialog": {
     "sign-out": {

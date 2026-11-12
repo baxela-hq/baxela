@@ -56,7 +56,8 @@
     "returns": "المرتجعات",
     "languages": "اللغات",
     "transfer-data": "نقل البيانات",
-    "invoices": "الفواتير"
+    "invoices": "الفواتير",
+    "security": "الأمان"
   },
   "dialog": {
     "sign-out": {

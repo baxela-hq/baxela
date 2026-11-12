@@ -13,3 +13,12 @@ export async function signIn(request: SignInRequest): Promise<SignInResponse> {
   });
   return data;
 }
+
+/** Verify a TOTP or recovery code against a sign-in challenge. */
+export async function verifyTwoFactor(challengeToken: string, code: string): Promise<SignInResponse> {
+  const { data } = await postRequest<SingleResponse<SignInResponse>, { challenge_token: string; code: string }>(
+    `${BASE_URL}/2fa/verify`,
+    { challenge_token: challengeToken, code },
+  );
+  return data;
+}

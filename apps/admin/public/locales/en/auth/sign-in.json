@@ -23,5 +23,11 @@
       "password-required": "Please enter your password",
       "password-min-length": "Password must be at least 7 characters long"
     }
+  },
+  "2fa": {
+    "enter_code": "Enter the 6-digit code from your authenticator app. You can also use a recovery code.",
+    "code_label": "Authentication code",
+    "verify_button": "Verify",
+    "back_to_sign_in": "Back to sign in"
   }
 }

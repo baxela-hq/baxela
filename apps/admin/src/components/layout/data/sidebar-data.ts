@@ -9,6 +9,7 @@ import {
   Package,
   ScrollText,
   Settings,
+  ShieldCheck,
   Ticket as TicketIcon,
   Users,
   GalleryVerticalEnd,
@@ -81,6 +82,11 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.settings'),
             url: '/settings/store',
             icon: Settings,
+          },
+          {
+            title: t('sidebar.security'),
+            url: '/settings/security',
+            icon: ShieldCheck,
           },
           {
             title: t('sidebar.notifications-inbox'),

@@ -1,0 +1,46 @@
+{
+  "page-title": "Sicherheit",
+  "page-description": "Verwalten Sie die Zwei-Faktor-Authentifizierung Ihres Kontos.",
+  "enrollment": {
+    "title": "Zwei-Faktor-Authentifizierung",
+    "description": "Scannen Sie den QR-Code mit Ihrer Authenticator-App und geben Sie dann den angezeigten sechsstelligen Code zur Bestätigung ein.",
+    "forced-description": "Ihr Konto muss mit Zwei-Faktor-Authentifizierung geschützt sein. Richten Sie sie ein, um die Anmeldung abzuschließen.",
+    "scan": "QR-Code",
+    "or-enter-key": "Oder geben Sie diesen Schlüssel manuell ein:",
+    "copy-secret": "Schlüssel kopieren",
+    "copied": "Kopiert",
+    "code-label": "Authenticator-Code",
+    "confirm": "Bestätigen und aktivieren",
+    "confirm-sign-in": "Bestätigen und anmelden",
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "loading": "QR-Code wird erstellt…",
+    "codes-title": "Speichern Sie Ihre Wiederherstellungscodes",
+    "codes-description": "Jeder Code funktioniert einmal, wenn Sie den Zugriff auf Ihre Authenticator-App verlieren. Sie werden nicht erneut angezeigt.",
+    "copy-codes": "Codes kopieren",
+    "download-codes": "Herunterladen",
+    "done": "Ich habe meine Codes gespeichert",
+    "error-secret": "Einrichtung konnte nicht gestartet werden. Bitte gehen Sie zurück und versuchen Sie es erneut.",
+    "error-generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  },
+  "management": {
+    "status-enabled": "Aktiviert seit {{date}}",
+    "status-disabled": "Deaktiviert",
+    "recovery-remaining": "{{count}} Wiederherstellungscodes übrig",
+    "description": "Fügen Sie Ihrem Konto einen zweiten Faktor hinzu. Nach der Aktivierung erfordert die Anmeldung zusätzlich zum Passwort einen Code aus Ihrer Authenticator-App.",
+    "enable": "Zwei-Faktor-Authentifizierung aktivieren",
+    "disable": "Deaktivieren",
+    "regenerate": "Wiederherstellungscodes neu generieren",
+    "disable-title": "Zwei-Faktor-Authentifizierung deaktivieren",
+    "disable-description": "Geben Sie einen gültigen Authenticator- oder Wiederherstellungscode ein, um die 2FA zu deaktivieren. Ihr Konto ist dann nur noch durch das Passwort geschützt.",
+    "regenerate-title": "Wiederherstellungscodes neu generieren",
+    "regenerate-description": "Geben Sie einen gültigen Authenticator- oder Wiederherstellungscode ein. Ihre bestehenden Wiederherstellungscodes funktionieren nicht mehr.",
+    "code-label": "Authenticator- oder Wiederherstellungscode",
+    "codes-description": "Dies sind Ihre neuen Wiederherstellungscodes. Jeder funktioniert einmal; sie werden nicht erneut angezeigt.",
+    "codes-done": "Fertig"
+  },
+  "messages": {
+    "error-generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "disabled-success": "Zwei-Faktor-Authentifizierung deaktiviert"
+  }
+}

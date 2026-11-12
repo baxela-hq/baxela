@@ -24,6 +24,7 @@ import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedMediaIndexRouteImport } from './routes/_authenticated/media/index'
 import { Route as AuthenticatedFailedJobsIndexRouteImport } from './routes/_authenticated/failed-jobs/index'
 import { Route as AuthenticatedSettingsStoreRouteImport } from './routes/_authenticated/settings/store'
+import { Route as AuthenticatedSettingsSecurityRouteImport } from './routes/_authenticated/settings/security'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedCatalogAttributesRouteRouteImport } from './routes/_authenticated/catalog/attributes/route'
 import { Route as AuthenticatedUserUsersIndexRouteImport } from './routes/_authenticated/user/users/index'
@@ -155,6 +156,12 @@ const AuthenticatedSettingsStoreRoute =
   AuthenticatedSettingsStoreRouteImport.update({
     id: '/store',
     path: '/store',
+    getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
+const AuthenticatedSettingsSecurityRoute =
+  AuthenticatedSettingsSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
 const AuthenticatedErrorsErrorRoute =
@@ -481,6 +488,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/catalog/attributes': typeof AuthenticatedCatalogAttributesRouteRouteWithChildren
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/failed-jobs': typeof AuthenticatedFailedJobsIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
@@ -547,6 +555,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/failed-jobs': typeof AuthenticatedFailedJobsIndexRoute
   '/media': typeof AuthenticatedMediaIndexRoute
@@ -617,6 +626,7 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/catalog/attributes': typeof AuthenticatedCatalogAttributesRouteRouteWithChildren
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/_authenticated/settings/security': typeof AuthenticatedSettingsSecurityRoute
   '/_authenticated/settings/store': typeof AuthenticatedSettingsStoreRoute
   '/_authenticated/failed-jobs/': typeof AuthenticatedFailedJobsIndexRoute
   '/_authenticated/media/': typeof AuthenticatedMediaIndexRoute
@@ -687,6 +697,7 @@ export interface FileRouteTypes {
     | '/'
     | '/catalog/attributes'
     | '/errors/$error'
+    | '/settings/security'
     | '/settings/store'
     | '/failed-jobs'
     | '/media'
@@ -753,6 +764,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/errors/$error'
+    | '/settings/security'
     | '/settings/store'
     | '/failed-jobs'
     | '/media'
@@ -822,6 +834,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/catalog/attributes'
     | '/_authenticated/errors/$error'
+    | '/_authenticated/settings/security'
     | '/_authenticated/settings/store'
     | '/_authenticated/failed-jobs/'
     | '/_authenticated/media/'
@@ -995,6 +1008,13 @@ declare module '@tanstack/react-router' {
       path: '/store'
       fullPath: '/settings/store'
       preLoaderRoute: typeof AuthenticatedSettingsStoreRouteImport
+      parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/settings/security': {
+      id: '/_authenticated/settings/security'
+      path: '/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof AuthenticatedSettingsSecurityRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
     '/_authenticated/errors/$error': {
@@ -1365,12 +1385,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedSettingsRouteRouteChildren {
+  AuthenticatedSettingsSecurityRoute: typeof AuthenticatedSettingsSecurityRoute
   AuthenticatedSettingsStoreRoute: typeof AuthenticatedSettingsStoreRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
 }
 
 const AuthenticatedSettingsRouteRouteChildren: AuthenticatedSettingsRouteRouteChildren =
   {
+    AuthenticatedSettingsSecurityRoute: AuthenticatedSettingsSecurityRoute,
     AuthenticatedSettingsStoreRoute: AuthenticatedSettingsStoreRoute,
     AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   }

@@ -7,14 +7,17 @@ import { StorageUtility, StorageKeys } from '@/shared/lib/storage-utility'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
 import { fetchAdminAccount } from '../api/account.api'
-import { signIn } from '../api/sign-in.api'
+import { signIn, verifyTwoFactor } from '../api/sign-in.api'
 import { Locales } from '../data/routes'
-import { type SignInRequest } from '../types/sign-in'
+import { type Settings, type SignInRequest } from '../types/sign-in'
+import { useState } from 'react'
 
 /**
- * Full sign-in flow: API call, staff gate, default language/currency
- * persistence, auth store writes and the post-login redirect. The component
- * only supplies credentials and the redirect target.
+ * Full sign-in flow including the 2FA challenge step (S.1): when the
+ * backend returns two_factor_required, the form switches to an OTP
+ * input; verifyTwoFactor completes the flow with the same post-sign-in
+ * chain (staff gate → language → store → redirect). Forced enrollment
+ * (super-admins) redirects to the enrollment wizard.
  */
 export function useSignIn() {
   const navigate = useNavigate()
@@ -22,74 +25,111 @@ export function useSignIn() {
   const applyUiLanguage = useApplyUiLanguage()
   const { tMessage } = useAppTranslation(Locales.SHARED_COMMON)
 
-  return useMutation({
+  const [challengeToken, setChallengeToken] = useState<string | null>(null)
+  const [enrollmentToken, setEnrollmentToken] = useState<string | null>(null)
+
+  /**
+   * The shared post-authentication chain (staff gate → language →
+   * store → redirect). Public so the forced-enrollment wizard can
+   * hand over its sign-in payload once its recovery codes are
+   * acknowledged.
+   */
+  const completeSignIn = async (
+    response: { token: string; settings: Settings },
+    redirectTo?: string,
+  ) => {
+    setAccessToken(response.token)
+
+    let account
+    try {
+      account = await fetchAdminAccount()
+    } catch {
+      reset()
+      toast.error(tMessage('error.forbidden'))
+      return
+    }
+
+    try {
+      toast.success(tMessage('success.sign-in'))
+
+      StorageUtility.setItem(StorageKeys.DEFAULT_LANGUAGE, response.settings.language)
+      StorageUtility.setItem(StorageKeys.DEFAULT_CURRENCY, response.settings.currency)
+      applyUiLanguage(response.settings.language)
+
+      setUser({
+        id: account.id,
+        accountNo: 'ACC001',
+        email: account.email,
+        role: account.roles.map((role) => role.name),
+        permissions: account.permissions ?? [],
+        name: ' ',
+        exp: Date.now() + 30 * 24 * 60 * 60 * 1000,
+      })
+
+      const targetPath = redirectTo || '/'
+      await navigate({ to: targetPath, replace: true })
+    } catch (err) {
+      reset()
+      toast.error(
+        err instanceof Error
+          ? tMessage('error.sign-in-failed', { message: err.message })
+          : tMessage('error.general'),
+      )
+    }
+  }
+
+  const signInMutation = useMutation({
     mutationFn: ({
       redirectTo: _redirectTo,
       ...credentials
     }: SignInRequest & { redirectTo?: string }) => signIn(credentials),
     onSuccess: async (response, { redirectTo }) => {
-      // the token must be stored first so the account call is authenticated
-      setAccessToken(response.token)
-
-      // staff gate: an admin-scope permission check on the server, not a
-      // payload flag — non-staff users get a 403 here
-      let account
-      try {
-        account = await fetchAdminAccount()
-      } catch {
-        reset()
-        toast.error(tMessage('error.forbidden'))
+      if (response.two_factor_required && response.challenge_token) {
+        setChallengeToken(response.challenge_token)
         return
       }
 
-      try {
-        toast.success(tMessage('success.sign-in'))
-
-        StorageUtility.setItem(
-          StorageKeys.DEFAULT_LANGUAGE,
-          response.settings.language
-        )
-        StorageUtility.setItem(
-          StorageKeys.DEFAULT_CURRENCY,
-          response.settings.currency
-        )
-
-        // the admin UI (translations + direction) follows the store default
-        // language reported at sign-in
-        applyUiLanguage(response.settings.language)
-
-        // Set user and access token
-        setUser({
-          id: account.id,
-          accountNo: 'ACC001',
-          email: account.email,
-          role: account.roles.map((role) => role.name),
-          permissions: account.permissions ?? [],
-          name: ' ', //TODO: set name
-          exp: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30*24 hours from now
-        })
-        // Redirect to the stored location or default to dashboard
-        const targetPath = redirectTo || '/'
-        await navigate({ to: targetPath, replace: true })
-      } catch (err) {
-        // A crash anywhere in the post-sign-in chain used to die silently
-        // (the button just did nothing) — reset and tell the user instead.
-        reset()
-        toast.error(
-          err instanceof Error
-            ? tMessage('error.sign-in-failed', { message: err.message })
-            : tMessage('error.general')
-        )
+      if (response.two_factor_enrollment_required && response.challenge_token) {
+        setEnrollmentToken(response.challenge_token)
+        return
       }
+
+      await completeSignIn(response, redirectTo)
     },
     onError: (err: unknown) => {
       if (err instanceof ApiError) {
         toast.error(err.message)
         return
       }
-      // Non-API failures (e.g. a crashed client-side step such as device-id
-      // generation) must not die in silence — they look like a dead button.
       toast.error(tMessage('error.general'))
     },
   })
+
+  const verifyMutation = useMutation({
+    mutationFn: ({ code }: { code: string; redirectTo?: string }) =>
+      verifyTwoFactor(challengeToken!, code),
+    onSuccess: async (response, { redirectTo }) => {
+      setChallengeToken(null)
+      await completeSignIn(response, redirectTo)
+    },
+    onError: (err: unknown) => {
+      if (err instanceof ApiError) {
+        toast.error(err.message)
+        return
+      }
+      toast.error(tMessage('error.general'))
+    },
+  })
+
+  return {
+    signIn: signInMutation,
+    verify: verifyMutation,
+    completeSignIn,
+    challengeToken,
+    enrollmentToken,
+    clearChallenge: () => {
+      setChallengeToken(null)
+      setEnrollmentToken(null)
+    },
+  }
 }
