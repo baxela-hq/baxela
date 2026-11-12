@@ -149,10 +149,34 @@ What's absent — the gaps this roadmap addresses:
 
 ### Work items
 
-- [ ] API: a `SetSecurityHeaders` middleware on the `api` group.
-- [ ] Admin nginx: add headers to the production conf.
-- [ ] Storefront: `next.config.ts` headers block.
-- [ ] Tests: headers present on API responses; HSTS only over HTTPS.
+- [x] API: a `SetSecurityHeaders` middleware on the `api` group (CSP +
+      conditional HSTS), plus the exception-render hook so unmatched
+      `/api/*` JSON 404 envelopes carry the headers too.
+- [x] Admin nginx: headers were already present (server-level baseline,
+      repeated in the locations that declare their own `add_header`) —
+      no change needed. The ownership split keeps nginx as the source
+      for static files, nginx error pages, and Reverb responses.
+- [x] Storefront: `next.config.ts` headers block — already shipped.
+- [x] Trust boundary: a config-driven `TrustProxies` middleware
+      (`core.trusted_proxies` → `env('TRUSTED_PROXIES', '')`, default
+      trusts nobody) honoring only `X-Forwarded-For` + `X-Forwarded-Proto`,
+      and a dedicated compose `proxy` network (subnet 172.28.0.0/29)
+      carrying only the nginx↔fpm path — so a container peer can never
+      feed authoritative forwarding headers to the app. Never set
+      `TRUSTED_PROXIES=*` on the shared compose network.
+- [x] Tests: CSP on success / matched-route 422 / unmatched 404 envelopes;
+      HSTS only when genuinely secure (direct TLS or a trusted proxy's
+      forwarded proto — spoofed and untrusted-peer forwarded headers
+      rejected); `Retry-After` preserved on 429; PDF downloads intact;
+      CSP absent off `/api/*`.
+
+**Deployment prerequisites (2026-11-12):** set
+`TRUSTED_PROXIES=172.28.0.0/29` in the backend env (matches the compose
+`proxy` network subnet); the edge proxy must overwrite (not forward)
+client-supplied `X-Forwarded-Proto`/`X-Forwarded-For`; every subdomain
+must serve HTTPS before the `includeSubDomains` HSTS policy reaches
+browsers; verify HSTS through the real production edge, not just
+feature tests.
 
 ---
 

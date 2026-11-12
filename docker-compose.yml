@@ -50,8 +50,9 @@ services:
                 condition: service_healthy
             redis:
                 condition: service_healthy
-
-    # Mirrors the production stack's worker so queued notifications (and
+        networks:
+            - default
+            - proxy
     # anything else on the database queue) process locally too.
     queue:
         logging: *default-logging
@@ -107,6 +108,11 @@ services:
             timeout: 5s
             retries: 20
             start_period: 30s
+        networks:
+            # default: reverb proxying and service resolution. proxy: the
+            # isolated fpm path — see TRUSTED_PROXIES.
+            - default
+            - proxy
 
     admin:
         logging: *default-logging
@@ -240,3 +246,12 @@ services:
 volumes:
     mysql-data:
     redis-data:
+
+# S.3: mirrors the production stack — the ONLY network path to fpm:9000.
+# Set TRUSTED_PROXIES to this subnet in apps/backend/.env.
+networks:
+    proxy:
+        ipam:
+            config:
+                - subnet: 172.28.0.0/29
+                  gateway: 172.28.0.1
