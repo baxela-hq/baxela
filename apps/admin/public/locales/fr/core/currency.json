@@ -25,5 +25,25 @@
         "true": "Par défaut"
       }
     }
+  },
+  "fx": {
+    "title": "Synchronisation automatique des devises",
+    "description": "Actualise automatiquement les taux de change depuis {provider}. Les taux manuels restent modifiables jusqu'à l'activation.",
+    "api-key": "Clé API du fournisseur",
+    "key-configured": "Configurée — laisser vide pour conserver",
+    "key-empty": "Non configurée",
+    "clear-key": "Effacer la clé enregistrée",
+    "key-will-clear": "La clé enregistrée sera effacée à l'enregistrement.",
+    "interval": "Intervalle de synchronisation (heures)",
+    "last-synced": "Dernière synchronisation : {time}",
+    "counts": "{updated} mises à jour, {skipped} ignorées",
+    "last-failed": "La dernière tentative a échoué ({code})",
+    "never-synced": "Jamais synchronisé.",
+    "sync-now": "Synchroniser maintenant",
+    "save-changes": "Enregistrer les modifications",
+    "saved": "Paramètres FX enregistrés",
+    "sync-success": "Taux de change synchronisés",
+    "sync-in-progress": "Une synchronisation est déjà en cours",
+    "sync-skipped": "Synchronisation ignorée"
   }
 }

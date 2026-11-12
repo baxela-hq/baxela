@@ -25,5 +25,25 @@
         "true": "Standard"
       }
     }
+  },
+  "fx": {
+    "title": "Automatischer FX-Kursabgleich",
+    "description": "Aktualisiert Wechselkurse automatisch von {provider}. Manuelle Kurse bleiben bearbeitbar, bis Sie dies aktivieren.",
+    "api-key": "API-Schlüssel des Anbieters",
+    "key-configured": "Konfiguriert — leer lassen zum Behalten",
+    "key-empty": "Nicht konfiguriert",
+    "clear-key": "Gespeicherten Schlüssel löschen",
+    "key-will-clear": "Der gespeicherte Schlüssel wird beim Speichern gelöscht.",
+    "interval": "Sync-Intervall (Stunden)",
+    "last-synced": "Zuletzt synchronisiert: {time}",
+    "counts": "{updated} aktualisiert, {skipped} übersprungen",
+    "last-failed": "Letzter Versuch fehlgeschlagen ({code})",
+    "never-synced": "Noch nie synchronisiert.",
+    "sync-now": "Jetzt synchronisieren",
+    "save-changes": "Änderungen speichern",
+    "saved": "FX-Einstellungen gespeichert",
+    "sync-success": "Wechselkurse synchronisiert",
+    "sync-in-progress": "Es läuft bereits eine Synchronisierung",
+    "sync-skipped": "Synchronisierung übersprungen"
   }
 }

@@ -56,7 +56,9 @@ export type SettingsForm = z.infer<typeof formSchema>
 
 export const SettingRequestSchema = z.object({
   name: z.string(),
-  value: z.string(),
+  // null is only meaningful for fx_api_key (clears the credential) —
+  // every other name keeps required|string server-side.
+  value: z.string().nullable(),
   translations: z.array(settingTranslationSchema).optional(),
 })
 export type SettingRequest = z.infer<typeof SettingRequestSchema>

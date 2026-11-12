@@ -25,5 +25,25 @@
         "true": "Predeterminada"
       }
     }
+  },
+  "fx": {
+    "title": "Sincronización automática de divisas",
+    "description": "Actualiza automáticamente los tipos de cambio desde {provider}. Las tarifas manuales siguen siendo editables hasta que active esto.",
+    "api-key": "Clave API del proveedor",
+    "key-configured": "Configurada — déjela vacía para conservarla",
+    "key-empty": "Sin configurar",
+    "clear-key": "Borrar la clave almacenada",
+    "key-will-clear": "La clave almacenada se borrará al guardar.",
+    "interval": "Intervalo de sincronización (horas)",
+    "last-synced": "Última sincronización: {time}",
+    "counts": "{updated} actualizadas, {skipped} omitidas",
+    "last-failed": "El último intento falló ({code})",
+    "never-synced": "Nunca se ha sincronizado.",
+    "sync-now": "Sincronizar ahora",
+    "save-changes": "Guardar cambios",
+    "saved": "Ajustes de divisas guardados",
+    "sync-success": "Tipos de cambio sincronizados",
+    "sync-in-progress": "Ya hay una sincronización en curso",
+    "sync-skipped": "Sincronización omitida"
   }
 }

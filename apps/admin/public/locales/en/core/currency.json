@@ -25,5 +25,25 @@
         "true": "Default"
       }
     }
+  },
+  "fx": {
+    "title": "FX rate auto-sync",
+    "description": "Automatically refresh exchange rates from {provider}. Manual rates stay editable and win until you enable this.",
+    "api-key": "Provider API key",
+    "key-configured": "Configured — leave blank to keep",
+    "key-empty": "Not configured",
+    "clear-key": "Clear the stored key",
+    "key-will-clear": "The stored key will be cleared when you save.",
+    "interval": "Sync interval (hours)",
+    "last-synced": "Last synced: {time}",
+    "counts": "{updated} updated, {skipped} skipped",
+    "last-failed": "Last attempt failed ({code})",
+    "never-synced": "Never synchronized.",
+    "sync-now": "Sync now",
+    "save-changes": "Save changes",
+    "saved": "FX settings saved",
+    "sync-success": "Exchange rates synced",
+    "sync-in-progress": "A sync is already running",
+    "sync-skipped": "Sync skipped"
   }
 }
