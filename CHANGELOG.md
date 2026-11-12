@@ -10,6 +10,19 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ### Added
 
+- **FX rate auto-sync (launch-readiness Part E)**: opt-in synchronization of
+  display exchange rates from openexchangerates.org (configurable endpoint so
+  other providers drop in). Admin-configurable interval with a synced-now
+  button; manual rates stay authoritative and editable. Financial-data
+  safeguards throughout: exact decimal-string arithmetic (no floats), provider
+  base-currency mismatch fails closed, stale/future snapshots rejected,
+  all-or-nothing rate updates under a shared currency-row lock protocol,
+  per-currency skip on invalid rates, sanitized error codes only — and the API
+  key travels in an Authorization header, is masked in every response, and is
+  encrypted at rest.
+
+### Added
+
 - **Invoices & credit notes with PDF documents (gap-B1)**: every paid
   order now produces a legal invoice — sequentially numbered per type
   per store-timezone year, snapshot-frozen at issue, auto-issued on

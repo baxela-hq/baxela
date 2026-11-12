@@ -1,0 +1,32 @@
+meta {
+  name: Update FX Settings
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/v1/setting/admin/settings
+  body: json
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  [
+    { "name": "fx_auto_sync_enabled", "value": "1", "translations": null },
+    { "name": "fx_sync_interval_hours", "value": "24", "translations": null }
+  ]
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

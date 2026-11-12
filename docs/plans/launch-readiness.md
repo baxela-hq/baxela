@@ -138,10 +138,23 @@ Execute the phase-1 plan sections verbatim (they are still accurate):
 
 **Done when:** Phase 1 exit criteria box is fully ticked except the baseline number.
 
-## Part E — FX rate auto-sync (your feature; upgrades the multi-currency claim)
+## Part E — FX rate auto-sync (your feature; upgrades the multi-currency claim) — DONE 2026-11-13
 
 Goal: admins can opt into automatic `exchange_rate` updates from an external FX API.
 Manual rates remain the default and always remain editable.
+
+> **Implemented 2026-11-13** (rev 4 plan, review-approved 9.7/10). Deviations from
+> the original sketch: rates flow as exact decimal strings (no float ever touches
+> a rate); the provider base is validated and mismatch fails closed (OXR free
+> tier is USD-locked — a non-USD store base needs a paid plan); all rate updates
+> are atomic under a shared currency-row lock protocol; the API key is
+> header-authenticated, masked in responses, encrypted at rest, and omitted-item
+> = keep / explicit null = clear (ConvertEmptyStringsToNull makes '' impossible
+> on the wire); retry cooldown + success interval are separate gates. Claim
+> wording for Part F: "configurable FX integration; update frequency depends on
+> the provider plan" — never "real-time rates". Deployment: `APP_KEY` must be
+> preserved (the stored credential is encrypted with it; after a rotation,
+> re-enter the key in the admin UI).
 
 1. **Provider abstraction (Core, near the currency CRUD):**
    `FxProviderInterface { fetchRates(string $baseCode): array<string, string> }` with a
