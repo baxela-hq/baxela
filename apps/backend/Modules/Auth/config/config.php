@@ -11,6 +11,15 @@ return [
         'otp_verify' => env('AUTH_OTP_VERIFY_RATE_LIMIT', 5),
     ],
 
+    // S.4 account lockout: after `max_attempts` failed sign-in attempts the
+    // account refuses every attempt (even correct passwords) for
+    // `lockout_minutes`. The inactivity-reset window of the failure counter
+    // is this same value (D2i) — no separate key on purpose.
+    'lockout' => [
+        'max_attempts' => env('AUTH_LOCKOUT_MAX_ATTEMPTS', 5),
+        'lockout_minutes' => env('AUTH_LOCKOUT_MINUTES', 15),
+    ],
+
     // Sanctum personal access token lifetimes, in days. `days` applies when
     // remember-me is requested (or the field is omitted); `short_days` when a
     // client explicitly signs in without remembering the device. Tokens are

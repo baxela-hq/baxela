@@ -137,6 +137,11 @@ class CompleteTwoFactorEnrollmentAction
             ]);
             $user->save();
 
+            // Read the sign-in context BEFORE consuming: consume() nulls
+            // the encrypted context on the in-memory model too, and the
+            // token/device registration needs the original device name.
+            $context = $challenge->{TwoFactorChallengeSchema::CONTEXT} ?? [];
+
             $this->challenges->consume($challenge);
 
             // Issue the token INSIDE the transaction (D6) using the
@@ -184,7 +189,11 @@ class CompleteTwoFactorEnrollmentAction
         $user = $result['user'];
         /** @var CompleteAuthenticationAction $completion */
         $completion = $result['completion'];
-        $completion->dispatchEvents($user, is_array($result['context']) ? $result['context'] : []);
+        $completion->dispatchEvents(
+            $user,
+            is_array($result['context']) ? $result['context'] : [],
+            (bool) $result['token_result']['device_is_new'],
+        );
 
         RateLimiter::clear($rateKey);
 

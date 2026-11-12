@@ -2,6 +2,16 @@
 
 return [
     'fa' => [
+        'auth' => [
+            'user' => [
+                'user' => [
+                    'new_device' => [
+                        'subject' => 'ورود به حساب از دستگاهی که قبلاً استفاده نکرده‌اید',
+                        'body' => 'ورودی به حساب شما از دستگاه «:device_name» در :signed_in_at گزارش شد. دستگاه‌ها با نامی که خودِ نرم‌افزار گزارش می‌کند شناسایی می‌شوند. اگر این ورود توسط شما بوده، نیازی به اقدام نیست؛ در غیر این صورت بلافاصله رمز عبور خود را تغییر دهید و نشست‌های فعال خود را بررسی کنید.',
+                    ],
+                ],
+            ],
+        ],
         'content' => [
             'admin' => [
                 'post_comment' => [
@@ -80,18 +90,18 @@ return [
                         'body' => 'فرآیند مرجوعی سفارش :order_code تکمیل شد.',
                     ],
                 ],
-                    'invoice' => [
-                        'ready' => [
-                            'subject' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است',
-                            'body' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است و به این ایمیل پیوست شده است.',
-                        ],
+                'invoice' => [
+                    'ready' => [
+                        'subject' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است',
+                        'body' => 'صورتحساب :invoice_number برای سفارش :order_code آماده است و به این ایمیل پیوست شده است.',
                     ],
-                    'credit_note' => [
-                        'ready' => [
-                            'subject' => 'قبض بازگشتی :credit_note_number برای سفارش :order_code صادر شد',
-                            'body' => 'قبض بازگشتی :credit_note_number برای صورتحساب :invoice_number سفارش :order_code صادر شد.',
-                        ],
+                ],
+                'credit_note' => [
+                    'ready' => [
+                        'subject' => 'قبض بازگشتی :credit_note_number برای سفارش :order_code صادر شد',
+                        'body' => 'قبض بازگشتی :credit_note_number برای صورتحساب :invoice_number سفارش :order_code صادر شد.',
                     ],
+                ],
             ],
         ],
         'payment' => [

@@ -6,6 +6,22 @@ use Modules\Core\Exceptions\BaseException;
 
 class AuthException extends BaseException
 {
+    // Sign-in lockout (S.4)
+    public static function signInAccountLocked(int $seconds, int $minutes): self
+    {
+        return new self(
+            ErrorCodeEnum::AUTH_SIGN_IN_LOCKED->value,
+            429,
+            meta: ['retry_after_seconds' => $seconds, 'retry_after_minutes' => $minutes],
+            messageParams: ['minutes' => $minutes],
+        );
+    }
+
+    public static function signInBusy(): self
+    {
+        return new self(ErrorCodeEnum::AUTH_SIGN_IN_BUSY->value, 503);
+    }
+
     // Two-factor authentication (S.1)
     public static function twoFactorInvalidCode(): self
     {

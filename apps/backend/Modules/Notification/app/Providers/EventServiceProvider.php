@@ -4,6 +4,7 @@ namespace Modules\Notification\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Queue\Events\JobFailed;
+use Modules\Core\Contracts\Events\Auth\NewDeviceSignInEvent;
 use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageCreatedEvent;
 use Modules\Core\Contracts\Events\Content\PostCommentApprovedEvent;
@@ -26,6 +27,7 @@ use Modules\Core\Contracts\Events\Payment\PaymentSucceededEvent;
 use Modules\Core\Contracts\Events\Support\TicketCreatedEvent;
 use Modules\Core\Contracts\Events\Support\TicketMessageCreatedEvent;
 use Modules\Core\Contracts\Events\System\QueueBacklogDetectedEvent;
+use Modules\Notification\Listeners\Auth\NewDeviceSignIn\SendNewDeviceSignInNotificationListener;
 use Modules\Notification\Listeners\Auth\OtpRequested\SendOtpCodeToUserListener;
 use Modules\Notification\Listeners\Contact\ContactMessageCreated\NotifyAdminContactMessageCreatedListener;
 use Modules\Notification\Listeners\Content\PostCommentApproved\SendPostCommentApprovedToUserListener;
@@ -69,6 +71,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         OtpRequestedEvent::class => [
             SendOtpCodeToUserListener::class,
+        ],
+        // S.4 new-device sign-in alert (locked code, database + email).
+        NewDeviceSignInEvent::class => [
+            SendNewDeviceSignInNotificationListener::class,
         ],
         ContactMessageCreatedEvent::class => [
             NotifyAdminContactMessageCreatedListener::class,

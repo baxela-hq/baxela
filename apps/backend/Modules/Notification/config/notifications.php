@@ -31,6 +31,12 @@ return [
                 'otp_code' => [
                     'user' => ['email'],
                 ],
+                // S.4 new-device sign-in alert (locked code — never
+                // disableable); the database row lands in the recipient's
+                // bell inbox.
+                'new_device' => [
+                    'user' => ['database', 'email'],
+                ],
             ],
         ],
         'contact' => [

@@ -10,6 +10,9 @@ enum NotificationCodeEnum: string
     case AUTH_USER_DEACTIVATED = 'auth.user.deactivated';
     case AUTH_USER_OTP_CODE = 'auth.user.otp_code';
 
+    // S.4 new-device sign-in alert
+    case AUTH_USER_NEW_DEVICE = 'auth.user.new_device';
+
     // CART
     case CART_CHECKOUT_STARTED = 'cart.checkout.started';
 

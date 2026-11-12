@@ -14,6 +14,9 @@ final class LockedNotificationCodes
     public const array CODES = [
         NotificationCodeEnum::AUTH_USER_OTP_CODE,
         NotificationCodeEnum::AUTH_USER_EMAIL_VERIFIED,
+        // S.4: the new-device alert is the recipient's "was this you?"
+        // signal — it must never be disableable (F8).
+        NotificationCodeEnum::AUTH_USER_NEW_DEVICE,
     ];
 
     public static function contains(NotificationCodeEnum $code): bool

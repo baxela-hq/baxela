@@ -2,6 +2,16 @@
 
 return [
     'en' => [
+        'auth' => [
+            'user' => [
+                'user' => [
+                    'new_device' => [
+                        'subject' => "New sign-in from a device you haven't used before",
+                        'body' => 'A sign-in to your account was reported from device ":device_name" at :signed_in_at. Devices are identified by the name a client reports for itself. If this was you, no action is needed; if you do not recognize it, change your password immediately and review your active sessions.',
+                    ],
+                ],
+            ],
+        ],
         'content' => [
             'admin' => [
                 'post_comment' => [
@@ -80,18 +90,18 @@ return [
                         'body' => 'Your return for :order_code is complete.',
                     ],
                 ],
-                    'invoice' => [
-                        'ready' => [
-                            'subject' => 'Invoice :invoice_number for order :order_code is ready',
-                            'body' => 'Your invoice :invoice_number for order :order_code is ready and attached to this email.',
-                        ],
+                'invoice' => [
+                    'ready' => [
+                        'subject' => 'Invoice :invoice_number for order :order_code is ready',
+                        'body' => 'Your invoice :invoice_number for order :order_code is ready and attached to this email.',
                     ],
-                    'credit_note' => [
-                        'ready' => [
-                            'subject' => 'Credit note :credit_note_number issued for order :order_code',
-                            'body' => 'A credit note :credit_note_number was issued against invoice :invoice_number for order :order_code.',
-                        ],
+                ],
+                'credit_note' => [
+                    'ready' => [
+                        'subject' => 'Credit note :credit_note_number issued for order :order_code',
+                        'body' => 'A credit note :credit_note_number was issued against invoice :invoice_number for order :order_code.',
                     ],
+                ],
             ],
         ],
         'payment' => [

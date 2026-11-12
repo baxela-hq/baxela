@@ -18,6 +18,8 @@ return [
         'too_many_requests' => 'Please wait a moment before requesting a new OTP.',
         'invalid' => 'The OTP you entered is invalid or has expired.',
     ],
+    'sign_in.locked' => 'Too many failed sign-in attempts. Your account is locked for :minutes minutes.',
+    'sign_in.busy' => 'Sign-in is temporarily unavailable. Please try again shortly.',
     'two_factor.invalid_code' => 'The verification code is invalid or has expired',
     'two_factor.challenge_invalid' => 'The challenge is invalid or expired',
     'two_factor.too_many_attempts' => 'Too many verification attempts. Try again later.',

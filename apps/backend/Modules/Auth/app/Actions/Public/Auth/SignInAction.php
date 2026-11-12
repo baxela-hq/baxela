@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
+use Modules\Auth\Exceptions\AuthException;
 use Modules\Auth\Exceptions\InvalidCredentialsException;
 use Modules\Auth\Http\Requests\Public\Auth\SignInRequest;
 use Modules\Auth\Models\User;
@@ -14,6 +15,8 @@ use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
+use Modules\Auth\Support\SignInLockout\FailureOutcome;
+use Modules\Auth\Support\SignInLockout\SignInLockoutService;
 use Modules\Auth\Support\TwoFactor\TwoFactorChallengeService;
 use Random\RandomException;
 
@@ -21,6 +24,7 @@ class SignInAction extends AbstractAction
 {
     public function __construct(
         protected TwoFactorChallengeService $challenges,
+        protected SignInLockoutService $lockout,
     ) {}
 
     /**
@@ -28,6 +32,7 @@ class SignInAction extends AbstractAction
      * @throws AccountNotActivatedException
      * @throws AccountAlreadyActivatedException
      * @throws InvalidCredentialsException
+     * @throws AuthException
      */
     public function handle(SignInRequest $request): object
     {
@@ -37,9 +42,34 @@ class SignInAction extends AbstractAction
             UserSchema::PASSWORD => $request->{UserSchema::PASSWORD},
         ];
 
-        if (! $auth->attempt($credentials)) {
-            throw new InvalidCredentialsException;
-        }
+        $emailHash = SignInLockoutService::emailKey($request->{OtpCodeSchema::EMAIL});
+
+        // D1: the per-email gate serializes the attempt phase (pre-check +
+        // credential verification + counter writes). The lockout invariant
+        // itself lives in the lockout row (SignInLockoutService) — the gate
+        // is throughput control, never the security boundary.
+        $this->lockout->gate($emailHash, function () use ($emailHash, $auth, $credentials): void {
+            $this->lockout->assertNotLocked($emailHash);
+
+            if (! $auth->attempt($credentials)) {
+                if ($this->lockout->recordFailure($emailHash) === FailureOutcome::LockedWhileInFlight) {
+                    // D2e: the lock was established while this request was
+                    // in flight — respond with the lockout, not the
+                    // generic credentials error.
+                    $this->lockout->throwLocked($emailHash);
+                }
+
+                throw new InvalidCredentialsException;
+            }
+
+            // D2f/D2h: the password verified — wipe the failure counter
+            // immediately (the 2FA phase never re-accumulates it). A lock
+            // established concurrently stops the flow here: a valid
+            // password is not permission to continue.
+            if ($this->lockout->clearAttempts($emailHash) === FailureOutcome::LockedWhileInFlight) {
+                $this->lockout->throwLocked($emailHash);
+            }
+        });
 
         $this->errorIfUserNotVerified(OtpCodeTypeEnum::EMAIL, $request->{OtpCodeSchema::EMAIL});
         $this->errorIfUserNotActivated(OtpCodeTypeEnum::EMAIL, $request->{OtpCodeSchema::EMAIL});
@@ -81,7 +111,7 @@ class SignInAction extends AbstractAction
 
         $completion = app(CompleteAuthenticationAction::class);
         $result = $completion->issueToken($user, $context);
-        $completion->dispatchEvents($user, $context);
+        $completion->dispatchEvents($user, $context, (bool) $result['device_is_new']);
 
         return (object) $result;
     }

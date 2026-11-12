@@ -271,27 +271,15 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
 
 		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
 			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-
-		-
-			message: '#^Offset ''device_name'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
-
-		-
-			message: '#^Offset ''remember'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
+			count: 3
 			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
 
 		-
@@ -595,6 +583,18 @@ parameters:
 			path: Modules/Auth/app/Models/OtpCode.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_until\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/SignInLockout.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/SignInLockout.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
 			identifier: property.notFound
 			count: 1
@@ -659,6 +659,18 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Auth/app/Models/User.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\UserDevice\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/UserDevice.php
+
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/UserDevice.php
 
 		-
 			message: '#^Method Modules\\Auth\\Providers\\AuthServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
@@ -777,7 +789,7 @@ parameters:
 		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 6
+			count: 8
 			path: Modules/Auth/config/config.php
 
 		-
@@ -1147,6 +1159,84 @@ parameters:
 			path: Modules/Auth/tests/Feature/HelperTrait.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\UserDevice\:\:\$first_seen_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\UserDevice\:\:\$last_seen_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$audience\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Function ndSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
+
+		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -1181,6 +1271,90 @@ parameters:
 			identifier: method.notFound
 			count: 3
 			path: Modules/Auth/tests/Feature/Public/Auth/RequestPasswordResetTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$failed_attempts\.$#'
+			identifier: property.notFound
+			count: 14
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$last_failed_at\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_at\.$#'
+			identifier: property.notFound
+			count: 5
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_until\.$#'
+			identifier: property.notFound
+			count: 10
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 19
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:markTestSkipped\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 13
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 13
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Function s4FailedSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 8
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'

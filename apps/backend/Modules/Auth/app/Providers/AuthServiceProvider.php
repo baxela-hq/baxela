@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Modules\Auth\Console\Commands\PruneSignInLockoutsCommand;
 use Modules\Auth\Console\Commands\SyncPermissionsCommand;
 use Modules\Auth\Gateways\AccessGateway;
 use Modules\Auth\Models\Role;
@@ -86,6 +87,7 @@ class AuthServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
+            PruneSignInLockoutsCommand::class,
             SyncPermissionsCommand::class,
         ]);
     }
@@ -100,6 +102,9 @@ class AuthServiceProvider extends ServiceProvider
             // Purge Sanctum tokens that expired more than 48 hours ago; the
             // grace window keeps recently expired sessions inspectable.
             $schedule->command('sanctum:prune-expired --hours=48')->daily();
+
+            // S.4: purge inert lockout rows (lock expired + counter stale).
+            $schedule->command('auth:prune-sign-in-lockouts')->daily();
         });
     }
 
