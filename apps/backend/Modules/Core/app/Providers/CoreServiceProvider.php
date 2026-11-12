@@ -14,6 +14,7 @@ use Modules\Core\Console\Commands\BaxelaRemoveCommand;
 use Modules\Core\Console\Commands\BaxelaUpdateCommand;
 use Modules\Core\Console\Commands\ErdGenerateCommand;
 use Modules\Core\Console\Commands\QueueCheckBacklogCommand;
+use Modules\Core\Console\Commands\SyncExchangeRatesCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Gateways\CoreGateway;
@@ -89,6 +90,7 @@ class CoreServiceProvider extends ServiceProvider
             BaxelaUpdateCommand::class,
             ErdGenerateCommand::class,
             QueueCheckBacklogCommand::class,
+            SyncExchangeRatesCommand::class,
         ]);
     }
 
@@ -108,6 +110,13 @@ class CoreServiceProvider extends ServiceProvider
             // permanent deletion, and what keeps exception search cheap.
             $retentionHours = max(1, (int) config('core.queue.failed_jobs.retention_days', 30)) * 24;
             $schedule->command('queue:prune-failed --hours='.$retentionHours)->daily();
+
+            // FX rate auto-sync (Part E): hourly tick; the engine applies
+            // the enabled/retry-cooldown/interval gates itself, so the
+            // admin-configured interval is real (review F19). Without-
+            // Overlapping guards the scheduler path; the engine's
+            // distributed lock additionally serializes manual syncs.
+            $schedule->command('currencies:sync-rates')->hourly()->withoutOverlapping();
         });
     }
 

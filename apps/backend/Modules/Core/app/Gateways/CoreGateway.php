@@ -3,6 +3,7 @@
 namespace Modules\Core\Gateways;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\DTOs\CurrencyDto;
 use Modules\Core\Contracts\Gateways\Core\DTOs\LanguageDto;
@@ -50,8 +51,20 @@ class CoreGateway implements CoreGatewayInterface
 
     public function markCurrencyDefault(int $currencyId): void
     {
-        Currency::query()->update([CurrencySchema::IS_DEFAULT => false]);
-        Currency::query()->whereKey($currencyId)->update([CurrencySchema::IS_DEFAULT => true]);
+        DB::transaction(function () use ($currencyId): void {
+            // Shared currency lock protocol (F18): every writer of
+            // is_default / exchange_rate locks ALL currency rows in
+            // ascending id order first — one total order makes ABBA
+            // deadlocks with the FX sync impossible, and the FX sync's
+            // base revalidation serializes against this switch.
+            Currency::query()
+                ->orderBy(CurrencySchema::ID)
+                ->lockForUpdate()
+                ->get();
+
+            Currency::query()->update([CurrencySchema::IS_DEFAULT => false]);
+            Currency::query()->whereKey($currencyId)->update([CurrencySchema::IS_DEFAULT => true]);
+        });
     }
 
     public function getLanguageIdByCode(string $code): ?int

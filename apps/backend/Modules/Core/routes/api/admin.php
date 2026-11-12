@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Core\Http\Controllers\Admin\Country\ListCountryController;
 use Modules\Core\Http\Controllers\Admin\Currency\CreateCurrencyController;
 use Modules\Core\Http\Controllers\Admin\Currency\ListCurrencyController;
+use Modules\Core\Http\Controllers\Admin\Currency\SyncCurrencyRatesController;
 use Modules\Core\Http\Controllers\Admin\Currency\UpdateCurrencyController;
 use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
@@ -26,6 +27,9 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/currencies', ListCurrencyController::class)->name('currencies.list');
     Route::post('/currencies', CreateCurrencyController::class)->name('currencies.create');
     Route::patch('/currencies/{id}', UpdateCurrencyController::class)->name('currencies.update');
+    // FX auto-sync (Part E): the "Sync now" path — permission derives
+    // from the route name (core.admin.currencies.sync).
+    Route::post('/currencies/sync-rates', SyncCurrencyRatesController::class)->name('currencies.sync');
     Route::get('/countries', ListCountryController::class)->name('countries.list');
 
     // The module's own data-transfer endpoints (reference data export/import).
