@@ -252,6 +252,111 @@ it('forced enrollment is off when the config says so', function () {
         ->and($response->json('data.two_factor_enrollment_required'))->toBeNull();
 });
 
+// --- Forced-enrollment completion (public challenge-token endpoints) ---
+
+function forcedEnrollmentChallenge(): array
+{
+    config(['auth.two_factor.force_super_admin' => true]);
+
+    $user = twoFactorUser();
+    $user->assignRole(test()->superAdminRole());
+
+    $signIn = test()->postJson(test()->baseUrl('/public/auth/signin'), [
+        UserSchema::EMAIL => $user->{UserSchema::EMAIL},
+        UserSchema::PASSWORD => '12345678',
+    ])->assertOk();
+
+    return [$user, $signIn->json('data.challenge_token')];
+}
+
+it('enrollment secret endpoint returns a secret and QR for the challenge holder', function () {
+    [$user, $challengeToken] = forcedEnrollmentChallenge();
+
+    $response = $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/secret'), [
+        'challenge_token' => $challengeToken,
+    ])->assertOk();
+
+    expect($response->json('data.secret'))->not->toBeNull()
+        ->and($response->json('data.qr_code_uri'))->toStartWith('data:image/svg+xml')
+        ->and($response->headers->get('Cache-Control'))->toContain('no-store')
+        // The secret is stored unconfirmed
+        ->and($user->refresh()->{UserSchema::TWO_FACTOR_SECRET})->not->toBeNull()
+        ->and($user->{UserSchema::TWO_FACTOR_CONFIRMED_AT})->toBeNull();
+});
+
+it('confirms enrollment with a TOTP code and issues a token + recovery codes', function () {
+    [$user, $challengeToken] = forcedEnrollmentChallenge();
+    $g2fa = app(Google2FA::class);
+
+    $secretResponse = $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/secret'), [
+        'challenge_token' => $challengeToken,
+    ])->assertOk();
+
+    $response = $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/confirm'), [
+        'challenge_token' => $challengeToken,
+        'code' => $g2fa->getCurrentOtp($secretResponse->json('data.secret')),
+    ])->assertOk();
+
+    expect($response->json('data.token'))->not->toBeNull()
+        // Settings shape is present (values depend on Core seeding)
+        ->and($response->json('data.settings'))->toBeArray()
+        ->and(array_key_exists('language', $response->json('data.settings')))->toBeTrue()
+        ->and(count($response->json('data.recovery_codes')))->toBe(8)
+        ->and($response->headers->get('Cache-Control'))->toContain('no-store');
+
+    // Enrollment persisted
+    $user = $user->refresh();
+    expect($user->{UserSchema::TWO_FACTOR_CONFIRMED_AT})->not->toBeNull()
+        ->and(count($user->{UserSchema::TWO_FACTOR_RECOVERY_CODES}))->toBe(8);
+
+    // Challenge consumed
+    $hash = hash('sha256', $challengeToken);
+    expect(TwoFactorChallenge::find($hash)->isConsumed())->toBeTrue();
+});
+
+it('rejects enrollment confirmation with a wrong code but keeps the challenge alive', function () {
+    [, $challengeToken] = forcedEnrollmentChallenge();
+
+    $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/secret'), [
+        'challenge_token' => $challengeToken,
+    ])->assertOk();
+
+    $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/confirm'), [
+        'challenge_token' => $challengeToken,
+        'code' => '000000',
+    ])->assertStatus(400);
+
+    $hash = hash('sha256', $challengeToken);
+    $challenge = TwoFactorChallenge::find($hash);
+    expect($challenge->{TwoFactorChallengeSchema::FAILED_ATTEMPTS})->toBe(1)
+        ->and($challenge->isConsumed())->toBeFalse();
+});
+
+it('rejects enrollment endpoints with an invalid challenge token', function () {
+    $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/secret'), [
+        'challenge_token' => str_repeat('b', 64),
+    ])->assertStatus(400);
+
+    $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/confirm'), [
+        'challenge_token' => str_repeat('b', 64),
+        'code' => '123456',
+    ])->assertStatus(400);
+});
+
+it('a sign-in challenge token cannot be used on the enrollment endpoints', function () {
+    [$user, $secret, , $g2fa] = enrolledUser();
+
+    $signIn = $this->postJson($this->baseUrl('/public/auth/signin'), [
+        UserSchema::EMAIL => $user->{UserSchema::EMAIL},
+        UserSchema::PASSWORD => '12345678',
+    ])->assertOk();
+
+    // A SIGN_IN-type challenge (D9 type isolation)
+    $this->postJson($this->baseUrl('/public/auth/2fa/enrollment/secret'), [
+        'challenge_token' => $signIn->json('data.challenge_token'),
+    ])->assertStatus(400);
+});
+
 // --- Self-service management endpoints ---
 
 it('enables 2FA and returns a QR code with no-store', function () {

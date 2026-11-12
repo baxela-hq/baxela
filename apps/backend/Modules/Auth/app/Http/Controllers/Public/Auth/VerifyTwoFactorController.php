@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Auth\Actions\Public\Auth\VerifyTwoFactorAction;
+use Modules\Auth\Transformers\Public\Auth\SignInResource;
 
 class VerifyTwoFactorController extends Controller
 {
@@ -23,11 +24,9 @@ class VerifyTwoFactorController extends Controller
             (string) $request->input('code'),
         );
 
-        return response()->json([
-            'data' => [
-                'user' => $result->user,
-                'token' => $result->token,
-            ],
-        ]);
+        // Same shape as a direct sign-in (token + user + settings) so
+        // the client completes both flows identically.
+        return SignInResource::make($result)
+            ->response();
     }
 }
