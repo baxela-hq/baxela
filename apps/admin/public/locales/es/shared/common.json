@@ -34,6 +34,8 @@
       "invalid_name": "El nombre contiene caracteres que no están permitidos.",
       "forbidden": "No tiene permiso para ver esta página.",
       "sign-in-failed": "No se pudo completar el inicio de sesión: {{message}}",
+      "account-locked": "Demasiados intentos de inicio de sesión fallidos. Su cuenta está bloqueada durante {{minutes}} minutos.",
+      "account-locked-generic": "Demasiados intentos de inicio de sesión fallidos. Inténtelo de nuevo más tarde.",
       "record": {
         "not_found": "No se encontró el registro solicitado.",
         "already_exists": "Ya existe un registro con este identificador."

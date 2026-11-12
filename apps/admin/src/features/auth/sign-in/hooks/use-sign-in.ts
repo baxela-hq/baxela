@@ -98,6 +98,20 @@ export function useSignIn() {
     },
     onError: (err: unknown) => {
       if (err instanceof ApiError) {
+        // S.4: account lockout gets a friendly, localized message. The
+        // meta is typed loosely on ApiError — read defensively and fall
+        // back to a message without the duration if it is absent/invalid.
+        if (err.code === 'auth.sign_in.locked') {
+          const minutes = Number(
+            (err.meta as { retry_after_minutes?: unknown } | undefined)?.retry_after_minutes,
+          )
+          toast.error(
+            Number.isFinite(minutes) && minutes > 0
+              ? tMessage('error.account-locked', { minutes: String(minutes) })
+              : tMessage('error.account-locked-generic'),
+          )
+          return
+        }
         toast.error(err.message)
         return
       }

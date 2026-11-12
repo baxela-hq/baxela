@@ -34,6 +34,8 @@
       "invalid_name": "Le nom contient des caractères non autorisés.",
       "forbidden": "Vous n'êtes pas autorisé à voir cette page.",
       "sign-in-failed": "La connexion n'a pas pu être effectuée : {{message}}",
+      "account-locked": "Trop de tentatives de connexion échouées. Votre compte est verrouillé pendant {{minutes}} minutes.",
+      "account-locked-generic": "Trop de tentatives de connexion échouées. Veuillez réessayer plus tard.",
       "record": {
         "not_found": "L'enregistrement demandé est introuvable.",
         "already_exists": "Un enregistrement avec cet identifiant existe déjà."

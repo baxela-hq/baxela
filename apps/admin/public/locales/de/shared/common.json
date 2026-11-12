@@ -34,6 +34,8 @@
       "invalid_name": "Der Name enthält nicht erlaubte Zeichen.",
       "forbidden": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",
       "sign-in-failed": "Die Anmeldung konnte nicht abgeschlossen werden: {{message}}",
+      "account-locked": "Zu viele fehlgeschlagene Anmeldeversuche. Ihr Konto ist für {{minutes}} Minuten gesperrt.",
+      "account-locked-generic": "Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuchen Sie es später erneut.",
       "record": {
         "not_found": "Der angeforderte Datensatz wurde nicht gefunden.",
         "already_exists": "Ein Datensatz mit dieser Kennung existiert bereits."

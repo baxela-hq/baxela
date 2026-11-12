@@ -34,6 +34,8 @@
       "invalid_name": "The name contains characters that are not allowed.",
       "forbidden": "You're not allowed to see this page.",
       "sign-in-failed": "Sign-in could not be completed: {{message}}",
+      "account-locked": "Too many failed sign-in attempts. Your account is locked for {{minutes}} minutes.",
+      "account-locked-generic": "Too many failed sign-in attempts. Please try again later.",
       "record": {
         "not_found": "The requested record was not found.",
         "already_exists": "A record with this identifier already exists."
