@@ -52,7 +52,7 @@ What's absent — the gaps this roadmap addresses:
 
 1. **TOTP (RFC 6238), not SMS.** Time-based one-time passwords via
    `pragmarx/google2fa` (or equivalent pure-PHP library — no external
-   service, shared-hosting safe). QR code enrollment rendered as a data
+   service). QR code enrollment rendered as a data
    URI (no CDN dependency).
 2. **Opt-in per user, enforced for admins above a configurable role.**
    Default: super-admins must enroll on next sign-in. Regular admins:
@@ -237,7 +237,7 @@ as a locked (non-disableable) notification code.
 2. **Every token is revocable.** No credential, human or machine, is
    irrevocable by design. The admin surface exposes every active session.
 3. **Headers are a deployment default, not a per-site choice.** Every
-   deploy target (prod compose, shared hosting, local dev) ships the
+   deploy target (prod compose, local dev) ships the
    same header floor.
 4. **Security slices get adversarial review.** Each phase's plan doc gets
    one external review specifically looking for bypass paths — not just

@@ -64,7 +64,7 @@ template leftovers, phpstan baseline < 500, launch assets ready, repo public, de
 - Bug fixes, docs, performance, i18n completeness — no new surfaces.
 - A breaking change in beta needs a written migration note and a very good reason;
   if it can wait for `0.2.0`, it waits.
-- Docs completeness sprint: install guides (Docker / prod compose / shared hosting),
+- Docs completeness sprint: install guides (Docker / prod compose),
   Scramble-published API docs linked everywhere, FAQ.
 
 **Exit gate (beta → rc):**

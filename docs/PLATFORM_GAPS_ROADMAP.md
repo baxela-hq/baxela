@@ -130,8 +130,8 @@ endpoint is reachable on the public URL.
       event ⚠ name); reissue/void as guarded admin actions.
 - [ ] `credit_notes` table linked to `PaymentRefund` rows — cut on refund success,
       referencing the original invoice.
-- [ ] PDF rendering via `barryvdh/laravel-dompdf` — pure PHP, no wkhtmltopdf binary, keeps
-      the shared-hosting path viable. Blade templates localized through the existing
+- [ ] PDF rendering via `barryvdh/laravel-dompdf` — pure PHP, no wkhtmltopdf binary.
+      Blade templates localized through the existing
       per-locale template machinery.
 - [ ] Admin: list/filter/download/void. Storefront: download from profile → orders.
       Notification: email the invoice on issue (attachment).
@@ -277,8 +277,8 @@ Suggested commits: `feat(backend/core): outbound webhook endpoints and deliverie
 
 ### C.3 Media image variants (v0.2–v0.4)
 
-- [ ] Generate thumbnail/responsive sizes on upload via `intervention/image` (pure PHP —
-      shared-hosting safe); conversions run on the queue.
+- [ ] Generate thumbnail/responsive sizes on upload via `intervention/image` (pure PHP);
+      conversions run on the queue.
 - [ ] Size presets in a core config; `MediaResource` exposes variants; storefront renders
       `srcset`. Originals untouched; variant files tracked for deletion with the parent.
 

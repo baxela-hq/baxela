@@ -34,6 +34,54 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
 - Forms with react-hook-form + zod, rich text with Tiptap, charts with Recharts
 - State with Zustand, i18n with i18next
 
+## Features
+
+- **Catalog, cart, checkout, orders** — products with variants, categories,
+  brands, attributes, inventory stocks, coupons and promotions
+- **Invoices & credit notes** — legal invoices with PDF documents, auto-issued
+  on payment, admin voids and customer refunds feeding one ledger
+- **Returns & refunds** — customers open returns on delivered orders; admin
+  reviews and executes refunds. Built-in refunds: Stripe, PayPal, Manual,
+  Adyen, Checkout.com, Mercado Pago, Razorpay — NowPayments (crypto) has no
+  provider-side refunds
+- **8 payment gateways with verified webhooks** — Stripe, PayPal, Adyen,
+  Checkout.com, Mercado Pago, Razorpay, NowPayments, Manual
+- **Display-currency conversion** with admin-managed or auto-synced FX rates
+  (openexchangerates.org integration, configurable); per-currency price lists
+  on the roadmap
+- **Six locales** (en, fa, ar, de, es, fr) with full RTL for Persian and
+  Arabic, across storefront, admin, and transactional email
+- **Security** — TOTP two-factor authentication, per-account sign-in lockout,
+  new-device notifications, super-admin session revocation (audit-logged),
+  security headers, and a permission system derived from route names
+- **Operability** — failed-job visibility, queue-depth monitoring, data
+  import/export per module, stack-health endpoint, module dependency graph
+- **Tested** — 1,300+ Pest tests on the backend, a Playwright e2e suite on the
+  storefront, and static analysis (Larastan) gated in CI
+- **Documented APIs** — interactive OpenAPI docs (`/docs/api`) plus a
+  ready-to-import Bruno/Postman collection (305 requests)
+
+## How Baxela compares
+
+| Capability | Baxela | Shopify | WooCommerce | Medusa | Bagisto |
+|---|---|---|---|---|---|
+| Returns & refunds, built-in | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Payment gateways with verified webhooks | 8 — signatures verified | 100+ (hosted) | via extensions | via plugins | via extensions |
+| Per-gateway refund capability documented | ✓ | — | — | — | — |
+| RTL storefront (fa, ar) | ✓ | theme-dependent | ✓ | — | ✓ |
+| Backend test suite in-repo | 1,300+ Pest + e2e | closed source | ✓ | ✓ | ✓ |
+| Ready-to-import API collection | ✓ — 305 requests | — | — | — | — |
+| OpenAPI docs | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Display-currency conversion with auto FX sync | ✓¹ | ✓ | via extensions | ✓ | ✓ |
+| Self-host, one `docker compose up` | ✓ | — (SaaS) | ✓ | ✓ | ✓ |
+
+¹ Display-currency conversion with admin-managed or auto-synced FX rates;
+per-currency price lists on the roadmap.
+
+Competitor cells are coarse public-knowledge comparisons (data vintage
+2026-11) — corrections welcome. Every Baxela cell is backed by the code or
+the docs in this repository.
+
 ## Structure
 
 ```

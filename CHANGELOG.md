@@ -21,7 +21,23 @@ from its first stable release. Pre-alpha development happens on `main`.
   key travels in an Authorization header, is masked in every response, and is
   encrypted at rest.
 
-### Added
+- **Two-factor authentication, session revocation, security headers, and
+  sign-in lockout (security roadmap S.1–S.4)**: TOTP 2FA (opt-in per user,
+  forced for super-admins) with an enrollment wizard, recovery codes, and a
+  replay guard; admin sign-in gains a 2FA challenge step. Super-admins can
+  list and force-revoke any user's sessions (audit-logged); every JSON API
+  response carries `Content-Security-Policy` with HSTS over verified-HTTPS
+  only; per-account progressive sign-in lockout with new-device email
+  notifications.
+
+- **Customer returns (order returns flow)**: customers can open a return on
+  delivered orders; admin review with approve/reject transitions, received /
+  completed states feeding the refund ledger. Audit-logged; visibility
+  permission-gated.
+
+- **Six-locale storefront and admin (en, fa, ar, de, es, fr)** — including
+  full RTL layouts for Persian and Arabic: translated UI across storefront,
+  admin, and transactional email; locale-aware routing on the storefront.
 
 - **Invoices & credit notes with PDF documents (gap-B1)**: every paid
   order now produces a legal invoice — sequentially numbered per type

@@ -47,8 +47,7 @@ demo sites exist.
 - Bilingual en/fa including full RTL storefront — no competitor on the GitHub
   `php-ecommerce` topic serves this.
 - Real deployment story: dev compose, prod compose (multi-stage Dockerfiles, one-shot
-  migrate, queue, scheduler, Reverb), plus an unusual **shared-hosting** path
-  (`infrastructure/sharedhosting/`) that competitors explicitly refuse.
+  migrate, queue, scheduler, Reverb).
 
 **Gaps (what this plan fixes, in priority order):**
 
@@ -219,10 +218,10 @@ Goal: nothing embarrassing or unsafe on launch day. Work through in rough priori
 - [ ] **1.11 Storefront mock/placeholder removal.** Hide mock saved-cards UI behind a
   feature flag or remove (`apps/storefront/components/account/saved-cards.tsx` states cards
   live in memory only); delete unused `coming-soon-panel.tsx` or wire it to unfinished pages.
-- [ ] **1.12 Wire Scramble.** `dedoc/scramble` is installed but unwired. Register it,
-  verify OpenAPI generation across the 325 API routes, link published docs from README.
-  If wiring proves heavy, cut scope to public+user routes for v0.1 — but do not ship the
-  claim without the feature.
+- [x] **1.12 Wire Scramble.** `dedoc/scramble` registered — OpenAPI UI at `/docs/api`,
+  JSON at `/docs/api.json` (verified live 2026-11-13); linked from both READMEs.
+  Scoped to `api/v1` (410 routes), bearer security via middleware strategy,
+  local-only docs access by default.
 
 **Phase 1 exit criteria:** security pass done, Shipping/thin modules tested, baseline < 500,
 e2e green in CI, multi-currency + new locales demoable, no template leftovers, Scramble
@@ -243,7 +242,7 @@ Goal: one coordinated launch moment. Do not leak the announcement before the tag
   mobile app link.
 - [ ] **2.3 Docs landing.** Index `docs/` + backend `docs/` into a navigable README-linked
   structure (VitePress site optional, defer if it slips the date): install (Docker, prod
-  compose, shared hosting), configuration, FAQ.
+  compose), configuration, FAQ.
 - [ ] **2.4 Community scaffolding.** GitHub Discussions enabled; bug/feature issue
   templates; `CONTRIBUTING.md` (setup, conventions, commit hook install
   `sh scripts/install-hooks.sh`); label ~10 real issues `good-first-issue` (include locale
@@ -336,6 +335,5 @@ framework installed in either admin or storefront** (Playwright arrives with Pha
 | Order state machine docs | `apps/backend/docs/flows/order-state-machine.md` |
 | i18n parity check | `scripts/check-i18n-parity.mjs` |
 | CI | `.github/workflows/ci.yml` |
-| Shared-hosting deploy | `infrastructure/sharedhosting/deploy.sh` |
 | Mock saved cards | `apps/storefront/components/account/saved-cards.tsx` |
 | Admin upstream license (keep) | `apps/admin/LICENSE` (shadcn-admin, MIT) |

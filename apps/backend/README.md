@@ -6,7 +6,6 @@ A developer-first, modular, headless e-commerce platform built with **Laravel**,
 - Modular monolith (nwidart/laravel-modules)
 - Event-Driven Architecture
 - Headless (API-first)
-- Shared-hosting friendly
 - Flows documented (order, payment, promotions); Bruno API collection as the working API reference
 - SOLID & Open/Closed compliant
 
@@ -41,8 +40,7 @@ Development runs from the repo root (`docker-compose.yml`).
 set `FILESYSTEM_DISK=s3` plus the `AWS_*` variables (`AWS_ACCESS_KEY_ID`,
 `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, `AWS_BUCKET`, `AWS_URL` if fronted by a
 CDN) — each media row records its disk and URLs/deletes resolve against it. For production see
-`docker-compose.prod.yml` and [`infrastructure/docker/production/README.md`](../../infrastructure/docker/production/README.md);
-shared-hosting deploys are covered by `infrastructure/sharedhosting/`.
+`docker-compose.prod.yml` and [`infrastructure/docker/production/README.md`](../../infrastructure/docker/production/README.md).
 
 ## 🧪 Testing
 ```bash
