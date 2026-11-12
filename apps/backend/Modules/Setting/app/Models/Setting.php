@@ -15,6 +15,13 @@ class Setting extends Model
 {
     use HasFactory;
 
+    /**
+     * The masked representation returned for the FX API key by the
+     * admin resource — submitted back verbatim, it is rejected by
+     * validation (review F8: the placeholder is never a key).
+     */
+    public const string MASKED_VALUE = '********';
+
     protected $table = SettingSchema::TABLE;
 
     protected $fillable = [

@@ -14,7 +14,6 @@ trait HelperTrait
         return 'api/v1/setting'.$endpoint;
     }
 
-
     public function superAdminUser(): User
     {
         return User::factory()->superAdmin()->create();

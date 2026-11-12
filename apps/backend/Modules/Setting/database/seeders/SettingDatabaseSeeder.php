@@ -17,16 +17,18 @@ class SettingDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * IDEMPOTENT (review F17): re-running seeds missing rows and
+     * preserves every existing value — administrator-managed settings
+     * and machine-managed state (fx_sync_status, credentials) survive
+     * a re-seed. Translations are seeded only for freshly created rows.
      */
     public function run(CoreGatewayInterface $coreGateway): void
     {
-        // $this->call([]);
-
         $lang = $coreGateway->getDefaultLanguage();
         $languages = $coreGateway->getActiveLanguages();
         $currency = $coreGateway->getDefaultCurrency();
-        Translation::query()->delete();
-        Setting::query()->delete();
+
         $records = [
             [
                 SettingSchema::GROUP => SettingGroupEnum::GENERAL,
@@ -85,23 +87,67 @@ class SettingDatabaseSeeder extends Seeder
                 SettingSchema::IS_TRANSLATABLE => false,
                 SettingSchema::VALUE => 'default',
             ],
+            // FX rate auto-sync (Part E) — opt-in, manual rates stay
+            // authoritative. fx_sync_status is machine-managed by the
+            // sync engine and starts empty.
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::BOOLEAN,
+                SettingSchema::NAME => SettingNameEnum::FX_AUTO_SYNC_ENABLED,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '0',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::FX_PROVIDER,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => 'openexchangerates',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::FX_API_KEY,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::INTEGER,
+                SettingSchema::NAME => SettingNameEnum::FX_SYNC_INTERVAL_HOURS,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '24',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::TEXT,
+                SettingSchema::NAME => SettingNameEnum::FX_SYNC_STATUS,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
         ];
+
         foreach ($records as $record) {
-            $setting = Setting::query()->create($record);
-            $setting = $setting->refresh();
-            if ($record[SettingSchema::IS_TRANSLATABLE]) {
-                $name = $record[SettingSchema::NAME]->value;
-                foreach ($languages as $language) {
-                    $key = Module::NAME_LOWER.'::seeder.'.$name;
-                    $value = trans($key, [], $language->code) === $key
-                        ? trans($key)
-                        : trans($key, [], $language->code);
-                    Translation::query()->create([
-                        TranslationSchema::SETTING_ID => $setting->{SettingSchema::ID},
-                        TranslationSchema::LANGUAGE_ID => $language->id,
-                        TranslationSchema::VALUE => $value,
-                    ]);
-                }
+            $setting = Setting::query()->firstOrCreate(
+                [SettingSchema::NAME => $record[SettingSchema::NAME]],
+                $record,
+            );
+
+            if (! $setting->wasRecentlyCreated || ! $record[SettingSchema::IS_TRANSLATABLE]) {
+                continue;
+            }
+
+            $name = $record[SettingSchema::NAME]->value;
+            foreach ($languages as $language) {
+                $key = Module::NAME_LOWER.'::seeder.'.$name;
+                $value = trans($key, [], $language->code) === $key
+                    ? trans($key)
+                    : trans($key, [], $language->code);
+                Translation::query()->create([
+                    TranslationSchema::SETTING_ID => $setting->{SettingSchema::ID},
+                    TranslationSchema::LANGUAGE_ID => $language->id,
+                    TranslationSchema::VALUE => $value,
+                ]);
             }
         }
     }

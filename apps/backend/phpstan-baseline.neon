@@ -1273,6 +1273,24 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/RequestPasswordResetTest.php
 
 		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:markTestSkipped\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$failed_attempts\.$#'
 			identifier: property.notFound
 			count: 14
@@ -1300,18 +1318,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
 			identifier: property.notFound
 			count: 19
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:markTestSkipped\(\)\.$#'
-			identifier: method.notFound
-			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
 
 		-
@@ -10339,6 +10345,30 @@ parameters:
 			path: Modules/Core/app/Actions/Admin/Currency/ListCurrencyAction.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
+			identifier: property.notFound
+			count: 4
+			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
 			identifier: property.notFound
 			count: 1
@@ -11581,6 +11611,12 @@ parameters:
 			path: Modules/Core/config/config.php
 
 		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 8
+			path: Modules/Core/config/fx.php
+
+		-
 			message: '#^Class Modules\\Core\\Database\\Factories\\CountryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -11849,6 +11885,60 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/tests/Feature/FailedJobTest.php
+
+		-
+			message: '#^Function fxMutableStub\(\) should return array\<int\> but returns array\<string, array\|int\|null\>\.$#'
+			identifier: return.type
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Function fxSnapshotBody not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Function fxStubRates\(\) has parameter \$rates with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and null will always evaluate to false\.$#'
+			identifier: notIdentical.alwaysFalse
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Variable \$base might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Variable \$rates might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Variable \$status might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
+
+		-
+			message: '#^Variable \$timestamp might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: Modules/Core/tests/Feature/FxSyncTest.php
 
 		-
 			message: '#^Trait Modules\\Core\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -20875,12 +20965,6 @@ parameters:
 			path: Modules/Setting/app/Http/Controllers/Public/Setting/ListSettingController.php
 
 		-
-			message: '#^Array has 2 duplicate keys with value ''\*\.value'' \(''\*\.'' \. \\Modules\\Setting\\Schemas\\Setting\\SettingSchema\:\:VALUE, ''\*\.'' \. \\Modules\\Setting\\Schemas\\Setting\\SettingSchema\:\:VALUE\)\.$#'
-			identifier: array.duplicateKey
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
 			message: '#^Method Modules\\Setting\\Http\\Requests\\Admin\\Setting\\SettingRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -20969,6 +21053,12 @@ parameters:
 			identifier: missingType.property
 			count: 1
 			path: Modules/Setting/app/Providers/SettingServiceProvider.php
+
+		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: Modules/Setting/app/Support/ResolvesFxSettings.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
@@ -21065,6 +21155,54 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Setting/database/seeders/SettingDatabaseSeeder.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 7
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: Modules/Setting/tests/Feature/FxSettingsTest.php
 
 		-
 			message: '#^Trait Modules\\Setting\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'

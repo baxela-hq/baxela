@@ -4,6 +4,7 @@ namespace Modules\Setting\Actions\Admin\Setting;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
@@ -12,6 +13,7 @@ use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Support\AppliesStoreIdentity;
 use Modules\Setting\Support\AppliesStoreTimezone;
+use Modules\Setting\Support\ResolvesFxSettings;
 use Modules\Setting\Support\ResolvesPricingMode;
 
 class UpdateSettingAction
@@ -27,13 +29,36 @@ class UpdateSettingAction
         Cache::forget(AppliesStoreTimezone::CACHE_KEY);
         Cache::forget(ResolvesPricingMode::CACHE_KEY);
         Cache::forget(AppliesStoreIdentity::CACHE_KEY);
+        Cache::forget(ResolvesFxSettings::CACHE_KEY);
 
         DB::beginTransaction();
 
         try {
             foreach ($data as $item) {
                 $record = $this->model->where(SettingSchema::NAME, $item[SettingSchema::NAME])->firstOrFail();
-                $record->update([SettingSchema::VALUE => $item[SettingSchema::VALUE]]);
+
+                // The FX credential (review F12/F17): an explicit null
+                // CLEARS the key, any submitted value REPLACES it (encrypted
+                // at rest so database dumps don't carry the plaintext).
+                // "Keep" is expressed by OMITTING the item — Laravel's
+                // ConvertEmptyStringsToNull turns '' into null on the wire,
+                // so an empty submission cannot be distinguished from a
+                // deliberate clear. The admin UI omits the field when
+                // left blank. The masked placeholder never reaches here
+                // (validation rejects it).
+                if ($item[SettingSchema::NAME] === SettingNameEnum::FX_API_KEY->value) {
+                    $submitted = $item[SettingSchema::VALUE] ?? null;
+
+                    if ($submitted === null) {
+                        $record->update([SettingSchema::VALUE => '']);
+                    } else {
+                        $record->update([
+                            SettingSchema::VALUE => Crypt::encryptString((string) $submitted),
+                        ]);
+                    }
+                } else {
+                    $record->update([SettingSchema::VALUE => $item[SettingSchema::VALUE]]);
+                }
 
                 // The default language/currency settings are the source of
                 // truth; mirror them onto the core flags so flag-based

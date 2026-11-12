@@ -4,9 +4,11 @@ namespace Modules\Setting\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Setting\FxSettingsResolverInterface;
 use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
 use Modules\Setting\Support\AppliesStoreIdentity;
 use Modules\Setting\Support\AppliesStoreTimezone;
+use Modules\Setting\Support\ResolvesFxSettings;
 use Modules\Setting\Support\ResolvesPricingMode;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -16,6 +18,7 @@ class SettingServiceProvider extends ServiceProvider
 {
     public $bindings = [
         PricingModeResolverInterface::class => ResolvesPricingMode::class,
+        FxSettingsResolverInterface::class => ResolvesFxSettings::class,
     ];
 
     use PathNamespace;

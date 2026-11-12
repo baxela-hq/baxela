@@ -36,4 +36,21 @@ enum SettingNameEnum: string
     case STORE_TAX_ID = 'store_tax_id';
 
     case STORE_CONTACT = 'store_contact';
+
+    /*
+    | FX rate auto-sync (launch-readiness Part E). Opt-in synchronization
+    | of display exchange rates; manual rates remain default and editable.
+    | fx_sync_status is MACHINE-MANAGED (written only by the sync engine
+    | through FxSettingsResolverInterface) and must never be accepted
+    | from the settings endpoint.
+    */
+    case FX_AUTO_SYNC_ENABLED = 'fx_auto_sync_enabled';
+
+    case FX_PROVIDER = 'fx_provider';
+
+    case FX_API_KEY = 'fx_api_key';
+
+    case FX_SYNC_INTERVAL_HOURS = 'fx_sync_interval_hours';
+
+    case FX_SYNC_STATUS = 'fx_sync_status';
 }
