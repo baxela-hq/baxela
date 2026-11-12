@@ -80,7 +80,8 @@
       "close": "إغلاق",
       "add": "إضافة",
       "add_item": "إضافة عنصر",
-      "remove_item": "إزالة عنصر"
+      "remove_item": "إزالة عنصر",
+      "sessions": "الجلسات"
     },
     "placeholders": {
       "input": "أدخل قيمة هنا",

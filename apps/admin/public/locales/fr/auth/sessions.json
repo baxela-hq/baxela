@@ -1,0 +1,19 @@
+{
+  "section-title": "Sessions actives",
+  "self-description": "Appareils connectés à votre compte. Révoquer la session actuelle — ou vous déconnecter partout — vous déconnecte aussi ici.",
+  "admin-dialog-title": "Sessions actives",
+  "admin-dialog-description": "Révocation forcée des sessions de cet utilisateur. Chaque révocation est consignée dans le journal d'audit.",
+  "current-badge": "Cet appareil",
+  "last-used": "Dernière utilisation",
+  "created": "Créée",
+  "expires": "Expire",
+  "revoke-one": "Révoquer la session",
+  "revoke-all": "Révoquer toutes les sessions",
+  "sign-out-everywhere": "Se déconnecter partout",
+  "empty": "Aucune session active",
+  "messages": {
+    "revoked-success": "Session révoquée",
+    "revoked-all-success": "Toutes les sessions révoquées",
+    "error-generic": "Une erreur est survenue. Veuillez réessayer."
+  }
+}

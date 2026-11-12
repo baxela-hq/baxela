@@ -1,0 +1,19 @@
+{
+  "section-title": "Active sessions",
+  "self-description": "Devices signed into your account. Revoking the current session — or signing out everywhere — signs you out here too.",
+  "admin-dialog-title": "Active sessions",
+  "admin-dialog-description": "Force-revoke this user's sessions. Every revocation is recorded in the audit trail.",
+  "current-badge": "This device",
+  "last-used": "Last used",
+  "created": "Created",
+  "expires": "Expires",
+  "revoke-one": "Revoke session",
+  "revoke-all": "Revoke all sessions",
+  "sign-out-everywhere": "Sign out everywhere",
+  "empty": "No active sessions",
+  "messages": {
+    "revoked-success": "Session revoked",
+    "revoked-all-success": "All sessions revoked",
+    "error-generic": "Something went wrong. Please try again."
+  }
+}

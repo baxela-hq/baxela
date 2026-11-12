@@ -1,0 +1,19 @@
+{
+  "section-title": "Sesiones activas",
+  "self-description": "Dispositivos con sesión iniciada en su cuenta. Revocar la sesión actual — o cerrar sesión en todas partes — también le desconecta aquí.",
+  "admin-dialog-title": "Sesiones activas",
+  "admin-dialog-description": "Revocación forzada de las sesiones de este usuario. Cada revocación se registra en la auditoría.",
+  "current-badge": "Este dispositivo",
+  "last-used": "Último uso",
+  "created": "Creada",
+  "expires": "Caduca",
+  "revoke-one": "Revocar sesión",
+  "revoke-all": "Revocar todas las sesiones",
+  "sign-out-everywhere": "Cerrar sesión en todas partes",
+  "empty": "No hay sesiones activas",
+  "messages": {
+    "revoked-success": "Sesión revocada",
+    "revoked-all-success": "Todas las sesiones revocadas",
+    "error-generic": "Algo salió mal. Inténtelo de nuevo."
+  }
+}

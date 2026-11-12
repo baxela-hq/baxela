@@ -1,6 +1,6 @@
 {
   "page-title": "Seguridad",
-  "page-description": "Gestione la autenticación de dos factores de su cuenta.",
+  "page-description": "Gestione la autenticación de dos factores y las sesiones activas de su cuenta.",
   "enrollment": {
     "title": "Autenticación de dos factores",
     "description": "Escanee el código QR con su aplicación de autenticación y luego introduzca el código de seis dígitos que muestra para confirmar.",

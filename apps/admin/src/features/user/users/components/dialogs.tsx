@@ -1,4 +1,5 @@
 import { DeleteDialog } from './delete-dialog.tsx';
+import { SessionsDialog } from './sessions-dialog.tsx';
 import { useUsers } from './provider.tsx';
 import { useQueryClient } from '@tanstack/react-query'
 import { FeatureRoutes } from '../data/routes'
@@ -41,6 +42,18 @@ export function Dialogs() {
               setTimeout(async () => {
                 setCurrentRow(null)
                 await queryClient.invalidateQueries({ queryKey: [FeatureRoutes.CACHE_KEY] })
+              }, 500)
+            }}
+            currentRow={currentRow}
+          />
+
+          <SessionsDialog
+            key={`user-sessions-${currentRow.id}`}
+            open={open === 'sessions'}
+            onOpenChange={() => {
+              setOpen('sessions')
+              setTimeout(() => {
+                setCurrentRow(null)
               }, 500)
             }}
             currentRow={currentRow}

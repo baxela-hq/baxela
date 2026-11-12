@@ -1,6 +1,6 @@
 {
   "page-title": "Security",
-  "page-description": "Manage two-factor authentication for your account.",
+  "page-description": "Manage two-factor authentication and active sessions for your account.",
   "enrollment": {
     "title": "Two-factor authentication",
     "description": "Scan the QR code with your authenticator app, then enter the six-digit code it shows to confirm.",

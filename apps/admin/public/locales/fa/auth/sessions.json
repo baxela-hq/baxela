@@ -1,0 +1,19 @@
+{
+  "section-title": "نشست‌های فعال",
+  "self-description": "دستگاه‌های وارد شده به حساب شما. با لغو نشست فعلی — یا خروج از همه جا — از اینجا نیز خارج می‌شوید.",
+  "admin-dialog-title": "نشست‌های فعال",
+  "admin-dialog-description": "لغو اجباری نشست‌های این کاربر. هر لغو در ردپای ممیزی ثبت می‌شود.",
+  "current-badge": "این دستگاه",
+  "last-used": "آخرین استفاده",
+  "created": "ایجاد شده",
+  "expires": "انقضا",
+  "revoke-one": "لغو نشست",
+  "revoke-all": "لغو همه نشست‌ها",
+  "sign-out-everywhere": "خروج از همه جا",
+  "empty": "نشست فعالی وجود ندارد",
+  "messages": {
+    "revoked-success": "نشست لغو شد",
+    "revoked-all-success": "همه نشست‌ها لغو شدند",
+    "error-generic": "خطایی رخ داد. لطفاً دوباره تلاش کنید."
+  }
+}

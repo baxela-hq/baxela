@@ -1,6 +1,6 @@
 {
   "page-title": "Sécurité",
-  "page-description": "Gérez l'authentification à deux facteurs de votre compte.",
+  "page-description": "Gérez l'authentification à deux facteurs et les sessions actives de votre compte.",
   "enrollment": {
     "title": "Authentification à deux facteurs",
     "description": "Scannez le code QR avec votre application d'authentification, puis saisissez le code à six chiffres affiché pour confirmer.",

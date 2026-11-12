@@ -80,7 +80,8 @@
       "close": "Fermer",
       "add": "Ajouter",
       "add_item": "Ajouter un élément",
-      "remove_item": "Retirer l'élément"
+      "remove_item": "Retirer l'élément",
+      "sessions": "Sessions"
     },
     "placeholders": {
       "input": "Saisissez une valeur ici",

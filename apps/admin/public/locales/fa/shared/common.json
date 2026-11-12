@@ -80,7 +80,8 @@
       "close": "بستن",
       "add": "اضافه کردن",
       "add_item": "اضافه کردن آیتم",
-      "remove_item": "حذف آیتم"
+      "remove_item": "حذف آیتم",
+      "sessions": "نشست‌ها"
     },
     "placeholders": {
       "input": "مقداری وارد کنید",

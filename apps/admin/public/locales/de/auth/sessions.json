@@ -1,0 +1,19 @@
+{
+  "section-title": "Aktive Sitzungen",
+  "self-description": "Geräte, die in Ihrem Konto angemeldet sind. Beim Widerrufen der aktuellen Sitzung — oder Abmelden überall — werden Sie auch hier abgemeldet.",
+  "admin-dialog-title": "Aktive Sitzungen",
+  "admin-dialog-description": "Zwangsweises Widerrufen der Sitzungen dieses Benutzers. Jeder Widerruf wird im Audit-Trail protokolliert.",
+  "current-badge": "Dieses Gerät",
+  "last-used": "Zuletzt verwendet",
+  "created": "Erstellt",
+  "expires": "Läuft ab",
+  "revoke-one": "Sitzung widerrufen",
+  "revoke-all": "Alle Sitzungen widerrufen",
+  "sign-out-everywhere": "Überall abmelden",
+  "empty": "Keine aktiven Sitzungen",
+  "messages": {
+    "revoked-success": "Sitzung widerrufen",
+    "revoked-all-success": "Alle Sitzungen widerrufen",
+    "error-generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+  }
+}

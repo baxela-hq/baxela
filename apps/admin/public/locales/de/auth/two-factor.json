@@ -1,6 +1,6 @@
 {
   "page-title": "Sicherheit",
-  "page-description": "Verwalten Sie die Zwei-Faktor-Authentifizierung Ihres Kontos.",
+  "page-description": "Verwalten Sie die Zwei-Faktor-Authentifizierung und aktiven Sitzungen Ihres Kontos.",
   "enrollment": {
     "title": "Zwei-Faktor-Authentifizierung",
     "description": "Scannen Sie den QR-Code mit Ihrer Authenticator-App und geben Sie dann den angezeigten sechsstelligen Code zur Bestätigung ein.",

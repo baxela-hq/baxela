@@ -1,5 +1,6 @@
 import { deleteRequest, getRequest, patchRequest, postRequest } from "@/shared/lib/api-client";
 import type { User, UserForm } from "../data/schema";
+import { type Session } from "@/features/auth/sessions/data/schema";
 import { type PaginatedResponse, type SingleResponse } from "@/shared/types/common.types";
 
 const BASE_URL = "auth/admin/users";
@@ -26,4 +27,17 @@ export function deleteUser(id: string) {
   return deleteRequest(`${BASE_URL}/${id}`);
 }
 
+// Forced session revocation (S.2) — super-admin surface.
 
+export async function fetchUserSessions(id: string): Promise<Session[]> {
+  const { data } = await getRequest<SingleResponse<Session[]>>(`${BASE_URL}/${id}/sessions`);
+  return data;
+}
+
+export function revokeUserSession(id: string, sessionId: number) {
+  return deleteRequest(`${BASE_URL}/${id}/sessions/${sessionId}`);
+}
+
+export function revokeAllUserSessions(id: string) {
+  return deleteRequest(`${BASE_URL}/${id}/sessions`);
+}

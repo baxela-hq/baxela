@@ -80,7 +80,8 @@
       "close": "Close",
       "add": "Add",
       "add_item": "Add Item",
-      "remove_item": "Remove Item"
+      "remove_item": "Remove Item",
+      "sessions": "Sessions"
     },
     "placeholders": {
       "input": "Enter a value here",
