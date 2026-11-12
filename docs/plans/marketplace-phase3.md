@@ -243,10 +243,25 @@ API rate limiting, download analytics beyond counters.
 
 ### Work items / tests
 
-- [ ] `SourceProvider` + `GithubSourceProvider` (HTTP client, `Http::fake` in tests).
-- [ ] `marketplace:sync` with the contract validator as a pure, unit-tested class.
-- [ ] Dist zip builder under the ingestion limits + post-build verification.
-- [ ] Tests: contract refusals (bad name, wrong composer type, missing manifest, missing
+- [x] `SourceProvider` + `GithubSourceProvider` (HTTP client, `Http::fake` in tests).
+      *(done 2026-11-13 — the ref-SHA like-for-like variant of the register's
+      sanctioned alternatives: the tags endpoint's `commit.sha` is stored as
+      `source_commit_sha` and compared like-for-like, costing zero API calls
+      for unchanged tags; recreating an annotated tag against the same commit
+      reports a false drift — a safe, report-only failure mode. Tarballs
+      stream chunk-by-chunk with the compressed cap enforced mid-transfer.)*
+- [x] `marketplace:sync` with the contract validator as a pure, unit-tested class.
+      *(done 2026-11-13 — `PackageSynchronizer` + `PackageContractValidator`;
+      identity, version agreement, contract skips tabled per tag.)*
+- [x] Dist zip builder under the ingestion limits + post-build verification.
+      *(done 2026-11-13 — a hand-rolled streaming USTAR reader
+      (`TarStreamReader`: typeflag-level control, no PharData) feeding
+      `ArchiveProcessor`: caps counted as bytes arrive/are written, traversal/
+      symlink/absolute/duplicate/non-regular rejection, bomb-ratio guard, hard
+      timeout, fresh temp dir, zip rebuilt from validated entries and
+      verified before publishing; move-then-insert publication with
+      compensating delete.)*
+- [x] Tests: contract refusals (bad name, wrong composer type, missing manifest, missing
   license, unparseable compat) each skip with reason; declared-version disagreement
   rejected; `v`-prefixed tag normalized (and metadata version injected accordingly);
   duplicate normalized version rejected; idempotent re-sync (SHA-equal → no fetch);
@@ -254,6 +269,11 @@ API rate limiting, download analytics beyond counters.
   403 → clear exhaustion error; archive attacks (traversal entry, symlink entry, bomb
   ratio, oversized entry, missing root composer.json) each rejected without residue;
   full fake happy path seeding two versions.
+      *(done 2026-11-13 — 35 new tests: 13 validator unit cases, 10 archive-
+      processor cases incl. hostile fixtures from a hand-rolled USTAR writer,
+      12 sync command cases with `Http::fake` + `preventStrayRequests` and a
+      request-count budget proof (sync 1 = 5 requests, re-sync = 1). Suite:
+      58/58, Larastan level 6 clean, Pint clean.)*
 
 ## 6. Slice M.3 — Catalog API (~0.5 d)
 
@@ -289,14 +309,20 @@ API rate limiting, download analytics beyond counters.
 
 ### Work items / tests
 
-- [ ] Both endpoints; request validation (`core` semver, installed map shape).
-- [ ] Tests: compatible update offered; **newer-but-incompatible NOT offered**; semver
+- [x] Both endpoints; request validation (`core` semver, installed map shape).
+      *(done 2026-11-13 — `PackageCatalog` + `UpdateResolver` (the explicit
+      state machine), `CatalogController` + `UpdatesController`; routes
+      `GET /api/packages`, `POST /api/packages/updates`, public by design.)*
+- [x] Tests: compatible update offered; **newer-but-incompatible NOT offered**; semver
   ordering (`0.0.10` > `0.0.9`) in both latest-selection and update comparison;
   never-downgrade (installed `0.0.11`, latest `0.0.10` → `installed_newer_than_registry`);
   installed newer than registry → `installed_newer_than_registry` with `latest` still
   reported; unknown slug → `unknown_package`; yanked package → `package_yanked`;
   yanked current version → flag set, updates still evaluated; yanked release never
   offered as `latest`; no compatible release → `null` latest.
+      *(done 2026-11-13 — 16 new tests (5 catalog + 11 updates); fixtures are
+      deliberately inserted NEWEST-FIRST so any reliance on insertion/database
+      ordering would fail. Suite 74/74, Larastan clean, Pint clean.)*
 
 ## 7. Slice M.4 — Back office (~0.5 d)
 
