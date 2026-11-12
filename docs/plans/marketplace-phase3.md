@@ -326,15 +326,24 @@ API rate limiting, download analytics beyond counters.
 
 ## 7. Slice M.4 — Back office (~0.5 d)
 
-- [ ] Filament panel (fallback plain Blade if ⚠ L13 support lags): Package list/view with
+- [x] Filament panel (fallback plain Blade if ⚠ L13 support lags): Package list/view with
       releases; yank/unyank actions at package AND release level; download counters;
       audit-log viewer.
-- [ ] Yank/unyank require explicit confirmation and a **reason**; every action writes the
+      *(done 2026-11-13 — the plan's own fallback: plain Blade, no new dependencies.
+      Filament is convenience, not a dependency, and the back office is three screens:
+      packages list, package detail (release table + actions), audit viewer.)*
+- [x] Yank/unyank require explicit confirmation and a **reason**; every action writes the
       `audit_log` row (actor, action, subject, reason).
-- [ ] No create/edit resources — data enters only through sync; editing would fight the
+      *(done 2026-11-13 — `YankService`: state flip + audit row + registry-cache flush on
+      every mutation; no-ops rejected without audit rows.)*
+- [x] No create/edit resources — data enters only through sync; editing would fight the
       append-only registry.
-- [ ] Login via the M.0 user only; panel behind auth; registration disabled; nothing
+- [x] Login via the M.0 user only; panel behind auth; registration disabled; nothing
       public except M.1/M.3 routes.
+      *(done 2026-11-13 — session auth via the M.0 `marketplace:user` users; registration
+      routes do not exist. 9 panel tests: auth gate, login, lists, yank/unyank at both
+      levels incl. reason validation and no-op rejection, package-unyank precedence,
+      audit viewer. Suite 83/83, Larastan clean.)*
 
 ## 8. Slice M.5 — Proof gate (~0.5 d, the phase exit)
 
