@@ -35,6 +35,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists(PostSeoTranslationSchema::TABLE);
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        // MySQL-only statement — migrate:fresh on SQLite (the S.4
+        // concurrency suite) would choke on it.
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        }
     }
 };

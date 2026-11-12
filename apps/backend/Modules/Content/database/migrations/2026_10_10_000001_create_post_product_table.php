@@ -32,6 +32,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists(PostProductSchema::TABLE);
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+
+        // MySQL-only statement — the S.4 concurrency suite runs
+        // migrate:fresh on SQLite, where this would be a syntax error.
+        if (DB::connection()->getDriverName() === 'mysql') {
+            // MySQL-only statement — migrate:fresh on SQLite (the S.4
+            // concurrency suite) would choke on it.
+            if (DB::connection()->getDriverName() === 'mysql') {
+                DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+            }
+        }
     }
 };
