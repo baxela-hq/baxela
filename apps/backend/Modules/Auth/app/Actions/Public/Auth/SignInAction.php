@@ -12,13 +12,17 @@ use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
-use Modules\Auth\Schemas\Token\PersonalAccessTokenSchema;
+use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeTypeEnum;
 use Modules\Auth\Schemas\User\UserSchema;
-use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
+use Modules\Auth\Support\TwoFactor\TwoFactorChallengeService;
 use Random\RandomException;
 
 class SignInAction extends AbstractAction
 {
+    public function __construct(
+        protected TwoFactorChallengeService $challenges,
+    ) {}
+
     /**
      * @throws RandomException
      * @throws AccountNotActivatedException
@@ -28,8 +32,6 @@ class SignInAction extends AbstractAction
     public function handle(SignInRequest $request): object
     {
         $auth = Auth::guard(GuardsEnum::USER_SESSION->value);
-        // Attempt to authenticate the user; only email/password may reach the
-        // guard — extra payload (device_name, remember) would become WHERE clauses.
         $credentials = [
             OtpCodeSchema::EMAIL => $request->{OtpCodeSchema::EMAIL},
             UserSchema::PASSWORD => $request->{UserSchema::PASSWORD},
@@ -42,39 +44,55 @@ class SignInAction extends AbstractAction
         $this->errorIfUserNotVerified(OtpCodeTypeEnum::EMAIL, $request->{OtpCodeSchema::EMAIL});
         $this->errorIfUserNotActivated(OtpCodeTypeEnum::EMAIL, $request->{OtpCodeSchema::EMAIL});
 
-        /* @var User $user */
+        /** @var User $user */
         $user = $auth->user();
 
-        $deviceName = $this->deviceName($request);
-
-        // Replace only this device's previous token; tokens issued to other
-        // devices stay valid so concurrent sessions keep working.
-        $user->tokens()
-            ->where(PersonalAccessTokenSchema::NAME, $deviceName)
-            ->delete();
-
-        $token = $user->createToken(
-            $deviceName,
-            ['*'],
-            now()->addDays($this->tokenTtlDays($request)),
-        )->plainTextToken;
-
-        // Guest cart token (X-Cart-Token header) — forwarded only when it is
-        // a well-formed UUID so the Cart module can merge the guest cart.
-        $cartToken = $request->header('X-Cart-Token');
-        $cartToken = is_string($cartToken) && Str::isUuid($cartToken) ? $cartToken : null;
-
-        event(new UserSignedInEvent(
-            $user->{UserSchema::ID},
-            $user->{UserSchema::EMAIL},
-            now()->toDateTimeString(),
-            $cartToken,
-        ));
-
-        return (object) [
-            'user' => $user,
-            'token' => $token,
+        $context = [
+            'device_name' => $this->deviceName($request),
+            'remember' => $this->remembered($request),
+            'cart_token' => $this->cartToken($request),
         ];
+
+        if ($user->{UserSchema::TWO_FACTOR_CONFIRMED_AT} !== null) {
+            $challengeToken = $this->challenges->issue(
+                $user,
+                TwoFactorChallengeTypeEnum::SIGN_IN,
+                $context,
+            );
+
+            return (object) [
+                'two_factor_required' => true,
+                'challenge_token' => $challengeToken,
+            ];
+        }
+
+        if ($this->forcedEnrollment($user)) {
+            $challengeToken = $this->challenges->issue(
+                $user,
+                TwoFactorChallengeTypeEnum::ENROLLMENT,
+                $context,
+            );
+
+            return (object) [
+                'two_factor_enrollment_required' => true,
+                'challenge_token' => $challengeToken,
+            ];
+        }
+
+        $completion = app(CompleteAuthenticationAction::class);
+        $result = $completion->issueToken($user, $context);
+        $completion->dispatchEvents($user, $context);
+
+        return (object) $result;
+    }
+
+    private function forcedEnrollment(User $user): bool
+    {
+        if (! config('auth.two_factor.force_super_admin', true)) {
+            return false;
+        }
+
+        return $user->hasRole('super-admin');
     }
 
     private function deviceName(SignInRequest $request): string
@@ -82,22 +100,23 @@ class SignInAction extends AbstractAction
         $deviceName = $request->validated(UserSchema::DEVICE_NAME);
 
         if (is_string($deviceName) && $deviceName !== '') {
-            return $deviceName;
+            return Str::limit($deviceName, 100, '');
         }
 
-        // Clients that do not send a stable device id fall back to the
-        // user agent, collapsed and truncated to fit the name column.
         $agent = trim((string) preg_replace('/\s+/', ' ', (string) $request->userAgent()));
 
         return Str::limit($agent, 100, '') ?: 'unknown-device';
     }
 
-    private function tokenTtlDays(SignInRequest $request): int
+    private function remembered(SignInRequest $request): bool
     {
-        // Absent `remember` keeps the long TTL so API clients (admin, Bruno)
-        // behave as before; only an explicit false shortens the session.
-        $remembered = filter_var($request->validated(UserSchema::REMEMBER) ?? true, FILTER_VALIDATE_BOOLEAN);
+        return filter_var($request->validated(UserSchema::REMEMBER) ?? true, FILTER_VALIDATE_BOOLEAN);
+    }
 
-        return (int) config('auth.token_ttl.'.($remembered ? 'days' : 'short_days'));
+    private function cartToken(SignInRequest $request): ?string
+    {
+        $cartToken = $request->header('X-Cart-Token');
+
+        return is_string($cartToken) && Str::isUuid($cartToken) ? $cartToken : null;
     }
 }

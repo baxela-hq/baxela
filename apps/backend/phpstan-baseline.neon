@@ -266,12 +266,6 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/RequestPasswordResetAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$created_at\.$#'
 			identifier: property.notFound
 			count: 1
@@ -23899,3 +23893,210 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Providers/SentryContextServiceProvider.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+		-
+			message: '#^Offset ''device_name'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+		-
+			message: '#^Offset ''remember'' on array\{device_name\: string, remember\: bool, cart_token\: string\|null\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
+		-
+			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+		-
+			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
+			identifier: staticMethod.unresolvableReturnType
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 6
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:confirm\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorConfirmController.php
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:disable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorDisableController.php
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:enable\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorEnableController.php
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:regenerateRecoveryCodes\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorRecoveryCodesController.php
+		-
+			message: '#^Parameter \#1 \$user of method Modules\\Auth\\Actions\\User\\TwoFactor\\ManageTwoFactorAction\:\:status\(\) expects Modules\\Auth\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorStatusController.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$expires_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/TwoFactorChallenge.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
+		-
+			message: '#^Method Modules\\Auth\\Support\\TwoFactor\\TwoFactorChallengeService\:\:issue\(\) has parameter \$context with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_last_used_step\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_recovery_codes\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_secret\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 28
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 19
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Function enrolledUser\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Function twoFactorUser\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php
+		-
+			message: '#^Unable to resolve the template type TValue in call to function expect$#'
+			identifier: argument.templateType
+			count: 3
+			path: Modules/Auth/tests/Feature/TwoFactorTest.php

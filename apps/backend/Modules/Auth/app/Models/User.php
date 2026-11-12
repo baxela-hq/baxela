@@ -25,6 +25,10 @@ class User extends Authenticatable
         UserSchema::PASSWORD,
         UserSchema::IS_ACTIVE,
         UserSchema::COMMENT,
+        UserSchema::TWO_FACTOR_SECRET,
+        UserSchema::TWO_FACTOR_RECOVERY_CODES,
+        UserSchema::TWO_FACTOR_CONFIRMED_AT,
+        UserSchema::TWO_FACTOR_LAST_USED_STEP,
     ];
 
     /**
@@ -35,6 +39,9 @@ class User extends Authenticatable
     protected $hidden = [
         UserSchema::PASSWORD,
         UserSchema::REMEMBER_TOKEN,
+        UserSchema::TWO_FACTOR_SECRET,
+        UserSchema::TWO_FACTOR_RECOVERY_CODES,
+        UserSchema::TWO_FACTOR_LAST_USED_STEP,
     ];
 
     /**
@@ -49,6 +56,10 @@ class User extends Authenticatable
             UserSchema::MOBILE_VERIFIED_AT => 'datetime',
             UserSchema::PASSWORD => 'hashed',
             UserSchema::IS_ACTIVE => 'boolean',
+            UserSchema::TWO_FACTOR_SECRET => 'encrypted',
+            UserSchema::TWO_FACTOR_RECOVERY_CODES => 'encrypted:array',
+            UserSchema::TWO_FACTOR_CONFIRMED_AT => 'datetime',
+            UserSchema::TWO_FACTOR_LAST_USED_STEP => 'integer',
         ];
     }
 

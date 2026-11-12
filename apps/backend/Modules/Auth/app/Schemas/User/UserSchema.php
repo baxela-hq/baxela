@@ -36,6 +36,15 @@ class UserSchema
     /** Virtual sign-in field requesting the long ("remember me") token TTL — not a column. */
     public const string REMEMBER = 'remember';
 
+    // Two-factor authentication (S.1)
+    public const string TWO_FACTOR_SECRET = 'two_factor_secret';
+
+    public const string TWO_FACTOR_RECOVERY_CODES = 'two_factor_recovery_codes';
+
+    public const string TWO_FACTOR_CONFIRMED_AT = 'two_factor_confirmed_at';
+
+    public const string TWO_FACTOR_LAST_USED_STEP = 'two_factor_last_used_step';
+
     /** Serialization key for role objects attached to a user — not a column. */
     public const string ROLES = 'roles';
 

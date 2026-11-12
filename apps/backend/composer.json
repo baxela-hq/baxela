@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "bacon/bacon-qr-code": "^3.1",
         "composer/semver": "^3.6",
         "dedoc/scramble": "^0.13.14",
         "intervention/image": "^4.4",
@@ -27,6 +28,7 @@
         "minishlink/web-push": "^11.0",
         "mpdf/mpdf": "^8.3",
         "nwidart/laravel-modules": "^12.0",
+        "pragmarx/google2fa": "^9.1",
         "sentry/sentry-laravel": "^4.29",
         "spatie/laravel-permission": "^8.3",
         "spatie/laravel-query-builder": "^7.2",

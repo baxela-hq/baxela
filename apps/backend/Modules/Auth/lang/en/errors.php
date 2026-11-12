@@ -18,4 +18,7 @@ return [
         'too_many_requests' => 'Please wait a moment before requesting a new OTP.',
         'invalid' => 'The OTP you entered is invalid or has expired.',
     ],
+    'two_factor.invalid_code' => 'The verification code is invalid or has expired',
+    'two_factor.challenge_invalid' => 'The challenge is invalid or expired',
+    'two_factor.too_many_attempts' => 'Too many verification attempts. Try again later.',
 ];

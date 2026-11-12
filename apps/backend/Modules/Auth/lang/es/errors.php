@@ -18,4 +18,7 @@ return [
         'too_many_requests' => 'Espera un momento antes de solicitar un nuevo OTP.',
         'invalid' => 'El OTP que ingresaste no es válido o ha caducado.',
     ],
+    'two_factor.invalid_code' => 'El código de verificación no es válido o ha caducado',
+    'two_factor.challenge_invalid' => 'El desafío no es válido o ha caducado',
+    'two_factor.too_many_attempts' => 'Demasiados intentos de verificación. Inténtelo de nuevo más tarde.',
 ];

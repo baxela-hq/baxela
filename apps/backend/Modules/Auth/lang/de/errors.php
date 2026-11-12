@@ -18,4 +18,7 @@ return [
         'too_many_requests' => 'Bitte warten Sie einen Moment, bevor Sie einen neuen OTP-Code anfordern.',
         'invalid' => 'Der eingegebene OTP-Code ist ungültig oder abgelaufen.',
     ],
+    'two_factor.invalid_code' => 'Der Bestätigungscode ist ungültig oder abgelaufen',
+    'two_factor.challenge_invalid' => 'Die Challenge ist ungültig oder abgelaufen',
+    'two_factor.too_many_attempts' => 'Zu viele Bestätigungsversuche. Versuchen Sie es später erneut.',
 ];

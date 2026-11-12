@@ -21,4 +21,15 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case AUTH_ACCOUNT_ALREADY_ACTIVATED = 'auth.account.already_active';
     case AUTH_ACCOUNT_NOT_ACTIVATED = 'auth.account.not_active';
 
+    // Two-factor authentication (S.1)
+    case TWO_FACTOR_INVALID_CODE = 'auth.two_factor.invalid_code';
+
+    case TWO_FACTOR_CHALLENGE_INVALID = 'auth.two_factor.challenge_invalid';
+
+    case TWO_FACTOR_TOO_MANY_ATTEMPTS = 'auth.two_factor.too_many_attempts';
+
+    case TWO_FACTOR_NOT_ENROLLED = 'auth.two_factor.not_enrolled';
+
+    case TWO_FACTOR_ALREADY_ENROLLED = 'auth.two_factor.already_enrolled';
+
 }

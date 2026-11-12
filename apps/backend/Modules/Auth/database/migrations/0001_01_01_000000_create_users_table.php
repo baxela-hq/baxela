@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string(UserSchema::PASSWORD);
             $table->boolean(UserSchema::IS_ACTIVE)->index()->default(false);
             $table->string(UserSchema::COMMENT)->nullable();
+            $table->text(UserSchema::TWO_FACTOR_SECRET)->nullable();
+            $table->text(UserSchema::TWO_FACTOR_RECOVERY_CODES)->nullable();
+            $table->timestamp(UserSchema::TWO_FACTOR_CONFIRMED_AT)->nullable();
+            $table->bigInteger(UserSchema::TWO_FACTOR_LAST_USED_STEP)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
