@@ -55,6 +55,7 @@ class RecordAuditLogListener
         'Created' => 'created',
         'Updated' => 'updated',
         'Deleted' => 'deleted',
+        'Revoked' => 'revoked',
         'Failed' => 'failed',
         'Shipped' => 'shipped',
         'Paid' => 'paid',

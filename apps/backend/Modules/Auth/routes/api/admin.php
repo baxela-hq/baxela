@@ -14,6 +14,9 @@ use Modules\Auth\Http\Controllers\Admin\Token\RevokeMachineTokenController;
 use Modules\Auth\Http\Controllers\Admin\User\CreateUserController;
 use Modules\Auth\Http\Controllers\Admin\User\DeleteUserController;
 use Modules\Auth\Http\Controllers\Admin\User\ListUserController;
+use Modules\Auth\Http\Controllers\Admin\User\ListUserSessionsController;
+use Modules\Auth\Http\Controllers\Admin\User\RevokeAllUserSessionsController;
+use Modules\Auth\Http\Controllers\Admin\User\RevokeUserSessionController;
 use Modules\Auth\Http\Controllers\Admin\User\ShowUserController;
 use Modules\Auth\Http\Controllers\Admin\User\UpdateUserController;
 use Modules\Core\Http\Middleware\PermissionMiddleware;
@@ -36,6 +39,13 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::delete('/users/{id}', DeleteUserController::class)->name('users.delete');
     Route::get('/users/{id}', ShowUserController::class)->name('users.show');
     Route::patch('/users/{id}', UpdateUserController::class)->name('users.update');
+
+    // Forced session revocation (S.2): super-admins list/revoke any
+    // user's sessions. Permissions derive from the route names and are
+    // synced by SyncPermissionsAction.
+    Route::get('/users/{id}/sessions', ListUserSessionsController::class)->name('users.sessions.list');
+    Route::delete('/users/{id}/sessions', RevokeAllUserSessionsController::class)->name('users.sessions.destroy-all');
+    Route::delete('/users/{id}/sessions/{tokenId}', RevokeUserSessionController::class)->name('users.sessions.destroy');
 
     // Machine tokens (gap-C2 D14): mint/list/revoke for S2S integrations.
     Route::get('/machine-tokens', ListMachineTokensController::class)->name('machine-tokens.list');

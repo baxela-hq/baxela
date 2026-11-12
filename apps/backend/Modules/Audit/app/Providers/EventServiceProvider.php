@@ -6,6 +6,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Audit\Listeners\RecordAuditLogListener;
 use Modules\Core\Contracts\Events\Auth\UserActivatedEvent;
 use Modules\Core\Contracts\Events\Auth\UserDeactivatedEvent;
+use Modules\Core\Contracts\Events\Auth\UserSessionRevokedEvent;
+use Modules\Core\Contracts\Events\Auth\UserSessionsRevokedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductActivatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductCommentApprovedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
@@ -59,6 +61,8 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         UserActivatedEvent::class => [RecordAuditLogListener::class],
         UserDeactivatedEvent::class => [RecordAuditLogListener::class],
+        UserSessionRevokedEvent::class => [RecordAuditLogListener::class],
+        UserSessionsRevokedEvent::class => [RecordAuditLogListener::class],
 
         ProductCreatedEvent::class => [RecordAuditLogListener::class],
         ProductUpdatedEvent::class => [RecordAuditLogListener::class],

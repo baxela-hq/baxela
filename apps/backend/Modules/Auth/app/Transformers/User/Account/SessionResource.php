@@ -15,8 +15,15 @@ class SessionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var PersonalAccessToken|null $current */
+        // currentAccessToken() is only a PersonalAccessToken when the
+        // request carries a real bearer token; other auth (actingAs in
+        // tests, future guards) yields a TransientToken with no id —
+        // nothing is "current" then.
         $current = $request->user()?->currentAccessToken();
+
+        $currentId = $current instanceof PersonalAccessToken
+            ? $current->{PersonalAccessTokenSchema::ID}
+            : null;
 
         return [
             PersonalAccessTokenSchema::ID => $this->resource->{PersonalAccessTokenSchema::ID},
@@ -25,7 +32,7 @@ class SessionResource extends JsonResource
             PersonalAccessTokenSchema::CREATED_AT => $this->resource->{PersonalAccessTokenSchema::CREATED_AT}?->toIso8601String(),
             PersonalAccessTokenSchema::LAST_USED_AT => $this->resource->{PersonalAccessTokenSchema::LAST_USED_AT}?->toIso8601String(),
             PersonalAccessTokenSchema::EXPIRES_AT => $this->resource->{PersonalAccessTokenSchema::EXPIRES_AT}?->toIso8601String(),
-            PersonalAccessTokenSchema::IS_CURRENT => $current?->{PersonalAccessTokenSchema::ID} === $this->resource->{PersonalAccessTokenSchema::ID},
+            PersonalAccessTokenSchema::IS_CURRENT => $currentId === $this->resource->{PersonalAccessTokenSchema::ID},
         ];
     }
 }
