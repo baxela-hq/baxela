@@ -182,27 +182,50 @@ feature tests.
 
 ## 5. Phase S.4 — Admin sign-in lockout & anomaly awareness (~0.5 d)
 
+**Status: implemented (2026-11-12)** — see
+`docs/plans/security-s4-lockout-notifications.md` (7 review rounds).
+**Deviation from decision 1, adopted through review:** the lockout state
+lives in a DB table (`auth_sign_in_lockouts`, keyed by a SHA-256 of the
+canonical email), not in cache — a cache counter cannot serialize against
+token issuance (the failed-password path and the token-issuance boundary
+must share one row lock for "locked account never completes
+authentication" to hold). Device memory is likewise a persistent
+`auth_user_devices` table, not the per-token names (sign-out and forced
+revocation delete tokens, which would re-fire the notification for the
+same device). Device names are client-reported labels — the notification
+never claims verified identity. The new-device notification is registered
+as a locked (non-disableable) notification code.
+
 ### Design decisions
 
 1. **Progressive lockout:** after N failed sign-in attempts (config,
    default 5), the account is locked for M minutes (config, default 15).
    Rate limiting throttles by IP; lockout is by account — they compose.
-   The lockout is stored in cache (not a DB column) with a TTL.
+   ~~The lockout is stored in cache (not a DB column) with a TTL.~~ →
+   stored in the DB with a `locked_until` timestamp; the inactivity-reset
+   window of the failure counter equals `lockout_minutes`.
 2. **New-device sign-in notification:** when a user signs in and the
-   device name (already tracked per-token) differs from any previously
-   seen device, fire a database + email notification: "New sign-in from
-   [device]". Uses the existing Notification module; no new infrastructure.
+   device name differs from any previously seen device (persistent
+   device table), fire a database + email notification: "New sign-in from
+   [device]". Uses the existing Notification module; no new channels.
 3. **No IP geolocation in v1:** external GeoIP services are a privacy
    and dependency concern; the device-name signal is sufficient for the
    "was this you?" prompt.
 
 ### Work items
 
-- [ ] Cache-based lockout check in the sign-in action.
-- [ ] `NewDeviceSignInEvent` + Notification listener (email + database).
-- [ ] Config: `auth.lockout.{max_attempts,lockout_minutes}`.
-- [ ] Tests: lockout triggers after N failures; clears after M minutes;
-      new-device notification fires; same device doesn't re-notify.
+- [x] Lockout check + counter on the sign-in action and the
+      token-issuance boundary, serialized on the lockout-row lock
+      (DB-backed, replacing the original cache-only design).
+- [x] `NewDeviceSignInEvent` + Notification listener (email + database,
+      locked code) + persistent `auth_user_devices` registration.
+- [x] Config: `auth.lockout.{max_attempts,lockout_minutes}`.
+- [x] Tests: lockout triggers after N failures; clears after M minutes;
+      never extends under pressure; concurrency (two-connection MySQL
+      bootstrap + forced-interleave cases); new-device notification fires
+      on first use only and cannot be disabled; all three completion
+      paths (password, 2FA verify, forced enrollment) refuse locked
+      accounts.
 
 ---
 
