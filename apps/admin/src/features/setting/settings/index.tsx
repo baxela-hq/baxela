@@ -89,6 +89,12 @@ export function SettingsStore() {
 
   const hasThemeGroup = settingsSafe.some((s) => s.group === 'theme')
 
+  // Store legal identity — seeded into the GENERAL db group, so presence
+  // is detected by name; the seller block gets its own UI section.
+  const hasIdentitySection = settingsSafe.some(
+    (s) => s.name === 'store_legal_name'
+  )
+
   const form = useForm<SettingsForm>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -119,6 +125,9 @@ export function SettingsStore() {
       <Tabs defaultValue='general' className='w-full'>
           <TabsList className='w-full'>
             <TabsTrigger value='general'>{tLabel('general')}</TabsTrigger>
+            {hasIdentitySection && (
+              <TabsTrigger value='identity'>{tLabel('identity')}</TabsTrigger>
+            )}
             {hasThemeGroup && (
               <TabsTrigger value='theme'>{tLabel('theme')}</TabsTrigger>
             )}
@@ -386,55 +395,11 @@ export function SettingsStore() {
                 </TabsContent>
               )}
 
-              {hasAnnouncementGroup && (
-                <TabsContent value='announcement' className='grid gap-4'>
-                  <FormField
-                    control={form.control}
-                    name='announcement_bar_enabled'
-                    render={({ field }) => (
-                      <FormItem className='grid gap-2'>
-                        <FormLabel htmlFor='announcement_bar_enabled'>
-                          {tStatus('name.announcement_bar_enabled')}
-                        </FormLabel>
-                        <FormControl>
-                          <Switch
-                            id='announcement_bar_enabled'
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                        <FormDescription>
-                          {tTooltip('name.announcement_bar_enabled')}
-                        </FormDescription>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name='prices_include_tax'
-                    render={({ field }) => (
-                      <FormItem className='grid gap-2'>
-                        <FormLabel htmlFor='prices_include_tax'>
-                          {tStatus('name.prices_include_tax')}
-                        </FormLabel>
-                        <FormControl>
-                          <Switch
-                            id='prices_include_tax'
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                        <FormDescription>
-                          {tStatus('help_texts.prices_include_tax')}
-                        </FormDescription>
-                      </FormItem>
-                    )}
-                  />
-
+              {hasIdentitySection && (
+                <TabsContent value='identity' className='grid gap-4'>
                   {/* Store legal identity — the seller block frozen onto
+                      invoices at issue time (gap-B1 D4). */}
+{/* Store legal identity — the seller block frozen onto
                       invoices at issue time (gap-B1 D4). */}
                   <FormField
                     control={form.control}
@@ -512,6 +477,56 @@ export function SettingsStore() {
                           />
                         </FormControl>
                         <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+              )}
+
+              {hasAnnouncementGroup && (
+                <TabsContent value='announcement' className='grid gap-4'>
+                  <FormField
+                    control={form.control}
+                    name='announcement_bar_enabled'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='announcement_bar_enabled'>
+                          {tStatus('name.announcement_bar_enabled')}
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            id='announcement_bar_enabled'
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription>
+                          {tTooltip('name.announcement_bar_enabled')}
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name='prices_include_tax'
+                    render={({ field }) => (
+                      <FormItem className='grid gap-2'>
+                        <FormLabel htmlFor='prices_include_tax'>
+                          {tStatus('name.prices_include_tax')}
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            id='prices_include_tax'
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                        <FormDescription>
+                          {tStatus('help_texts.prices_include_tax')}
+                        </FormDescription>
                       </FormItem>
                     )}
                   />

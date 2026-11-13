@@ -13,7 +13,8 @@
         "default": "Default (Baxela)"
       },
       "currency": "Currency",
-      "languages": "Languages"
+      "languages": "Languages",
+      "identity": "Store identity"
     },
     "statuses": {
       "name": {
@@ -46,6 +47,12 @@
     "help_texts": {
       "announcement_text": "Text can be saved while the bar is disabled",
       "prices_include_tax": "Displayed prices contain tax; the extracted tax is informational and never added to totals."
+    },
+    "placeholders": {
+      "store_legal_name": "Baxela Commerce Ltd",
+      "store_legal_address": "Legal address on invoices",
+      "store_tax_id": "VAT / tax ID",
+      "store_contact": "billing@example.com"
     }
   }
 }

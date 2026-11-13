@@ -13,7 +13,8 @@
         "default": "الافتراضي (Baxela)"
       },
       "currency": "العملة",
-      "languages": "اللغات"
+      "languages": "اللغات",
+      "identity": "هوية المتجر"
     },
     "statuses": {
       "name": {
@@ -46,6 +47,12 @@
     "help_texts": {
       "announcement_text": "يمكن حفظ النص أثناء تعطيل الشريط",
       "prices_include_tax": "الأسعار المعروضة تتضمن الضريبة؛ الضريبة المستخرجة معلوماتية ولا تُضاف أبدًا إلى الإجماليات."
+    },
+    "placeholders": {
+      "store_legal_name": "شركة باكسيلا",
+      "store_legal_address": "العنوان القانوني على الفواتير",
+      "store_tax_id": "الرقم الضريبي",
+      "store_contact": "billing@example.com"
     }
   }
 }

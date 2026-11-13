@@ -13,7 +13,8 @@
         "default": "Standard (Baxela)"
       },
       "currency": "Währung",
-      "languages": "Sprachen"
+      "languages": "Sprachen",
+      "identity": "Shop-Identität"
     },
     "statuses": {
       "name": {
@@ -46,6 +47,12 @@
     "help_texts": {
       "announcement_text": "Der Text kann gespeichert werden, während der Balken deaktiviert ist",
       "prices_include_tax": "Angezeigte Preise enthalten die Steuer; die extrahierte Steuer ist informativ und wird nie zu Summen addiert."
+    },
+    "placeholders": {
+      "store_legal_name": "Baxela Handel GmbH",
+      "store_legal_address": "Rechtsadresse auf Rechnungen",
+      "store_tax_id": "USt-IdNr.",
+      "store_contact": "billing@example.com"
     }
   }
 }

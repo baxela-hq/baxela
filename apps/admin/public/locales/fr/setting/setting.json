@@ -13,7 +13,8 @@
         "default": "Par défaut (Baxela)"
       },
       "currency": "Devise",
-      "languages": "Langues"
+      "languages": "Langues",
+      "identity": "Identité de la boutique"
     },
     "statuses": {
       "name": {
@@ -46,6 +47,12 @@
     "help_texts": {
       "announcement_text": "Le texte peut être enregistré pendant que la barre est désactivée",
       "prices_include_tax": "Les prix affichés contiennent la taxe ; la taxe extraite est informative et n'est jamais ajoutée aux totaux."
+    },
+    "placeholders": {
+      "store_legal_name": "Baxela Commerce SAS",
+      "store_legal_address": "Adresse légale sur les factures",
+      "store_tax_id": "N° TVA",
+      "store_contact": "billing@example.com"
     }
   }
 }

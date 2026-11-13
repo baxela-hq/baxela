@@ -21,5 +21,9 @@
   "void_failed": "Stornieren fehlgeschlagen",
   "download_failed": "PDF-Download fehlgeschlagen",
   "retry_success": "Generierung wiederholt",
-  "retry_failed": "Wiederholen fehlgeschlagen"
+  "retry_failed": "Wiederholen fehlgeschlagen",
+  "credit_notes": "Gutschriften",
+  "reason": "Grund",
+  "amount": "Betrag",
+  "actions": "Aktionen"
 }

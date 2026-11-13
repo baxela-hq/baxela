@@ -21,5 +21,9 @@
   "void_failed": "فشل إبطال الفاتورة",
   "download_failed": "فشل تحميل PDF",
   "retry_success": "تمت إعادة المحاولة",
-  "retry_failed": "فشلت إعادة المحاولة"
+  "retry_failed": "فشلت إعادة المحاولة",
+  "credit_notes": "إشعارات دائنة",
+  "reason": "السبب",
+  "amount": "المبلغ",
+  "actions": "إجراءات"
 }

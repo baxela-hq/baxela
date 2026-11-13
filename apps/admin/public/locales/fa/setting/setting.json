@@ -13,7 +13,8 @@
         "default": "پوسته پیش‌فرض (باکسلا)"
       },
       "currency": "ارز",
-      "languages": "زبان‌ها"
+      "languages": "زبان‌ها",
+      "identity": "هویت فروشگاه"
     },
     "statuses": {
       "name": {
@@ -46,6 +47,12 @@
     "help_texts": {
       "announcement_text": "متن را می‌توان در حالی که نوار غیرفعال است ذخیره کرد",
       "prices_include_tax": "قیمت‌های نمایش‌داده‌شده شامل مالیات‌اند؛ مالیات استخراج‌شده اطلاعاتی است و هرگز به جمع سفارش اضافه نمی‌شود."
+    },
+    "placeholders": {
+      "store_legal_name": "شرکت باکسلا",
+      "store_legal_address": "نشانی حقوقی روی فاکتور",
+      "store_tax_id": "شناسه مالیاتی",
+      "store_contact": "billing@example.com"
     }
   }
 }

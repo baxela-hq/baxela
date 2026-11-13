@@ -21,5 +21,9 @@
   "void_failed": "Échec de l'annulation",
   "download_failed": "Échec du téléchargement PDF",
   "retry_success": "Génération relancée",
-  "retry_failed": "Échec de la relance"
+  "retry_failed": "Échec de la relance",
+  "credit_notes": "Avoirs",
+  "reason": "Motif",
+  "amount": "Montant",
+  "actions": "Actions"
 }

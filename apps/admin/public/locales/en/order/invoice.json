@@ -21,5 +21,9 @@
   "void_failed": "Failed to void invoice",
   "download_failed": "PDF download failed",
   "retry_success": "Generation retried",
-  "retry_failed": "Retry failed"
+  "retry_failed": "Retry failed",
+  "credit_notes": "Credit notes",
+  "reason": "Reason",
+  "amount": "Amount",
+  "actions": "Actions"
 }

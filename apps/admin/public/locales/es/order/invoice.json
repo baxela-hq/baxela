@@ -21,5 +21,9 @@
   "void_failed": "Error al anular",
   "download_failed": "Error al descargar PDF",
   "retry_success": "Generación reintentada",
-  "retry_failed": "Error al reintentar"
+  "retry_failed": "Error al reintentar",
+  "credit_notes": "Notas de crédito",
+  "reason": "Motivo",
+  "amount": "Importe",
+  "actions": "Acciones"
 }

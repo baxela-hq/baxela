@@ -21,5 +21,9 @@
   "void_failed": "ابطال صورتحساب ناموفق بود",
   "download_failed": "دانلود PDF ناموفق بود",
   "retry_success": "تولید مجدد انجام شد",
-  "retry_failed": "تلاش مجدد ناموفق بود"
+  "retry_failed": "تلاش مجدد ناموفق بود",
+  "credit_notes": "اعتبارنامه‌ها",
+  "reason": "دلیل",
+  "amount": "مبلغ",
+  "actions": "عملیات"
 }
