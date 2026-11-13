@@ -4,9 +4,10 @@
 > and its marketplace. Captures all decisions and build order from the planning discussion —
 > readable later without conversation history, or handable to an agent session.
 >
-> **Created:** 2026-11-01 · **Revised:** 2026-11-08 — Phase 2 is now a throwaway-proof sample
-> extension; Zarinpal deferred to Phase 6 · **Owner:** solo maintainer · **Status:** Phases 0–1
-> done (2026-11-09/10); Phase 2 next, then the marketplace phases
+> **Created:** 2026-11-01 · **Revised:** 2026-11-14 — Zarinpal removed from the plan
+> (Phase 6 dropped; examples genericized); 2026-11-08 — Phase 2 became the
+> throwaway-proof sample extension · **Owner:** solo maintainer · **Status:** Phases 0–4
+> done (2026-11-09…13); Phase 5 next
 >
 > **How to use:** Work phases strictly in order (0 → 7). Phase 0 is the hard prerequisite —
 > nothing else works without it. The marketplace waits until the extension system is proven
@@ -19,7 +20,7 @@
 | # | Decision | Reason |
 |---|----------|--------|
 | 1 | **Core platform stays geography-neutral.** No country branding, no Iranian services in core, international defaults (currency/locale/calendar). | Visible Iran-tied payment code in core would deter Western (esp. US) merchants for sanctions-compliance reasons, fairly or not. Neutral core + regional gateway extensions serves both markets. |
-| 2 | **Zarinpal lives outside core** — its own repo, published as a Composer package, installed as an extension. | Same pattern as WooCommerce/Shopify gateways: invisible to anyone who doesn't install it. Also protects the owner formally. |
+| 2 | **Production extensions live outside core** — their own repo, published as a Composer package, installed as an extension. | Same pattern as WooCommerce/Shopify gateways: invisible to anyone who doesn't install it. Also protects the owner formally. |
 | 3 | **Extensions are Composer packages.** `baxela:install` is a wrapper around `composer require` + lifecycle hooks. | Composer already solves versioning, deps, autoload, lock files. Never build custom download/verify machinery. |
 | 4 | **The marketplace is the only *supported* channel.** Side-loading via raw composer works (it's open source) but is unsupported. | Can't technically prevent it, and shouldn't — private in-house extensions are legitimate. Curation is the trust layer, not a wall. |
 | 5 | **Marketplace is an independent repo** (`baxela-marketplace`), a plain Laravel app — *not* a modular monolith, *not* inside this monorepo. | Owner plans numerous additional apps; independent repo per app. Marketplace is Package/Release/Vendor CRUD + file serving — module infra would be overkill. |
@@ -61,16 +62,16 @@ Install flow: admin panel / `baxela:search` → catalog API → `baxela:install 
 
 ```json
 "extra": {
-    "laravel": { "providers": ["Baxela\\Zarinpal\\ZarinpalServiceProvider"] },
+    "laravel": { "providers": ["Baxela\\ExampleGateway\\ExampleGatewayServiceProvider"] },
     "baxela": {
-        "name": "Zarinpal Gateway", "slug": "zarinpal",
+        "name": "Example Gateway", "slug": "example-gateway",
         "type": "payment-driver",
         "compat": { "core": "^1.0" }
     }
 }
 ```
 
-Integration contract: the provider merges itself into registries at boot, e.g. `config(['payment.drivers.zarinpal' => ZarinpalPaymentDriver::class])`. No core changes per extension — ever.
+Integration contract: the provider merges itself into registries at boot, e.g. `config(['payment.drivers.example' => ExamplePaymentDriver::class])`. No core changes per extension — ever.
 
 ## 4. Build phases
 
@@ -96,7 +97,7 @@ methods are enum cases.
 
 ### Phase 2 — Sample extension: prove the system (repo #2: `baxela/baxela-sandbox-gateway`)
 
-Deliberately **not** Zarinpal — a minimal fake payment gateway ("Sandbox Gateway") with zero
+Deliberately **not** a production gateway — a minimal fake payment gateway ("Sandbox Gateway") with zero
 external API calls. Isolating extension-system bugs from payment-provider bugs is the whole
 point: if the flow breaks here, the cause is the system. It also permanently earns its keep
 three ways: a dev/testing gateway for checkout flows without real credentials, the reference
@@ -146,14 +147,13 @@ Public face of the marketplace app; linked from the home site nav, not embedded.
 - [ ] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08).
 - [ ] "Update available" badge via the updates endpoint; changelog link. Notification only — merchant pulls.
 
-### Phase 6 — First production extension: Zarinpal (repo #4: `baxela/baxela-zarinpal`)
+### Phase 6 — REMOVED 2026-11-14 (was: first production extension, Zarinpal)
 
-Timing is flexible relative to Phases 3–5 — the build itself can start once Phase 2 passes;
-the marketplace (Phase 3) is only needed for the publish step at the end.
-
-- [ ] Same scaffold as the sample; `ZarinpalPaymentDriver` implements `PaymentDriverInterface` + `RefundableDriver` (Zarinpal's API supports refunds).
-- [ ] `config/zarinpal.php`: merchant ID, sandbox flag, callback/return URLs; `handleWebhook()` implementation — served by the existing parameterized `api/v1/payment/webhook/{driver}` route, signature-verified in the driver.
-- [ ] Publish through the marketplace as its first real third-party-shaped package — exercising submission validation, ingestion, and update-check against it.
+Zarinpal was dropped from the plan by owner decision. The first production extension —
+whatever it turns out to be — publishes through the marketplace's real submission flow
+(Phase 4's pipeline), which is exactly what the dropped phase existed to exercise.
+Phase 7 keeps its number: existing references (paid auth on the registry seam, GitLab
+sources) point at it.
 
 ### Phase 7 — Ecosystem maturity (only when there are real third-party extensions)
 

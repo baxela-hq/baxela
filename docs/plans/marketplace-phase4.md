@@ -43,9 +43,9 @@
 | P.4 | Manual review checklist + end-to-end proof gate | The phase exit: a real submission through the real flow, webhook push → auto-ingest |
 
 Not in this plan (Phase 5+ per the roadmap): admin-panel integration in the monorepo,
-Zarinpal as first production extension, paid/licensed enforcement, GitLab sources,
-abandoned-package adoption flow, core-N readiness dashboard, automated install smoke-tests
-in CI. §9 lists this plan's own explicit non-goals.
+paid/licensed enforcement, GitLab sources, abandoned-package adoption flow, core-N
+readiness dashboard, automated install smoke-tests in CI. §9 lists this plan's own
+explicit non-goals.
 
 ## 2. Verified state register (2026-11-13)
 
@@ -576,7 +576,8 @@ Phase 3 state (all verified against the codebase survey of 2026-11-13):
 
 **Phase exit: PASSED 2026-11-13.** Roadmap Phase 4 ticked; the marketplace has a public
 face, a self-served submission pipeline, and hands-off re-sync — ready for Phase 5
-(admin-panel integration) and Phase 6 (Zarinpal publishes through the real flow).
+(admin-panel integration) and the first production extension's publish through the real
+flow.
 
 ## 8. Policies this plan adds
 
