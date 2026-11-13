@@ -12,6 +12,10 @@ use Modules\Auth\Database\factories\UserFactory;
 use Modules\Auth\Schemas\User\UserSchema;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @property int $id
+ * @property string $email
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
