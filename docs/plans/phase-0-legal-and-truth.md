@@ -177,4 +177,6 @@ pushed on 2026-10-22 (LICENSE: MIT).
       same pinned image `v8.24.3` over the full 699-commit history: no leaks found;
       the Sentry fixture DSN is covered by `.gitleaksignore`)
 - [x] Root governance files exist; `apps/admin/.github/` has no upstream leftovers
-- [ ] GitHub settings checklist ticked (manual — task 0.6.3, owner)
+- [x] GitHub settings checklist ticked (owner, 2026-11-13 — description, topics,
+      social preview card generated from the repo brand assets, Discussions,
+      private vulnerability reporting; see the overnight report for details)
