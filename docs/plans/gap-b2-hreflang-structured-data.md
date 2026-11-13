@@ -6,9 +6,9 @@
 > JSON-LD rich enough for Google Merchant/Rich-Results eligibility. All facts
 > verified 2026-11-07.
 >
-> **Created:** 2026-11-07 · **Owner:** solo maintainer · **Status:** **approved**
-> (v2 review 8.5/10 → v2.1 clarifications folded in after the final review 9.4/10 —
-> see the review trail, §8) — ready to implement ·
+> **Created:** 2026-11-07 · **Owner:** solo maintainer · **Status:** **implemented
+> 2026-11-07; live-verified 2026-11-13** (v2 review 8.5/10 → v2.1 clarifications folded
+> in after the final review 9.4/10 — see the review trail, §8) ·
 > **Size:** 2–3 focused days (three phases; review-calibrated).
 >
 > **Scope note from verification:** the gap roadmap's sitemap item ("per-URL
@@ -76,24 +76,24 @@
 > the manual launch-QA gate).
 
 ### Phase A — Metadata & international SEO (storefront only)
-- [ ] `lib/seo/` scaffolding (D8): `urls.ts`, `alternates.ts` (D1 v2 — per-locale URL maps), `canonical.ts`, `metadata.ts` (OG + Twitter cards + fallbacks).
-- [ ] PDP `generateMetadata` (D2): title/description (SEO translation ⚠ else product fields), canonical = **slug** form, alternates from the entity's per-locale slugs, OG + Twitter, absolute image URLs.
-- [ ] Static routes: home, products, brands (list + detail), blog (list + post + category), pages, contact — canonical + alternates (D3).
-- [ ] **Explicit indexing decision for every utility route** (final review §8A): login/signup/forgot-password/enter-otp, profile pages, **cart, checkout, search results, wishlist, order tracking** — each gets `robots: { index: false }` or a documented reason to be indexable, with correct canonical interaction (noindex pages need no alternates).
-- [ ] `pnpm build` + rendered `<head>` spot-check on dev compose (en + fa).
+- [x] `lib/seo/` scaffolding (D8): `urls.ts`, `alternates.ts` (D1 v2 — per-locale URL maps), `canonical.ts`, `metadata.ts` (OG + Twitter cards + fallbacks).
+- [x] PDP `generateMetadata` (D2): title/description (SEO translation ⚠ else product fields), canonical = **slug** form, alternates from the entity's per-locale slugs, OG + Twitter, absolute image URLs.
+- [x] Static routes: home, products, brands (list + detail), blog (list + post + category), pages, contact — canonical + alternates (D3).
+- [x] **Explicit indexing decision for every utility route** (final review §8A): login/signup/forgot-password/enter-otp, profile pages, **cart, checkout, search results, wishlist, order tracking** — each gets `robots: { index: false }` or a documented reason to be indexable, with correct canonical interaction (noindex pages need no alternates).
+- [x] `pnpm build` + rendered `<head>` spot-check on dev compose (en + fa). *(live head spot-check re-run 2026-11-13 against the compose stack: canonical + 6 reciprocal hreflang alternates + `x-default` on the PDP, fa self-canonical, sign-in `noindex`)*
 
 ### Phase B — Structured data (storefront + availability backend field)
-- [ ] Backend: `availability` enum on the public show payload via `InventoryGateway` (D6 v2) + Pest assertions (in-stock and out-of-stock products).
-- [ ] `lib/seo/schema-org.ts` builders + `<JsonLd>` with safe serialization (D4 v2, D8).
-- [ ] Entity graph with stable `@id`s (D7 v2): `Organization` + `WebSite` in the shop layout from **store settings**; PDP `Product`/`ProductGroup` + `BreadcrumbList` mirroring the visible breadcrumbs; `Article` (dates/author where available) on posts; `BreadcrumbList` on brand/category.
-- [ ] Pricing per D5 v2: active selling price in the rendered currency, `priceSpecification` for the original price on sale, minor-unit conversion at one boundary.
-- [ ] Variant strategy (D4 v2): simple → `Product`+`Offer`; variable → `ProductGroup`/`hasVariant`/`variesBy` with per-variant offers (documented fallback to representative-variant if per-variant availability can't be sourced).
+- [x] Backend: `availability` enum on the public show payload via `InventoryGateway` (D6 v2) + Pest assertions (in-stock and out-of-stock products).
+- [x] `lib/seo/schema-org.ts` builders + `<JsonLd>` with safe serialization (D4 v2, D8).
+- [x] Entity graph with stable `@id`s (D7 v2): `Organization` + `WebSite` in the shop layout from **store settings**; PDP `Product`/`ProductGroup` + `BreadcrumbList` mirroring the visible breadcrumbs; `Article` (dates/author where available) on posts; `BreadcrumbList` on brand/category.
+- [x] Pricing per D5 v2: active selling price in the rendered currency, `priceSpecification` for the original price on sale, minor-unit conversion at one boundary.
+- [x] Variant strategy (D4 v2): simple → `Product`+`Offer`; variable → `ProductGroup`/`hasVariant`/`variesBy` with per-variant offers (documented fallback to representative-variant if per-variant availability can't be sourced).
 
 ### Phase C — Testing & validation (review §9 matrix)
-- [ ] Playwright/head assertions: en PDP (canonical + six valid alternates) · fa PDP (fa canonical + **reciprocal** alternates) · localized slug URLs resolve per language · missing product → real **404** · no-price product → no Offer node · no-rating → no `aggregateRating` · rated product → valid `aggregateRating` · variable product → variant representation · out-of-stock → availability · sale → active + original prices · login/profile → noindex · JSON-LD parses with expected `@type`s.
-- [ ] Canonical-hygiene rules (D2/§6 of review): `/products/{id}` and outdated slugs → **permanent redirect to the canonical slug** (the backend already resolves both — add the redirect at the storefront or API ⚠ verify where it belongs); query params (tracking/sort/filters/pagination) must not vary the canonical.
-- [ ] Validators: Google Rich Results test + schema.org validator on the demo PDP after deploy; Search Console setup line in the launch checklist (human gate; neither validator guarantees display).
-- [ ] CHANGELOG + roadmap tick; `docs/PLATFORM_GAPS_ROADMAP.md` B.2 updated (including the sitemap-already-done note).
+- [x] Playwright/head assertions: en PDP (canonical + six valid alternates) · fa PDP (fa canonical + **reciprocal** alternates) · localized slug URLs resolve per language · missing product → real **404** · no-price product → no Offer node · no-rating → no `aggregateRating` · rated product → valid `aggregateRating` · variable product → variant representation · out-of-stock → availability · sale → active + original prices · login/profile → noindex · JSON-LD parses with expected `@type`s. *(e2e/seo.spec.ts — runs in CI's compose stack)*
+- [x] Canonical-hygiene rules (D2/§6 of review): `/products/{id}` and outdated slugs → **permanent redirect to the canonical slug** (the backend already resolves both — add the redirect at the storefront or API ⚠ verify where it belongs); query params (tracking/sort/filters/pagination) must not vary the canonical.
+- [ ] Validators: Google Rich Results test + schema.org validator on the demo PDP after deploy; Search Console setup line in the launch checklist (human gate; neither validator guarantees display). *(launch-QA gate — stays open until a public deployment exists)*
+- [x] CHANGELOG + roadmap tick; `docs/PLATFORM_GAPS_ROADMAP.md` B.2 updated (including the sitemap-already-done note).
 
 ## 4. Edge cases
 
