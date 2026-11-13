@@ -125,6 +125,37 @@ class SettingDatabaseSeeder extends Seeder
                 SettingSchema::IS_TRANSLATABLE => false,
                 SettingSchema::VALUE => '',
             ],
+            // Store legal identity (gap-B1 D4) — the invoice seller
+            // snapshot source. Empty until the merchant fills them;
+            // issuance falls back to the app name for the legal name.
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::STORE_LEGAL_NAME,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::TEXT,
+                SettingSchema::NAME => SettingNameEnum::STORE_LEGAL_ADDRESS,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::STORE_TAX_ID,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
+            [
+                SettingSchema::GROUP => SettingGroupEnum::GENERAL,
+                SettingSchema::TYPE => SettingTypeEnum::STRING,
+                SettingSchema::NAME => SettingNameEnum::STORE_CONTACT,
+                SettingSchema::IS_TRANSLATABLE => false,
+                SettingSchema::VALUE => '',
+            ],
         ];
 
         foreach ($records as $record) {
