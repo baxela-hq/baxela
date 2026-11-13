@@ -129,13 +129,15 @@ Plain Laravel app, built slice by slice in `baxela-hq/baxela-marketplace` (M.0�
 ### Phase 4 — Marketplace frontend + submissions
 
 Public face of the marketplace app; linked from the home site nav, not embedded.
+*(planned in `docs/plans/marketplace-phase4.md`; implemented + proof gate passed
+2026-11-13 — suite 158/158, Larastan clean, Pint clean.)*
 
-- [ ] Pages: browse/search (filter by extension type, sort by downloads), package detail (README, versions, install command, compat badge).
-- [ ] GitHub OAuth sign-in; submit = paste repo URL; ownership proven via push-access check on the repo.
-- [ ] Automated validation pipeline (instant, self-served rejections): naming regex, manifest completeness, license + README, semver tag, secret scanning, red-flag greps.
-- [ ] Submission statuses: `pending → approved | rejected` (with written reason) at repo level; `flagged` (community report button), `orphaned` (repo gone), `yanked` (release pulled) operational states.
-- [ ] After approval: GitHub webhook installed on the repo → new tags auto-ingest, no re-review per release. Major version bumps / manifest changes re-flag.
-- [ ] Manual review checklist (markdown file in the marketplace repo): install cleanly in a disposable Baxela container → happy path for its type (sandbox payment + webhook for drivers) → read the webhook handler (signature verification actually enforced?) → manifest honesty.
+- [x] Pages: browse/search (filter by extension type, sort by downloads), package detail (README, versions, install command, compat badge). *(P.1 — first consumer of the Vite/Tailwind pipeline; README via league/commonmark, HTML stripped, XSS-tested; sorts: downloads (default), name, recently_ingested; yanked/all-yanked/missing 404, orphaned packages keep their offers with a banner.)*
+- [x] GitHub OAuth sign-in; submit = paste repo URL; ownership proven via push-access check on the repo. *(P.2 — hand-rolled OAuth, no Socialite; one registered callback serves sign-in (identity scopes) and submission (public_repo admin:repo_hook) intents; token encrypted at rest, task-scoped, deleted when its task ends; `permissions.admin` recorded pre-approval.)*
+- [x] Automated validation pipeline (instant, self-served rejections): naming regex, manifest completeness, license + README, semver tag, secret scanning, red-flag greps. *(P.2 — a non-publishing dry run of the real ingestion (same caps, submitter's token) plus scans riding the validated-entry walk; rejections surface pattern name + file, never the secret value; no-residue guarantee; rate-limited runs retry, they don't reject.)*
+- [x] Submission statuses: `pending → approved | rejected` (with written reason) at repo level; `flagged` (community report button), `orphaned` (repo gone), `yanked` (release pulled) operational states. *(P.2/P.3 — moderation lives on separate tables, never on the registry's active|yanked statuses; orphaned is `packages.orphaned_at` — operational, releases stay offered; flagged = deduped open flags; yanked = the existing M.4 machinery.)*
+- [x] After approval: GitHub webhook installed on the repo → new tags auto-ingest, no re-review per release. Major version bumps / manifest changes re-flag. *(P.3 — fail-closed signature-verified receiver, per-repo mutex, rate-limit-aware job; proven live with a real upstream v0.0.4 tag + signed push delivery → auto-ingest → updates endpoint offers it. Hook creation on the sandbox itself is deferred to deployment (org OAuth-app restrictions during the proof; the app is org-owned now — future submissions install cleanly; localhost can't receive deliveries regardless).)*
+- [x] Manual review checklist (markdown file in the marketplace repo): install cleanly in a disposable Baxela container → happy path for its type (sandbox payment + webhook for drivers) → read the webhook handler (signature verification actually enforced?) → manifest honesty. *(P.4 — `baxela-marketplace/docs/REVIEW_CHECKLIST.md`; the sandbox's own review carried over its M.5 install/happy-path evidence.)*
 - [ ] Later optimizations (don't build now): automated install smoke-test in CI, core-N readiness dashboard for authors.
 
 ### Phase 5 — Admin panel integration (`apps/admin`)
