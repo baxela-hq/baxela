@@ -20,6 +20,18 @@ return [
         'lockout_minutes' => env('AUTH_LOCKOUT_MINUTES', 15),
     ],
 
+    // S.1 two-factor authentication. `enabled=false` removes the sign-in
+    // challenge and the forced super-admin enrollment ENTIRELY — an
+    // enrolled account signs in with password alone (enrollment data is
+    // preserved, so re-enabling restores every factor). Intended for
+    // local development; production keeps the roadmap policy "admin
+    // access is two-factor".
+    'two_factor' => [
+        'enabled' => env('AUTH_TWO_FACTOR_ENABLED', true),
+        // S.1 D9: force super-admins through enrollment at sign-in.
+        'force_super_admin' => env('AUTH_TWO_FACTOR_FORCE_SUPER_ADMIN', true),
+    ],
+
     // Sanctum personal access token lifetimes, in days. `days` applies when
     // remember-me is requested (or the field is omitted); `short_days` when a
     // client explicitly signs in without remembering the device. Tokens are

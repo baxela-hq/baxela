@@ -83,7 +83,11 @@ class SignInAction extends AbstractAction
             'cart_token' => $this->cartToken($request),
         ];
 
-        if ($user->{UserSchema::TWO_FACTOR_CONFIRMED_AT} !== null) {
+        // S.1: 2FA branches. `auth.two_factor.enabled=false` (local dev)
+        // removes the sign-in challenge and forced enrollment entirely —
+        // an enrolled account signs in with password alone; enrollment
+        // data is preserved, so re-enabling restores every factor.
+        if (config('auth.two_factor.enabled', true) && $user->{UserSchema::TWO_FACTOR_CONFIRMED_AT} !== null) {
             $challengeToken = $this->challenges->issue(
                 $user,
                 TwoFactorChallengeTypeEnum::SIGN_IN,
@@ -96,7 +100,7 @@ class SignInAction extends AbstractAction
             ];
         }
 
-        if ($this->forcedEnrollment($user)) {
+        if (config('auth.two_factor.enabled', true) && $this->forcedEnrollment($user)) {
             $challengeToken = $this->challenges->issue(
                 $user,
                 TwoFactorChallengeTypeEnum::ENROLLMENT,

@@ -12,6 +12,16 @@ use PragmaRX\Google2FA\Google2FA;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+// Each test starts with 2FA enabled; the disabled-config tests opt out
+// explicitly and restore it when they finish.
+beforeEach(function () {
+    config(['auth.two_factor.enabled' => true]);
+});
+
+afterEach(function () {
+    config(['auth.two_factor.enabled' => true]);
+});
+
 function twoFactorUser(array $overrides = []): User
 {
     $user = User::factory()->create(array_merge([
@@ -448,4 +458,33 @@ it('secret and recovery codes never appear in serialized user resources', functi
     expect(json_encode($json))->not->toContain('two_factor_secret')
         ->and(json_encode($json))->not->toContain('two_factor_recovery_codes')
         ->and(json_encode($json))->not->toContain('two_factor_last_used_step');
+});
+
+it('signs in directly when two-factor is disabled by config, even for enrolled users', function () {
+    config(['auth.two_factor.enabled' => false]);
+    [$user] = enrolledUser();
+
+    $response = $this->postJson($this->baseUrl('/public/auth/signin'), [
+        UserSchema::EMAIL => $user->{UserSchema::EMAIL},
+        UserSchema::PASSWORD => '12345678',
+    ])->assertOk();
+
+    expect($response->json('data.token'))->not->toBeNull()
+        ->and($response->json('data.two_factor_required'))->toBeNull()
+        ->and($response->json('data.challenge_token'))->toBeNull();
+});
+
+it('signs in a super-admin directly when two-factor is disabled by config', function () {
+    config(['auth.two_factor.enabled' => false, 'auth.two_factor.force_super_admin' => true]);
+
+    $user = twoFactorUser();
+    $user->assignRole($this->superAdminRole());
+
+    $response = $this->postJson($this->baseUrl('/public/auth/signin'), [
+        UserSchema::EMAIL => $user->{UserSchema::EMAIL},
+        UserSchema::PASSWORD => '12345678',
+    ])->assertOk();
+
+    expect($response->json('data.token'))->not->toBeNull()
+        ->and($response->json('data.two_factor_enrollment_required'))->toBeNull();
 });
