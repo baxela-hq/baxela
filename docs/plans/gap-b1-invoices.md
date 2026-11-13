@@ -425,11 +425,25 @@ Nothing below may invent a transition not listed here.
       with the new files' Eloquent false-positive family; Pint clean)*
 
 **Remaining slivers after this pass (tracked here so silence doesn't read
-as oversight):** the admin invoices tab + storefront download button (React/Next
-surfaces over the tested endpoints), the CN-issued email (one matrix entry +
-blade pair on the now-generic attachment machinery), the store-identity fields
-in the admin Settings UI, the S3-down test case, and the ERD/module-graph regen
-at release time.
+as oversight):** ~~the admin invoices tab + storefront download button~~, ~~the
+CN-issued email~~, ~~the store-identity fields in the admin Settings UI~~,
+~~the S3-down test case~~, and the ERD/module-graph regen at release time.
+
+*Slivers closed 2026-11-12/13 — this paragraph had gone stale:* the CN email,
+S3-down test, admin invoices tab and storefront download button landed in
+`6b93b118`/`64f36d6d`/`38259bae` (2026-11-12) without re-ticking here. A
+code-verified sweep on 2026-11-13 then closed what was genuinely still open:
+the **admin credit-notes table** (the API layer, zod type and query hook had
+shipped unused — a Credit notes tab now sits on the invoices page, sharing its
+URL state so a number search works from either side of the document chain) and
+the **store-identity settings defect** (the four fields rendered inside the
+announcement tab's conditional and their DB rows were never created, so the
+always-submitting settings form hit `firstOrFail` — rows now seed idempotently
+with the FX pattern and the fields live in their own "Store identity" tab;
+`StoreIdentitySettingsTest` pins seeding, PATCH persistence and re-seed
+preservation). Still deferred to release time: the ERD/module-graph regen.
+Known future work, out of sliver scope: user-facing credit-note endpoints +
+storefront CN downloads (CN list/PDF is admin-only today).
 
 ## 6. Edge cases (each maps to a named decision + a test)
 
