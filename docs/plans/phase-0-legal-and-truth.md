@@ -173,7 +173,8 @@ pushed on 2026-10-22 (LICENSE: MIT).
 - [x] `LICENSE` at root (MIT) + credits in admin README (credits already existed)
 - [x] `grep` sweep from 0.2.7 returns no false claims
 - [x] `modules.md` / `v1/modules.md` list 19 real modules
-- [ ] gitleaks job green in CI (job added; verify on next push — if the Sentry test
-      fixture DSN trips it, add a `.gitleaksignore` entry per task 0.4.2)
+- [x] gitleaks job green in CI (job added; verified 2026-11-13 — local run with the
+      same pinned image `v8.24.3` over the full 699-commit history: no leaks found;
+      the Sentry fixture DSN is covered by `.gitleaksignore`)
 - [x] Root governance files exist; `apps/admin/.github/` has no upstream leftovers
 - [ ] GitHub settings checklist ticked (manual — task 0.6.3, owner)
