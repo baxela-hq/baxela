@@ -12,7 +12,8 @@
       "admin_note": "Admin-Notiz",
       "restore_stock": "Bestand wiederherstellen",
       "created_at": "Angefragt am",
-      "updated_at": "Aktualisiert am"
+      "updated_at": "Aktualisiert am",
+      "name": "Name"
     },
     "help_texts": {
       "restore_stock": "Fügt die zurückgegebenen Mengen wieder zum Lagerbestand hinzu (genau einmal)"

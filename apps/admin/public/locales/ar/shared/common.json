@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "قائمة {{entity}}",
-      "subtitle": "اعرض جميع {{entity}} وأدِرها"
+      "subtitle": "اعرض جميع {{entity}} وأدِرها",
+      "loading": "جارٍ تحميل {{entity}}…"
     },
     "form": {
       "title_create": "إنشاء {{entity}}",
@@ -83,16 +84,23 @@
       "add": "إضافة",
       "add_item": "إضافة عنصر",
       "remove_item": "إزالة عنصر",
-      "sessions": "الجلسات"
+      "sessions": "الجلسات",
+      "upload": "تحميل"
     },
     "placeholders": {
       "input": "أدخل قيمة هنا",
       "select": "اختر خيارًا",
       "textarea": "اكتب هنا",
-      "search": "بحث…"
+      "search": "بحث…",
+      "select_product_first": "اختر منتجًا أولاً",
+      "rate": "السعر"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "إجراءات",
+    "cancel": "إلغاء"
   }
 }

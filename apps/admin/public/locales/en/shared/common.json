@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "{{entity}} List",
-      "subtitle": "View and manage all {{entity}}"
+      "subtitle": "View and manage all {{entity}}",
+      "loading": "Loading {{entity}}…"
     },
     "form": {
       "title_create": "Create a {{entity}}",
@@ -83,16 +84,23 @@
       "add": "Add",
       "add_item": "Add Item",
       "remove_item": "Remove Item",
-      "sessions": "Sessions"
+      "sessions": "Sessions",
+      "upload": "Upload"
     },
     "placeholders": {
       "input": "Enter a value here",
       "select": "Select an option",
       "textarea": "Write here",
-      "search": "Search…"
+      "search": "Search…",
+      "select_product_first": "Select a product first",
+      "rate": "Rate"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "Actions",
+    "cancel": "Cancel"
   }
 }

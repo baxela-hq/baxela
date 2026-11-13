@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "{{entity}}-Liste",
-      "subtitle": "Alle {{entity}} anzeigen und verwalten"
+      "subtitle": "Alle {{entity}} anzeigen und verwalten",
+      "loading": "{{entity}} wird geladen…"
     },
     "form": {
       "title_create": "{{entity}} erstellen",
@@ -83,16 +84,23 @@
       "add": "Hinzufügen",
       "add_item": "Element hinzufügen",
       "remove_item": "Element entfernen",
-      "sessions": "Sitzungen"
+      "sessions": "Sitzungen",
+      "upload": "Hochladen"
     },
     "placeholders": {
       "input": "Geben Sie hier einen Wert ein",
       "select": "Wählen Sie eine Option",
       "textarea": "Hier schreiben",
-      "search": "Suchen…"
+      "search": "Suchen…",
+      "select_product_first": "Zuerst ein Produkt auswählen",
+      "rate": "Kurs"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "Aktionen",
+    "cancel": "Abbrechen"
   }
 }

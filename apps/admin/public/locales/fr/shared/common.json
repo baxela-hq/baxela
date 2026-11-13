@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "Liste des {{entity}}",
-      "subtitle": "Consulter et gérer tous les {{entity}}"
+      "subtitle": "Consulter et gérer tous les {{entity}}",
+      "loading": "Chargement de {{entity}}…"
     },
     "form": {
       "title_create": "Créer un {{entity}}",
@@ -83,16 +84,23 @@
       "add": "Ajouter",
       "add_item": "Ajouter un élément",
       "remove_item": "Retirer l'élément",
-      "sessions": "Sessions"
+      "sessions": "Sessions",
+      "upload": "Téléverser"
     },
     "placeholders": {
       "input": "Saisissez une valeur ici",
       "select": "Sélectionnez une option",
       "textarea": "Écrivez ici",
-      "search": "Rechercher…"
+      "search": "Rechercher…",
+      "select_product_first": "Sélectionnez d'abord un produit",
+      "rate": "Taux"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "Actions",
+    "cancel": "Annuler"
   }
 }

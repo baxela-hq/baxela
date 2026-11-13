@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "Lista de {{entity}}",
-      "subtitle": "Vea y gestione todos los {{entity}}"
+      "subtitle": "Vea y gestione todos los {{entity}}",
+      "loading": "Cargando {{entity}}…"
     },
     "form": {
       "title_create": "Crear un {{entity}}",
@@ -83,16 +84,23 @@
       "add": "Añadir",
       "add_item": "Añadir elemento",
       "remove_item": "Quitar elemento",
-      "sessions": "Sesiones"
+      "sessions": "Sesiones",
+      "upload": "Subir"
     },
     "placeholders": {
       "input": "Introduzca un valor aquí",
       "select": "Seleccione una opción",
       "textarea": "Escriba aquí",
-      "search": "Buscar…"
+      "search": "Buscar…",
+      "select_product_first": "Seleccione primero un producto",
+      "rate": "Tasa"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "Acciones",
+    "cancel": "Cancelar"
   }
 }

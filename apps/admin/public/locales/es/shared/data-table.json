@@ -55,5 +55,6 @@
     "go-last-page": "Ir a la última página",
     "go-next-page": "Ir a la página siguiente",
     "go-previous-page": "Ir a la página anterior"
-  }
+  },
+  "no_results": "No se encontraron resultados"
 }

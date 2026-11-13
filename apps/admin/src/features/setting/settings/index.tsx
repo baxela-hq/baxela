@@ -524,7 +524,7 @@ export function SettingsStore() {
                         </FormControl>
                         <FormMessage />
                         <FormDescription>
-                          {tStatus('help_texts.prices_include_tax')}
+                          {tHelpText('prices_include_tax')}
                         </FormDescription>
                       </FormItem>
                     )}

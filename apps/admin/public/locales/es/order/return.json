@@ -12,7 +12,8 @@
       "admin_note": "Nota del administrador",
       "restore_stock": "Restaurar existencias",
       "created_at": "Solicitado el",
-      "updated_at": "Actualizado el"
+      "updated_at": "Actualizado el",
+      "name": "Nombre"
     },
     "help_texts": {
       "restore_stock": "Añade de nuevo las cantidades devueltas al inventario (exactamente una vez)"

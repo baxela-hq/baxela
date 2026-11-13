@@ -2,7 +2,8 @@
   "page_titles": {
     "index": {
       "title": "لیست {{entity}}",
-      "subtitle": "مشاهده و مدیریت تمام {{entity}}"
+      "subtitle": "مشاهده و مدیریت تمام {{entity}}",
+      "loading": "در حال بارگذاری {{entity}}…"
     },
     "form": {
       "title_create": "ایجاد یک {{entity}}",
@@ -83,16 +84,23 @@
       "add": "اضافه کردن",
       "add_item": "اضافه کردن آیتم",
       "remove_item": "حذف آیتم",
-      "sessions": "نشست‌ها"
+      "sessions": "نشست‌ها",
+      "upload": "بارگذاری"
     },
     "placeholders": {
       "input": "مقداری وارد کنید",
       "select": "یک گزینه انتخاب کنید",
       "textarea": "اینجا بنویسید",
-      "search": "جستجو…"
+      "search": "جستجو…",
+      "select_product_first": "ابتدا محصول را انتخاب کنید",
+      "rate": "نرخ"
     },
     "help_texts": {},
     "statuses": {},
     "validation": {}
+  },
+  "actions": {
+    "title": "عملیات",
+    "cancel": "لغو"
   }
 }

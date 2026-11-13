@@ -12,7 +12,8 @@
       "admin_note": "Note d'administration",
       "restore_stock": "Restaurer le stock",
       "created_at": "Demandé le",
-      "updated_at": "Mis à jour le"
+      "updated_at": "Mis à jour le",
+      "name": "Nom"
     },
     "help_texts": {
       "restore_stock": "Ajoute les quantités retournées au stock (exactement une fois)"

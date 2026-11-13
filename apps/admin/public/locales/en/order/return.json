@@ -12,7 +12,8 @@
       "admin_note": "Admin note",
       "restore_stock": "Restore stock",
       "created_at": "Requested At",
-      "updated_at": "Updated At"
+      "updated_at": "Updated At",
+      "name": "Name"
     },
     "help_texts": {
       "restore_stock": "Adds the returned quantities back to inventory (exactly once)"
