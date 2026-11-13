@@ -114,15 +114,17 @@ implementation for marketplace authors, and the first package the marketplace in
   - [x] `baxela:remove` unregisters everything cleanly *(row, method row via uninstall hook, vendor package, driver)*
 - [x] **End-to-end proof without any marketplace.** Do not start Phase 3 before this passes. *(passed 2026-11-10; steady state is mountable-not-installed — install is one command, and an always-installed dev extension would change registry-derived test expectations per machine)*
 
-### Phase 3 — Marketplace app (repo #3: `baxela-marketplace`)
+### Phase 3 — Marketplace app (repo #3: `baxela-marketplace`) — **DONE 2026-11-13**
 
-Plain Laravel app. Three jobs only, in this order:
+Plain Laravel app, built slice by slice in `baxela-hq/baxela-marketplace` (M.0–M.5; see
+`docs/plans/marketplace-phase3.md` for the execution trail and the M.5 proof log):
 
-- [ ] Composer registry: `packages.json` route + dist zip serving, generated from DB. App skeleton in the monorepo ships `"repositories": [{ "type": "composer", "url": "https://repo.baxela…/…" }]`.
-- [ ] Ingestion: `marketplace:sync vendor/repo` (fetch tags + composer.json via GitHub API → releases + zips) behind a `SourceProvider` interface (GitHub-only v1; GitLab later).
-- [ ] Catalog API: search/list endpoint + `POST /api/packages/updates` (input: core version + installed slugs/versions → compatible updates only).
-- [ ] **Reserve the auth pathway now** (token-filtered `packages.json` middleware) even though v1 is anonymous read — this is how paid/licensed extensions will gate installs later.
-- [ ] Back office: minimal internal panel (Filament is fine) — approve/reject, releases, stats.
+- [x] Composer registry: `packages.json` route + dist zip serving, generated from DB. App skeleton in the monorepo ships `"repositories": [{ "type": "composer", "url": "https://repo.baxela…/…" }]`. *(M.1 — flat document with tag-derived versions injected, self-hosted dist zips with `no-store`, yank-omission semantics, explicit cache flush on every mutation. The skeleton's registry URL is deliberately NOT added yet — it gains the entry only when the registry is deployed publicly; the path entry stays for dev.)*
+- [x] Ingestion: `marketplace:sync vendor/repo` (fetch tags + composer.json via GitHub API → releases + zips) behind a `SourceProvider` interface (GitHub-only v1; GitLab later). *(M.2 — SHA-first sync with unchanged-tag skip, drift report-only, contract enforcement, hardened streaming archive processing; the LIVE proof found and fixed a real PAX-header bug in the tar reader.)*
+- [x] Catalog API: search/list endpoint + `POST /api/packages/updates` (input: core version + installed slugs/versions → compatible updates only). *(M.3 — semver-ordered selection and the explicit six-state response contract incl. never-downgrade.)*
+- [x] **Reserve the auth pathway now** (token-filtered `packages.json` middleware) even though v1 is anonymous read — this is how paid/licensed extensions will gate installs later. *(M.1 — `EnsureRegistryToken`: constant-time, HTTPS-in-production, malformed-401, both states tested.)*
+- [x] Back office: minimal internal panel (Filament is fine) — approve/reject, releases, stats. *(M.4 — plain Blade (the plan's fallback, zero dependencies): yank/unyank at package AND release level with required reason, audit-log viewer, download counters; no create/edit. Approve/reject is Phase 4's submission flow.)*
+- [x] **Phase exit proof (M.5, 2026-11-13):** sandbox ingested live from `baxela-hq/baxela-sandbox-gateway` (v0.0.1–v0.0.3); clean monorepo checkout installed/updated/removed the extension through the real composer client against the locally served registry; yank 0.0.1 withdrawn from document+dist; yank-after-install left the installed copy intact with no forced downgrade; composer-client cache honesty proven (yanked version uninstallable after cache expiry). Owner action resolved: the dead GitHub token was at `~/.composer/auth.json` (not `~/.config/composer/`); its github-oauth entry removed with a backup kept.
 
 ### Phase 4 — Marketplace frontend + submissions
 

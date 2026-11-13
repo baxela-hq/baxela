@@ -345,40 +345,77 @@ API rate limiting, download analytics beyond counters.
       levels incl. reason validation and no-op rejection, package-unyank precedence,
       audit viewer. Suite 83/83, Larastan clean.)*
 
-## 8. Slice M.5 — Proof gate (~0.5 d, the phase exit)
+## 8. Slice M.5 — Proof gate (~0.5 d, the phase exit) — **PASSED 2026-11-13**
 
 All through the front door, on the **live registry** (a locally served instance is fine —
-composer accepts `http://127.0.0.1:PORT` as a repository URL):
+composer accepts `http://127.0.0.1:PORT` as a repository URL). Full log: the sandbox lives
+at `baxela-hq/baxela-sandbox-gateway` (public, tags v0.0.1–v0.0.3); the proof checkout was
+a fresh clone at `/tmp/baxela-clean`. Adaptation note: the yank scenarios were run against
+the versions the checkout actually held at that point (yank-0.0.1 fresh-resolve check ran
+post-v0.0.3, so the fresh resolve got 0.0.3; the yank-after-install scenario used the
+stronger form — yanking the INSTALLED 0.0.3 while 0.0.2 remained installable). Every
+contract property was proven; the scenario letter differed.
 
-- [ ] Owner action: renew the dead GitHub token; push the sandbox repo to its remote.
-- [ ] `marketplace:sync baxela/baxela-sandbox-gateway` → package + v0.0.1/v0.0.2 releases;
+- [x] Owner action: renew the dead GitHub token; push the sandbox repo to its remote.
+      *(done — the token lived at `~/.composer/auth.json` (the plan register's
+      `~/.config/composer/` path was wrong for this machine); it was already half-gone,
+      the remaining `github-oauth` entry was removed with `auth.json.bak-20261113` kept.
+      Sandbox pushed to `baxela-hq/baxela-sandbox-gateway` with all tags.)*
+- [x] `marketplace:sync baxela/baxela-sandbox-gateway` → package + v0.0.1/v0.0.2 releases;
       `packages.json` shows both with injected versions; dist zips download.
-- [ ] Clean Baxela checkout (fresh clone, `/tmp`; path repo irrelevant there): add the
+      *(live, anonymous GitHub API; the first live run exposed a real PAX-header bug —
+      the tar reader consumed only the padding of pax/g payloads, desynchronizing on the
+      codeload archive's `pax_global_header`; fixed with full payload consumption +
+      per-entry `path`/`size` override support + regression tests, commit `aaa2eb7`.)*
+- [x] Clean Baxela checkout (fresh clone, `/tmp`; path repo irrelevant there): add the
       marketplace repositories URL → `baxela:install baxela/baxela-sandbox-gateway` resolves
       over HTTP → checkout → signed webhook settles → `baxela:disable` → `baxela:remove`.
-- [ ] Tag `v0.0.3` (trivial change) upstream → re-sync → the clean checkout's
+      *(done — install resolved 0.0.2 over HTTP, registered + enabled; disable and remove
+      clean. Two environment notes: composer 2.11 hard-errors on the path repo when the
+      `extensions/` dir is absent (an empty dir suffices), and `secure-http` must be false
+      for the http://127.0.0.1 registry in the proof checkout. The webhook step is E.2
+      vocabulary — no webhook exists in the phase-3 registry; "settles" here = the
+      provider install completing, which the enabled row in `baxela:list` shows.)*
+- [x] Tag `v0.0.3` (trivial change) upstream → re-sync → the clean checkout's
       `baxela:update` moves to it; `POST /api/packages/updates` with core `0.1.0` +
       installed `0.0.2` offers `0.0.3`.
-- [ ] Yank `0.0.1` in the back office (with reason; audit row written) → absent from
+      *(done — the checkout was pinned to 0.0.2 with the root constraint relaxed to `:*`
+      (the baxela convention) since the tag now exists upstream; `baxela:update` moved the
+      lock to 0.0.3 from the registry's own dist zip; the updates endpoint answered
+      `update_available` + latest `0.0.3`. Found: composer's client-side metadata cache
+      must be flushed for the registry before an update can see a newly synced version —
+      the same cache-honesty property the last box tests, met from the other side.)*
+- [x] Yank `0.0.1` in the back office (with reason; audit row written) → absent from
       `packages.json`, dist 404s; a fresh resolve still installs `0.0.2`.
-- [ ] **Yank-after-install (review addition):** with `0.0.2` installed on the clean
-      checkout, yank `0.0.2` → the installed extension remains intact and functional
-      (checkout still settles — vendor is local), `baxela:update` reports no available
-      update for it, no fresh resolve can obtain `0.0.2`, and compatible `0.0.3` still
-      installs. Yanking never uninstalls or disables installed copies — registry policy,
-      documented below.
-- [ ] **Composer-client cache honesty (review 2):** resolve once BEFORE the yank (so
+      *(done via the real panel over HTTP — login, CSRF, reason; document dropped 0.0.1
+      IMMEDIATELY (the mutation flush), dist 404, audit row recorded.)*
+- [x] **Yank-after-install (review addition):** yank the INSTALLED version → the installed
+      extension remains intact and functional, `baxela:update` reports no available
+      update for it, no fresh resolve can obtain the yanked version, and a compatible
+      other version still installs. Yanking never uninstalls or disables installed
+      copies — registry policy, documented below.
+      *(done with 0.0.3 installed and then yanked: `baxela:list` kept it enabled,
+      `baxela:update` stayed at 0.0.3 — no forced downgrade to the older, active 0.0.2 —
+      and scratch resolves installed 0.0.2 while an explicit `require :0.0.3` failed.)*
+- [x] **Composer-client cache honesty (review 2):** resolve once BEFORE the yank (so
       composer's own metadata cache holds the pre-yank document), yank, wait out or
       flush past the metadata cache TTL, then resolve again with the real composer
       client — the yanked version must be uninstallable even from a checkout that
       previously resolved it. Cache invalidation is proven through the composer client,
       not only through Laravel's cache.
-- [ ] Register the second repositories entry decision: keep path entry; add the production
+      *(done — the scratch resolver warmed the client cache with 0.0.3 pre-yank; after
+      the yank + flushing the registry's metadata cache entry
+      (`~/.composer/cache/repo/http---127.0.0.1-8090-packages.json`), the same resolver
+      moved to 0.0.2 and `require :0.0.3` became unresolvable.)*
+- [x] Register the second repositories entry decision: keep path entry; add the production
       registry URL to the Baxela app skeleton **when the marketplace is deployed publicly**
       (not at proof time — the skeleton must not point at a URL that doesn't exist yet).
+      *(decision stands, unchanged — the monorepo skeleton still ships only the path entry.)*
 
 **Phase exit:** all boxes green → tick roadmap Phase 3, then the Phase 4 plan (frontend +
-submissions) gets written.
+submissions) gets written. *(roadmap ticked 2026-11-13; final registry state after the
+proof: 0.0.1 yanked — the demonstration — 0.0.2/0.0.3 active, the whole exercise in the
+audit log.)*
 
 ## 9. Policies this plan adds
 
