@@ -655,6 +655,11 @@ install smoke-tests in CI, core-N readiness dashboard.
   **Nits folded:** README filename case-pinning, `actor_email` pseudo-actor docblock,
   approve idempotence guard, report note cap, downloads-sum consistency, anchored route
   constraint. Green light for implementation.
+- 2026-11-14 — Zarinpal removed from the roadmap (owner decision: Phase 6 tombstoned,
+  Phase 7 numbering kept so the paid-auth/GitLab references stay valid). Panel stack
+  re-decided: the marketplace back office STAYS plain Blade — Filament only as a future
+  wholesale-replacement slice, triggered by sustained review volume or Phase 7's
+  paid-era administration, with the Filament × L13 compat check done first.
 - 2026-11-13 — **implementation note (P.2):** GitHub OAuth apps register exactly ONE
   callback URL, and the plan's separate `/auth/github/submit/callback` would be rejected
   as a non-subset of it. Reality: ONE callback (`/auth/github/callback`) serves both
