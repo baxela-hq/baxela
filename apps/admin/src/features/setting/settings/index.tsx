@@ -54,9 +54,8 @@ export function SettingsStore() {
   const { tAction, tPageTitle, tPlaceHolder } = useAppTranslation(
     Locales.SHARED_COMMON
   )
-  const { tLabel, tStatus, tTooltip, tHelpText } = useAppTranslation(
-    Locales.SETTING
-  )
+  const { tLabel, tStatus, tTooltip, tHelpText, tPlaceHolder: tSettingPlaceHolder } =
+    useAppTranslation(Locales.SETTING)
 
   const entityName = {
     singular: tLabel('setting'),
@@ -412,7 +411,7 @@ export function SettingsStore() {
                         <FormControl>
                           <Input
                             id='store_legal_name'
-                            placeholder={tPlaceHolder('store_legal_name')}
+                            placeholder={tSettingPlaceHolder('store_legal_name')}
                             {...field}
                           />
                         </FormControl>
@@ -432,7 +431,7 @@ export function SettingsStore() {
                         <FormControl>
                           <Input
                             id='store_legal_address'
-                            placeholder={tPlaceHolder('store_legal_address')}
+                            placeholder={tSettingPlaceHolder('store_legal_address')}
                             {...field}
                           />
                         </FormControl>
@@ -452,7 +451,7 @@ export function SettingsStore() {
                         <FormControl>
                           <Input
                             id='store_tax_id'
-                            placeholder={tPlaceHolder('store_tax_id')}
+                            placeholder={tSettingPlaceHolder('store_tax_id')}
                             {...field}
                           />
                         </FormControl>
@@ -472,7 +471,7 @@ export function SettingsStore() {
                         <FormControl>
                           <Input
                             id='store_contact'
-                            placeholder={tPlaceHolder('store_contact')}
+                            placeholder={tSettingPlaceHolder('store_contact')}
                             {...field}
                           />
                         </FormControl>
