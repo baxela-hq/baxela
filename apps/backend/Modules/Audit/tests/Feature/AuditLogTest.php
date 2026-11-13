@@ -10,9 +10,12 @@ use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Contact\Models\ContactMessage;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageStatusEnum;
 
-uses(RefreshDatabase::class);
-uses(HelperTrait::class);
+uses(RefreshDatabase::class, HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function auditLogRow(array $overrides = []): array
 {
     return array_merge([
@@ -35,10 +38,9 @@ it('records an admin mutation with actor, entity and request context', function 
     $this->patchJson('api/v1/contact/admin/messages/'.$message->id.'/status', ['status' => 'replied'])
         ->assertOk();
 
-    $log = AuditLog::query()->where(AuditLogSchema::MODULE, 'contact')->first();
+    $log = AuditLog::query()->where(AuditLogSchema::MODULE, 'contact')->firstOrFail();
 
-    expect($log)->not->toBeNull()
-        ->and($log->{AuditLogSchema::USER_ID})->toBe($admin->id)
+    expect($log->{AuditLogSchema::USER_ID})->toBe($admin->id)
         ->and($log->{AuditLogSchema::ENTITY})->toBe('contact_message')
         ->and($log->{AuditLogSchema::ACTION})->toBe('status_updated')
         ->and($log->{AuditLogSchema::ENTITY_ID})->toBe($message->id)

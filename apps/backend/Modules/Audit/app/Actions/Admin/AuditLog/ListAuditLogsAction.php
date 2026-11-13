@@ -5,6 +5,7 @@ namespace Modules\Audit\Actions\Admin\AuditLog;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Audit\Filters\CreatedFromFilter;
 use Modules\Audit\Filters\CreatedToFilter;
+use Modules\Audit\Models\AuditLog;
 use Modules\Audit\Schemas\AuditLog\AuditLogSchema;
 use Modules\Core\Utils\Pagination;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -12,6 +13,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListAuditLogsAction extends AbstractAuditLogAction
 {
+    /**
+     * @return LengthAwarePaginator<int, AuditLog>
+     */
     public function handle(): LengthAwarePaginator
     {
         $id = AuditLogSchema::TABLE.'.'.AuditLogSchema::ID;

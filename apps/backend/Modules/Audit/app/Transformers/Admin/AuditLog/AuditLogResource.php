@@ -4,13 +4,30 @@ namespace Modules\Audit\Transformers\Admin\AuditLog;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use Modules\Audit\Schemas\AuditLog\AuditLogSchema;
+use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\User\UserSchema;
 
+/**
+ * @property int $id
+ * @property string $module
+ * @property string $entity
+ * @property string $action
+ * @property int|string|null $entity_id
+ * @property array<string, mixed>|null $properties
+ * @property string|null $ip_address
+ * @property string|null $user_agent
+ * @property Carbon|null $created_at
+ * @property User|null $user
+ */
 class AuditLogResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     */
+    /**
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {

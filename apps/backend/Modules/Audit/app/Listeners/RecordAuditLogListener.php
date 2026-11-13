@@ -76,8 +76,8 @@ class RecordAuditLogListener
                 AuditLogSchema::ACTION => $this->actionName($event),
                 AuditLogSchema::ENTITY_ID => $payload['id'] ?? null,
                 AuditLogSchema::PROPERTIES => $payload,
-                AuditLogSchema::IP_ADDRESS => request()?->ip(),
-                AuditLogSchema::USER_AGENT => request()?->userAgent(),
+                AuditLogSchema::IP_ADDRESS => request()->ip(),
+                AuditLogSchema::USER_AGENT => request()->userAgent(),
             ]);
         } catch (Throwable $e) {
             // An audit failure must never break the request it is auditing.

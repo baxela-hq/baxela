@@ -4,6 +4,11 @@ includes:
 
 parameters:
     level: 6
+    universalObjectCratesClasses:
+        # Fluent pending-call proxies — method calls resolve at runtime,
+        # so static analysis cannot verify method names on them.
+        - Pest\PendingCalls\TestCall
+        - Pest\Support\HigherOrderTapProxy
     paths:
         - app
         - Modules
