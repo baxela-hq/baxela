@@ -365,11 +365,11 @@ Suggested commits: `refactor(admin): remove shadcn-admin auth and settings lefto
 
 ## Definition of done
 
-- [ ] Throttle + OTP-lockout tests green; admin-route protection audit test green
+- [x] Throttle + OTP-lockout tests green; admin-route protection audit test green
 - [ ] `e2e` workflow green on main (or `continue-on-error` with a tracking issue)
-- [ ] Currency switcher demoable end-to-end; orders snapshot display currency + rate
-- [ ] `check-i18n-parity.mjs` green with 6 locales in both apps; `ar` renders RTL
-- [ ] S3 upload/delete/URL tests green; record-disk bugs fixed
-- [ ] `/docs/api` renders locally; `openapi.json` artifact attached to CI runs
+- [x] Currency switcher demoable end-to-end; orders snapshot display currency + rate
+- [x] `check-i18n-parity.mjs` green with 6 locales in both apps; `ar` renders RTL
+- [x] S3 upload/delete/URL tests green; record-disk bugs fixed *(done — `Media/tests/Feature/Admin/Media/MediaDiskTest` exercises the s3 disk)*
+- [x] `/docs/api` renders locally; `openapi.json` artifact attached to CI runs
 - [ ] Shipping admin + Menu tests merged; phpstan baseline < 500; phpstan CI job live
 - [ ] No template leftovers; builds green in both frontends

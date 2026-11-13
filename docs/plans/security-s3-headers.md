@@ -13,7 +13,8 @@
 > 7.5/10 — nginx inheritance misdiagnosis corrected, ownership split
 > adopted), rev 2 (review 2, 9.0/10 — Symfony response type, trusted-proxy
 > handling, deterministic tests), rev 3 (this document, pending review);
-> see §8 · **Owner:** solo maintainer · **Status:** rev 3, awaiting review
+> see §8 · **Owner:** solo maintainer · **Status:** **implemented** (all roadmap work
+> items ticked — middleware, TrustProxies, tests green)
 >
 > **How to use:** Re-verify ⚠-marked facts before relying on them.
 > Conventional commits; never commit unless asked; heavy commands

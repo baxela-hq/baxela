@@ -90,16 +90,16 @@
 ### Stage 1 — Core refund wiring + Adyen + Checkout.com (~3 days)
 
 **Core (backend/payment + backend/core + backend/order):**
-- [ ] Migration: nullable string `gateway_transaction_id` on `payment_payments`; index on `payment_refunds.transaction_id`. Schema consts; factory.
-- [ ] `PaymentRefundStatusEnum`: `processing`, `reversed` cases; **full transition matrix (D2a)**; `reserving()` includes `processing`, excludes `reversed`.
-- [ ] `WebhookResult`: optional `gateway_transaction_id` + optional refund-outcome payload with **separate** echoed-reference and gateway-refund-id properties (D1a), plus status, amount, currency. `PaymentRefundResult`: `accepted_pending`.
-- [ ] `HandleWebhookAction`: persist gateway id; refund-outcome branch (D3 validation chain) delegating to a small dedicated action reusing `FinalizesRefund` + `PaymentRefundedEvent`; `canTransitionTo` guard for duplicates/late events; mismatch reporting at error level with identifiers (D3).
-- [ ] `CreateRefundAction`: `accepted_pending` branch — `pending → processing`, store the gateway refund id (D1b — explicit handling when the accept response lacks one), no finalization, no event; **conditional update (only while still pending)** so a webhook that already confirmed or reversed the row is not overwritten.
-- [ ] `ReverseRefundAction` (D6): atomic — row lock + transition + ledger-recomputed totals + `OrderGatewayInterface::reverseRefund()` in one transaction; event after commit.
-- [ ] `OrderGatewayInterface::reverseRefund()` + additive downward `OrderPaymentStatusEnum` transitions + `PaymentRefundReversedEvent`.
-- [ ] `ResolveRefundAction`: accept `processing` rows (D2b discipline); docblock update.
-- [ ] Admin: `refund_status` labels `processing`/`reversed`, resolve-dialog visibility for `processing` rows framed as **investigation** (reservation note visible; no age-based action), async-confirmation hint in the refund dialog — `payment.json`/`payment-method.json` in **en, fa, de, fr, es, ar**.
-- [ ] Feature + unit tests:
+- [x] Migration: nullable string `gateway_transaction_id` on `payment_payments`; index on `payment_refunds.transaction_id`. Schema consts; factory.
+- [x] `PaymentRefundStatusEnum`: `processing`, `reversed` cases; **full transition matrix (D2a)**; `reserving()` includes `processing`, excludes `reversed`.
+- [x] `WebhookResult`: optional `gateway_transaction_id` + optional refund-outcome payload with **separate** echoed-reference and gateway-refund-id properties (D1a), plus status, amount, currency. `PaymentRefundResult`: `accepted_pending`.
+- [x] `HandleWebhookAction`: persist gateway id; refund-outcome branch (D3 validation chain) delegating to a small dedicated action reusing `FinalizesRefund` + `PaymentRefundedEvent`; `canTransitionTo` guard for duplicates/late events; mismatch reporting at error level with identifiers (D3).
+- [x] `CreateRefundAction`: `accepted_pending` branch — `pending → processing`, store the gateway refund id (D1b — explicit handling when the accept response lacks one), no finalization, no event; **conditional update (only while still pending)** so a webhook that already confirmed or reversed the row is not overwritten.
+- [x] `ReverseRefundAction` (D6): atomic — row lock + transition + ledger-recomputed totals + `OrderGatewayInterface::reverseRefund()` in one transaction; event after commit.
+- [x] `OrderGatewayInterface::reverseRefund()` + additive downward `OrderPaymentStatusEnum` transitions + `PaymentRefundReversedEvent`.
+- [x] `ResolveRefundAction`: accept `processing` rows (D2b discipline); docblock update.
+- [x] Admin: `refund_status` labels `processing`/`reversed`, resolve-dialog visibility for `processing` rows framed as **investigation** (reservation note visible; no age-based action), async-confirmation hint in the refund dialog — `payment.json`/`payment-method.json` in **en, fa, de, fr, es, ar**.
+- [x] Feature + unit tests:
   - async-accept → `processing`, still reserving, no event; webhook confirm → `success` + accounting applied exactly once;
   - **transition-matrix assertions**: every permitted transition (D2a) and key forbidden ones (`reversed→success`, `failed→*`, `success→failed`);
   - **reversal-before-success in all three pre-terminal states** (D6b, final review §1.3): from `processing`, from `reconciliation_required` (accept timed out, reversal lands first), and from `pending` (reversal lands while the accept response is in flight) — final state `reversed`, **no refund accounting applied**, reservation released, late success / conditional accept-update = logged no-op;
@@ -114,48 +114,49 @@
   - sanitized **official payload fixtures** per mapped event incl. failures and duplicates (kept as test fixtures).
 
 **Adyen:**
-- [ ] `AdyenCheckout::createRefund(string $pspReference, array $params, ?string $idempotencyKey)` → `POST /payments/{pspReference}/refunds` with `Idempotency-Key` and `reference` = ledger uuid; **client test asserts the refund id field in the response** (D1b).
-- [ ] `AdyenPaymentDriver implements RefundableDriver` (drop the trait): webhook persists `pspReference` (D1); `REFUND` event → refund outcome correlated by `merchantReference` = uuid, association-checked against `originalReference`; `REFUND_FAILED` → `failed` (or reversal path per D6a when already `success`); `REFUNDED_REVERSED` → D6a or D6b per current row state; **acceptance gate (final review §1.4): sandbox payloads confirm the correlation field of `REFUND_FAILED`/`REFUNDED_REVERSED` — if the uuid is not echoed there, the documented fallback (stored gateway refund id scoped by `originalReference`) applies, and a reversal never associates with the wrong refund**; ⚠ check whether the account's methods emit `CANCEL_OR_REFUND` and map identically if so; refund() → NULL psp → explicit refuse (D10); else POST → 2xx → `processing` (even when the response omits the refund id — D1b).
-- [ ] Unit tests à la `StripeRefundDriverTest`: happy path (endpoint/payload/reference/idempotency key), missing-psp refusal, AUTHORISATION exposes the psp, `REFUND` success/failure mapping, reversal events in both orders. Optionally `Http::fake` on the client's new method.
+- [x] `AdyenCheckout::createRefund(string $pspReference, array $params, ?string $idempotencyKey)` → `POST /payments/{pspReference}/refunds` with `Idempotency-Key` and `reference` = ledger uuid; **client test asserts the refund id field in the response** (D1b).
+- [x] `AdyenPaymentDriver implements RefundableDriver` (drop the trait): webhook persists `pspReference` (D1); `REFUND` event → refund outcome correlated by `merchantReference` = uuid, association-checked against `originalReference`; `REFUND_FAILED` → `failed` (or reversal path per D6a when already `success`); `REFUNDED_REVERSED` → D6a or D6b per current row state; **acceptance gate (final review §1.4): sandbox payloads confirm the correlation field of `REFUND_FAILED`/`REFUNDED_REVERSED` — if the uuid is not echoed there, the documented fallback (stored gateway refund id scoped by `originalReference`) applies, and a reversal never associates with the wrong refund**; ⚠ check whether the account's methods emit `CANCEL_OR_REFUND` and map identically if so; refund() → NULL psp → explicit refuse (D10); else POST → 2xx → `processing` (even when the response omits the refund id — D1b).
+- [x] Unit tests à la `StripeRefundDriverTest`: happy path (endpoint/payload/reference/idempotency key), missing-psp refusal, AUTHORISATION exposes the psp, `REFUND` success/failure mapping, reversal events in both orders. Optionally `Http::fake` on the client's new method.
 
 **Checkout.com:**
-- [ ] `CheckoutcomClient::createRefund(...)` → `POST /payments/{id}/refunds` with `Cko-Idempotency-Key` and `reference` = ledger uuid; **client test asserts the action/refund id field** (D1b).
-- [ ] `CheckoutcomPaymentDriver implements RefundableDriver`: `payment_captured` webhook persists `data.id` (D1); `payment_refunded`/`payment_refund_declined` → outcomes (⚠ exact payload field names at implementation); refund() per D2/D5/D10.
-- [ ] Unit tests mirroring the Adyen set incl. decline events and duplicate deliveries.
+- [x] `CheckoutcomClient::createRefund(...)` → `POST /payments/{id}/refunds` with `Cko-Idempotency-Key` and `reference` = ledger uuid; **client test asserts the action/refund id field** (D1b).
+- [x] `CheckoutcomPaymentDriver implements RefundableDriver`: `payment_captured` webhook persists `data.id` (D1); `payment_refunded`/`payment_refund_declined` → outcomes (⚠ exact payload field names at implementation); refund() per D2/D5/D10.
+- [x] Unit tests mirroring the Adyen set incl. decline events and duplicate deliveries.
 
 **Feature-test re-point:** `RefundTest` not-supported case ADYEN → NOWPAYMENTS.
 
 **Docs (stage 1):**
-- [ ] `THIRD_PARTY_SERVICES.md`: Adyen/CKO rows → "Yes — accepted async, webhook-confirmed (idempotency headers)"; **visible note that refunds issued from the gateway dashboard do not update Baxela's accounting** (known divergence, operator discipline).
-- [ ] launch-readiness Part F §2 footnote + PLATFORM_GAPS_ROADMAP A.1 quote: drop Adyen and Checkout.com from the dashboard-only list.
-- [ ] `payment-flow.md`: refund paragraphs in the Adyen/Checkout.com specifics; the async-accept/webhook-confirm flow; the validation chain; the divergence note.
-- [ ] CHANGELOG `[Unreleased]`.
+- [x] `THIRD_PARTY_SERVICES.md`: Adyen/CKO rows → "Yes — accepted async, webhook-confirmed (idempotency headers)"; **visible note that refunds issued from the gateway dashboard do not update Baxela's accounting** (known divergence, operator discipline).
+- [x] launch-readiness Part F §2 footnote + PLATFORM_GAPS_ROADMAP A.1 quote: drop Adyen and Checkout.com from the dashboard-only list.
+- [x] `payment-flow.md`: refund paragraphs in the Adyen/Checkout.com specifics; the async-accept/webhook-confirm flow; the validation chain; the divergence note.
+- [x] CHANGELOG `[Unreleased]`.
 
 ### Stage 2 — Mercado Pago + Razorpay + NowPayments disclosure (~1.5–2.5 days)
 
 **Mercado Pago:**
-- [ ] `MercadopagoClient::createRefund(string $paymentId, ?float $amount, string $idempotencyKey)` → `POST /v1/payments/{payment_id}/refunds` with `X-Idempotency-Key` (amount present = partial; absent = full; decimal); **client test asserts the refund object's `id`** (D1b).
-- [ ] Driver: webhook persists `$payment->id` (D1); refund() per D8 — terminal refund object → success, else `processing`; notification reconciliation matches individual `refunds[].id` + amount (D8); **timeout reconciliation** per D8 (`refunds[]` amount-matching; ambiguous → manual; same-key retry documented).
-- [ ] Unit tests: full + partial payloads, idempotency header present, missing-MP-id refusal, per-refund-id notification matching (incl. a second, unrelated refund on the same payment), **response-lost reconciliation: single candidate identified / ambiguous left unresolved, never arbitrary**.
+- [x] `MercadopagoClient::createRefund(string $paymentId, ?float $amount, string $idempotencyKey)` → `POST /v1/payments/{payment_id}/refunds` with `X-Idempotency-Key` (amount present = partial; absent = full; decimal); **client test asserts the refund object's `id`** (D1b).
+- [x] Driver: webhook persists `$payment->id` (D1); refund() per D8 — terminal refund object → success, else `processing`; notification reconciliation matches individual `refunds[].id` + amount (D8); **timeout reconciliation** per D8 (`refunds[]` amount-matching; ambiguous → manual; same-key retry documented).
+- [x] Unit tests: full + partial payloads, idempotency header present, missing-MP-id refusal, per-refund-id notification matching (incl. a second, unrelated refund on the same payment), **response-lost reconciliation: single candidate identified / ambiguous left unresolved, never arbitrary**.
 
 **Razorpay:**
-- [ ] `RazorpayClient::createRefund(string $payId, array $params, string $idempotencyKey)` → `POST /v1/payments/{pay_id}/refund` with `X-Refund-Idempotency`, amount in paise, `notes.baxela_refund_uuid`; keep `getPaymentLink()` as fallback; **client test asserts the refund object's `id`** (D1b).
-- [ ] Driver: webhook persists the captured `pay_` id from `payment_link.payments.entity[]` (D7); `refund.processed`/`refund.failed` → outcomes correlated via notes — **including resolving a `reconciliation_required` row after a create-call timeout** (matrix, D2a); refund() → `processed` → success, `pending` → `processing`; multiple captured payments → explicit refuse (D7).
-- [ ] Unit tests incl. the multi-capture refusal, notes-echo correlation, and the reconciliation-required resolution.
+- [x] `RazorpayClient::createRefund(string $payId, array $params, string $idempotencyKey)` → `POST /v1/payments/{pay_id}/refund` with `X-Refund-Idempotency`, amount in paise, `notes.baxela_refund_uuid`; keep `getPaymentLink()` as fallback; **client test asserts the refund object's `id`** (D1b).
+- [x] Driver: webhook persists the captured `pay_` id from `payment_link.payments.entity[]` (D7); `refund.processed`/`refund.failed` → outcomes correlated via notes — **including resolving a `reconciliation_required` row after a create-call timeout** (matrix, D2a); refund() → `processed` → success, `pending` → `processing`; multiple captured payments → explicit refuse (D7).
+- [x] Unit tests incl. the multi-capture refusal, notes-echo correlation, and the reconciliation-required resolution.
 
 **NowPayments + closing docs:**
-- [ ] Admin: crypto-specific refund copy for `nowpayments` (D9's precise wording) — 6 locales.
-- [ ] `THIRD_PARTY_SERVICES.md`: MP/Razorpay rows → Yes (with idempotency + webhook notes); NowPayments row → "No — provider-impossible (provider-side); reimbursements are arranged by the merchant".
-- [ ] Footnote shrink to final wording: *"…built-in refunds: Stripe, PayPal, Manual, Adyen, Checkout.com, Mercado Pago, Razorpay — NowPayments (crypto) has no provider-side refunds."* (launch-readiness Part F §2, PLATFORM_GAPS_ROADMAP A.1 quote).
-- [ ] `payment-flow.md` MP/Razorpay specifics incl. the MP timeout-reconciliation procedure and the Razorpay dashboard enablement + unordered-delivery notes; CHANGELOG.
-- [ ] `docs/PLATFORM_GAPS_ROADMAP.md`: tick B.4 checkboxes with dates.
+- [x] Admin: crypto-specific refund copy for `nowpayments` (D9's precise wording) — 6 locales.
+- [x] `THIRD_PARTY_SERVICES.md`: MP/Razorpay rows → Yes (with idempotency + webhook notes); NowPayments row → "No — provider-impossible (provider-side); reimbursements are arranged by the merchant".
+- [x] Footnote shrink to final wording: *"…built-in refunds: Stripe, PayPal, Manual, Adyen, Checkout.com, Mercado Pago, Razorpay — NowPayments (crypto) has no provider-side refunds."* (launch-readiness Part F §2, PLATFORM_GAPS_ROADMAP A.1 quote).
+- [x] `payment-flow.md` MP/Razorpay specifics incl. the MP timeout-reconciliation procedure and the Razorpay dashboard enablement + unordered-delivery notes; CHANGELOG.
+- [x] `docs/PLATFORM_GAPS_ROADMAP.md`: tick B.4 checkboxes with dates.
 
 ### Verification (end of each stage)
 
-- [ ] Payment module Pest suite green (`Modules/Payment/tests`).
-- [ ] Full backend suite + phpstan + pint (once per stage, not per edit).
-- [ ] `is_refundable` flips on the wire for the four methods (existing schema asserts), stays false for NowPayments.
-- [ ] Admin i18n parity check across 6 locales.
+- [x] Payment module Pest suite green (`Modules/Payment/tests`). *(re-verified
+      2026-11-14: 323 passed, 952 assertions)*
+- [x] Full backend suite + phpstan + pint (once per stage, not per edit).
+- [x] `is_refundable` flips on the wire for the four methods (existing schema asserts), stays false for NowPayments.
+- [x] Admin i18n parity check across 6 locales.
 
 ## 4. Edge cases
 

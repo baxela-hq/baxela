@@ -128,21 +128,21 @@ before the admin panel, docs last. Each step is independently testable.
 
 ### Step 1 — Core failed-jobs backend (no schedules yet)
 
-- [ ] `Modules/Core/app/Models/FailedJob.php` — Eloquent over the framework
+- [x] `Modules/Core/app/Models/FailedJob.php` — Eloquent over the framework
       `failed_jobs` table with the D1 configuration applied explicitly
       (`$table`, `$timestamps = false`, primary key `id`, datetime cast on
       `failed_at`); no relations, no domain logic; class docblock states it
       represents a framework-managed table.
-- [ ] `Modules/Core/app/Schemas/FailedJob/FailedJobSchema.php` — column + filter
+- [x] `Modules/Core/app/Schemas/FailedJob/FailedJobSchema.php` — column + filter
       constants (uuid, connection, queue, payload, exception, failed_at), mirroring
       `Modules/Audit/app/Schemas/AuditLog/AuditLogSchema.php` (shared
       `PkAndTimestampsTrait` doesn't apply — failed_at ≠ timestamps).
-- [ ] Routes in `Modules/Core/routes/api/admin.php` (exact middleware group already
+- [x] Routes in `Modules/Core/routes/api/admin.php` (exact middleware group already
       present): the four routes of D2 with names `failed-jobs.list|show|retry|delete`
       → permissions `core.admin.failed-jobs.{list,show,retry,delete}` via the
       existing `SyncPermissionsAction` sync (run the sync command/seeder; super-admin
       bypasses via `Gate::before`).
-- [ ] `FailedJobSearchFilter` (exception substring, min 3 chars — reject shorter with
+- [x] `FailedJobSearchFilter` (exception substring, min 3 chars — reject shorter with
       a validation error, mirroring `Modules/Audit/app/Filters/CreatedFromFilter.php`)
       + exact filters for uuid/queue; `ListFailedJobsAction` (QueryBuilder, sorts,
       `Pagination::perPage()`), `ShowFailedJobAction`, `RetryFailedJobAction`
@@ -151,42 +151,42 @@ before the admin panel, docs last. Each step is independently testable.
       failed row itself on success), `ForgetFailedJobAction`
       (`app('queue.failer')->forget($uuid)` — bool return, verified). Thin invokable
       controllers.
-- [ ] `Transformers/Admin/FailedJob/FailedJobResource.php` — list shape with the
+- [x] `Transformers/Admin/FailedJob/FailedJobResource.php` — list shape with the
       ≤300-char server-side excerpt; show shape with full exception + redacted
       payload (D3: placeholder for `data.command`, denylist masking, plain strings).
-- [ ] Error codes + `Modules/Core/lang/en/errors.php` (uuid not found, retry
+- [x] Error codes + `Modules/Core/lang/en/errors.php` (uuid not found, retry
       failed, search-too-short) + the other 5 locale `errors.php` files (agent-drafted,
       flagged for owner review).
-- [ ] Pest: list/pagination/filters incl. min-length rejection, show 404, permission
+- [x] Pest: list/pagination/filters incl. min-length rejection, show 404, permission
       matrix (show-only admin → 403 on retry/delete; super-admin allowed),
       retry moves the row back onto the queue and removes it (assert via `Queue::size()`
       or the `jobs` table), forget deletes.
 
 ### Step 2 — Core schedules + backlog monitor
 
-- [ ] `Modules/Core/config/queue.php` (auto-registered by
+- [x] `Modules/Core/config/queue.php` (auto-registered by
       `CoreServiceProvider::registerConfig()`; keys under the `core.` prefix):
       `backlog.threshold` (100), `backlog.targets` (v1: the default connection's
       default queue, resolved at runtime), `backlog.state_ttl_hours` (24),
       `failed_jobs.retention_days` (30).
-- [ ] `QueueCheckBacklogCommand` (`core:queue-check-backlog`, D6): per target —
+- [x] `QueueCheckBacklogCommand` (`core:queue-check-backlog`, D6): per target —
       depth check → above threshold: atomic `Cache::add` dedup (fail-open on cache
       Throwable: log + still alert) → fresh crossing fires `QueueBacklogDetectedEvent`;
       below threshold: clear state (cache failures logged, never fatal). TTL on the
       state key so a stalled scheduler can't wedge suppression (semantics per D6:
       dedup + maximum suppression period, not a strict cooldown).
-- [ ] `Modules/Core/app/Contracts/Events/System/QueueBacklogDetectedEvent.php`
+- [x] `Modules/Core/app/Contracts/Events/System/QueueBacklogDetectedEvent.php`
       (connection, queue, size, threshold) ⚠ confirm the `Contracts/Events` subdirectory
       naming at implementation.
-- [ ] Wire `CoreServiceProvider::registerCommandSchedules()` (currently a stub):
+- [x] Wire `CoreServiceProvider::registerCommandSchedules()` (currently a stub):
       `core:queue-check-backlog` every five minutes **`->withoutOverlapping()`** +
       `queue:prune-failed --hours={retention_days * 24}` daily; register the command
       in `registerCommands()` next to `ErdGenerateCommand`.
-- [ ] **Deployment verification (D7):** on the dev compose, confirm
+- [x] **Deployment verification (D7):** on the dev compose, confirm
       `php artisan schedule:list` shows both entries and the scheduler executes them;
       document the prod equivalent (`docker compose -f docker-compose.prod.yml exec
       scheduler php artisan schedule:list`) for Step 6.
-- [ ] Pest: crossing → event fired once; repeat runs above threshold → no event
+- [x] Pest: crossing → event fired once; repeat runs above threshold → no event
       (dedup); recovery run below threshold → state cleared → next crossing fires
       again; cache `add` throwing → event still fires (fail-open); TTL expiry on a
       continuously-busy queue → re-alert; both schedules registered with the
@@ -194,32 +194,32 @@ before the admin panel, docs last. Each step is independently testable.
 
 ### Step 3 — Notification integration
 
-- [ ] `Modules/Notification/app/Listeners/Queue/NotifyAdminJobFailedListener.php` on
+- [x] `Modules/Notification/app/Listeners/Queue/NotifyAdminJobFailedListener.php` on
       `Illuminate\Queue\Events\JobFailed` — synchronous (no `ShouldQueue`), whole
       handle in try/catch → `Log::` (uuid/queue/job only), D5 semantics.
-- [ ] `NotifyAdminQueueBacklogListener` on `QueueBacklogDetectedEvent` — same isolated
+- [x] `NotifyAdminQueueBacklogListener` on `QueueBacklogDetectedEvent` — same isolated
       shape.
-- [ ] Map both in `Modules/Notification/app/Providers/EventServiceProvider.php`
+- [x] Map both in `Modules/Notification/app/Providers/EventServiceProvider.php`
       (framework events and Core contract events sit side by side there — mirror the
       existing mapping style).
-- [ ] `NotificationCodeEnum` cases (`system.queue.job_failed`,
+- [x] `NotificationCodeEnum` cases (`system.queue.job_failed`,
       `system.queue.backlog` ⚠ final naming at implementation) + channel-matrix
       entries in `Modules/Notification/config/notifications.php` — database channel
       always; email/telegram per the existing admin-alert entries.
-- [ ] `LocaleTemplateEngine` templates ×6 locales: **external channels carry
+- [x] `LocaleTemplateEngine` templates ×6 locales: **external channels carry
       identifiers only** (job, queue, uuid, failed-at, pointer to the admin page) —
       no exception text outside the admin UI and the database inbox (D3); consistent
       ops terminology; agent-drafted translations flagged for owner review.
-- [ ] **Alert `NotificationMessage` built with explicit per-channel data keys**
+- [x] **Alert `NotificationMessage` built with explicit per-channel data keys**
       (D3, verified): `database` may carry the exception excerpt; `email` and
       `telegram` are **always passed explicitly with identifier-only content** —
       `TelegramPayloadBuilder`/`WebPushPayloadBuilder` fall back to
       `data['database']` when their key is absent, so an omitted key would leak
       exception text into external channels.
-- [ ] Bounded timeouts for external channels (D5): ⚠ verify `TelegramClient` and the
+- [x] Bounded timeouts for external channels (D5): ⚠ verify `TelegramClient` and the
       mail transport's current timeout config; set explicit connect/request timeouts
       via config if missing.
-- [ ] Pest: JobFailed (run a real failing queued job + `queue:work --once`) →
+- [x] Pest: JobFailed (run a real failing queued job + `queue:work --once`) →
       database-channel alert row exists with admin recipients, external channels carry
       no exception text (`Mail::fake()` assertions); listener's dispatcher throwing →
       no exception propagates, `failed_jobs` row intact; backlog event → alert;
@@ -227,7 +227,7 @@ before the admin panel, docs last. Each step is independently testable.
 
 ### Step 4 — Automated tests (consolidation pass)
 
-- [ ] The per-step tests above already cover the critical set; this pass adds the
+- [x] The per-step tests above already cover the critical set; this pass adds the
       review's explicitly named cases and runs the touched modules' suites together:
       **retry returns the job to the queue and removes the failed row** · **JobFailed
       alert reaches admin recipients, external channels carry no exception text** ·
@@ -235,53 +235,53 @@ before the admin panel, docs last. Each step is independently testable.
       failure/timeout leaves the failed-job record intact and propagates nothing** ·
       **backlog: crossing → one alert, re-checks suppressed, recovery clears state,
       next crossing re-alerts** · **cache failure → alert still sent**.
-- [ ] High set: filters + min-length search validation · forget · prune retention ·
+- [x] High set: filters + min-length search validation · forget · prune retention ·
       uuid-not-found error mapping.
-- [ ] Full `Modules/Core` + `Modules/Notification` suites green; Pint; phpstan
+- [x] Full `Modules/Core` + `Modules/Notification` suites green; Pint; phpstan
       neutral (baseline spliced only for new-file false positives, A.1/A.3 pattern).
 
 ### Step 5 — Admin panel (`apps/admin`)
 
-- [ ] Feature slice mirroring `src/features/audit/logs/`: route
+- [x] Feature slice mirroring `src/features/audit/logs/`: route
       `src/routes/_authenticated/failed-jobs/index.tsx` (beforeLoad permission gate →
       `/403`, search-param validation), `src/features/failed-jobs/` with
       `data/routes.ts` (cache key + Locales namespace), `api/failed-job.api.ts`,
       `hooks/use-failed-jobs.ts`, `components/{columns,data-table,view-dialog}.tsx`
       (manual pagination/sort/filter per the admin data-table conventions).
-- [ ] Columns per D2: uuid, job name, connection, queue, failed-at, exception excerpt;
+- [x] Columns per D2: uuid, job name, connection, queue, failed-at, exception excerpt;
       detail dialog (fetch gated on `core.admin.failed-jobs.show`): full exception +
       redacted payload rendered as escaped text.
-- [ ] **Retry + forget buttons, each gated on its own permission**
+- [x] **Retry + forget buttons, each gated on its own permission**
       (`core.admin.failed-jobs.retry` / `.delete` via `hasPermission`), each opening a
       confirmation dialog with the D4 copy (side-effects warning on retry; permanent
       deletion on forget). Success/error toasts; list refresh after the action.
-- [ ] Sidebar entry in `src/components/layout/data/sidebar-data.ts` General group
+- [x] Sidebar entry in `src/components/layout/data/sidebar-data.ts` General group
       (next to Audit Logs), `permission: 'core.admin.failed-jobs.list'`.
-- [ ] i18n: `apps/admin/public/locales/{ar,de,en,es,fa,fr}/failed-jobs.json` +
+- [x] i18n: `apps/admin/public/locales/{ar,de,en,es,fa,fr}/failed-jobs.json` +
       `sidebar.failed-jobs` key in `shared/layout.json` ×6; `node
       scripts/check-i18n-parity.mjs` green; agent-drafted translations flagged for
       owner review.
 
 ### Step 6 — Documentation & deployment verification
 
-- [ ] `apps/backend/docs/flows/queue-visibility.md` (new): lifecycle of a failed job
+- [x] `apps/backend/docs/flows/queue-visibility.md` (new): lifecycle of a failed job
       (throw → retries → `failed_jobs` → alert → retry/forget → prune), the
       retry-is-not-recovery + idempotency expectations for job authors (D4), the
       dedup/cooldown behavior, the shared-hosting caveat (§5), and the
       visibility-≠-worker-management boundary (§1.3).
-- [ ] `docs/LOGGING.md` §Failed jobs: replace the "tracked follow-up" sentence with a
+- [x] `docs/LOGGING.md` §Failed jobs: replace the "tracked follow-up" sentence with a
       pointer to the alerting + admin surface; keep the artisan commands as the
       CLI fallback.
-- [ ] `infrastructure/docker/production/README.md` Day-2 operations: failed-jobs
+- [x] `infrastructure/docker/production/README.md` Day-2 operations: failed-jobs
       triage lines + the scheduler/prune verification command from Step 2.
-- [ ] `docs/PLATFORM_GAPS_ROADMAP.md` §B.3: tick checkboxes with dates; record the
+- [x] `docs/PLATFORM_GAPS_ROADMAP.md` §B.3: tick checkboxes with dates; record the
       surface decision + Horizon deferral (D8) in the section; tick the Phase B exit
       criterion line once B.1–B.3 all land.
-- [ ] Bruno requests `api/bruno/Core/Admin/FailedJobs/` (List, Show, Retry, Forget)
+- [x] Bruno requests `api/bruno/Core/Admin/FailedJobs/` (List, Show, Retry, Forget)
       with the collection's `meta`/`auth: bearer` conventions.
-- [ ] Regenerate the module dependency graph (`python3 scripts/generate-module-graph.py`)
+- [x] Regenerate the module dependency graph (`python3 scripts/generate-module-graph.py`)
       — a new admin feature area is added.
-- [ ] CHANGELOG entry; full test suite once before declaring done (not per-edit).
+- [x] CHANGELOG entry; full test suite once before declaring done (not per-edit).
 
 ## 5. Edge cases (each maps to a decision + a test)
 

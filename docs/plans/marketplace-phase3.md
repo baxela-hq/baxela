@@ -156,10 +156,10 @@ API rate limiting, download analytics beyond counters.
 
 ### Work items / tests
 
-- [ ] `packages.json` route + the `RegistryDocument` builder (version injection).
-- [ ] Dist route with streaming, counting, yank-404, `no-store`.
-- [ ] `EnsureRegistryToken` middleware + config; both states tested.
-- [ ] Tests (hand-seeded rows, no GitHub): document shape incl. injected version; yanked
+- [x] `packages.json` route + the `RegistryDocument` builder (version injection).
+- [x] Dist route with streaming, counting, yank-404, `no-store`.
+- [x] `EnsureRegistryToken` middleware + config; both states tested.
+- [x] Tests (hand-seeded rows, no GitHub): document shape incl. injected version; yanked
   release absent; yanked package omitted; all-releases-yanked package omitted; dist 404
   on yank + no-store header; token set → 401 without/with wrong credentials and with
   malformed headers; token empty → anonymous OK; cache bust after every mutation kind.

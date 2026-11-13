@@ -156,7 +156,8 @@ and `chore(admin): remove upstream shadcn-admin governance files`
    - [ ] Social preview image 1200×640 (owner supplies; placeholder: Baxela wordmark on
          dark background)
    - [ ] Discussions enabled (Categories: Announcements, Q&A, Show and tell, Ideas)
-   - [ ] Private vulnerability reporting enabled
+   - [x] Private vulnerability reporting enabled *(owner-confirmed, set to "Enable
+         All" on GitHub, 2026-11-13)*
    - [ ] Community standards page all-green
 
 Suggested commit: `chore(admin): rename package to baxela-admin and drop upstream changelog`

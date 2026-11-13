@@ -226,32 +226,32 @@ one txn) → generate (retryable, same number) → ready | generation_failed; vo
 (any time, keeps number, CNs stay attached); reissue (next revision, fresh number).
 Nothing below may invent a transition not listed here.
 
-- [ ] Migrations: the four tables above (additive, per marketplace-policy §5.2).
-- [ ] Models + schemas (`OrderInvoice`, `OrderInvoiceItem`, `OrderCreditNote`, enums)
+- [x] Migrations: the four tables above (additive, per marketplace-policy §5.2).
+- [x] Models + schemas (`OrderInvoice`, `OrderInvoiceItem`, `OrderCreditNote`, enums)
       with relations; `credited_amount` as an accessor.
-- [ ] `DocumentNumberService`: next number per (type, year) — first-row-safe
+- [x] `DocumentNumberService`: next number per (type, year) — first-row-safe
       initialization (D3), store-TZ year; called inside the caller's transaction.
-- [ ] `IssueInvoiceAction(Order $order)`: guards (no ACTIVE invoice; payment status in
+- [x] `IssueInvoiceAction(Order $order)`: guards (no ACTIVE invoice; payment status in
       {**PAID, PARTIALLY_REFUNDED, REFUNDED**} — v2.2: partial refunds must pass the
       lazy-issuance path, final review §1.2), D4 snapshots (items from `OrderItem`
       snapshots — tax_amount and line_total **copied, never recalculated**; sku/variant
       from the variant relation ⚠ verify what's nullable for deleted variants; ⚠ verify
       whether items persist a per-line coupon allocation), D2 revision + single-ACTIVE
       enforcement under the parent-order lock, persists. No PDF.
-- [ ] `credited_amount`/`balance`: the **document service owns the calculation** (one
+- [x] `credited_amount`/`balance`: the **document service owns the calculation** (one
       site for the Σ + minor-unit conventions); the model accessor — if kept —
       **delegates to it**; the resource exposes the service's result. No duplicated
       aggregation logic in model + resource + service (final review §1.5).
-- [ ] `GenerateDocumentPdfAction`: D7 lifecycle — mark generating → render via
+- [x] `GenerateDocumentPdfAction`: D7 lifecycle — mark generating → render via
       D12 interface → store to disk + checksum → ready; failure → generation_failed.
       Separate from issuance.
-- [ ] `VoidInvoiceAction`: guarded, keeps number, allows reissue; audit log.
-- [ ] Pest: **critical set from the reviews** — two simultaneous issuance requests;
+- [x] `VoidInvoiceAction`: guarded, keeps number, allows reissue; audit log.
+- [x] Pest: **critical set from the reviews** — two simultaneous issuance requests;
       concurrent first-time sequence initialization; void + replacement reissue;
       snapshot correctness (tax copied, not recalculated); double-issue guard;
       numbering year boundary in store TZ; **partial-refund lazy issuance** (payment
       status PARTIALLY_REFUNDED passes the guard — final review §1.2).
-- [ ] Admin endpoints (list w/ filters, show, issue, void, **retry of failed
+- [x] Admin endpoints (list w/ filters, show, issue, void, **retry of failed
       generation** — per D7 v2.2 the retry-failure path is admin-accessible; full
       regeneration is ops-only artisan, no endpoint) + permission tests; Bruno requests.
 
@@ -309,7 +309,7 @@ Nothing below may invent a transition not listed here.
       dispatch site. Amount rides as `amount_minor` (D11). Tests: dispatched exactly
       once per finalize with uuid/amount/currency/reason; not dispatched for
       resolution-to-failed)*
-- [ ] **`documents:reconcile-refunds`** (D15 v2.2): finds finalized refunds whose
+- [x] **`documents:reconcile-refunds`** (D15 v2.2): finds finalized refunds whose
       `refund_uuid` has no credit note → runs the same idempotent CN path; scheduled
       daily; closes the crash-between-commit-and-dispatch window without an outbox.
       *(**moved to Phase 4 by execution necessity** — the reconcile command's "run
@@ -346,20 +346,23 @@ Nothing below may invent a transition not listed here.
       processes with silent exit-2s, a memorable debugging hour); database channel
       still gets its inbox row; `order.invoice.ready` enters the preference matrix
       as user-configurable [database, email])*
-- [ ] Storefront: profile → orders → invoice download (stream stored bytes; only
+- [x] Storefront: profile → orders → invoice download (stream stored bytes; only
       `ready`; permission = order ownership — **test that another customer's invoice
       403s**, review §7). *(backend done 2026-11-10: `GET /user/orders/{code}/invoices`
       + `GET /user/invoices/{id}/pdf` — ownership enforced as a 404 (ids stay
       non-enumerable; the plan's 403-ask was hardened to 404-on-foreign, matching
       the codebase's user-surface convention), ready-only 409, guest 401, idempotent
       replay under paid-event redelivery, auto-issue-off leaves manual admin issue
-      working — 7-test `InvoiceAutomationTest`. **The React/Next UI surfaces remain
-      open.**)* Admin UI: invoices tab under Orders (list/filter/download/
+      working — 7-test `InvoiceAutomationTest`. **Storefront UI done 2026-11-10
+      (commit 38259bae):** profile → orders → download button on paid orders —
+      fetches the ready invoice, streams the PDF named by its number, not-ready /
+      failed toasts, per-locale `download_invoice` keys ×6 in
+      `messages/*/account/account.json`.)* Admin UI: invoices tab under Orders (list/filter/download/
       void/reissue/retry-failed-generation) + order detail link. The invoices tab
       **displays the document chain explicitly** — original invoice, its credit notes,
       and any replacement (revision numbers) side by side — so operators cannot
       misread the accounting history of a void+reissue (final review §2).
-- [ ] i18n keys ×6 (admin + storefront + backend notification lang files); parity check.
+- [x] i18n keys ×6 (admin + storefront + backend notification lang files); parity check.
 
 ### Phase 4 — Credit notes (policy-per-D5, locking-per-D14)
 

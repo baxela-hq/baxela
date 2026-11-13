@@ -10,8 +10,8 @@
 >
 > **Created:** 2026-11-10 · **Revised:** 2026-11-12 — rev 2 (review 1,
 > 7.8/10), rev 3 (review 2, 8.8/10), rev 4 (reviews 3+4, 9.1/10, approved);
-> see §12 · **Owner:** solo maintainer · **Status:** rev 4, approved for
-> implementation
+> see §12 · **Owner:** solo maintainer · **Status:** **implemented** (rev 4 approved —
+> google2fa + challenge bridge + recovery codes + admin UI live; see `SECURITY_ROADMAP.md` §2)
 >
 > **How to use:** Re-verify ⚠-marked facts before relying on them. Slice
 > strictly in order: **backend → frontend → policy**. Conventional commits;
@@ -146,40 +146,40 @@ Schema::create(TwoFactorChallengeSchema::TABLE, function (Blueprint $table) {
 
 ### Backend (~2.5 d)
 
-- [ ] Verify `pragmarx/google2fa` + `bacon/bacon-qr-code` compatibility; record versions; test `verifyKeyNewer()` returns the matched step.
-- [ ] Edit the existing `create_users_table` migration (add four columns per §4).
-- [ ] New migration for the challenges table (per §4).
-- [ ] Schema constants + models (encrypted casts, `$hidden`).
-- [ ] `TwoFactorChallengeService`: `issue()` (D17), `resolveForUser()`, `recordFailure()`, `invalidateAllForUser()`, `pruneExpired()` (nulls context on expiry).
-- [ ] `TwoFactorService`: `generateSecret()`, `qrCodeUri()`, `verifyAndRecordStep()`, `verifyAndConsumeRecoveryCode()`, `generateRecoveryCodes()`, `clearAll()`.
-- [ ] `CompleteAuthenticationAction`: `issueToken()` (DB-only, in-transaction) + `dispatchEvents()` (after commit).
-- [ ] `SignInAction`: 2FA branch → sign_in challenge; super-admin force branch → enrollment challenge.
-- [ ] `VerifyTwoFactorAction`: D6 sequence (lock user → lock challenge → verify → consume → issue token in-transaction → commit → dispatch).
-- [ ] Enrollment endpoints (public, challenge-gated).
-- [ ] User self-service endpoints.
-- [ ] Privileged recovery (D12).
-- [ ] Rate limiters via `RateLimiter` (D10).
-- [ ] Prune command (hourly).
-- [ ] Error codes + lang ×6.
-- [ ] Storefront reconciliation.
-- [ ] Tests: §7.
+- [x] Verify `pragmarx/google2fa` + `bacon/bacon-qr-code` compatibility; record versions; test `verifyKeyNewer()` returns the matched step.
+- [x] Edit the existing `create_users_table` migration (add four columns per §4).
+- [x] New migration for the challenges table (per §4).
+- [x] Schema constants + models (encrypted casts, `$hidden`).
+- [x] `TwoFactorChallengeService`: `issue()` (D17), `resolveForUser()`, `recordFailure()`, `invalidateAllForUser()`, `pruneExpired()` (nulls context on expiry).
+- [x] `TwoFactorService`: `generateSecret()`, `qrCodeUri()`, `verifyAndRecordStep()`, `verifyAndConsumeRecoveryCode()`, `generateRecoveryCodes()`, `clearAll()`.
+- [x] `CompleteAuthenticationAction`: `issueToken()` (DB-only, in-transaction) + `dispatchEvents()` (after commit).
+- [x] `SignInAction`: 2FA branch → sign_in challenge; super-admin force branch → enrollment challenge.
+- [x] `VerifyTwoFactorAction`: D6 sequence (lock user → lock challenge → verify → consume → issue token in-transaction → commit → dispatch).
+- [x] Enrollment endpoints (public, challenge-gated).
+- [x] User self-service endpoints.
+- [x] Privileged recovery (D12).
+- [x] Rate limiters via `RateLimiter` (D10).
+- [x] Prune command (hourly).
+- [x] Error codes + lang ×6.
+- [x] Storefront reconciliation.
+- [x] Tests: §7.
 
 ### MySQL concurrency integration tests (~0.5 d)
 
-- [ ] Concurrent same-challenge → one succeeds.
-- [ ] Concurrent same-recovery-code → one succeeds.
-- [ ] Same TOTP across two challenges → second rejected.
-- [ ] Concurrent enrollment double-confirm → one succeeds.
-- [ ] Regeneration racing with consumption → clean.
-- [ ] **Verification racing with disable → no deadlock AND no token after disable.**
-- [ ] Concurrent challenge issuance respects limits.
+- [x] Concurrent same-challenge → one succeeds.
+- [x] Concurrent same-recovery-code → one succeeds.
+- [x] Same TOTP across two challenges → second rejected.
+- [x] Concurrent enrollment double-confirm → one succeeds.
+- [x] Regeneration racing with consumption → clean.
+- [x] **Verification racing with disable → no deadlock AND no token after disable.**
+- [x] Concurrent challenge issuance respects limits.
 
 ### Admin frontend (~1 d)
 
-- [ ] Sign-in form: both challenge types → OTP/enrollment flow.
-- [ ] Enrollment wizard: QR → code → confirm → recovery codes ("save now").
-- [ ] 2FA management section (profile settings).
-- [ ] i18n ×6.
+- [x] Sign-in form: both challenge types → OTP/enrollment flow.
+- [x] Enrollment wizard: QR → code → confirm → recovery codes ("save now").
+- [x] 2FA management section (profile settings).
+- [x] i18n ×6.
 
 ## 7. Acceptance tests
 

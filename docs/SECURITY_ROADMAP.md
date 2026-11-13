@@ -70,17 +70,17 @@ What's absent — the gaps this roadmap addresses:
 
 ### Work items
 
-- [ ] `two_factor_secret` (encrypted) + `two_factor_recovery_codes` (hashed)
-      + `two_factor_confirmed_at` columns on users.
-- [ ] `pragmarx/google2fa` (or equivalent) + QR-code generation.
-- [ ] `EnableTwoFactorAction`, `ConfirmTwoFactorAction`, `DisableTwoFactorAction`.
-- [ ] Sign-in flow: challenge-token bridge between password and token issue.
-- [ ] Recovery-code generation + verification (single-use, hash-stored).
-- [ ] Admin API: enable/confirm/disable/regenerate-recovery endpoints.
-- [ ] Admin UI: 2FA settings section (QR enrollment, recovery codes).
-- [ ] Tests: enrollment → sign-in with code; wrong code; expired challenge;
+- [x] `two_factor_secret` (encrypted) + `two_factor_recovery_codes` (hashed)
+      + `two_factor_confirmed_at` columns on users. *(done — `UserSchema::TWO_FACTOR_*` constants; S.1 plan §W1)*
+- [x] `pragmarx/google2fa` (or equivalent) + QR-code generation. *(done — `composer.json` `pragmarx/google2fa ^9.1`; `TwoFactorService`)*
+- [x] `EnableTwoFactorAction`, `ConfirmTwoFactorAction`, `DisableTwoFactorAction`. *(done — `ManageTwoFactorAction` + user-route `TwoFactorEnable/Confirm/DisableController`)*
+- [x] Sign-in flow: challenge-token bridge between password and token issue. *(done — `TwoFactorChallengeService` + `VerifyTwoFactorAction` + `CompleteAuthenticationAction`)*
+- [x] Recovery-code generation + verification (single-use, hash-stored). *(done — `TwoFactorRecoveryCodesController`, verified in `VerifyTwoFactorAction`)*
+- [x] Admin API: enable/confirm/disable/regenerate-recovery endpoints. *(done — self-service endpoints under `api/user` 2FA routes; super-admins additionally flow through forced enrollment at sign-in, S.1 D9)*
+- [x] Admin UI: 2FA settings section (QR enrollment, recovery codes). *(done — `apps/admin/src/features/auth/two-factor`)*
+- [x] Tests: enrollment → sign-in with code; wrong code; expired challenge;
       recovery code single-use; forced enrollment for super-admins;
-      disenrollment requires valid code.
+      disenrollment requires valid code. *(done — `Modules/Auth/tests/Feature/TwoFactorTest.php`)*
 
 ### Edge cases
 
@@ -114,12 +114,12 @@ What's absent — the gaps this roadmap addresses:
 
 ### Work items
 
-- [ ] `RevokeAllTokensAction` (admin-profile + super-admin variant).
-- [ ] Token listing: user tokens alongside machine tokens, with revocation.
-- [ ] Super-admin forced revocation endpoint + audit log.
-- [ ] Admin UI: "Active sessions" section under the profile.
-- [ ] Tests: revoke-all invalidates every session; current session
-      re-issued; super-admin revokes another user's tokens; audit entry.
+- [x] `RevokeAllTokensAction` (admin-profile + super-admin variant). *(done — `RevokeAllUserSessionsAction`)*
+- [x] Token listing: user tokens alongside machine tokens, with revocation. *(done — `ListUserSessionsAction` + `RevokeUserSessionAction`)*
+- [x] Super-admin forced revocation endpoint + audit log. *(done — `DELETE users/{id}/sessions` + `users/{id}/sessions/{tokenId}` admin routes, permission-gated)*
+- [x] Admin UI: "Active sessions" section under the profile. *(done — `apps/admin/src/features/auth/sessions` + per-user sessions dialog)*
+- [x] Tests: revoke-all invalidates every session; current session
+      re-issued; super-admin revokes another user's tokens; audit entry. *(done — `SessionTest` + `Admin/UserSessionRevocationTest`)*
 
 ---
 

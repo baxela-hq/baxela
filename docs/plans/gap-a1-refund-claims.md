@@ -91,27 +91,27 @@ interface RefundableDriver extends PaymentDriverInterface {}
 
 ### 3.1 Backend — capability contract + API exposure (~1h)
 
-- [ ] Add `RefundableDriver` marker interface (Core contracts, path above).
-- [ ] `StripePaymentDriver`, `PaypalPaymentDriver`, `ManualPaymentDriver`: implement it.
-- [ ] `PaymentDriverManager::supportsRefund(PaymentMethodEnum $method): bool`.
-- [ ] `PaymentMethodSchema`: add `IS_REFUNDABLE = 'is_refundable'` constant.
-- [ ] Admin `PaymentMethodResource`: add `is_refundable` (via manager; false when
+- [x] Add `RefundableDriver` marker interface (Core contracts, path above).
+- [x] `StripePaymentDriver`, `PaypalPaymentDriver`, `ManualPaymentDriver`: implement it.
+- [x] `PaymentDriverManager::supportsRefund(PaymentMethodEnum $method): bool`.
+- [x] `PaymentMethodSchema`: add `IS_REFUNDABLE = 'is_refundable'` constant.
+- [x] Admin `PaymentMethodResource`: add `is_refundable` (via manager; false when
       unregistered).
-- [ ] Admin `PaymentResource`: add `is_refundable` for the payment's method (independent
+- [x] Admin `PaymentResource`: add `is_refundable` for the payment's method (independent
       of status — the FE combines).
-- [ ] **Deliberately excluded:** user/shopper `PaymentMethodResource` — checkout offers
+- [x] **Deliberately excluded:** user/shopper `PaymentMethodResource` — checkout offers
       no refund choice; nothing for a customer to see.
 - Scramble picks the new fields up automatically (resources are typed) — verify `/docs/api`
       still generates.
 
 ### 3.2 Admin — methods page badge + hint (~1h)
 
-- [ ] `features/payment/methods/data/schema.ts`: add `is_refundable: boolean`.
-- [ ] `method-row.tsx`: second muted line under the existing hint — badge
+- [x] `features/payment/methods/data/schema.ts`: add `is_refundable: boolean`.
+- [x] `method-row.tsx`: second muted line under the existing hint — badge
       `outline` "Refunds: built-in" or "Refunds: gateway dashboard" + short help text.
       Do **not** overload the primary hint; it currently encodes
       registered/configured state.
-- [ ] i18n keys in `payment-method.json`, **all 6 locales** (en/fa/de/fr/es/ar) —
+- [x] i18n keys in `payment-method.json`, **all 6 locales** (en/fa/de/fr/es/ar) —
       suggested names (final wording owner-reviewed, agent-drafted per ROADMAP convention):
       - `form.statuses.state.refunds-supported` → "Refunds: built-in"
       - `form.statuses.state.refunds-not-supported` → "Refunds: gateway dashboard"
@@ -120,39 +120,39 @@ interface RefundableDriver extends PaymentDriverInterface {}
 
 ### 3.3 Admin — payments page: gate the refund button (~1h)
 
-- [ ] `features/payment/payments/data/data.ts` (row type): add `is_refundable`.
-- [ ] `data-table-row-actions.tsx`: keep "Issue refund" **visible but disabled** with a
+- [x] `features/payment/payments/data/data.ts` (row type): add `is_refundable`.
+- [x] `data-table-row-actions.tsx`: keep "Issue refund" **visible but disabled** with a
       tooltip when `!is_refundable` (visible-disabled beats hidden: honest, discoverable,
       matches A.1's spirit). "Refund history" stays always-available.
       `refundable = status === 'success' && is_refundable` — tooltip names which
       condition failed (i18n keys in `payment/payment.json`, 6 locales).
-- [ ] `refund-dialog.tsx`: no change (unreachable when gated correctly).
+- [x] `refund-dialog.tsx`: no change (unreachable when gated correctly).
 
 ### 3.4 Tests (Pest, `Modules/Payment/tests/`)
 
-- [ ] `supportsRefund()` matrix: true for stripe/paypal/manual; false for the other five;
+- [x] `supportsRefund()` matrix: true for stripe/paypal/manual; false for the other five;
       false for unregistered name. Mirror existing manager/driver test file conventions.
-- [ ] Admin methods list: `is_refundable` present and correct per row (extend the
+- [x] Admin methods list: `is_refundable` present and correct per row (extend the
       existing methods-list test if present, else add).
-- [ ] Admin payments list: `is_refundable` reflects the payment's method.
-- [ ] Unchanged behavior guard: refund attempt on a `CannotRefund` driver still throws
+- [x] Admin payments list: `is_refundable` reflects the payment's method.
+- [x] Unchanged behavior guard: refund attempt on a `CannotRefund` driver still throws
       `payment.refund.not_supported` (may already exist — check before writing).
 
 ### 3.5 Docs + claim wording (~1h)
 
-- [ ] `docs/THIRD_PARTY_SERVICES.md` refund table stays as-is (verified accurate);
+- [x] `docs/THIRD_PARTY_SERVICES.md` refund table stays as-is (verified accurate);
       add one sentence under §Refunds pointing at the admin badge so the two stay linked.
-- [ ] **Comparison-table footnote spec** — Part F of `launch-readiness.md` must use this
+- [x] **Comparison-table footnote spec** — Part F of `launch-readiness.md` must use this
       exact wording for the gateways row (add it to that plan's §F.2 so it can't drift):
       > "8 payment gateways with webhook verification; built-in refunds: Stripe, PayPal,
       > Manual — Adyen, MercadoPago, Checkout.com, Razorpay refund via the gateway
       > dashboard (driver support roadmaped); NowPayments (crypto) has no provider-side
       > refunds."
-- [ ] Root README: no bare gateway claims exist today — nothing to fix; do not add one
+- [x] Root README: no bare gateway claims exist today — nothing to fix; do not add one
       without the footnote (policy below).
-- [ ] `CHANGELOG.md` `[Unreleased]` → Added: per-driver refund capability in the admin
+- [x] `CHANGELOG.md` `[Unreleased]` → Added: per-driver refund capability in the admin
       (methods + payments surfaces).
-- [ ] Bruno: optional only — the methods list request has no schema assertions; skip
+- [x] Bruno: optional only — the methods list request has no schema assertions; skip
       unless touching that folder anyway.
 
 ## 4. Verification (in order)

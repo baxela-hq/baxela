@@ -122,21 +122,21 @@ endpoint is reachable on the public URL.
 
 ### B.1 Invoices & credit notes (day-sized, the big one)
 
-- [ ] `invoices` table: sequential number per store (setting for prefix/format, e.g.
+- [x] `invoices` table: sequential number per store (setting for prefix/format, e.g.
       `INV-2026-0001`), `order_id`, `issued_at`, status (issued/void), and a **totals +
       billing-address snapshot** (orders already snapshot tax — mirror that; documents must
-      never drift from the order they were cut from).
-- [ ] Issue automatically on payment success (listener on the existing order-paid domain
-      event ⚠ name); reissue/void as guarded admin actions.
-- [ ] `credit_notes` table linked to `PaymentRefund` rows — cut on refund success,
-      referencing the original invoice.
-- [ ] PDF rendering via `barryvdh/laravel-dompdf` — pure PHP, no wkhtmltopdf binary.
+      never drift from the order they were cut from). *(done — `order_invoices`/`order_invoice_items` migrations 2026-11-07 + `DocumentNumberService` per-(type, year) allocation)*
+- [x] Issue automatically on payment success (listener on the existing order-paid domain
+      event ⚠ name); reissue/void as guarded admin actions. *(done — `IssueInvoiceOnOrderPaid` on `OrderPaidEvent`; `IssueInvoiceAction`/`VoidInvoiceAction` admin actions with revision + fresh number on reissue)*
+- [x] `credit_notes` table linked to `PaymentRefund` rows — cut on refund success,
+      referencing the original invoice. *(done — cut on the new `RefundFinalizedEvent` (D10) via `IssueCreditNoteOnRefundFinalized`; `ReconcileRefundCreditNotesCommand` backfills)*
+- [x] PDF rendering via `barryvdh/laravel-dompdf` — pure PHP, no wkhtmltopdf binary.
       Blade templates localized through the existing
-      per-locale template machinery.
-- [ ] Admin: list/filter/download/void. Storefront: download from profile → orders.
-      Notification: email the invoice on issue (attachment).
-- [ ] Tests: number sequence under concurrency, snapshot immutability, credit-note totals
-      match refund. Bruno + admin i18n (6 locales).
+      per-locale template machinery. *(deviation: `mpdf/mpdf ^8.3` chosen over dompdf for first-class RTL — fa/ar invoices; en templates + fa RTL proof per plan §phase 2)*
+- [x] Admin: list/filter/download/void. Storefront: download from profile → orders.
+      Notification: email the invoice on issue (attachment). *(done — admin invoice + credit-note endpoints/routes and UI tab; storefront `order-list.tsx` download on paid orders (commit 38259bae); per-locale "invoice is ready" email templates)*
+- [x] Tests: number sequence under concurrency, snapshot immutability, credit-note totals
+      match refund. Bruno + admin i18n (6 locales). *(done — `InvoiceAutomationTest` incl. "serializes allocation across transactions: numbers never collide", `CreditNoteLifecycleTest`, `Admin/InvoiceTest`; storefront i18n keys in all 6 locales)*
 
 Suggested commits: `feat(backend/order): invoice and credit note documents`,
 `feat(admin): invoice management`, `feat(storefront): invoice downloads in profile orders`
@@ -239,21 +239,24 @@ explicitly documented for every enabled gateway.
 
 ### C.1 Tax engine: regional, inclusive, VAT (the strategic one — split, don't batch)
 
-- [ ] **C.1a Regional rates:** extend `TaxRate` scope from country to
+- [x] **C.1a Regional rates:** extend `TaxRate` scope from country to
       country + region (ISO 3166-2), with a country-wildcard default. Seed region data
       into Core the way countries/currencies are seeded (`database/data/`). ⚠ First
       verify the `Address` schema has a region/state field — if not, that additive
       migration comes first, storefront address forms second. US state rates ship as seed
       data; AvaTax/TaxJar are explicitly *not* core (future `tax-engine` extension).
-- [ ] **C.1b Tax-inclusive pricing:** `price_contains_tax` flag on TaxRate/TaxClass;
+      *(done 2026-11-08 per gap-phase-c-engines v4 — `region_code` on tax_rates + Core `regions` table/model/`regions.php` seed; `region_code` on user_addresses AND order_addresses)*
+- [x] **C.1b Tax-inclusive pricing:** `price_contains_tax` flag on TaxRate/TaxClass;
       display-price resolution in the storefront (Money utility stays integer-exact);
       orders snapshot the contained-tax amount alongside the existing tax snapshot.
-- [ ] **C.1c VAT ID (B2B):** VAT-ID field on customer/address, offline checksum
+      *(done 2026-11-08 — store-level `prices_include_tax` Setting + `ResolvesPricingMode`/`TaxMath`; `prices_contain_tax` snapshot on order_invoices)*
+- [x] **C.1c VAT ID (B2B):** VAT-ID field on customer/address, offline checksum
       validation per country format, reverse-charge zero-rating with the VAT ID recorded
       as evidence on the order. VIES online check = later extension, not core.
-- [ ] Tests: region precedence over country default, inclusive/exclusive rounding,
+      *(done 2026-11-08 — `vat_id` on addresses + `VatIdRule` per-country validators; frozen into invoice buyer identity)*
+- [x] Tests: region precedence over country default, inclusive/exclusive rounding,
       reverse-charge evidence snapshot. Docs: a `docs/tax.md` honest about what core does
-      and doesn't cover.
+      and doesn't cover. *(done — `Tax/tests/Unit/RegionalTaxTest` + per-line invariant tests in the plan's §8 matrix)*
 
 Suggested commits: `feat(backend/tax): region-scoped tax rates`,
 `feat(backend/tax): tax-inclusive pricing support`,
@@ -261,26 +264,33 @@ Suggested commits: `feat(backend/tax): region-scoped tax rates`,
 
 ### C.2 Outbound webhooks + server-to-server API tokens (v0.3)
 
-- [ ] `webhook_endpoints` table (URL, subscribed events, secret, active); HMAC-SHA256
+- [x] `webhook_endpoints` table (URL, subscribed events, secret, active); HMAC-SHA256
       signature header; delivery log with response status; retries with backoff on the
       queue; auto-disable after N consecutive failures (alert the merchant).
-- [ ] v1 event catalog mapped from existing domain events: `order.created`,
+      *(done 2026-11-08 per gap-phase-c-engines v4 — new `Modules/Webhooks`: `WebhookEndpoint`/`WebhookDelivery`/`WebhookEvent` + outbox pattern; `UrlGuard`, archival/retention commands, `RetryWebhookDeliveryCommand`)*
+- [x] v1 event catalog mapped from existing domain events: `order.created`,
       `order.paid`, `order.cancelled`, `shipment.dispatched`, `refund.processed`,
       `return.*` ⚠ (verify exact event names in `Modules/Core/app/Contracts/`).
+      *(done — sync outbox listeners on the domain transitions; `WebhookOutboxTest` covers the per-transition `source_key` cases)*
 - [ ] Admin UI: endpoint CRUD, delivery log viewer, "send test event" button.
-- [ ] API tokens: sanctum tokens with abilities + per-token rate limit for
+      *(backend admin routes exist (`Modules/Webhooks/routes/api/admin.php`) but the `apps/admin` feature pages are NOT built — genuinely remaining)*
+- [x] API tokens: sanctum tokens with abilities + per-token rate limit for
       server-to-server consumers (mobile app, ERP); document scopes.
-- [ ] Tests: signature verification, retry/backoff, dead-lettering, ability enforcement.
+      *(done — machine group + bearer-only `EnsureMachineToken` (D14: session cookies rejected, wildcard abilities rejected))*
+- [x] Tests: signature verification, retry/backoff, dead-lettering, ability enforcement.
+      *(done — `Webhooks/tests/Feature/Admin/WebhookEndpointTest` + `WebhookDeliveryTest` + `WebhookOutboxTest`)*
 
 Suggested commits: `feat(backend/core): outbound webhook endpoints and deliveries`,
 `feat(admin): webhook endpoint management`
 
 ### C.3 Media image variants (v0.2–v0.4)
 
-- [ ] Generate thumbnail/responsive sizes on upload via `intervention/image` (pure PHP);
+- [x] Generate thumbnail/responsive sizes on upload via `intervention/image` (pure PHP);
       conversions run on the queue.
-- [ ] Size presets in a core config; `MediaResource` exposes variants; storefront renders
+      *(done 2026-11-08 per gap-phase-c-engines v4 — `intervention/image ^4.4` (GD); `GenerateImageVariantsListener` + `GenerateMediaVariantsAction` + `media:regenerate-variants`)*
+- [x] Size presets in a core config; `MediaResource` exposes variants; storefront renders
       `srcset`. Originals untouched; variant files tracked for deletion with the parent.
+      *(done — presets config; variant payloads through the gateways; storefront render sites use variant srcset; admin media card/preview expose variants)*
 
 Suggested commit: `feat(backend/media): queued image variant generation`
 

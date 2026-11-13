@@ -139,16 +139,16 @@ production. Documented as a deployment checklist item per slice.
 | D11 | **Storefront:** `ApiImage`/`ApiProduct`/`ApiPost` gain `variants?: {thumb?, medium?, large?}` each `{url, width}`; product card `srcset` from **actual intrinsic widths** with `sizes`; gallery main = largest completed, thumbnails = thumb; blog card/cover likewise; JSON-LD keeps the largest/original. Admin `media-card` thumb; `preview-sheet` dimensions + per-variant status. | srcset descriptors match reality. |
 
 ### Work items
-- [ ] composer: `intervention/image`; config presets + limits + documented TTL/timeout
+- [x] composer: `intervention/image`; config presets + limits + documented TTL/timeout
       relationship (D1–D3, D5).
-- [ ] `GenerateMediaVariantsAction` (limits → classification → version allocation
+- [x] `GenerateMediaVariantsAction` (limits → classification → version allocation
       under lock → presets → **atomic publication protocol** → prune) + queued listener
       with hard job timeout (D4–D7).
-- [ ] `media:regenerate-variants` (D8); `DeleteMediaAction` under lock (D10);
+- [x] `media:regenerate-variants` (D8); `DeleteMediaAction` under lock (D10);
       `MediaResource` exposure (D9).
-- [ ] `MediaGatewayInterface::getVariantsByIds()` + Catalog/Content payload attachment.
-- [ ] Storefront: types + four render sites with honest srcset (D11); admin card/preview.
-- [ ] Pest: both disks; idempotency + **concurrency** (lock excludes a second worker;
+- [x] `MediaGatewayInterface::getVariantsByIds()` + Catalog/Content payload attachment.
+- [x] Storefront: types + four render sites with honest srcset (D11); admin card/preview.
+- [x] Pest: both disks; idempotency + **concurrency** (lock excludes a second worker;
       version allocation under lock — two concurrent regenerations, one version); the
       publication protocol (failed attempt → old set stays live; merge semantics; prune
       after publish); per-variant partial-failure state; permanent vs retryable;
@@ -204,21 +204,21 @@ concurrent jobs → documented sizing rule.
 | D14 | **S2S tokens — ownership + full enforcement:** minted **only** to a designated machine/service user (audit-logged creation/revocation, plaintext once, explicit default-deny abilities `orders.read`/`products.read`, expiration, immediate revocation). `api/v1/machine/...` is read-only, per-token rate-limited, and guarded by middleware that **requires a bearer personal-access token, rejects session-authenticated requests, rejects wildcard-ability (`['*']`) tokens, verifies the token is unexpired/unrevoked and its machine user is active**, and applies **an explicit ability check on every route**. **The ownership boundary is enforced in the query/action layer** — machine orders reads are scoped to the owning account's data, not just at authentication. PII: machine tokens read the merchant's **own** store data — documented as in-scope for an ERP integration. | Review P1-F's final safeguard list, adopted item by item. |
 
 ### Work items
-- [ ] Scaffold `Modules/Webhooks`; migrations (`webhook_events` with `source_key`,
+- [x] Scaffold `Modules/Webhooks`; migrations (`webhook_events` with `source_key`,
       `webhook_endpoints` encrypted secret + archive, `webhook_deliveries` with claim
       token/lease/attempt history); models + schemas.
-- [ ] Public payload serializers (D6); sync outbox listeners with per-transition
+- [x] Public payload serializers (D6); sync outbox listeners with per-transition
       `source_key` (D2); `ProcessOutboxEventJob` (D3); `webhooks:dispatch-deliveries`
       sweep with atomic claim (D3).
-- [ ] `UrlGuard` (CNAME chain, zone-id/mapped-IPv6 normalization, port/userinfo rules)
+- [x] `UrlGuard` (CNAME chain, zone-id/mapped-IPv6 normalization, port/userinfo rules)
       + `CURLOPT_RESOLVE` pinning + fresh-client-per-attempt (D7); `DeliverWebhookJob`
       with claim-token lifecycle (D4) + canonical signing + test vector (D8) +
       classification (D10) + attempt history (D9) + endpoint-lock auto-disable (D11).
-- [ ] Archival + retention commands (D12); admin CRUD + `webhooks:retry-delivery` (D13);
+- [x] Archival + retention commands (D12); admin CRUD + `webhooks:retry-delivery` (D13);
       `auth:sync-permissions`; i18n ×6; Bruno.
-- [ ] S2S tokens: Auth admin minting (D14); `machine` group + bearer-only/ability
+- [x] S2S tokens: Auth admin minting (D14); `machine` group + bearer-only/ability
       middleware + ownership-scoped queries + rate limiter; scope docs.
-- [ ] Pest: outbox atomicity + per-transition `source_key` (the reviewer's four cases:
+- [x] Pest: outbox atomicity + per-transition `source_key` (the reviewer's four cases:
       multiple partial payments, reversed-then-collected, multiple shipments, multiple
       refunds); serializer shape + PII/VAT absence + no AddressDto dumps; UrlGuard
       matrix (CNAME-to-private, mapped-IPv6, credentials, odd ports, non-HTTPS) +
@@ -278,17 +278,17 @@ deleted by mistake → archive restores.
 | D8 | **Canonical representation `US-CA` / `CA-ON` / `DE-BY` everywhere** (validation, admin, API, resolution) via one normalizer; **`core_regions` naming throughout**; seed updated via PRs; no region admin CRUD in v1. Address chain: `user_addresses`/`order_addresses` migrations, `AddressDto`, `AddressRequest` + `RegionCodeRule`, storefront region select + types. Tax admin + `TaxTransfer` extended. | One representation, one name. |
 
 ### Work items
-- [ ] Migration (dedup-safe unique replacement, dual-engine tests, rollback warning) +
+- [x] Migration (dedup-safe unique replacement, dual-engine tests, rollback warning) +
       schema/model constants.
-- [ ] Core: `core_regions` + `regions.php` seed + seeder + model + public endpoint
+- [x] Core: `core_regions` + `regions.php` seed + seeder + model + public endpoint
       (all seeded regions per country) + `RegionCodeRule` + normalizer.
-- [ ] `TaxGateway` precedence/inactive/region-required rules (D2–D3) +
+- [x] `TaxGateway` precedence/inactive/region-required rules (D2–D3) +
       `TaxCalculationInput.region_code`; `CheckoutAction` shipping-destination
       resolution (D4).
-- [ ] Address chain migrations + DTO + `AddressRequest` + storefront region select
+- [x] Address chain migrations + DTO + `AddressRequest` + storefront region select
       (×6 locales).
-- [ ] Tax admin + `TaxTransfer` + Bruno; i18n ×6.
-- [ ] Pest: the §5 D2–D4 matrix (incl. loud region-required failure; jurisdiction =
+- [x] Tax admin + `TaxTransfer` + Bruno; i18n ×6.
+- [x] Pest: the §5 D2–D4 matrix (incl. loud region-required failure; jurisdiction =
       shipping destination; **stored-address seed-drift behavior**); duplicate-insert
       rejection; migration against seeded data (both engines ⚠); checkout snapshot;
       transfer round-trip; admin CRUD.
@@ -327,15 +327,15 @@ country fallback · multiple regions per class coexist with the single country-w
 | D7 | **Storefront + preview:** "incl. VAT"-style marker (i18n ×6) when the store mode is inclusive; preview receives the same inputs as checkout (jurisdiction, mode, classes, discount allocation) — the calculator remains the single source of truth for preview, checkout, invoices and storefront display. | Review §6-C. |
 
 ### Work items
-- [ ] Setting enum + admin settings UI + i18n ×6.
-- [ ] `TaxMath` extraction + `TaxGateway` mode path + input/result flags;
+- [x] Setting enum + admin settings UI + i18n ×6.
+- [x] `TaxMath` extraction + `TaxGateway` mode path + input/result flags;
       `CheckoutAction` resolves the setting, snapshots it, switches the total formula
       by mode (D3).
-- [ ] Orders + `order_invoices` additive `prices_contain_tax`; B.1 kernel schemas
+- [x] Orders + `order_invoices` additive `prices_contain_tax`; B.1 kernel schemas
       updated; invoice line derivation documented (D5).
-- [ ] Tax preview marker + reconciliation assertions; storefront i18n ×6; Bruno;
+- [x] Tax preview marker + reconciliation assertions; storefront i18n ×6; Bruno;
       transfer rules.
-- [ ] Pest: per-line invariant (`gross_after = net_after + tax_after`) with discounts;
+- [x] Pest: per-line invariant (`gross_after = net_after + tax_after`) with discounts;
       order-level invariants in both modes; extraction vectors on net AND tax
       (fractional cases); shipping extraction; zero-rated; **partial-refund rounding
       rule + full-refund exactness**; historical default false; preview/checkout
@@ -377,12 +377,12 @@ net = gross ÷ 2 (pinned) · refund of a fully refunded line → exact original 
 | D4 | **Evidence frozen on the order:** additive `buyer_vat_id` on orders, persisted from billing; B.1 Phase 2's invoice `buyer_identity` copies it from the order snapshot at creation. | Snapshot discipline. |
 
 ### Work items
-- [ ] Migrations + schema constants + DTO + gateway mapping + `AddressRequest` rule.
-- [ ] `VatIdRule` + per-country validator classes (isolated, replaceable) +
+- [x] Migrations + schema constants + DTO + gateway mapping + `AddressRequest` rule.
+- [x] `VatIdRule` + per-country validator classes (isolated, replaceable) +
       `TaxGatewayInterface::validateVatId()` + implementation.
-- [ ] Orders `buyer_vat_id` + persistence; store-address forms (conditional input,
+- [x] Orders `buyer_vat_id` + persistence; store-address forms (conditional input,
       i18n ×6); types; Bruno; transfer rules.
-- [ ] Pest: format matrix (valid/invalid/normalized/EL); prefix-vs-billing mismatch;
+- [x] Pest: format matrix (valid/invalid/normalized/EL); prefix-vs-billing mismatch;
       snapshot; billing-governs; historical immutability; **error-message and log
       hygiene (no VAT echo)**; preview unaffected.
 
