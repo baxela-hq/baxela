@@ -10,6 +10,8 @@ import { Locales } from '@/features/core/languages/data/routes'
 /**
  * The language management table, embedded as a Settings tab. Fetches the
  * full list (active + inactive) — activation is the whole point here.
+ * Activated languages are listed first (stable sort keeps the backend's
+ * position order inside each group).
  */
 export function LanguagesTab() {
   const { tPlaceHolder } = useAppTranslation(Locales.SHARED_COMMON)
@@ -22,9 +24,12 @@ export function LanguagesTab() {
 
   const filtered = useMemo(() => {
     if (!data) return []
+    const activeFirst = [...data].sort(
+      (a, b) => Number(b.is_active) - Number(a.is_active)
+    )
     const q = search.trim().toLowerCase()
-    if (!q) return data
-    return data.filter(
+    if (!q) return activeFirst
+    return activeFirst.filter(
       (row) =>
         row.code.toLowerCase().includes(q) ||
         row.name.toLowerCase().includes(q) ||
