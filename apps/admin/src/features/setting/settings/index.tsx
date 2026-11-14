@@ -18,8 +18,6 @@ import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
-  SelectGroup,
-  SelectLabel,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -30,6 +28,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchTimezones } from './api/settings.api'
 import { CurrenciesTab } from './components/currencies-tab'
 import { LanguagesTab } from './components/languages-tab'
+import { TimezoneSelect } from './components/timezone-select'
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { SkeletonWidget } from '@/components/shared/skeleton-widget.tsx'
 import { TiptapEditor } from '@/components/tiptap/tiptap-editor'
@@ -300,52 +299,31 @@ export function SettingsStore() {
                     </FormItem>
                   )}
                 />
-              </TabsContent>
 
-              <FormField
-                control={form.control}
-                name='timezone'
-                render={({ field }) => (
-                  <FormItem className='grid gap-2'>
-                    <FormLabel htmlFor='timezone'>
-                      {tStatus('name.timezone')}
-                    </FormLabel>
-                    <Select
-                      onValueChange={(value) => {
-                        if (value !== '') field.onChange(value)
-                      }}
-                      value={field.value || undefined}
-                    >
+                <FormField
+                  control={form.control}
+                  name='timezone'
+                  render={({ field }) => (
+                    <FormItem className='grid gap-2'>
+                      <FormLabel htmlFor='timezone'>
+                        {tStatus('name.timezone')}
+                      </FormLabel>
                       <FormControl>
-                        <SelectTrigger id='timezone' className='w-full'>
-                          <SelectValue placeholder={tPlaceHolder('select')} />
-                        </SelectTrigger>
+                        <TimezoneSelect
+                          id='timezone'
+                          timezones={timezonesSafe}
+                          value={field.value || undefined}
+                          onValueChange={field.onChange}
+                        />
                       </FormControl>
-                      <SelectContent>
-                        {Object.entries(timezonesSafe).map(
-                          ([region, identifiers]) => (
-                            <SelectGroup key={region}>
-                              <SelectLabel>{region}</SelectLabel>
-                              {identifiers.map((identifier) => (
-                                <SelectItem
-                                  key={identifier}
-                                  value={identifier}
-                                >
-                                  {identifier}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    <FormDescription>
-                      {tTooltip('name.timezone')}
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                      <FormDescription>
+                        {tTooltip('name.timezone')}
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+              </TabsContent>
 
               {hasThemeGroup && (
                 <TabsContent value='theme' className='grid gap-4'>
