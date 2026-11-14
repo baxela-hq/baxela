@@ -17,6 +17,7 @@ Guiding principles (from README):
 ## Tech Stack
 
 - PHP **^8.3**, Laravel **^13**, `nwidart/laravel-modules` **^12**
+- Runtime: **Laravel Octane on RoadRunner** — persistent workers behind nginx (see below)
 - Auth: `laravel/sanctum` (token auth)
 - Query/filtering: `spatie/laravel-query-builder`
 - API docs: `dedoc/scramble` serves OpenAPI 3.1 at `/docs/api` (config: `config/scramble.php`, scoped to `api/v1`, bearer security via middleware strategy; local-only docs access)
@@ -24,6 +25,32 @@ Guiding principles (from README):
 - Code style: **Laravel Pint** (4-space indent, LF — see `.editorconfig`)
 - DB: MySQL in dev (Docker), SQLite `:memory:` in tests
 - Frontend tooling: Vite + Tailwind (used only for assets, not the product UI)
+
+## Runtime (Octane / RoadRunner)
+
+The API is served by `php artisan octane:start --server=roadrunner --host=0.0.0.0 --port=8000
+--rpc-host=127.0.0.1 --workers=4 --max-requests=500` (the same command in dev, prod, and
+`composer dev`, plus `--watch` in dev). nginx reverse-proxies to it over the isolated `proxy`
+network; the RPC listener is loopback-only.
+
+Because workers keep the framework in memory:
+
+- Service providers boot **once per worker**. Anything request-scoped must reset per request —
+  Octane flushes framework state (log context, auth, config sandbox, …); app-level state that
+  pretends to be per-request (e.g. `ExtensionManager::$state`) is flushed via listeners in
+  `config/octane.php` / `app/Octane/`.
+- **Extension lifecycle** (`baxela:install/enable/disable/remove`) runs in a CLI process — running
+  workers keep already-booted extensions until `php artisan octane:reload` (or a container
+  restart). Row *state* is always current (it re-reads per request); what lags is the registered
+  driver/routes.
+- **Editing `.env` in dev needs `docker compose restart app`** — workers read env once at boot.
+  Code/config changes reload automatically (`--watch`, paths in `config/octane.php` `watch`).
+- Persistent-worker isolation is a release gate: `scripts/octane-isolation-gate.php` drives a real
+  RoadRunner server through auth/permission/log/Sentry-scope scenarios (see the script header for
+  usage). Run it before merging lifecycle-touching changes.
+
+Ops (worker sizing, memory budget, timeout coordination, healthchecks) live in
+`infrastructure/docker/develop/README.md` and `infrastructure/docker/production/README.md`.
 
 ## Repository Layout
 

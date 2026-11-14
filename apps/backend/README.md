@@ -28,11 +28,27 @@ See `/docs/modules.md`
 ```bash
 git clone ...
 cp .env.example .env         # repo root: compose variables (ports, DB creds)
-docker compose up -d          # php-fpm + nginx + MySQL + Redis
+docker compose up -d          # Octane (RoadRunner) + nginx + MySQL + Redis
 docker compose exec app composer install
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
+
+## ⚡ How the API is served
+
+The backend runs on **Laravel Octane with RoadRunner**: the framework boots once per persistent
+worker instead of per request. nginx serves static `public/` files and reverse-proxies everything
+else to RoadRunner's HTTP listener (`:8000`, inside the compose network).
+
+- Dev containers reload automatically on code/config changes (`--watch`); **`.env` edits need
+  `docker compose restart app`**.
+- Extension lifecycle commands (`baxela:install/enable/disable`) can't reach running workers —
+  follow them with `docker compose exec app php artisan octane:reload`.
+- Host-side development (`composer dev`) needs the RoadRunner binary once:
+  `vendor/bin/rr get-binary` (gitignored; the Docker images bake a pinned copy).
+- Worker sizing, memory budget, timeout coordination, and ops commands are documented in
+  [`infrastructure/docker/develop/README.md`](../../infrastructure/docker/develop/README.md) and
+  [`infrastructure/docker/production/README.md`](../../infrastructure/docker/production/README.md).
 ## ⚙️Configuration
 Development runs from the repo root (`docker-compose.yml`).
 
