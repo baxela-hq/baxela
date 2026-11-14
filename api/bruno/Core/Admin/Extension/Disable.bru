@@ -1,0 +1,24 @@
+meta {
+  name: Disable
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/core/admin/extensions/acme/baxela-sandbox/disable
+  body: none
+  auth: bearer
+}
+
+headers {
+  Accept: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
