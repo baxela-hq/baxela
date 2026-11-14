@@ -272,8 +272,8 @@ Suggested commits: `feat(backend/tax): region-scoped tax rates`,
       `order.paid`, `order.cancelled`, `shipment.dispatched`, `refund.processed`,
       `return.*` ⚠ (verify exact event names in `Modules/Core/app/Contracts/`).
       *(done — sync outbox listeners on the domain transitions; `WebhookOutboxTest` covers the per-transition `source_key` cases)*
-- [ ] Admin UI: endpoint CRUD, delivery log viewer, "send test event" button.
-      *(backend admin routes exist (`Modules/Webhooks/routes/api/admin.php`) but the `apps/admin` feature pages are NOT built — genuinely remaining)*
+- [x] Admin UI: endpoint CRUD, delivery log viewer, "send test event" button.
+      *(done 2026-11-14 — the `/webhooks` page in `apps/admin`: endpoints table (events/active/failure badges), create/edit dialog over the v1 EventCatalog, archive-not-delete with the history-preserved warning, the once-only signing-secret dialog on create/regenerate, per-endpoint delivery log with status badges + retry for failures, and the send-test-event action — every action permission-gated (`webhooks.admin.*`), i18n ×6; consumes the frozen gap-C.2 backend routes unchanged)*
 - [x] API tokens: sanctum tokens with abilities + per-token rate limit for
       server-to-server consumers (mobile app, ERP); document scopes.
       *(done — machine group + bearer-only `EnsureMachineToken` (D14: session cookies rejected, wildcard abilities rejected))*

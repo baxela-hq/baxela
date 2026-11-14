@@ -1,0 +1,76 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "خطافات الويب",
+      "subtitle": "أحداث موقّعة تُسلَّم لأنظمتك — نقاط التسليم والسجل والأحداث التجريبية"
+    }
+  },
+  "form": {
+    "labels": {
+      "name": "الاسم",
+      "url": "العنوان",
+      "events": "الأحداث",
+      "is_active": "نشط",
+      "consecutive_failures": "الإخفاقات",
+      "updated_at": "محدّث",
+      "create-title": "نقطة تسليم جديدة",
+      "edit-title": "تحرير نقطة التسليم",
+      "secret-title": "مفتاح التوقيع",
+      "deliveries-title": "سجل التسليم",
+      "event_type": "الحدث",
+      "status": "الحالة",
+      "response_status": "الاستجابة",
+      "attempt_count": "المحاولات",
+      "created_at": "الوقت",
+      "archive-title": "أرشفة النقطة",
+      "no-results": "لا توجد نقاط تسليم بعد."
+    },
+    "actions": {
+      "create": "نقطة جديدة",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "edit": "تحرير",
+      "archive": "أرشفة",
+      "confirm": "تأكيد",
+      "deliveries": "سجل التسليم",
+      "send_test": "إرسال حدث تجريبي",
+      "regenerate_secret": "إعادة توليد المفتاح",
+      "retry": "إعادة المحاولة",
+      "refresh": "تحديث",
+      "copy": "نسخ",
+      "done": "تم",
+      "open_menu": "فتح القائمة"
+    },
+    "statuses": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "قيد الانتظار",
+      "processing": "قيد المعالجة",
+      "succeeded": "ناجح",
+      "failed_retryable": "فاشل — أُعيد جدولة المحاولة",
+      "failed_permanent": "فاشل — دائم"
+    },
+    "placeholders": {
+      "name": "مثل: مزامنة المخزون",
+      "url": "https://example.com/webhooks/baxela"
+    },
+    "help_texts": {
+      "endpoint_help": "يرسل باكسلا حمولة JSON موقّعة إلى هذا العنوان لكل حدث مشترك.",
+      "url_help": "يلزم HTTPS في الإنتاج؛ تُرفض العناوين الداخلية احتياطًا.",
+      "secret_once": "انسخ مفتاح التوقيع الآن — يُعرض مرة واحدة فقط. اضبط مستقبلك للتحقق من ترويسة X-Signature.",
+      "secret_verify": "تُوقَّع التسليمات بـ HMAC-SHA256 على المتن الخام.",
+      "secret_copied": "نُسخ المفتاح إلى الحافظة",
+      "deliveries_help": "آخر تسليمات هذه النقطة — حالة الاستجابة والمحاولات ومقاطع منقّاة.",
+      "no_deliveries": "لا تسليمات بعد — أرسل حدثًا تجريبيًا للتحقق.",
+      "archive_help": "الأرشفة توقف التسليم نهائيًا. يُحفظ السجل للتدقيق. لا يمكن التراجع."
+    }
+  },
+  "messages": {
+    "created": "أُنشئت نقطة التسليم",
+    "updated": "حُدّثت نقطة التسليم",
+    "archived": "أُرشفت نقطة التسليم",
+    "test_sent": "أُرسل الحدث التجريبي — راجع السجل",
+    "retry_queued": "أُعيد جدولة التسليم",
+    "error_general": "حدث خطأ ما"
+  }
+}

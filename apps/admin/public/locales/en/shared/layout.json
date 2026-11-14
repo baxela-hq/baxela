@@ -58,7 +58,8 @@
     "languages": "Languages",
     "transfer-data": "Data Transfer",
     "invoices": "Invoices",
-    "security": "Security"
+    "security": "Security",
+    "webhooks": "Webhooks"
   },
   "dialog": {
     "sign-out": {

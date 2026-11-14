@@ -1,0 +1,76 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Webhooks",
+      "subtitle": "Des événements signés livrés à vos systèmes — points de livraison, historique et événements test"
+    }
+  },
+  "form": {
+    "labels": {
+      "name": "Nom",
+      "url": "URL",
+      "events": "Événements",
+      "is_active": "Actif",
+      "consecutive_failures": "Échecs",
+      "updated_at": "Mis à jour",
+      "create-title": "Nouveau point de livraison",
+      "edit-title": "Modifier le point de livraison",
+      "secret-title": "Secret de signature",
+      "deliveries-title": "Journal de livraison",
+      "event_type": "Événement",
+      "status": "Statut",
+      "response_status": "Réponse",
+      "attempt_count": "Tentatives",
+      "created_at": "Heure",
+      "archive-title": "Archiver le point",
+      "no-results": "Aucun point de livraison pour le moment."
+    },
+    "actions": {
+      "create": "Nouveau point",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "edit": "Modifier",
+      "archive": "Archiver",
+      "confirm": "Confirmer",
+      "deliveries": "Journal de livraison",
+      "send_test": "Envoyer un événement test",
+      "regenerate_secret": "Régénérer le secret",
+      "retry": "Réessayer",
+      "refresh": "Rafraîchir",
+      "copy": "Copier",
+      "done": "Terminé",
+      "open_menu": "Ouvrir le menu"
+    },
+    "statuses": {
+      "active": "Actif",
+      "inactive": "Inactif",
+      "pending": "En attente",
+      "processing": "En cours",
+      "succeeded": "Succès",
+      "failed_retryable": "Échec — nouvelle tentative prévue",
+      "failed_permanent": "Échec — définitif"
+    },
+    "placeholders": {
+      "name": "p. ex. Sync stock",
+      "url": "https://example.com/webhooks/baxela"
+    },
+    "help_texts": {
+      "endpoint_help": "Baxela POSTe une charge JSON signée vers cette URL pour chaque événement souscrit.",
+      "url_help": "HTTPS requis en production ; les adresses internes sont rejetées par sécurité.",
+      "secret_once": "Copiez ce secret de signature maintenant — il n'est affiché qu'une seule fois. Configurez votre récepteur pour vérifier l'en-tête X-Signature.",
+      "secret_verify": "Les livraisons sont signées en HMAC-SHA256 sur le corps brut.",
+      "secret_copied": "Secret copié dans le presse-papiers",
+      "deliveries_help": "Les dernières livraisons de ce point — statut de réponse, tentatives et extraits assainis.",
+      "no_deliveries": "Aucune livraison — envoyez un événement test pour vérifier.",
+      "archive_help": "L'archivage arrête définitivement les livraisons. L'historique est conservé pour audit. Irréversible."
+    }
+  },
+  "messages": {
+    "created": "Point de livraison créé",
+    "updated": "Point de livraison mis à jour",
+    "archived": "Point de livraison archivé",
+    "test_sent": "Événement test envoyé — voir le journal",
+    "retry_queued": "Livraison replanifiée",
+    "error_general": "Une erreur est survenue"
+  }
+}

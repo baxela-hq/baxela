@@ -58,7 +58,8 @@
     "languages": "زبان‌ها",
     "transfer-data": "انتقال داده‌ها",
     "invoices": "صورتحساب‌ها",
-    "security": "امنیت"
+    "security": "امنیت",
+    "webhooks": "وب‌هوک‌ها"
   },
   "dialog": {
     "sign-out": {

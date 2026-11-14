@@ -1,0 +1,76 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Webhooks",
+      "subtitle": "Signierte Store-Events für Ihre Systeme — Endpunkte, Zustellverlauf und Test-Events"
+    }
+  },
+  "form": {
+    "labels": {
+      "name": "Name",
+      "url": "URL",
+      "events": "Events",
+      "is_active": "Aktiv",
+      "consecutive_failures": "Fehler",
+      "updated_at": "Aktualisiert",
+      "create-title": "Neuer Webhook-Endpunkt",
+      "edit-title": "Webhook-Endpunkt bearbeiten",
+      "secret-title": "Signier-Geheimnis",
+      "deliveries-title": "Zustellprotokoll",
+      "event_type": "Event",
+      "status": "Status",
+      "response_status": "Antwort",
+      "attempt_count": "Versuche",
+      "created_at": "Zeit",
+      "archive-title": "Endpunkt archivieren",
+      "no-results": "Noch keine Webhook-Endpunkte."
+    },
+    "actions": {
+      "create": "Neuer Endpunkt",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "edit": "Bearbeiten",
+      "archive": "Archivieren",
+      "confirm": "Bestätigen",
+      "deliveries": "Zustellprotokoll",
+      "send_test": "Test-Event senden",
+      "regenerate_secret": "Geheimnis neu erzeugen",
+      "retry": "Erneut senden",
+      "refresh": "Aktualisieren",
+      "copy": "Kopieren",
+      "done": "Fertig",
+      "open_menu": "Menü öffnen"
+    },
+    "statuses": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "pending": "Ausstehend",
+      "processing": "Läuft",
+      "succeeded": "Erfolgreich",
+      "failed_retryable": "Fehlgeschlagen — Wiederholung geplant",
+      "failed_permanent": "Fehlgeschlagen — endgültig"
+    },
+    "placeholders": {
+      "name": "z. B. Bestands-Sync",
+      "url": "https://example.com/webhooks/baxela"
+    },
+    "help_texts": {
+      "endpoint_help": "Baxela POSTet für jedes abonnierte Event eine signierte JSON-Nutzlast an diese URL.",
+      "url_help": "In Produktion erforderlich: HTTPS; interne Adressen werden sicherheitshalber abgelehnt.",
+      "secret_once": "Kopieren Sie dieses Signier-Geheimnis jetzt — es wird genau einmal angezeigt. Konfigurieren Sie Ihren Empfänger zur Prüfung des X-Signature-Headers.",
+      "secret_verify": "Zustellungen werden mit HMAC-SHA256 über den Rohteil signiert.",
+      "secret_copied": "Geheimnis in die Zwischenablage kopiert",
+      "deliveries_help": "Die letzten Zustellungen dieses Endpunkts — Antwortstatus, Versuche und bereinigte Antwortauszüge.",
+      "no_deliveries": "Noch keine Zustellungen — senden Sie ein Test-Event zur Prüfung.",
+      "archive_help": "Archivieren beendet Zustellungen dauerhaft. Der Verlauf bleibt zu Prüfzwecken erhalten. Nicht rückgängig machbar."
+    }
+  },
+  "messages": {
+    "created": "Webhook-Endpunkt erstellt",
+    "updated": "Webhook-Endpunkt aktualisiert",
+    "archived": "Webhook-Endpunkt archiviert",
+    "test_sent": "Test-Event versandt — siehe Zustellprotokoll",
+    "retry_queued": "Zustellung erneut eingeplant",
+    "error_general": "Etwas ist schiefgelaufen"
+  }
+}

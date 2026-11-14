@@ -1,0 +1,76 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Webhooks",
+      "subtitle": "Eventos firmados entregados a sus sistemas — puntos de entrega, historial y eventos de prueba"
+    }
+  },
+  "form": {
+    "labels": {
+      "name": "Nombre",
+      "url": "URL",
+      "events": "Eventos",
+      "is_active": "Activo",
+      "consecutive_failures": "Fallos",
+      "updated_at": "Actualizado",
+      "create-title": "Nuevo punto de entrega",
+      "edit-title": "Editar punto de entrega",
+      "secret-title": "Secreto de firma",
+      "deliveries-title": "Registro de entregas",
+      "event_type": "Evento",
+      "status": "Estado",
+      "response_status": "Respuesta",
+      "attempt_count": "Intentos",
+      "created_at": "Hora",
+      "archive-title": "Archivar punto",
+      "no-results": "Aún no hay puntos de entrega."
+    },
+    "actions": {
+      "create": "Nuevo punto",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "archive": "Archivar",
+      "confirm": "Confirmar",
+      "deliveries": "Registro de entregas",
+      "send_test": "Enviar evento de prueba",
+      "regenerate_secret": "Regenerar secreto",
+      "retry": "Reintentar",
+      "refresh": "Actualizar",
+      "copy": "Copiar",
+      "done": "Hecho",
+      "open_menu": "Abrir menú"
+    },
+    "statuses": {
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "pending": "Pendiente",
+      "processing": "Procesando",
+      "succeeded": "Correcto",
+      "failed_retryable": "Fallido — reintento programado",
+      "failed_permanent": "Fallido — permanente"
+    },
+    "placeholders": {
+      "name": "p. ej. Sincronización de inventario",
+      "url": "https://example.com/webhooks/baxela"
+    },
+    "help_texts": {
+      "endpoint_help": "Baxela envía (POST) una carga JSON firmada a esta URL por cada evento suscrito.",
+      "url_help": "Se requiere HTTPS en producción; las direcciones internas se rechazan por seguridad.",
+      "secret_once": "Copie este secreto de firma ahora — se muestra exactamente una vez. Configure su receptor para verificar la cabecera X-Signature.",
+      "secret_verify": "Las entregas se firman con HMAC-SHA256 sobre el cuerpo sin procesar.",
+      "secret_copied": "Secreto copiado al portapapeles",
+      "deliveries_help": "Las últimas entregas de este punto — estado de respuesta, intentos y fragmentos depurados.",
+      "no_deliveries": "Aún no hay entregas — envíe un evento de prueba para verificar.",
+      "archive_help": "Archivar detiene las entregas permanentemente. El historial se conserva para auditoría. Irreversible."
+    }
+  },
+  "messages": {
+    "created": "Punto de entrega creado",
+    "updated": "Punto de entrega actualizado",
+    "archived": "Punto de entrega archivado",
+    "test_sent": "Evento de prueba enviado — vea el registro",
+    "retry_queued": "Entrega reprogramada",
+    "error_general": "Algo salió mal"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "page_titles": {
+    "index": {
+      "title": "Webhooks",
+      "subtitle": "Signed store events delivered to your systems — endpoints, delivery history and test events"
+    }
+  },
+  "form": {
+    "labels": {
+      "name": "Name",
+      "url": "URL",
+      "events": "Events",
+      "is_active": "Active",
+      "consecutive_failures": "Failures",
+      "updated_at": "Updated",
+      "create-title": "New webhook endpoint",
+      "edit-title": "Edit webhook endpoint",
+      "secret-title": "Signing secret",
+      "deliveries-title": "Delivery log",
+      "event_type": "Event",
+      "status": "Status",
+      "response_status": "Response",
+      "attempt_count": "Attempts",
+      "created_at": "Time",
+      "archive-title": "Archive endpoint",
+      "no-results": "No webhook endpoints yet."
+    },
+    "actions": {
+      "create": "New endpoint",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "archive": "Archive",
+      "confirm": "Confirm",
+      "deliveries": "Delivery log",
+      "send_test": "Send test event",
+      "regenerate_secret": "Regenerate secret",
+      "retry": "Retry",
+      "refresh": "Refresh",
+      "copy": "Copy",
+      "done": "Done",
+      "open_menu": "Open menu"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "processing": "Processing",
+      "succeeded": "Succeeded",
+      "failed_retryable": "Failed — retry scheduled",
+      "failed_permanent": "Failed — permanent"
+    },
+    "placeholders": {
+      "name": "e.g. Inventory sync",
+      "url": "https://example.com/webhooks/baxela"
+    },
+    "help_texts": {
+      "endpoint_help": "Baxela POSTs a signed JSON payload to this URL for each subscribed event.",
+      "url_help": "Must be HTTPS in production; internal addresses are rejected for safety.",
+      "secret_once": "Copy this signing secret now — it is shown exactly once and never again. Configure your receiver to verify the X-Signature header with it.",
+      "secret_verify": "Deliveries are signed with HMAC-SHA256 over the raw body.",
+      "secret_copied": "Secret copied to clipboard",
+      "deliveries_help": "The most recent deliveries for this endpoint — response status, attempts and sanitized response snippets.",
+      "no_deliveries": "No deliveries yet — send a test event to verify the receiver.",
+      "archive_help": "Archiving stops deliveries permanently. The delivery history is preserved for auditing. This cannot be undone."
+    }
+  },
+  "messages": {
+    "created": "Webhook endpoint created",
+    "updated": "Webhook endpoint updated",
+    "archived": "Webhook endpoint archived",
+    "test_sent": "Test event dispatched — check the delivery log",
+    "retry_queued": "Delivery re-queued",
+    "error_general": "Something went wrong"
+  }
+}

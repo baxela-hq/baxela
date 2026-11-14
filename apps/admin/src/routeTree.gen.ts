@@ -18,6 +18,7 @@ import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedWebhooksIndexRouteImport } from './routes/_authenticated/webhooks/index'
 import { Route as AuthenticatedTransferIndexRouteImport } from './routes/_authenticated/transfer/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
@@ -121,6 +122,12 @@ const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWebhooksIndexRoute =
+  AuthenticatedWebhooksIndexRouteImport.update({
+    id: '/webhooks/',
+    path: '/webhooks/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedTransferIndexRoute =
@@ -495,6 +502,7 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/transfer': typeof AuthenticatedTransferIndexRoute
+  '/webhooks': typeof AuthenticatedWebhooksIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -562,6 +570,7 @@ export interface FileRoutesByTo {
   '/notifications': typeof AuthenticatedNotificationsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/transfer': typeof AuthenticatedTransferIndexRoute
+  '/webhooks': typeof AuthenticatedWebhooksIndexRoute
   '/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -633,6 +642,7 @@ export interface FileRoutesById {
   '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/transfer/': typeof AuthenticatedTransferIndexRoute
+  '/_authenticated/webhooks/': typeof AuthenticatedWebhooksIndexRoute
   '/_authenticated/catalog/attributes/groups': typeof AuthenticatedCatalogAttributesGroupsRoute
   '/_authenticated/catalog/attributes/templates': typeof AuthenticatedCatalogAttributesTemplatesRoute
   '/_authenticated/catalog/products/create': typeof AuthenticatedCatalogProductsCreateRoute
@@ -704,6 +714,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings/'
     | '/transfer'
+    | '/webhooks'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -771,6 +782,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/settings'
     | '/transfer'
+    | '/webhooks'
     | '/catalog/attributes/groups'
     | '/catalog/attributes/templates'
     | '/catalog/products/create'
@@ -841,6 +853,7 @@ export interface FileRouteTypes {
     | '/_authenticated/notifications/'
     | '/_authenticated/settings/'
     | '/_authenticated/transfer/'
+    | '/_authenticated/webhooks/'
     | '/_authenticated/catalog/attributes/groups'
     | '/_authenticated/catalog/attributes/templates'
     | '/_authenticated/catalog/products/create'
@@ -966,6 +979,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/webhooks/': {
+      id: '/_authenticated/webhooks/'
+      path: '/webhooks'
+      fullPath: '/webhooks'
+      preLoaderRoute: typeof AuthenticatedWebhooksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/transfer/': {
@@ -1435,6 +1455,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMediaIndexRoute: typeof AuthenticatedMediaIndexRoute
   AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
   AuthenticatedTransferIndexRoute: typeof AuthenticatedTransferIndexRoute
+  AuthenticatedWebhooksIndexRoute: typeof AuthenticatedWebhooksIndexRoute
   AuthenticatedCatalogProductsCreateRoute: typeof AuthenticatedCatalogProductsCreateRoute
   AuthenticatedContentPagesCreateRoute: typeof AuthenticatedContentPagesCreateRoute
   AuthenticatedContentPostsCreateRoute: typeof AuthenticatedContentPostsCreateRoute
@@ -1493,6 +1514,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMediaIndexRoute: AuthenticatedMediaIndexRoute,
   AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
   AuthenticatedTransferIndexRoute: AuthenticatedTransferIndexRoute,
+  AuthenticatedWebhooksIndexRoute: AuthenticatedWebhooksIndexRoute,
   AuthenticatedCatalogProductsCreateRoute:
     AuthenticatedCatalogProductsCreateRoute,
   AuthenticatedContentPagesCreateRoute: AuthenticatedContentPagesCreateRoute,

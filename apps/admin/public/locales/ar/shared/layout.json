@@ -58,7 +58,8 @@
     "transfer-data": "نقل البيانات",
     "invoices": "الفواتير",
     "security": "الأمان",
-    "system": "النظام"
+    "system": "النظام",
+    "webhooks": "خطافات الويب"
   },
   "dialog": {
     "sign-out": {

@@ -58,7 +58,8 @@
     "transfer-data": "Datenübertragung",
     "invoices": "Rechnungen",
     "security": "Sicherheit",
-    "system": "System"
+    "system": "System",
+    "webhooks": "Webhooks"
   },
   "dialog": {
     "sign-out": {
