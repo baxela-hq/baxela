@@ -68,12 +68,12 @@ jobs:
       redis:
         image: redis:7-alpine
         ports:
-          - 127.0.0.1:6378:6379
+          - 6378:6379
         options: >-
           --health-cmd "redis-cli ping"
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677268 # v4
 
