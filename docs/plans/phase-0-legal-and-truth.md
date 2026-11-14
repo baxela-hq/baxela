@@ -150,9 +150,8 @@ and `chore(admin): remove upstream shadcn-admin governance files`
 2. Delete `apps/admin/CHANGELOG.md` (upstream's release log — misleading inside Baxela);
    upstream history stays available via the Credits link.
 3. Manual GitHub settings checklist (owner, 10 minutes, record completion here):
-   - [ ] Description + homepage (demo storefront URL) — *description set (verified
-         live via API 2026-11-14); **homepage URL still empty** — set it to the demo
-         storefront URL in Settings → General → Website*
+   - [x] Description + homepage (demo storefront URL) — *verified live via API
+         2026-11-14: description set, homepage = `https://demo.baxela.com/`*
    - [x] Topics: `php-ecommerce`, `laravel`, `ecommerce`, `nextjs`, `react`, `typescript`,
          `storefront`, `headless-commerce`, `rtl`, `open-source` — *(all 10 present,
          verified live via API 2026-11-14)*
