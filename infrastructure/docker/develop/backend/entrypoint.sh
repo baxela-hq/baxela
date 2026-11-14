@@ -7,13 +7,28 @@ set -e
 # cheap no-ops. The source (including vendor and .env) is bind-mounted from
 # apps/backend, so this also works when a copy already exists on the host.
 #
-# app, queue and reverb all share this entrypoint, but only the compose
-# service carrying RUN_MIGRATIONS=1 may migrate: a worker restarting after
-# its tables were wiped must not re-create them mid `module:migrate-fresh`.
+# app, queue and reverb all share this entrypoint. Two flags keep the
+# side-effecting steps sole-owner (mirroring each other):
+#   RUN_MIGRATIONS=1     only the compose `app` service may migrate — a
+#                        worker restarting after its tables were wiped must
+#                        not re-create them mid `module:migrate-fresh`.
+#   INSTALL_NODE_DEPS=1  only the compose `app` service may install the
+#                        backend's npm dependencies (chokidar for
+#                        `octane:start --watch`) into the bind-mounted
+#                        node_modules — queue/reverb must never race it.
 cd /var/www/html
 
 if [ ! -f vendor/autoload.php ] || [ composer.lock -nt vendor/autoload.php ]; then
     composer install --no-interaction --no-progress
+fi
+
+# Node deps for the Octane watcher. `npm ci` (not install) keeps the result
+# deterministic against the committed package-lock.json; a failure here must
+# abort startup rather than leave octane --watch without its watcher.
+if [ "${INSTALL_NODE_DEPS:-0}" = "1" ]; then
+    if [ ! -f node_modules/.package-lock.json ] || [ package-lock.json -nt node_modules/.package-lock.json ]; then
+        npm ci --no-audit --no-fund
+    fi
 fi
 
 if [ ! -f .env ]; then
