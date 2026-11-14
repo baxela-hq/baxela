@@ -125,6 +125,22 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     };
   }, [token, user?.id]);
 
+  // Reads never broadcast on the websocket (only .notification.created
+  // does), so the badge can go stale when rows are read in another tab or
+  // on another device: re-sync whenever this tab becomes visible again.
+  useEffect(() => {
+    if (!token) return;
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        void refresh().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [token, refresh]);
+
   const markRead = useCallback(
     (notification: ApiNotification) => {
       if (notification.read_at || !token) return;
