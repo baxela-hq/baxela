@@ -150,15 +150,23 @@ and `chore(admin): remove upstream shadcn-admin governance files`
 2. Delete `apps/admin/CHANGELOG.md` (upstream's release log — misleading inside Baxela);
    upstream history stays available via the Credits link.
 3. Manual GitHub settings checklist (owner, 10 minutes, record completion here):
-   - [ ] Description + homepage (demo storefront URL)
-   - [ ] Topics: `php-ecommerce`, `laravel`, `ecommerce`, `nextjs`, `react`, `typescript`,
-         `storefront`, `headless-commerce`, `rtl`, `open-source`
+   - [ ] Description + homepage (demo storefront URL) — *description set (verified
+         live via API 2026-11-14); **homepage URL still empty** — set it to the demo
+         storefront URL in Settings → General → Website*
+   - [x] Topics: `php-ecommerce`, `laravel`, `ecommerce`, `nextjs`, `react`, `typescript`,
+         `storefront`, `headless-commerce`, `rtl`, `open-source` — *(all 10 present,
+         verified live via API 2026-11-14)*
    - [ ] Social preview image 1200×640 (owner supplies; placeholder: Baxela wordmark on
-         dark background)
-   - [ ] Discussions enabled (Categories: Announcements, Q&A, Show and tell, Ideas)
+         dark background) — *branded card generated at `~/baxela-social-preview.png`
+         (1280×640, GitHub's recommended size); the upload itself is not queryable via
+         API — owner uploads in Settings → General → Social preview*
+   - [x] Discussions enabled (Categories: Announcements, Q&A, Show and tell, Ideas)
+         — *(verified live via API 2026-11-14)*
    - [x] Private vulnerability reporting enabled *(owner-confirmed, set to "Enable
          All" on GitHub, 2026-11-13)*
-   - [ ] Community standards page all-green
+   - [x] Community standards page all-green — *(all 7 community health files present
+         per the API 2026-11-14: license, readme, code of conduct, contributing,
+         issue + PR templates)*
 
 Suggested commit: `chore(admin): rename package to baxela-admin and drop upstream changelog`
 
