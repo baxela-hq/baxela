@@ -1,13 +1,14 @@
 "use client";
 
-import { Suspense, useEffect, useState, type FormEvent } from "react";
+import { Suspense, useCallback, useEffect, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
-import { useAuth } from "@/context/auth-context";
+import { useAuth, type GoogleSignInResult } from "@/context/auth-context";
 import { ApiError } from "@/lib/api/client";
 import { isSafeInternalPath } from "@/lib/url-safety";
 import { AuthShell } from "@/components/auth/auth-shell";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -38,6 +39,29 @@ function LoginForm() {
     const query = params.toString();
     router.replace(query ? `/login?${query}` : "/login");
   }, [searchParams, router, t]);
+
+  // Google path: signed_in goes to the same post-login target as the form;
+  // requires_activation routes to the existing OTP verification flow — the
+  // account exists but has no token until activation completes.
+  const onGoogleSuccess = useCallback(
+    (result: GoogleSignInResult) => {
+      if (result.kind === "signed_in") {
+        toast.success(t("login.messages.success.signed_in"));
+      } else {
+        toast.success(t("signup.messages.success.signed_up"));
+      }
+
+      const next = searchParams.get("next");
+      router.replace(
+        result.kind === "requires_activation"
+          ? `/enter-otp?mode=activation&email=${encodeURIComponent(result.email)}`
+          : next && isSafeInternalPath(next)
+            ? next
+            : "/profile",
+      );
+    },
+    [searchParams, router, t],
+  );
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -107,6 +131,7 @@ function LoginForm() {
                 : t("login.actions.submit")}
             </Button>
           </form>
+          <GoogleSignInButton onSuccess={onGoogleSuccess} />
           <p className="mt-6 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
             {t("login.texts.no_account")}{" "}
             <Link

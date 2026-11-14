@@ -39,11 +39,22 @@ interface SignInInput {
   remember?: boolean;
 }
 
+/**
+ * Outcome of a Google sign-in attempt: either a normal signed-in session
+ * (same envelope as the password sign-in) or a brand-new third-party-email
+ * account that must complete the existing OTP activation before any token
+ * exists.
+ */
+export type GoogleSignInResult =
+  | { kind: "signed_in"; user: ApiUser }
+  | { kind: "requires_activation"; email: string };
+
 interface AuthContextValue {
   status: AuthStatus;
   user: ApiUser | null;
   token: string | null;
   signIn: (input: SignInInput) => Promise<ApiUser>;
+  signInWithGoogle: (credential: string) => Promise<GoogleSignInResult>;
   signOut: () => void;
 }
 
@@ -151,6 +162,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const signInWithGoogle = useCallback(
+    async (credential: string): Promise<GoogleSignInResult> => {
+      // Same contract as the password sign-in: the guest cart token rides
+      // along so the backend folds the guest cart into the account cart on
+      // any signed-in outcome. device_name lets the backend replace only
+      // this device's previous token.
+      const result = await api.post<
+        { token: string; user: ApiUser } | { requires_activation: true; email: string }
+      >("/auth/public/auth/google", {
+        credential,
+        device_name: getDeviceId(),
+        remember: true,
+      }, {
+        cartToken: getCartToken(),
+      });
+
+      if ("requires_activation" in result) {
+        // No token exists yet — the account activates through the OTP flow
+        // and only then signs in. The guest cart stays untouched.
+        return { kind: "requires_activation", email: result.email };
+      }
+
+      window.localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+      window.localStorage.setItem(AUTH_USER_KEY, JSON.stringify(result.user));
+      setToken(result.token);
+      setUser(result.user);
+      setStatus("authenticated");
+
+      // Only drop the guest token once sign-in (and the server-side merge)
+      // has succeeded — a failed attempt must leave the guest cart reachable.
+      clearCartToken();
+
+      return { kind: "signed_in", user: result.user };
+    },
+    [],
+  );
+
   const signOut = useCallback(async () => {
     // Revoke the token server-side first so the session dies on every
     // device list, then drop the local session — even if the call fails
@@ -166,8 +214,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [token, clearSession]);
 
   const value = useMemo<AuthContextValue>(
-    () => ({ status, user, token, signIn, signOut }),
-    [status, user, token, signIn, signOut],
+    () => ({ status, user, token, signIn, signInWithGoogle, signOut }),
+    [status, user, token, signIn, signInWithGoogle, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

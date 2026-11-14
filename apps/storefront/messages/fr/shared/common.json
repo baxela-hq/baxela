@@ -29,12 +29,16 @@
   "messages": {
     "error": {
       "general": "Une erreur s'est produite. Veuillez réessayer plus tard.",
-      "network": "Échec de la connexion. Veuillez vérifier votre connexion."
+      "network": "Échec de la connexion. Veuillez vérifier votre connexion.",
+      "google_email_exists": "Un compte avec cet e-mail existe déjà. Veuillez vous connecter avec votre mot de passe.",
+      "google_nonce_invalid": "La connexion avec Google a expiré. Veuillez réessayer.",
+      "google_admin_forbidden": "La connexion avec Google n'est pas disponible pour ce compte."
     },
     "info": {
       "loading": "Chargement…",
       "not_found": "La page que vous recherchez est introuvable.",
-      "no_results": "Aucun résultat trouvé."
+      "no_results": "Aucun résultat trouvé.",
+      "or": "ou"
     }
   }
 }

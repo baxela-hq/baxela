@@ -29,12 +29,16 @@
   "messages": {
     "error": {
       "general": "Algo salió mal. Inténtalo de nuevo más tarde.",
-      "network": "No se pudo conectar. Comprueba tu conexión."
+      "network": "No se pudo conectar. Comprueba tu conexión.",
+      "google_email_exists": "Ya existe una cuenta con este correo. Inicia sesión con tu contraseña.",
+      "google_nonce_invalid": "El inicio de sesión con Google ha caducado. Inténtalo de nuevo.",
+      "google_admin_forbidden": "El inicio de sesión con Google no está disponible para esta cuenta."
     },
     "info": {
       "loading": "Cargando…",
       "not_found": "No se encontró la página que buscas.",
-      "no_results": "No se encontraron resultados."
+      "no_results": "No se encontraron resultados.",
+      "or": "o"
     }
   }
 }

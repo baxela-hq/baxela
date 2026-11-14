@@ -35,6 +35,16 @@ const SENTRY_INGEST_ORIGIN = (() => {
   }
 })();
 
+// Google Identity Services (sign in with Google): script, iframe and
+// connect targets. The origins are only allowed when the storefront is
+// actually configured for the feature (client id + enabled flag), so an
+// unconfigured deployment keeps the CSP untouched.
+const GOOGLE_GIS_ORIGIN =
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID &&
+  process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true"
+    ? "https://accounts.google.com"
+    : "";
+
 const isProduction = process.env.NODE_ENV === "production";
 
 // Backend-served product/category images may live on any https host, and on
@@ -55,11 +65,13 @@ const scriptSources = isProduction
 // today is constraining connect/img/frame targets under a stolen token.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src ${scriptSources}`,
+  `script-src ${scriptSources} ${GOOGLE_GIS_ORIGIN}`.trimEnd(),
   `style-src 'self' 'unsafe-inline'`,
   `img-src ${imgSources.join(" ")}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${API_ORIGIN} ${REVERB_ORIGIN} ${SENTRY_INGEST_ORIGIN}`.trimEnd(),
+  `connect-src 'self' ${API_ORIGIN} ${REVERB_ORIGIN} ${SENTRY_INGEST_ORIGIN} ${GOOGLE_GIS_ORIGIN}`.trimEnd(),
+  // GIS renders its button/prompt inside a Google-served iframe.
+  ...(GOOGLE_GIS_ORIGIN ? [`frame-src 'self' ${GOOGLE_GIS_ORIGIN}`] : []),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

@@ -29,12 +29,16 @@
   "messages": {
     "error": {
       "general": "Something went wrong. Please try again later.",
-      "network": "Failed to connect. Please check your connection."
+      "network": "Failed to connect. Please check your connection.",
+      "google_email_exists": "An account with this email already exists. Please sign in with your password.",
+      "google_nonce_invalid": "Sign-in with Google expired. Please try again.",
+      "google_admin_forbidden": "Sign-in with Google is unavailable for this account."
     },
     "info": {
       "loading": "Loading…",
       "not_found": "The page you are looking for was not found.",
-      "no_results": "No results found."
+      "no_results": "No results found.",
+      "or": "or"
     }
   }
 }

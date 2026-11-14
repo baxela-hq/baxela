@@ -29,12 +29,16 @@
   "messages": {
     "error": {
       "general": "Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.",
-      "network": "Verbindung fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung."
+      "network": "Verbindung fehlgeschlagen. Bitte prüfen Sie Ihre Internetverbindung.",
+      "google_email_exists": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Bitte melden Sie sich mit Ihrem Passwort an.",
+      "google_nonce_invalid": "Die Anmeldung mit Google ist abgelaufen. Bitte versuchen Sie es erneut.",
+      "google_admin_forbidden": "Die Anmeldung mit Google ist für dieses Konto nicht verfügbar."
     },
     "info": {
       "loading": "Wird geladen…",
       "not_found": "Die gesuchte Seite wurde nicht gefunden.",
-      "no_results": "Keine Ergebnisse gefunden."
+      "no_results": "Keine Ergebnisse gefunden.",
+      "or": "oder"
     }
   }
 }

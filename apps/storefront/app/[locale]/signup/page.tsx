@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { api, ApiError } from "@/lib/api/client";
+import type { GoogleSignInResult } from "@/context/auth-context";
 import { AuthShell } from "@/components/auth/auth-shell";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LockIcon, MailIcon, UserIcon } from "@/components/ui/icons";
@@ -21,6 +23,22 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [pending, setPending] = useState(false);
+
+  // Google path: a new third-party-email account lands on the OTP flow
+  // exactly like the password signup; a returning Google customer is
+  // simply signed in.
+  const onGoogleSuccess = useCallback(
+    (result: GoogleSignInResult) => {
+      toast.success(t("signup.messages.success.signed_up"));
+
+      router.replace(
+        result.kind === "requires_activation"
+          ? `/enter-otp?mode=activation&email=${encodeURIComponent(result.email)}`
+          : "/profile",
+      );
+    },
+    [router, t],
+  );
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -109,6 +127,7 @@ export default function SignupPage() {
                 : t("signup.actions.submit")}
             </Button>
           </form>
+          <GoogleSignInButton onSuccess={onGoogleSuccess} text="signup_with" />
           <p className="mt-6 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
             {t("signup.texts.agree_intro")}{" "}
             <Link
