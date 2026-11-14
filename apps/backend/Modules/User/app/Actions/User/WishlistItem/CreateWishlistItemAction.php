@@ -16,6 +16,7 @@ class CreateWishlistItemAction
      * existing row. The unique index is the ultimate guard — a
      * concurrent duplicate insert loses the race and re-fetches.
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): WishlistItem
     {
         $attributes = [

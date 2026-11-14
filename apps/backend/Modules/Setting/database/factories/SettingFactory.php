@@ -9,6 +9,7 @@ use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Schemas\Setting\SettingTypeEnum;
 
+/** @extends Factory<Setting> */
 class SettingFactory extends Factory
 {
     protected $model = Setting::class;

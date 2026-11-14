@@ -10,6 +10,7 @@ use Modules\Setting\Schemas\Setting\SettingSchema;
 
 class SettingResource extends JsonResource
 {
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

@@ -7,6 +7,7 @@ use Modules\Setting\Models\Setting;
 use Modules\Setting\Models\Translation;
 use Modules\Setting\Schemas\Translation\TranslationSchema;
 
+/** @extends Factory<Translation> */
 class TranslationFactory extends Factory
 {
     protected $model = Translation::class;

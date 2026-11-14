@@ -89,7 +89,9 @@ class UserTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @param  Builder  $query
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  Builder<TModel>  $query
      * @return list<array{source_id: int, payload: array<string, mixed>}>
      */
     private function exportRowsOf($query, \Closure $payload): array

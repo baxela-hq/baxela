@@ -16,6 +16,7 @@ use RecursiveIteratorIterator;
 
 class SettingServiceProvider extends ServiceProvider
 {
+    /** @var array<class-string, class-string> */
     public $bindings = [
         PricingModeResolverInterface::class => ResolvesPricingMode::class,
         FxSettingsResolverInterface::class => ResolvesFxSettings::class,
@@ -153,11 +154,13 @@ class SettingServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

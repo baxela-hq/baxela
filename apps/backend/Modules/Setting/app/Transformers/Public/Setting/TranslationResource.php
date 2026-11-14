@@ -8,6 +8,7 @@ use Modules\Setting\Schemas\Translation\TranslationSchema;
 
 class TranslationResource extends JsonResource
 {
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

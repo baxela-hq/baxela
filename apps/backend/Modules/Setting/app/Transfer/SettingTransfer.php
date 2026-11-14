@@ -157,9 +157,8 @@ class SettingTransfer implements ModuleTransferInterface
      */
     private function exportValue(Setting $setting): string
     {
-        $name = $setting->{SettingSchema::NAME} instanceof SettingNameEnum
-            ? $setting->{SettingSchema::NAME}->value
-            : (string) $setting->{SettingSchema::NAME};
+        // The NAME column is enum-cast — always SettingNameEnum on read.
+        $name = $setting->{SettingSchema::NAME}->value;
 
         $value = (string) $setting->{SettingSchema::VALUE};
 

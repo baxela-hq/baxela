@@ -7,6 +7,7 @@ use Modules\User\Models\Profile;
 use Modules\User\Schemas\Profile\GenderEnum;
 use Modules\User\Schemas\Profile\ProfileSchema;
 
+/** @extends Factory<Profile> */
 class ProfileFactory extends Factory
 {
     /**

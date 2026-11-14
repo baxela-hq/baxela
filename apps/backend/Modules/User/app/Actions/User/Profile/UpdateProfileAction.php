@@ -5,11 +5,12 @@ namespace Modules\User\Actions\User\Profile;
 use Modules\Core\Contracts\Events\User\UserProfileUpdatedEvent;
 use Modules\Core\Utils\Auth;
 use Modules\User\Http\Requests\User\Profile\ProfileRequest;
+use Modules\User\Models\Profile;
 use Modules\User\Schemas\Profile\ProfileSchema;
 
 class UpdateProfileAction extends AbstractProfileAction
 {
-    public function handle(ProfileRequest $request)
+    public function handle(ProfileRequest $request): Profile
     {
         $record = $this->model->getByUserId(Auth::id());
 

@@ -5,6 +5,7 @@ namespace Modules\Setting\Http\Requests\Admin\Setting;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\In;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
@@ -21,13 +22,19 @@ class SettingRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $items = collect($this->input());
+        /** @var list<array<string, mixed>> $input */
+        $input = $this->input();
+        $items = collect($input);
 
-        $codes = $items
-            ->flatMap(fn ($setting) => $setting[SettingSchema::RES_TRANSLATIONS] ?? [])
-            ->pluck(TSchema::LANGUAGE)
-            ->unique()
-            ->all();
+        $codes = [];
+        foreach ($items as $setting) {
+            foreach ($setting[SettingSchema::RES_TRANSLATIONS] ?? [] as $translation) {
+                if (is_array($translation) && isset($translation[TSchema::LANGUAGE])) {
+                    $codes[] = (string) $translation[TSchema::LANGUAGE];
+                }
+            }
+        }
+        $codes = array_values(array_unique($codes));
 
         if (empty($codes)) {
             return;
@@ -58,6 +65,7 @@ class SettingRequest extends FormRequest
         $this->replace($settings);
     }
 
+    /** @return array<string, array<int, string|Enum|In>> */
     public function rules(): array
     {
         $rules = [

@@ -17,6 +17,10 @@ function country(string $code): Country
     );
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function addressPayload(array $overrides = []): array
 {
     return array_merge([

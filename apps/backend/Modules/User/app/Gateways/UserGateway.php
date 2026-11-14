@@ -29,6 +29,10 @@ class UserGateway implements UserGatewayInterface
         return $record ? AddressDto::fill($record->toArray()) : null;
     }
 
+    /**
+     * @param  list<int>  $ids
+     * @return array<int, string|null>
+     */
     public function getUserNamesByIds(array $ids): array
     {
         return Profile::query()

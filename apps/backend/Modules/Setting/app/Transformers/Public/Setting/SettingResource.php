@@ -12,6 +12,7 @@ class SettingResource extends JsonResource
 {
     use ResolvesPublicLanguage;
 
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations
@@ -21,7 +22,7 @@ class SettingResource extends JsonResource
             SettingSchema::GROUP => $this->resource->{SettingSchema::GROUP},
             SettingSchema::TYPE => $this->resource->{SettingSchema::TYPE},
             SettingSchema::NAME => $this->resource->{SettingSchema::NAME},
-            SettingSchema::VALUE => $translation?->{TranslationSchema::VALUE} ?? $this->resource->{SettingSchema::VALUE},
+            SettingSchema::VALUE => $translation->{TranslationSchema::VALUE} ?? $this->resource->{SettingSchema::VALUE},
             SettingSchema::RES_TRANSLATIONS => TranslationResource::collection($this->whenLoaded(SettingSchema::RES_TRANSLATIONS)),
         ];
     }

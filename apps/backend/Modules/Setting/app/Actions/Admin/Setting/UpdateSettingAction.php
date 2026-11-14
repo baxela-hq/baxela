@@ -23,6 +23,10 @@ class UpdateSettingAction
         protected CoreGatewayInterface $coreGateway,
     ) {}
 
+    /**
+     * @param  list<array<string, mixed>>  $data
+     * @return Collection<int, Setting>
+     */
     public function handle(array $data): Collection
     {
         // the boot-time timezone override caches its lookup

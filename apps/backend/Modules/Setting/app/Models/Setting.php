@@ -2,6 +2,8 @@
 
 namespace Modules\Setting\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,8 +13,21 @@ use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Schemas\Setting\SettingTypeEnum;
 
+/**
+ * @property int $id
+ * @property string|null $group
+ * @property string|null $type
+ * @property SettingNameEnum $name
+ * @property string|null $value
+ * @property bool $is_translatable
+ * @property string|null $comment
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, Translation> $translations
+ */
 class Setting extends Model
 {
+    /** @use HasFactory<SettingFactory> */
     use HasFactory;
 
     /**

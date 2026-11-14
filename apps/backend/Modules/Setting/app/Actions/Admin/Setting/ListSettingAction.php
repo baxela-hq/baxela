@@ -10,6 +10,7 @@ class ListSettingAction
 {
     public function __construct(protected Setting $model) {}
 
+    /** @return Collection<int, Setting> */
     public function handle(): Collection
     {
         return $this->model->with(SettingSchema::RES_TRANSLATIONS)->get();

@@ -19,6 +19,10 @@ function seedCountry(string $code): void
     );
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function vatAddressPayload(array $overrides = []): array
 {
     return array_merge([

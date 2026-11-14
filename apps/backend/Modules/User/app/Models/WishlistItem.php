@@ -2,12 +2,19 @@
 
 namespace Modules\User\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 /**
- * @mixin Builder
+ * @property int $id
+ * @property int $user_id
+ * @property int $product_id
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<WishlistItem>
  */
 class WishlistItem extends Model
 {

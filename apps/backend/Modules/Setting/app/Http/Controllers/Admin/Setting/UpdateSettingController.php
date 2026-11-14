@@ -14,6 +14,9 @@ class UpdateSettingController extends Controller
 
     public function __invoke(SettingRequest $request): AnonymousResourceCollection
     {
-        return SettingResource::collection($this->action->handle($request->validated()));
+        /** @var list<array<string, mixed>> $data */
+        $data = $request->validated();
+
+        return SettingResource::collection($this->action->handle($data));
     }
 }

@@ -7,6 +7,7 @@ use Modules\User\Models\Address;
 use Modules\User\Schemas\Address\AddressSchema;
 use Modules\User\Schemas\Address\AddressTypeEnum;
 
+/** @extends Factory<Address> */
 class AddressFactory extends Factory
 {
     /**

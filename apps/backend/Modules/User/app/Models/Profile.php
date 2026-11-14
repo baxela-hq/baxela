@@ -2,6 +2,7 @@
 
 namespace Modules\User\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,10 +11,22 @@ use Modules\User\Schemas\Profile\GenderEnum;
 use Modules\User\Schemas\Profile\ProfileSchema;
 
 /**
- * @mixin Builder
+ * @property int $id
+ * @property int $user_id
+ * @property string $full_name
+ * @property string|null $display_name
+ * @property string|null $bio
+ * @property string|null $avatar
+ * @property string|null $gender
+ * @property string|null $date_of_birth
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<Profile>
  */
 class Profile extends Model
 {
+    /** @use HasFactory<ProfileFactory> */
     use HasFactory;
 
     protected $table = ProfileSchema::TABLE;

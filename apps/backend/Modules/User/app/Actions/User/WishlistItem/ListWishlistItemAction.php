@@ -17,6 +17,7 @@ class ListWishlistItemAction
         protected CatalogGatewayInterface $catalogGateway,
     ) {}
 
+    /** @return Collection<int, WishlistItem> */
     public function handle(): Collection
     {
         // Ordering is owned here — recently saved first — never by
