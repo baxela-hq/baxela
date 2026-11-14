@@ -3,6 +3,7 @@
 namespace Modules\Core\Console\Commands;
 
 use Illuminate\Console\Command;
+use Modules\Core\Actions\Admin\Extension\CheckExtensionUpdatesAction;
 use Modules\Core\Console\Commands\Concerns\InteractsWithComposer;
 use Modules\Core\Extensions\ComposerPackages;
 use Modules\Core\Extensions\ExtensionManager;
@@ -42,6 +43,10 @@ class BaxelaUpdateCommand extends Command
         if (! $this->composer(['update', $slug])) {
             return self::FAILURE;
         }
+
+        // The installed package set changed (P5.3) — invalidate before
+        // migrations run, whatever happens next.
+        CheckExtensionUpdatesAction::flush();
 
         $this->call('migrate', ['--force' => true]);
 

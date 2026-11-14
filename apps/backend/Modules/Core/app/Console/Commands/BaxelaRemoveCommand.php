@@ -3,6 +3,7 @@
 namespace Modules\Core\Console\Commands;
 
 use Illuminate\Console\Command;
+use Modules\Core\Actions\Admin\Extension\CheckExtensionUpdatesAction;
 use Modules\Core\Console\Commands\Concerns\InteractsWithComposer;
 use Modules\Core\Extensions\ComposerPackages;
 use Modules\Core\Extensions\ExtensionManager;
@@ -58,6 +59,10 @@ class BaxelaRemoveCommand extends Command
 
                 return self::FAILURE;
             }
+
+            // The installed package set changed (P5.3) — invalidate now,
+            // before the row cleanup, whatever happens next.
+            CheckExtensionUpdatesAction::flush();
         }
 
         $manager->remove($slug);

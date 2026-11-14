@@ -10,6 +10,7 @@ use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ListCoreDataImportsController;
 use Modules\Core\Http\Controllers\Admin\Data\PreviewCoreDataImportController;
+use Modules\Core\Http\Controllers\Admin\Extension\CheckExtensionUpdatesController;
 use Modules\Core\Http\Controllers\Admin\Extension\DisableExtensionController;
 use Modules\Core\Http\Controllers\Admin\Extension\EnableExtensionController;
 use Modules\Core\Http\Controllers\Admin\Extension\ListExtensionController;
@@ -56,4 +57,7 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::get('/extensions', ListExtensionController::class)->name('extensions.list');
     Route::post('/extensions/{vendor}/{package}/enable', EnableExtensionController::class)->name('extensions.enable');
     Route::post('/extensions/{vendor}/{package}/disable', DisableExtensionController::class)->name('extensions.disable');
+    // Marketplace update-check proxy (P5.3): availability envelope, HTTP
+    // 200 even when degraded; permission core.admin.extensions.updates.
+    Route::get('/extensions/updates', CheckExtensionUpdatesController::class)->name('extensions.updates');
 });

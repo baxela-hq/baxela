@@ -57,6 +57,10 @@ class ToggleExtensionAction
 
         ExtensionManager::flush();
 
+        // The toggle changes which extensions effectively run, so the
+        // update-check cache must not survive it (P5.3).
+        CheckExtensionUpdatesAction::flush();
+
         return $this->builder->build($slug);
     }
 }

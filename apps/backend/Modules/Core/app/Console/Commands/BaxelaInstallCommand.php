@@ -4,6 +4,7 @@ namespace Modules\Core\Console\Commands;
 
 use App\Baxela;
 use Illuminate\Console\Command;
+use Modules\Core\Actions\Admin\Extension\CheckExtensionUpdatesAction;
 use Modules\Core\Console\Commands\Concerns\InteractsWithComposer;
 use Modules\Core\Extensions\ComposerPackages;
 use Modules\Core\Extensions\ExtensionManager;
@@ -47,6 +48,10 @@ class BaxelaInstallCommand extends Command
             // verbatim; nothing has been recorded to clean up.
             return self::FAILURE;
         }
+
+        // The installed package set changed (P5.3): the update-check
+        // cache must not survive past this point, whatever happens next.
+        CheckExtensionUpdatesAction::flush();
 
         if (! $packages->isExtensionPackage($slug)) {
             $this->rollback($slug, "refused: [{$slug}] is not of type baxela-extension");
@@ -98,6 +103,11 @@ class BaxelaInstallCommand extends Command
     {
         $this->error($reason);
         $this->info("Rolling back: composer remove {$slug}…");
-        $this->composer(['remove', $slug]);
+
+        // A SUCCESSFUL rollback changes the installed set again (P5.3);
+        // a failed one is not a mutation and must not invalidate.
+        if ($this->composer(['remove', $slug])) {
+            CheckExtensionUpdatesAction::flush();
+        }
     }
 }
