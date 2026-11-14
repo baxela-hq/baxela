@@ -28,7 +28,13 @@
         "empty": "You have no notifications."
       },
       "actions": {
-        "view_all": "View all notifications"
+        "view_all": "View all notifications",
+        "mark_all_read": "Mark all as read"
+      },
+      "messages": {
+        "error": {
+          "mark_all_read_failed": "Could not mark your notifications as read. Please try again."
+        }
       }
     },
     "cart": {

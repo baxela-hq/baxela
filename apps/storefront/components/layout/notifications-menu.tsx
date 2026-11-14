@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useFormatter, useNow, useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAuth } from "@/context/auth-context";
 import { useNotifications } from "@/context/notifications-context";
 import { BellIcon, BoxIcon, LockIcon } from "@/components/ui/icons";
@@ -21,9 +23,10 @@ function rowIcon(code: string) {
  * island. State lives in the notifications context, shared with the
  * profile notifications page: the badge + preview load once on sign-in,
  * update live over the private Reverb channel (no polling), and stay in
- * sync when rows are read from any surface. Clicking a row, like the bell
- * itself, opens the profile notifications page; full history and
- * mark-as-read live there.
+ * sync when rows are read from any surface. The preview's "Mark all as
+ * read" action PATCHes through the same context, so the badge clears
+ * without leaving the header; clicking a row, like the bell itself,
+ * opens the profile notifications page for the full history.
  */
 export function NotificationsMenu() {
   const t = useTranslations("shared.layout");
@@ -32,7 +35,19 @@ export function NotificationsMenu() {
   // staying pinned to the request-time `now` from the provider.
   const now = useNow({ updateInterval: 30_000 });
   const { status } = useAuth();
-  const { unread, preview: items } = useNotifications();
+  const { unread, preview: items, markAllRead } = useNotifications();
+  const [markingAll, setMarkingAll] = useState(false);
+
+  const handleMarkAllRead = async () => {
+    setMarkingAll(true);
+    try {
+      await markAllRead();
+    } catch {
+      toast.error(t("header.notifications.messages.error.mark_all_read_failed"));
+    } finally {
+      setMarkingAll(false);
+    }
+  };
 
   if (status !== "authenticated") {
     return null;
@@ -57,6 +72,18 @@ export function NotificationsMenu() {
 
       <div className="invisible absolute end-0 top-full z-50 w-80 pt-4 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
         <div className="rounded-default border border-border-light bg-background shadow-[0_24px_48px_-24px_rgba(23,23,23,0.15)]">
+          {unread !== null && unread > 0 ? (
+            <div className="flex justify-end border-b border-border-light px-5 py-3">
+              <button
+                type="button"
+                disabled={markingAll}
+                onClick={handleMarkAllRead}
+                className="text-sm font-medium text-accent transition-opacity hover:opacity-80 disabled:opacity-40 rtl:normal-case rtl:tracking-normal"
+              >
+                {t("header.notifications.actions.mark_all_read")}
+              </button>
+            </div>
+          ) : null}
           {items === null ? (
             <p className="px-5 py-8 text-center text-sm text-secondary-text rtl:normal-case rtl:tracking-normal">
               {t("header.notifications.texts.empty")}
