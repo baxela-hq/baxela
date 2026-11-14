@@ -18,6 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
+        then: function (): void {
+            // Octane acceptance-gate endpoints (scripts/octane-isolation-gate.php):
+            // mounted only when explicitly requested and never in production.
+            if (env('OCTANE_GATE', false) && app()->environment() !== 'production') {
+                require __DIR__.'/../routes/octane-gate.php';
+            }
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // S.3: config-driven trust boundary (default trusts nobody) —

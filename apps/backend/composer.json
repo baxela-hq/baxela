@@ -19,9 +19,10 @@
         "bacon/bacon-qr-code": "^3.1",
         "composer/semver": "^3.6",
         "dedoc/scramble": "^0.13.14",
-        "firebase/php-jwt": "^7.2",
+        "firebase/php-jwt": "*",
         "intervention/image": "^4.4",
         "laravel/framework": "^13.0",
+        "laravel/octane": "^2.24",
         "laravel/reverb": "^1.11",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
@@ -33,6 +34,7 @@
         "sentry/sentry-laravel": "^4.29",
         "spatie/laravel-permission": "^8.3",
         "spatie/laravel-query-builder": "^7.2",
+        "spiral/roadrunner-http": "^4.2",
         "stripe/stripe-php": "^21.3"
     },
     "require-dev": {
@@ -44,7 +46,8 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.3",
-        "pestphp/pest-plugin-laravel": "^4.0"
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "spiral/roadrunner-cli": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -69,7 +72,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan octane:start --host=0.0.0.0 --port=8000 --rpc-host=127.0.0.1 --workers=4 --max-requests=500 --watch\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
         "test": [
             "sh scripts/test.sh"

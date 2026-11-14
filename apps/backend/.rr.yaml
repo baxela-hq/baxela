@@ -1,0 +1,23 @@
+# RoadRunner runtime configuration — committed so pool supervision settings
+# are versioned. Laravel Octane starts `rr serve -c .rr.yaml` and then
+# OVERRIDES these keys via command-line `-o` flags on every start (see
+# vendor/laravel/octane StartRoadRunnerCommand): version, http.address,
+# server.command, http.pool.num_workers, http.pool.max_jobs, rpc.listen,
+# http.pool.supervisor.exec_ttl, http.static.dir, http.middleware, and
+# logs.mode/level/output/encoding.
+#
+# Everything below is what Octane does NOT manage. Do not add keys Octane
+# owns — they would be silently overridden at startup.
+
+version: 3
+
+http:
+  pool:
+    supervisor:
+      # Soft per-worker memory limit (MB): a worker that crosses it is
+      # recycled instead of growing until PHP's memory_limit (256M) fatals.
+      # Placeholder until per-worker peaks are measured under real load
+      # (authenticated API, large catalog responses, invoice PDF generation,
+      # image processing) — see the RoadRunner rollout plan, Phase 3. A
+      # per-worker limit is not a container memory budget.
+      max_worker_memory: 200

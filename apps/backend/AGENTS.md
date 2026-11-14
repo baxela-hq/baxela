@@ -194,8 +194,10 @@ docker compose exec app php artisan migrate
 composer test               # Pest via scripts/test.sh (plain, greppable output)
 composer analyse            # Larastan (phpstan level 6 + baseline)
 vendor/bin/pint             # format code (use --test to check only)
-composer dev                # server + queue + logs + vite (concurrently)
+composer dev                # octane (RoadRunner, --watch) + queue + logs + vite (concurrently)
+                            # requires the RoadRunner binary: vendor/bin/rr get-binary (gitignored)
 ```
+
 
 ## Git Conventions
 
