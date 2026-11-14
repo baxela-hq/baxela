@@ -8,10 +8,20 @@ use Modules\Core\Schemas\Currency\CurrencySchema;
 
 class ListCurrencyAction
 {
-    public function handle(): Collection
+    /**
+     * Active currencies by default (the settings page's default-currency
+     * dropdown consumes this); the management pages ask for all rows to
+     * reveal and toggle inactive ones.
+     */
+    public function handle(bool $all = false): Collection
     {
-        return Currency::query()
-            ->orderBy(CurrencySchema::IS_DEFAULT, 'desc')
-            ->get();
+        $query = Currency::query()
+            ->orderBy(CurrencySchema::IS_DEFAULT, 'desc');
+
+        if (! $all) {
+            $query->where(CurrencySchema::IS_ACTIVE, true);
+        }
+
+        return $query->get();
     }
 }

@@ -23,6 +23,23 @@ it('lists active currencies default-first with their rates', function () {
         ->assertJsonPath('data.1.exchange_rate', '1.08500000');
 });
 
+it('lists currencies for the admin: active by default, all with all=1', function () {
+    $this->actingAs($this->superAdmin);
+    Currency::factory()->create(['code' => 'USD']);
+    Currency::factory()->create(['code' => 'GBP', 'is_active' => false]);
+
+    // the settings dropdown path — deactivated currencies are not offered
+    $this->getJson('api/v1/core/admin/currencies')
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.code', 'USD');
+
+    // the management tables path — inactive rows stay visible
+    $this->getJson('api/v1/core/admin/currencies?all=1')
+        ->assertOk()
+        ->assertJsonCount(2, 'data');
+});
+
 it('creates a currency as super-admin and derives its permission from the route', function () {
     $this->actingAs($this->superAdmin);
 

@@ -24545,3 +24545,38 @@ parameters:
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
 
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:spy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 8
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php

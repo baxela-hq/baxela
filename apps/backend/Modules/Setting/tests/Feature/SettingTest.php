@@ -67,7 +67,12 @@ it('syncs the default language and currency flags onto the core records', functi
     Setting::factory()->create(['name' => 'language_id', 'value' => '1']);
     Setting::factory()->create(['name' => 'currency_id', 'value' => '1']);
     $oldLanguage = Language::factory()->create([LanguageSchema::IS_DEFAULT => true]);
-    $newLanguage = Language::factory()->create([LanguageSchema::IS_DEFAULT => false]);
+    // The default must reference an active language (languages are
+    // inactive unless seeded/factory-flagged active).
+    $newLanguage = Language::factory()->create([
+        LanguageSchema::IS_DEFAULT => false,
+        LanguageSchema::IS_ACTIVE => true,
+    ]);
     $oldCurrency = Currency::factory()->create([CurrencySchema::IS_DEFAULT => true]);
     $newCurrency = Currency::factory()->create([CurrencySchema::IS_DEFAULT => false]);
 
@@ -80,6 +85,23 @@ it('syncs the default language and currency flags onto the core records', functi
         ->and($oldLanguage->refresh()->{LanguageSchema::IS_DEFAULT})->toBeFalse()
         ->and($newCurrency->refresh()->{CurrencySchema::IS_DEFAULT})->toBeTrue()
         ->and($oldCurrency->refresh()->{CurrencySchema::IS_DEFAULT})->toBeFalse();
+});
+
+it('rejects a default language or currency that is not active', function () {
+    $this->actingAs($this->superAdminUser());
+    Setting::factory()->create(['name' => 'language_id', 'value' => '1']);
+    Setting::factory()->create(['name' => 'currency_id', 'value' => '1']);
+    $inactiveLanguage = Language::factory()->create([LanguageSchema::IS_ACTIVE => false]);
+    $inactiveCurrency = Currency::factory()->create([CurrencySchema::IS_ACTIVE => false]);
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'language_id', 'value' => (string) $inactiveLanguage->id, 'translations' => null],
+        ['name' => 'currency_id', 'value' => (string) $inactiveCurrency->id, 'translations' => null],
+    ])->assertStatus(422);
+
+    // the stored defaults are untouched
+    expect(Setting::query()->where('name', 'language_id')->first()->value)->toBe('1')
+        ->and(Setting::query()->where('name', 'currency_id')->first()->value)->toBe('1');
 });
 
 it('denies setting writes without permissions', function () {

@@ -14,6 +14,6 @@ class ListCurrencyController extends Controller
 
     public function __invoke(Request $request): AnonymousResourceCollection
     {
-        return CurrencyResource::collection($this->action->handle());
+        return CurrencyResource::collection($this->action->handle($request->boolean('all')));
     }
 }

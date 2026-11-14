@@ -6,7 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
+use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
+use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Setting\Models\Setting;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
@@ -126,6 +128,25 @@ class SettingRequest extends FormRequest
         if ($name === SettingNameEnum::TIMEZONE->value
             && ! in_array($value, \DateTimeZone::listIdentifiers(), true)) {
             $fail('The timezone must be a valid timezone identifier.');
+        }
+
+        // The store defaults may only reference active core records — the
+        // admin dropdowns list active rows, and the API must not accept a
+        // deactivated (or unknown) id behind the UI's back.
+        if ($name === SettingNameEnum::LANGUAGE_ID->value
+            && ! Language::query()
+                ->where(LanguageSchema::ID, $value)
+                ->where(LanguageSchema::IS_ACTIVE, true)
+                ->exists()) {
+            $fail('The default language must be an active language.');
+        }
+
+        if ($name === SettingNameEnum::CURRENCY_ID->value
+            && ! Currency::query()
+                ->where(CurrencySchema::ID, $value)
+                ->where(CurrencySchema::IS_ACTIVE, true)
+                ->exists()) {
+            $fail('The default currency must be an active currency.');
         }
 
         if ($name === SettingNameEnum::PRICES_INCLUDE_TAX->value
