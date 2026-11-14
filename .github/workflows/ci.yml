@@ -88,9 +88,21 @@ jobs:
           exit 1
 
       # Pest against SQLite :memory: — env comes from phpunit.xml, except
-      # Redis: a real env var outranks any phpunit.xml entry.
+      # Redis: a real env var outranks any phpunit.xml entry. On failure,
+      # the failed tests are echoed as annotations — the raw job log
+      # needs auth to read, annotations don't.
       - name: Run tests
-        run: vendor/bin/pest
+        shell: bash
+        run: |
+          set -o pipefail
+          vendor/bin/pest 2>&1 | tee /tmp/pest.log
+          rc=${PIPESTATUS[0]}
+          if [ $rc -ne 0 ]; then
+            grep -a 'FAILED' /tmp/pest.log | head -20 | while IFS= read -r line; do
+              echo "::error::${LINEO:+line }$line"
+            done
+          fi
+          exit $rc
         env:
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: '6378'
