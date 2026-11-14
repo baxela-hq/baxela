@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'The payment or refund is not in a state that allows this action',
     'refund.failed' => 'The gateway rejected the refund',
     'refund.outcome_unknown' => 'The refund result is unknown; it is held for reconciliation',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'The payment driver :driver is not a configurable payment driver',
+        'key_unknown' => 'The credential key :key is not declared by the :driver driver',
+    ],
 ];

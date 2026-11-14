@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'Die Zahlung oder Erstattung befindet sich nicht in einem Zustand, der diese Aktion erlaubt',
     'refund.failed' => 'Der Zahlungsdienstleister hat die Erstattung abgelehnt',
     'refund.outcome_unknown' => 'Das Ergebnis der Erstattung ist unbekannt; sie wird zur Abgleichung zurückgestellt',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'Der Zahlungs-Treiber :driver ist kein konfigurierbarer Zahlungs-Treiber',
+        'key_unknown' => 'Der Zugangsdaten-Schlüssel :key wird vom Treiber :driver nicht deklariert',
+    ],
 ];

@@ -143,9 +143,9 @@ Public face of the marketplace app; linked from the home site nav, not embedded.
 
 ### Phase 5 — Admin panel integration (`apps/admin`)
 
-- [ ] Extensions settings page: installed list, enable/disable toggles, per-driver credential forms.
-- [ ] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08).
-- [ ] "Update available" badge via the updates endpoint; changelog link. Notification only — merchant pulls.
+- [ ] Extensions settings page: installed list, enable/disable toggles, per-driver credential forms. *(backend toggle surface done 2026-11-14 — P5.1: `POST core/admin/extensions/{vendor}/{package}/enable|disable` behind `core.admin.extensions.{enable,disable}`; the page itself is P5.4)*
+- [x] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08). *(done 2026-11-14 — P5.2 backend slice; deviation from the letter of this item: a dedicated `payment_driver_credentials` table in the Payment module with the built-in `encrypted` cast — the Webhooks pattern the item points at — rather than Setting-module rows, avoiding per-driver SettingNameEnum churn; resolution contract in Core (`PaymentCredentialResolverInterface`, DB → env fallback, undecryptable fails closed), the `ApplyDatabaseCredentials` middleware makes the store effective for every client with zero driver edits, admin API states-only (`GET/PATCH/DELETE payment/admin/credentials/*`), PayPal's OAuth token flushed on rotation, audit event on committed mutations; admin credential forms land with P5.4)*
+- [ ] "Update available" badge via the updates endpoint; changelog link. Notification only — merchant pulls. *(backend proxy is P5.3)*
 
 ### Phase 6 — REMOVED 2026-11-14 (was: first production extension, Zarinpal)
 

@@ -14,6 +14,9 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class PaypalClient
 {
+    /** Flushed when paypal credentials are mutated — an 8-hour OAuth token must not outlive a rotation (marketplace P5.2 D7). */
+    public const string ACCESS_TOKEN_CACHE_KEY = 'payment.paypal.access_token';
+
     public function createOrder(array $params): object
     {
         return $this->request()->post('/v2/checkout/orders', $params)->throw()->object();
@@ -86,7 +89,7 @@ class PaypalClient
         }
 
         // PayPal tokens live ~9 hours; refresh slightly before expiry.
-        return Cache::remember('payment.paypal.access_token', now()->addHours(8), function () use ($clientId, $clientSecret): string {
+        return Cache::remember(self::ACCESS_TOKEN_CACHE_KEY, now()->addHours(8), function () use ($clientId, $clientSecret): string {
             return (string) Http::withBasicAuth($clientId, $clientSecret)
                 ->asForm()
                 ->post($this->baseUrl().'/v1/oauth2/token', ['grant_type' => 'client_credentials'])

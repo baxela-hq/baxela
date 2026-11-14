@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'Le paiement ou le remboursement n’est pas dans un état permettant cette action',
     'refund.failed' => 'La passerelle a rejeté le remboursement',
     'refund.outcome_unknown' => 'Le résultat du remboursement est inconnu ; il est mis en attente pour rapprochement',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'Le pilote de paiement :driver n\'est pas un pilote de paiement configurable',
+        'key_unknown' => 'La clé d\'identifiants :key n\'est pas déclarée par le pilote :driver',
+    ],
 ];

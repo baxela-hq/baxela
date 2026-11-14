@@ -39,6 +39,7 @@ use Modules\Core\Contracts\Events\Order\OrderReturnCompletedEvent;
 use Modules\Core\Contracts\Events\Order\OrderReturnReceivedEvent;
 use Modules\Core\Contracts\Events\Order\OrderReturnRejectedEvent;
 use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+use Modules\Core\Contracts\Events\Payment\PaymentCredentialsUpdatedEvent;
 use Modules\Core\Contracts\Events\Payment\PaymentRefundedEvent;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
 use Modules\Core\Contracts\Events\Shipping\ShipmentCreatedEvent;
@@ -104,6 +105,7 @@ class EventServiceProvider extends ServiceProvider
         OrderReturnReceivedEvent::class => [RecordAuditLogListener::class],
         OrderReturnCompletedEvent::class => [RecordAuditLogListener::class],
         PaymentRefundedEvent::class => [RecordAuditLogListener::class],
+        PaymentCredentialsUpdatedEvent::class => [RecordAuditLogListener::class],
 
         SettingUpdatedEvent::class => [RecordAuditLogListener::class],
 

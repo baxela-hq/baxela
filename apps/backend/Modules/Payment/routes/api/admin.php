@@ -6,6 +6,9 @@ use Modules\Payment\Http\Controllers\Admin\Data\ExportPaymentDataController;
 use Modules\Payment\Http\Controllers\Admin\Data\ImportPaymentDataController;
 use Modules\Payment\Http\Controllers\Admin\Data\ListPaymentDataImportsController;
 use Modules\Payment\Http\Controllers\Admin\Data\PreviewPaymentDataImportController;
+use Modules\Payment\Http\Controllers\Admin\DriverCredential\DeleteDriverCredentialController;
+use Modules\Payment\Http\Controllers\Admin\DriverCredential\ListDriverCredentialsController;
+use Modules\Payment\Http\Controllers\Admin\DriverCredential\UpdateDriverCredentialsController;
 use Modules\Payment\Http\Controllers\Admin\Payment\ListPaymentController;
 use Modules\Payment\Http\Controllers\Admin\Payment\ListPaymentMethodController;
 use Modules\Payment\Http\Controllers\Admin\Payment\UpdatePaymentController;
@@ -24,6 +27,12 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
 
     Route::get('/methods', ListPaymentMethodController::class)->name('methods.list');
     Route::patch('/methods/{id}', UpdatePaymentMethodController::class)->name('methods.update');
+    // Driver credential admin surface (marketplace P5.2): states only —
+    // values never leave the server. Route names derive the permissions
+    // payment.admin.credentials.{list,update,delete} verbatim.
+    Route::get('/credentials', ListDriverCredentialsController::class)->name('credentials.list');
+    Route::patch('/credentials/{driver}', UpdateDriverCredentialsController::class)->name('credentials.update');
+    Route::delete('/credentials/{driver}/{key}', DeleteDriverCredentialController::class)->name('credentials.delete');
     // The module's own data-transfer endpoints (export-only surface; the
     // central transfer endpoints remain available).
     Route::get('/data/export', ExportPaymentDataController::class)->name('data.export');

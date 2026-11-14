@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'El pago o el reembolso no está en un estado que permita esta acción',
     'refund.failed' => 'La pasarela rechazó el reembolso',
     'refund.outcome_unknown' => 'El resultado del reembolso es desconocido; queda en espera para conciliación',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'El controlador de pago :driver no es un controlador de pago configurable',
+        'key_unknown' => 'La clave de credenciales :key no está declarada por el controlador :driver',
+    ],
 ];

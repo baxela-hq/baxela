@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'الدفعة أو الاسترداد ليست في حالة تسمح بهذا الإجراء',
     'refund.failed' => 'رفضت البوابة الإلكترونية عملية الاسترداد',
     'refund.outcome_unknown' => 'نتيجة الاسترداد غير معروفة؛ وهي محفوظة للتسوية',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'برنامج الدفع :driver ليس برنامج دفع قابلاً للتهيئة',
+        'key_unknown' => 'مفتاح بيانات الاعتماد :key غير معلن من قبل برنامج الدفع :driver',
+    ],
 ];

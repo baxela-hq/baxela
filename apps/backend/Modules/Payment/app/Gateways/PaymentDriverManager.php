@@ -42,12 +42,22 @@ class PaymentDriverManager
     /**
      * Whether the driver carries the credentials its full payment
      * lifecycle needs — checkout initiation and webhook verification
-     * alike, per its own ConfigurableDriver declaration. False for
+     * alike, per its own ConfigurableDriver declaration (credentialKeys()
+     * IS the required-for-lifecycle set: every declared key is required,
+     * webhook secrets included — marketplace P5.2 review F7). False for
      * unregistered drivers and for registered ones that declare no
      * contract (fail closed); a driver declaring no keys counts as
-     * configured. Only this policy answer is boolean: unexpected
-     * driver-resolution failures propagate, never silently become
-     * "unconfigured".
+     * configured.
+     *
+     * The check reads CONFIG, deliberately: the ApplyDatabaseCredentials
+     * middleware deterministically rewrites every declared credential
+     * slot from the resolver (database → env fallback, undecryptable →
+     * null) on every HTTP request, so on both call surfaces (user
+     * checkout method listing, admin methods resource) config IS the
+     * effective credential state. Legacy truthiness semantics preserved
+     * verbatim — '' and '0' count as unconfigured. Only this policy
+     * answer is boolean: unexpected driver-resolution failures
+     * propagate, never silently become "unconfigured".
      */
     public function isConfigured(string $driver): bool
     {

@@ -29,4 +29,8 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case REFUND_FAILED = 'payment.refund.failed';
 
     case REFUND_OUTCOME_UNKNOWN = 'payment.refund.outcome_unknown';
+
+    case CREDENTIALS_DRIVER_UNKNOWN = 'payment.credentials.driver_unknown';
+
+    case CREDENTIALS_KEY_UNKNOWN = 'payment.credentials.key_unknown';
 }

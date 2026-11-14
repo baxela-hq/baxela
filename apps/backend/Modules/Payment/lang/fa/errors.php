@@ -13,4 +13,11 @@ return [
     'refund.invalid_status' => 'پرداخت یا بازپرداخت در وضعیتی نیست که این اقدام را مجاز کند',
     'refund.failed' => 'درگاه پرداخت بازپرداخت را رد کرد',
     'refund.outcome_unknown' => 'نتیجه بازپرداخت نامشخص است و برای بررسی نگه داشته شد',
+
+    // Driver credential admin surface (marketplace P5.2) — see
+    // DriverCredentialsException; values never appear in responses.
+    'credentials' => [
+        'driver_unknown' => 'درایور پرداخت :driver یک درایور قابل پیکربندی نیست',
+        'key_unknown' => 'کلید اعتبارنامه :key برای درایور :driver تعریف نشده است',
+    ],
 ];

@@ -72,4 +72,27 @@ class PaymentException extends BaseException
     {
         return new self(ErrorCodeEnum::REFUND_OUTCOME_UNKNOWN->value, previous: $previous);
     }
+
+    /**
+     * The driver is either unregistered, or registered without the
+     * ConfigurableDriver contract — nothing to manage credentials for.
+     */
+    public static function credentialsDriverUnknown(string $driver): PaymentException
+    {
+        return new self(
+            ErrorCodeEnum::CREDENTIALS_DRIVER_UNKNOWN->value,
+            422,
+            messageParams: ['driver' => $driver],
+        );
+    }
+
+    /** The key is not declared by the driver's credentialKeys() — unknown keys can never be stored. */
+    public static function credentialsKeyUnknown(string $driver, string $key): PaymentException
+    {
+        return new self(
+            ErrorCodeEnum::CREDENTIALS_KEY_UNKNOWN->value,
+            422,
+            messageParams: ['driver' => $driver, 'key' => $key],
+        );
+    }
 }

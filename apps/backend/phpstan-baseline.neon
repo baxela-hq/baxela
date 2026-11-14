@@ -24580,3 +24580,43 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 10
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 15
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
+			identifier: method.notFound
+			count: 23
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 17
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php

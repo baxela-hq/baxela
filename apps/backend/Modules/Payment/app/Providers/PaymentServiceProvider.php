@@ -4,9 +4,13 @@ namespace Modules\Payment\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Http\Middleware\ApplyDatabaseCredentials;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -19,6 +23,14 @@ class PaymentServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'payment';
 
+    /** Core contract → Payment implementation (marketplace P5.2 D2).
+     *
+     * @var array<class-string, class-string>
+     */
+    public $bindings = [
+        PaymentCredentialResolverInterface::class => ResolvesPaymentCredentials::class,
+    ];
+
     /**
      * Boot the application events.
      */
@@ -30,6 +42,7 @@ class PaymentServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        $this->registerCredentialMiddleware();
 
         RateLimiter::for('webhook', fn (Request $request) => Limit::perMinute((int) config('payment.rate_limit.webhook'))
             ->by($request->ip()));
@@ -42,6 +55,21 @@ class PaymentServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * The credential middleware runs PREPENDED in the api group: admin,
+     * user and webhook routes all see the same credential state, and the
+     * resolver's env baseline initializes inside its first resolver call
+     * — before anything else can read (let alone write) credential
+     * config in this process (marketplace P5.2 D3/F1b).
+     */
+    protected function registerCredentialMiddleware(): void
+    {
+        $this->app->booted(function (): void {
+            $this->app->make(Router::class)
+                ->prependMiddlewareToGroup('api', ApplyDatabaseCredentials::class);
+        });
     }
 
     /**
