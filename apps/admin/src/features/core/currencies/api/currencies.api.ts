@@ -6,8 +6,14 @@ import { type Setting, type SettingRequest } from "@/features/setting/settings/d
 
 const BASE_URL = "core/admin/currencies";
 
-export async function fetchCurrencies(): Promise<Currency[]> {
-  const { data } = await getRequest<AllResponse<Currency>>(BASE_URL);
+/**
+ * Active currencies by default (what the settings default-currency dropdown
+ * consumes). The management pages pass `all` to also list deactivated rows.
+ */
+export async function fetchCurrencies(all = false): Promise<Currency[]> {
+  const { data } = await getRequest<AllResponse<Currency>>(
+    all ? `${BASE_URL}?all=1` : BASE_URL
+  );
   return data as Currency[];
 }
 

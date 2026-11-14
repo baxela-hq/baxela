@@ -9,7 +9,7 @@ import { PrimaryButtons } from './components/primary-buttons'
 import { Dialogs } from './components/dialogs'
 import { Provider } from './components/provider'
 import { Locales } from './data/routes'
-import { useCurrencies } from './hooks/use-currencies'
+import { useAllCurrencies } from './hooks/use-currencies'
 
 export function Currencies() {
   const { tPageTitle } = useAppTranslation(Locales.SHARED_COMMON)
@@ -19,7 +19,7 @@ export function Currencies() {
     plural: tLabel('currencies'),
   }
 
-  const { data, isLoading, isSuccess } = useCurrencies()
+  const { data, isLoading, isSuccess } = useAllCurrencies()
 
   return (
     <Provider>
