@@ -38,6 +38,13 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <!-- Redis is intentionally NOT pinned here: the Google nonce
+             tests speak to a live Redis (fail-closed service). In the
+             develop container .env's REDIS_HOST=redis wins; CI exports
+             127.0.0.1:6378 (the mapped service) at the workflow level —
+             real environment variables take precedence over phpunit env
+             entries, so one phpunit.xml serves both. Host runs need the
+             phpredis extension and a REDIS_HOST export. -->
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>

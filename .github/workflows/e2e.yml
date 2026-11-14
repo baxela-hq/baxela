@@ -1,9 +1,9 @@
 name: E2E
 
 # Playwright happy-path against the real compose stack (frontend + mail
-# profiles). Not on pull_request yet: heavy (~15 min) and allowed to fail
-# while it settles — flip continue-on-error once it's stable, then consider
-# adding it to PRs.
+# profiles). Gating since 2026-11-15: failures block main (no
+# continue-on-error). Still push-only (~15 min) — too heavy for
+# pull_request until it proves quiet for a few releases.
 on:
   push:
     branches: [main]

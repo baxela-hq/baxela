@@ -66,10 +66,10 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
   await page.getByRole("button", { name: "Signup" }).click();
 
   // -- Email-OTP activation, code read from Mailpit ---------------------------
-  await expect(page).toHaveURL(/enter-otp/);
+  await expect(page).toHaveURL(/enter-otp/, { timeout: 60_000 }); // cold compile
   await stableFill(page.getByPlaceholder("Enter the code"), await activationCode(email));
   await page.getByRole("button", { name: "Verify" }).click();
-  await expect(page).toHaveURL(/login/);
+  await expect(page).toHaveURL(/login/, { timeout: 60_000 }); // cold compile
 
   // -- Sign in ----------------------------------------------------------------
   await stableFill(page.locator('input[type="email"]'), email);
@@ -104,14 +104,14 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
 
   await page.getByRole("button", { name: "Add to cart" }).click();
   await page.getByRole("link", { name: "View cart" }).click();
-  await expect(page).toHaveURL(/\/cart/);
+  await expect(page).toHaveURL(/\/cart/, { timeout: 60_000 }); // cold compile
 
   // -- Cart → checkout ---------------------------------------------------------
   await page.getByRole("button", { name: "Proceed to checkout" }).click();
-  await expect(page).toHaveURL(/\/checkout/);
+  await expect(page).toHaveURL(/\/checkout/, { timeout: 60_000 }); // cold compile
 
   // -- Address form (fresh account → no saved addresses) -----------------------
-  await expect(page.getByPlaceholder("First and last name")).toBeVisible();
+  await expect(page.getByPlaceholder("First and last name")).toBeVisible({ timeout: 60_000 }); // cold compile
   await page.getByPlaceholder("First and last name").fill("E2E Shopper");
   await page.getByPlaceholder("Phone number").fill("+1 555 000 1234");
   await page.getByPlaceholder("Street address, number, unit").fill("742 Evergreen Terrace");
@@ -123,7 +123,7 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
 
   // -- Shipping quote + payment ------------------------------------------------
   const shippingRadio = page.locator('input[type="radio"][name="shipping"]').first();
-  await expect(shippingRadio).toBeVisible();
+  await expect(shippingRadio).toBeVisible({ timeout: 60_000 }); // cold compile
   await shippingRadio.check();
 
   await page.getByRole("radio", { name: "Manual payment" }).check();
@@ -131,7 +131,7 @@ test("customer signs up and completes a manual-payment checkout", async ({ page 
   await page.getByRole("button", { name: "Place order" }).click();
 
   // -- Success panel carries the order code -------------------------------------
-  await expect(page.getByText("Order placed!")).toBeVisible();
+  await expect(page.getByText("Order placed!")).toBeVisible({ timeout: 60_000 }); // cold compile
   const codeText = await page
     .getByText(/Order code:/)
     .innerText();

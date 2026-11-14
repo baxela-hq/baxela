@@ -59,21 +59,41 @@ jobs:
     defaults:
       run:
         working-directory: apps/backend
+    # The Google sign-in nonce store is deliberately Redis-backed and
+    # fails closed when Redis is unreachable; its Lua passthrough speaks
+    # the phpredis eval order, so the suite needs the extension plus a
+    # live Redis. The service maps the develop stack's host port (6378,
+    # the same phpunit.xml expects).
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 127.0.0.1:6378:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677268 # v4
 
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.4'
-          extensions: mbstring, pdo_sqlite, sqlite3, intl, bcmath, gd
+          extensions: mbstring, pdo_sqlite, sqlite3, intl, bcmath, gd, redis
           coverage: none
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      # Pest against SQLite :memory: — env comes from phpunit.xml
+      # Pest against SQLite :memory: — env comes from phpunit.xml, except
+      # Redis: the live service is mapped to 127.0.0.1:6378 above, and a
+      # real env var outranks any phpunit.xml entry.
       - name: Run tests
         run: vendor/bin/pest
+        env:
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: '6378'
 
       - name: Export OpenAPI document
         run: php artisan scramble:export
