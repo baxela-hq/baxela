@@ -19,6 +19,7 @@
         "bacon/bacon-qr-code": "^3.1",
         "composer/semver": "^3.6",
         "dedoc/scramble": "^0.13.14",
+        "firebase/php-jwt": "^7.2",
         "intervention/image": "^4.4",
         "laravel/framework": "^13.0",
         "laravel/reverb": "^1.11",

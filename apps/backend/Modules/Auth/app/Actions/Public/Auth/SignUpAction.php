@@ -2,46 +2,32 @@
 
 namespace Modules\Auth\Actions\Public\Auth;
 
-use Modules\Auth\Exceptions\OtpTooManyRequestsException;
+use Modules\Auth\Actions\Public\Auth\Concerns\IssuesActivationOtp;
 use Modules\Auth\Http\Requests\Public\Auth\SignUpRequest;
 use Modules\Auth\Models\User;
-use Modules\Auth\Schemas\Otp\OtpCodeActionEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
-use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
-use Modules\Auth\Schemas\User\UserSchema;
-use Modules\Auth\Utils\Utility;
-use Modules\Core\Contracts\Events\Auth\OtpRequestedEvent;
-use Modules\Core\Contracts\Events\Auth\UserSignedUpEvent;
-use Random\RandomException;
 
 class SignUpAction extends AbstractAction
 {
+    use IssuesActivationOtp;
+
     /**
-     * @throws RandomException
-     * @throws OtpTooManyRequestsException
+     * The sequence is unchanged from the pre-extraction original: throttle
+     * check → OTP persist → user create → immediate event dispatch (the
+     * dispatch exceptions propagate, exactly as before — the Google flow
+     * uses the concern's best-effort variant instead).
+     *
+     * @throws \Random\RandomException
+     * @throws \Modules\Auth\Exceptions\OtpTooManyRequestsException
      */
     public function handle(SignUpRequest $request): void
     {
         $email = $request->{OtpCodeSchema::EMAIL};
 
-        $this->errorIfOtpAlreadyActive(OtpCodeTypeEnum::EMAIL, $email, OtpCodeActionEnum::VERIFY_EMAIL);
-
-        $otpCode = Utility::generateOtpCode(self::OTP_LENGTH);
-
-        $this->storeOtp(OtpCodeTypeEnum::EMAIL, $email, $otpCode, OtpCodeActionEnum::VERIFY_EMAIL);
+        $otpCode = $this->persistActivationOtp($email);
 
         $user = User::query()->create($request->validated());
 
-        event(new UserSignedUpEvent(
-            $user->{UserSchema::ID},
-            $user->{UserSchema::EMAIL},
-            $user->{UserSchema::CREATED_AT},
-        ));
-
-        event(OtpRequestedEvent::fill([
-            'email' => $email,
-            'code' => $otpCode,
-            'action' => OtpCodeActionEnum::VERIFY_EMAIL->value,
-        ]));
+        $this->dispatchActivationEvents($user, $email, $otpCode);
     }
 }

@@ -27,17 +27,39 @@ abstract class AbstractAction
      */
     protected function requestOtp(OtpCodeTypeEnum $type, string $value, OtpCodeActionEnum $action): void
     {
-        // Anti-enumeration: unknown and already-verified addresses get the
-        // same generic success as everyone else — an OTP is only minted for
-        // a real, not-yet-verified account. The meaningful errors stay with
-        // the authenticated flows (sign-in) where the user is known.
+        $otpCode = $this->mintOtp($type, $value, $action);
+
+        if ($otpCode === null) {
+            return;
+        }
+
+        event(OtpRequestedEvent::fill([
+            'email' => $value,
+            'code' => $otpCode,
+            'action' => $action->value,
+        ]));
+    }
+
+    /**
+     * Mint + persist an OTP without dispatching anything. Returns null
+     * when no OTP may be minted — anti-enumeration: unknown and
+     * already-verified addresses get the same generic success as everyone
+     * else (an OTP is only minted for a real, not-yet-verified account;
+     * the meaningful errors stay with the authenticated flows where the
+     * user is known). Throttling and expiry semantics are unchanged.
+     *
+     * @throws RandomException
+     * @throws OtpTooManyRequestsException
+     */
+    protected function mintOtp(OtpCodeTypeEnum $type, string $value, OtpCodeActionEnum $action): ?string
+    {
         $verifiedAt = $type === OtpCodeTypeEnum::MOBILE ? UserSchema::MOBILE_VERIFIED_AT :
             UserSchema::EMAIL_VERIFIED_AT;
 
         $user = User::query()->where($type->value, $value)->first();
 
         if ($user === null || ! is_null($user->{$verifiedAt})) {
-            return;
+            return null;
         }
 
         $this->errorIfOtpAlreadyActive($type, $value, $action);
@@ -46,11 +68,7 @@ abstract class AbstractAction
 
         $this->storeOtp($type, $value, $otpCode, $action);
 
-        event(OtpRequestedEvent::fill([
-            'email' => $value,
-            'code' => $otpCode,
-            'action' => $action->value,
-        ]));
+        return $otpCode;
     }
 
     /**

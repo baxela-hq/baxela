@@ -23,4 +23,14 @@ return [
     'two_factor.invalid_code' => 'The verification code is invalid or has expired',
     'two_factor.challenge_invalid' => 'The challenge is invalid or expired',
     'two_factor.too_many_attempts' => 'Too many verification attempts. Try again later.',
+
+    'google' => [
+        'invalid_token' => 'Sign-in with Google failed. Please try again.',
+        'nonce_invalid' => 'Sign-in with Google expired. Please try again.',
+        'disabled' => 'Sign-in with Google is currently unavailable.',
+        'email_unverified' => 'Sign-in with Google failed because the email address could not be verified.',
+        'email_exists' => 'An account with this email already exists. Please sign in with your password.',
+        'admin_forbidden' => 'Sign-in with Google is unavailable for this account.',
+        'unavailable' => 'Sign-in with Google is temporarily unavailable. Please try again.',
+    ],
 ];

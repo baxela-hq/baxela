@@ -21,4 +21,14 @@ return [
     'two_factor.invalid_code' => 'Le code de vérification est invalide ou expiré',
     'two_factor.challenge_invalid' => 'Le challenge est invalide ou expiré',
     'two_factor.too_many_attempts' => 'Trop de tentatives de vérification. Réessayez plus tard.',
+
+    'google' => [
+        'invalid_token' => 'Échec de la connexion avec Google. Veuillez réessayer.',
+        'nonce_invalid' => 'La connexion avec Google a expiré. Veuillez réessayer.',
+        'disabled' => 'La connexion avec Google est actuellement indisponible.',
+        'email_unverified' => 'Échec de la connexion avec Google : l\'adresse e-mail n\'a pas pu être vérifiée.',
+        'email_exists' => 'Un compte avec cet e-mail existe déjà. Veuillez vous connecter avec votre mot de passe.',
+        'admin_forbidden' => 'La connexion avec Google n\'est pas disponible pour ce compte.',
+        'unavailable' => 'La connexion avec Google est temporairement indisponible. Veuillez réessayer.',
+    ],
 ];

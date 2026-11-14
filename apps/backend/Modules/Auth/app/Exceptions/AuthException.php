@@ -47,4 +47,41 @@ class AuthException extends BaseException
     {
         return new self(ErrorCodeEnum::TWO_FACTOR_ALREADY_ENROLLED->value);
     }
+
+    // Google sign-in (customers only)
+    public static function googleInvalidToken(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_INVALID_TOKEN->value, 401);
+    }
+
+    public static function googleNonceInvalid(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_NONCE_INVALID->value, 401);
+    }
+
+    public static function googleDisabled(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_DISABLED->value, 403);
+    }
+
+    public static function googleEmailUnverified(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_EMAIL_UNVERIFIED->value, 403);
+    }
+
+    public static function googleEmailExists(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_EMAIL_EXISTS->value, 409);
+    }
+
+    public static function googleAdminForbidden(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_ADMIN_FORBIDDEN->value, 403);
+    }
+
+    /** Fail-closed: Redis/JWKS dependency unavailable — reject, never degrade. */
+    public static function googleUnavailable(): self
+    {
+        return new self(ErrorCodeEnum::GOOGLE_UNAVAILABLE->value, 503);
+    }
 }

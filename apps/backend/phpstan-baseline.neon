@@ -73,12 +73,6 @@ parameters:
 			path: Modules/Auth/app/Actions/Admin/User/ListUserAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Admin/User/UpdateUserAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -89,24 +83,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email_verified_at\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$mobile_verified_at\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteAuthenticationAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
@@ -145,22 +121,10 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$email_verified_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/RequestPasswordResetAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/SignUpAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
@@ -457,12 +421,6 @@ parameters:
 			path: Modules/Auth/app/Models/TwoFactorChallenge.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/User.php
-
-		-
 			message: '#^Method Modules\\Auth\\Models\\User\:\:newFactory\(\) return type with generic class Illuminate\\Database\\Eloquent\\Factories\\Factory does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -597,7 +555,7 @@ parameters:
 		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 10
+			count: 12
 			path: Modules/Auth/config/config.php
 
 		-
@@ -727,18 +685,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Admin/SyncPermissionsTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$email_verified_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Auth\\Models\\User\>\|Modules\\Auth\\Models\\User\:\:\$password\.$#'
 			identifier: property.notFound
 			count: 1
@@ -778,18 +724,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 5
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<bool\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
 
 		-
@@ -11493,7 +11427,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 4
+			count: 5
 			path: Modules/Core/tests/Feature/CurrencyTest.php
 
 		-
@@ -11505,7 +11439,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
-			count: 1
+			count: 3
 			path: Modules/Core/tests/Feature/CurrencyTest.php
 
 		-
@@ -20991,7 +20925,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 4
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -21003,7 +20937,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Modules\\Setting\\Models\\Setting\:\:\$value\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 4
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -21015,13 +20949,13 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 5
+			count: 6
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
-			count: 8
+			count: 9
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -21033,19 +20967,19 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
 			identifier: method.notFound
-			count: 6
+			count: 7
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 4
+			count: 5
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 3
+			count: 4
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -21063,7 +20997,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 3
+			count: 4
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -24485,3 +24419,129 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Webhooks/tests/Feature/HelperTrait.php
+		-
+			message: '#^Method Modules\\Auth\\Models\\SocialAccount\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/SocialAccount.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\User\:\:socialAccounts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/User.php
+
+		-
+			message: '#^Function publishJwks\(\) has parameter \$keys with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Function verifierKeypair\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Function verifierToken\(\) has parameter \$claims with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Parameter \#1 \$redis of class Modules\\Auth\\Support\\Google\\SignInNonceService constructor expects Illuminate\\Contracts\\Redis\\Factory, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SocialAccount\:\:\$provider_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 16
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 14
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Log\:\:shouldHaveReceived\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Function googleSignIn\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Function googleSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Parameter \#1 \$app of class FakeGoogleVerifier constructor expects Illuminate\\Contracts\\Container\\Container, Pest\\PendingCalls\\TestCall given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+

@@ -13,6 +13,12 @@ class RouteSchema
 
     public const string SIGN_IN = 'signin';
 
+    // Google sign-in (customers only): the credential submission and the
+    // single-use nonce issuance.
+    public const string SIGN_IN_GOOGLE = 'google';
+
+    public const string GOOGLE_NONCE = 'google/nonce';
+
     public const string VERIFY_ACCOUNT_ACTIVATION = 'account-activation/verify';
 
     public const string REQUEST_ACCOUNT_ACTIVATION = 'account-activation/request';

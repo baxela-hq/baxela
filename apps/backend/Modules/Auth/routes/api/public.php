@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\Public\Auth\RequestAccountActivationAuthController;
+use Modules\Auth\Http\Controllers\Public\Auth\RequestGoogleNonceAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\RequestPasswordResetAuthController;
+use Modules\Auth\Http\Controllers\Public\Auth\GoogleSignInAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\SignInAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\SignUpAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\VerifyAccountActivationAuthController;
@@ -17,6 +19,8 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::prefix(RouteSchema::PREFIX)->name(RouteSchema::PREFIX.'.')->group(function () {
         Route::post(RouteSchema::SIGN_UP, SignUpAuthController::class)->name('signup')->middleware('throttle:auth-sign-up');
         Route::post(RouteSchema::SIGN_IN, SignInAuthController::class)->name('signin')->middleware('throttle:auth-sign-in');
+        Route::post(RouteSchema::SIGN_IN_GOOGLE, GoogleSignInAuthController::class)->name('google.signin')->middleware('throttle:auth-sign-in');
+        Route::post(RouteSchema::GOOGLE_NONCE, RequestGoogleNonceAuthController::class)->name('google.nonce')->middleware('throttle:auth-sign-in');
         Route::post('2fa/verify', VerifyTwoFactorController::class)->name('2fa.verify')->middleware('throttle:auth-sign-in');
         Route::post('2fa/enrollment/secret', TwoFactorEnrollmentSecretController::class)->name('2fa.enrollment.secret')->middleware('throttle:auth-sign-in');
         Route::post('2fa/enrollment/confirm', TwoFactorEnrollmentConfirmController::class)->name('2fa.enrollment.confirm')->middleware('throttle:auth-sign-in');

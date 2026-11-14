@@ -22,6 +22,8 @@ use Random\RandomException;
 
 class SignInAction extends AbstractAction
 {
+    use Concerns\BuildsSignInContext;
+
     public function __construct(
         protected TwoFactorChallengeService $challenges,
         protected SignInLockoutService $lockout,
@@ -77,11 +79,7 @@ class SignInAction extends AbstractAction
         /** @var User $user */
         $user = $auth->user();
 
-        $context = [
-            'device_name' => $this->deviceName($request),
-            'remember' => $this->remembered($request),
-            'cart_token' => $this->cartToken($request),
-        ];
+        $context = $this->buildSignInContext($request);
 
         // S.1: 2FA branches. `auth.two_factor.enabled=false` (local dev)
         // removes the sign-in challenge and forced enrollment entirely —
@@ -127,30 +125,5 @@ class SignInAction extends AbstractAction
         }
 
         return $user->hasRole('super-admin');
-    }
-
-    private function deviceName(SignInRequest $request): string
-    {
-        $deviceName = $request->validated(UserSchema::DEVICE_NAME);
-
-        if (is_string($deviceName) && $deviceName !== '') {
-            return Str::limit($deviceName, 100, '');
-        }
-
-        $agent = trim((string) preg_replace('/\s+/', ' ', (string) $request->userAgent()));
-
-        return Str::limit($agent, 100, '') ?: 'unknown-device';
-    }
-
-    private function remembered(SignInRequest $request): bool
-    {
-        return filter_var($request->validated(UserSchema::REMEMBER) ?? true, FILTER_VALIDATE_BOOLEAN);
-    }
-
-    private function cartToken(SignInRequest $request): ?string
-    {
-        $cartToken = $request->header('X-Cart-Token');
-
-        return is_string($cartToken) && Str::isUuid($cartToken) ? $cartToken : null;
     }
 }

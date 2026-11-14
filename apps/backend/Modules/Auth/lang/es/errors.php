@@ -21,4 +21,14 @@ return [
     'two_factor.invalid_code' => 'El código de verificación no es válido o ha caducado',
     'two_factor.challenge_invalid' => 'El desafío no es válido o ha caducado',
     'two_factor.too_many_attempts' => 'Demasiados intentos de verificación. Inténtelo de nuevo más tarde.',
+
+    'google' => [
+        'invalid_token' => 'Error al iniciar sesión con Google. Inténtalo de nuevo.',
+        'nonce_invalid' => 'El inicio de sesión con Google ha caducado. Inténtalo de nuevo.',
+        'disabled' => 'El inicio de sesión con Google no está disponible actualmente.',
+        'email_unverified' => 'El inicio de sesión con Google falló porque no se pudo verificar la dirección de correo.',
+        'email_exists' => 'Ya existe una cuenta con este correo. Inicia sesión con tu contraseña.',
+        'admin_forbidden' => 'El inicio de sesión con Google no está disponible para esta cuenta.',
+        'unavailable' => 'El inicio de sesión con Google no está disponible temporalmente. Inténtalo de nuevo.',
+    ],
 ];

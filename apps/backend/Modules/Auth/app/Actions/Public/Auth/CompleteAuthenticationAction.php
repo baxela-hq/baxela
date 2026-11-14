@@ -3,6 +3,7 @@
 namespace Modules\Auth\Actions\Public\Auth;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\AuthException;
 use Modules\Auth\Models\User;
@@ -14,6 +15,7 @@ use Modules\Core\Contracts\Events\Auth\NewDeviceSignInEvent;
 use Modules\Core\Contracts\Events\Auth\UserSignedInEvent;
 use Modules\Core\Utils\Locale;
 use RuntimeException;
+use Throwable;
 
 /**
  * The authoritative successful-authentication sequence (S.1 D15),
@@ -103,28 +105,87 @@ class CompleteAuthenticationAction
      * the device (S.4). MUST be called after the caller's transaction
      * commits — events must never run inside a rollback-able scope.
      *
+     * Unchanged for the password and 2FA callers: exceptions from dispatch
+     * propagate exactly as before. The Google sign-in path uses
+     * dispatchEventsBestEffort() instead.
+     *
      * @param  array{device_name?: string, remember?: bool, cart_token?: string|null}  $context
      */
     public function dispatchEvents(User $user, array $context, bool $deviceIsNew = false): void
     {
-        event(new UserSignedInEvent(
+        event($this->signInEvent($user, $context));
+
+        if ($deviceIsNew) {
+            event($this->newDeviceSignInEvent($user, $context));
+        }
+    }
+
+    /**
+     * Google-only variant of dispatchEvents(): identical events, payloads,
+     * ordering and `deviceIsNew` condition, but each attempt is wrapped in
+     * its own try/catch so one failure never suppresses the other, and a
+     * dispatch failure after a successful commit never turns the committed
+     * authentication into an HTTP failure. Failures are logged with
+     * diagnostic context, never credentials or tokens.
+     *
+     * @param  array{device_name?: string, remember?: bool, cart_token?: string|null}  $context
+     */
+    public function dispatchEventsBestEffort(User $user, array $context, bool $deviceIsNew = false): void
+    {
+        try {
+            event($this->signInEvent($user, $context));
+        } catch (Throwable $e) {
+            $this->logDispatchFailure('user_signed_in', $user, $e);
+        }
+
+        if ($deviceIsNew) {
+            try {
+                event($this->newDeviceSignInEvent($user, $context));
+            } catch (Throwable $e) {
+                $this->logDispatchFailure('new_device_sign_in', $user, $e);
+            }
+        }
+    }
+
+    /**
+     * @param  array{device_name?: string, remember?: bool, cart_token?: string|null}  $context
+     */
+    private function signInEvent(User $user, array $context): UserSignedInEvent
+    {
+        return new UserSignedInEvent(
             $user->{UserSchema::ID},
             $user->{UserSchema::EMAIL},
             now()->toDateTimeString(),
             $context['cart_token'] ?? null,
-        ));
+        );
+    }
 
-        if ($deviceIsNew) {
-            event(new NewDeviceSignInEvent(
-                $user->{UserSchema::ID},
-                $user->{UserSchema::EMAIL},
-                $context['device_name'] ?? 'unknown-device',
-                now()->toDateTimeString(),
-                // Locale captured at dispatch time so the queued listener
-                // renders in the recipient's language (D8, house pattern).
-                Locale::fromRequest(),
-            ));
-        }
+    /**
+     * @param  array{device_name?: string, remember?: bool, cart_token?: string|null}  $context
+     */
+    private function newDeviceSignInEvent(User $user, array $context): NewDeviceSignInEvent
+    {
+        return new NewDeviceSignInEvent(
+            $user->{UserSchema::ID},
+            $user->{UserSchema::EMAIL},
+            $context['device_name'] ?? 'unknown-device',
+            now()->toDateTimeString(),
+            // Locale captured at dispatch time so the queued listener
+            // renders in the recipient's language (D8, house pattern).
+            Locale::fromRequest(),
+        );
+    }
+
+    /** Diagnostic context for a swallowed post-commit dispatch failure. */
+    private function logDispatchFailure(string $event, User $user, Throwable $e): void
+    {
+        Log::warning('Google sign-in: post-commit event dispatch failed', [
+            'event' => $event,
+            'stage' => 'after_commit_dispatch',
+            'user_id' => $user->getKey(),
+            'exception' => $e::class,
+            'message' => $e->getMessage(),
+        ]);
     }
 
     /**

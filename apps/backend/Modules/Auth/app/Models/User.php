@@ -5,16 +5,24 @@ namespace Modules\Auth\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Auth\Database\factories\UserFactory;
+use Modules\Auth\Schemas\SocialAccount\SocialAccountSchema;
 use Modules\Auth\Schemas\User\UserSchema;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property int $id
  * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property \Illuminate\Support\Carbon|null $mobile_verified_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property bool $is_active
+ * @property string|null $comment
  */
 class User extends Authenticatable
 {
@@ -70,6 +78,12 @@ class User extends Authenticatable
     protected static function newFactory(): UserFactory|Factory
     {
         return UserFactory::new();
+    }
+
+    /** Third-party identities linked to this account (Google sign-in). */
+    public function socialAccounts(): HasMany
+    {
+        return $this->hasMany(SocialAccount::class, SocialAccountSchema::USER_ID);
     }
 
     public function markEmailAsVerified(): bool

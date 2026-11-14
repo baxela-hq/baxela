@@ -21,4 +21,14 @@ return [
     'two_factor.invalid_code' => 'Der Bestätigungscode ist ungültig oder abgelaufen',
     'two_factor.challenge_invalid' => 'Die Challenge ist ungültig oder abgelaufen',
     'two_factor.too_many_attempts' => 'Zu viele Bestätigungsversuche. Versuchen Sie es später erneut.',
+
+    'google' => [
+        'invalid_token' => 'Die Anmeldung mit Google ist fehlgeschlagen. Bitte versuchen Sie es erneut.',
+        'nonce_invalid' => 'Die Anmeldung mit Google ist abgelaufen. Bitte versuchen Sie es erneut.',
+        'disabled' => 'Die Anmeldung mit Google ist derzeit nicht verfügbar.',
+        'email_unverified' => 'Die Anmeldung mit Google ist fehlgeschlagen, weil die E-Mail-Adresse nicht bestätigt werden konnte.',
+        'email_exists' => 'Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Bitte melden Sie sich mit Ihrem Passwort an.',
+        'admin_forbidden' => 'Die Anmeldung mit Google ist für dieses Konto nicht verfügbar.',
+        'unavailable' => 'Die Anmeldung mit Google ist vorübergehend nicht verfügbar. Bitte versuchen Sie es erneut.',
+    ],
 ];

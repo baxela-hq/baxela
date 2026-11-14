@@ -32,6 +32,17 @@ return [
         'force_super_admin' => env('AUTH_TWO_FACTOR_FORCE_SUPER_ADMIN', true),
     ],
 
+    // Google sign-in (customer-only). The storefront must not render the
+    // button unless its own flag is on, but THIS flag is the security
+    // control: when disabled, both the credential and nonce endpoints
+    // refuse with the same disabled-feature error. `nonce_ttl` bounds how
+    // long an issued nonce may be consumed (seconds).
+    'google' => [
+        'enabled' => env('AUTH_GOOGLE_ENABLED', false),
+        'client_id' => env('AUTH_GOOGLE_CLIENT_ID'),
+        'nonce_ttl' => 300,
+    ],
+
     // Sanctum personal access token lifetimes, in days. `days` applies when
     // remember-me is requested (or the field is omitted); `short_days` when a
     // client explicitly signs in without remembering the device. Tokens are

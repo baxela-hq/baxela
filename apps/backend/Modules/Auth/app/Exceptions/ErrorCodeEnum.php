@@ -37,4 +37,19 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
 
     case TWO_FACTOR_ALREADY_ENROLLED = 'auth.two_factor.already_enrolled';
 
+    // Google sign-in (customers only)
+    case GOOGLE_INVALID_TOKEN = 'auth.google.invalid_token';
+
+    case GOOGLE_NONCE_INVALID = 'auth.google.nonce_invalid';
+
+    case GOOGLE_DISABLED = 'auth.google.disabled';
+
+    case GOOGLE_EMAIL_UNVERIFIED = 'auth.google.email_unverified';
+
+    case GOOGLE_EMAIL_EXISTS = 'auth.google.email_exists';
+
+    case GOOGLE_ADMIN_FORBIDDEN = 'auth.google.admin_forbidden';
+
+    case GOOGLE_UNAVAILABLE = 'auth.google.unavailable';
+
 }
