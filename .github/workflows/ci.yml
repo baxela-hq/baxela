@@ -59,21 +59,6 @@ jobs:
     defaults:
       run:
         working-directory: apps/backend
-    # The Google sign-in nonce store is deliberately Redis-backed and
-    # fails closed when Redis is unreachable; its Lua passthrough speaks
-    # the phpredis eval order, so the suite needs the extension plus a
-    # live Redis. The service maps the develop stack's host port (6378,
-    # the same phpunit.xml expects).
-    services:
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6378:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677268 # v4
 
@@ -86,9 +71,24 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      # The Google sign-in nonce store is deliberately Redis-backed and
+      # fails closed when Redis is unreachable; its Lua passthrough
+      # speaks the phpredis eval order, so the suite needs the extension
+      # plus a live Redis. A plain step container (not a job service —
+      # those died at setup on this runner) maps 6378 -> 6379, the
+      # develop stack's host port.
+      - name: Start Redis
+        run: |
+          docker run -d --name redis -p 6378:6379 redis:7-alpine
+          for i in $(seq 1 30); do
+            docker exec redis redis-cli ping 2>/dev/null | grep -q PONG && exit 0
+            sleep 2
+          done
+          echo "::error::Redis did not become healthy"
+          exit 1
+
       # Pest against SQLite :memory: — env comes from phpunit.xml, except
-      # Redis: the live service is mapped to 127.0.0.1:6378 above, and a
-      # real env var outranks any phpunit.xml entry.
+      # Redis: a real env var outranks any phpunit.xml entry.
       - name: Run tests
         run: vendor/bin/pest
         env:
