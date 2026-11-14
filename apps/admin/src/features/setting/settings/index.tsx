@@ -27,6 +27,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useQuery } from '@tanstack/react-query'
 import { fetchTimezones } from './api/settings.api'
 import { CurrenciesTab } from './components/currencies-tab'
+import { ExtensionsTab } from './components/extensions-tab'
 import { LanguagesTab } from './components/languages-tab'
 import { TimezoneSelect } from './components/timezone-select'
 import { Textarea } from '@/components/ui/textarea.tsx'
@@ -136,6 +137,7 @@ export function SettingsStore() {
             )}
             <TabsTrigger value='currency'>{tLabel('currency')}</TabsTrigger>
             <TabsTrigger value='languages'>{tLabel('languages')}</TabsTrigger>
+            <TabsTrigger value='extensions'>{tLabel('extensions')}</TabsTrigger>
           </TabsList>
 
           <Form {...form}>
@@ -586,6 +588,11 @@ export function SettingsStore() {
           </TabsContent>
           <TabsContent value='languages'>
             <LanguagesTab />
+          </TabsContent>
+          {/* Extensions (marketplace P5.4): toggles, credential states and
+              update badges — management surface, so outside the form. */}
+          <TabsContent value='extensions'>
+            <ExtensionsTab />
           </TabsContent>
       </Tabs>
     </ContentSection>

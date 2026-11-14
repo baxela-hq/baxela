@@ -14,7 +14,8 @@
       },
       "currency": "Währung",
       "languages": "Sprachen",
-      "identity": "Shop-Identität"
+      "identity": "Shop-Identität",
+      "extensions": "Erweiterungen"
     },
     "statuses": {
       "name": {
@@ -54,5 +55,23 @@
       "store_tax_id": "USt-IdNr.",
       "store_contact": "billing@example.com"
     }
+  },
+  "extensions": {
+    "title": "Erweiterungen",
+    "empty": "Es sind keine Erweiterungen installiert oder registriert.",
+    "worker_caveat_title": "Gespeichert — mit einem Vorbehalt",
+    "worker_caveat_body": "Erweiterungsänderungen aktualisieren den gespeicherten Zustand, aber bereits laufende Worker können beim Start geladene Provider beibehalten. Ein Worker-Neustart oder -Reload kann erforderlich sein, bevor die Änderung vollständig wirksam wird.",
+    "confirm_enable_title": "{{name}} aktivieren?",
+    "confirm_enable_body": "Die Erweiterung wird für neu gestartete Worker gebootet. Bereits laufende Worker benötigen möglicherweise einen Reload.",
+    "confirm_disable_title": "{{name}} deaktivieren?",
+    "confirm_disable_body": "Die Erweiterung wird für neue Worker nicht mehr gebootet. Bereits laufende Worker benötigen möglicherweise einen Reload."
+  },
+  "credentials": {
+    "title": "Zahlungs-Treiber-Zugangsdaten",
+    "empty": "Keine konfigurierbaren Zahlungs-Treiber registriert."
+  },
+  "updates": {
+    "title": "Marketplace-Updates",
+    "empty": "Keine installierten Erweiterungen zu prüfen."
   }
 }

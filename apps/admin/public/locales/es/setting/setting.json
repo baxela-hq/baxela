@@ -14,7 +14,8 @@
       },
       "currency": "Moneda",
       "languages": "Idiomas",
-      "identity": "Identidad de la tienda"
+      "identity": "Identidad de la tienda",
+      "extensions": "Extensiones"
     },
     "statuses": {
       "name": {
@@ -54,5 +55,23 @@
       "store_tax_id": "NIF / CIF",
       "store_contact": "billing@example.com"
     }
+  },
+  "extensions": {
+    "title": "Extensiones",
+    "empty": "No hay extensiones instaladas ni registradas.",
+    "worker_caveat_title": "Guardado — con un matiz",
+    "worker_caveat_body": "Los cambios de extensiones actualizan el estado persistido, pero los workers en ejecución pueden conservar los proveedores cargados al inicio. Puede requerirse un reinicio o recarga de workers antes de que el cambio surta efecto por completo.",
+    "confirm_enable_title": "¿Activar {{name}}?",
+    "confirm_enable_body": "La extensión se iniciará para los workers nuevos. Los workers en ejecución pueden necesitar una recarga.",
+    "confirm_disable_title": "¿Desactivar {{name}}?",
+    "confirm_disable_body": "La extensión dejará de iniciarse para los workers nuevos. Los workers en ejecución pueden necesitar una recarga."
+  },
+  "credentials": {
+    "title": "Credenciales de controladores de pago",
+    "empty": "No hay controladores de pago configurables registrados."
+  },
+  "updates": {
+    "title": "Actualizaciones del marketplace",
+    "empty": "No hay extensiones instaladas que comprobar."
   }
 }

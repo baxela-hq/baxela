@@ -57,7 +57,8 @@
     "languages": "اللغات",
     "transfer-data": "نقل البيانات",
     "invoices": "الفواتير",
-    "security": "الأمان"
+    "security": "الأمان",
+    "system": "النظام"
   },
   "dialog": {
     "sign-out": {

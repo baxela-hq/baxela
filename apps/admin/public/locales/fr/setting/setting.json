@@ -14,7 +14,8 @@
       },
       "currency": "Devise",
       "languages": "Langues",
-      "identity": "Identité de la boutique"
+      "identity": "Identité de la boutique",
+      "extensions": "Extensions"
     },
     "statuses": {
       "name": {
@@ -54,5 +55,23 @@
       "store_tax_id": "N° TVA",
       "store_contact": "billing@example.com"
     }
+  },
+  "extensions": {
+    "title": "Extensions",
+    "empty": "Aucune extension installée ou enregistrée.",
+    "worker_caveat_title": "Enregistré — avec une réserve",
+    "worker_caveat_body": "Les modifications d'extension mettent à jour l'état persisté, mais les workers déjà en cours d'exécution peuvent conserver les fournisseurs chargés au démarrage. Un redémarrage ou rechargement des workers peut être nécessaire avant que le changement ne prenne pleinement effet.",
+    "confirm_enable_title": "Activer {{name}} ?",
+    "confirm_enable_body": "L'extension démarrera pour les nouveaux workers. Les workers en cours peuvent nécessiter un rechargement.",
+    "confirm_disable_title": "Désactiver {{name}} ?",
+    "confirm_disable_body": "L'extension ne démarrera plus pour les nouveaux workers. Les workers en cours peuvent nécessiter un rechargement."
+  },
+  "credentials": {
+    "title": "Identifiants des pilotes de paiement",
+    "empty": "Aucun pilote de paiement configurable enregistré."
+  },
+  "updates": {
+    "title": "Mises à jour du marketplace",
+    "empty": "Aucune extension installée à vérifier."
   }
 }

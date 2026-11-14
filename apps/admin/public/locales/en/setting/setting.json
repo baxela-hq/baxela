@@ -14,7 +14,8 @@
       },
       "currency": "Currency",
       "languages": "Languages",
-      "identity": "Store identity"
+      "identity": "Store identity",
+      "extensions": "Extensions"
     },
     "statuses": {
       "name": {
@@ -54,5 +55,23 @@
       "store_tax_id": "VAT / tax ID",
       "store_contact": "billing@example.com"
     }
+  },
+  "extensions": {
+    "title": "Extensions",
+    "empty": "No extensions are installed or registered.",
+    "worker_caveat_title": "Saved — with one caveat",
+    "worker_caveat_body": "Extension changes update persisted state, but already-running application workers may retain providers loaded at worker startup. A worker restart or reload may be required before the change takes full effect.",
+    "confirm_enable_title": "Enable {{name}}?",
+    "confirm_enable_body": "The extension will boot for newly started workers. Already-running workers may need a reload before it takes effect.",
+    "confirm_disable_title": "Disable {{name}}?",
+    "confirm_disable_body": "The extension stops booting for newly started workers. Already-running workers may need a reload before it takes effect."
+  },
+  "credentials": {
+    "title": "Payment driver credentials",
+    "empty": "No configurable payment drivers are registered."
+  },
+  "updates": {
+    "title": "Marketplace updates",
+    "empty": "No installed extensions to check."
   }
 }
