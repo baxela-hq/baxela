@@ -6,8 +6,8 @@
 >
 > **Created:** 2026-11-01 · **Revised:** 2026-11-14 — Zarinpal removed from the plan
 > (Phase 6 dropped; examples genericized); 2026-11-08 — Phase 2 became the
-> throwaway-proof sample extension · **Owner:** solo maintainer · **Status:** Phases 0–4
-> done (2026-11-09…13); Phase 5 next
+> throwaway-proof sample extension · **Owner:** solo maintainer · **Status:** Phases 0–5
+> done (2026-11-09…14)
 >
 > **How to use:** Work phases strictly in order (0 → 7). Phase 0 is the hard prerequisite —
 > nothing else works without it. The marketplace waits until the extension system is proven
@@ -141,11 +141,14 @@ Public face of the marketplace app; linked from the home site nav, not embedded.
 - [x] Manual review checklist (markdown file in the marketplace repo): install cleanly in a disposable Baxela container → happy path for its type (sandbox payment + webhook for drivers) → read the webhook handler (signature verification actually enforced?) → manifest honesty. *(P.4 — `baxela-marketplace/docs/REVIEW_CHECKLIST.md`; the sandbox's own review carried over its M.5 install/happy-path evidence.)*
 - [ ] Later optimizations (don't build now): automated install smoke-test in CI, core-N readiness dashboard for authors.
 
-### Phase 5 — Admin panel integration (`apps/admin`)
+### Phase 5 — Admin panel integration (`apps/admin`) — **DONE 2026-11-14**
 
-- [ ] Extensions settings page: installed list, enable/disable toggles, per-driver credential forms. *(backend toggle surface done 2026-11-14 — P5.1: `POST core/admin/extensions/{vendor}/{package}/enable|disable` behind `core.admin.extensions.{enable,disable}`; the page itself is P5.4)*
-- [x] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08). *(done 2026-11-14 — P5.2 backend slice; deviation from the letter of this item: a dedicated `payment_driver_credentials` table in the Payment module with the built-in `encrypted` cast — the Webhooks pattern the item points at — rather than Setting-module rows, avoiding per-driver SettingNameEnum churn; resolution contract in Core (`PaymentCredentialResolverInterface`, DB → env fallback, undecryptable fails closed), the `ApplyDatabaseCredentials` middleware makes the store effective for every client with zero driver edits, admin API states-only (`GET/PATCH/DELETE payment/admin/credentials/*`), PayPal's OAuth token flushed on rotation, audit event on committed mutations; admin credential forms land with P5.4)*
-- [ ] "Update available" badge via the updates endpoint; changelog link. Notification only — merchant pulls. *(backend proxy is P5.3)*
+*(Five slices: P5.1 enable/disable endpoints `70b20c9e` · P5.2 credential store + resolver `d0ada70d` · P5.3 updates proxy with two-key stale-while-error cache `ffef089f` · P5.4 the Extensions settings tab `125161e5` · P5.5 the marketplace catalog throttle in `baxela-marketplace`. Every slice carried its own adversarial plan review to explicit approval; verification: backend suites green, Larastan clean, Pint clean, admin build/lint/i18n parity + usage green, marketplace suite 162/162. Deployment checklist for P5.5: the marketplace cache store must remain shared (database default) and trusted-proxy configuration must resolve real client IPs behind the reverse proxy — otherwise every visitor shares one throttle bucket. Two deliberate deviations are annotated on the items below.)*
+
+- [x] Extensions settings page: installed list, enable/disable toggles, per-driver credential forms. *(done 2026-11-14 — P5.1 endpoints + P5.4 Settings tab `125161e5`: three independent sections — five-field extension list with confirm-guarded toggles and the truthful worker caveat (persisted state changes; running workers keep their providers until a reload), states-only credential forms (blank = unchanged, explicit DELETE for overrides, undecryptable → re-entry recovery), update badges with stale/degraded labelling; i18n ×6 incl. the new `payment/credentials` namespace)*
+- [x] Move payment driver credentials from `.env` to the Setting module (DB) — required for a hosted product. Reuse the secrets-encrypted-at-rest pattern from the Webhooks module (landed with the C.2 outbox work, 2026-11-08). *(done 2026-11-14 — P5.2 backend slice `d0ada70d` + P5.4 forms; deviation from the letter of this item: a dedicated `payment_driver_credentials` table in the Payment module with the built-in `encrypted` cast — the Webhooks pattern the item points at — rather than Setting-module rows, avoiding per-driver SettingNameEnum churn; resolution contract in Core (`PaymentCredentialResolverInterface`, DB → env fallback, undecryptable fails closed), the `ApplyDatabaseCredentials` middleware makes the store effective for every client with zero driver edits, admin API states-only (`GET/PATCH/DELETE payment/admin/credentials/*`), PayPal's OAuth token flushed on rotation, audit event on committed mutations)*
+- [x] "Update available" badge via the updates endpoint. Notification only — merchant pulls. *(done 2026-11-14 — P5.3 proxy `ffef089f` (two-key stale-while-error cache: 15-min fresh + 24-h last-known-good, honest availability states, marketplace never called from the browser) + P5.4 badges; credential mutations never touch update data; no automatic anything — the merchant pulls)*
+- [ ] Changelog link on the badge (deferred): requires a marketplace changelog route/field — none exists today (`packages.show` renders README/versions/repo only). Revisit when the marketplace grows one; no URL is invented in the UI (P5.4 F3).
 
 ### Phase 6 — REMOVED 2026-11-14 (was: first production extension, Zarinpal)
 
