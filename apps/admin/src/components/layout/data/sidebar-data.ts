@@ -84,32 +84,9 @@ export const useSidebarData = (): SidebarData => {
             icon: Settings,
           },
           {
-            title: t('sidebar.security'),
-            url: '/settings/security',
-            icon: ShieldCheck,
-          },
-          {
             title: t('sidebar.notifications-inbox'),
             url: '/notifications',
             icon: Bell,
-          },
-          {
-            title: t('sidebar.audit-logs'),
-            url: '/audit/logs',
-            icon: ScrollText,
-            permission: 'audit.admin.logs.list',
-          },
-          {
-            title: t('sidebar.transfer-data'),
-            url: '/transfer',
-            icon: ArrowLeftRight,
-            permission: 'transfer.admin.capabilities.show',
-          },
-          {
-            title: t('sidebar.failed-jobs'),
-            url: '/failed-jobs',
-            icon: CircleAlert,
-            permission: 'core.admin.failed-jobs.list',
           },
         ],
       },
@@ -319,6 +296,34 @@ export const useSidebarData = (): SidebarData => {
                 url: '/discount/promotions',
               },
             ],
+          },
+        ],
+      },
+      {
+        title: t('sidebar.system'),
+        items: [
+          {
+            title: t('sidebar.security'),
+            url: '/settings/security',
+            icon: ShieldCheck,
+          },
+          {
+            title: t('sidebar.audit-logs'),
+            url: '/audit/logs',
+            icon: ScrollText,
+            permission: 'audit.admin.logs.list',
+          },
+          {
+            title: t('sidebar.transfer-data'),
+            url: '/transfer',
+            icon: ArrowLeftRight,
+            permission: 'transfer.admin.capabilities.show',
+          },
+          {
+            title: t('sidebar.failed-jobs'),
+            url: '/failed-jobs',
+            icon: CircleAlert,
+            permission: 'core.admin.failed-jobs.list',
           },
         ],
       },
