@@ -18,9 +18,11 @@ class ExtensionSchema
 
     /**
      * Computed wire fields (no backing column): the version is read live
-     * from the installed packages, the skip reason from the boot guard —
-     * neither is stored, so neither can drift from Composer or the
-     * runtime decision.
+     * from the installed packages and skip_reason is derived from current
+     * rows + Composer facts (ExtensionStateBuilder) — neither is stored,
+     * so neither can drift from the state they describe. skip_reason is a
+     * best-effort, currently-derivable status, NOT the boot guard's
+     * account; null means "no derivable blocker", not "guaranteed to boot".
      */
     public const string RES_VERSION = 'version';
 

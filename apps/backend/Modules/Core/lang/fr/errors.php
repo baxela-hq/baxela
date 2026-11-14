@@ -30,4 +30,10 @@ return [
         'provider_timeout' => 'Le fournisseur de devises n\'a pas répondu à temps.',
         'invalid_provider_document' => 'Le fournisseur de devises a renvoyé une réponse illisible.',
     ],
+
+    // Extension admin surface (marketplace P5.1) — enabling requires the
+    // registry row AND the Composer package; see ExtensionsException.
+    'extensions' => [
+        'not_installed' => 'L\'extension :slug n\'est pas installée.',
+    ],
 ];

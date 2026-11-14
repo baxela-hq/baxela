@@ -74,14 +74,33 @@ class ComposerPackages
     }
 
     /**
+     * The compat.core constraint declared in the package's Composer
+     * metadata (extra.baxela), or null when the package or its manifest
+     * is absent. Serves install-time validation and compatible(); it is
+     * NOT a mirror of the provider's runtime manifest() — Extension::boot()
+     * passes whatever the provider class returns to the boot guard, and
+     * that guard remains the sole runtime authority for compatibility.
+     */
+    public function compatConstraint(string $slug): ?string
+    {
+        $manifest = $this->manifestFor($slug);
+
+        if (! is_array($manifest)) {
+            return null;
+        }
+
+        return (string) ($manifest['compat']['core'] ?? '');
+    }
+
+    /**
      * Whether the installed package's compat.core constraint is
      * satisfied by this core.
      */
     public function compatible(string $slug): bool
     {
-        $constraint = (string) ($this->manifestFor($slug)['compat']['core'] ?? '');
+        $constraint = $this->compatConstraint($slug);
 
-        return $constraint !== '' && Semver::satisfies(Baxela::VERSION, $constraint);
+        return $constraint !== null && $constraint !== '' && Semver::satisfies(Baxela::VERSION, $constraint);
     }
 
     /**

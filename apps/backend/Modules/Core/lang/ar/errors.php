@@ -30,4 +30,10 @@ return [
         'provider_timeout' => 'لم يستجب مزود أسعار الصرف في الوقت المناسب.',
         'invalid_provider_document' => 'أعاد مزود أسعار الصرف استجابة غير قابلة للقراءة.',
     ],
+
+    // Extension admin surface (marketplace P5.1) — enabling requires the
+    // registry row AND the Composer package; see ExtensionsException.
+    'extensions' => [
+        'not_installed' => 'الإضافة :slug غير مثبتة.',
+    ],
 ];

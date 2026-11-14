@@ -4,18 +4,20 @@ namespace Modules\Core\Actions\Admin\Extension;
 
 use Modules\Core\Extensions\ComposerPackages;
 use Modules\Core\Extensions\ExtensionManager;
-use Modules\Core\Schemas\Extension\ExtensionSchema;
+use Modules\Core\Extensions\ExtensionStateBuilder;
 
 /**
- * Rows plus live composer facts, for the admin extensions surface
- * (roadmap Phase 5 builds the page on this). Read-only on purpose —
- * enabling/disabling is CLI-only until Phase 5.
+ * Rows plus live composer facts, for the admin extensions surface. Each
+ * slug's state comes from ExtensionStateBuilder — derived from current
+ * rows + Composer, never from boot-recorded diagnostics, so the list
+ * reflects a runtime toggle immediately and stays honest under Octane.
  */
 class ListExtensionsAction
 {
     public function __construct(
         protected ExtensionManager $manager,
         protected ComposerPackages $packages,
+        protected ExtensionStateBuilder $builder,
     ) {}
 
     /**
@@ -30,30 +32,7 @@ class ListExtensionsAction
             ->values();
 
         return $slugs
-            ->map(fn (string $slug): array => [
-                ExtensionSchema::SLUG => $slug,
-                ExtensionSchema::ENABLED => $this->manager->enabled($slug),
-                ExtensionSchema::RES_INSTALLED => $this->packages->package($slug) !== null,
-                ExtensionSchema::RES_VERSION => $this->packages->version($slug),
-                ExtensionSchema::RES_SKIP_REASON => $this->skipReason($slug),
-            ])
+            ->map(fn (string $slug): array => $this->builder->build($slug))
             ->all();
-    }
-
-    protected function skipReason(string $slug): ?string
-    {
-        if ($this->manager->skipReason($slug) !== null) {
-            return $this->manager->skipReason($slug);
-        }
-
-        if ($this->manager->row($slug) === null) {
-            return 'missing_row';
-        }
-
-        if ($this->packages->package($slug) === null) {
-            return 'not_installed';
-        }
-
-        return null;
     }
 }

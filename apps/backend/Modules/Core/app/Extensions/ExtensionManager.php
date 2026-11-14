@@ -17,9 +17,11 @@ use Modules\Core\Schemas\Extension\ExtensionSchema;
  * installed packages. Rows are cached once per request; command
  * mutations write through and must flush.
  *
- * The manager also records WHY an extension was skipped at boot, so
- * `baxela:list` and the admin API can surface the reason instead of a
- * silently missing driver.
+ * The manager also records WHY an extension was skipped at boot. These
+ * recorded reasons are boot diagnostics scoped to this process (per
+ * worker under Octane) — the admin API and `baxela:list` do NOT consume
+ * them; they surface *derived* state instead (see ExtensionStateBuilder),
+ * so a runtime toggle can never report a stale boot reason.
  */
 class ExtensionManager
 {
@@ -67,8 +69,11 @@ class ExtensionManager
     }
 
     /**
-     * Why the extension was skipped at boot, if it was. `not_installed`
-     * is derived here for rows whose package is gone from vendor.
+     * The reason the boot guard recorded the last time it evaluated this
+     * extension in this process — nothing more. It is NOT derived here:
+     * the API's skip_reason (missing_row / not_installed / disabled) is
+     * computed from current rows + Composer by ExtensionStateBuilder,
+     * and a null there does not guarantee the extension will boot.
      */
     public function skipReason(string $slug): ?string
     {

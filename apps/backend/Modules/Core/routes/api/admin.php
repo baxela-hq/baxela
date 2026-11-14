@@ -10,6 +10,8 @@ use Modules\Core\Http\Controllers\Admin\Data\ExportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ImportCoreDataController;
 use Modules\Core\Http\Controllers\Admin\Data\ListCoreDataImportsController;
 use Modules\Core\Http\Controllers\Admin\Data\PreviewCoreDataImportController;
+use Modules\Core\Http\Controllers\Admin\Extension\DisableExtensionController;
+use Modules\Core\Http\Controllers\Admin\Extension\EnableExtensionController;
 use Modules\Core\Http\Controllers\Admin\Extension\ListExtensionController;
 use Modules\Core\Http\Controllers\Admin\FailedJob\ForgetFailedJobController;
 use Modules\Core\Http\Controllers\Admin\FailedJob\ListFailedJobsController;
@@ -45,7 +47,13 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::post('/failed-jobs/{uuid}/retry', RetryFailedJobController::class)->name('failed-jobs.retry');
     Route::delete('/failed-jobs/{uuid}', ForgetFailedJobController::class)->name('failed-jobs.delete');
 
-    // Extension runtime surface (E.1): read-only — enabling/disabling
-    // stays CLI-only until the roadmap Phase 5 admin page.
+    // Extension runtime surface (E.1 + marketplace P5.1): the list is
+    // read-only; enable/disable mutate the persisted row (the boot guard
+    // re-evaluates it per boot — under Octane, already-running workers
+    // keep their bindings until a reload; see ToggleExtensionAction).
+    // Route names derive the permissions
+    // core.admin.extensions.{list,enable,disable} verbatim.
     Route::get('/extensions', ListExtensionController::class)->name('extensions.list');
+    Route::post('/extensions/{vendor}/{package}/enable', EnableExtensionController::class)->name('extensions.enable');
+    Route::post('/extensions/{vendor}/{package}/disable', DisableExtensionController::class)->name('extensions.disable');
 });

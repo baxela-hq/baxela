@@ -31,4 +31,10 @@ return [
         'provider_timeout' => 'The FX provider did not respond in time.',
         'invalid_provider_document' => 'The FX provider returned an unreadable response.',
     ],
+
+    // Extension admin surface (marketplace P5.1) — enabling requires the
+    // registry row AND the Composer package; see ExtensionsException.
+    'extensions' => [
+        'not_installed' => 'The extension :slug is not installed.',
+    ],
 ];

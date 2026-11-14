@@ -30,4 +30,10 @@ return [
         'provider_timeout' => 'سرویس‌دهنده ارز به‌موقع پاسخ نداد.',
         'invalid_provider_document' => 'پاسخ نامفهومی از سرویس‌دهنده ارز دریافت شد.',
     ],
+
+    // Extension admin surface (marketplace P5.1) — enabling requires the
+    // registry row AND the Composer package; see ExtensionsException.
+    'extensions' => [
+        'not_installed' => 'افزونه :slug نصب نشده است.',
+    ],
 ];
