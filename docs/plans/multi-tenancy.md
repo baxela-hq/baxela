@@ -44,7 +44,15 @@ Rev 4 changes from rev 3 (architecture untouched):
   narrowing to `IS NULL`.
 - F3. Middleware chokepoint: `CoreServiceProvider::boot()` pushes onto the `api` group
   (`Modules/Core/app/Providers/CoreServiceProvider.php:38`). `bootstrap/app.php` `withMiddleware`
-  is empty. No Octane (absent from `composer.json`; long-running processes = queue workers + reverb only).
+  is empty. **Update (rev 5, RoadRunner rollout): the API is now served by Laravel Octane +
+  RoadRunner with persistent workers** — the "no Octane" assumption below is superseded. Octane
+  flushes most framework state per request, but it does **not** disconnect database connections
+  by default (`DisconnectFromDatabases` is commented out in the published `config/octane.php`),
+  and application singletons live across requests. The tenancy implementation must therefore
+  treat persistent-worker compatibility as a prerequisite: `TenantContext` has to be a scoped
+  binding (or carry an explicit, exception-safe reset to `MODE_INACTIVE` at the very start of
+  every request), and the isolation tests in the RoadRunner rollout plan (same-worker
+  consecutive requests) must pass for tenant scenarios before tenancy ships.
 - F4. `PermissionMiddleware` (`Modules/Core/app/Http/Middleware/PermissionMiddleware.php`) is already
   fail-closed: no auth → throw; unnamed/non-admin route name → throw; delegates to
   `AccessGatewayInterface::userCan()` = `$user->can($permission)` with PermissionDoesNotExist → false.
@@ -187,8 +195,11 @@ New files in `Modules/Core/app/Support/Tenancy/`:
   }
   ```
 
-  `runForTenant` snapshots and **restores the previous mode in `finally`**. FPM resets the singleton
-  per request (F3 — no Octane listener needed); queue workers are handled in §6.1. `runCentral` is
+  `runForTenant` snapshots and **restores the previous mode in `finally`**. Under Octane the
+  singleton persists across requests, so `runForTenant`'s snapshot/restore is not enough on its
+  own: **every request must begin in `MODE_INACTIVE`** via an explicit reset (Octane
+  `RequestReceived` listener or a scoped binding) so a previous request's tenant can never leak
+  into the next one (F3 rev 5). Queue workers are handled in §6.1. `runCentral` is
   **removed** from the public surface in rev 4 — cross-tenant execution goes through
   `CentralOperations` (§6.5), which is the only caller of the internal `central()`.
 
@@ -406,7 +417,9 @@ disk gets tenant subdirectories (§6.4).
   relation is no longer a safe all-team query after teams are enabled.
 - Team context lifecycle: `AuthorizeTenantAccess` sets `setPermissionsTeamId($tenantId)` before
   permission checks and restores/clears it in a `finally`/request-termination path. Queue jobs that
-  check permissions set it inside their tenant run. FPM per-request lifecycle keeps the static
+  check permissions set it inside their tenant run. Under Octane the per-request lifecycle is no
+  longer free: the team id must be cleared on request termination (spatie's octane reset listener
+  is enabled via `config/permission.php`), so the static resolver stays safe (F3 rev 5).
   resolver safe (F3).
 - Permission cache is confirmed team-agnostic: one flat cache key stores role/permission definitions;
   tenant filtering occurs in pivot SQL. No per-team cache key is required (but see §6.3 for the
