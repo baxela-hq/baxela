@@ -98,9 +98,8 @@ jobs:
           vendor/bin/pest 2>&1 | tee /tmp/pest.log
           rc=${PIPESTATUS[0]}
           if [ $rc -ne 0 ]; then
-            grep -a 'FAILED' /tmp/pest.log | head -20 | while IFS= read -r line; do
-              echo "::error::${LINEO:+line }$line"
-            done
+            echo "::error::$(grep -a 'FAILED' /tmp/pest.log | head -20 | tr '\n' ' ' || true)"
+            echo "::error::tail: $(tail -c 1500 /tmp/pest.log | tr '\n' ' ')"
           fi
           exit $rc
         env:
