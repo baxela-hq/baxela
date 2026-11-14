@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
 
+/** @extends Factory<Product> */
 class ProductFactory extends Factory
 {
     /**

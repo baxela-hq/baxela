@@ -18,6 +18,7 @@ uses(HelperTrait::class);
  * Product with one variant, one English translation, and a stock row.
  * Kept local: catalog factories do not create translations.
  */
+/** @return array{0: Product, 1: Variant, 2: InventoryStock} */
 function stockedProduct(int $quantity, string $sku = 'SKU-001', string $title = 'Coffee Mug'): array
 {
     $product = Product::factory()->create();

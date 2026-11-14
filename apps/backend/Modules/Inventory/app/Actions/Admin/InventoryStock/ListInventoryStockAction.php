@@ -5,12 +5,14 @@ namespace Modules\Inventory\Actions\Admin\InventoryStock;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Utils\Pagination;
+use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListInventoryStockAction extends AbstractInventoryStockAction
 {
+    /** @return LengthAwarePaginator<int, InventoryStock> */
     public function handle(): LengthAwarePaginator
     {
         $id = InventoryStockSchema::TABLE.'.'.InventoryStockSchema::ID;

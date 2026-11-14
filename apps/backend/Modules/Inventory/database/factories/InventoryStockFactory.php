@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Variant;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
+/** @extends Factory<InventoryStock> */
 class InventoryStockFactory extends Factory
 {
     /**

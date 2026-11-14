@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 
+/** @extends Factory<Variant> */
 class VariantFactory extends Factory
 {
     /**

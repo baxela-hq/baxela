@@ -367,6 +367,12 @@ parameters:
 			path: Modules/Auth/app/Models/SignInLockout.php
 
 		-
+			message: '#^Method Modules\\Auth\\Models\\SocialAccount\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/SocialAccount.php
+
+		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
 			identifier: property.notFound
 			count: 1
@@ -422,6 +428,12 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Auth\\Models\\User\:\:newFactory\(\) return type with generic class Illuminate\\Database\\Eloquent\\Factories\\Factory does not specify its types\: TModel$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/app/Models/User.php
+
+		-
+			message: '#^Method Modules\\Auth\\Models\\User\:\:socialAccounts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Auth/app/Models/User.php
@@ -851,6 +863,120 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Auth/tests/Feature/HelperTrait.php
+
+		-
+			message: '#^Function publishJwks\(\) has parameter \$keys with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Function verifierKeypair\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Function verifierToken\(\) has parameter \$claims with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Parameter \#1 \$redis of class Modules\\Auth\\Support\\Google\\SignInNonceService constructor expects Illuminate\\Contracts\\Redis\\Factory, Mockery\\MockInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
+
+		-
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\SocialAccount\:\:\$provider_user_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 16
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 14
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Log\:\:shouldHaveReceived\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 3
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Function googleSignIn\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Function googleSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
+			identifier: missingType.generics
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Parameter \#1 \$app of class FakeGoogleVerifier constructor expects Illuminate\\Contracts\\Container\\Container, Pest\\PendingCalls\\TestCall given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
+
+		-
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\UserDevice\:\:\$first_seen_at\.$#'
@@ -1785,7 +1911,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 2
 			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
 
 		-
@@ -1834,12 +1960,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
 			identifier: method.notFound
 			count: 8
-			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
 			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
 
 		-
@@ -5209,19 +5329,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeTranslationResource.php
@@ -5263,19 +5371,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupTranslationResource.php
@@ -5371,19 +5467,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueTranslationResource.php
@@ -5431,19 +5515,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandTranslationResource.php
@@ -5497,19 +5569,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryTranslationResource.php
@@ -5641,19 +5701,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Option/OptionResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Option\\OptionTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Option/OptionTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Option\\OptionTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Option/OptionTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Option\\OptionTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Option/OptionTranslationResource.php
@@ -5695,19 +5743,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueTranslationResource.php
@@ -5809,19 +5845,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductSeoTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductSeoTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductSeoTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductSeoTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductSeoTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductSeoTranslationResource.php
@@ -5833,19 +5857,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductShippingResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductTranslationResource.php
@@ -6049,19 +6061,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Public/ProductComment/ProductCommentResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Sitemap\\ProductSitemapResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Sitemap/ProductSitemapResource.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Sitemap\\ProductSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Sitemap/ProductSitemapResource.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Transformers\\Public\\Sitemap\\ProductSitemapResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Transformers/Public/Sitemap/ProductSitemapResource.php
@@ -6205,12 +6205,6 @@ parameters:
 			path: Modules/Catalog/database/factories/ProductCommentFactory.php
 
 		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\ProductFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/ProductFactory.php
-
-		-
 			message: '#^Class Modules\\Catalog\\Database\\Factories\\ProductSeoTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -6221,12 +6215,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/database/factories/ProductTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\VariantFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/VariantFactory.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
@@ -6685,12 +6673,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/FeaturedMigrationTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -6724,12 +6706,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Function featuredProduct\(\) should return Modules\\Catalog\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
 
 		-
@@ -6933,7 +6909,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
 			identifier: method.notFound
-			count: 2
+			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
@@ -7237,18 +7213,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -7261,15 +7225,9 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
 
 		-
-			message: '#^Function commentedProduct\(\) should return Modules\\Catalog\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
 		-
@@ -7285,12 +7243,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:variants\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -7300,12 +7252,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
-			message: '#^Function productWithPricedVariant\(\) should return Modules\\Catalog\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
 		-
@@ -7369,18 +7315,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 3
@@ -7397,18 +7331,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$id\.$#'
@@ -7441,12 +7363,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
 
 		-
-			message: '#^Function publicProduct\(\) should return Modules\\Catalog\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 3
@@ -7457,12 +7373,6 @@ parameters:
 			identifier: argument.templateType
 			count: 3
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -7479,12 +7389,6 @@ parameters:
 		-
 			message: '#^Function sitemapProduct\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Function sitemapProduct\(\) should return Modules\\Catalog\\Models\\Product but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
 			count: 1
 			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
 
@@ -8929,19 +8833,7 @@ parameters:
 			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
 
 		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Page\\PageTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Admin\\Page\\PageTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Content\\Transformers\\Admin\\Page\\PageTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Admin/Page/PageTranslationResource.php
@@ -9001,37 +8893,13 @@ parameters:
 			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
 
 		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostSeoTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostSeoTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostSeoTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Admin/Post/PostSeoTranslationResource.php
 
 		-
-			message: '#^Property Modules\\Content\\Transformers\\Admin\\Post\\PostSeoTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostSeoTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Content\\Transformers\\Admin\\Post\\PostTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Admin/Post/PostTranslationResource.php
@@ -9073,19 +8941,7 @@ parameters:
 			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
 
 		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryTranslationResource.php
@@ -9121,28 +8977,10 @@ parameters:
 			path: Modules/Content/app/Transformers/Public/PostComment/PostCommentResource.php
 
 		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PageSitemapResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PageSitemapResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PageSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Public/Sitemap/PageSitemapResource.php
-
-		-
-			message: '#^Property Modules\\Content\\Transformers\\Public\\Sitemap\\PageSitemapResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PageSitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostCategorySitemapResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostCategorySitemapResource.php
 
 		-
 			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostCategorySitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -9151,25 +8989,7 @@ parameters:
 			path: Modules/Content/app/Transformers/Public/Sitemap/PostCategorySitemapResource.php
 
 		-
-			message: '#^Property Modules\\Content\\Transformers\\Public\\Sitemap\\PostCategorySitemapResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostCategorySitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostSitemapResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostSitemapResource.php
-
-		-
 			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostSitemapResource.php
-
-		-
-			message: '#^Property Modules\\Content\\Transformers\\Public\\Sitemap\\PostSitemapResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Transformers/Public/Sitemap/PostSitemapResource.php
@@ -9511,12 +9331,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_description\.$#'
 			identifier: property.notFound
 			count: 1
@@ -9855,13 +9669,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 4
+			count: 2
 			path: Modules/Content/tests/Feature/Public/PostTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
 			identifier: method.notFound
-			count: 7
+			count: 6
 			path: Modules/Content/tests/Feature/Public/PostTest.php
 
 		-
@@ -11283,6 +11097,12 @@ parameters:
 		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
+			count: 2
+			path: Modules/Core/config/extensions.php
+
+		-
+			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
+			identifier: larastan.noEnvCallsOutsideOfConfig
 			count: 8
 			path: Modules/Core/config/fx.php
 
@@ -11495,6 +11315,120 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Core/tests/Feature/ExtensionBootGuardTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 9
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:spy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 8
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 14
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 21
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 20
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 12
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:adminUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:assertIsString\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -12645,7 +12579,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 19
+			count: 8
 			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
@@ -12907,108 +12841,6 @@ parameters:
 			path: Modules/Discount/tests/Unit/RedemptionGuardTest.php
 
 		-
-			message: '#^Method Modules\\Inventory\\Actions\\Admin\\InventoryStock\\CreateInventoryStockAction\:\:handle\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Inventory/app/Actions/Admin/InventoryStock/CreateInventoryStockAction.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Actions\\Admin\\InventoryStock\\ListInventoryStockAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Inventory/app/Actions/Admin/InventoryStock/ListInventoryStockAction.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Http\\Requests\\Admin\\InventoryStock\\InventoryStockRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Http/Requests/Admin/InventoryStock/InventoryStockRequest.php
-
-		-
-			message: '#^Class Modules\\Inventory\\Models\\InventoryStock uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Inventory/app/Models/InventoryStock.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Models\\InventoryStock\:\:variant\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Inventory/app/Models/InventoryStock.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Providers\\InventoryServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Providers/InventoryServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Providers\\InventoryServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Providers/InventoryServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Inventory\\Providers\\InventoryServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Providers/InventoryServiceProvider.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Inventory\\Models\\InventoryStock\:\:\$quantity\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Inventory\\Models\\InventoryStock\:\:\$variant_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<array\<string, mixed\>\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
-
-		-
-			message: '#^Parameter \#1 \$variantId of method Modules\\Core\\Contracts\\Gateways\\Inventory\\InventoryGatewayInterface\:\:upsertStock\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Inventory/app/Transfer/InventoryTransfer.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Transformers\\Admin\\InventoryStock\\InventoryStockResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Transformers/Admin/InventoryStock/InventoryStockResource.php
-
-		-
-			message: '#^Method Modules\\Inventory\\Transformers\\Admin\\InventoryStock\\InventoryStockResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Transformers/Admin/InventoryStock/InventoryStockResource.php
-
-		-
-			message: '#^Property Modules\\Inventory\\Transformers\\Admin\\InventoryStock\\InventoryStockResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/app/Transformers/Admin/InventoryStock/InventoryStockResource.php
-
-		-
-			message: '#^Class Modules\\Inventory\\Database\\Factories\\InventoryStockFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Inventory/database/factories/InventoryStockFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 7
@@ -13048,24 +12880,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 7
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Function stockedProduct\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 2
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
 			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
 
 		-
@@ -13115,48 +12929,6 @@ parameters:
 			identifier: method.notFound
 			count: 3
 			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Function inventoryTransferStock\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Inventory/tests/Unit/InventoryGatewayTest.php
-
-		-
-			message: '#^Function stockedVariant\(\) should return Modules\\Catalog\\Models\\Variant but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Inventory/tests/Unit/InventoryGatewayTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 2
-			path: Modules/Inventory/tests/Unit/InventoryGatewayTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of function quantityOf expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Inventory/tests/Unit/InventoryGatewayTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Inventory/tests/Unit/InventoryGatewayTest.php
 
 		-
 			message: '#^Method Modules\\Media\\Actions\\Admin\\Folder\\CreateFolderAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
@@ -14155,19 +13927,7 @@ parameters:
 			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
 
 		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\Menu\\MenuTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Menu\\Transformers\\Admin\\Menu\\MenuTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Transformers/Admin/Menu/MenuTranslationResource.php
@@ -14227,19 +13987,7 @@ parameters:
 			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
 
 		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkTranslationResource.php
@@ -17617,12 +17365,6 @@ parameters:
 			path: Modules/Order/tests/Feature/Admin/StatsTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 2
@@ -17643,18 +17385,6 @@ parameters:
 		-
 			message: '#^Function expiredOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
-			count: 1
-			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
 			count: 1
 			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
 
@@ -17841,7 +17571,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
 
 		-
@@ -17899,18 +17629,6 @@ parameters:
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
 
 		-
-			message: '#^Function variantForOrder\(\) should return Modules\\Catalog\\Models\\Variant but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
 			message: '#^Parameter \#2 \$coupon of function couponOrderInput expects Modules\\Discount\\Models\\Coupon\|null, Illuminate\\Database\\Eloquent\\Model given\.$#'
 			identifier: argument.type
 			count: 3
@@ -17937,7 +17655,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 9
+			count: 7
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
@@ -18064,18 +17782,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of function createInputFor expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 4
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
@@ -18307,12 +18013,6 @@ parameters:
 			path: Modules/Order/tests/Feature/OrderReturnTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
 			identifier: property.notFound
 			count: 6
@@ -18339,18 +18039,6 @@ parameters:
 		-
 			message: '#^Function orderFor\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
-			count: 1
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
-			message: '#^Parameter \#1 \$product of method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:ofProduct\(\) expects Modules\\Catalog\\Models\\Product, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
-			message: '#^Parameter \#1 \$variant of method Modules\\Inventory\\Database\\Factories\\InventoryStockFactory\:\:ofVariant\(\) expects Modules\\Catalog\\Models\\Variant, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
 			count: 1
 			path: Modules/Order/tests/Feature/User/UserOrderTest.php
 
@@ -18977,6 +18665,54 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/database/factories/PaymentRefundFactory.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 18
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
+			identifier: method.notFound
+			count: 10
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
+			identifier: method.notFound
+			count: 15
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
+			identifier: method.notFound
+			count: 23
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
+			identifier: method.notFound
+			count: 17
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+
+		-
+			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -21595,19 +21331,7 @@ parameters:
 			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Method\\MethodTranslationResource\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodTranslationResource.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Method\\MethodTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodTranslationResource.php
-
-		-
-			message: '#^Property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodTranslationResource\:\:\$mapCodes type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Transformers/Admin/Method/MethodTranslationResource.php
@@ -23503,30 +23227,6 @@ parameters:
 			path: Modules/Tax/tests/Unit/TaxGatewayTest.php
 
 		-
-			message: '#^Method Modules\\Transfer\\Providers\\TransferServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Providers/TransferServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Providers\\TransferServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Providers/TransferServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Transfer\\Transformers\\Admin\\TransferModuleResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferModuleResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\{module\: string, supported\: bool, endpoints\: array\{export\: string, import_preview\: string, import\: string, imports\: string\}\|null, sections\: list\<array\<string, mixed\>\>\}  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 193 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Transfer/app/Transformers/Admin/TransferModuleResource.php
-
-		-
 			message: '#^Trait Modules\\Transfer\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
@@ -23553,18 +23253,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
-			count: 3
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
 			count: 3
 			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
 
@@ -23921,12 +23609,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 9
-			path: Modules/User/tests/Feature/WishlistTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -24419,269 +24101,3 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Webhooks/tests/Feature/HelperTrait.php
-		-
-			message: '#^Method Modules\\Auth\\Models\\SocialAccount\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/SocialAccount.php
-
-		-
-			message: '#^Method Modules\\Auth\\Models\\User\:\:socialAccounts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/User.php
-
-		-
-			message: '#^Function publishJwks\(\) has parameter \$keys with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
-
-		-
-			message: '#^Function verifierKeypair\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
-
-		-
-			message: '#^Function verifierToken\(\) has parameter \$claims with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Parameter \#1 \$redis of class Modules\\Auth\\Support\\Google\\SignInNonceService constructor expects Illuminate\\Contracts\\Redis\\Factory, Mockery\\MockInterface given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SocialAccount\:\:\$provider_user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Log\:\:shouldHaveReceived\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Function googleSignIn\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Function googleSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Parameter \#1 \$app of class FakeGoogleVerifier constructor expects Illuminate\\Contracts\\Container\\Container, Pest\\PendingCalls\\TestCall given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:spy\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 15
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 23
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 21
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 20
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 12
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:assertIsString\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-		-
-			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
-			identifier: larastan.noEnvCallsOutsideOfConfig
-			count: 2
-			path: Modules/Core/config/extensions.php

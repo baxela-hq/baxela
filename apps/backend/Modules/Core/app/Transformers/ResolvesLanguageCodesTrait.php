@@ -7,6 +7,7 @@ use Modules\Core\Schemas\Language\LanguageSchema;
 
 trait ResolvesLanguageCodesTrait
 {
+    /** @var array<int, string> */
     private array $mapCodes = [];
 
     protected function languageCode(
@@ -19,6 +20,7 @@ trait ResolvesLanguageCodesTrait
         return $this->mapCodes[$languageId];
     }
 
+    /** @return array<int, string> */
     private function languageResolve(): array
     {
         return Language::query()

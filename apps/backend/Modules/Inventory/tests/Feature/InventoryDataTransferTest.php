@@ -16,6 +16,7 @@ function inventoryTransferTransferFile(string $content): File
     return UploadedFile::fake()->createWithContent('transfer.json', $content);
 }
 
+/** @return array{product: Product, variant: Variant, stock: InventoryStock} */
 function inventoryTransferStock(int $quantity): array
 {
     $product = Product::query()->create(['type' => 'simple', 'status' => 'in_stock', 'is_published' => true]);

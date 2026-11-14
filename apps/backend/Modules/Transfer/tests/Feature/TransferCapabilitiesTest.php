@@ -22,11 +22,11 @@ it('denies capabilities without permissions', function () {
 it('lists every enabled module with its transfer support', function () {
     $this->actingAs($this->superAdminUser());
 
-    $modules = collect(
-        $this->getJson($this->baseUrl('/admin/capabilities'))
-            ->assertOk()
-            ->json('data')
-    )->pluck('supported', 'module');
+    /** @var list<array{module: string, supported: bool}> $data */
+    $data = $this->getJson($this->baseUrl('/admin/capabilities'))
+        ->assertOk()
+        ->json('data');
+    $modules = collect($data)->pluck('supported', 'module');
 
     // Ten modules are wired onto the standard; catalog/media/auth/audit
     // deliberately are not.
@@ -41,11 +41,11 @@ it('lists every enabled module with its transfer support', function () {
 it('declares the participating module sections with their flags', function () {
     $this->actingAs($this->superAdminUser());
 
-    $tax = collect(
-        $this->getJson($this->baseUrl('/admin/capabilities'))
-            ->assertOk()
-            ->json('data')
-    )->firstWhere('module', 'tax');
+    /** @var list<array{module: string, supported: bool, endpoints: array<string, string>|null, sections: list<array<string, mixed>>}> $data */
+    $data = $this->getJson($this->baseUrl('/admin/capabilities'))
+        ->assertOk()
+        ->json('data');
+    $tax = collect($data)->firstWhere('module', 'tax');
 
     expect($tax['supported'])->toBeTrue()
         ->and($tax['sections'])->toHaveCount(2)
@@ -58,11 +58,11 @@ it('declares the participating module sections with their flags', function () {
 it('publishes the wired module data endpoints and none for the others', function () {
     $this->actingAs($this->superAdminUser());
 
-    $modules = collect(
-        $this->getJson($this->baseUrl('/admin/capabilities'))
-            ->assertOk()
-            ->json('data')
-    );
+    /** @var list<array<string, mixed>> $data */
+    $data = $this->getJson($this->baseUrl('/admin/capabilities'))
+        ->assertOk()
+        ->json('data');
+    $modules = collect($data);
 
     $tax = $modules->firstWhere('module', 'tax');
     expect($tax['endpoints'])->toBe([

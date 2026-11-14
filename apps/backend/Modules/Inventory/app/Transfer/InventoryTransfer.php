@@ -76,7 +76,7 @@ class InventoryTransfer implements ModuleTransferInterface
 
         $result = ImportResult::empty();
 
-        foreach (array_values($rows) as $index => $row) {
+        foreach ($rows as $index => $row) {
             $label = self::SECTION_STOCKS.'['.($index + 1).']';
             $payload = $row[self::KEY_PAYLOAD] ?? null;
 
@@ -124,7 +124,7 @@ class InventoryTransfer implements ModuleTransferInterface
                 }
 
                 // The gateway's own upsert keeps the ledger invariant.
-                $this->inventoryGateway->upsertStock((string) $variantId, $quantity);
+                $this->inventoryGateway->upsertStock($variantId, $quantity);
 
                 if ($existing !== null) {
                     $result->recordUpdated();

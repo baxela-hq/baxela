@@ -11,6 +11,8 @@ class InventoryStockRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, list<string|Closure>>
      */
     public function rules(): array
     {
