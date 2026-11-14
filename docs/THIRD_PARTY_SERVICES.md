@@ -169,6 +169,39 @@ No tax provider is integrated; calculation is local and fully self-hosted:
   remove this last external frontend dependency (the storefront CSP already forbids
   external fonts).
 
+## Authentication — Google sign-in (customers only)
+
+Implemented (see `docs/plans/google-sign-in.md` for the full contract and
+security invariants):
+
+- **What it uses:** Google Identity Services (GIS) JS SDK renders the
+  official button in the storefront and returns an **ID token**; the backend
+  verifies it against Google's public JWKS with `firebase/php-jwt`. No OAuth
+  code exchange, **no Google access/refresh tokens stored**, no Google
+  profile data persisted (only the identity link: provider + `sub`).
+- **Setup:** create an OAuth client (type *Web application*) in Google Cloud
+  Console with an **authorized JavaScript origin** for the storefront origin
+  (e.g. `http://localhost:3000` — HTTPS-only in production). Set
+  `AUTH_GOOGLE_ENABLED=true` + `AUTH_GOOGLE_CLIENT_ID` (backend) and
+  `NEXT_PUBLIC_GOOGLE_CLIENT_ID` + `NEXT_PUBLIC_AUTH_GOOGLE_ENABLED=true`
+  (storefront); the client IDs must match. The storefront flag is
+  presentational — the backend flag is the security control.
+- **Scope:** customers only. Administrative accounts (any spatie
+  role/permission) are rejected before any mutation; they keep password +
+  forced TOTP.
+- **Email authority:** Gmail/Googlemail and Workspace (`hd` matching the
+  email domain) activate instantly when Google reports the email verified;
+  third-party email addresses (either claim value) go through the existing
+  OTP activation flow — the OTP, not the Google claim, proves mailbox
+  ownership. Existing password accounts are never auto-linked (a 409 with
+  "sign in with your password" guidance); linking is a deferred feature.
+- **Single-use nonces:** the storefront fetches a nonce from
+  `POST /api/v1/auth/public/auth/google/nonce` and binds the attempt to it;
+  the backend consumes it atomically (shared Redis, hashed keys, fail-closed).
+- **Delivery note:** activation emails on the Google path are best-effort
+  post-commit dispatch — a queue failure cannot fail an already-committed
+  authentication (a transactional outbox is the deferred hardening).
+
 ## Not implemented — provider + code needed
 
 These features have no implementation; an account alone won't enable them:
@@ -177,7 +210,7 @@ These features have no implementation; an account alone won't enable them:
 |---|---|---|
 | SMS | None (one commented-out channel registration in the Notification module); OTP is email-only | Iran: Kavenegar, Ghasedak, SMS.ir — Global: Twilio, Vonage |
 | Search engine | Catalog filtering is SQL-only; no Scout/Meilisearch/Algolia | Meilisearch (self-host), Algolia, Typesense |
-| Social login | None; no Socialite | Google, GitHub, etc. |
+| Social login (other providers) | **Google is implemented** (see above); GitHub/Apple/etc. would follow the same ID-token pattern per provider | GitHub, Apple, Microsoft |
 | Shipping carrier APIs | Tracking numbers entered manually (`docs/shipping.md`) | FedEx, UPS, DHL, local couriers |
 | Exchange rates | Built in: admin-managed manual FX rates on currencies, storefront switcher (display conversion), order snapshots — charging stays in the base currency | exchangerate.host, Open Exchange Rates, ECB feeds (automated rate sync) |
 | Newsletter / mailing list | Contact module stores subscribers in DB only | Mailchimp, Brevo, Listmonk (self-host) |

@@ -82,8 +82,10 @@ feature-count war with Bagisto.
 3. Reach **1,000 GitHub stars within 6–9 months** via release cadence + content + community.
 
 **Explicit non-goals for v0.1.0-alpha** (defer, list publicly as roadmap): multi-vendor /
-marketplace, Meilisearch integration, external FX rate APIs, SMS/social login, newsletter
-ESP integration, Iranian payment gateway.
+marketplace, Meilisearch integration, external FX rate APIs, SMS login, newsletter
+ESP integration, Iranian payment gateway. *(Google social login landed outside the
+alpha plan — implemented per `docs/plans/google-sign-in.md` and documented in
+`docs/THIRD_PARTY_SERVICES.md`; other providers remain deferred.)*
 
 ---
 
