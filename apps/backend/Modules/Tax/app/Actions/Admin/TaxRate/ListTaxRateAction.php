@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListTaxRateAction
 {
+    /** @return LengthAwarePaginator<int, TaxRate> */
     public function handle(): LengthAwarePaginator
     {
         $id = TaxRateSchema::TABLE.'.'.TaxRateSchema::ID;

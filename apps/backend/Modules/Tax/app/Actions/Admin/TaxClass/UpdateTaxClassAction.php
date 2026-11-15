@@ -14,6 +14,7 @@ class UpdateTaxClassAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): TaxClass
     {
         $record = TaxClass::query()->findOrFail($id);

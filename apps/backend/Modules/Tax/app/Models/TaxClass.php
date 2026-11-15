@@ -2,7 +2,9 @@
 
 namespace Modules\Tax\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,8 +15,18 @@ use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property string $name
+ * @property bool $is_default
+ * @property bool $is_shipping
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, TaxRate> $rates
+ */
 class TaxClass extends Model
 {
+    /** @use HasFactory<TaxClassFactory> */
     use HasFactory;
 
     protected $table = TaxClassSchema::TABLE;
@@ -38,6 +50,7 @@ class TaxClass extends Model
         return TaxClassFactory::new();
     }
 
+    /** @return HasMany<TaxRate, $this> */
     public function rates(): HasMany
     {
         return $this->hasMany(TaxRate::class, TaxRateSchema::TAX_CLASS_ID);

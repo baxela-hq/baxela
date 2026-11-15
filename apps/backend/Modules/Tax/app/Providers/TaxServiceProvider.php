@@ -18,6 +18,7 @@ class TaxServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'tax';
 
+    /** @var array<class-string, class-string> */
     public array $bindings = [
         TaxGatewayInterface::class => TaxGateway::class,
     ];
@@ -140,11 +141,13 @@ class TaxServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

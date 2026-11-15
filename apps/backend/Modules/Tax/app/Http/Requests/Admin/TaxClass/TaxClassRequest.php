@@ -3,6 +3,7 @@
 namespace Modules\Tax\Http\Requests\Admin\TaxClass;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 
 class TaxClassRequest extends FormRequest
@@ -10,6 +11,7 @@ class TaxClassRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

@@ -4,13 +4,16 @@ namespace Modules\Tax\Transformers\Admin\TaxClass;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 
+/** @mixin TaxClass */
 class TaxClassResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

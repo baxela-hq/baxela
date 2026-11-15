@@ -2,6 +2,7 @@
 
 namespace Modules\Tax\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +13,21 @@ use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $country_code
+ * @property string $region_code
+ * @property int $tax_class_id
+ * @property string $rate
+ * @property bool $is_active
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read TaxClass $taxClass
+ */
 class TaxRate extends Model
 {
+    /** @use HasFactory<TaxRateFactory> */
     use HasFactory;
 
     protected $table = TaxRateSchema::TABLE;
@@ -42,6 +56,7 @@ class TaxRate extends Model
         return TaxRateFactory::new();
     }
 
+    /** @return BelongsTo<TaxClass, $this> */
     public function taxClass(): BelongsTo
     {
         return $this->belongsTo(TaxClass::class, TaxRateSchema::TAX_CLASS_ID);

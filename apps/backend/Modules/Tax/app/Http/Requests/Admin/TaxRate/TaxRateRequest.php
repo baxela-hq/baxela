@@ -4,6 +4,7 @@ namespace Modules\Tax\Http\Requests\Admin\TaxRate;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\RegionCodeRule;
 use Modules\Tax\Rules\ScopedRateUniqueRule;
@@ -15,6 +16,7 @@ class TaxRateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|Exists|CountryCodeRule|RegionCodeRule|ScopedRateUniqueRule>> */
     public function rules(): array
     {
         // null on create, the rate id on update — /api/v1/tax/admin/tax-rates/{id}

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 
+/** @extends Factory<TaxClass> */
 class TaxClassFactory extends Factory
 {
     protected $model = TaxClass::class;
 
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

@@ -7,10 +7,12 @@ use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Models\TaxRate;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 
+/** @extends Factory<TaxRate> */
 class TaxRateFactory extends Factory
 {
     protected $model = TaxRate::class;
 
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

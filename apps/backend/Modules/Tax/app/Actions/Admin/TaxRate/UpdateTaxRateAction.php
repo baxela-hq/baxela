@@ -12,6 +12,7 @@ class UpdateTaxRateAction
     /**
      * @throws UpdateFailedException
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): TaxRate
     {
         $record = TaxRate::query()->findOrFail($id);
