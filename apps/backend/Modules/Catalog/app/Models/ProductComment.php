@@ -15,8 +15,12 @@ use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ */
 class ProductComment extends Model
 {
+    /** @use HasFactory<ProductCommentFactory> */
     use HasFactory;
 
     protected $table = ProductCommentSchema::TABLE;
@@ -43,6 +47,7 @@ class ProductComment extends Model
         return ProductCommentFactory::new();
     }
 
+    /** @return BelongsTo<Product, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
@@ -58,6 +63,7 @@ class ProductComment extends Model
         return $this->hasMany(self::class, ProductCommentSchema::PARENT_ID);
     }
 
+    /** @return HasMany<ProductCommentReaction, $this> */
     public function reactions(): HasMany
     {
         return $this->hasMany(ProductCommentReaction::class, ProductCommentReactionSchema::PRODUCT_COMMENT_ID);

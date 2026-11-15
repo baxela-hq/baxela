@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
 
+/**
+ * @property int $id
+ */
 class AttributeGroupTranslation extends Model
 {
     use HasFactory;
@@ -22,6 +25,7 @@ class AttributeGroupTranslation extends Model
         AttributeGroupTranslationSchema::TITLE,
     ];
 
+    /** @return BelongsTo<AttributeGroup, $this> */
     public function attributeGroup(): BelongsTo
     {
         return $this->belongsTo(AttributeGroup::class);

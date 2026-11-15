@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Database\Factories\ProductSeoTranslationFactory;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema;
 
+/**
+ * @property int $id
+ */
 class ProductSeoTranslation extends Model
 {
     use BelongToProductTrait;
+
+    /** @use HasFactory<ProductSeoTranslationFactory> */
     use HasFactory;
 
     protected $table = ProductSeoTranslationSchema::TABLE;

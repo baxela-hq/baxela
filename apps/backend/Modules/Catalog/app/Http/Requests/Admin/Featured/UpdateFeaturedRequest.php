@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Requests\Admin\Featured;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema as FISchema;
@@ -15,6 +16,7 @@ class UpdateFeaturedRequest extends FormRequest
      * Full-sync payload: every list must be sent, array order encodes
      * the position within each section.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

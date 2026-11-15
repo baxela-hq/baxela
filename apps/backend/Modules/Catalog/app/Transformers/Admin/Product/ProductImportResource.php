@@ -15,6 +15,7 @@ class ProductImportResource extends JsonResource
      *
      * @param  CatalogImport  $this->resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

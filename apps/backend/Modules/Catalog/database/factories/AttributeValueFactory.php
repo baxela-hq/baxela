@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 
+/** @extends Factory<AttributeValue> */
 class AttributeValueFactory extends Factory
 {
     /**

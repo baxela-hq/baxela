@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
 
+/** @extends Factory<CatalogImport> */
 class CatalogImportFactory extends Factory
 {
     /**

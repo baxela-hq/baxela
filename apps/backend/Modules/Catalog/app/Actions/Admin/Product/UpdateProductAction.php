@@ -16,6 +16,7 @@ class UpdateProductAction
 {
     use FiltersProductSeoTrait;
 
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Model
     {
         $record = Product::query()->findOrFail($id);

@@ -17,6 +17,7 @@ class ProductSitemapResource extends JsonResource
      * language are skipped — admin flows always resolve a language_id,
      * and a URL locale can't be derived from a null one.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

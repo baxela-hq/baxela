@@ -15,6 +15,10 @@ use function Modules\Catalog\Tests\Feature\defaultLanguage;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function productPayload(array $overrides = []): array
 {
     defaultLanguage();
@@ -93,10 +97,13 @@ it('updates a product and its translations', function () {
         ]],
     ]))->assertOk();
 
-    $product = Product::query()->find($productId);
+    $product = Product::query()->findOrFail($productId);
 
-    expect($product->{ProductSchema::IS_PUBLISHED})->toBeFalse()
-        ->and($product->translations()->first()->{ProductTranslationSchema::TITLE})->toBe('Renamed Product');
+    $translation = $product->translations()->first();
+
+    expect($translation)->not->toBeNull()
+        ->and($translation->{ProductTranslationSchema::TITLE})->toBe('Renamed Product')
+        ->and((bool) $product->{ProductSchema::IS_PUBLISHED})->toBeFalse();
 });
 
 it('soft-deletes a product', function () {

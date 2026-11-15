@@ -13,6 +13,7 @@ class ProductImportResultResource extends JsonResource
      *
      * @param  array<string, mixed>  $this->resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

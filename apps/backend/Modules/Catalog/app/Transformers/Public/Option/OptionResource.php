@@ -19,6 +19,7 @@ class OptionResource extends JsonResource
      * Transform the option into a filter-friendly group: the option title
      * plus its values with translated titles.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations

@@ -3,6 +3,7 @@
 namespace Modules\Catalog\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 
 class ProductOptionRequest extends FormRequest
@@ -10,6 +11,7 @@ class ProductOptionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

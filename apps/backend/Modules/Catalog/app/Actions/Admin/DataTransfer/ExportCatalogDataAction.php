@@ -8,6 +8,7 @@ use Modules\Catalog\Models\AttributeValue;
 use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\FeaturedItem;
+use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\OptionValue;
 use Modules\Catalog\Models\Product;
@@ -374,7 +375,7 @@ class ExportCatalogDataAction
 
                     if ($product->{ProductSchema::RES_IMAGES}->isNotEmpty()) {
                         $payload[ProductSchema::RES_IMAGES] = $product->{ProductSchema::RES_IMAGES}
-                            ->map(fn ($image) => [
+                            ->map(fn (Image $image): array => [
                                 ImageSchema::MEDIA_ID => (int) $image->{ImageSchema::MEDIA_ID},
                                 ImageSchema::URL => $image->{ImageSchema::URL},
                                 ImageSchema::POSITION => $image->{ImageSchema::POSITION},

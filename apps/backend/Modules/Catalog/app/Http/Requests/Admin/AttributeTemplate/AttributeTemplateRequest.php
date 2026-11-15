@@ -4,12 +4,14 @@ namespace Modules\Catalog\Http\Requests\Admin\AttributeTemplate;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateGroupSchema;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
 
 class AttributeTemplateRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

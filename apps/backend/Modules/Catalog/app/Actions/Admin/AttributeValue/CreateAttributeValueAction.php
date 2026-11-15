@@ -13,6 +13,7 @@ class CreateAttributeValueAction
     /**
      * @throws CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $attributeId, array $data): AttributeValue
     {
         try {

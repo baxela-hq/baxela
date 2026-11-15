@@ -8,8 +8,9 @@ use Modules\Core\Exceptions\BaseException;
 class UpdateFailedException extends BaseException
 {
     public function __construct(
-        $code = null,
+        ?string $code = null,
         int $httpStatus = 400,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

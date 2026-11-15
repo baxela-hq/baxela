@@ -12,6 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListOptionAction
 {
+    /** @return LengthAwarePaginator<int, Option> */
     public function handle(): LengthAwarePaginator
     {
         $id = OptionSchema::TABLE.'.'.OptionSchema::ID;

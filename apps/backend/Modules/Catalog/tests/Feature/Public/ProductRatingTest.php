@@ -11,6 +11,10 @@ use Modules\Catalog\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  list<int>  $ratings
+ * @param  list<int>  $pendingRatings
+ */
 function ratedProduct(string $slug, array $ratings, array $pendingRatings = []): Product
 {
     $product = test()->commentableProduct($slug);

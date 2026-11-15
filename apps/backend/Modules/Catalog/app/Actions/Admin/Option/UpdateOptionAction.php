@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Option\OptionSchema;
 
 class UpdateOptionAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Option
     {
         $category = Option::query()->findOrFail($id);

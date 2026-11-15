@@ -12,6 +12,9 @@ use Tests\TestCase;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function sitemapProduct(string $slug, array $attributes = []): Product
 {
     $product = Product::factory()->create([

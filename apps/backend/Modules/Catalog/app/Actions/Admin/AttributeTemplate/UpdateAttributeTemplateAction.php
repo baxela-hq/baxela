@@ -14,6 +14,7 @@ class UpdateAttributeTemplateAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): AttributeTemplate
     {
         $record = AttributeTemplate::query()->findOrFail($id);

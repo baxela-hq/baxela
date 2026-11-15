@@ -8,6 +8,7 @@ use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
 
+/** @extends Factory<ProductComment> */
 class ProductCommentFactory extends Factory
 {
     /**
@@ -18,6 +19,7 @@ class ProductCommentFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

@@ -9,9 +9,14 @@ use Modules\Catalog\Database\Factories\ProductTranslationFactory;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Core\Models\Traits\SlugTrait;
 
+/**
+ * @property int $id
+ */
 class ProductTranslation extends Model
 {
+    /** @use HasFactory<ProductTranslationFactory> */
     use HasFactory;
+
     use SlugTrait;
 
     protected $table = ProductTranslationSchema::TABLE;
@@ -30,6 +35,7 @@ class ProductTranslation extends Model
         return ProductTranslationFactory::new();
     }
 
+    /** @return BelongsTo<Product, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

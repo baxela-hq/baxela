@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Brand\BrandSchema;
 
 class UpdateBrandAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Brand
     {
         $record = Brand::query()->findOrFail($id);

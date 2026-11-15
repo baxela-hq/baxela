@@ -2,6 +2,8 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,9 +21,29 @@ use Modules\Catalog\Schemas\Product\ProductTypeEnum;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Core\Models\Traits\SlugTrait;
 
+/**
+ * @property int $id
+ * @property ProductTypeEnum $type
+ * @property ProductStatusEnum $status
+ * @property bool $is_published
+ * @property int|null $tax_class_id
+ * @property string|null $rating_avg
+ * @property int $rating_count
+ * @property int|null $brand_id
+ * @property CarbonInterface|null $deleted_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, ProductTranslation> $translations
+ * @property-read Collection<int, Image> $images
+ * @property-read Collection<int, Variant> $variants
+ * @property-read Collection<int, ProductAttributeValue> $attributeValues
+ * @property-read Collection<int, ProductComment> $comments
+ */
 class Product extends Model
 {
+    /** @use HasFactory<ProductFactory> */
     use HasFactory;
+
     use SlugTrait;
     use SoftDeletes;
 
@@ -53,12 +75,14 @@ class Product extends Model
         return ProductFactory::new();
     }
 
+    /** @return BelongsToMany<Category, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class, CategoryProductSchema::TABLE,
             CategoryProductSchema::PRODUCT_ID, CategoryProductSchema::CATEGORY_ID);
     }
 
+    /** @return BelongsTo<Brand, $this> */
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
@@ -69,11 +93,13 @@ class Product extends Model
         return $this->morphOne(FeaturedItem::class, 'featuredable');
     }
 
+    /** @return HasMany<Option, $this> */
     public function options(): HasMany
     {
         return $this->hasMany(Option::class);
     }
 
+    /** @return BelongsToMany<OptionValue, $this> */
     public function optionValues(): BelongsToMany
     {
         return $this->belongsToMany(OptionValue::class, VariantOptionValueSchema::TABLE,

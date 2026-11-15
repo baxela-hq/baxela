@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 
 class CreateOptionValueAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): ?OptionValue
     {
         // Resolve the parent first so an unknown option 404s instead of

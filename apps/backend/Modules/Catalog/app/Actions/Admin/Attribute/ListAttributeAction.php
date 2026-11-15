@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListAttributeAction
 {
+    /** @return LengthAwarePaginator<int, Attribute> */
     public function handle(): LengthAwarePaginator
     {
         $id = AttributeSchema::TABLE.'.'.AttributeSchema::ID;

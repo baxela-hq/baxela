@@ -15,6 +15,7 @@ class ListCatalogImportAction
      * Module JSON import history, latest first — the shared audit table
      * also holds the product CSV runs.
      */
+    /** @return LengthAwarePaginator<int, CatalogImport> */
     public function handle(): LengthAwarePaginator
     {
         return QueryBuilder::for(CatalogImport::class)

@@ -4,14 +4,16 @@ namespace Modules\Catalog\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\CategoryTranslation;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 
+/** @extends Factory<CategoryTranslation> */
 class CategoryTranslationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      */
-    protected $model = Category::class;
+    protected $model = CategoryTranslation::class;
 
     /**
      * Define the model's default state.

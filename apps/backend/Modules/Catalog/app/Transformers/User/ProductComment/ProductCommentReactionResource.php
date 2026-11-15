@@ -12,6 +12,7 @@ class ProductCommentReactionResource extends JsonResource
     /**
      * @param  array{reaction: ?ProductCommentReactionEnum, likes_count: int, dislikes_count: int}  $resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

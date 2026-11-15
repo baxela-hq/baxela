@@ -14,6 +14,7 @@ class UpdateAttributeGroupAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): AttributeGroup
     {
         $record = AttributeGroup::query()->findOrFail($id);

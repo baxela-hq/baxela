@@ -13,6 +13,7 @@ class UpdateAttributeValueAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $attributeId, string $valueId, array $data): AttributeValue
     {
         $record = AttributeValue::query()

@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Category\CategorySchema;
 
 class CreateCategoryAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Category
     {
         $body = [

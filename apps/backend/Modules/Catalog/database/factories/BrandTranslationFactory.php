@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\BrandTranslation;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
 
+/** @extends Factory<BrandTranslation> */
 class BrandTranslationFactory extends Factory
 {
     /**

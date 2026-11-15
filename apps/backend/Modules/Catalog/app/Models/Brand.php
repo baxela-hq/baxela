@@ -10,9 +10,14 @@ use Modules\Catalog\Database\Factories\BrandFactory;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Core\Models\Traits\SlugTrait;
 
+/**
+ * @property int $id
+ */
 class Brand extends Model
 {
+    /** @use HasFactory<BrandFactory> */
     use HasFactory;
+
     use SlugTrait;
 
     protected $table = BrandSchema::TABLE;
@@ -31,11 +36,13 @@ class Brand extends Model
         return BrandFactory::new();
     }
 
+    /** @return HasMany<Product, $this> */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /** @return HasMany<BrandTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(BrandTranslation::class);

@@ -1249,12 +1249,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -1316,12 +1310,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$promotion_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
@@ -1645,40 +1633,10 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/UserCartTest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Attribute\\CreateAttributeAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Attribute/CreateAttributeAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Attribute\\ListAttributeAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Attribute/ListAttributeAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Attribute\\UpdateAttributeAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Attribute/UpdateAttributeAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeGroup\\CreateAttributeGroupAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeGroup/CreateAttributeGroupAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeGroup\\ListAttributeGroupAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/AttributeGroup/ListAttributeGroupAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeGroup\\UpdateAttributeGroupAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeGroup/UpdateAttributeGroupAction.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeTemplate\\CreateAttributeTemplateAction\:\:groupPivotData\(\) has parameter \$data with no value type specified in iterable type array\.$#'
@@ -1688,12 +1646,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeTemplate\\CreateAttributeTemplateAction\:\:groupPivotData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeTemplate/CreateAttributeTemplateAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeTemplate\\CreateAttributeTemplateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/AttributeTemplate/CreateAttributeTemplateAction.php
@@ -1717,46 +1669,10 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/AttributeTemplate/UpdateAttributeTemplateAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeTemplate\\UpdateAttributeTemplateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeTemplate/UpdateAttributeTemplateAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeValue\\CreateAttributeValueAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeValue/CreateAttributeValueAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeValue\\ListAttributeValueAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/AttributeValue/ListAttributeValueAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeValue\\UpdateAttributeValueAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/AttributeValue/UpdateAttributeValueAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Brand\\CreateBrandAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Brand/CreateBrandAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Brand\\ListBrandAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Brand/ListBrandAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Brand\\UpdateBrandAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Brand/UpdateBrandAction.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Category\\CreateCategoryAction\:\:attributePivotData\(\) has parameter \$data with no value type specified in iterable type array\.$#'
@@ -1771,18 +1687,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Category/CreateCategoryAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Category\\CreateCategoryAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Category/CreateCategoryAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Category\\ListCategoryAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Category/ListCategoryAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Category\\UpdateCategoryAction\:\:attributePivotData\(\) has parameter \$data with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1795,79 +1699,13 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Category/UpdateCategoryAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Category\\UpdateCategoryAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Category/UpdateCategoryAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$attribute_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$attribute_value_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$barcode\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$boolean_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$collection\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$compare_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cost_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$dimension_unit\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$images\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$media_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
@@ -1885,12 +1723,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$number_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_description\.$#'
 			identifier: property.notFound
 			count: 1
@@ -1898,12 +1730,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$optionValues\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
@@ -1927,43 +1753,7 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$requires_shipping\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$sku\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$text_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
@@ -1981,49 +1771,7 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$data_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$group_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$is_filterable\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\AttributeGroup\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\AttributeValue\:\:\$attribute_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\AttributeValue\:\:\$position\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
@@ -2072,42 +1820,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Option\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionValue\:\:\$option_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionValue\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$brand_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$is_published\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$type\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
@@ -2173,44 +1885,8 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
 
 		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 3
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 3
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 3
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$data_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\CatalogImport\:\:\$status\.$#'
 			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
-
-		-
-			message: '#^Match expression does not handle remaining value\: mixed$#'
-			identifier: match.unhandled
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
 
@@ -2239,12 +1915,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ListCatalogImportAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\DataTransfer\\ListCatalogImportAction\:\:handle\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ListCatalogImportAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Featured\\ListFeaturedAction\:\:handle\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -2269,40 +1939,10 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Featured/UpdateFeaturedAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Option\\CreateOptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Option/CreateOptionAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Option\\ListOptionAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Option/ListOptionAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Option\\UpdateOptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Option/UpdateOptionAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\OptionValue\\CreateOptionValueAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/OptionValue/CreateOptionValueAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\OptionValue\\ListOptionValueAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/OptionValue/ListOptionValueAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\OptionValue\\UpdateOptionValueAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/OptionValue/UpdateOptionValueAction.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
@@ -2330,12 +1970,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Product\\CreateProductAction\:\:filterProductSeo\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Product/CreateProductAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Product\\CreateProductAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/Product/CreateProductAction.php
@@ -2377,12 +2011,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Product/ListProductImportAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Product\\ListProductImportAction\:\:handle\(\) return type with generic interface Illuminate\\Contracts\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Product/ListProductImportAction.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2413,12 +2041,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Product/UpdateProductAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Product\\UpdateProductAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Product/UpdateProductAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$parent_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2443,22 +2065,10 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/ProductComment/AbstractProductCommentAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\ProductComment\\CreateProductCommentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/ProductComment/CreateProductCommentAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$product_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/ProductComment/DeleteProductCommentAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\ProductComment\\ListProductCommentAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/ProductComment/ListProductCommentAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$product_id\.$#'
@@ -2470,12 +2080,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Catalog/app/Actions/Admin/ProductComment/UpdateProductCommentAction.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\ProductComment\\UpdateProductCommentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: Modules/Catalog/app/Actions/Admin/ProductComment/UpdateProductCommentAction.php
 
 		-
@@ -2551,18 +2155,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/User/ProductComment/CreateProductCommentAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\User\\ProductComment\\CreateProductCommentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/User/ProductComment/CreateProductCommentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Catalog/app/Actions/User/ProductComment/ReactToProductCommentAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductCommentReaction\:\:\$reaction\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2587,12 +2179,6 @@ parameters:
 			path: Modules/Catalog/app/DTOs/Admin/Product/ProductDTO.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\Attribute\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/Attribute/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\Attribute\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2609,12 +2195,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/Attribute/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\Attribute\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/Attribute/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\Attribute\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2635,12 +2215,6 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/Attribute/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeGroup/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2657,12 +2231,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/AttributeGroup/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\NotEmptyException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeGroup/NotEmptyException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\NotEmptyException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2683,12 +2251,6 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/AttributeGroup/NotEmptyException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeGroup/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeGroup\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2705,12 +2267,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/AttributeGroup/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeTemplate\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeTemplate/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeTemplate\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2731,12 +2287,6 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/AttributeTemplate/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeTemplate\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeTemplate/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeTemplate\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2753,12 +2303,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/AttributeTemplate/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeValue\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeValue/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeValue\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2779,12 +2323,6 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/AttributeValue/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeValue\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/AttributeValue/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\AttributeValue\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2801,12 +2339,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/AttributeValue/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\Data\\ImportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/Data/ImportFailedException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\Data\\ImportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2827,12 +2359,6 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/Data/ImportFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\Product\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/Product/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\Product\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2849,12 +2375,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Catalog/app/Exceptions/Product/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\Product\\ImportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/Product/ImportFailedException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\Product\\ImportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2875,22 +2395,10 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/Product/ImportFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/ProductComment/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Exceptions/ProductComment/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\InvalidParentException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/ProductComment/InvalidParentException.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\InvalidParentException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -2899,82 +2407,16 @@ parameters:
 			path: Modules/Catalog/app/Exceptions/ProductComment/InvalidParentException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\ReactionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/ProductComment/ReactionFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\ReactionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Exceptions/ProductComment/ReactionFailedException.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Exceptions/ProductComment/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Exceptions\\ProductComment\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Exceptions/ProductComment/UpdateFailedException.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$compare_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$images\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$translations\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$compare_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Gateways\\CatalogGateway\:\:getProductSummaries\(\) has parameter \$productIds with no value type specified in iterable type array\.$#'
@@ -3121,12 +2563,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeTemplate\\AttributeTemplateRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeTemplate/AttributeTemplateRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeValue\\AttributeValueRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -3199,24 +2635,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\DataTransfer\\ImportCatalogRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/DataTransfer/ImportCatalogRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\DataTransfer\\PreviewCatalogImportRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/DataTransfer/PreviewCatalogImportRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Featured\\UpdateFeaturedRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -3265,46 +2683,10 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ImportProductsRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ImportProductsRequest.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/Product/ImportProductsRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\PreviewImportRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/PreviewImportRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductOptionRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductOptionRequest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$data_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
-			message: '#^Match expression does not handle remaining value\: mixed$#'
-			identifier: match.unhandled
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:isTypeSimple\(\) is unused\.$#'
@@ -3349,94 +2731,10 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\ProductComment\\ProductCommentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/ProductComment/ProductCommentRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\User\\ProductComment\\ProductCommentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/User/ProductComment/ProductCommentRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\User\\ProductComment\\ReactToProductCommentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/User/ProductComment/ReactToProductCommentRequest.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\Attribute uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Attribute.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Attribute\:\:categories\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Attribute.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Attribute\:\:group\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Attribute.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Attribute\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Attribute.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Attribute\:\:values\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Attribute.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\AttributeGroup uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeGroup.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeGroup\:\:attributes\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeGroup.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeGroup\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeGroup.php
-
-		-
 			message: '#^Class Modules\\Catalog\\Models\\AttributeGroupTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/AttributeGroupTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeGroupTranslation\:\:attributeGroup\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeGroupTranslation.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\AttributeTemplate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeTemplate.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeTemplate\:\:groups\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeTemplate.php
 
 		-
 			message: '#^Class Modules\\Catalog\\Models\\AttributeTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
@@ -3445,55 +2743,13 @@ parameters:
 			path: Modules/Catalog/app/Models/AttributeTranslation.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeTranslation\:\:attribute\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeTranslation.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\AttributeValue uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeValue.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeValue\:\:attribute\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeValue.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeValue\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeValue.php
-
-		-
 			message: '#^Class Modules\\Catalog\\Models\\AttributeValueTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/AttributeValueTranslation.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\AttributeValueTranslation\:\:attributeValue\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/AttributeValueTranslation.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\Brand uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Brand.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\Brand\:\:featuredItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Brand.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Brand\:\:products\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Brand.php
@@ -3505,55 +2761,13 @@ parameters:
 			path: Modules/Catalog/app/Models/Brand.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\Brand\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Brand.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\BrandTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/BrandTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\BrandTranslation\:\:brand\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/BrandTranslation.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\BrandTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/BrandTranslation.php
 
 		-
-			message: '#^Class Modules\\Catalog\\Models\\CatalogImport uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/CatalogImport.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\Category uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Category.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Category\:\:attributes\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Category.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\Category\:\:featuredItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Category.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Category\:\:products\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Category.php
@@ -3563,24 +2777,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Category.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Category\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Category.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\CategoryTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/CategoryTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\CategoryTranslation\:\:category\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/CategoryTranslation.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Models\\CategoryTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
@@ -3595,55 +2791,13 @@ parameters:
 			path: Modules/Catalog/app/Models/FeaturedItem.php
 
 		-
-			message: '#^Class Modules\\Catalog\\Models\\Image uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Image.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Image\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Image.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Image\:\:variant\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Image.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\Option uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Option.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\Option\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Option.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\Option\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Option.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Option\:\:values\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Option.php
-
-		-
 			message: '#^Class Modules\\Catalog\\Models\\OptionTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/OptionTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\OptionTranslation\:\:option\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/OptionTranslation.php
@@ -3661,12 +2815,6 @@ parameters:
 			path: Modules/Catalog/app/Models/OptionValue.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\OptionValue\:\:option\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/OptionValue.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\OptionValue\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -3679,25 +2827,7 @@ parameters:
 			path: Modules/Catalog/app/Models/OptionValue.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\OptionValue\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/OptionValue.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\OptionValue\:\:variants\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/OptionValue.php
-
-		-
 			message: '#^Class Modules\\Catalog\\Models\\OptionValueTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/OptionValueTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\OptionValueTranslation\:\:optionValue\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/OptionValueTranslation.php
@@ -3709,25 +2839,7 @@ parameters:
 			path: Modules/Catalog/app/Models/OptionValueTranslation.php
 
 		-
-			message: '#^Class Modules\\Catalog\\Models\\Product uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Product.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\Product\:\:attributeValues\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Product.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Product\:\:brand\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Product.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Product\:\:categories\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Product.php
@@ -3746,18 +2858,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Models\\Product\:\:images\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Product.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Product\:\:optionValues\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Product.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Product\:\:options\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/Product.php
@@ -3793,43 +2893,7 @@ parameters:
 			path: Modules/Catalog/app/Models/Product.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductAttributeValue\:\:attribute\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductAttributeValue.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductAttributeValue\:\:attributeValue\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductAttributeValue.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductAttributeValue\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductAttributeValue.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\ProductComment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductComment.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\ProductComment\:\:parent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductComment.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductComment\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductComment.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductComment\:\:reactions\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/ProductComment.php
@@ -3841,82 +2905,16 @@ parameters:
 			path: Modules/Catalog/app/Models/ProductComment.php
 
 		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductComment.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductCommentReaction\:\:comment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductCommentReaction.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductCommentReaction.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\ProductSeoTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductSeoTranslation.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\ProductSeoTranslation\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/ProductSeoTranslation.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductShipping\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductShipping.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\ProductTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\ProductTranslation\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/ProductTranslation.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Models\\ProductTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/ProductTranslation.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Models\\Variant uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Variant.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Variant\:\:images\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Variant.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Variant\:\:optionValues\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Variant.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Models\\Variant\:\:product\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/app/Models/Variant.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Providers\\CatalogServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
@@ -3997,36 +2995,6 @@ parameters:
 			path: Modules/Catalog/app/Support/AppliesProductPromotions.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionTranslation\:\:\$option_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionTranslation\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionValueTranslation\:\:\$option_value_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\OptionValueTranslation\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
 			message: '#^Property Modules\\Catalog\\Support\\ProductImport\\ProductImportOptionResolver\:\:\$addedKeys type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4041,18 +3009,6 @@ parameters:
 		-
 			message: '#^Property Modules\\Catalog\\Support\\ProductImport\\ProductImportOptionResolver\:\:\$valueIdByKey type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Unable to resolve the template type TMapToGroupsValue in call to method Illuminate\\Support\\Collection\<int,Modules\\Catalog\\Models\\OptionTranslation\>\:\:mapToGroups\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
-
-		-
-			message: '#^Unable to resolve the template type TMapToGroupsValue in call to method Illuminate\\Support\\Collection\<int,Modules\\Catalog\\Models\\OptionValueTranslation\>\:\:mapToGroups\(\)$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
 
@@ -4123,18 +3079,6 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeTranslationResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupResource\:\:\$attributes_count\.$#'
 			identifier: property.notFound
 			count: 1
@@ -4163,18 +3107,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupTranslationResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeTemplate\\AttributeTemplateResource\:\:\$created_at\.$#'
@@ -4225,12 +3157,6 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeTemplate\\AttributeTemplateResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$attribute_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -4259,18 +3185,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueTranslationResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandResource\:\:\$created_at\.$#'
@@ -4307,18 +3221,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandTranslationResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryResource\:\:\$created_at\.$#'
@@ -4363,20 +3265,8 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\DataTransfer\\CatalogImportPreviewResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
+			identifier: mixin.nonObject
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportPreviewResource.php
 
@@ -4384,55 +3274,7 @@ parameters:
 			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
 			identifier: mixin.nonObject
 			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportPreviewResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 112 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportPreviewResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\DataTransfer\\CatalogImportResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(CatalogImport  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 86 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\DataTransfer\\CatalogImportResultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
-			identifier: mixin.nonObject
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 104 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResultResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Featured\\FeaturedResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Featured/FeaturedResource.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$resource$#'
-			identifier: parameter.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Featured/FeaturedResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$collection\.$#'
@@ -4489,24 +3331,6 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Option\\OptionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Option/OptionResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Option\\OptionTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Option/OptionTranslationResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$created_at\.$#'
 			identifier: property.notFound
 			count: 1
@@ -4535,18 +3359,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueTranslationResource.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$attribute_id\.$#'
@@ -4585,14 +3397,8 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductImportPreviewResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
+			identifier: mixin.nonObject
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportPreviewResource.php
 
@@ -4600,112 +3406,10 @@ parameters:
 			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
 			identifier: mixin.nonObject
 			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportPreviewResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 112 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportPreviewResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductImportResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(CatalogImport  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 86 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductImportResultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
-			identifier: mixin.nonObject
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 101 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductImportResultResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductSeoTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductSeoTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductShippingResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductShippingResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Product\\ProductTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\ProductComment\\ProductCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/ProductComment/ProductCommentResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Admin\\Variant\\VariantResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Variant/VariantResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Brand\\BrandResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Brand/BrandResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Category\\CategoryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Category/CategoryResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Option\\OptionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Option/OptionResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Product\\ListProductResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ListProductResource.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$data_type\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
@@ -4717,238 +3421,10 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$translations\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$collection\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$media_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductAttributeValue\:\:\$boolean_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductAttributeValue\:\:\$number_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductAttributeValue\:\:\$text_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$compare_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$sku\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Product\\ShowProductResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{id\: int, title\: mixed\}, Closure\(Modules\\Catalog\\Models\\OptionValue\)\: array\{id\: int, title\: mixed\} given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
-			count: 6
+			count: 5
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\ProductComment\\ProductCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/ProductComment/ProductCommentResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\Public\\Sitemap\\ProductSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/Public/Sitemap/ProductSitemapResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\User\\ProductComment\\MyProductCommentReactionsResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/User/ProductComment/MyProductCommentReactionsResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\User\\ProductComment\\ProductCommentReactionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/User/ProductComment/ProductCommentReactionResource.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$resource$#'
-			identifier: parameter.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/User/ProductComment/ProductCommentReactionResource.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Transformers\\User\\ProductComment\\ProductCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Transformers/User/ProductComment/ProductCommentResource.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\AttributeFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/AttributeFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\AttributeGroupFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/AttributeGroupFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\AttributeTemplateFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/AttributeTemplateFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\AttributeValueFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/AttributeValueFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\BrandFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/BrandFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\BrandTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/BrandTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\CatalogImportFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/CatalogImportFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\CategoryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/CategoryFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\CategoryTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/CategoryTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\ImageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/ImageFactory.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Factories\\ImageFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/factories/ImageFactory.php
 
 		-
 			message: '#^Access to undefined constant Modules\\Catalog\\Schemas\\Option\\OptionSchema\:\:NAME\.$#'
@@ -4969,46 +3445,10 @@ parameters:
 			path: Modules/Catalog/database/factories/OptionFactory.php
 
 		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\OptionFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/OptionFactory.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Factories\\OptionFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/factories/OptionFactory.php
-
-		-
 			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Database\\Eloquent\\Builder\<Modules\\Catalog\\Models\\Product\>\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Catalog/database/factories/OptionFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\ProductCommentFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/ProductCommentFactory.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Factories\\ProductCommentFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/factories/ProductCommentFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\ProductSeoTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/ProductSeoTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Catalog\\Database\\Factories\\ProductTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Catalog/database/factories/ProductTranslationFactory.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Database\\Factories\\VariantFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
@@ -5021,12 +3461,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Catalog/database/factories/VariantFactory.php
-
-		-
-			message: '#^Method Illuminate\\Database\\Migrations\\Migration@anonymous/Modules/Catalog/database/migrations/2026_10_02_000002_migrate_featured_flags_and_drop_columns\.php\:11\:\:insertFeaturedItems\(\) has parameter \$ids with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/database/migrations/2026_10_02_000002_migrate_featured_flags_and_drop_columns.php
 
 		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
@@ -5125,12 +3559,6 @@ parameters:
 			path: Modules/Catalog/database/seeders/OptionSeeder.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Attribute\:\:\$data_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
@@ -5179,12 +3607,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -5221,24 +3643,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
 
 		-
-			message: '#^Function brandPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Function brandPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -5251,21 +3655,9 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$attribute_value_id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
 		-
@@ -5317,25 +3709,7 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
 		-
-			message: '#^Function exportedSections\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
 			message: '#^Function seedTransferCatalog\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Function transferImportPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Function transferImportPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
@@ -5343,7 +3717,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
 		-
@@ -5389,12 +3763,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -5422,24 +3790,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Function categoryPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Function categoryPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
 
 		-
@@ -5509,12 +3859,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -5557,21 +3901,9 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$body\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
 			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
 
 		-
@@ -5629,30 +3961,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
 
 		-
-			message: '#^Function moderate\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Function reviewOn\(\) should return Modules\\Catalog\\Models\\ProductComment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$price\.$#'
 			identifier: property.notFound
 			count: 1
@@ -5667,37 +3975,13 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
 			identifier: property.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$is_published\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Product\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
+			count: 2
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:optionValues\(\)\.$#'
 			identifier: method.notFound
 			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
@@ -5737,37 +4021,7 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
-			message: '#^Function fullMapping\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
 			message: '#^Function importOptionWithValues\(\) has parameter \$values with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Function importPayload\(\) has parameter \$mapping with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Function importPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Function importPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Function multiVariantMapping\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
@@ -5781,7 +4035,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 4
+			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
@@ -5799,19 +4053,13 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\Product\>\|Modules\\Catalog\\Models\\Product\:\:\$is_published\.$#'
-			identifier: property.notFound
 			count: 2
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
+			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 6
+			count: 5
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
 
 		-
@@ -5822,18 +4070,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$media_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Image\:\:\$product_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
@@ -5887,18 +4123,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
 
 		-
-			message: '#^Function productPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Function productPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -5907,7 +4131,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 4
+			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
 
 		-
@@ -5925,7 +4149,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
 
 		-
@@ -5947,12 +4171,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/BrandTest.php
 
 		-
-			message: '#^Function publicBrand\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/BrandTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -5974,12 +4192,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
-
-		-
-			message: '#^Function publicCategory\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
 
 		-
@@ -6061,18 +4273,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
 
 		-
-			message: '#^Function ratedProduct\(\) has parameter \$pendingRatings with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
-			message: '#^Function ratedProduct\(\) has parameter \$ratings with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -6103,12 +4303,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:images\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -6124,12 +4318,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
 			identifier: method.notFound
 			count: 9
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
-			message: '#^Function commentOn\(\) should return Modules\\Catalog\\Models\\ProductComment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
 
 		-
@@ -6155,24 +4343,6 @@ parameters:
 			identifier: method.notFound
 			count: 2
 			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Function sitemapProduct\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductComment\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 12
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductCommentReaction\:\:\$reaction\.$#'
@@ -6211,12 +4381,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
 
 		-
-			message: '#^Function approvedReview\(\) should return Modules\\Catalog\\Models\\ProductComment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -6244,12 +4408,6 @@ parameters:
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\ProductComment\>\|Modules\\Catalog\\Models\\ProductComment\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
 			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
 
 		-
@@ -8531,12 +6689,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'

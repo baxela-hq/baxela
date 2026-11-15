@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 
+/** @extends Factory<Brand> */
 class BrandFactory extends Factory
 {
     /**

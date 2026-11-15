@@ -17,6 +17,7 @@ class CreateProductCommentAction extends AbstractProductCommentAction
      *
      * @throws InvalidParentException|CreationFailedException
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): ProductComment
     {
         $this->assertValidParent($data[Schema::PRODUCT_ID], $data[Schema::PARENT_ID]);

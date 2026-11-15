@@ -3,10 +3,12 @@
 namespace Modules\Catalog\Http\Requests\Admin\DataTransfer;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 
 class PreviewCatalogImportRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

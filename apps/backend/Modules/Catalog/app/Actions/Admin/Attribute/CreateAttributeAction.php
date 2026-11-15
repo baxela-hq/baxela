@@ -15,6 +15,7 @@ class CreateAttributeAction
     /**
      * @throws CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Attribute
     {
         try {

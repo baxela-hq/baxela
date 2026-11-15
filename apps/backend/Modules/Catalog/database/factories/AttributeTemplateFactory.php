@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\AttributeTemplate;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
 
+/** @extends Factory<AttributeTemplate> */
 class AttributeTemplateFactory extends Factory
 {
     /**

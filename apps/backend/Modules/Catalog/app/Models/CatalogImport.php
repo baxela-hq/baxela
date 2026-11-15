@@ -10,8 +10,12 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
 
+/**
+ * @property int $id
+ */
 class CatalogImport extends Model
 {
+    /** @use HasFactory<CatalogImportFactory> */
     use HasFactory;
 
     protected $table = CatalogImportSchema::TABLE;

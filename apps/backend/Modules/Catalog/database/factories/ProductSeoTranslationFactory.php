@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductSeoTranslation;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema;
 
+/** @extends Factory<ProductSeoTranslation> */
 class ProductSeoTranslationFactory extends Factory
 {
     /**

@@ -7,6 +7,7 @@ use Modules\Catalog\Models\Option;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 
+/** @extends Factory<Option> */
 class OptionFactory extends Factory
 {
     /**
@@ -17,6 +18,7 @@ class OptionFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

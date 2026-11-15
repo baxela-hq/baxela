@@ -15,6 +15,7 @@ class FeaturedResource extends JsonResource
     /**
      * @param  array{product: Collection, category: Collection, brand: Collection}  $resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

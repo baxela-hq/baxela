@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListBrandAction extends AbstractBrandAction
 {
+    /** @return LengthAwarePaginator<int, Brand> */
     public function handle(): LengthAwarePaginator
     {
         $id = BrandSchema::TABLE.'.'.BrandSchema::ID;

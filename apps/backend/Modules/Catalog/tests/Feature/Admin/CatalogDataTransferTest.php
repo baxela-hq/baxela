@@ -144,6 +144,9 @@ function wipeCatalogTables(): void
     AttributeGroup::query()->delete();
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function exportedSections(string $content): array
 {
     $file = json_decode($content, true);
@@ -156,6 +159,10 @@ function exportedSections(string $content): array
     return $byEntity;
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function transferImportPayload(Media $media, array $overrides = []): array
 {
     return array_merge([

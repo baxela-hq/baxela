@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Requests\User\ProductComment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 
 class ProductCommentRequest extends FormRequest
@@ -11,6 +12,7 @@ class ProductCommentRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

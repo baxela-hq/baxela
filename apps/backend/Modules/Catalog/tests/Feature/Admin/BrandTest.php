@@ -12,6 +12,10 @@ use function Modules\Catalog\Tests\Feature\defaultLanguage;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function brandPayload(array $overrides = []): array
 {
     defaultLanguage();

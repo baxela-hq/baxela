@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\OptionValue\OptionValueSchema as Schema;
 
 class UpdateOptionValueAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, string $valueId, array $data): OptionValue
     {
         $record = OptionValue::query()->findOrFail($valueId);

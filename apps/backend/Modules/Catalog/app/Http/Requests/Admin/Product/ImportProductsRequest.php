@@ -4,6 +4,7 @@ namespace Modules\Catalog\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
@@ -31,6 +32,7 @@ class ImportProductsRequest extends FormRequest
         ]);
     }
 
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

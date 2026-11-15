@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 
+/**
+ * @property int $id
+ */
 class FeaturedItem extends Model
 {
     protected $table = FeaturedItemSchema::TABLE;

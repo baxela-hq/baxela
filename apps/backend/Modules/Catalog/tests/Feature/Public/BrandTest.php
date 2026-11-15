@@ -12,6 +12,9 @@ use function Modules\Catalog\Tests\Feature\defaultLanguage;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function publicBrand(string $slug, array $attributes = []): Brand
 {
     $brand = Brand::query()->create($attributes);

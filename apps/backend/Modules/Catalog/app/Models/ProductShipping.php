@@ -8,6 +8,9 @@ use Modules\Catalog\Schemas\Product\DimensionUnitEnum;
 use Modules\Catalog\Schemas\Product\ProductShippingSchema;
 use Modules\Catalog\Schemas\Product\WeightUnitEnum;
 
+/**
+ * @property int $id
+ */
 class ProductShipping extends Model
 {
     protected $table = ProductShippingSchema::TABLE;
@@ -32,6 +35,7 @@ class ProductShipping extends Model
         ];
     }
 
+    /** @return BelongsTo<Product, $this> */
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, ProductShippingSchema::PRODUCT_ID);

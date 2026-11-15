@@ -56,6 +56,9 @@ function sampleCsv(): string
         ."BX-TEE-001,450000,25,in_stock,yes,تی‌شرت کلاسیک مردانه,,Men's Classic T-Shirt,,\n";
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function fullMapping(): array
 {
     return [
@@ -72,6 +75,11 @@ function fullMapping(): array
     ];
 }
 
+/**
+ * @param  array<string, mixed>  $mapping
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function importPayload(Media $media, array $mapping, array $overrides = []): array
 {
     return array_merge([
@@ -90,6 +98,9 @@ function multiVariantCsv(): string
         ."BX-TEE-BLU-M,450000,6,classic-tee,Color,Blue,Size,M,,,,\n";
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function multiVariantMapping(): array
 {
     return [

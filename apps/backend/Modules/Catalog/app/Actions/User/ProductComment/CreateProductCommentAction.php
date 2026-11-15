@@ -16,6 +16,7 @@ class CreateProductCommentAction
     /**
      * @throws InvalidParentException|CreationFailedException
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $productId, array $data): ProductComment
     {
         $parentId = $data[Schema::PARENT_ID] ?? null;

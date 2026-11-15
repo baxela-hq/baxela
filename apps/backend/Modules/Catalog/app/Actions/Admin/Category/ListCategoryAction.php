@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListCategoryAction extends AbstractCategoryAction
 {
+    /** @return LengthAwarePaginator<int, Category> */
     public function handle(): LengthAwarePaginator
     {
         $id = CategorySchema::TABLE.'.'.CategorySchema::ID;

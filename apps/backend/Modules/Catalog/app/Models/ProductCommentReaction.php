@@ -11,6 +11,9 @@ use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ */
 class ProductCommentReaction extends Model
 {
     protected $table = ProductCommentReactionSchema::TABLE;
@@ -28,6 +31,7 @@ class ProductCommentReaction extends Model
         ];
     }
 
+    /** @return BelongsTo<ProductComment, $this> */
     public function comment(): BelongsTo
     {
         return $this->belongsTo(ProductComment::class, ProductCommentReactionSchema::PRODUCT_COMMENT_ID);

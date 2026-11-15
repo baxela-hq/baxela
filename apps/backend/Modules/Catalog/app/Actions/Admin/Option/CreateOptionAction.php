@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Option\OptionSchema;
 
 class CreateOptionAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): ?Option
     {
         $body = [

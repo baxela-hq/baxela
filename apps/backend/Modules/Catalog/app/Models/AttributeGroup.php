@@ -9,8 +9,12 @@ use Modules\Catalog\Database\Factories\AttributeGroupFactory;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 
+/**
+ * @property int $id
+ */
 class AttributeGroup extends Model
 {
+    /** @use HasFactory<AttributeGroupFactory> */
     use HasFactory;
 
     protected $table = AttributeGroupSchema::TABLE;
@@ -27,11 +31,13 @@ class AttributeGroup extends Model
         return AttributeGroupFactory::new();
     }
 
+    /** @return HasMany<Attribute, $this> */
     public function attributes(): HasMany
     {
         return $this->hasMany(Attribute::class, AttributeSchema::GROUP_ID);
     }
 
+    /** @return HasMany<AttributeGroupTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(AttributeGroupTranslation::class);

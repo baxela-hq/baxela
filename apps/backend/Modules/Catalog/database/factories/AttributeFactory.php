@@ -8,6 +8,7 @@ use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 
+/** @extends Factory<Attribute> */
 class AttributeFactory extends Factory
 {
     /**

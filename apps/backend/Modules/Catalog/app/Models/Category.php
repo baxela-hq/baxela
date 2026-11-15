@@ -13,9 +13,15 @@ use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Core\Models\Traits\SlugTrait;
 
+/**
+ * @property int $id
+ * @property bool $is_featured
+ */
 class Category extends Model
 {
+    /** @use HasFactory<CategoryFactory> */
     use HasFactory;
+
     use SlugTrait;
 
     protected $table = CategorySchema::TABLE;
@@ -43,12 +49,14 @@ class Category extends Model
         return CategoryFactory::new();
     }
 
+    /** @return BelongsToMany<Product, $this> */
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, CategoryProductSchema::TABLE,
             CategoryProductSchema::CATEGORY_ID, CategoryProductSchema::PRODUCT_ID);
     }
 
+    /** @return BelongsToMany<Attribute, $this> */
     public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class, CategoryAttributeSchema::TABLE,
@@ -57,6 +65,7 @@ class Category extends Model
             ->orderByPivot(CategoryAttributeSchema::POSITION);
     }
 
+    /** @return HasMany<CategoryTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(CategoryTranslation::class);

@@ -9,8 +9,12 @@ use Modules\Catalog\Database\Factories\AttributeTemplateFactory;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateGroupSchema;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
 
+/**
+ * @property int $id
+ */
 class AttributeTemplate extends Model
 {
+    /** @use HasFactory<AttributeTemplateFactory> */
     use HasFactory;
 
     protected $table = AttributeTemplateSchema::TABLE;
@@ -37,6 +41,7 @@ class AttributeTemplate extends Model
         return AttributeTemplateFactory::new();
     }
 
+    /** @return BelongsToMany<AttributeGroup, $this> */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(AttributeGroup::class, AttributeTemplateGroupSchema::TABLE,

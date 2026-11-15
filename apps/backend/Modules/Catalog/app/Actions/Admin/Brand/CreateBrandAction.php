@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Brand\BrandSchema;
 
 class CreateBrandAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Brand
     {
         $body = [

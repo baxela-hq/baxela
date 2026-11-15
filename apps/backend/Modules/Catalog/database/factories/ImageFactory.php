@@ -8,6 +8,7 @@ use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 
+/** @extends Factory<Image> */
 class ImageFactory extends Factory
 {
     /**
@@ -18,6 +19,7 @@ class ImageFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

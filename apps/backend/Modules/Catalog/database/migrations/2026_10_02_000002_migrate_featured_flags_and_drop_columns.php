@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
@@ -73,6 +74,7 @@ return new class extends Migration
         $this->insertFeaturedItems(FeaturedItemSchema::TYPE_PRODUCT, $ids);
     }
 
+    /** @param  Collection<int, int>  $ids */
     private function insertFeaturedItems(string $type, $ids): void
     {
         $now = now()->toDateTimeString();

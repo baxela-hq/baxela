@@ -28,6 +28,9 @@ function syncAggregate(Product $product): void
     RecalculatesProductRating::recalculate($product->id);
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function moderate(ProductComment $comment, array $overrides): void
 {
     test()->patchJson(test()->baseUrl('/admin/product-comments/'.$comment->{ProductCommentSchema::ID}), array_merge([

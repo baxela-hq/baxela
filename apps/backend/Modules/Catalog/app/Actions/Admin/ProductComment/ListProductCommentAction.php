@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListProductCommentAction extends AbstractProductCommentAction
 {
+    /** @return LengthAwarePaginator<int, ProductComment> */
     public function handle(): LengthAwarePaginator
     {
         $comments = QueryBuilder::for(ProductComment::class)

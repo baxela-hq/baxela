@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Image;
 use Modules\Catalog\Models\OptionValue;
+use Modules\Catalog\Models\OptionValueTranslation;
 use Modules\Catalog\Models\ProductAttributeValue;
 use Modules\Catalog\Models\Variant;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
@@ -38,6 +39,7 @@ class ShowProductResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $languageId = $this->resolvePublicLanguageId($request);
@@ -125,13 +127,17 @@ class ShowProductResource extends JsonResource
                     'is_default' => $variant->{VariantSchema::IS_DEFAULT},
                     'image_url' => $variant->{VariantSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
                     'option_values' => $variant->optionValues
-                        ->map(fn (OptionValue $optionValue): array => [
-                            'id' => $optionValue->{OptionValueSchema::ID},
-                            'title' => $optionValue->translations
-                                ->firstWhere(OVTSchema::LANGUAGE_ID, $languageId)
-                                ?->{OVTSchema::TITLE}
-                                ?? PicksTranslation::pick($optionValue->translations, $languageId)?->{OVTSchema::TITLE},
-                        ])->all(),
+                        ->map(function (OptionValue $optionValue) use ($languageId): array {
+                            $picked = $optionValue->translations->firstWhere(OVTSchema::LANGUAGE_ID, $languageId)
+                                ?? PicksTranslation::pick($optionValue->translations, $languageId);
+                            /** @var OptionValueTranslation|null $picked */
+                            $title = $picked?->{OVTSchema::TITLE};
+
+                            return [
+                                'id' => $optionValue->{OptionValueSchema::ID},
+                                'title' => $title,
+                            ];
+                        })->all(),
                 ])->all(),
             'images' => $this->resource->images
                 ->map(fn (Image $image): array => [

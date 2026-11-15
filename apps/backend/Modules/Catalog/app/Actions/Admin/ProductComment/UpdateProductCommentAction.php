@@ -19,6 +19,7 @@ class UpdateProductCommentAction extends AbstractProductCommentAction
      *
      * @throws InvalidParentException|UpdateFailedException
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): ProductComment
     {
         $record = ProductComment::query()->findOrFail($id);

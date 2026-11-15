@@ -163,7 +163,7 @@ class CatalogGateway implements CatalogGatewayInterface
     {
         $product = $variant->{VariantSchema::RES_PRODUCT};
         $productTranslation = PicksTranslation::pick(
-            $product?->{ProductSchema::RES_TRANSLATIONS},
+            $product->{ProductSchema::RES_TRANSLATIONS},
             $languageId,
         );
 
@@ -190,10 +190,10 @@ class CatalogGateway implements CatalogGatewayInterface
             compare_price: $comparePrice,
             product_title: $productTranslation?->{PTSchema::TITLE},
             product_slug: $productTranslation?->{PTSchema::SLUG},
-            image_url: $product?->{ProductSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
+            image_url: $product->{ProductSchema::RES_IMAGES}->first()?->{ImageSchema::URL},
             variant_label: $labels->isNotEmpty() ? $labels->join(' / ') : null,
             promotion: $promotion,
-            tax_class_id: $product?->{ProductSchema::TAX_CLASS_ID} !== null
+            tax_class_id: $product->{ProductSchema::TAX_CLASS_ID} !== null
                 ? (int) $product->{ProductSchema::TAX_CLASS_ID}
                 : null,
         );
@@ -212,7 +212,7 @@ class CatalogGateway implements CatalogGatewayInterface
     {
         $base = $variant->{VariantSchema::PRICE};
 
-        if ($promotion === null || $base === null) {
+        if ($promotion === null) {
             return [$base, $variant->{VariantSchema::COMPARE_PRICE}];
         }
 

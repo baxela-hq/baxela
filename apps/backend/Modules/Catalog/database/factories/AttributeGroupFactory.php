@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Catalog\Models\AttributeGroup;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 
+/** @extends Factory<AttributeGroup> */
 class AttributeGroupFactory extends Factory
 {
     /**

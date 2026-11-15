@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Category\CategorySchema;
 
 class UpdateCategoryAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Category
     {
         $record = Category::query()->findOrFail($id);

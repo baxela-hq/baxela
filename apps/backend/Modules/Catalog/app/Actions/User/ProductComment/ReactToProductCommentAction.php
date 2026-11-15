@@ -20,6 +20,7 @@ class ReactToProductCommentAction
      * state plus the refreshed counts.
      *
      * @param  array{reaction: string}  $data
+     * @param  array<string, mixed>  $data
      * @return array{reaction: ?ProductCommentReactionEnum, likes_count: int, dislikes_count: int}
      *
      * @throws ReactionFailedException
