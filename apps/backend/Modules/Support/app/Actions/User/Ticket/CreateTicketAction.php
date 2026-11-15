@@ -28,6 +28,9 @@ class CreateTicketAction extends AbstractTicketAction
     /**
      * @throws CreationFailedException|InvalidOrderException|Throwable
      */
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function handle(array $data): Ticket
     {
         $orderCode = $data[TicketSchema::ORDER_CODE] ?? null;

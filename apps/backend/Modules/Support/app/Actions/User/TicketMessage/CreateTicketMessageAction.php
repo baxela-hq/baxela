@@ -25,6 +25,9 @@ class CreateTicketMessageAction
      *
      * @throws CreationFailedException|Throwable
      */
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function handle(string $ticketId, array $data): TicketMessage
     {
         // the ownership scope turns someone else's ticket into a 404

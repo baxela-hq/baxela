@@ -15,6 +15,9 @@ class UpdateTicketStatusAction extends AbstractTicketAction
     /**
      * @throws StatusUpdateFailedException|Throwable
      */
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function handle(string $id, array $data): Ticket
     {
         $record = Ticket::query()->findOrFail($id);

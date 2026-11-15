@@ -3,7 +3,7 @@
 namespace Modules\Support\Transfer;
 
 use BackedEnum;
-use DateTimeInterface;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportOptions;
@@ -65,7 +65,7 @@ class SupportTransfer implements ModuleTransferInterface
                 foreach ($record->getAttributes() as $key => $value) {
                     $payload[$key] = match (true) {
                         $value instanceof BackedEnum => $value->value,
-                        $value instanceof DateTimeInterface => $value->toIso8601String(),
+                        $value instanceof CarbonInterface => $value->toIso8601String(),
                         default => $value,
                     };
                 }

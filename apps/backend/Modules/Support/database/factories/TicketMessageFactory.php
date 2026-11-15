@@ -7,6 +7,7 @@ use Modules\Support\Models\TicketMessage;
 use Modules\Support\Schemas\TicketMessage\TicketMessageSchema;
 use Modules\Support\Schemas\TicketMessage\TicketSenderEnum;
 
+/** @extends Factory<TicketMessage> */
 class TicketMessageFactory extends Factory
 {
     /**

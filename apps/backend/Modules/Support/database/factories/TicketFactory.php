@@ -7,6 +7,7 @@ use Modules\Support\Models\Ticket;
 use Modules\Support\Schemas\Ticket\TicketSchema;
 use Modules\Support\Schemas\Ticket\TicketStatusEnum;
 
+/** @extends Factory<Ticket> */
 class TicketFactory extends Factory
 {
     /**

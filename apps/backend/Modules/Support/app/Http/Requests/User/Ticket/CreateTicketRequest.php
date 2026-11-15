@@ -3,11 +3,13 @@
 namespace Modules\Support\Http\Requests\User\Ticket;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Support\Schemas\Ticket\TicketSchema;
 use Modules\Support\Schemas\TicketMessage\TicketMessageSchema;
 
 class CreateTicketRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

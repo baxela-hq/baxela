@@ -9,6 +9,7 @@ use Modules\Support\Schemas\Ticket\TicketStatusEnum;
 
 class UpdateTicketStatusRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

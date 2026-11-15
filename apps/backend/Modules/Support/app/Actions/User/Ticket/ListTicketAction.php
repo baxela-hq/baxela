@@ -11,6 +11,9 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListTicketAction extends AbstractTicketAction
 {
+    /**
+     * @return LengthAwarePaginator<int, Ticket>
+     */
     public function handle(): LengthAwarePaginator
     {
         $id = TicketSchema::TABLE.'.'.TicketSchema::ID;

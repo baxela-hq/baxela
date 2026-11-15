@@ -17,6 +17,9 @@ class ListTicketAction extends AbstractTicketAction
         parent::__construct($model);
     }
 
+    /**
+     * @return LengthAwarePaginator<int, Ticket>
+     */
     public function handle(): LengthAwarePaginator
     {
         $id = TicketSchema::TABLE.'.'.TicketSchema::ID;
