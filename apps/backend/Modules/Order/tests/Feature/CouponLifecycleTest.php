@@ -18,6 +18,10 @@ use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $orderOverrides
+ * @return array{0: Order, 1: Coupon}
+ */
 function couponOrder(array $orderOverrides = []): array
 {
     $user = User::factory()->create();

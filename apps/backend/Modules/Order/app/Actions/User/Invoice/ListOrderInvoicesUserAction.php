@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Actions\User\Invoice;
 
+use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Utils\Auth;
 use Modules\Order\Exceptions\OrderException;
 use Modules\Order\Models\Order;
@@ -30,15 +31,18 @@ class ListOrderInvoicesUserAction
             throw OrderException::orderNotFound();
         }
 
-        return $order->invoices()
+        /** @var Collection<int, OrderInvoice> $invoices */
+        $invoices = $order->invoices()
             ->orderByDesc(OrderSchema::CREATED_AT)
-            ->get()
+            ->get();
+
+        return $invoices
             ->map(fn (OrderInvoice $invoice): array => [
                 'id' => (int) $invoice->id,
                 'number' => (string) $invoice->number,
                 'revision' => (int) $invoice->revision,
                 'status' => $invoice->status->value,
-                'issued_at' => $invoice->issued_at?->toIso8601String(),
+                'issued_at' => $invoice->issued_at->toIso8601String(),
                 'pdf_ready' => $invoice->pdf_status === DocumentPdfStatusEnum::READY,
             ])
             ->all();

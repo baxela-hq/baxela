@@ -4,13 +4,16 @@ namespace Modules\Order\Transformers\User\OrderItem;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Order\Models\OrderItem;
 use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
+/** @mixin OrderItem */
 class OrderItemResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $summary = $this->resource->getAttribute(OrderItemSchema::ATTR_VARIANT_SUMMARY);

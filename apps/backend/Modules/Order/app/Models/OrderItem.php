@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,8 +11,23 @@ use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
 // use Modules\Order\Database\Factories\OrderItemFactory;
 
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property int $variant_id
+ * @property string $product_name_snapshot
+ * @property string|null $product_slug_snapshot
+ * @property string $price_snapshot
+ * @property int $quantity
+ * @property string $tax_amount
+ * @property string $tax_rate
+ * @property int|null $tax_class_id
+ * @property CarbonInterface|null $created_at
+ * @property-read Order $order
+ */
 class OrderItem extends Model
 {
+    /** @use HasFactory<OrderItemFactory> */
     use HasFactory;
 
     protected $table = OrderItemSchema::TABLE;
@@ -42,6 +58,7 @@ class OrderItem extends Model
         });
     }
 
+    /** @return BelongsTo<Order, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

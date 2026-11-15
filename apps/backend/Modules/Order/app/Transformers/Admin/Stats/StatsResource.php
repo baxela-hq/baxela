@@ -4,14 +4,17 @@ namespace Modules\Order\Transformers\Admin\Stats;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Stats\StatsSchema;
 use Modules\Order\Transformers\Admin\Order\OrderResource;
 
+/** @mixin Order */
 class StatsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

@@ -8,6 +8,7 @@ use Modules\Order\Models\OrderAddress;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
 use Modules\Order\Schemas\OrderAddress\OrderAddressTypeEnum;
 
+/** @extends Factory<OrderAddress> */
 class OrderAddressFactory extends Factory
 {
     /**
@@ -18,6 +19,7 @@ class OrderAddressFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

@@ -4,13 +4,16 @@ namespace Modules\Order\Transformers\User\OrderAddress;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Order\Models\Order;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
 
+/** @mixin Order */
 class OrderAddressResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

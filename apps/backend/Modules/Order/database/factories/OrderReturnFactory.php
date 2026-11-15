@@ -9,10 +9,12 @@ use Modules\Order\Schemas\OrderReturn\OrderReturnReasonEnum;
 use Modules\Order\Schemas\OrderReturn\OrderReturnSchema;
 use Modules\Order\Schemas\OrderReturn\OrderReturnStatusEnum;
 
+/** @extends Factory<OrderReturn> */
 class OrderReturnFactory extends Factory
 {
     protected $model = OrderReturn::class;
 
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         $order = $params[OrderReturnSchema::ORDER_ID] ?? Order::factory();

@@ -16,6 +16,9 @@ use Modules\Order\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function shippedPaidOrder(User $user, array $overrides = []): Order
 {
     static $variantSeq = 70;

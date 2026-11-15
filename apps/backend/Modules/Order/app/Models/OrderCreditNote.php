@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,26 @@ use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
  * is unique when set — the idempotency key of the refund automation.
  *
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property string|null $refund_uuid
+ * @property string $number
+ * @property OrderCreditNoteStatusEnum $status
+ * @property CarbonInterface $issued_at
+ * @property CarbonInterface|null $voided_at
+ * @property string|null $void_reason
+ * @property string $currency_code
+ * @property string $amount
+ * @property DocumentPdfStatusEnum $pdf_status
+ * @property string|null $pdf_disk
+ * @property string|null $pdf_path
+ * @property string|null $pdf_checksum
+ * @property CarbonInterface|null $pdf_generated_at
+ * @property string|null $template_version
+ * @property CarbonInterface|null $generation_claimed_at
+ * @property-read OrderInvoice $invoice
  */
 class OrderCreditNote extends Model
 {
@@ -52,6 +73,7 @@ class OrderCreditNote extends Model
         ];
     }
 
+    /** @return BelongsTo<OrderInvoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(OrderInvoice::class, OrderCreditNoteSchema::INVOICE_ID);

@@ -9,6 +9,7 @@ use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Utils\OrderCodeGenerator;
 
+/** @extends Factory<Order> */
 class OrderFactory extends Factory
 {
     /**
@@ -19,6 +20,7 @@ class OrderFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

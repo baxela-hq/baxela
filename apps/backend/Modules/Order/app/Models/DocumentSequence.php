@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Order\Schemas\Document\DocumentSequenceSchema;
@@ -13,6 +14,16 @@ use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
  * the year and incremented inside the issuing transaction.
  *
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property string $type
+ * @property int $year
+ * @property int $last_number
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<DocumentSequence>
  */
 class DocumentSequence extends Model
 {

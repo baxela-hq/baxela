@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Gateways;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Events\Order\OrderCompletedEvent;
@@ -220,8 +221,11 @@ class OrderGateway implements OrderGatewayInterface
             return [];
         }
 
-        return $order->items()
-            ->get([OrderItemSchema::VARIANT_ID, OrderItemSchema::QUANTITY])
+        /** @var Collection<int, OrderItem> $items */
+        $items = $order->items()
+            ->get([OrderItemSchema::VARIANT_ID, OrderItemSchema::QUANTITY]);
+
+        return $items
             ->map(fn (OrderItem $item): array => [
                 OrderItemSchema::VARIANT_ID => $item->{OrderItemSchema::VARIANT_ID},
                 OrderItemSchema::QUANTITY => $item->{OrderItemSchema::QUANTITY},

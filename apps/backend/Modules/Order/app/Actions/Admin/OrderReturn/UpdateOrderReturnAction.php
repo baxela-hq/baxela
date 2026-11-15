@@ -78,7 +78,7 @@ class UpdateOrderReturnAction
         $payload = [
             OrderReturnSchema::ID => (int) $return->{OrderReturnSchema::ID},
             OrderReturnSchema::ORDER_ID => (int) $return->{OrderReturnSchema::ORDER_ID},
-            OrderSchema::ORDER_CODE => (string) $return->{OrderReturnSchema::RES_ORDER}?->{OrderSchema::ORDER_CODE},
+            OrderSchema::ORDER_CODE => (string) $return->{OrderReturnSchema::RES_ORDER}->{OrderSchema::ORDER_CODE},
             OrderSchema::USER_ID => (int) $return->{OrderReturnSchema::USER_ID},
             OrderReturnSchema::STATUS => $status->value,
             'locale' => Locale::fromRequest(),

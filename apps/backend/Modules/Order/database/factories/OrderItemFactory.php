@@ -7,6 +7,7 @@ use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
 use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
+/** @extends Factory<OrderItem> */
 class OrderItemFactory extends Factory
 {
     /**
@@ -17,6 +18,7 @@ class OrderItemFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

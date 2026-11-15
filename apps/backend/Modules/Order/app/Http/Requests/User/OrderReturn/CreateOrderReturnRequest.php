@@ -4,6 +4,7 @@ namespace Modules\Order\Http\Requests\User\OrderReturn;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Order\Schemas\OrderReturn\OrderReturnReasonEnum;
 use Modules\Order\Schemas\OrderReturn\OrderReturnSchema;
 
@@ -12,6 +13,7 @@ class CreateOrderReturnRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

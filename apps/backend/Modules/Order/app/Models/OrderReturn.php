@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,20 @@ use Modules\Order\Schemas\OrderReturn\OrderReturnStatusEnum;
 
 /**
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property int $user_id
+ * @property OrderReturnStatusEnum $status
+ * @property string $reason
+ * @property string|null $note
+ * @property string|null $admin_note
+ * @property string|null $tracking_number
+ * @property CarbonInterface|null $stock_restored_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Order $order
  */
 class OrderReturn extends Model
 {
@@ -43,6 +58,7 @@ class OrderReturn extends Model
         return OrderReturnFactory::new();
     }
 
+    /** @return BelongsTo<Order, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, OrderReturnSchema::ORDER_ID);

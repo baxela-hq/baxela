@@ -2,7 +2,9 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,6 +21,39 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  * representation tracked by the pdf_* columns (D7/D16).
  *
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property int $revision
+ * @property string $number
+ * @property OrderInvoiceStatusEnum $status
+ * @property CarbonInterface $issued_at
+ * @property CarbonInterface|null $voided_at
+ * @property string|null $void_reason
+ * @property string $currency_code
+ * @property string $subtotal_amount
+ * @property string $discount_amount
+ * @property string|null $coupon_code
+ * @property string $shipping_amount
+ * @property string $shipping_tax_amount
+ * @property string $tax_amount
+ * @property string $total_amount
+ * @property array<string, mixed> $billing_address
+ * @property array<string, mixed> $buyer_identity
+ * @property array<string, mixed> $seller_identity
+ * @property array<string, mixed>|null $meta
+ * @property DocumentPdfStatusEnum $pdf_status
+ * @property string|null $pdf_disk
+ * @property string|null $pdf_path
+ * @property string|null $pdf_checksum
+ * @property CarbonInterface|null $pdf_generated_at
+ * @property string|null $template_version
+ * @property CarbonInterface|null $generation_claimed_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Order $order
+ * @property-read Collection<int, OrderInvoiceItem> $items
  */
 class OrderInvoice extends Model
 {
@@ -70,11 +105,13 @@ class OrderInvoice extends Model
         ];
     }
 
+    /** @return BelongsTo<Order, $this> */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, OrderInvoiceSchema::ORDER_ID);
     }
 
+    /** @return HasMany<OrderInvoiceItem, $this> */
     public function items(): HasMany
     {
         return $this->hasMany(OrderInvoiceItem::class, OrderInvoiceItemSchema::INVOICE_ID);

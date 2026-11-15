@@ -29,6 +29,9 @@ use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @return array{0: Order, 1: Payment, 2: OrderInvoice}
+ */
 function cnOrderWithInvoice(float $total = 100.0): array
 {
     Storage::fake('local');

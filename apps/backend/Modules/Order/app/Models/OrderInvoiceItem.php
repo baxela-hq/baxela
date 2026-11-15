@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,23 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  * recalculated at issue time).
  *
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property int $invoice_id
+ * @property string $product_name
+ * @property string|null $product_slug
+ * @property string|null $sku
+ * @property int|null $variant_id
+ * @property int $quantity
+ * @property string $unit_price
+ * @property string $discount_amount
+ * @property string $tax_rate
+ * @property string $tax_amount
+ * @property string $line_total
+ * @property array<string, mixed>|null $meta
+ * @property CarbonInterface|null $created_at
+ * @property-read OrderInvoice $invoice
  */
 class OrderInvoiceItem extends Model
 {
@@ -44,6 +62,7 @@ class OrderInvoiceItem extends Model
         ];
     }
 
+    /** @return BelongsTo<OrderInvoice, $this> */
     public function invoice(): BelongsTo
     {
         return $this->belongsTo(OrderInvoice::class, OrderInvoiceItemSchema::INVOICE_ID);
