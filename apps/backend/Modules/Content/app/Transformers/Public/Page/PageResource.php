@@ -4,11 +4,13 @@ namespace Modules\Content\Transformers\Public\Page;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Page;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PTSchema;
 use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 
+/** @mixin Page */
 class PageResource extends JsonResource
 {
     use ResolvesPublicLanguage;
@@ -17,6 +19,7 @@ class PageResource extends JsonResource
      * Transform the resource into an array. The page is served in the
      * visitor's language (Accept-Language), falling back to the default.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations

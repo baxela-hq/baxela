@@ -9,6 +9,7 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\PostComment\PostCommentSchema;
 use Modules\Content\Schemas\PostComment\PostCommentStatusEnum;
 
+/** @extends Factory<PostComment> */
 class PostCommentFactory extends Factory
 {
     /**

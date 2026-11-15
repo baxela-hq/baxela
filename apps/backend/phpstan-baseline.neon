@@ -6661,12 +6661,6 @@ parameters:
 			path: Modules/Content/app/Actions/Admin/Page/UpdatePageAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostProduct\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Admin/Post/CreatePostAction.php
-
-		-
 			message: '#^Method Modules\\Content\\Actions\\Admin\\Post\\CreatePostAction\:\:filterPostSeo\(\) has parameter \$items with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6689,18 +6683,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Content/app/Actions/Admin/Post/ListPostAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostProduct\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Admin/Post/ShowPostAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostProduct\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Admin/Post/UpdatePostAction.php
 
 		-
 			message: '#^Method Modules\\Content\\Actions\\Admin\\Post\\UpdatePostAction\:\:filterPostSeo\(\) has parameter \$items with no value type specified in iterable type array\.$#'
@@ -6739,24 +6721,6 @@ parameters:
 			path: Modules/Content/app/Actions/Admin/PostCategory/UpdatePostCategoryAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostComment\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Admin/PostComment/AbstractPostCommentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostComment\:\:\$post_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Admin/PostComment/AbstractPostCommentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostComment\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/app/Actions/Admin/PostComment/AbstractPostCommentAction.php
-
-		-
 			message: '#^Method Modules\\Content\\Actions\\Admin\\PostComment\\AbstractPostCommentAction\:\:enrichWithUserNames\(\) has parameter \$comments with no value type specified in iterable type iterable\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6773,12 +6737,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Content/app/Actions/Admin/PostComment/ListPostCommentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostComment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/app/Actions/Admin/PostComment/UpdatePostCommentAction.php
 
 		-
 			message: '#^Method Modules\\Content\\Actions\\Admin\\PostComment\\UpdatePostCommentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
@@ -6799,22 +6757,10 @@ parameters:
 			path: Modules/Content/app/Actions/Public/Post/ListPostsAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostProduct\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/Public/Post/ShowPostAction.php
-
-		-
 			message: '#^Method Modules\\Content\\Actions\\Public\\PostCategory\\ListPostCategoryAction\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: Modules/Content/app/Actions/Public/PostCategory/ListPostCategoryAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\PostComment\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/app/Actions/Public/PostComment/ListPostCommentsAction.php
 
 		-
 			message: '#^Method Modules\\Content\\Actions\\Public\\PostComment\\ListPostCommentsAction\:\:enrichWithUserNames\(\) has parameter \$comments with no value type specified in iterable type iterable\.$#'
@@ -6835,28 +6781,10 @@ parameters:
 			path: Modules/Content/app/Actions/Public/Sitemap/ListSitemapAction.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/User/PostComment/CreatePostCommentAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$post_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Actions/User/PostComment/CreatePostCommentAction.php
-
-		-
 			message: '#^Method Modules\\Content\\Actions\\User\\PostComment\\CreatePostCommentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Actions/User/PostComment/CreatePostCommentAction.php
-
-		-
-			message: '#^Method Modules\\Content\\Exceptions\\Post\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/Post/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Content\\Exceptions\\Post\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -6865,22 +6793,10 @@ parameters:
 			path: Modules/Content/app/Exceptions/Post/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Content\\Exceptions\\Post\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/Post/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Content\\Exceptions\\Post\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Exceptions/Post/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Content\\Exceptions\\PostCategory\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/PostCategory/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Content\\Exceptions\\PostCategory\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -6889,22 +6805,10 @@ parameters:
 			path: Modules/Content/app/Exceptions/PostCategory/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Content\\Exceptions\\PostCategory\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/PostCategory/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Content\\Exceptions\\PostCategory\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Exceptions/PostCategory/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/PostComment/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -6913,22 +6817,10 @@ parameters:
 			path: Modules/Content/app/Exceptions/PostComment/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\InvalidParentException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/PostComment/InvalidParentException.php
-
-		-
 			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\InvalidParentException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Exceptions/PostComment/InvalidParentException.php
-
-		-
-			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Content/app/Exceptions/PostComment/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Content\\Exceptions\\PostComment\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -6937,19 +6829,7 @@ parameters:
 			path: Modules/Content/app/Exceptions/PostComment/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Featured\\UpdateFeaturedRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
@@ -6973,12 +6853,6 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Post\\PostRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -6997,12 +6871,6 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -7015,46 +6883,10 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostComment\\PostCommentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/PostComment/PostCommentRequest.php
-
-		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\User\\PostComment\\PostCommentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/User/PostComment/PostCommentRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Models\\FeaturedItem\:\:featuredable\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Content/app/Models/FeaturedItem.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\Page uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Page.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Page\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Page.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\PageTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PageTranslation.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PageTranslation\:\:page\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PageTranslation.php
 
 		-
 			message: '#^Method Modules\\Content\\Models\\PageTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
@@ -7063,76 +6895,10 @@ parameters:
 			path: Modules/Content/app/Models/PageTranslation.php
 
 		-
-			message: '#^Class Modules\\Content\\Models\\Post uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Post\:\:categories\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Post\:\:comments\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
 			message: '#^Method Modules\\Content\\Models\\Post\:\:featuredItem\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\MorphOne does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Post\:\:products\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Post\:\:seo\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\Post\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/Post.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\PostCategory uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostCategory.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostCategory\:\:posts\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostCategory.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostCategory\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostCategory.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\PostCategoryTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostCategoryTranslation.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostCategoryTranslation\:\:postCategory\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostCategoryTranslation.php
 
 		-
 			message: '#^Method Modules\\Content\\Models\\PostCategoryTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
@@ -7141,121 +6907,13 @@ parameters:
 			path: Modules/Content/app/Models/PostCategoryTranslation.php
 
 		-
-			message: '#^Class Modules\\Content\\Models\\PostComment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostComment.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostComment\:\:parent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostComment.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostComment\:\:post\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostComment.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostComment\:\:replies\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostComment.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostComment.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostProduct\:\:post\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostProduct.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\PostSeoTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostSeoTranslation.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostSeoTranslation\:\:post\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostSeoTranslation.php
-
-		-
-			message: '#^Class Modules\\Content\\Models\\PostTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostTranslation.php
-
-		-
-			message: '#^Method Modules\\Content\\Models\\PostTranslation\:\:post\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/app/Models/PostTranslation.php
-
-		-
 			message: '#^Method Modules\\Content\\Models\\PostTranslation\:\:slug\(\) return type with generic class Illuminate\\Database\\Eloquent\\Casts\\Attribute does not specify its types\: TGet, TSet$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Content/app/Models/PostTranslation.php
 
 		-
-			message: '#^Method Modules\\Content\\Providers\\ContentServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Providers/ContentServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Content\\Providers\\ContentServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Providers/ContentServiceProvider.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$open_graph_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\Page\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Content/app/Transfer/ContentTransfer.php
@@ -7268,18 +6926,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$image_url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$published_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Content/app/Transfer/ContentTransfer.php
@@ -7309,72 +6955,6 @@ parameters:
 			path: Modules/Content/app/Transfer/ContentTransfer.php
 
 		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Featured\\FeaturedResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Featured/FeaturedResource.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$resource$#'
-			identifier: parameter.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Featured/FeaturedResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Page\\PageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Page\\PageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Page\\PageResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Page\\PageResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Page\\PageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Page\\PageTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Page/PageTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostProductResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostProductResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$image_media_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -7387,54 +6967,6 @@ parameters:
 			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$published_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostSeoTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostSeoTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\Post\\PostTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/Post/PostTranslationResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryResource\:\:\$parent_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -7445,132 +6977,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\PostCategory\\PostCategoryTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostCategory/PostCategoryTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Admin\\PostComment\\PostCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Admin/PostComment/PostCommentResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Page\\PageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Page/PageResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Post\\PostResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Post/PostResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\PostCategory\\PostCategoryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/PostCategory/PostCategoryResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\PostComment\\PostCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/PostComment/PostCommentResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PageSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PageSitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostCategorySitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostCategorySitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\PostSitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/PostSitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\Public\\Sitemap\\SitemapResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/Public/Sitemap/SitemapResource.php
-
-		-
-			message: '#^Method Modules\\Content\\Transformers\\User\\PostComment\\PostCommentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transformers/User/PostComment/PostCommentResource.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PageFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PageTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PageTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostCategoryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostCategoryFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostCategoryTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostCategoryTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostCommentFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostCommentFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostSeoTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostSeoTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Content\\Database\\Factories\\PostTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Content/database/factories/PostTranslationFactory.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between ''mysql'' and ''mysql'' will always evaluate to true\.$#'
@@ -7609,12 +7015,6 @@ parameters:
 			path: Modules/Content/database/seeders/PostSeeder.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -7651,12 +7051,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
 
 		-
-			message: '#^Function featuredPost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -7676,18 +7070,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostCategory\>\|Modules\\Content\\Models\\PostCategory\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
@@ -7735,46 +7117,10 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -7813,18 +7159,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
 
 		-
-			message: '#^Function commentablePost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Post\>\|Modules\\Content\\Models\\Post\:\:\$image_media_id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -7834,42 +7168,6 @@ parameters:
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Post\>\|Modules\\Content\\Models\\Post\:\:\$image_url\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Post\>\|Modules\\Content\\Models\\Post\:\:\$published_at\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Post\>\|Modules\\Content\\Models\\Post\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
@@ -7921,12 +7219,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
-			message: '#^Function postCategory\(\) should return Modules\\Content\\Models\\PostCategory but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
 			message: '#^Function postPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -7939,40 +7231,16 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 4
+			count: 2
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 3
+			count: 2
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$meta_title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Content\\Models\\PostCategory\:\:\$parent_id\.$#'
@@ -8023,18 +7291,6 @@ parameters:
 			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
 			count: 1
@@ -8045,24 +7301,6 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Content/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Page\>\|Modules\\Content\\Models\\Page\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/PageTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -8113,18 +7351,6 @@ parameters:
 			path: Modules/Content/tests/Feature/PageTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$image_media_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -8132,12 +7358,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$image_url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PostSeederTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Content\\Models\\Post\:\:\$status\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Content/tests/Feature/PostSeederTest.php
@@ -8157,14 +7377,8 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
 			path: Modules/Content/tests/Feature/PostSeederTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Public/PostCommentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -8177,24 +7391,6 @@ parameters:
 			identifier: method.notFound
 			count: 2
 			path: Modules/Content/tests/Feature/Public/PostCommentTest.php
-
-		-
-			message: '#^Function commentedPost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/Public/PostTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -8215,24 +7411,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Public/PostTest.php
 
 		-
-			message: '#^Function publishedPost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
-			message: '#^Function scheduledPost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 3
@@ -8251,52 +7429,10 @@ parameters:
 			path: Modules/Content/tests/Feature/Public/SitemapTest.php
 
 		-
-			message: '#^Function sitemapPage\(\) should return Modules\\Content\\Models\\Page but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
 			message: '#^Function sitemapPost\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Function sitemapPost\(\) should return Modules\\Content\\Models\\Post but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Function sitemapPostCategory\(\) should return Modules\\Content\\Models\\PostCategory but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\PostComment\>\|Modules\\Content\\Models\\PostComment\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -8314,18 +7450,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Content/tests/Feature/User/PostCommentTest.php
 
 		-

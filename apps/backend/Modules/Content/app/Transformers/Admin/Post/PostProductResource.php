@@ -4,14 +4,17 @@ namespace Modules\Content\Transformers\Admin\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Post;
 use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Core\Contracts\Gateways\Catalog\DTOs\ProductSummary;
 
+/** @mixin Post */
 class PostProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $summary = $this->resource->getAttribute(PostProductSchema::ATTR_PRODUCT_SUMMARY);

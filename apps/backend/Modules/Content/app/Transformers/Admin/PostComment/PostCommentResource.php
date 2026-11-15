@@ -4,15 +4,18 @@ namespace Modules\Content\Transformers\Admin\PostComment;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\PostComment;
 use Modules\Content\Schemas\Post\PostSchema as PSchema;
 use Modules\Content\Schemas\PostComment\PostCommentSchema as Schema;
 use Modules\Content\Transformers\Admin\Post\PostTranslationResource;
 
+/** @mixin PostComment */
 class PostCommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

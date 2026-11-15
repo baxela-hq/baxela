@@ -4,9 +4,11 @@ namespace Modules\Content\Transformers\Admin\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Post;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin Post */
 class PostSeoTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -14,6 +16,7 @@ class PostSeoTranslationResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

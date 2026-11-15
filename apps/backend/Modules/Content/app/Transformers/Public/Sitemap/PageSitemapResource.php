@@ -4,10 +4,12 @@ namespace Modules\Content\Transformers\Public\Sitemap;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Page;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PagTSchema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin Page */
 class PageSitemapResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -17,6 +19,7 @@ class PageSitemapResource extends JsonResource
      * language are skipped — admin flows always resolve a language_id,
      * and a URL locale can't be derived from a null one.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

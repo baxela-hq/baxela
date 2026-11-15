@@ -8,6 +8,7 @@ use Modules\Content\Models\PostTranslation;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostTranslationSchema;
 
+/** @extends Factory<PostTranslation> */
 class PostTranslationFactory extends Factory
 {
     /**

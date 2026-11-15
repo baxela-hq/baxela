@@ -7,6 +7,7 @@ use Modules\Content\Models\Page;
 use Modules\Content\Models\PageTranslation;
 use Modules\Content\Schemas\Page\PageTranslationSchema;
 
+/** @extends Factory<PageTranslation> */
 class PageTranslationFactory extends Factory
 {
     /**

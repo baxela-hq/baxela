@@ -8,6 +8,7 @@ use Modules\Content\Models\PageTranslation;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageStatusEnum;
 
+/** @extends Factory<Page> */
 class PageFactory extends Factory
 {
     /**

@@ -2,6 +2,8 @@
 
 namespace Modules\Content\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,8 +11,16 @@ use Modules\Content\Database\Factories\PageFactory;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageStatusEnum;
 
+/**
+ * @property int $id
+ * @property PageStatusEnum $status
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, PageTranslation> $translations
+ */
 class Page extends Model
 {
+    /** @use HasFactory<PageFactory> */
     use HasFactory;
 
     protected $table = PageSchema::TABLE;
@@ -34,6 +44,7 @@ class Page extends Model
         return PageFactory::new();
     }
 
+    /** @return HasMany<PageTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(PageTranslation::class);

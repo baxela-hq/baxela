@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\In;
 use Modules\Content\Schemas\Post\PostSchema as PSchema;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema as PSTSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
@@ -28,6 +30,7 @@ class PostRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|Closure|Enum|In|Exists|LanguageUniquePair>> */
     public function rules(): array
     {
         // null on create, the post id on update — /api/v1/content/admin/posts/{id}

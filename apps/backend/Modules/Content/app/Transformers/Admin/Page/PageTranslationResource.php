@@ -4,9 +4,11 @@ namespace Modules\Content\Transformers\Admin\Page;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Page;
 use Modules\Content\Schemas\Page\PageTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin Page */
 class PageTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -14,6 +16,7 @@ class PageTranslationResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

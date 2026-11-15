@@ -7,6 +7,7 @@ use Modules\Content\Models\PostCategory;
 use Modules\Content\Models\PostCategoryTranslation;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 
+/** @extends Factory<PostCategory> */
 class PostCategoryFactory extends Factory
 {
     /**

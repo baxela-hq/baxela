@@ -4,13 +4,16 @@ namespace Modules\Content\Transformers\Admin\Page;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Page;
 use Modules\Content\Schemas\Page\PageSchema;
 
+/** @mixin Page */
 class PageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

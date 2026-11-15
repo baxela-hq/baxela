@@ -4,13 +4,16 @@ namespace Modules\Content\Transformers\Admin\PostCategory;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\PostCategory;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 
+/** @mixin PostCategory */
 class PostCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

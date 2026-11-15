@@ -5,6 +5,8 @@ namespace Modules\Content\Http\Requests\Admin\Page;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\In;
 use Modules\Content\Schemas\Page\PageSchema as PSchema;
 use Modules\Content\Schemas\Page\PageStatusEnum;
 use Modules\Content\Schemas\Page\PageTranslationSchema as PTSchema;
@@ -23,6 +25,7 @@ class PageRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|\Closure|Enum|In|Exists|LanguageUniquePair>> */
     public function rules(): array
     {
         $id = $this->route('id');

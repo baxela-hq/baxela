@@ -4,6 +4,9 @@ namespace Modules\Content\Http\Requests\Admin\PostCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\In;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema as PCSchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
@@ -21,6 +24,7 @@ class PostCategoryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|\Closure|Enum|In|Exists|LanguageUniquePair>> */
     public function rules(): array
     {
         // null on create, the category id on update — /api/v1/content/admin/post-categories/{id}

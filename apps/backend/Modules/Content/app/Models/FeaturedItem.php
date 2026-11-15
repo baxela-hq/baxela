@@ -2,10 +2,19 @@
 
 namespace Modules\Content\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
 
+/**
+ * @property int $id
+ * @property string $featuredable_type
+ * @property int $featuredable_id
+ * @property int|null $position
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ */
 class FeaturedItem extends Model
 {
     protected $table = FeaturedItemSchema::TABLE;

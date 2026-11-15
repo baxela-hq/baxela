@@ -4,11 +4,13 @@ namespace Modules\Content\Transformers\Public\PostCategory;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\PostCategory;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
 use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 
+/** @mixin PostCategory */
 class PostCategoryResource extends JsonResource
 {
     use ResolvesPublicLanguage;
@@ -17,6 +19,7 @@ class PostCategoryResource extends JsonResource
      * Transform the resource into an array. The category is served in the
      * visitor's language (Accept-Language), falling back to the default.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations

@@ -8,6 +8,7 @@ use Modules\Content\Models\PostTranslation;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 
+/** @extends Factory<Post> */
 class PostFactory extends Factory
 {
     /**

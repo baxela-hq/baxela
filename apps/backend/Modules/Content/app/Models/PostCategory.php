@@ -2,6 +2,8 @@
 
 namespace Modules\Content\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -10,8 +12,16 @@ use Modules\Content\Database\Factories\PostCategoryFactory;
 use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 
+/**
+ * @property int $id
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, Post> $posts
+ * @property-read Collection<int, PostCategoryTranslation> $translations
+ */
 class PostCategory extends Model
 {
+    /** @use HasFactory<PostCategoryFactory> */
     use HasFactory;
 
     protected $table = PostCategorySchema::TABLE;
@@ -29,12 +39,14 @@ class PostCategory extends Model
         return PostCategoryFactory::new();
     }
 
+    /** @return BelongsToMany<Post, $this> */
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, PostCategoryPostSchema::TABLE,
             PostCategoryPostSchema::POST_CATEGORY_ID, PostCategoryPostSchema::POST_ID);
     }
 
+    /** @return HasMany<PostCategoryTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(PostCategoryTranslation::class);

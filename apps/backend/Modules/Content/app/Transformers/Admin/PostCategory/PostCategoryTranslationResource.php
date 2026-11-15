@@ -4,9 +4,11 @@ namespace Modules\Content\Transformers\Admin\PostCategory;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\PostCategory;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin PostCategory */
 class PostCategoryTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -14,6 +16,7 @@ class PostCategoryTranslationResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

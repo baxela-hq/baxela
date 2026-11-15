@@ -4,6 +4,7 @@ namespace Modules\Content\Transformers\Public\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Content\Models\Post;
 use Modules\Content\Schemas\Post\PostProductSchema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
@@ -13,6 +14,7 @@ use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
 
+/** @mixin Post */
 class PostResource extends JsonResource
 {
     use ResolvesPublicLanguage;
@@ -21,6 +23,7 @@ class PostResource extends JsonResource
      * Transform the resource into an array. The post is served in the
      * visitor's language (Accept-Language), falling back to the default.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations

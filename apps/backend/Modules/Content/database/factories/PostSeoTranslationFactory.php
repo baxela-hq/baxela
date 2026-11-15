@@ -7,6 +7,7 @@ use Modules\Content\Models\Post;
 use Modules\Content\Models\PostSeoTranslation;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema;
 
+/** @extends Factory<PostSeoTranslation> */
 class PostSeoTranslationFactory extends Factory
 {
     /**

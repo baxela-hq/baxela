@@ -2,6 +2,8 @@
 
 namespace Modules\Content\Models;
 
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,8 +14,21 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
 
+/**
+ * @property int $id
+ * @property PostStatusEnum $status
+ * @property CarbonInterface|null $published_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, PostTranslation> $translations
+ * @property-read Collection<int, PostCategory> $categories
+ * @property-read Collection<int, PostProduct> $products
+ * @property-read Collection<int, PostSeoTranslation> $seo
+ * @property-read Collection<int, PostComment> $comments
+ */
 class Post extends Model
 {
+    /** @use HasFactory<PostFactory> */
     use HasFactory;
 
     protected $table = PostSchema::TABLE;
@@ -41,27 +56,32 @@ class Post extends Model
         return PostFactory::new();
     }
 
+    /** @return HasMany<PostTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(PostTranslation::class);
     }
 
+    /** @return BelongsToMany<PostCategory, $this> */
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(PostCategory::class, PostCategoryPostSchema::TABLE,
             PostCategoryPostSchema::POST_ID, PostCategoryPostSchema::POST_CATEGORY_ID);
     }
 
+    /** @return HasMany<PostProduct, $this> */
     public function products(): HasMany
     {
         return $this->hasMany(PostProduct::class);
     }
 
+    /** @return HasMany<PostSeoTranslation, $this> */
     public function seo(): HasMany
     {
         return $this->hasMany(PostSeoTranslation::class);
     }
 
+    /** @return HasMany<PostComment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(PostComment::class);
