@@ -21,8 +21,8 @@ class PicksTranslation
     private const CACHE_TTL = 300;
 
     /**
-     * @param  Collection<int, object>|null  $translations
-     *                                                      (Eloquent collections extend it)
+     * @param  Collection<int, mixed>|null  $translations
+     *                                                     (Eloquent collections extend it; element type varies by caller)
      */
     public static function pick(
         ?Collection $translations,

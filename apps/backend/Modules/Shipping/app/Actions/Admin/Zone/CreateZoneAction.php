@@ -13,6 +13,7 @@ class CreateZoneAction
     /**
      * @throws CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Zone
     {
         try {

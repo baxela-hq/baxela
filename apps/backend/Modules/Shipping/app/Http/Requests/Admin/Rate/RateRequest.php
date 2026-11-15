@@ -4,6 +4,7 @@ namespace Modules\Shipping\Http\Requests\Admin\Rate;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Modules\Core\Rules\UniquePair;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Rate\RateSchema;
@@ -11,6 +12,7 @@ use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
 class RateRequest extends FormRequest
 {
+    /** @return array<string, list<string|Exists|UniquePair>> */
     public function rules(): array
     {
         $id = $this->route('id');

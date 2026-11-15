@@ -5,8 +5,10 @@ namespace Modules\Shipping\Transformers\Admin\Method;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
+use Modules\Shipping\Models\MethodTranslation;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema as Schema;
 
+/** @mixin MethodTranslation */
 class MethodTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -14,6 +16,7 @@ class MethodTranslationResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

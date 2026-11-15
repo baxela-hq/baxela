@@ -4,13 +4,16 @@ namespace Modules\Shipping\Transformers\User\Shipment;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Shipping\Models\Shipment;
 use Modules\Shipping\Schemas\Shipment\ShipmentSchema;
 
+/** @mixin Shipment */
 class ShipmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

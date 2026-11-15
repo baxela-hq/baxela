@@ -9,6 +9,7 @@ use Modules\Shipping\Schemas\Shipment\ShipmentStatusEnum;
 
 class ShipmentRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum|array<int, string>>> */
     public function rules(): array
     {
         return [

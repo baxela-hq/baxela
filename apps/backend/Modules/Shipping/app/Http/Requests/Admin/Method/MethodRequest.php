@@ -4,6 +4,7 @@ namespace Modules\Shipping\Http\Requests\Admin\Method;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema as MTSchema;
@@ -17,6 +18,7 @@ class MethodRequest extends FormRequest
         $this->resolveLanguages();
     }
 
+    /** @return array<string, array<int, string|Enum|array<int, string>>> */
     public function rules(): array
     {
         $id = $this->route('id');

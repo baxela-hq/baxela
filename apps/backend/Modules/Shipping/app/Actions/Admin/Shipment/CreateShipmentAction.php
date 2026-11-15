@@ -20,6 +20,7 @@ class CreateShipmentAction
     /**
      * @throws OrderNotFoundException|AlreadyExistsException|CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Shipment
     {
         $orderId = $data[ShipmentSchema::ORDER_ID];

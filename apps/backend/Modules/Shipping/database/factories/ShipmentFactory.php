@@ -7,6 +7,7 @@ use Modules\Shipping\Models\Shipment;
 use Modules\Shipping\Schemas\Shipment\ShipmentSchema;
 use Modules\Shipping\Schemas\Shipment\ShipmentStatusEnum;
 
+/** @extends Factory<Shipment> */
 class ShipmentFactory extends Factory
 {
     /**
@@ -17,6 +18,7 @@ class ShipmentFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

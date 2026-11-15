@@ -20,6 +20,7 @@ class UpdateShipmentAction
     /**
      * @throws InvalidTransitionException|UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Shipment
     {
         $record = Shipment::query()->findOrFail($id);

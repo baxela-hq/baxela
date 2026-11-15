@@ -5,12 +5,15 @@ namespace Modules\Shipping\Transformers\User\Method;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Contracts\Gateways\Shipping\DTOs\ShippingMethodQuoteDto;
+use Modules\Shipping\Models\Method;
 
+/** @mixin Method */
 class MethodQuoteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         /** @var ShippingMethodQuoteDto $quote */

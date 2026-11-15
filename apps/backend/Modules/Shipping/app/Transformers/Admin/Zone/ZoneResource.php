@@ -5,13 +5,16 @@ namespace Modules\Shipping\Transformers\Admin\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Schemas\Country\CountrySchema;
+use Modules\Shipping\Models\Zone;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
+/** @mixin Zone */
 class ZoneResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

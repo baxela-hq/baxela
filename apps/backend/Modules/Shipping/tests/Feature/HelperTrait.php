@@ -74,7 +74,6 @@ trait HelperTrait
         return $zone;
     }
 
-
     /** Zone (country-coded) + method (translated) + a rate tying them. */
     public function seedTransferShipping(string $languageId): array
     {
@@ -96,7 +95,6 @@ trait HelperTrait
 
         return ['zone' => $zone, 'method' => $method, 'rate' => $rate];
     }
-
 
     /**
      * Export through the module's own data endpoint and return the

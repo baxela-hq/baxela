@@ -12,6 +12,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListRateAction
 {
+    /** @return LengthAwarePaginator<int, Rate> */
     public function handle(): LengthAwarePaginator
     {
         $id = RateSchema::TABLE.'.'.RateSchema::ID;

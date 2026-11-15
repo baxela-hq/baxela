@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Shipping\Models\Method;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 
+/** @extends Factory<Method> */
 class MethodFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class MethodFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

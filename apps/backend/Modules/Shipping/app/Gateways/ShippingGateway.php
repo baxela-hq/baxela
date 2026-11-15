@@ -99,8 +99,8 @@ class ShippingGateway implements ShippingGatewayInterface
     {
         $translations = $method->translations;
 
-        return PicksTranslation::pick($translations, $languageId)
-            ?->{MethodTranslationSchema::NAME}
-            ?? $method->{MethodSchema::CODE};
+        $translation = PicksTranslation::pick($translations, $languageId);
+
+        return $translation?->{MethodTranslationSchema::NAME} ?? $method->{MethodSchema::CODE};
     }
 }

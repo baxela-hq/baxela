@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListShipmentAction
 {
+    /** @return LengthAwarePaginator<int, Shipment> */
     public function handle(): LengthAwarePaginator
     {
         $id = ShipmentSchema::TABLE.'.'.ShipmentSchema::ID;

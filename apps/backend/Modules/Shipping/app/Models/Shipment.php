@@ -2,6 +2,7 @@
 
 namespace Modules\Shipping\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Shipping\Database\Factories\ShipmentFactory;
@@ -12,8 +13,22 @@ use Modules\Shipping\Schemas\Shipment\ShipmentStatusEnum;
  * No order() relation on purpose: orders live in another module and are
  * only reachable through the order gateway.
  */
+/**
+ * @property int $id
+ * @property int $order_id
+ * @property string|null $carrier_name
+ * @property string|null $tracking_number
+ * @property string|null $tracking_url
+ * @property ShipmentStatusEnum $status
+ * @property CarbonInterface|null $shipped_at
+ * @property CarbonInterface|null $delivered_at
+ * @property string|null $notes
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ */
 class Shipment extends Model
 {
+    /** @use HasFactory<ShipmentFactory> */
     use HasFactory;
 
     protected $table = ShipmentSchema::TABLE;

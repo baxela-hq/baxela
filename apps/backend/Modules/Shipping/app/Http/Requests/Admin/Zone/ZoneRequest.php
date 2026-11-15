@@ -8,6 +8,7 @@ use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
 class ZoneRequest extends FormRequest
 {
+    /** @return array<string, list<string|CountryCodeRule>> */
     public function rules(): array
     {
         return [

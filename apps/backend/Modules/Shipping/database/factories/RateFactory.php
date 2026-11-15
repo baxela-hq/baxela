@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Shipping\Models\Rate;
 use Modules\Shipping\Schemas\Rate\RateSchema;
 
+/** @extends Factory<Rate> */
 class RateFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class RateFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

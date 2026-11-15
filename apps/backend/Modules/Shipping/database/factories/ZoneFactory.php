@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Shipping\Models\Zone;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
+/** @extends Factory<Zone> */
 class ZoneFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class ZoneFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

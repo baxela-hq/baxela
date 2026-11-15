@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Shipping\Models\MethodTranslation;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema;
 
+/** @extends Factory<MethodTranslation> */
 class MethodTranslationFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class MethodTranslationFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

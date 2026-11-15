@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListZoneAction
 {
+    /** @return LengthAwarePaginator<int, Zone> */
     public function handle(): LengthAwarePaginator
     {
         $id = ZoneSchema::TABLE.'.'.ZoneSchema::ID;

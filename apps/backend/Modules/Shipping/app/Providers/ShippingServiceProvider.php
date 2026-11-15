@@ -18,6 +18,7 @@ class ShippingServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'shipping';
 
+    /** @var array<class-string, class-string> */
     public array $bindings = [
         ShippingGatewayInterface::class => ShippingGateway::class,
     ];
@@ -141,11 +142,13 @@ class ShippingServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListMethodAction
 {
+    /** @return LengthAwarePaginator<int, Method> */
     public function handle(): LengthAwarePaginator
     {
         $id = MethodSchema::TABLE.'.'.MethodSchema::ID;
