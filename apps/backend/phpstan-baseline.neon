@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 7
@@ -2481,7 +2475,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 2
+			count: 1
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -4099,12 +4093,6 @@ parameters:
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
 		-
-			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Catalog/app/Gateways/CatalogGateway.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:create\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -4177,12 +4165,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Attribute\\AttributeRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Attribute\\AttributeRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4190,12 +4172,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Attribute\\AttributeRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\Attribute\\AttributeRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
@@ -4213,12 +4189,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4226,12 +4196,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
@@ -4255,12 +4219,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeTemplate/AttributeTemplateRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeValue\\AttributeValueRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeValue\\AttributeValueRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4268,12 +4226,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeValue\\AttributeValueRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\AttributeValue\\AttributeValueRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
@@ -4289,12 +4241,6 @@ parameters:
 			identifier: argument.templateType
 			count: 4
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Brand\\BrandRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Brand\\BrandRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
@@ -4309,12 +4255,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
 
 		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\Brand\\BrandRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -4327,12 +4267,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Category\\CategoryRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Category\\CategoryRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4340,12 +4274,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Category\\CategoryRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\Category\\CategoryRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
@@ -4381,12 +4309,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4394,12 +4316,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
@@ -4417,12 +4333,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4430,12 +4340,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
@@ -4501,12 +4405,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4526,12 +4424,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:validateAttributeValueType\(\) has parameter \$attributeValue with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
@@ -6031,12 +5923,6 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
 
 		-
-			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
-			identifier: argument.type
-			count: 3
-			path: Modules/Catalog/app/Transformers/Public/Product/ShowProductResource.php
-
-		-
 			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
 			identifier: method.unresolvableReturnType
 			count: 1
@@ -6471,7 +6357,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 2
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
 		-
@@ -6543,12 +6429,6 @@ parameters:
 		-
 			message: '#^Function transferImportPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Function transferMedia\(\) should return Modules\\Media\\Models\\Media but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
 			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
@@ -6951,12 +6831,6 @@ parameters:
 		-
 			message: '#^Function fullMapping\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Function importMedia\(\) should return Modules\\Media\\Models\\Media but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
 			count: 1
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
@@ -7519,58 +7393,10 @@ parameters:
 			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
 
 		-
-			message: '#^Method Modules\\Contact\\Actions\\Admin\\ContactMessage\\ListContactMessageAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/app/Actions/Admin/ContactMessage/ListContactMessageAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Actions\\Admin\\ContactMessage\\UpdateContactMessageStatusAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Actions/Admin/ContactMessage/UpdateContactMessageStatusAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Actions\\Admin\\NewsletterSubscriber\\ListNewsletterSubscriberAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/app/Actions/Admin/NewsletterSubscriber/ListNewsletterSubscriberAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Actions\\Admin\\NewsletterSubscriber\\UpdateNewsletterSubscriberStatusAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Actions/Admin/NewsletterSubscriber/UpdateNewsletterSubscriberStatusAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Actions\\Public\\ContactMessage\\SubmitContactMessageAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Actions/Public/ContactMessage/SubmitContactMessageAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Actions\\Public\\NewsletterSubscriber\\SubscribeNewsletterAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Actions/Public/NewsletterSubscriber/SubscribeNewsletterAction.php
-
-		-
-			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Contact/app/Exceptions/ContactMessage/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Contact/app/Exceptions/ContactMessage/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\DeletionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Contact/app/Exceptions/ContactMessage/DeletionFailedException.php
 
 		-
 			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\DeletionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -7579,268 +7405,16 @@ parameters:
 			path: Modules/Contact/app/Exceptions/ContactMessage/DeletionFailedException.php
 
 		-
-			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\StatusUpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Contact/app/Exceptions/ContactMessage/StatusUpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Contact\\Exceptions\\ContactMessage\\StatusUpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Contact/app/Exceptions/ContactMessage/StatusUpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Contact\\Http\\Requests\\Admin\\ContactMessage\\UpdateContactMessageStatusRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Http/Requests/Admin/ContactMessage/UpdateContactMessageStatusRequest.php
-
-		-
-			message: '#^Method Modules\\Contact\\Http\\Requests\\Admin\\NewsletterSubscriber\\UpdateNewsletterSubscriberStatusRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Http/Requests/Admin/NewsletterSubscriber/UpdateNewsletterSubscriberStatusRequest.php
-
-		-
-			message: '#^Method Modules\\Contact\\Http\\Requests\\Public\\ContactMessage\\SubmitContactMessageRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Http/Requests/Public/ContactMessage/SubmitContactMessageRequest.php
-
-		-
-			message: '#^Method Modules\\Contact\\Http\\Requests\\Public\\NewsletterSubscriber\\SubscribeNewsletterRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Http/Requests/Public/NewsletterSubscriber/SubscribeNewsletterRequest.php
-
-		-
-			message: '#^Class Modules\\Contact\\Models\\ContactMessage uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/app/Models/ContactMessage.php
-
-		-
-			message: '#^Class Modules\\Contact\\Models\\NewsletterSubscriber uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/app/Models/NewsletterSubscriber.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$content\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$ip_address\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$phone\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\ContactMessage\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\NewsletterSubscriber\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\NewsletterSubscriber\:\:\$locale\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Models\\NewsletterSubscriber\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transfer/ContactTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$content\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$ip_address\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$phone\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Method Modules\\Contact\\Transformers\\Admin\\ContactMessage\\ContactMessageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$locale\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Method Modules\\Contact\\Transformers\\Admin\\NewsletterSubscriber\\NewsletterSubscriberResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Transformers/Admin/NewsletterSubscriber/NewsletterSubscriberResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Public\\ContactMessage\\ContactMessageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Public/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Public\\ContactMessage\\ContactMessageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Public/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Contact\\Transformers\\Public\\ContactMessage\\ContactMessageResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/app/Transformers/Public/ContactMessage/ContactMessageResource.php
-
-		-
-			message: '#^Method Modules\\Contact\\Transformers\\Public\\ContactMessage\\ContactMessageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/app/Transformers/Public/ContactMessage/ContactMessageResource.php
-
-		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
 			count: 2
 			path: Modules/Contact/config/config.php
-
-		-
-			message: '#^Class Modules\\Contact\\Database\\Factories\\ContactMessageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/database/factories/ContactMessageFactory.php
-
-		-
-			message: '#^Class Modules\\Contact\\Database\\Factories\\NewsletterSubscriberFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Contact/database/factories/NewsletterSubscriberFactory.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -7891,30 +7465,6 @@ parameters:
 			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Contact\\Models\\ContactMessage\>\|Modules\\Contact\\Models\\ContactMessage\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Contact\\Models\\ContactMessage\>\|Modules\\Contact\\Models\\ContactMessage\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -7957,52 +7507,10 @@ parameters:
 			path: Modules/Contact/tests/Feature/ContactMessageTest.php
 
 		-
-			message: '#^Function messagePayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Function messagePayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
 			message: '#^Trait Modules\\Contact\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Contact/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Contact\\Models\\NewsletterSubscriber\>\|Modules\\Contact\\Models\\NewsletterSubscriber\:\:\$email\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Contact\\Models\\NewsletterSubscriber\>\|Modules\\Contact\\Models\\NewsletterSubscriber\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -8044,12 +7552,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
 
 		-
@@ -8389,12 +7891,6 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -8402,12 +7898,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
-			message: '#^Property Modules\\Content\\Http\\Requests\\Admin\\Page\\PageRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
@@ -8423,12 +7913,6 @@ parameters:
 			identifier: argument.templateType
 			count: 4
 			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Post\\PostRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
 
 		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Post\\PostRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
@@ -8443,12 +7927,6 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
 
 		-
-			message: '#^Property Modules\\Content\\Http\\Requests\\Admin\\Post\\PostRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -8461,12 +7939,6 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
 
 		-
-			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -8474,12 +7946,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
-
-		-
-			message: '#^Property Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
@@ -12931,82 +12397,10 @@ parameters:
 			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
 
 		-
-			message: '#^Method Modules\\Media\\Actions\\Admin\\Folder\\CreateFolderAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Folder/CreateFolderAction.php
-
-		-
-			message: '#^Method Modules\\Media\\Actions\\Admin\\Folder\\ListFolderAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Folder/ListFolderAction.php
-
-		-
-			message: '#^Instanceof between Illuminate\\Support\\Collection\<\(int\|string\), mixed\> and Illuminate\\Support\\Collection will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Folder/UpdateFolderAction.php
-
-		-
-			message: '#^Method Modules\\Media\\Actions\\Admin\\Folder\\UpdateFolderAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Folder/UpdateFolderAction.php
-
-		-
-			message: '#^Offset mixed on \*NEVER\* on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Folder/UpdateFolderAction.php
-
-		-
 			message: '#^Class Modules\\Media\\DTOs\\Admin\\CreateMediaInput referenced with incorrect case\: Modules\\Media\\Dtos\\Admin\\CreateMediaInput\.$#'
 			identifier: class.nameCase
 			count: 2
 			path: Modules/Media/app/Actions/Admin/Media/CreateMediaAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/DeleteMediaAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/DeleteMediaAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$mime_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Media/app/Actions/Admin/Media/GenerateMediaVariantsAction.php
-
-		-
-			message: '#^Method Modules\\Media\\Actions\\Admin\\Media\\ListMediaAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/ListMediaAction.php
-
-		-
-			message: '#^Method Modules\\Media\\Actions\\Admin\\Media\\UpdateMediaAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Actions/Admin/Media/UpdateMediaAction.php
 
 		-
 			message: '#^Method Modules\\Media\\DTOs\\Admin\\CreateMediaInput\:\:fill\(\) has parameter \$input with no value type specified in iterable type array\.$#'
@@ -13021,142 +12415,16 @@ parameters:
 			path: Modules/Media/app/DTOs/Admin/CreateMediaInput.php
 
 		-
-			message: '#^Method Modules\\Media\\Exceptions\\Admin\\Folder\\CircularMoveException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Media/app/Exceptions/Admin/Folder/CircularMoveException.php
-
-		-
 			message: '#^Method Modules\\Media\\Exceptions\\Admin\\Folder\\CircularMoveException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Media/app/Exceptions/Admin/Folder/CircularMoveException.php
 
 		-
-			message: '#^Method Modules\\Media\\Exceptions\\Admin\\Media\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Media/app/Exceptions/Admin/Media/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Media\\Exceptions\\Admin\\Media\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Media/app/Exceptions/Admin/Media/CreationFailedException.php
-
-		-
-			message: '#^Class Modules\\Media\\Filters\\NullableExactFilter implements generic interface Spatie\\QueryBuilder\\Filters\\Filter but does not specify its types\: TModelClass$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Filters/NullableExactFilter.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$extension\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$mime_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Parameter \#2 \$callback of function array_filter expects \(callable\(string\)\: bool\)\|null, ''strlen'' given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Media/app/Gateways/MediaGateway.php
-
-		-
-			message: '#^Method Modules\\Media\\Http\\Requests\\Admin\\Folder\\FolderRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Http/Requests/Admin/Folder/FolderRequest.php
-
-		-
-			message: '#^Method Modules\\Media\\Http\\Requests\\Admin\\Media\\ListMediaRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Http/Requests/Admin/Media/ListMediaRequest.php
-
-		-
-			message: '#^Method Modules\\Media\\Http\\Requests\\Admin\\Media\\MediaRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Http/Requests/Admin/Media/MediaRequest.php
-
-		-
-			message: '#^Method Modules\\Media\\Http\\Requests\\Admin\\Media\\UpdateMediaRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Http/Requests/Admin/Media/UpdateMediaRequest.php
-
-		-
-			message: '#^Class Modules\\Media\\Models\\Folder uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Models/Folder.php
-
-		-
-			message: '#^Method Modules\\Media\\Models\\Folder\:\:media\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Models/Folder.php
-
-		-
-			message: '#^Class Modules\\Media\\Models\\Media uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Models/Media.php
-
-		-
-			message: '#^Method Modules\\Media\\Models\\Media\:\:folder\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/app/Models/Media.php
-
-		-
-			message: '#^Method Modules\\Media\\Providers\\MediaServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Providers/MediaServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Media\\Providers\\MediaServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/app/Providers/MediaServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Media\\Providers\\MediaServiceProvider\:\:\$bindings has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: Modules/Media/app/Providers/MediaServiceProvider.php
 
 		-
 			message: '#^Method Modules\\Media\\Schemas\\Media\\MediaMimeTypeEnum\:\:values\(\) return type has no value type specified in iterable type array\.$#'
@@ -13181,36 +12449,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Media/app/Transformers/Admin/Media/MediaResource.php
-
-		-
-			message: '#^Class Modules\\Media\\Database\\Factories\\FolderFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/database/factories/FolderFactory.php
-
-		-
-			message: '#^Class Modules\\Media\\Database\\Factories\\MediaFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Media/database/factories/MediaFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 34
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13273,42 +12511,6 @@ parameters:
 			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 6
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Media\\Models\\Media\>\|Modules\\Media\\Models\\Media\:\:\$metadata\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$disk\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$metadata\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$mime_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Media\\Models\\Media\:\:\$path\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\Expectation\<mixed\>\:\:assertNoContent\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -13351,26 +12553,8 @@ parameters:
 			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
 
 		-
-			message: '#^Function mediaWithBytes\(\) should return Modules\\Media\\Models\\Media but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
 			message: '#^Function variantsOf\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Parameter \#1 \$media of function variantsOf expects Modules\\Media\\Models\\Media, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Parameter \#1 \$media of method Modules\\Media\\Actions\\Admin\\Media\\GenerateMediaVariantsAction\:\:handle\(\) expects Modules\\Media\\Models\\Media, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
 			count: 1
 			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
 
@@ -13427,30 +12611,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Media/tests/Feature/Admin/Media/MediaDiskTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/MediaGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$folder_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 22
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13519,76 +12679,16 @@ parameters:
 			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
 			message: '#^Trait Modules\\Media\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Media/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Method Modules\\Menu\\Actions\\Admin\\Menu\\CreateMenuAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/Menu/CreateMenuAction.php
-
-		-
-			message: '#^Method Modules\\Menu\\Actions\\Admin\\Menu\\ListMenuAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/Menu/ListMenuAction.php
-
-		-
-			message: '#^Method Modules\\Menu\\Actions\\Admin\\Menu\\UpdateMenuAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/Menu/UpdateMenuAction.php
-
-		-
-			message: '#^Method Modules\\Menu\\Actions\\Admin\\MenuLink\\CreateMenuLinkAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/MenuLink/CreateMenuLinkAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$menu_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Menu/app/Actions/Admin/MenuLink/DeleteMenuLinkAction.php
-
-		-
 			message: '#^Method Modules\\Menu\\Actions\\Admin\\MenuLink\\ListMenuLinkAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Menu/app/Actions/Admin/MenuLink/ListMenuLinkAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$menu_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/MenuLink/UpdateMenuLinkAction.php
-
-		-
-			message: '#^Instanceof between Illuminate\\Support\\Collection\<\(int\|string\), mixed\> and Illuminate\\Support\\Collection will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/MenuLink/UpdateMenuLinkAction.php
-
-		-
-			message: '#^Method Modules\\Menu\\Actions\\Admin\\MenuLink\\UpdateMenuLinkAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/MenuLink/UpdateMenuLinkAction.php
-
-		-
-			message: '#^Offset mixed on \*NEVER\* on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Menu/app/Actions/Admin/MenuLink/UpdateMenuLinkAction.php
 
 		-
 			message: '#^Method Modules\\Menu\\Actions\\Public\\Menu\\AbstractMenuAction\:\:linkRelations\(\) return type has no value type specified in iterable type array\.$#'
@@ -13609,22 +12709,10 @@ parameters:
 			path: Modules/Menu/app/Actions/Public/Menu/ListMenuAction.php
 
 		-
-			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/Menu/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Exceptions/Menu/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\DeletionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/Menu/DeletionFailedException.php
 
 		-
 			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\DeletionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -13633,22 +12721,10 @@ parameters:
 			path: Modules/Menu/app/Exceptions/Menu/DeletionFailedException.php
 
 		-
-			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/Menu/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Menu\\Exceptions\\Menu\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Exceptions/Menu/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\CircularMoveException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/MenuLink/CircularMoveException.php
 
 		-
 			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\CircularMoveException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -13657,22 +12733,10 @@ parameters:
 			path: Modules/Menu/app/Exceptions/MenuLink/CircularMoveException.php
 
 		-
-			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/MenuLink/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Exceptions/MenuLink/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\DeletionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/MenuLink/DeletionFailedException.php
 
 		-
 			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\DeletionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -13681,28 +12745,10 @@ parameters:
 			path: Modules/Menu/app/Exceptions/MenuLink/DeletionFailedException.php
 
 		-
-			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Menu/app/Exceptions/MenuLink/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Menu\\Exceptions\\MenuLink\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Menu/app/Exceptions/MenuLink/UpdateFailedException.php
-
-		-
-			message: '#^Class Modules\\Menu\\Filters\\NullableExactFilter implements generic interface Spatie\\QueryBuilder\\Filters\\Filter but does not specify its types\: TModelClass$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Filters/NullableExactFilter.php
-
-		-
-			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\Menu\\MenuRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
 
 		-
 			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\Menu\\MenuRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
@@ -13711,18 +12757,6 @@ parameters:
 			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
 
 		-
-			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\Menu\\MenuRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
-
-		-
-			message: '#^Property Modules\\Menu\\Http\\Requests\\Admin\\Menu\\MenuRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -13733,12 +12767,6 @@ parameters:
 			identifier: argument.templateType
 			count: 4
 			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
-
-		-
-			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\MenuLink\\MenuLinkRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
 
 		-
 			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\MenuLink\\MenuLinkRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
@@ -13747,18 +12775,6 @@ parameters:
 			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
 
 		-
-			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\MenuLink\\MenuLinkRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
-
-		-
-			message: '#^Property Modules\\Menu\\Http\\Requests\\Admin\\MenuLink\\MenuLinkRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -13771,70 +12787,16 @@ parameters:
 			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
 
 		-
-			message: '#^Class Modules\\Menu\\Models\\Menu uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/Menu.php
-
-		-
-			message: '#^Method Modules\\Menu\\Models\\Menu\:\:links\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/Menu.php
-
-		-
-			message: '#^Method Modules\\Menu\\Models\\Menu\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/Menu.php
-
-		-
-			message: '#^Class Modules\\Menu\\Models\\MenuLink uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuLink.php
-
-		-
-			message: '#^Method Modules\\Menu\\Models\\MenuLink\:\:children\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuLink.php
-
-		-
-			message: '#^Method Modules\\Menu\\Models\\MenuLink\:\:menu\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuLink.php
-
-		-
-			message: '#^Method Modules\\Menu\\Models\\MenuLink\:\:parent\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuLink.php
-
-		-
 			message: '#^Method Modules\\Menu\\Models\\MenuLink\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Menu/app/Models/MenuLink.php
 
 		-
-			message: '#^Class Modules\\Menu\\Models\\MenuLinkTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuLinkTranslation.php
-
-		-
 			message: '#^Method Modules\\Menu\\Models\\MenuLinkTranslation\:\:link\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Menu/app/Models/MenuLinkTranslation.php
-
-		-
-			message: '#^Class Modules\\Menu\\Models\\MenuTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/app/Models/MenuTranslation.php
 
 		-
 			message: '#^Method Modules\\Menu\\Models\\MenuTranslation\:\:menu\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
@@ -13847,186 +12809,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\Menu\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\Menu\:\:\$location\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$menu_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$target\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transfer/MenuTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:\$location\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\Menu\\MenuResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\Menu\\MenuTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/Menu/MenuTranslationResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$menu_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$target\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Admin\\MenuLink\\MenuLinkTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Admin/MenuLink/MenuLinkTranslationResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Public\\Menu\\MenuResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Public/Menu/MenuResource.php
-
-		-
-			message: '#^Method Modules\\Menu\\Transformers\\Public\\MenuLink\\MenuLinkResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Menu/app/Transformers/Public/MenuLink/MenuLinkResource.php
-
-		-
-			message: '#^Class Modules\\Menu\\Database\\Factories\\MenuFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/database/factories/MenuFactory.php
-
-		-
-			message: '#^Class Modules\\Menu\\Database\\Factories\\MenuLinkFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/database/factories/MenuLinkFactory.php
-
-		-
-			message: '#^Class Modules\\Menu\\Database\\Factories\\MenuLinkTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/database/factories/MenuLinkTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Menu\\Database\\Factories\\MenuTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Menu/database/factories/MenuTranslationFactory.php
 
 		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
@@ -14083,24 +12865,6 @@ parameters:
 			path: Modules/Menu/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\Menu\:\:\$location\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$menu_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Menu\\Models\\MenuLink\:\:\$parent_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -14153,18 +12917,6 @@ parameters:
 			identifier: method.notFound
 			count: 2
 			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:translations\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Menu/tests/Feature/MenuTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -20311,124 +19063,28 @@ parameters:
 			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php
 
 		-
-			message: '#^Method Modules\\Setting\\Actions\\Admin\\Setting\\ListSettingAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Actions/Admin/Setting/ListSettingAction.php
-
-		-
-			message: '#^Method Modules\\Setting\\Actions\\Admin\\Setting\\UpdateSettingAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Actions/Admin/Setting/UpdateSettingAction.php
-
-		-
-			message: '#^Method Modules\\Setting\\Actions\\Admin\\Setting\\UpdateSettingAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Actions/Admin/Setting/UpdateSettingAction.php
-
-		-
-			message: '#^Method Modules\\Setting\\Actions\\Public\\Setting\\ListSettingAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Actions/Public/Setting/ListSettingAction.php
-
-		-
-			message: '#^Method Modules\\Setting\\Actions\\Public\\Setting\\ListSettingAction\:\:handle\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: Modules/Setting/app/Http/Controllers/Public/Setting/ListSettingController.php
-
-		-
-			message: '#^Method Modules\\Setting\\Http\\Requests\\Admin\\Setting\\SettingRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
 			message: '#^Method Modules\\Setting\\Http\\Requests\\Admin\\Setting\\SettingRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
 
 		-
-			message: '#^Method Modules\\Setting\\Http\\Requests\\Admin\\Setting\\SettingRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
-			message: '#^Property Modules\\Setting\\Http\\Requests\\Admin\\Setting\\SettingRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TFlatMapKey in call to method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:flatMap\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TFlatMapValue in call to method Illuminate\\Support\\Collection\<\(int\|string\),mixed\>\:\:flatMap\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 5
 			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
-			count: 6
+			count: 5
 			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
-			message: '#^Class Modules\\Setting\\Models\\Setting uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Models/Setting.php
 
 		-
 			message: '#^Method Modules\\Setting\\Models\\Setting\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Setting/app/Models/Setting.php
-
-		-
-			message: '#^Class Modules\\Setting\\Models\\Translation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Models/Translation.php
-
-		-
-			message: '#^Method Modules\\Setting\\Models\\Translation\:\:setting\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/app/Models/Translation.php
-
-		-
-			message: '#^Method Modules\\Setting\\Providers\\SettingServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Providers/SettingServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Setting\\Providers\\SettingServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Providers/SettingServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Setting\\Providers\\SettingServiceProvider\:\:\$bindings has no type specified\.$#'
-			identifier: missingType.property
-			count: 1
-			path: Modules/Setting/app/Providers/SettingServiceProvider.php
 
 		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
@@ -20443,76 +19099,10 @@ parameters:
 			path: Modules/Setting/app/Transfer/SettingTransfer.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Setting/app/Transfer/SettingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Setting/app/Transfer/SettingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Setting\\Models\\Setting\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Setting/app/Transfer/SettingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Setting\\Models\\Setting\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Setting/app/Transfer/SettingTransfer.php
-
-		-
-			message: '#^Method Modules\\Setting\\Transformers\\Admin\\Setting\\SettingResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Transformers/Admin/Setting/SettingResource.php
-
-		-
-			message: '#^Method Modules\\Setting\\Transformers\\Admin\\Setting\\TranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Transformers/Admin/Setting/TranslationResource.php
-
-		-
-			message: '#^Method Modules\\Setting\\Transformers\\Public\\Setting\\SettingResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Transformers/Public/Setting/SettingResource.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: Modules/Setting/app/Transformers/Public/Setting/SettingResource.php
-
-		-
-			message: '#^Method Modules\\Setting\\Transformers\\Public\\Setting\\TranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Setting/app/Transformers/Public/Setting/TranslationResource.php
-
-		-
-			message: '#^Class Modules\\Setting\\Database\\Factories\\SettingFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/database/factories/SettingFactory.php
-
-		-
 			message: '#^Method Modules\\Setting\\Database\\Factories\\SettingFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Setting/database/factories/SettingFactory.php
-
-		-
-			message: '#^Class Modules\\Setting\\Database\\Factories\\TranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Setting/database/factories/TranslationFactory.php
 
 		-
 			message: '#^Method Modules\\Setting\\Database\\Factories\\TranslationFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
@@ -20671,12 +19261,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Setting\\Models\\Setting\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
 			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\|null\>\:\:\$not\.$#'
 			identifier: property.notFound
 			count: 1
@@ -20715,7 +19299,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 4
+			count: 3
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -20733,7 +19317,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 4
+			count: 1
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -20767,112 +19351,10 @@ parameters:
 			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Method\\CreateMethodAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Method/CreateMethodAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Method\\ListMethodAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Method/ListMethodAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Method\\UpdateMethodAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Method/UpdateMethodAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Rate\\CreateRateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Rate/CreateRateAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Rate\\ListRateAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Rate/ListRateAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Rate\\UpdateRateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Rate/UpdateRateAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Shipment\\CreateShipmentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/CreateShipmentAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Shipment\\ListShipmentAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/ListShipmentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Shipment\:\:\$delivered_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/UpdateShipmentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Shipment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Shipping/app/Actions/Admin/Shipment/UpdateShipmentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Shipment\:\:\$shipped_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/UpdateShipmentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Shipment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/UpdateShipmentAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Shipment\\UpdateShipmentAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Shipment/UpdateShipmentAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Zone\\CreateZoneAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Zone/CreateZoneAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Zone\\ListZoneAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Zone/ListZoneAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Actions\\Admin\\Zone\\UpdateZoneAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Actions/Admin/Zone/UpdateZoneAction.php
-
-		-
 			message: '#^PHPDoc tag @throws with type Modules\\Shipping\\Actions\\User\\Shipment\\Throwable\|Modules\\Shipping\\Exceptions\\Shipment\\NotFoundException is not subtype of Throwable$#'
 			identifier: throws.notThrowable
 			count: 1
 			path: Modules/Shipping/app/Actions/User/Shipment/ShowShipmentAction.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Method/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -20881,22 +19363,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Method/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\InvalidAddressException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Method/InvalidAddressException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\InvalidAddressException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Method/InvalidAddressException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Method/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Method\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -20905,22 +19375,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Method/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Rate\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Rate/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Rate\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Rate/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Rate\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Rate/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Rate\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -20929,22 +19387,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Rate/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\AlreadyExistsException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/AlreadyExistsException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\AlreadyExistsException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Shipment/AlreadyExistsException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -20953,22 +19399,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Shipment/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\InvalidTransitionException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/InvalidTransitionException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\InvalidTransitionException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Shipment/InvalidTransitionException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\NotFoundException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/NotFoundException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\NotFoundException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -20977,22 +19411,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Shipment/NotFoundException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\OrderNotFoundException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/OrderNotFoundException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\OrderNotFoundException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Shipment/OrderNotFoundException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Shipment/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Shipment\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -21001,22 +19423,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Shipment/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\ShippingException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/ShippingException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\ShippingException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/ShippingException.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Zone\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Zone/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Zone\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -21025,46 +19435,10 @@ parameters:
 			path: Modules/Shipping/app/Exceptions/Zone/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Exceptions\\Zone\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Shipping/app/Exceptions/Zone/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Exceptions\\Zone\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Exceptions/Zone/UpdateFailedException.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Method\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$method_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
-
-		-
-			message: '#^Parameter \#1 \$method of method Modules\\Shipping\\Gateways\\ShippingGateway\:\:methodName\(\) expects Modules\\Shipping\\Models\\Method, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
-
-		-
-			message: '#^Parameter \#1 \$translations of static method Modules\\Core\\Support\\PicksTranslation\:\:pick\(\) expects Illuminate\\Support\\Collection\<int, object\>\|null, Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: Modules/Shipping/app/Gateways/ShippingGateway.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -21073,25 +19447,7 @@ parameters:
 			path: Modules/Shipping/app/Gateways/ShippingGateway.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Method\\MethodRequest\:\:languageResolve\(\) has parameter \$codes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Method\\MethodRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Method\\MethodRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
-
-		-
-			message: '#^Property Modules\\Shipping\\Http\\Requests\\Admin\\Method\\MethodRequest\:\:\$languageMap type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
@@ -21109,106 +19465,10 @@ parameters:
 			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
 
 		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Rate\\RateRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Rate/RateRequest.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Shipment\\ShipmentRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Shipment/ShipmentRequest.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Zone\\ZoneRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Zone/ZoneRequest.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Http\\Requests\\User\\Method\\MethodQuoteRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Http/Requests/User/Method/MethodQuoteRequest.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Models\\Method uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Method.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Models\\Method\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Method.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Models\\MethodTranslation uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/MethodTranslation.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Models\\MethodTranslation\:\:method\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/MethodTranslation.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Models\\Rate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Rate.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Models\\Rate\:\:method\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Rate.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Models\\Rate\:\:zone\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Rate.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Models\\Shipment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Shipment.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Models\\Zone uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/app/Models/Zone.php
-
-		-
 			message: '#^Method Modules\\Shipping\\Models\\Zone\:\:countries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany does not specify its types\: TRelatedModel, TDeclaringModel, TPivotModel, TAccessor \(2\-4 required\)$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Shipping/app/Models/Zone.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Providers\\ShippingServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Providers/ShippingServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Providers\\ShippingServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Providers/ShippingServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Shipping\\Providers\\ShippingServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Providers/ShippingServiceProvider.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
@@ -21217,435 +19477,15 @@ parameters:
 			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$language_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Method\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Method\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Method\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$method_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$zone_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Zone\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Zone\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Zone\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transfer/ShippingTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Method\\MethodResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Method\\MethodTranslationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Method/MethodTranslationResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$method_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:\$zone_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Rate\\RateResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Rate/RateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$carrier_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$delivered_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$notes\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$shipped_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$tracking_number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$tracking_url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Shipment\\ShipmentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\Admin\\Zone\\ZoneResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/Admin/Zone/ZoneResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\User\\Method\\MethodQuoteResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Method/MethodQuoteResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$carrier_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$delivered_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$shipped_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$tracking_number\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$tracking_url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Transformers\\User\\Shipment\\ShipmentResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/app/Transformers/User/Shipment/ShipmentResource.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Database\\Factories\\MethodFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/database/factories/MethodFactory.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Database\\Factories\\MethodFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/database/factories/MethodFactory.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Database\\Factories\\MethodTranslationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/database/factories/MethodTranslationFactory.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Database\\Factories\\MethodTranslationFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/database/factories/MethodTranslationFactory.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Database\\Factories\\RateFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/database/factories/RateFactory.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Database\\Factories\\RateFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/database/factories/RateFactory.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Database\\Factories\\ShipmentFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/database/factories/ShipmentFactory.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Database\\Factories\\ShipmentFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/database/factories/ShipmentFactory.php
-
-		-
-			message: '#^Class Modules\\Shipping\\Database\\Factories\\ZoneFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Shipping/database/factories/ZoneFactory.php
-
-		-
-			message: '#^Method Modules\\Shipping\\Database\\Factories\\ZoneFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Shipping/database/factories/ZoneFactory.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 3
 			path: Modules/Shipping/database/seeders/ShippingDatabaseSeeder.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Shipping\\Models\\Shipment\>\|Modules\\Shipping\\Models\\Shipment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Shipping\\Models\\Zone\>\|Modules\\Shipping\\Models\\Zone\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 5
+			count: 4
 			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
 
 		-
@@ -21703,28 +19543,10 @@ parameters:
 			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
 			message: '#^Trait Modules\\Shipping\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Shipping/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$method_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Shipping\\Models\\Rate\:\:\$zone_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -21781,21 +19603,9 @@ parameters:
 			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<array\<mixed\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 3
+			count: 1
 			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
 
 		-
@@ -21829,18 +19639,6 @@ parameters:
 			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
 
 		-
-			message: '#^Function addressIn\(\) should return Modules\\User\\Models\\Address but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Shipping/tests/Unit/ShippingGatewayTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:activeMethod\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -21853,148 +19651,10 @@ parameters:
 			path: Modules/Shipping/tests/Unit/ShippingGatewayTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/ListTicketAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\Admin\\Ticket\\ListTicketAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/ListTicketAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/ShowTicketAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/ShowTicketAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/UpdateTicketStatusAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\Admin\\Ticket\\UpdateTicketStatusAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Actions/Admin/Ticket/UpdateTicketStatusAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\TicketMessage\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/Admin/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\Admin\\TicketMessage\\CreateTicketMessageAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Actions/Admin/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\TicketMessage\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Support/app/Actions/User/Ticket/CreateTicketAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\User\\Ticket\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/Ticket/CreateTicketAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\User\\Ticket\\CreateTicketAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Actions/User/Ticket/CreateTicketAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\User\\Ticket\\ListTicketAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Actions/User/Ticket/ListTicketAction.php
-
-		-
 			message: '#^Method Modules\\Support\\Actions\\User\\Ticket\\ShowTicketAction\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: Modules/Support/app/Actions/User/Ticket/ShowTicketAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\User\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/Ticket/UpdateTicketStatusAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\User\\Ticket\\UpdateTicketStatusAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Actions/User/Ticket/UpdateTicketStatusAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\TicketMessage\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\User\\Ticket\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\User\\Ticket\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\User\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Actions/User/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Actions\\User\\TicketMessage\\CreateTicketMessageAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Actions/User/TicketMessage/CreateTicketMessageAction.php
-
-		-
-			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Support/app/Exceptions/Ticket/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -22003,22 +19663,10 @@ parameters:
 			path: Modules/Support/app/Exceptions/Ticket/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\DeletionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Support/app/Exceptions/Ticket/DeletionFailedException.php
-
-		-
 			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\DeletionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Support/app/Exceptions/Ticket/DeletionFailedException.php
-
-		-
-			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\InvalidOrderException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Support/app/Exceptions/Ticket/InvalidOrderException.php
 
 		-
 			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\InvalidOrderException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -22027,22 +19675,10 @@ parameters:
 			path: Modules/Support/app/Exceptions/Ticket/InvalidOrderException.php
 
 		-
-			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\StatusUpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Support/app/Exceptions/Ticket/StatusUpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Support\\Exceptions\\Ticket\\StatusUpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Support/app/Exceptions/Ticket/StatusUpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Support\\Exceptions\\TicketMessage\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Support/app/Exceptions/TicketMessage/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Support\\Exceptions\\TicketMessage\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -22051,70 +19687,10 @@ parameters:
 			path: Modules/Support/app/Exceptions/TicketMessage/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Support\\Http\\Requests\\Admin\\Ticket\\UpdateTicketStatusRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Http/Requests/Admin/Ticket/UpdateTicketStatusRequest.php
-
-		-
-			message: '#^Method Modules\\Support\\Http\\Requests\\Admin\\TicketMessage\\CreateTicketMessageRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Http/Requests/Admin/TicketMessage/CreateTicketMessageRequest.php
-
-		-
-			message: '#^Method Modules\\Support\\Http\\Requests\\User\\Ticket\\CreateTicketRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Http/Requests/User/Ticket/CreateTicketRequest.php
-
-		-
-			message: '#^Method Modules\\Support\\Http\\Requests\\User\\Ticket\\UpdateTicketStatusRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Http/Requests/User/Ticket/UpdateTicketStatusRequest.php
-
-		-
-			message: '#^Method Modules\\Support\\Http\\Requests\\User\\TicketMessage\\CreateTicketMessageRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/app/Http/Requests/User/TicketMessage/CreateTicketMessageRequest.php
-
-		-
-			message: '#^Class Modules\\Support\\Models\\Ticket uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Models/Ticket.php
-
-		-
-			message: '#^Method Modules\\Support\\Models\\Ticket\:\:messages\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Models/Ticket.php
-
-		-
-			message: '#^Class Modules\\Support\\Models\\TicketMessage uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Models/TicketMessage.php
-
-		-
-			message: '#^Method Modules\\Support\\Models\\TicketMessage\:\:ticket\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Models/TicketMessage.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Support/app/Models/User/Ticket.php
-
-		-
-			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/app/Transfer/SupportTransfer.php
 
 		-
 			message: '#^Method Modules\\Support\\Transfer\\SupportTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
@@ -22327,18 +19903,6 @@ parameters:
 			path: Modules/Support/config/config.php
 
 		-
-			message: '#^Class Modules\\Support\\Database\\Factories\\TicketFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/database/factories/TicketFactory.php
-
-		-
-			message: '#^Class Modules\\Support\\Database\\Factories\\TicketMessageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/database/factories/TicketMessageFactory.php
-
-		-
 			message: '#^Trait Modules\\Support\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
@@ -22373,48 +19937,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 11
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$last_message_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\Ticket\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Models\\TicketMessage\:\:\$sender\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -22459,94 +19981,10 @@ parameters:
 			path: Modules/Support/tests/Feature/SupportTicketTest.php
 
 		-
-			message: '#^Function ticketPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Function ticketPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxClass\\CreateTaxClassAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxClass/CreateTaxClassAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxClass/DeleteTaxClassAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxClass/DeleteTaxClassAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxClass\\ListTaxClassAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxClass/ListTaxClassAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxClass\\UpdateTaxClassAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxClass/UpdateTaxClassAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxRate\\CreateTaxRateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxRate/CreateTaxRateAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxRate\\ListTaxRateAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxRate/ListTaxRateAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Actions\\Admin\\TaxRate\\UpdateTaxRateAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Actions/Admin/TaxRate/UpdateTaxRateAction.php
-
-		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxClass/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Tax/app/Exceptions/TaxClass/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\DeleteDefaultException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxClass/DeleteDefaultException.php
 
 		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\DeleteDefaultException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -22555,22 +19993,10 @@ parameters:
 			path: Modules/Tax/app/Exceptions/TaxClass/DeleteDefaultException.php
 
 		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\InUseException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxClass/InUseException.php
-
-		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\InUseException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Tax/app/Exceptions/TaxClass/InUseException.php
-
-		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxClass/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -22579,322 +20005,16 @@ parameters:
 			path: Modules/Tax/app/Exceptions/TaxClass/UpdateFailedException.php
 
 		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxRate\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxRate/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxRate\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Tax/app/Exceptions/TaxRate/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Tax\\Exceptions\\TaxRate\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Tax/app/Exceptions/TaxRate/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxRate\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Tax/app/Exceptions/TaxRate/UpdateFailedException.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Tax/app/Gateways/TaxGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$rate\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Tax/app/Gateways/TaxGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$region_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Gateways/TaxGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Gateways/TaxGateway.php
-
-		-
-			message: '#^Method Modules\\Tax\\Http\\Requests\\Admin\\TaxClass\\TaxClassRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Http/Requests/Admin/TaxClass/TaxClassRequest.php
-
-		-
-			message: '#^Method Modules\\Tax\\Http\\Requests\\Admin\\TaxRate\\TaxRateRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Http/Requests/Admin/TaxRate/TaxRateRequest.php
-
-		-
-			message: '#^Class Modules\\Tax\\Models\\TaxClass uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxClass.php
-
-		-
-			message: '#^Method Modules\\Tax\\Models\\TaxClass\:\:rates\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxClass.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxClass.php
-
-		-
-			message: '#^Class Modules\\Tax\\Models\\TaxRate uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxRate.php
-
-		-
-			message: '#^Method Modules\\Tax\\Models\\TaxRate\:\:taxClass\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxRate.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/app/Models/TaxRate.php
-
-		-
-			message: '#^Method Modules\\Tax\\Providers\\TaxServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Providers/TaxServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Tax\\Providers\\TaxServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Providers/TaxServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Tax\\Providers\\TaxServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Providers/TaxServiceProvider.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Tax/app/Support/SyncsClassFlags.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Support/SyncsClassFlags.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$is_shipping\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Support/SyncsClassFlags.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$is_shipping\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$country_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$region_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transfer/TaxTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$is_shipping\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Method Modules\\Tax\\Transformers\\Admin\\TaxClass\\TaxClassResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxClass/TaxClassResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Method Modules\\Tax\\Transformers\\Admin\\TaxRate\\TaxRateResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/app/Transformers/Admin/TaxRate/TaxRateResource.php
-
-		-
-			message: '#^Class Modules\\Tax\\Database\\Factories\\TaxClassFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/database/factories/TaxClassFactory.php
-
-		-
-			message: '#^Method Modules\\Tax\\Database\\Factories\\TaxClassFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/database/factories/TaxClassFactory.php
-
-		-
-			message: '#^Class Modules\\Tax\\Database\\Factories\\TaxRateFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Tax/database/factories/TaxRateFactory.php
-
-		-
-			message: '#^Method Modules\\Tax\\Database\\Factories\\TaxRateFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/database/factories/TaxRateFactory.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/database/seeders/TaxDatabaseSeeder.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Tax\\Models\\TaxClass\>\|Modules\\Tax\\Models\\TaxClass\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Tax\\Models\\TaxClass\>\|Modules\\Tax\\Models\\TaxClass\:\:\$is_shipping\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -22937,30 +20057,6 @@ parameters:
 			identifier: method.notFound
 			count: 5
 			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Function classPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Function classPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -23029,18 +20125,6 @@ parameters:
 			path: Modules/Tax/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxClass\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Tax\\Models\\TaxRate\:\:\$tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 7
@@ -23102,12 +20186,6 @@ parameters:
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
@@ -23257,178 +20335,10 @@ parameters:
 			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
 
 		-
-			message: '#^Method Modules\\User\\Actions\\User\\Address\\CreateAddressAction\:\:handle\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/User/app/Actions/User/Address/CreateAddressAction.php
-
-		-
-			message: '#^Method Modules\\User\\Actions\\User\\Address\\ListAddressAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Actions/User/Address/ListAddressAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\User\\Models\\User\\Address\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/User/app/Actions/User/Address/UpdateAddressAction.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: Modules/User/app/Actions/User/Address/UpdateAddressAction.php
-
-		-
-			message: '#^Method Modules\\User\\Actions\\User\\Profile\\UpdateProfileAction\:\:handle\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/User/app/Actions/User/Profile/UpdateProfileAction.php
-
-		-
-			message: '#^Method Modules\\User\\Actions\\User\\WishlistItem\\CreateWishlistItemAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Actions/User/WishlistItem/CreateWishlistItemAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\User\\Models\\WishlistItem\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/User/app/Actions/User/WishlistItem/ListWishlistItemAction.php
-
-		-
-			message: '#^Method Modules\\User\\Actions\\User\\WishlistItem\\ListWishlistItemAction\:\:handle\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Actions/User/WishlistItem/ListWishlistItemAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\User\\Models\\Profile\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/User/app/Gateways/UserGateway.php
-
-		-
-			message: '#^Method Modules\\User\\Gateways\\UserGateway\:\:getUserNamesByIds\(\) has parameter \$ids with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Gateways/UserGateway.php
-
-		-
-			message: '#^Method Modules\\User\\Http\\Requests\\User\\Address\\AddressRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Http/Requests/User/Address/AddressRequest.php
-
-		-
-			message: '#^Method Modules\\User\\Http\\Requests\\User\\Profile\\ProfileRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Http/Requests/User/Profile/ProfileRequest.php
-
-		-
-			message: '#^Class Modules\\User\\Models\\Address uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Models/Address.php
-
-		-
-			message: '#^Class Modules\\User\\Models\\Profile uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Models/Profile.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Models/Profile.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/User/app/Models/User/Address.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Models/WishlistItem.php
-
-		-
-			message: '#^Method Modules\\User\\Providers\\UserServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Providers/UserServiceProvider.php
-
-		-
-			message: '#^Method Modules\\User\\Providers\\UserServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Providers/UserServiceProvider.php
-
-		-
-			message: '#^Property Modules\\User\\Providers\\UserServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Providers/UserServiceProvider.php
-
-		-
-			message: '#^Method Modules\\User\\Transfer\\UserTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/app/Transfer/UserTransfer.php
-
-		-
-			message: '#^Method Modules\\User\\Transformers\\User\\Address\\AddressResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Transformers/User/Address/AddressResource.php
-
-		-
-			message: '#^Method Modules\\User\\Transformers\\User\\Profile\\ProfileResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Transformers/User/Profile/ProfileResource.php
-
-		-
-			message: '#^Method Modules\\User\\Transformers\\User\\WishlistItem\\WishlistItemResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/app/Transformers/User/WishlistItem/WishlistItemResource.php
-
-		-
-			message: '#^Class Modules\\User\\Database\\Factories\\AddressFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/database/factories/AddressFactory.php
-
-		-
-			message: '#^Class Modules\\User\\Database\\Factories\\ProfileFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/User/database/factories/ProfileFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\User\\Models\\Address\>\|Modules\\User\\Models\\Address\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$city\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/User/tests/Feature/AddressTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -23467,34 +20377,10 @@ parameters:
 			path: Modules/User/tests/Feature/AddressTest.php
 
 		-
-			message: '#^Function addressPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Function addressPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
 			message: '#^Trait Modules\\User\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/User/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Modules\\User\\Models\\Profile\:\:\$bio\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/User/tests/Feature/ProfileTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -23518,12 +20404,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/User/tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/User/tests/Feature/ProfileTest.php
 
 		-
@@ -23569,12 +20449,6 @@ parameters:
 			path: Modules/User/tests/Feature/UserDataTransferTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\User\\Models\\Address\:\:\$vat_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 3
@@ -23590,24 +20464,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 3
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Function vatAddressPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Function vatAddressPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
 			path: Modules/User/tests/Feature/VatIdTest.php
 
 		-
@@ -23641,106 +20497,10 @@ parameters:
 			path: Modules/User/tests/Feature/WishlistTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$events\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$event_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$processed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$endpoint_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/RecordDeliveryOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$consecutive_failures\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/RecordDeliveryOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEndpoint\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
-
-		-
-			message: '#^Access to constant ID on an unknown class Modules\\Webhooks\\Actions\\Webhooks\\WebhookDeliverySchema\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
-
-		-
-			message: '#^Missing parameter \$data \(array\) in call to method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\)\.$#'
-			identifier: argument.missing
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
-
-		-
-			message: '#^Unknown parameter \$payload in call to method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\)\.$#'
-			identifier: argument.unknown
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/SendTestEventAction.php
-
-		-
-			message: '#^Method Modules\\Webhooks\\Actions\\Webhooks\\WriteOutboxEventAction\:\:write\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Webhooks/app/Actions/Webhooks/WriteOutboxEventAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Console/Commands/RetryWebhookDeliveryCommand.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookDelivery\>\:\:jsonPaginate\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/ListWebhookDeliveryController.php
-
-		-
-			message: '#^Access to constant CLAIM_TOKEN on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
-
-		-
-			message: '#^Access to constant ID on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
-
-		-
-			message: '#^Access to constant NEXT_ATTEMPT_AT on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
-
-		-
-			message: '#^Access to constant STATUS on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\WebhookDeliverySchema\.$#'
-			identifier: class.notFound
-			count: 2
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/RetryWebhookDeliveryController.php
 
 		-
 			message: '#^Parameter \$request of method Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\RetryWebhookDeliveryController\:\:__invoke\(\) has invalid type Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookDelivery\\Request\.$#'
@@ -23753,12 +20513,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookEndpoint/ListWebhookEndpointController.php
-
-		-
-			message: '#^Call to static method query\(\) on an unknown class Modules\\Webhooks\\Http\\Controllers\\Admin\\WebhookEndpoint\\WebhookEndpoint\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookEndpoint/TestWebhookEndpointController.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Order\\Models\\Order\>\:\:jsonPaginate\(\)\.$#'
@@ -23785,136 +20539,10 @@ parameters:
 			path: Modules/Webhooks/app/Http/Requests/Admin/WebhookEndpoint/WebhookEndpointRequest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Webhooks\\Models\\WebhookEvent\>\|Modules\\Webhooks\\Models\\WebhookEvent\:\:\$payload\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$secret\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$attempts\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$event_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$event_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
 			message: '#^Method Modules\\Webhooks\\Jobs\\DeliverWebhookJob\:\:appendAttempt\(\) has parameter \$startedAt with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
 			path: Modules/Webhooks/app/Jobs/DeliverWebhookJob.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordOrderCancelledListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordOrderCreatedListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordOrderPaidListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordOrderReturnRequestedListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordOrderShippedListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordPaymentRefundedListener.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Listeners/RecordShipmentShippedListener.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookDelivery.php
-
-		-
-			message: '#^Method Modules\\Webhooks\\Models\\WebhookDelivery\:\:endpoint\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookDelivery.php
-
-		-
-			message: '#^Method Modules\\Webhooks\\Models\\WebhookDelivery\:\:event\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookDelivery.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookDelivery.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookEndpoint.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookEvent.php
-
-		-
-			message: '#^Method Modules\\Webhooks\\Models\\WebhookEvent\:\:deliveries\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookEvent.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Webhooks/app/Models/WebhookEvent.php
 
 		-
 			message: '#^Method Modules\\Webhooks\\Transformers\\Admin\\WebhookDelivery\\WebhookDeliveryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -23929,48 +20557,6 @@ parameters:
 			path: Modules/Webhooks/app/Transformers/Admin/WebhookEndpoint/WebhookEndpointResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$attempt_count\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$claim_token\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$error_category\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$next_attempt_at\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$response_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$event_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:webhookEndpoint\(\)\.$#'
 			identifier: method.notFound
 			count: 8
@@ -23980,24 +20566,6 @@ parameters:
 			message: '#^Function deliveryFor\(\) has parameter \$endpoint with no type specified\.$#'
 			identifier: missingType.parameter
 			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookDeliveryTest.php
 
 		-
@@ -24049,24 +20617,6 @@ parameters:
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookDelivery\:\:\$endpoint_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$payload\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Webhooks\\Models\\WebhookEvent\:\:\$processed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:webhookEndpoint\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -24081,18 +20631,6 @@ parameters:
 		-
 			message: '#^Result of static method Illuminate\\Support\\Testing\\Fakes\\QueueFake\:\:assertPushed\(\) \(void\) is used\.$#'
 			identifier: staticMethod.void
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookOutboxTest.php
 
