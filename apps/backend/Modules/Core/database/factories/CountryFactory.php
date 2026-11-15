@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\Models\Country;
 use Modules\Core\Schemas\Country\CountrySchema;
 
+/** @extends Factory<Country> */
 class CountryFactory extends Factory
 {
     /**

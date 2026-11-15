@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Language\LanguageSchema;
 
+/** @extends Factory<Language> */
 class LanguageFactory extends Factory
 {
     /**

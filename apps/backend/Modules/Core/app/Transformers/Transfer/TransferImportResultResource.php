@@ -4,13 +4,16 @@ namespace Modules\Core\Transformers\Transfer;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Models\TransferImport;
 
 /** Summary of one transfer import run (dry runs included). */
+/** @mixin TransferImport */
 class TransferImportResultResource extends JsonResource
 {
     /**
      * @param  array<string, mixed>  $this->resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

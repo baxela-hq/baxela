@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\Models\IdempotencyKey;
 use Modules\Core\Schemas\IdempotencyKeys\IdempotencyKeysSchema;
 
+/** @extends Factory<IdempotencyKey> */
 class IdempotencyKeyFactory extends Factory
 {
     /**

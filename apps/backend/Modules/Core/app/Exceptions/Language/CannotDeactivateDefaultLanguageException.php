@@ -14,6 +14,7 @@ class CannotDeactivateDefaultLanguageException extends BaseException
     public function __construct(
         string $code = 'core.language.cannot_deactivate_default',
         int $httpStatus = 400,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

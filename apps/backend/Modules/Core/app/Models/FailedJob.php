@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Schemas\FailedJob\FailedJobSchema;
 
@@ -14,6 +15,14 @@ use Modules\Core\Schemas\FailedJob\FailedJobSchema;
  * explicit: no `updated_at`/`created_at` pair exists (the sole timestamp is
  * `failed_at`, set by the framework on insert), and the primary key is the
  * auto-increment `id` while all API addressing goes through `uuid`.
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property string $connection
+ * @property string $queue
+ * @property string $payload
+ * @property string $exception
+ * @property CarbonInterface $failed_at
  */
 class FailedJob extends Model
 {

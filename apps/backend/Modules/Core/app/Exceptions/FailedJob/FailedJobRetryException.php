@@ -18,6 +18,7 @@ class FailedJobRetryException extends BaseException
     public function __construct(
         string $code = 'core.failed_jobs.retry_failed',
         int $httpStatus = 500,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = false,
         ?Throwable $previous = null

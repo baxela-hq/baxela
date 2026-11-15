@@ -15,6 +15,7 @@ class LanguageNotImplementedException extends BaseException
     public function __construct(
         string $code = 'core.language.not_implemented',
         int $httpStatus = 400,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

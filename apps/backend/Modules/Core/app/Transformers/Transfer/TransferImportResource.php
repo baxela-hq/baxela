@@ -15,6 +15,7 @@ class TransferImportResource extends JsonResource
      *
      * @param  TransferImport  $this->resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

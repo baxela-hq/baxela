@@ -4,6 +4,7 @@ namespace Modules\Core\Http\Requests\Transfer;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 
@@ -25,6 +26,7 @@ class TransferImportRequest extends FormRequest
         ]);
     }
 
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

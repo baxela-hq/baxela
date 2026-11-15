@@ -1579,12 +1579,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$currency_id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -7471,36 +7465,6 @@ parameters:
 			path: Modules/Core/app/Actions/Admin/Currency/ListCurrencyAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Currency/SyncExchangeRatesAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Currency/UpdateCurrencyAction.php
-
-		-
 			message: '#^Method Modules\\Core\\Actions\\Admin\\Currency\\UpdateCurrencyAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -7511,24 +7475,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Actions/Admin/Language/ListLanguageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Language/UpdateLanguageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Core/app/Actions/Admin/Language/UpdateLanguageAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Admin/Language/UpdateLanguageAction.php
 
 		-
 			message: '#^Method Modules\\Core\\Actions\\Admin\\Language\\UpdateLanguageAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
@@ -7553,48 +7499,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Actions/Public/Language/ListActiveLanguagesAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Region\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Region\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Modules\\Core\\Models\\Region\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Parameter \#3 \$callback of static method Illuminate\\Cache\\Repository\:\:remember\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Database\\Eloquent\\Collection\<int,Modules\\Core\\Models\\Region\>\:\:map\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Return type of call to method Illuminate\\Support\\Collection\<int,array\<string, mixed\>\>\:\:all\(\) contains unresolvable type\.$#'
-			identifier: method.unresolvableReturnType
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
-
-		-
-			message: '#^Return type of call to static method Illuminate\\Cache\\Repository\:\:remember\(\) contains unresolvable type\.$#'
-			identifier: staticMethod.unresolvableReturnType
-			count: 1
-			path: Modules/Core/app/Actions/Public/Region/ListRegionsAction.php
 
 		-
 			message: '#^Cannot call abstract static method Modules\\Core\\Contracts\\DTOs\\AbstractDTO\:\:fromArray\(\)\.$#'
@@ -7855,34 +7759,16 @@ parameters:
 			path: Modules/Core/app/Exceptions/Tax/TaxConfigurationException.php
 
 		-
-			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Core/app/Exceptions/Transfer/ExportFailedException.php
-
-		-
 			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ExportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Exceptions/Transfer/ExportFailedException.php
 
 		-
-			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Core/app/Exceptions/Transfer/ImportFailedException.php
-
-		-
 			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ImportFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/app/Exceptions/Transfer/ImportFailedException.php
-
-		-
-			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Core/app/Exceptions/Transfer/ModuleNotSupportedException.php
 
 		-
 			message: '#^Method Modules\\Core\\Exceptions\\Transfer\\ModuleNotSupportedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -7933,12 +7819,6 @@ parameters:
 			path: Modules/Core/app/Http/Middleware/AssignRequestId.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\IdempotencyKey\:\:\$response\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Http/Middleware/IdempotencyMiddleware.php
-
-		-
 			message: '#^Method Modules\\Core\\Http\\Middleware\\IdempotencyMiddleware\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -7949,18 +7829,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: Modules/Core/app/Http/Middleware/PermissionMiddleware.php
-
-		-
-			message: '#^Method Modules\\Core\\Http\\Requests\\Transfer\\TransferImportRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Http/Requests/Transfer/TransferImportRequest.php
-
-		-
-			message: '#^Method Modules\\Core\\Http\\Requests\\Transfer\\TransferPreviewRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Http/Requests/Transfer/TransferPreviewRequest.php
 
 		-
 			message: '#^Method Modules\\Core\\Listeners\\LogAllEvents\:\:handle\(\) has parameter \$event with no type specified\.$#'
@@ -7991,12 +7859,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Models/Language.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/app/Models/Region.php
 
 		-
 			message: '#^Class Modules\\Core\\Models\\Scopes\\UserScope implements generic interface Illuminate\\Database\\Eloquent\\Scope but does not specify its types\: TModel$#'
@@ -8203,528 +8065,6 @@ parameters:
 			path: Modules/Core/app/Support/PicksTranslation.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$code3\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$emoji\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Country\:\:\$phone_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$decimal_places\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_symbol_right\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$symbol\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code3\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$date_format\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_rtl\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$locale\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$time_format\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transfer/CoreTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$code3\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$emoji\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Admin\\Country\\CountryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$decimal_places\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$is_symbol_right\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$symbol\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Admin\\Currency\\CurrencyResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$code3\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$date_format\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$is_rtl\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$locale\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$time_format\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Admin\\Language\\LanguageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Admin/Language/LanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Public\\Country\\CountryResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Public\\Country\\CountryResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Transformers\\Public\\Country\\CountryResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Country/CountryResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Public\\Country\\CountryResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Country/CountryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$decimal_places\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_symbol_right\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$symbol\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Public\\Currency\\ActiveCurrencyResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/ActiveCurrencyResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Public\\Currency\\CurrencyResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Currency/CurrencyResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_rtl\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$native_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Public\\Language\\ActiveLanguageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Public/Language/ActiveLanguageResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportPreviewResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportPreviewResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportPreviewResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(TransferImport  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 87 on line 4$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportResource.php
-
-		-
-			message: '#^Method Modules\\Core\\Transformers\\Transfer\\TransferImportResultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportResultResource.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(array\<string, mixed\>  \$this\-\>resource\)\: Unexpected token "\$this", expected variable at offset 41 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: Modules/Core/app/Transformers/Transfer/TransferImportResultResource.php
-
-		-
 			message: '#^Instanceof between Illuminate\\Http\\Request and Illuminate\\Http\\Request will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -8747,30 +8087,6 @@ parameters:
 			identifier: larastan.noEnvCallsOutsideOfConfig
 			count: 8
 			path: Modules/Core/config/fx.php
-
-		-
-			message: '#^Class Modules\\Core\\Database\\Factories\\CountryFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/database/factories/CountryFactory.php
-
-		-
-			message: '#^Class Modules\\Core\\Database\\Factories\\CurrencyFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/database/factories/CurrencyFactory.php
-
-		-
-			message: '#^Class Modules\\Core\\Database\\Factories\\IdempotencyKeyFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/database/factories/IdempotencyKeyFactory.php
-
-		-
-			message: '#^Class Modules\\Core\\Database\\Factories\\LanguageFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/database/factories/LanguageFactory.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
@@ -8833,58 +8149,10 @@ parameters:
 			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
 			identifier: method.notFound
 			count: 5
 			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Currency\:\:\$exchange_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CurrencyTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -8914,18 +8182,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Core/tests/Feature/CurrencyTest.php
 
 		-
@@ -9271,12 +8527,6 @@ parameters:
 			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Models\\Language\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 7
@@ -9297,12 +8547,6 @@ parameters:
 		-
 			message: '#^Function languageRow\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Core/tests/Feature/LanguageTest.php
 
@@ -15445,12 +14689,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Illuminate\\Database\\Eloquent\\Model\>\|Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\Order\>\|Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
 			identifier: property.notFound
 			count: 3
@@ -15979,12 +15217,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -16051,18 +15283,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_default\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
 			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<Illuminate\\Support\\Collection\<\(int\|string\), mixed\>\|null\>\:\:\$not\.$#'
 			identifier: property.notFound
 			count: 1
@@ -16099,12 +15319,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -16114,12 +15328,6 @@ parameters:
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
@@ -16403,12 +15611,6 @@ parameters:
 			identifier: method.notFound
 			count: 2
 			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'

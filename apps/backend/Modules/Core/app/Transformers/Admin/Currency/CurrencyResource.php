@@ -4,13 +4,16 @@ namespace Modules\Core\Transformers\Admin\Currency;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Models\Currency;
 use Modules\Core\Schemas\Currency\CurrencySchema as Schema;
 
+/** @mixin Currency */
 class CurrencyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

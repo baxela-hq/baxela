@@ -8,13 +8,13 @@ use Throwable;
 class ExtensionsException extends BaseException
 {
     /**
-     * @param  string|null  $code
      * @param  array<string, mixed>  $meta
      * @param  array<string, mixed>  $messageParams
      */
     public function __construct(
-        $code = null,
+        ?string $code = null,
         int $httpStatus = 400,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null,

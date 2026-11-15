@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Schemas\Region\RegionSchema;
@@ -11,6 +12,16 @@ use Modules\Core\Schemas\Region\RegionSchema;
  * in v1), consumed by RegionCodeRule and the public regions endpoint.
  *
  * @mixin Builder
+ */
+/**
+ * @property int $id
+ * @property string $country_code
+ * @property string $code
+ * @property string $name
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<Region>
  */
 class Region extends Model
 {

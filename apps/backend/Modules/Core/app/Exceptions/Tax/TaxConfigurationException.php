@@ -18,6 +18,7 @@ class TaxConfigurationException extends BaseException
     public function __construct(
         string $code = 'tax.configuration.invalid_class',
         int $httpStatus = 500,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

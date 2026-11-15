@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\Models\Currency;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 
+/** @extends Factory<Currency> */
 class CurrencyFactory extends Factory
 {
     /**

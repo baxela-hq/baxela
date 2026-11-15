@@ -16,6 +16,7 @@ class RedemptionRefusedException extends BaseException
     public function __construct(
         public readonly RedemptionResult $reason,
         int $httpStatus = 400,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

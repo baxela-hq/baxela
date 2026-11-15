@@ -14,6 +14,7 @@ use Modules\Core\Schemas\Currency\CurrencySchema as Schema;
  */
 class ActiveCurrencyResource extends JsonResource
 {
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         /** @var Currency $currency */

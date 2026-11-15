@@ -2,11 +2,20 @@
 
 namespace Modules\Core\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Database\Factories\IdempotencyKeyFactory;
 use Modules\Core\Schemas\IdempotencyKeys\IdempotencyKeysSchema;
 
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property string $key
+ * @property array<string, mixed>|null $response
+ * @property CarbonInterface|null $expired_at
+ * @property CarbonInterface $created_at
+ */
 class IdempotencyKey extends Model
 {
     use HasFactory;

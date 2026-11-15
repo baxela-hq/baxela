@@ -5,6 +5,7 @@ namespace Modules\Core\Transformers\Admin\FailedJob;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Models\FailedJob;
 use Modules\Core\Schemas\FailedJob\FailedJobSchema;
 use Modules\Core\Support\FailedJob\FailedJobPayloadPresenter;
 
@@ -21,6 +22,7 @@ use Modules\Core\Support\FailedJob\FailedJobPayloadPresenter;
  * @property string $exception
  * @property CarbonInterface|null $failed_at
  */
+/** @mixin FailedJob */
 class FailedJobResource extends JsonResource
 {
     public function __construct($resource, protected bool $detailed = false)
@@ -43,7 +45,7 @@ class FailedJobResource extends JsonResource
             FailedJobSchema::RES_JOB => $presenter->displayName($this->{FailedJobSchema::PAYLOAD}),
             FailedJobSchema::CONNECTION => $this->{FailedJobSchema::CONNECTION},
             FailedJobSchema::QUEUE => $this->{FailedJobSchema::QUEUE},
-            FailedJobSchema::FAILED_AT => $this->{FailedJobSchema::FAILED_AT}?->toISOString(),
+            FailedJobSchema::FAILED_AT => $this->{FailedJobSchema::FAILED_AT}->toISOString(),
             FailedJobSchema::EXCEPTION => $presenter->exceptionExcerpt($this->{FailedJobSchema::EXCEPTION}),
         ];
 

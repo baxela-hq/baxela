@@ -4,8 +4,10 @@ namespace Modules\Core\Transformers\Admin\Extension;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Models\Extension;
 use Modules\Core\Schemas\Extension\ExtensionSchema;
 
+/** @mixin Extension */
 class ExtensionResource extends JsonResource
 {
     /**

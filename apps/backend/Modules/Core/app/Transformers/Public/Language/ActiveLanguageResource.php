@@ -13,6 +13,7 @@ use Modules\Core\Schemas\Language\LanguageSchema as Schema;
  */
 class ActiveLanguageResource extends JsonResource
 {
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         /** @var Language $language */

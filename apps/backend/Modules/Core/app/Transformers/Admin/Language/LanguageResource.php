@@ -4,13 +4,16 @@ namespace Modules\Core\Transformers\Admin\Language;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Language\LanguageSchema as Schema;
 
+/** @mixin Language */
 class LanguageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [
