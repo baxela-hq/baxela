@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListNewsletterSubscriberAction extends AbstractNewsletterSubscriberAction
 {
+    /** @return LengthAwarePaginator<int, NewsletterSubscriber> */
     public function handle(): LengthAwarePaginator
     {
         $id = NewsletterSubscriberSchema::TABLE.'.'.NewsletterSubscriberSchema::ID;

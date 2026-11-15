@@ -14,6 +14,7 @@ class UpdateContactMessageStatusAction extends AbstractContactMessageAction
     /**
      * @throws StatusUpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): ContactMessage
     {
         $record = ContactMessage::query()->findOrFail($id);

@@ -7,6 +7,7 @@ use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 
 class UpdateNewsletterSubscriberStatusAction extends AbstractNewsletterSubscriberAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): NewsletterSubscriber
     {
         $record = NewsletterSubscriber::query()->findOrFail($id);

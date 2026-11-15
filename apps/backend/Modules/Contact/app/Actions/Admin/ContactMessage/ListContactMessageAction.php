@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListContactMessageAction extends AbstractContactMessageAction
 {
+    /** @return LengthAwarePaginator<int, ContactMessage> */
     public function handle(): LengthAwarePaginator
     {
         $id = ContactMessageSchema::TABLE.'.'.ContactMessageSchema::ID;

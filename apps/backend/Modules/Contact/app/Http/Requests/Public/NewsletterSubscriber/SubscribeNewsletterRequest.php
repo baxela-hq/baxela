@@ -3,10 +3,12 @@
 namespace Modules\Contact\Http\Requests\Public\NewsletterSubscriber;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 
 class SubscribeNewsletterRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

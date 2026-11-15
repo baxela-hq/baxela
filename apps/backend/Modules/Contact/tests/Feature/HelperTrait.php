@@ -19,7 +19,6 @@ trait HelperTrait
         return 'api/v1/contact'.$endpoint;
     }
 
-
     public function superAdminUser(): User
     {
         return User::factory()->superAdmin()->create();
@@ -45,7 +44,6 @@ trait HelperTrait
 
         return ['subscriber' => $subscriber, 'message' => $message];
     }
-
 
     /**
      * Export through the module's own data endpoint and return the

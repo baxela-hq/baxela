@@ -3,10 +3,12 @@
 namespace Modules\Contact\Http\Requests\Public\ContactMessage;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
 
 class SubmitContactMessageRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

@@ -15,6 +15,7 @@ class SubscribeNewsletterAction
      * had unsubscribed) flips it back to subscribed instead of failing on
      * the unique constraint.
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data, ?string $locale): NewsletterSubscriber
     {
         return NewsletterSubscriber::query()->updateOrCreate(

@@ -7,6 +7,7 @@ use Modules\Contact\Models\ContactMessage;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageStatusEnum;
 
+/** @extends Factory<ContactMessage> */
 class ContactMessageFactory extends Factory
 {
     /**

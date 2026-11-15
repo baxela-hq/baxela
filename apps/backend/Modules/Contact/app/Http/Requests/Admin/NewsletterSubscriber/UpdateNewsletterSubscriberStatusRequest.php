@@ -9,6 +9,7 @@ use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberStatusEnum;
 
 class UpdateNewsletterSubscriberStatusRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|Enum>> */
     public function rules(): array
     {
         return [

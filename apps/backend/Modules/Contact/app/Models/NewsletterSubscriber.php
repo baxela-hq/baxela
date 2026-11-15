@@ -2,14 +2,24 @@
 
 namespace Modules\Contact\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Database\Factories\NewsletterSubscriberFactory;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberStatusEnum;
 
+/**
+ * @property int $id
+ * @property string $email
+ * @property string|null $locale
+ * @property NewsletterSubscriberStatusEnum $status
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ */
 class NewsletterSubscriber extends Model
 {
+    /** @use HasFactory<NewsletterSubscriberFactory> */
     use HasFactory;
 
     protected $table = NewsletterSubscriberSchema::TABLE;

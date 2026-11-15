@@ -7,6 +7,7 @@ use Modules\Contact\Models\NewsletterSubscriber;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberStatusEnum;
 
+/** @extends Factory<NewsletterSubscriber> */
 class NewsletterSubscriberFactory extends Factory
 {
     /**

@@ -4,13 +4,18 @@ namespace Modules\Contact\Transformers\Admin\ContactMessage;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Contact\Models\ContactMessage;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
 
+/**
+ * @mixin ContactMessage
+ */
 class ContactMessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [
