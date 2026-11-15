@@ -4,14 +4,17 @@ namespace Modules\Notification\Transformers\User\PushSubscription;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Notification\Models\PushSubscription;
 use Modules\Notification\Schemas\PushSubscription\PushSubscriptionSchema;
 
+/** @mixin PushSubscription */
 class PushSubscriptionResource extends JsonResource
 {
     /**
      * Transform the resource into an array. Encryption keys are never
      * exposed; the endpoint identifies the registration.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

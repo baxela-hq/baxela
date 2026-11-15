@@ -3,6 +3,7 @@
 namespace Modules\Notification\Http\Requests\User\Telegram;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Notification\Schemas\TelegramSubscription\TelegramSubscriptionSchema;
 
 class LinkTelegramRequest extends FormRequest
@@ -13,6 +14,7 @@ class LinkTelegramRequest extends FormRequest
      * reported by the bot (direct entry). Both keys always ride along;
      * the unused one is null.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

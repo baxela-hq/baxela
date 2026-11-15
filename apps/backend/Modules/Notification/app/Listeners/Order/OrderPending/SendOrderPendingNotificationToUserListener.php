@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Order\OrderPending;
 
+use Modules\Core\Contracts\Events\Order\OrderPendingEvent;
+
 class SendOrderPendingNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendOrderPendingNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(OrderPendingEvent $event): void {}
 }

@@ -18,6 +18,7 @@ class NotificationPreferenceRequest extends FormRequest
      * must be one of the admin-configurable notifications and the channel
      * one that code actually uses (per the config matrix).
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         $configured = PreferenceMatrix::configured(NotificationAudienceEnum::ADMIN);

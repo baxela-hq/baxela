@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Content\PagePublished;
 
+use Modules\Core\Contracts\Events\Content\PagePublishedEvent;
+
 class SendPagePublishedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendPagePublishedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(PagePublishedEvent $event): void {}
 }

@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Content\PageUnpublished;
 
+use Modules\Core\Contracts\Events\Content\PageUnpublishedEvent;
+
 class NotifyAdminPageUnpublishedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminPageUnpublishedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(PageUnpublishedEvent $event): void {}
 }

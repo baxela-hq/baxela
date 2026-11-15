@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Order\OrderShipped;
 
+use Modules\Core\Contracts\Events\Order\OrderShippedEvent;
+
 class NotifyAdminOrderShippedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminOrderShippedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(OrderShippedEvent $event): void {}
 }

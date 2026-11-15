@@ -2,6 +2,7 @@
 
 namespace Modules\Notification\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Notification\Database\Factories\NotificationFactory;
@@ -9,8 +10,20 @@ use Modules\Notification\Schemas\Notification\NotificationAudienceEnum;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
 
+/**
+ * @property int $id
+ * @property int|null $user_id
+ * @property NotificationCodeEnum $code
+ * @property NotificationAudienceEnum $audience
+ * @property string $title
+ * @property string $body
+ * @property array<string, mixed>|null $meta
+ * @property CarbonInterface|null $read_at
+ * @property CarbonInterface $created_at
+ */
 class Notification extends Model
 {
+    /** @use HasFactory<NotificationFactory> */
     use HasFactory;
 
     protected $table = NotificationSchema::TABLE;

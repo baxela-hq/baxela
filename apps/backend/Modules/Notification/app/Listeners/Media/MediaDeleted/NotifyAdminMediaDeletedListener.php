@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Media\MediaDeleted;
 
+use Modules\Core\Contracts\Events\Media\MediaDeletedEvent;
+
 class NotifyAdminMediaDeletedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminMediaDeletedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(MediaDeletedEvent $event): void {}
 }

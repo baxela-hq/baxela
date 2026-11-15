@@ -4,13 +4,16 @@ namespace Modules\Notification\Transformers\User\Notification;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Notification\Models\Notification;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
 
+/** @mixin Notification */
 class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Order\OrderPaid;
 
+use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
+
 class NotifyAdminPaymentReceivedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminPaymentReceivedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(OrderPaidEvent $event): void {}
 }

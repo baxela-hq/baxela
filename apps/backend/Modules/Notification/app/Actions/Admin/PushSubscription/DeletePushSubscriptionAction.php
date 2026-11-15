@@ -8,6 +8,7 @@ use Modules\Notification\Schemas\PushSubscription\PushSubscriptionSchema;
 
 class DeletePushSubscriptionAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): int
     {
         return PushSubscription::query()

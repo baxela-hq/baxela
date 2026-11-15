@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Inventory\StockDepleted;
 
+use Modules\Core\Contracts\Events\Inventory\StockDepletedEvent;
+
 class NotifyAdminStockDepletedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminStockDepletedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(StockDepletedEvent $event): void {}
 }

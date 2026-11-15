@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\User\UserProfileUpdated;
 
+use Modules\Core\Contracts\Events\User\UserProfileUpdatedEvent;
+
 class SendProfileUpdatedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendProfileUpdatedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(UserProfileUpdatedEvent $event): void {}
 }

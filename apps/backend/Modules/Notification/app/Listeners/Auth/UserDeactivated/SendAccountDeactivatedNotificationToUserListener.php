@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Auth\UserDeactivated;
 
+use Modules\Core\Contracts\Events\Auth\UserDeactivatedEvent;
+
 class SendAccountDeactivatedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendAccountDeactivatedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(UserDeactivatedEvent $event): void {}
 }

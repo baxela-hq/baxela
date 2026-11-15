@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Auth\UserEmailVerified;
 
+use Modules\Core\Contracts\Events\Auth\UserEmailVerifiedEvent;
+
 class SendEmailVerifiedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendEmailVerifiedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(UserEmailVerifiedEvent $event): void {}
 }

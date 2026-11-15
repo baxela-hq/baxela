@@ -16,6 +16,7 @@ class TelegramSubscriptionResource extends JsonResource
      * Transform the resource into an array. The chat id is the user's own
      * Telegram identity — it is only ever returned to its owner.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

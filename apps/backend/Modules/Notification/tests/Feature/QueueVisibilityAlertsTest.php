@@ -8,6 +8,7 @@ use Modules\Core\Tests\Fixtures\FailingTestJob;
 use Modules\Notification\Emails\DynamicNotification;
 use Modules\Notification\Models\Notification;
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
+use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
 use Modules\Notification\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);
@@ -67,7 +68,7 @@ it('keeps failure handling intact when the alert dispatch throws', function () {
     // A broken notification stack must not break the worker's failure path.
     $this->instance(NotificationDispatcherInterface::class, new class implements NotificationDispatcherInterface
     {
-        public function dispatch($message): void
+        public function dispatch(NotificationMessage $message): void
         {
             throw new RuntimeException('notification stack is down');
         }

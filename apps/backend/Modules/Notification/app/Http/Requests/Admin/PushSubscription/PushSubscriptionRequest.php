@@ -3,6 +3,7 @@
 namespace Modules\Notification\Http\Requests\Admin\PushSubscription;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Notification\Schemas\PushSubscription\PushSubscriptionSchema;
 
 class PushSubscriptionRequest extends FormRequest
@@ -12,6 +13,7 @@ class PushSubscriptionRequest extends FormRequest
      * the browser PushSubscription JSON (endpoint + keys) plus capture
      * context. Delete sends only the endpoint.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

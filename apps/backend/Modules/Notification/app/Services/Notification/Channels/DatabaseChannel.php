@@ -57,7 +57,7 @@ class DatabaseChannel implements NotificationChannelInterface
             audience: $audience,
             payload: [
                 NotificationSchema::ID => $record->{NotificationSchema::ID},
-                NotificationSchema::CODE => $code instanceof \BackedEnum ? $code->value : $code,
+                NotificationSchema::CODE => $code->value,
                 NotificationSchema::TITLE => $record->{NotificationSchema::TITLE},
                 NotificationSchema::BODY => $record->{NotificationSchema::BODY},
                 NotificationSchema::META => $record->{NotificationSchema::META},

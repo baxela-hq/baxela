@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Catalog\ProductActivated;
 
+use Modules\Core\Contracts\Events\Catalog\ProductActivatedEvent;
+
 class NotifyAdminProductActivatedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminProductActivatedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(ProductActivatedEvent $event): void {}
 }

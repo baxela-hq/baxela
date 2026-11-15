@@ -985,30 +985,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$audience\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1030,18 +1006,6 @@ parameters:
 			message: '#^Function ndSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
 			identifier: missingType.generics
 			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
 			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
 
 		-
@@ -12043,28 +12007,10 @@ parameters:
 			path: Modules/Notification/app/Actions/Admin/Notification/ListNotificationAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$read_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Actions/Admin/Notification/MarkNotificationReadAction.php
-
-		-
-			message: '#^Method Modules\\Notification\\Actions\\Admin\\PushSubscription\\DeletePushSubscriptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Actions/Admin/PushSubscription/DeletePushSubscriptionAction.php
-
-		-
 			message: '#^Method Modules\\Notification\\Actions\\Admin\\PushSubscription\\ListPushSubscriptionsAction\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: Modules/Notification/app/Actions/Admin/PushSubscription/ListPushSubscriptionsAction.php
-
-		-
-			message: '#^Method Modules\\Notification\\Actions\\Admin\\PushSubscription\\UpsertPushSubscriptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Actions/Admin/PushSubscription/UpsertPushSubscriptionAction.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Notification\\Models\\Notification\>\:\:allowedFilters\(\)\.$#'
@@ -12079,28 +12025,10 @@ parameters:
 			path: Modules/Notification/app/Actions/User/Notification/ListNotificationAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$read_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Actions/User/Notification/MarkNotificationReadAction.php
-
-		-
-			message: '#^Method Modules\\Notification\\Actions\\User\\PushSubscription\\DeletePushSubscriptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Actions/User/PushSubscription/DeletePushSubscriptionAction.php
-
-		-
 			message: '#^Method Modules\\Notification\\Actions\\User\\PushSubscription\\ListPushSubscriptionsAction\:\:handle\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: Modules/Notification/app/Actions/User/PushSubscription/ListPushSubscriptionsAction.php
-
-		-
-			message: '#^Method Modules\\Notification\\Actions\\User\\PushSubscription\\UpsertPushSubscriptionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Actions/User/PushSubscription/UpsertPushSubscriptionAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Notification\\Models\\TelegramSubscription\:\:\$chat_id\.$#'
@@ -12145,22 +12073,10 @@ parameters:
 			path: Modules/Notification/app/Exceptions/NotificationException.php
 
 		-
-			message: '#^Method Modules\\Notification\\Exceptions\\NotificationPreference\\LockedNotificationPreferenceException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Exceptions/NotificationPreference/LockedNotificationPreferenceException.php
-
-		-
 			message: '#^Method Modules\\Notification\\Exceptions\\NotificationPreference\\LockedNotificationPreferenceException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Notification/app/Exceptions/NotificationPreference/LockedNotificationPreferenceException.php
-
-		-
-			message: '#^Method Modules\\Notification\\Exceptions\\Telegram\\TelegramApiException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Exceptions/Telegram/TelegramApiException.php
 
 		-
 			message: '#^Method Modules\\Notification\\Exceptions\\Telegram\\TelegramApiException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -12179,198 +12095,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Notification/app/Gateways/TelegramClient.php
-
-		-
-			message: '#^Method Modules\\Notification\\Http\\Requests\\Admin\\NotificationPreference\\NotificationPreferenceRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Http/Requests/Admin/NotificationPreference/NotificationPreferenceRequest.php
-
-		-
-			message: '#^Method Modules\\Notification\\Http\\Requests\\Admin\\PushSubscription\\PushSubscriptionRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Http/Requests/Admin/PushSubscription/PushSubscriptionRequest.php
-
-		-
-			message: '#^Method Modules\\Notification\\Http\\Requests\\User\\PushSubscription\\PushSubscriptionRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Http/Requests/User/PushSubscription/PushSubscriptionRequest.php
-
-		-
-			message: '#^Method Modules\\Notification\\Http\\Requests\\User\\Telegram\\LinkTelegramRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Http/Requests/User/Telegram/LinkTelegramRequest.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Auth\\UserDeactivated\\NotifyAdminUserDeactivatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Auth/UserDeactivated/NotifyAdminUserDeactivatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Auth\\UserDeactivated\\SendAccountDeactivatedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Auth/UserDeactivated/SendAccountDeactivatedNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Auth\\UserEmailVerified\\SendEmailVerifiedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Auth/UserEmailVerified/SendEmailVerifiedNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Auth\\UserSignedUp\\NotifyAdminNewUserRegisteredListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Auth/UserSignedUp/NotifyAdminNewUserRegisteredListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Auth\\UserSignedUp\\SendWelcomeNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Auth/UserSignedUp/SendWelcomeNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Cart\\CartCheckedOut\\SendCheckoutStartedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Cart/CartCheckedOut/SendCheckoutStartedNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductActivated\\NotifyAdminProductActivatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductActivated/NotifyAdminProductActivatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductActivated\\SendProductAvailableNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductActivated/SendProductAvailableNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductCreated\\NotifyAdminProductCreatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductCreated/NotifyAdminProductCreatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductDeactivated\\NotifyAdminProductDeactivatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductDeactivated/NotifyAdminProductDeactivatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductDeleted\\NotifyAdminProductDeletedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductDeleted/NotifyAdminProductDeletedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Catalog\\ProductUpdated\\NotifyAdminProductUpdatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Catalog/ProductUpdated/NotifyAdminProductUpdatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Content\\PagePublished\\SendPagePublishedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Content/PagePublished/SendPagePublishedNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Content\\PageUnpublished\\NotifyAdminPageUnpublishedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Content/PageUnpublished/NotifyAdminPageUnpublishedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Inventory\\StockDepleted\\NotifyAdminStockDepletedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Inventory/StockDepleted/NotifyAdminStockDepletedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Inventory\\StockIncreased\\NotifyAdminStockIncreasedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Inventory/StockIncreased/NotifyAdminStockIncreasedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Inventory\\StockIncreased\\SendBackInStockNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Inventory/StockIncreased/SendBackInStockNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Media\\MediaDeleted\\NotifyAdminMediaDeletedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Media/MediaDeleted/NotifyAdminMediaDeletedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderCancelled\\NotifyAdminOrderCancelledListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Order/OrderCancelled/NotifyAdminOrderCancelledListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderPaid\\NotifyAdminPaymentReceivedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Order/OrderPaid/NotifyAdminPaymentReceivedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderPending\\SendOrderPendingNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Order/OrderPending/SendOrderPendingNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Order\\OrderShipped\\NotifyAdminOrderShippedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Order/OrderShipped/NotifyAdminOrderShippedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Payment\\PaymentInitiated\\SendPaymentInitiatedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Payment/PaymentInitiated/SendPaymentInitiatedNotificationToUserListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\Setting\\SettingUpdated\\NotifyAdminSettingUpdatedListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/Setting/SettingUpdated/NotifyAdminSettingUpdatedListener.php
-
-		-
-			message: '#^Method Modules\\Notification\\Listeners\\User\\UserProfileUpdated\\SendProfileUpdatedNotificationToUserListener\:\:handle\(\) has parameter \$event with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/app/Listeners/User/UserProfileUpdated/SendProfileUpdatedNotificationToUserListener.php
-
-		-
-			message: '#^Class Modules\\Notification\\Models\\Notification uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Notification/app/Models/Notification.php
-
-		-
-			message: '#^Method Modules\\Notification\\Providers\\NotificationServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Providers/NotificationServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Notification\\Providers\\NotificationServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Providers/NotificationServiceProvider.php
 
 		-
 			message: '#^Method Modules\\Notification\\Schemas\\Notification\\NotificationContext\:\:__construct\(\) has parameter \$recipients with no value type specified in iterable type array\.$#'
@@ -12401,42 +12125,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Notification/app/Services/Notification/Builders/WebPushPayloadBuilder.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$meta\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$read_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/app/Services/Notification/Channels/DatabaseChannel.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Notification\\Models\\TelegramSubscription\:\:\$chat_id\.$#'
@@ -12715,76 +12403,10 @@ parameters:
 			path: Modules/Notification/app/Transfer/NotificationTransfer.php
 
 		-
-			message: '#^Method Modules\\Notification\\Transformers\\Admin\\Notification\\NotificationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/Admin/Notification/NotificationResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\Admin\\Notification\\UnreadCountResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/Admin/Notification/UnreadCountResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\Admin\\NotificationPreference\\NotificationPreferenceResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/Admin/NotificationPreference/NotificationPreferenceResource.php
-
-		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$resource$#'
-			identifier: parameter.notFound
-			count: 1
-			path: Modules/Notification/app/Transformers/Admin/NotificationPreference/NotificationPreferenceResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\Admin\\PushSubscription\\PushSubscriptionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/Admin/PushSubscription/PushSubscriptionResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\User\\Notification\\NotificationResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/User/Notification/NotificationResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\User\\Notification\\UnreadCountResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/User/Notification/UnreadCountResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\User\\PushSubscription\\PushSubscriptionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/User/PushSubscription/PushSubscriptionResource.php
-
-		-
-			message: '#^Method Modules\\Notification\\Transformers\\User\\Telegram\\TelegramSubscriptionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Notification/app/Transformers/User/Telegram/TelegramSubscriptionResource.php
-
-		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
 			count: 10
 			path: Modules/Notification/config/notifications.php
-
-		-
-			message: '#^Class Modules\\Notification\\Database\\Factories\\NotificationFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Notification/database/factories/NotificationFactory.php
-
-		-
-			message: '#^Method Faker\\Generator\:\:word\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: Modules/Notification/database/factories/NotificationFactory.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -12919,18 +12541,6 @@ parameters:
 			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$meta\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -12943,52 +12553,10 @@ parameters:
 			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
-
-		-
 			message: '#^Function postCommentApprovedPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
@@ -13001,30 +12569,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$meta\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
@@ -13042,24 +12586,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Method Modules\\Notification\\Services\\Notification\\Contracts\\NotificationDispatcherInterface@anonymous/Modules/Notification/tests/Feature/QueueVisibilityAlertsTest\.php\:68\:\:dispatch\(\) has parameter \$message with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
 			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
 		-
@@ -13181,24 +12707,6 @@ parameters:
 			identifier: argument.templateType
 			count: 3
 			path: Modules/Notification/tests/Feature/WebPushTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Unit/NotificationServiceTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Notification\\Models\\Notification\:\:\$title\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Unit/NotificationServiceTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Notification/tests/Unit/NotificationServiceTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'

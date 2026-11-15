@@ -4,8 +4,10 @@ namespace Modules\Notification\Transformers\Admin\NotificationPreference;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Notification\Models\NotificationPreference;
 use Modules\Notification\Schemas\Notification\NotificationPreferenceSchema;
 
+/** @mixin NotificationPreference */
 class NotificationPreferenceResource extends JsonResource
 {
     /**
@@ -15,6 +17,7 @@ class NotificationPreferenceResource extends JsonResource
      *
      * @param  array<string, mixed>  $resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Catalog\ProductUpdated;
 
+use Modules\Core\Contracts\Events\Catalog\ProductUpdatedEvent;
+
 class NotifyAdminProductUpdatedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminProductUpdatedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(ProductUpdatedEvent $event): void {}
 }

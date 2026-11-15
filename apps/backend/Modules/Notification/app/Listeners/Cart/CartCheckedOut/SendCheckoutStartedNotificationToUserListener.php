@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Cart\CartCheckedOut;
 
+use Modules\Core\Contracts\Events\Cart\CartCheckedOutEvent;
+
 class SendCheckoutStartedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendCheckoutStartedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(CartCheckedOutEvent $event): void {}
 }

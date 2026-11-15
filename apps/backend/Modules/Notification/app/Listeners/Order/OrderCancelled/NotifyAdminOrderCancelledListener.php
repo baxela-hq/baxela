@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Order\OrderCancelled;
 
+use Modules\Core\Contracts\Events\Order\OrderCancelledEvent;
+
 class NotifyAdminOrderCancelledListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminOrderCancelledListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(OrderCancelledEvent $event): void {}
 }

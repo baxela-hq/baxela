@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Catalog\ProductDeactivated;
 
+use Modules\Core\Contracts\Events\Catalog\ProductDeactivatedEvent;
+
 class NotifyAdminProductDeactivatedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminProductDeactivatedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(ProductDeactivatedEvent $event): void {}
 }

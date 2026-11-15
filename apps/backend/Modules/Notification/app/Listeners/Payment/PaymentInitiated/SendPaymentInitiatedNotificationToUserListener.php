@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Payment\PaymentInitiated;
 
+use Modules\Core\Contracts\Events\Payment\PaymentInitiatedEvent;
+
 class SendPaymentInitiatedNotificationToUserListener
 {
     /**
@@ -12,5 +14,5 @@ class SendPaymentInitiatedNotificationToUserListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(PaymentInitiatedEvent $event): void {}
 }

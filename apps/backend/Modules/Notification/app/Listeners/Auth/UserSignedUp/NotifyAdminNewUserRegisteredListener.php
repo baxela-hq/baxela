@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Auth\UserSignedUp;
 
+use Modules\Core\Contracts\Events\Auth\UserSignedUpEvent;
+
 class NotifyAdminNewUserRegisteredListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminNewUserRegisteredListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(UserSignedUpEvent $event): void {}
 }

@@ -8,6 +8,7 @@ use Modules\Notification\Schemas\Notification\NotificationAudienceEnum;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
 
+/** @extends Factory<Notification> */
 class NotificationFactory extends Factory
 {
     /**
@@ -24,7 +25,7 @@ class NotificationFactory extends Factory
             NotificationSchema::USER_ID => $this->faker->randomDigitNotZero(),
             NotificationSchema::CODE => $this->faker->randomElement(NotificationCodeEnum::cases()),
             NotificationSchema::AUDIENCE => $this->faker->randomElement(NotificationAudienceEnum::cases()),
-            NotificationSchema::TITLE => $this->faker->word(2),
+            NotificationSchema::TITLE => $this->faker->words(2, true),
             NotificationSchema::BODY => $this->faker->paragraph(),
             NotificationSchema::META => null,
             NotificationSchema::READ_AT => null,

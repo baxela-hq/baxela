@@ -13,6 +13,7 @@ class UpsertPushSubscriptionAction
      * endpoint so re-subscribing on a shared browser re-assigns the row
      * to whoever just signed in.
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): PushSubscription
     {
         return PushSubscription::query()->updateOrCreate(

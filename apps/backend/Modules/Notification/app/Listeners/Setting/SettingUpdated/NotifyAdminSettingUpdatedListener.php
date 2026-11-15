@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Setting\SettingUpdated;
 
+use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
+
 class NotifyAdminSettingUpdatedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminSettingUpdatedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(SettingUpdatedEvent $event): void {}
 }

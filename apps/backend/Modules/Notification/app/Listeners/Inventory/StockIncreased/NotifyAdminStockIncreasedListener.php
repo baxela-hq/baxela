@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Listeners\Inventory\StockIncreased;
 
+use Modules\Core\Contracts\Events\Inventory\StockIncreasedEvent;
+
 class NotifyAdminStockIncreasedListener
 {
     /**
@@ -12,5 +14,5 @@ class NotifyAdminStockIncreasedListener
     /**
      * Handle the event.
      */
-    public function handle($event): void {}
+    public function handle(StockIncreasedEvent $event): void {}
 }

@@ -80,18 +80,18 @@ return [
                         'body' => 'اكتمل إرجاعك للطلب :order_code.',
                     ],
                 ],
-                    'invoice' => [
-                        'ready' => [
-                            'subject' => 'الفاتورة :invoice_number للطلب :order_code جاهزة',
-                            'body' => 'فاتورتك :invoice_number للطلب :order_code جاهزة ومرفقة بهذا البريد.',
-                        ],
+                'invoice' => [
+                    'ready' => [
+                        'subject' => 'الفاتورة :invoice_number للطلب :order_code جاهزة',
+                        'body' => 'فاتورتك :invoice_number للطلب :order_code جاهزة ومرفقة بهذا البريد.',
                     ],
-                    'credit_note' => [
-                        'ready' => [
-                            'subject' => 'إشعار دائن :credit_note_number للطلب :order_code',
-                            'body' => 'تم إصدار إشعار دائن :credit_note_number للفاتورة :invoice_number للطلب :order_code.',
-                        ],
+                ],
+                'credit_note' => [
+                    'ready' => [
+                        'subject' => 'إشعار دائن :credit_note_number للطلب :order_code',
+                        'body' => 'تم إصدار إشعار دائن :credit_note_number للفاتورة :invoice_number للطلب :order_code.',
                     ],
+                ],
             ],
         ],
         'payment' => [
