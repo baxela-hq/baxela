@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Media\Models\Folder;
 use Modules\Media\Schemas\Folder\FolderSchema;
 
+/** @extends Factory<Folder> */
 class FolderFactory extends Factory
 {
     /**

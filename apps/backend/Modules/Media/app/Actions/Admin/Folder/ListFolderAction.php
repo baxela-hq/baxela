@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListFolderAction
 {
+    /** @return Collection<int, Folder> */
     public function handle(): Collection
     {
         return QueryBuilder::for(Folder::class)

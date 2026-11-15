@@ -23,16 +23,12 @@ class MediaGateway implements MediaGatewayInterface
     /**
      * @throws Exception
      */
-    public function create(CreateMediaInput $input): ?CreateMediaOutput
+    public function create(CreateMediaInput $input): CreateMediaOutput
     {
         $action = app(CreateMediaAction::class);
         $dto = CreateMediaInputDto::fill($input->toArray());
 
         $result = $action->handle($dto);
-
-        if (! $result) {
-            return null;
-        }
 
         return CreateMediaOutput::fill($result->toArray());
     }
@@ -63,7 +59,7 @@ class MediaGateway implements MediaGatewayInterface
             'path' => $media->{MediaSchema::PATH},
             'name' => $media->{MediaSchema::NAME},
             'extension' => $media->{MediaSchema::EXTENSION},
-            'mime_type' => $media->{MediaSchema::MIME_TYPE}?->value,
+            'mime_type' => $media->{MediaSchema::MIME_TYPE}->value,
         ]);
     }
 
@@ -104,7 +100,8 @@ class MediaGateway implements MediaGatewayInterface
     {
         $folderId = null;
 
-        foreach (array_filter(explode('/', trim($path)), 'strlen') as $segment) {
+        $segments = array_filter(explode('/', trim($path)), fn (string $s): bool => $s !== '');
+        foreach ($segments as $segment) {
             $folder = Folder::query()
                 ->where(FolderSchema::NAME, $segment)
                 ->when($folderId === null,

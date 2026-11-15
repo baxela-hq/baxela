@@ -4,6 +4,7 @@ namespace Modules\Media\Http\Requests\Admin\Folder;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Modules\Core\Rules\UniquePair;
 use Modules\Media\Schemas\Folder\FolderSchema;
 
@@ -12,6 +13,7 @@ class FolderRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|Exists|UniquePair>> */
     public function rules(): array
     {
         $id = $this->route('id');

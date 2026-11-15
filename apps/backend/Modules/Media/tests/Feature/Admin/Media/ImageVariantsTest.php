@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use Modules\Media\Actions\Admin\Media\GenerateMediaVariantsAction;
 use Modules\Media\Gateways\MediaGateway;
 use Modules\Media\Models\Media;
+use Modules\Media\Schemas\Media\MediaDiskEnum;
+use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
 use Modules\Media\Schemas\Media\MediaSchema;
 use Modules\Media\Tests\Feature\HelperTrait;
 
@@ -242,9 +244,9 @@ it('is a no-op when generation runs for a deleted media row', function () {
 
     $ghost = new Media;
     $ghost->id = $id;
-    $ghost->{MediaSchema::DISK} = 'public';
+    $ghost->{MediaSchema::DISK} = MediaDiskEnum::PUBLIC;
     $ghost->{MediaSchema::PATH} = 'images/source.jpg';
-    $ghost->{MediaSchema::MIME_TYPE} = 'image/jpeg';
+    $ghost->{MediaSchema::MIME_TYPE} = MediaMimeTypeEnum::IMAGE_JPEG;
 
     expect(app(GenerateMediaVariantsAction::class)->handle($ghost))->toBe('no-op');
 });

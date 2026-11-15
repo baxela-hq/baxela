@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListMediaAction extends AbstractMediaAction
 {
+    /** @return Collection<int, Media> */
     public function handle(): Collection
     {
         return QueryBuilder::for(Media::class)

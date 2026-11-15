@@ -10,6 +10,7 @@ use Modules\Media\Schemas\Media\MediaSchema;
 
 class UpdateMediaAction extends AbstractMediaAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Media
     {
         $userId = Auth::id();

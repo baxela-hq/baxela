@@ -4,6 +4,7 @@ namespace Modules\Media\Http\Requests\Admin\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\File;
 use Modules\Media\DTOs\Admin\CreateMediaInput;
 use Modules\Media\Schemas\Folder\FolderSchema;
@@ -15,6 +16,7 @@ class MediaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, list<string|Exists|File>> */
     public function rules(): array
     {
         return [

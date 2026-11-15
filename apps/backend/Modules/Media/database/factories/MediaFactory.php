@@ -8,6 +8,7 @@ use Modules\Media\Schemas\Media\MediaDiskEnum;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
 use Modules\Media\Schemas\Media\MediaSchema;
 
+/** @extends Factory<Media> */
 class MediaFactory extends Factory
 {
     /**

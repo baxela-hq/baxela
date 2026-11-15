@@ -2,13 +2,13 @@
 
 namespace Modules\Media\Actions\Admin\Media;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Media\MediaCreatedEvent;
 use Modules\Core\Utils\Auth;
 use Modules\Media\Dtos\Admin\CreateMediaInput;
 use Modules\Media\Exceptions\Admin\Media\CreationFailedException;
 use Modules\Media\Models\Folder;
+use Modules\Media\Models\Media;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaSchema;
 
@@ -17,7 +17,7 @@ class CreateMediaAction extends AbstractMediaAction
     /**
      * @throws CreationFailedException
      */
-    public function handle(CreateMediaInput $input): Model
+    public function handle(CreateMediaInput $input): Media
     {
         $folderId = $input->{MediaSchema::FOLDER_ID};
 

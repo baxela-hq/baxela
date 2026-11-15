@@ -8,6 +8,7 @@ use Modules\Media\Schemas\Folder\FolderSchema;
 
 class CreateFolderAction
 {
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Folder
     {
         $data[FolderSchema::USER_ID] = Auth::id();

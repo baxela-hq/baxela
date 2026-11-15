@@ -5,6 +5,9 @@ namespace Modules\Media\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\Filters\Filter;
 
+/** @template TModel of \Illuminate\Database\Eloquent\Model
+ * @implements Filter<TModel>
+ */
 class NullableExactFilter implements Filter
 {
     public function __construct(protected string $column) {}

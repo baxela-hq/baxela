@@ -2,7 +2,6 @@
 
 namespace Modules\Media\Actions\Admin\Folder;
 
-use Illuminate\Support\Collection;
 use Modules\Core\Utils\Auth;
 use Modules\Media\Exceptions\Admin\Folder\CircularMoveException;
 use Modules\Media\Models\Folder;
@@ -13,6 +12,7 @@ class UpdateFolderAction
     /**
      * @throws CircularMoveException
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Folder
     {
         $folder = Folder::query()
@@ -54,9 +54,7 @@ class UpdateFolderAction
                 throw new CircularMoveException;
             }
 
-            $cursor = $ancestors instanceof Collection
-                ? ($ancestors->has($cursor) ? $ancestors->get($cursor) : null)
-                : ($ancestors[$cursor] ?? null);
+            $cursor = $ancestors->has($cursor) ? $ancestors->get($cursor) : null;
         }
     }
 }
