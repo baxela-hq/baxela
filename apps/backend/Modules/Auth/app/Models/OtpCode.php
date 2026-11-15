@@ -2,11 +2,25 @@
 
 namespace Modules\Auth\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auth\Schemas\Otp\OtpCodeActionEnum;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
 use Modules\Auth\Schemas\Otp\OtpCodeTypeEnum;
 
+/**
+ * @property int $id
+ * @property string|null $mobile
+ * @property string|null $email
+ * @property string $type
+ * @property string $action
+ * @property string $code
+ * @property CarbonInterface $expires_at
+ * @property bool $is_used
+ * @property int $attempts
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ */
 class OtpCode extends Model
 {
     protected $table = OtpCodeSchema::TABLE;

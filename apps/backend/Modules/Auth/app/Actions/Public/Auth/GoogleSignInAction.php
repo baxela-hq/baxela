@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Auth\Actions\Public\Auth\Concerns\BuildsSignInContext;
 use Modules\Auth\Actions\Public\Auth\Concerns\IssuesActivationOtp;
-use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\AuthException;
 use Modules\Auth\Http\Requests\Public\Auth\GoogleSignInRequest;
 use Modules\Auth\Models\SocialAccount;
@@ -18,8 +17,8 @@ use Modules\Auth\Schemas\SocialAccount\SocialAccountSchema;
 use Modules\Auth\Schemas\SocialAccount\SocialProviderEnum;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Support\Google\GoogleEmailClass;
-use Modules\Auth\Support\Google\GoogleIdTokenVerifier;
 use Modules\Auth\Support\Google\GoogleIdentity;
+use Modules\Auth\Support\Google\GoogleIdTokenVerifier;
 
 /**
  * Google sign-in for storefront customers (admins keep password + TOTP).

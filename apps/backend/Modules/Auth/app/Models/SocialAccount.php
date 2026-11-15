@@ -2,7 +2,7 @@
 
 namespace Modules\Auth\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Auth\Schemas\SocialAccount\SocialAccountSchema;
@@ -14,6 +14,15 @@ use Modules\Auth\Schemas\SocialAccount\SocialProviderEnum;
  * (Google's `sub`) is looked up first and the email is never used as the
  * long-term identifier. No provider access/refresh tokens are stored: the
  * sign-in flow only verifies ID tokens and never calls provider APIs.
+ */
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property string $provider
+ * @property string $provider_user_id
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read User $user
  */
 class SocialAccount extends Model
 {
@@ -32,6 +41,7 @@ class SocialAccount extends Model
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

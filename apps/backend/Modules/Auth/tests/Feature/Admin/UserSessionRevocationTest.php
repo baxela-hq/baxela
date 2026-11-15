@@ -4,10 +4,11 @@ use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Modules\Audit\Models\AuditLog;
+use Modules\Auth\Models\TwoFactorChallenge;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeSchema;
-use Modules\Auth\Support\TwoFactor\TwoFactorChallengeService;
 use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeTypeEnum;
+use Modules\Auth\Support\TwoFactor\TwoFactorChallengeService;
 use Modules\Auth\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);
@@ -126,7 +127,7 @@ it('force-revokes every session, invalidates 2FA challenges, and audit-logs it',
     s2JsonAs($phone, 'get', '/user/account/me')->assertUnauthorized();
 
     // D9: the pending challenge died with the sessions.
-    $challenge = \Modules\Auth\Models\TwoFactorChallenge::find(hash('sha256', $rawChallenge));
+    $challenge = TwoFactorChallenge::find(hash('sha256', $rawChallenge));
     expect($challenge->{TwoFactorChallengeSchema::CONSUMED_AT})->not->toBeNull();
 
     $audit = AuditLog::query()

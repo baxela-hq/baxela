@@ -3,9 +3,11 @@
 namespace Modules\Auth\Actions\Public\Auth;
 
 use Modules\Auth\Actions\Public\Auth\Concerns\IssuesActivationOtp;
+use Modules\Auth\Exceptions\OtpTooManyRequestsException;
 use Modules\Auth\Http\Requests\Public\Auth\SignUpRequest;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\Otp\OtpCodeSchema;
+use Random\RandomException;
 
 class SignUpAction extends AbstractAction
 {
@@ -17,8 +19,8 @@ class SignUpAction extends AbstractAction
      * dispatch exceptions propagate, exactly as before — the Google flow
      * uses the concern's best-effort variant instead).
      *
-     * @throws \Random\RandomException
-     * @throws \Modules\Auth\Exceptions\OtpTooManyRequestsException
+     * @throws RandomException
+     * @throws OtpTooManyRequestsException
      */
     public function handle(SignUpRequest $request): void
     {

@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'auth';
 
+    /** @var array<class-string, class-string> */
     public array $bindings = [
         AccessGatewayInterface::class => AccessGateway::class,
     ];
@@ -201,11 +202,13 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

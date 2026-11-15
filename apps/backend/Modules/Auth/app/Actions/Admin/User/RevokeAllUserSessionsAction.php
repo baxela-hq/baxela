@@ -14,8 +14,7 @@ class RevokeAllUserSessionsAction extends AbstractUserAction
     public function __construct(
         User $model,
         protected TwoFactorChallengeService $challenges,
-    )
-    {
+    ) {
         parent::__construct($model);
     }
 

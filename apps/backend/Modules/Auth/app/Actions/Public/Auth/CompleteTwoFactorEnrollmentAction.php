@@ -146,8 +146,8 @@ class CompleteTwoFactorEnrollmentAction
 
             // Issue the token INSIDE the transaction (D6) using the
             // challenge's original sign-in context.
+            /** @var array<string, mixed> $context */
             $context = $challenge->{TwoFactorChallengeSchema::CONTEXT} ?? [];
-            $context = is_array($context) ? $context : [];
             $completion = app(CompleteAuthenticationAction::class);
             $tokenResult = $completion->issueToken($user, $context);
 
@@ -191,7 +191,7 @@ class CompleteTwoFactorEnrollmentAction
         $completion = $result['completion'];
         $completion->dispatchEvents(
             $user,
-            is_array($result['context']) ? $result['context'] : [],
+            $result['context'],
             (bool) $result['token_result']['device_is_new'],
         );
 

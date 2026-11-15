@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Auth\Http\Controllers\Public\Auth\GoogleSignInAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\RequestAccountActivationAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\RequestGoogleNonceAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\RequestPasswordResetAuthController;
-use Modules\Auth\Http\Controllers\Public\Auth\GoogleSignInAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\SignInAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\SignUpAuthController;
-use Modules\Auth\Http\Controllers\Public\Auth\VerifyAccountActivationAuthController;
-use Modules\Auth\Http\Controllers\Public\Auth\VerifyPasswordResetAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\TwoFactorEnrollmentConfirmController;
 use Modules\Auth\Http\Controllers\Public\Auth\TwoFactorEnrollmentSecretController;
+use Modules\Auth\Http\Controllers\Public\Auth\VerifyAccountActivationAuthController;
+use Modules\Auth\Http\Controllers\Public\Auth\VerifyPasswordResetAuthController;
 use Modules\Auth\Http\Controllers\Public\Auth\VerifyTwoFactorController;
 use Modules\Auth\Schemas\RouteSchema;
 

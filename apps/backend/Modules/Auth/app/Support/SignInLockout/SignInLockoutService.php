@@ -5,6 +5,7 @@ namespace Modules\Auth\Support\SignInLockout;
 use Closure;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -257,7 +258,7 @@ final class SignInLockoutService
             ->first();
     }
 
-    private function table(ConnectionInterface $connection): \Illuminate\Database\Query\Builder
+    private function table(ConnectionInterface $connection): Builder
     {
         return $connection->table(SignInLockoutSchema::TABLE);
     }

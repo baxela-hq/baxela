@@ -1,20 +1,20 @@
 <?php
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
 use Modules\Auth\Exceptions\AuthException;
 use Modules\Auth\Models\Permission;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Models\SocialAccount;
 use Modules\Auth\Models\User;
-use Modules\Auth\Schemas\Otp\OtpCodeActionEnum;
-use Modules\Auth\Schemas\SocialAccount\SocialAccountSchema;
 use Modules\Auth\Support\Google\GoogleEmailClass;
-use Modules\Auth\Support\Google\GoogleIdTokenVerifier;
 use Modules\Auth\Support\Google\GoogleIdentity;
+use Modules\Auth\Support\Google\GoogleIdTokenVerifier;
 use Modules\Auth\Support\Google\SignInNonceService;
 use Modules\Auth\Tests\Feature\HelperTrait;
 use Modules\Core\Contracts\Events\Auth\NewDeviceSignInEvent;
@@ -61,7 +61,7 @@ function googleIdentity(string $email, bool $verified, GoogleEmailClass $class, 
     );
 }
 
-function googleSignIn(string $email, bool $verified, GoogleEmailClass $class, array $overrides = []): \Illuminate\Testing\TestResponse
+function googleSignIn(string $email, bool $verified, GoogleEmailClass $class, array $overrides = []): TestResponse
 {
     /** @var FakeGoogleVerifier $fake */
     $fake = app(GoogleIdTokenVerifier::class);
@@ -531,7 +531,7 @@ class FakeGoogleVerifier extends GoogleIdTokenVerifier
 
     public ?string $nonce = null;
 
-    public function __construct(private readonly \Illuminate\Contracts\Container\Container $app)
+    public function __construct(private readonly Container $app)
     {
         parent::__construct($app->make(SignInNonceService::class));
     }

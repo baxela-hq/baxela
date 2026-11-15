@@ -3,7 +3,6 @@
 namespace Modules\Auth\Actions\Public\Auth;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Modules\Auth\Exceptions\AccountAlreadyActivatedException;
 use Modules\Auth\Exceptions\AccountNotActivatedException;
 use Modules\Auth\Exceptions\AuthException;

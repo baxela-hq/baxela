@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +16,20 @@ use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeTypeEnum;
  * remember, cart token) is encrypted; nulled on consumption.
  *
  * @mixin Builder
+ */
+/**
+ * @property string $token_hash
+ * @property int $user_id
+ * @property string $type
+ * @property array<string, mixed>|null $context
+ * @property int $failed_attempts
+ * @property CarbonInterface $expires_at
+ * @property CarbonInterface|null $consumed_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read User $user
+ *
+ * @mixin Builder<TwoFactorChallenge>
  */
 class TwoFactorChallenge extends Model
 {
@@ -55,6 +70,7 @@ class TwoFactorChallenge extends Model
         ];
     }
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -63,6 +79,10 @@ class TwoFactorChallenge extends Model
     /**
      * Scope: challenges that can still be used — not consumed, not
      * expired, under the failed-attempt cap.
+     */
+    /**
+     * @param  Builder<TwoFactorChallenge>  $query
+     * @return Builder<TwoFactorChallenge>
      */
     public function scopeActive(Builder $query): Builder
     {

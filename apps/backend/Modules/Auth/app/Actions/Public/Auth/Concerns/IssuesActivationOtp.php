@@ -42,8 +42,8 @@ trait IssuesActivationOtp
      * Mint + persist the VERIFY_EMAIL OTP. Fatal on failure (throttle,
      * storage); callers own the ordering relative to user creation.
      *
-     * @throws \Random\RandomException
-     * @throws \Modules\Auth\Exceptions\OtpTooManyRequestsException
+     * @throws RandomException
+     * @throws OtpTooManyRequestsException
      */
     protected function persistActivationOtp(string $email): string
     {

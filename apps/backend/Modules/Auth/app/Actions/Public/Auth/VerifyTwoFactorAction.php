@@ -86,7 +86,7 @@ class VerifyTwoFactorAction
             $user->save();
 
             $completion = app(CompleteAuthenticationAction::class);
-            $tokenResult = $completion->issueToken($user, is_array($context) ? $context : []);
+            $tokenResult = $completion->issueToken($user, $context);
 
             return [
                 'status' => 'success',
@@ -117,7 +117,7 @@ class VerifyTwoFactorAction
         $completion = $result['completion'];
         $completion->dispatchEvents(
             $user,
-            is_array($result['context']) ? $result['context'] : [],
+            $result['context'],
             (bool) $result['token_result']['device_is_new'],
         );
 

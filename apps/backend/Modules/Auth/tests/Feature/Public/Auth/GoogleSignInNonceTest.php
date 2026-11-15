@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Contracts\Redis\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Redis;
@@ -54,7 +55,7 @@ it('consumes nonces across service instances sharing one store', function () {
     // over the same shared Redis store must see the same single use.
     $nonce = nonceService()->issue();
 
-    $secondInstance = new SignInNonceService(app(Illuminate\Contracts\Redis\Factory::class));
+    $secondInstance = new SignInNonceService(app(Factory::class));
 
     expect($secondInstance->consume($nonce))->toBeTrue()
         ->and(nonceService()->consume($nonce))->toBeFalse()
@@ -62,10 +63,10 @@ it('consumes nonces across service instances sharing one store', function () {
 });
 
 it('fails closed when Redis is unavailable', function () {
-    $factory = Mockery::mock(Illuminate\Contracts\Redis\Factory::class);
+    $factory = Mockery::mock(Factory::class);
     $connection = Mockery::mock(Connection::class);
     $factory->shouldReceive('connection')->andThrow(new RuntimeException('redis down'));
-    $this->app->instance(Illuminate\Contracts\Redis\Factory::class, $factory);
+    $this->app->instance(Factory::class, $factory);
     $service = new SignInNonceService($factory);
 
     try {

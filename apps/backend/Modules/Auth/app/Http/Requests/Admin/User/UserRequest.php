@@ -4,12 +4,15 @@ namespace Modules\Auth\Http\Requests\Admin\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules\Unique;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Schemas\User\UserSchema;
 
 class UserRequest extends FormRequest
 {
+    /** @return array<string, list<string|Unique|Exists|Password>> */
     public function rules(): array
     {
         $id = $this->route('id');

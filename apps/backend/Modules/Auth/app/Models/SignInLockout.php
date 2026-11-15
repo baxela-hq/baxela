@@ -2,6 +2,7 @@
 
 namespace Modules\Auth\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auth\Schemas\SignInLockout\SignInLockoutSchema;
@@ -14,6 +15,17 @@ use Modules\Auth\Schemas\SignInLockout\SignInLockoutSchema;
  * past AND the failure counter is stale — pruned daily.
  *
  * @mixin Builder
+ */
+/**
+ * @property string $email_hash
+ * @property int $failed_attempts
+ * @property CarbonInterface|null $last_failed_at
+ * @property CarbonInterface|null $locked_until
+ * @property CarbonInterface|null $locked_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<SignInLockout>
  */
 class SignInLockout extends Model
 {

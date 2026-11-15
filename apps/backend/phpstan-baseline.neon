@@ -67,24 +67,6 @@ parameters:
 			path: Modules/Auth/app/Actions/Admin/User/ListUserAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/AbstractAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
 			identifier: property.notFound
 			count: 2
@@ -97,46 +79,10 @@ parameters:
 			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
 
 		-
-			message: '#^Call to function is_array\(\) with array\<mixed\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
-
-		-
-			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
-
-		-
-			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: staticMethod.unresolvableReturnType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/CompleteTwoFactorEnrollmentAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Auth/app/Actions/Public/Auth/SignInAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$token_hash\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
-
-		-
-			message: '#^Parameter \#1 \$callback of static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
-
-		-
-			message: '#^Return type of call to static method Illuminate\\Database\\Connection\:\:transaction\(\) contains unresolvable type\.$#'
-			identifier: staticMethod.unresolvableReturnType
-			count: 1
-			path: Modules/Auth/app/Actions/Public/Auth/VerifyTwoFactorAction.php
 
 		-
 			message: '#^Argument of an invalid type Illuminate\\Routing\\RouteCollectionInterface supplied for foreach, only iterables are supported\.$#'
@@ -169,22 +115,10 @@ parameters:
 			path: Modules/Auth/app/Actions/User/TwoFactor/ManageTwoFactorAction.php
 
 		-
-			message: '#^Method Modules\\Auth\\Exceptions\\AccountAlreadyActivatedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/AccountAlreadyActivatedException.php
-
-		-
 			message: '#^Method Modules\\Auth\\Exceptions\\AccountAlreadyActivatedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Exceptions/AccountAlreadyActivatedException.php
-
-		-
-			message: '#^Method Modules\\Auth\\Exceptions\\AccountNotActivatedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/AccountNotActivatedException.php
 
 		-
 			message: '#^Method Modules\\Auth\\Exceptions\\AccountNotActivatedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -193,22 +127,10 @@ parameters:
 			path: Modules/Auth/app/Exceptions/AccountNotActivatedException.php
 
 		-
-			message: '#^Method Modules\\Auth\\Exceptions\\InvalidCredentialsException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/InvalidCredentialsException.php
-
-		-
 			message: '#^Method Modules\\Auth\\Exceptions\\InvalidCredentialsException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Exceptions/InvalidCredentialsException.php
-
-		-
-			message: '#^Method Modules\\Auth\\Exceptions\\InvalidOtpException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/InvalidOtpException.php
 
 		-
 			message: '#^Method Modules\\Auth\\Exceptions\\InvalidOtpException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -217,22 +139,10 @@ parameters:
 			path: Modules/Auth/app/Exceptions/InvalidOtpException.php
 
 		-
-			message: '#^Method Modules\\Auth\\Exceptions\\OtpTooManyRequestsException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/OtpTooManyRequestsException.php
-
-		-
 			message: '#^Method Modules\\Auth\\Exceptions\\OtpTooManyRequestsException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Exceptions/OtpTooManyRequestsException.php
-
-		-
-			message: '#^Method Modules\\Auth\\Exceptions\\Role\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/Role/CreationFailedException.php
 
 		-
 			message: '#^Method Modules\\Auth\\Exceptions\\Role\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -241,34 +151,16 @@ parameters:
 			path: Modules/Auth/app/Exceptions/Role/CreationFailedException.php
 
 		-
-			message: '#^Method Modules\\Auth\\Exceptions\\Role\\DeletionFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/Role/DeletionFailedException.php
-
-		-
 			message: '#^Method Modules\\Auth\\Exceptions\\Role\\DeletionFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Exceptions/Role/DeletionFailedException.php
 
 		-
-			message: '#^Method Modules\\Auth\\Exceptions\\Role\\InUseException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/Role/InUseException.php
-
-		-
 			message: '#^Method Modules\\Auth\\Exceptions\\Role\\InUseException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/app/Exceptions/Role/InUseException.php
-
-		-
-			message: '#^Method Modules\\Auth\\Exceptions\\Role\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Auth/app/Exceptions/Role/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Auth\\Exceptions\\Role\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -313,90 +205,6 @@ parameters:
 			path: Modules/Auth/app/Http/Controllers/User/TwoFactor/TwoFactorStatusController.php
 
 		-
-			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\Role\\RoleRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Http/Requests/Admin/Role/RoleRequest.php
-
-		-
-			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\Token\\MachineTokenRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Http/Requests/Admin/Token/MachineTokenRequest.php
-
-		-
-			message: '#^Method Modules\\Auth\\Http\\Requests\\Admin\\User\\UserRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Http/Requests/Admin/User/UserRequest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$attempts\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Models/OtpCode.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$expires_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/OtpCode.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\OtpCode\:\:\$is_used\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/OtpCode.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_until\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/SignInLockout.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/SignInLockout.php
-
-		-
-			message: '#^Method Modules\\Auth\\Models\\SocialAccount\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/SocialAccount.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$expires_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeActive\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
 			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -404,18 +212,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:scopeOfType\(\) return type with generic class Illuminate\\Database\\Eloquent\\Builder does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^Method Modules\\Auth\\Models\\TwoFactorChallenge\:\:user\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/app/Models/TwoFactorChallenge.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Auth/app/Models/TwoFactorChallenge.php
@@ -445,30 +241,6 @@ parameters:
 			path: Modules/Auth/app/Models/UserDevice.php
 
 		-
-			message: '#^Method Modules\\Auth\\Providers\\AuthServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Providers/AuthServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Auth\\Providers\\AuthServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Providers/AuthServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Auth\\Providers\\AuthServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Providers/AuthServiceProvider.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/app/Support/TwoFactor/TwoFactorChallengeService.php
-
-		-
 			message: '#^Method Modules\\Auth\\Support\\TwoFactor\\TwoFactorChallengeService\:\:issue\(\) has parameter \$context with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -491,66 +263,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Auth/app/Support/TwoFactor/TwoFactorService.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Admin\\Account\\AccountResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Admin/Account/AccountResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Admin\\Permission\\PermissionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Admin/Permission/PermissionResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Admin\\Role\\RoleResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Admin/Role/RoleResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Admin\\Stats\\StatsResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Admin/Stats/StatsResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Admin\\User\\UserResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Admin/User/UserResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Public\\Auth\\SignInResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Public/Auth/SignInResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Public\\Auth\\VerifyOtpResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Public/Auth/VerifyOtpResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Public\\DefaultResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Public/DefaultResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\Public\\User\\UserResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/Public/User/UserResource.php
-
-		-
-			message: '#^Method Modules\\Auth\\Transformers\\User\\Account\\SessionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Auth/app/Transformers/User/Account/SessionResource.php
 
 		-
 			message: '#^Parameter \#1 \$string of function str_pad expects string, int\<0, 999999\> given\.$#'
@@ -775,12 +487,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$consumed_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -847,12 +553,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
 			message: '#^Trait Modules\\Auth\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
@@ -893,12 +593,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SocialAccount\:\:\$provider_user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -963,12 +657,6 @@ parameters:
 		-
 			message: '#^Parameter \#1 \$app of class FakeGoogleVerifier constructor expects Illuminate\\Contracts\\Container\\Container, Pest\\PendingCalls\\TestCall given\.$#'
 			identifier: argument.type
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
 
@@ -1063,30 +751,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$failed_attempts\.$#'
-			identifier: property.notFound
-			count: 14
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$last_failed_at\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\SignInLockout\:\:\$locked_until\.$#'
-			identifier: property.notFound
-			count: 10
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -1113,18 +777,6 @@ parameters:
 		-
 			message: '#^Function s4FailedSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
 			identifier: missingType.generics
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 8
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
 
@@ -1297,12 +949,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/SessionTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Auth\\Models\\TwoFactorChallenge\:\:\$failed_attempts\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
 			identifier: property.notFound
 			count: 2
@@ -1371,7 +1017,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 4
+			count: 2
 			path: Modules/Auth/tests/Feature/TwoFactorTest.php
 
 		-

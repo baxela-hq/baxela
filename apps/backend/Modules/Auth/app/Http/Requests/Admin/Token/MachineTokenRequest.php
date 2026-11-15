@@ -4,6 +4,7 @@ namespace Modules\Auth\Http\Requests\Admin\Token;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 /**
  * Machine token minting (gap-C2 D14): abilities are explicit and
@@ -21,6 +22,7 @@ class MachineTokenRequest extends FormRequest
         self::ABILITY_PRODUCTS_READ,
     ];
 
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

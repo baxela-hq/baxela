@@ -17,7 +17,7 @@ class RequestGoogleNonceAuthController extends Controller
      * Redis with nonce entries.
      *
      * @throws AuthException when the feature is disabled or Redis is
-     *                        unavailable (fails closed)
+     *                       unavailable (fails closed)
      */
     public function __invoke(SignInNonceService $nonces): JsonResponse
     {

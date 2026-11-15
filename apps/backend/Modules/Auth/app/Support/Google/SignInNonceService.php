@@ -3,6 +3,7 @@
 namespace Modules\Auth\Support\Google;
 
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
+use Illuminate\Redis\Connections\Connection;
 use Modules\Auth\Exceptions\AuthException;
 
 /**
@@ -71,7 +72,7 @@ class SignInNonceService
         }
     }
 
-    private function connection(): \Illuminate\Redis\Connections\Connection
+    private function connection(): Connection
     {
         return $this->redis->connection();
     }

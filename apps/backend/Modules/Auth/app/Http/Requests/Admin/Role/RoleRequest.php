@@ -4,11 +4,13 @@ namespace Modules\Auth\Http\Requests\Admin\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Modules\Auth\Models\Permission;
 use Modules\Auth\Schemas\Role\RoleSchema;
 
 class RoleRequest extends FormRequest
 {
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         $id = $this->route('id');

@@ -6,6 +6,7 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 use Illuminate\Support\Facades\Cache;
@@ -51,7 +52,7 @@ class GoogleIdTokenVerifier
 
     /**
      * @throws AuthException on every failure path (invalid token, nonce,
-     *                    configuration, or unavailable dependencies)
+     *                       configuration, or unavailable dependencies)
      */
     public function verify(string $credential, string $clientId): GoogleIdentity
     {
@@ -262,7 +263,7 @@ class GoogleIdTokenVerifier
      * fetching on its own), then a retry; a key still missing afterwards
      * is a hard rejection.
      *
-     * @return array<string, \Firebase\JWT\Key>
+     * @return array<string, Key>
      *
      * @throws AuthException when the keys cannot be resolved
      */
