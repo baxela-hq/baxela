@@ -218,6 +218,9 @@ it('rejects non-terminal events so the payment stays pending', function (string 
     'approved is authorised, not captured' => ['payment_approved'],
 ]);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function checkoutcomRefundInput(array $overrides = []): PaymentRefundInput
 {
     $base = [

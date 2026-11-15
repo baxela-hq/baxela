@@ -37,6 +37,10 @@ function nowpaymentsPendingPayment(Order $order): Payment
     return $payment;
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function nowpaymentsIpnBody(string $reference, array $overrides = []): array
 {
     return array_merge([
@@ -66,6 +70,9 @@ function nowpaymentsSigHeader(array $ipn, string $secret = 'np-ipn-test'): array
     return ['x-nowpayments-sig' => nowpaymentsIpnSignature($ipn, $secret)];
 }
 
+/**
+ * @param  array<string, mixed>  $ipn
+ */
 function nowpaymentsIpnSignature(array $ipn, string $secret): string
 {
     return hash_hmac(

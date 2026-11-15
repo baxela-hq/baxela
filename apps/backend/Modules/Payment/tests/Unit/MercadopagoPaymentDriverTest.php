@@ -303,6 +303,9 @@ it('rejects non-terminal payment statuses so the payment stays pending', functio
     'authorized' => ['authorized'],
 ]);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function mercadopagoRefundInput(array $overrides = []): PaymentRefundInput
 {
     $base = [

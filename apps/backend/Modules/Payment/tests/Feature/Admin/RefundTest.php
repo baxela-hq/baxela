@@ -25,6 +25,10 @@ use Modules\Payment\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $orderOverrides
+ * @return array{0: Order, 1: Payment}
+ */
 function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides = []): array
 {
     $order = Order::query()->create(array_merge([
@@ -64,6 +68,9 @@ function paidOrderWithGatewayPayment(float $amount = 100.0, string $method = 'ma
     return [$order->refresh(), $payment->refresh()];
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function refundPayload(float $amount, string $reason = 'customer return'): array
 {
     return [

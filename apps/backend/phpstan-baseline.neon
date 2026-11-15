@@ -1255,36 +1255,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -1339,12 +1309,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$base_price\.$#'
 			identifier: property.notFound
 			count: 1
@@ -1360,24 +1324,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 4
 			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
 
 		-
@@ -1465,42 +1411,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$tax_amount\.$#'
 			identifier: property.notFound
 			count: 1
@@ -1575,14 +1485,8 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$currency_id\.$#'
-			identifier: property.notFound
 			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
+			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$display_currency_code\.$#'
@@ -1594,24 +1498,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$display_fx_rate\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_method_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -1657,12 +1543,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -1671,7 +1551,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 3
+			count: 2
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
@@ -8491,12 +8371,6 @@ parameters:
 			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -10465,73 +10339,7 @@ parameters:
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$prices_contain_tax\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_cost\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
@@ -10603,6 +10411,12 @@ parameters:
 			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
 
 		-
+			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+
+		-
 			message: '#^Method Modules\\Order\\Actions\\Admin\\Invoice\\ListOrderInvoicesAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -10637,54 +10451,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: Modules/Order/app/Actions/Admin/Order/ShowOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/Admin/Order/UpdateOrderAction.php
 
 		-
 			message: '#^Method Modules\\Order\\Actions\\Admin\\OrderItem\\ListOrderItemAction\:\:handle\(\) has no return type specified\.$#'
@@ -10813,12 +10579,6 @@ parameters:
 			path: Modules/Order/app/Actions/User/Invoice/DownloadOrderInvoicePdfUserAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderInvoice\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
@@ -10867,33 +10627,9 @@ parameters:
 			path: Modules/Order/app/Actions/User/Invoice/ListOrderInvoicesUserAction.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Order/app/Actions/User/Order/CancelOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Order/CancelOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Order/CancelOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/Order/CancelOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$items\.$#'
-			identifier: property.notFound
-			count: 2
 			path: Modules/Order/app/Actions/User/Order/ListOrderAction.php
 
 		-
@@ -10903,19 +10639,7 @@ parameters:
 			path: Modules/Order/app/Actions/User/Order/ListOrderAction.php
 
 		-
-			message: '#^Unable to resolve the template type TFlatMapKey in call to method Illuminate\\Support\\Collection\<int,Modules\\Order\\Models\\Order\>\:\:flatMap\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Order/app/Actions/User/Order/ListOrderAction.php
-
-		-
-			message: '#^Unable to resolve the template type TFlatMapValue in call to method Illuminate\\Support\\Collection\<int,Modules\\Order\\Models\\Order\>\:\:flatMap\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Order/app/Actions/User/Order/ListOrderAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$items\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/app/Actions/User/OrderItem/ListOrderItemAction.php
@@ -10925,30 +10649,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: Modules/Order/app/Actions/User/OrderItem/ListOrderItemAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Actions/User/OrderReturn/CreateOrderReturnAction.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderReturn\:\:\$id\.$#'
@@ -11021,60 +10721,6 @@ parameters:
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/app/Actions/User/OrderReturn/UpdateOwnOrderReturnAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/CancelExpiredOrdersCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Console/Commands/ReconcileRefundCreditNotesCommand.php
 
 		-
 			message: '#^Dead catch \- Modules\\Order\\Exceptions\\OrderException is never thrown in the try block\.$#'
@@ -11275,78 +10921,6 @@ parameters:
 			path: Modules/Order/app/Gateways/DTOs/GetOrderOutput.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 11
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$refunded_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_class_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_tax_rate\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderItem\:\:\$quantity\.$#'
 			identifier: property.notFound
 			count: 1
@@ -11503,18 +11077,6 @@ parameters:
 			path: Modules/Order/app/Models/DocumentSequence.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/app/Models/Order.php
-
-		-
-			message: '#^Class Modules\\Order\\Models\\Order uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Order/app/Models/Order.php
-
-		-
 			message: '#^Method Modules\\Order\\Models\\Order\:\:addresses\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -11528,12 +11090,6 @@ parameters:
 
 		-
 			message: '#^Method Modules\\Order\\Models\\Order\:\:items\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Order/app/Models/Order.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Order/app/Models/Order.php
@@ -11875,12 +11431,6 @@ parameters:
 			path: Modules/Order/config/config.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/database/factories/OrderAddressFactory.php
-
-		-
 			message: '#^Class Modules\\Order\\Database\\Factories\\OrderAddressFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -11911,12 +11461,6 @@ parameters:
 			path: Modules/Order/database/factories/OrderFactory.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/database/factories/OrderItemFactory.php
-
-		-
 			message: '#^Class Modules\\Order\\Database\\Factories\\OrderItemFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -11933,12 +11477,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Order/database/factories/OrderItemFactory.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/database/factories/OrderReturnFactory.php
 
 		-
 			message: '#^Class Modules\\Order\\Database\\Factories\\OrderReturnFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
@@ -11963,18 +11501,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Order/database/seeders/OrderDatabaseSeeder.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
 
 		-
 			message: '#^Access to an undefined property Pest\\Expectation\<Modules\\Order\\Models\\Order\|null\>\:\:\$status\.$#'
@@ -12003,12 +11529,6 @@ parameters:
 		-
 			message: '#^Function adminOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
 
@@ -12050,18 +11570,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\OrderInvoice\>\|Modules\\Order\\Models\\OrderInvoice\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 17
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
@@ -12169,12 +11677,6 @@ parameters:
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/StatsTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -12211,12 +11713,6 @@ parameters:
 			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -12237,7 +11733,7 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
 			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
 
 		-
@@ -12281,12 +11777,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\OrderCreditNote\:\:\$amount\.$#'
@@ -12343,18 +11833,6 @@ parameters:
 			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 9
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -12403,30 +11881,6 @@ parameters:
 			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 3
@@ -12435,12 +11889,6 @@ parameters:
 		-
 			message: '#^Property Modules\\Core\\Contracts\\Gateways\\Order\\DTOs\\CreateOrderInput\:\:\$cart_items \(array\<int, array\{variant_id\: int, price_snapshot\: string, product_name_snapshot\: string, quantity\: int\}\>\) does not accept array\{array\{variant_id\: int, price_snapshot\: 150, product_name_snapshot\: ''Test Product'', quantity\: 2\}\}\.$#'
 			identifier: assign.propertyType
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
-			identifier: argument.templateType
 			count: 1
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
 
@@ -12523,57 +11971,9 @@ parameters:
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$expires_at\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$prices_contain_tax\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_cost\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$shipping_method_name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$tax_amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$total_amount\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
@@ -12609,13 +12009,13 @@ parameters:
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 2
+			count: 1
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
-			count: 6
+			count: 4
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
@@ -12655,18 +12055,6 @@ parameters:
 			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 10
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -12689,18 +12077,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -12736,18 +12112,6 @@ parameters:
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$variant_id\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
 			path: Modules/Order/tests/Feature/OrderReturnTest.php
 
 		-
@@ -12811,18 +12175,6 @@ parameters:
 			path: Modules/Order/tests/Feature/OrderReturnTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -12841,94 +12193,10 @@ parameters:
 			path: Modules/Order/tests/Feature/User/UserOrderTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
 			message: '#^Method Modules\\Payment\\Actions\\Admin\\Payment\\ListPaymentAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Payment/app/Actions/Admin/Payment/ListPaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Admin/Payment/UpdatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/app/Actions/Admin/Payment/UpdatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/Payment/UpdatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentMethod\:\:\$method\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/Payment/UpdatePaymentMethodAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$gateway_transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$method\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
 
 		-
 			message: '#^Parameter \#1 \$previous of static method Modules\\Payment\\Exceptions\\PaymentException\:\:refundFailed\(\) expects Modules\\Payment\\Exceptions\\Throwable\|null, Throwable given\.$#'
@@ -12947,180 +12215,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ListPaymentRefundsAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ResolveRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Admin/PaymentRefund/ReverseRefundAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/User/Payment/CreatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/User/Payment/CreatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentMethod\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/User/Payment/CreatePaymentAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentMethod\:\:\$method\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/User/Payment/ListPaymentMethodsAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$gateway_transaction_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/app/Actions/Webhook/Payment/ConfirmRefundOutcomeAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/HandleWebhookAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$gateway_transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/HandleWebhookAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/app/Actions/Webhook/Payment/HandleWebhookAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Actions/Webhook/Payment/HandleWebhookAction.php
 
 		-
 			message: '#^Parameter \$previous of class Modules\\Payment\\Exceptions\\PaymentException constructor expects Throwable\|null, Modules\\Payment\\Exceptions\\Throwable\|null given\.$#'
@@ -13231,30 +12325,6 @@ parameters:
 			path: Modules/Payment/app/Http/Requests/User/Payment/PaymentRequest.php
 
 		-
-			message: '#^Class Modules\\Payment\\Models\\Payment uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/app/Models/Payment.php
-
-		-
-			message: '#^Class Modules\\Payment\\Models\\PaymentRefund uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/app/Models/PaymentRefund.php
-
-		-
-			message: '#^Method Modules\\Payment\\Models\\PaymentRefund\:\:payment\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/app/Models/PaymentRefund.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/app/Models/PaymentRefund.php
-
-		-
 			message: '#^Method Modules\\Payment\\Providers\\PaymentServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -13271,54 +12341,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/app/Schemas/PaymentRefund/PaymentRefundStatusEnum.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FinalizesRefund.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/app/Support/FinalizesRefund.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
 
 		-
 			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
@@ -13447,24 +12469,6 @@ parameters:
 			path: Modules/Payment/config/payment.php
 
 		-
-			message: '#^Class Modules\\Payment\\Database\\Factories\\PaymentFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/database/factories/PaymentFactory.php
-
-		-
-			message: '#^Class Modules\\Payment\\Database\\Factories\\PaymentRefundFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/database/factories/PaymentRefundFactory.php
-
-		-
-			message: '#^Method Modules\\Payment\\Database\\Factories\\PaymentRefundFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/database/factories/PaymentRefundFactory.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 18
@@ -13515,13 +12519,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
+			count: 3
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
@@ -13549,12 +12547,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
-			message: '#^Function adminPaymentFor\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
 			message: '#^Parameter \#1 \$order of function adminPaymentFor expects Modules\\Order\\Models\\Order, Illuminate\\Database\\Eloquent\\Model given\.$#'
 			identifier: argument.type
 			count: 6
@@ -13571,18 +12563,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentMethod\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentMethod\:\:\$sort_order\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13615,12 +12595,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 7
@@ -13631,48 +12605,6 @@ parameters:
 			identifier: argument.templateType
 			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13699,58 +12631,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
 
 		-
-			message: '#^Function adminPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
 			message: '#^Function adminUnpaidOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
 			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$refunded_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13783,46 +12667,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
-			message: '#^Function paidOrderWithManualPayment\(\) has parameter \$orderOverrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Function paidOrderWithManualPayment\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Function refundPayload\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\|null\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
 			message: '#^Trait Modules\\Payment\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Payment/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13853,30 +12701,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -13915,60 +12739,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$currency_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$method\.$#'
-			identifier: property.notFound
-			count: 8
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 8
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Payment\\Models\\Payment\>\|Modules\\Payment\\Models\\Payment\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 21
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
 			count: 21
@@ -13996,24 +12766,6 @@ parameters:
 			message: '#^Function payableOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 22
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
@@ -14059,42 +12811,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 9
@@ -14104,24 +12820,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 9
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Function adyenAuthItem\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Function adyenAuthItem\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Function adyenAuthSignature\(\) has parameter \$item with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
 
 		-
@@ -14143,64 +12841,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
 
 		-
-			message: '#^Function adyenPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
 			message: '#^Function adyenUnpaidOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -14212,18 +12856,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Function checkoutcomEventBody\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Function checkoutcomPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
 
 		-
@@ -14251,48 +12883,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 7
@@ -14305,64 +12895,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
 
 		-
-			message: '#^Function pendingPaymentFor\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
 			message: '#^Function unpaidOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
@@ -14383,12 +12919,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
 
 		-
-			message: '#^Function mercadopagoPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
 			message: '#^Function mercadopagoSignedHeaders\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -14401,54 +12931,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 10
@@ -14458,30 +12940,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Function nowpaymentsIpnBody\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Function nowpaymentsIpnBody\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Function nowpaymentsIpnSignature\(\) has parameter \$ipn with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Function nowpaymentsPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
 
 		-
@@ -14503,42 +12961,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 6
@@ -14557,18 +12979,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
 
 		-
-			message: '#^Function paypalApprovedEvent\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Function paypalPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
 			message: '#^Function paypalTransmission\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -14581,54 +12991,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
 
 		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 10
@@ -14638,18 +13000,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Function razorpayEventBody\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Function razorpayPendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
 
 		-
@@ -14675,66 +13025,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Order\\Models\\Order\>\|Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$refunded_amount\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 13
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentRefund\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 16
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -14773,72 +13063,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
 
 		-
-			message: '#^Function refundFor\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Function refundFor\(\) should return Modules\\Payment\\Models\\PaymentRefund but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Function refundWebhook\(\) has parameter \$outcome with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Function refundWebhook\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 13
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$paid_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$payment_status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Models\\Payment\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -14851,27 +13075,9 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
 
 		-
-			message: '#^Function stripePendingPayment\(\) should return Modules\\Payment\\Models\\Payment but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
 			message: '#^Function stripeUnpaidOrder\(\) should return Modules\\Order\\Models\\Order but returns Illuminate\\Database\\Eloquent\\Model\.$#'
 			identifier: return.type
 			count: 1
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
 			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
 
 		-
@@ -14882,12 +13088,6 @@ parameters:
 
 		-
 			message: '#^Function adyenItem\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Unit/AdyenPaymentDriverTest.php
-
-		-
-			message: '#^Function adyenRefundInput\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/tests/Unit/AdyenPaymentDriverTest.php
@@ -14935,12 +13135,6 @@ parameters:
 			path: Modules/Payment/tests/Unit/CheckoutcomPaymentDriverTest.php
 
 		-
-			message: '#^Function checkoutcomRefundInput\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Unit/CheckoutcomPaymentDriverTest.php
-
-		-
 			message: '#^Parameter \#1 \$checkoutcom of class Modules\\Payment\\Gateways\\Drivers\\CheckoutcomPaymentDriver constructor expects Modules\\Payment\\Gateways\\CheckoutcomClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -14948,12 +13142,6 @@ parameters:
 
 		-
 			message: '#^Function mercadopagoPaymentResource\(\) has parameter \$refunds with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Unit/MercadopagoPaymentDriverTest.php
-
-		-
-			message: '#^Function mercadopagoRefundInput\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/tests/Unit/MercadopagoPaymentDriverTest.php
@@ -15067,12 +13255,6 @@ parameters:
 			path: Modules/Payment/tests/Unit/RazorpayPaymentDriverTest.php
 
 		-
-			message: '#^Function razorpayRefundInput\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Unit/RazorpayPaymentDriverTest.php
-
-		-
 			message: '#^Parameter \#1 \$razorpay of class Modules\\Payment\\Gateways\\Drivers\\RazorpayPaymentDriver constructor expects Modules\\Payment\\Gateways\\RazorpayClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
@@ -15089,12 +13271,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/StripePaymentDriverTest.php
-
-		-
-			message: '#^Function stripeSession\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php
 
 		-
 			message: '#^Parameter \#1 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'

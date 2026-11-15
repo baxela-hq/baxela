@@ -37,6 +37,9 @@ function checkoutcomPendingPayment(Order $order): Payment
     return $payment;
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function checkoutcomEventBody(string $reference, string $type = 'payment_captured'): array
 {
     return [

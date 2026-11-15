@@ -56,6 +56,9 @@ function paidGatewayOrder(float $amount = 100.0, array $paymentOverrides = []): 
     return [$order, $payment];
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function refundFor(Payment $payment, array $overrides = []): PaymentRefund
 {
     return PaymentRefund::factory()->create(array_merge([
@@ -68,6 +71,10 @@ function refundFor(Payment $payment, array $overrides = []): PaymentRefund
     ], $overrides));
 }
 
+/**
+ * @param  array<string, mixed>  $outcome
+ * @return array{0: array<string, mixed>, 1: array<string, string>}
+ */
 function refundWebhook(array $outcome): array
 {
     return [

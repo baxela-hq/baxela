@@ -266,6 +266,9 @@ it('rejects a webhook whose body is not valid json', function () {
         ->handleWebhook(Request::create('/api/v1/payment/webhook/adyen', 'POST', [], [], [], [], 'not-json'));
 })->throws(PaymentException::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function adyenRefundInput(array $overrides = []): PaymentRefundInput
 {
     $base = [

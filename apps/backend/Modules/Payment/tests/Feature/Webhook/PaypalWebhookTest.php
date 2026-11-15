@@ -50,6 +50,9 @@ function paypalTransmission(): array
     ];
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function paypalApprovedEvent(): array
 {
     return [

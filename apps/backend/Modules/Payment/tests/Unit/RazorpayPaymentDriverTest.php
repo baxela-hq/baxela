@@ -236,6 +236,9 @@ it('rejects a webhook whose body is not valid json even when correctly signed', 
         ], $rawBody));
 })->throws(PaymentException::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function razorpayRefundInput(array $overrides = []): PaymentRefundInput
 {
     $base = [

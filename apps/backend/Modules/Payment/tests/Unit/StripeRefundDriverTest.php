@@ -23,6 +23,9 @@ function stripeRefundDriver(callable $configure): StripePaymentDriver
     return new StripePaymentDriver($checkout);
 }
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function stripeSession(array $attributes): Session
 {
     return Session::constructFrom($attributes);

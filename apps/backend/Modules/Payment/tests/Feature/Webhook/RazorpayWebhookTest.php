@@ -37,6 +37,9 @@ function razorpayPendingPayment(Order $order): Payment
     return $payment;
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function razorpayEventBody(string $reference, string $event = 'payment_link.paid'): array
 {
     return [

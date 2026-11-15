@@ -2,6 +2,7 @@
 
 namespace Modules\Order\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +14,34 @@ use Modules\Order\Schemas\Order\OrderStatusEnum;
 use Modules\Order\Utils\OrderCodeGenerator;
 
 /**
- * @mixin Builder
+ * @property int $id
+ * @property int $user_id
+ * @property string $order_code
+ * @property OrderStatusEnum $status
+ * @property OrderPaymentStatusEnum $payment_status
+ * @property CarbonInterface|null $paid_at
+ * @property string $total_amount
+ * @property int|null $currency_id
+ * @property int|null $shipping_method_id
+ * @property string|null $shipping_method_name
+ * @property string $shipping_cost
+ * @property int|null $coupon_id
+ * @property string|null $coupon_code
+ * @property string $discount_amount
+ * @property string $tax_amount
+ * @property string $shipping_tax_amount
+ * @property string $shipping_tax_rate
+ * @property int|null $shipping_tax_class_id
+ * @property string $refunded_amount
+ * @property CarbonInterface|null $expires_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ *
+ * @mixin Builder<Order>
  */
 class Order extends Model
 {
+    /** @use HasFactory<OrderFactory> */
     use HasFactory;
 
     protected $table = OrderSchema::TABLE;

@@ -7,6 +7,7 @@ use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 
+/** @extends Factory<Payment> */
 class PaymentFactory extends Factory
 {
     /**

@@ -37,6 +37,10 @@ function adyenPendingPayment(Order $order): Payment
     return $payment;
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function adyenAuthItem(string $reference, array $overrides = []): array
 {
     return array_merge([
@@ -61,6 +65,9 @@ function adyenDelivery(array $item, ?array $signItem = null): array
     return ['live' => 'false', 'notificationItems' => [['NotificationRequestItem' => $item]]];
 }
 
+/**
+ * @param  array<string, mixed>  $item
+ */
 function adyenAuthSignature(array $item): string
 {
     $success = ($item['success'] ?? false) === true || ($item['success'] ?? false) === 'true';

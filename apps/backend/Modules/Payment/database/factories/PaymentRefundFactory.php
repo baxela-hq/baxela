@@ -9,10 +9,12 @@ use Modules\Payment\Models\PaymentRefund;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 
+/** @extends Factory<PaymentRefund> */
 class PaymentRefundFactory extends Factory
 {
     protected $model = PaymentRefund::class;
 
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

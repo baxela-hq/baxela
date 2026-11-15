@@ -2,6 +2,7 @@
 
 namespace Modules\Payment\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,8 +14,23 @@ use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property string $uuid
+ * @property int $payment_id
+ * @property int $order_id
+ * @property string $amount
+ * @property string $reason
+ * @property PaymentRefundStatusEnum $status
+ * @property string|null $transaction_id
+ * @property int|null $refunded_by
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Payment $payment
+ */
 class PaymentRefund extends Model
 {
+    /** @use HasFactory<PaymentRefundFactory> */
     use HasFactory;
 
     protected $table = PaymentRefundSchema::TABLE;
@@ -44,6 +60,7 @@ class PaymentRefund extends Model
         return PaymentRefundFactory::new();
     }
 
+    /** @return BelongsTo<Payment, $this> */
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class, PaymentRefundSchema::PAYMENT_ID);
