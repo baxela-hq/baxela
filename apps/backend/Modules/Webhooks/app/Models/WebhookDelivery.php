@@ -2,6 +2,7 @@
 
 namespace Modules\Webhooks\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,29 @@ use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
  * token is the ownership unit — every state update is conditional on it,
  * so a stale worker can never overwrite a newer claim's state.
  *
- * @mixin Builder
+ * @property string $id
+ * @property int $endpoint_id
+ * @property string $event_id
+ * @property string $event_type
+ * @property WebhookDeliveryStatusEnum $status
+ * @property string|null $claim_token
+ * @property CarbonInterface|null $claimed_at
+ * @property int $attempt_count
+ * @property list<array<string, mixed>>|null $attempts
+ * @property CarbonInterface|null $next_attempt_at
+ * @property int|null $response_status
+ * @property string|null $response_snippet
+ * @property string|null $error_category
+ * @property int|null $duration_ms
+ * @property CarbonInterface|null $delivered_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read WebhookEvent $event
+ * @property-read WebhookEndpoint $endpoint
+ *
+ * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, static> jsonPaginate()
+ *
+ * @mixin Builder<WebhookDelivery>
  */
 class WebhookDelivery extends Model
 {
@@ -59,11 +82,13 @@ class WebhookDelivery extends Model
         });
     }
 
+    /** @return BelongsTo<WebhookEvent, $this> */
     public function event(): BelongsTo
     {
         return $this->belongsTo(WebhookEvent::class, WebhookDeliverySchema::EVENT_ID);
     }
 
+    /** @return BelongsTo<WebhookEndpoint, $this> */
     public function endpoint(): BelongsTo
     {
         return $this->belongsTo(WebhookEndpoint::class, WebhookDeliverySchema::ENDPOINT_ID);

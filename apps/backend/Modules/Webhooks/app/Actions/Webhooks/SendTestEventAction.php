@@ -5,6 +5,7 @@ namespace Modules\Webhooks\Actions\Webhooks;
 use Modules\Webhooks\Exceptions\WebhooksException;
 use Modules\Webhooks\Jobs\DeliverWebhookJob;
 use Modules\Webhooks\Models\WebhookEndpoint;
+use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookEndpoint\WebhookEndpointSchema;
 
 /**
@@ -37,7 +38,7 @@ class SendTestEventAction
         $event = $this->writer->write(
             type: $type,
             sourceKey: sprintf('%s:%d:%s', $type, $endpoint->getKey(), now()->format('YmdHisu')),
-            payload: [
+            data: [
                 'endpoint_id' => $endpoint->getKey(),
                 'endpoint_name' => $endpoint->{WebhookEndpointSchema::NAME},
             ],

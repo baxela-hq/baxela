@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Webhooks\Exceptions\WebhooksException;
 use Modules\Webhooks\Jobs\DeliverWebhookJob;
 use Modules\Webhooks\Models\WebhookDelivery;
+use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
 
 /**

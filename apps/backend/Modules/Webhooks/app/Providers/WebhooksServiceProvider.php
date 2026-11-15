@@ -131,5 +131,4 @@ class WebhooksServiceProvider extends ServiceProvider
 
         config([$key => array_replace_recursive($existing, $module_config)]);
     }
-
 }

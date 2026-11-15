@@ -17,6 +17,7 @@ use Modules\Webhooks\Support\EventCatalog;
  */
 class WriteOutboxEventAction
 {
+    /** @param  array<string, mixed>  $data */
     public function write(string $type, string $sourceKey, array $data): WebhookEvent
     {
         $payload = [

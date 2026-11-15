@@ -2,7 +2,9 @@
 
 namespace Modules\Webhooks\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
@@ -15,7 +17,16 @@ use Modules\Webhooks\Schemas\WebhookEvent\WebhookEventSchema;
  * per-endpoint deliveries. source_key is the deterministic business
  * identity — repeated invocations of the same transition dedupe here.
  *
- * @mixin Builder
+ * @property string $id
+ * @property string $source_key
+ * @property string $event_type
+ * @property array<string, mixed> $payload
+ * @property CarbonInterface|null $processed_at
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, WebhookDelivery> $deliveries
+ *
+ * @mixin Builder<WebhookEvent>
  */
 class WebhookEvent extends Model
 {
@@ -48,6 +59,7 @@ class WebhookEvent extends Model
         });
     }
 
+    /** @return HasMany<WebhookDelivery, $this> */
     public function deliveries(): HasMany
     {
         return $this->hasMany(WebhookDelivery::class, WebhookDeliverySchema::EVENT_ID);
