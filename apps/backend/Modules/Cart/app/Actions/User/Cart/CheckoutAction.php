@@ -258,14 +258,15 @@ class CheckoutAction
                 }
 
                 foreach ($cartItems as $cartItem) {
+                    // The inventory gateway's variant id contract is string-typed.
+                    $variantId = (string) $cartItem->{CartItemSchema::VARIANT_ID};
                     if (! $inventoryGateway->decrement(
-                        $cartItem->{CartItemSchema::VARIANT_ID},
+                        $variantId,
                         $cartItem->{CartItemSchema::QUANTITY}
                     )) {
-                        $variantId = $cartItem->{CartItemSchema::VARIANT_ID};
                         throw new OutOfStockException(
                             VariantDisplayName::fromSummary(
-                                app(CatalogGatewayInterface::class)->getVariantSummaries([(int) $variantId])->get((int) $variantId)
+                                app(CatalogGatewayInterface::class)->getVariantSummaries([$variantId])->get($variantId)
                             ),
                             $inventoryGateway->availableQuantity((string) $variantId) ?? 0,
                             (int) $variantId,

@@ -19,6 +19,7 @@ class CartItemResource extends JsonResource
      * VariantSummary the list action attached; they are null when the
      * variant no longer resolves — the snapshots still identify the item.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $summary = $this->resource->getAttribute(CartItemSchema::ATTR_VARIANT_SUMMARY);

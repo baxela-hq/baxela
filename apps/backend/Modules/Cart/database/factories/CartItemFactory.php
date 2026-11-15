@@ -7,6 +7,7 @@ use Modules\Cart\Models\Cart;
 use Modules\Cart\Models\CartItem;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 
+/** @extends Factory<CartItem> */
 class CartItemFactory extends Factory
 {
     /**
@@ -17,13 +18,14 @@ class CartItemFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [
             CartItemSchema::CART_ID => $params[CartItemSchema::CART_ID] ?? Cart::inRandomOrder()?->first()?->id,
             CartItemSchema::VARIANT_ID => $params[CartItemSchema::VARIANT_ID] ?? $this->faker->numberBetween(1, 100),
             CartItemSchema::QUANTITY => $params[CartItemSchema::QUANTITY] ?? $this->faker->numberBetween(1, 20),
-            CartItemSchema::PRICE_SNAPSHOT => $params[CartItemSchema::PRICE_SNAPSHOT] ?? $this->faker->numerify(1, 100),
+            CartItemSchema::PRICE_SNAPSHOT => $params[CartItemSchema::PRICE_SNAPSHOT] ?? $this->faker->randomFloat(2, 1, 100),
             CartItemSchema::PRODUCT_NAME_SNAPSHOT => $params[CartItemSchema::PRODUCT_NAME_SNAPSHOT] ?? $this->faker->name(),
         ];
     }

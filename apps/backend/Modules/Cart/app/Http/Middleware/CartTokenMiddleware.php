@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Modules\Cart\Exceptions\Public\CartTokenException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The X-Cart-Token header is a bearer credential for the guest cart: it is
@@ -20,7 +21,7 @@ class CartTokenMiddleware
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $token = $request->header(self::HEADER);
 

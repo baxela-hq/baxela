@@ -3,12 +3,14 @@
 namespace Modules\Cart\Http\Requests\User\Coupon;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class ApplyCouponRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
      */
+    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [

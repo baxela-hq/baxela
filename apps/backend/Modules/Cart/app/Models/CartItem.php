@@ -2,6 +2,7 @@
 
 namespace Modules\Cart\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +13,20 @@ use Modules\Cart\Schemas\CartItem\CartItemSchema;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property int $cart_id
+ * @property int $variant_id
+ * @property string $price_snapshot
+ * @property string $product_name_snapshot
+ * @property int $quantity
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Cart $cart
+ */
 class CartItem extends Model
 {
+    /** @use HasFactory<CartItemFactory> */
     use HasFactory;
 
     protected $table = CartItemSchema::TABLE;
@@ -29,6 +42,7 @@ class CartItem extends Model
         CartItemSchema::QUANTITY,
     ];
 
+    /** @return BelongsTo<Cart, $this> */
     public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class);

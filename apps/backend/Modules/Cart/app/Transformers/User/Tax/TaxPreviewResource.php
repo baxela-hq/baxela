@@ -13,6 +13,7 @@ class TaxPreviewResource extends JsonResource
     /**
      * @param  array{result: TaxResult, currency_id: ?int, shipping_tax_included: bool}  $resource
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $result = $this->resource['result'];

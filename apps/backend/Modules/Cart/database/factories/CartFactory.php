@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Cart\Models\Cart;
 use Modules\Cart\Schemas\Cart\CartSchema;
 
+/** @extends Factory<Cart> */
 class CartFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class CartFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [
