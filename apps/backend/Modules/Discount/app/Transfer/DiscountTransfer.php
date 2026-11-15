@@ -163,7 +163,7 @@ class DiscountTransfer implements ModuleTransferInterface
                         self::KEY_SOURCE_ID => (int) $redemption->getKey(),
                         self::KEY_PAYLOAD => [
                             // The code travels; order/user stay source ids.
-                            'coupon_code' => $redemption->coupon?->{CouponSchema::CODE},
+                            'coupon_code' => $redemption->coupon->{CouponSchema::CODE},
                             RedemptionSchema::ORDER_ID => $redemption->{RedemptionSchema::ORDER_ID},
                             RedemptionSchema::USER_ID => $redemption->{RedemptionSchema::USER_ID},
                             RedemptionSchema::DISCOUNT_AMOUNT => $redemption->{RedemptionSchema::DISCOUNT_AMOUNT},

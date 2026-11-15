@@ -11,6 +11,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListCouponAction
 {
+    /** @return LengthAwarePaginator<int, Coupon> */
     public function handle(): LengthAwarePaginator
     {
         $id = CouponSchema::TABLE.'.'.CouponSchema::ID;

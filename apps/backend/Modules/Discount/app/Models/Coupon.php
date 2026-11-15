@@ -2,7 +2,9 @@
 
 namespace Modules\Discount\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,8 +15,27 @@ use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property string $code
+ * @property string|null $name
+ * @property CouponTypeEnum $type
+ * @property string $value
+ * @property string|null $max_discount_amount
+ * @property string|null $min_order_amount
+ * @property CarbonInterface|null $starts_at
+ * @property CarbonInterface|null $ends_at
+ * @property int|null $usage_limit
+ * @property int|null $per_user_limit
+ * @property int $usage_count
+ * @property bool $is_active
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Collection<int, Redemption> $redemptions
+ */
 class Coupon extends Model
 {
+    /** @use HasFactory<CouponFactory> */
     use HasFactory;
 
     protected $table = CouponSchema::TABLE;
@@ -44,6 +65,7 @@ class Coupon extends Model
         ];
     }
 
+    /** @return HasMany<Redemption, $this> */
     public function redemptions(): HasMany
     {
         return $this->hasMany(Redemption::class);

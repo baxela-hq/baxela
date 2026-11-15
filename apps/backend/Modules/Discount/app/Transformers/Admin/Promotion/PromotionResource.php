@@ -10,6 +10,7 @@ use Modules\Discount\Schemas\Promotion\PromotionSchema;
 /**
  * @mixin Promotion
  */
+/** @mixin Promotion */
 class PromotionResource extends JsonResource
 {
     /**
@@ -19,6 +20,7 @@ class PromotionResource extends JsonResource
      * action attaches; single-record contexts fall back to the pivot
      * lookups.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

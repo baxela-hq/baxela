@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Discount\Models\Redemption;
 use Modules\Discount\Schemas\Redemption\RedemptionSchema;
 
+/** @extends Factory<Redemption> */
 class RedemptionFactory extends Factory
 {
     /**
@@ -16,6 +17,7 @@ class RedemptionFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         return [

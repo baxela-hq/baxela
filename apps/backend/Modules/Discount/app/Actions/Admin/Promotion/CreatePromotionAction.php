@@ -13,6 +13,7 @@ class CreatePromotionAction
     /**
      * @throws CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(array $data): Promotion
     {
         try {

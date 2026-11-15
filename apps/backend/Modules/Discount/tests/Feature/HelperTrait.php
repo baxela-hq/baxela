@@ -23,7 +23,6 @@ trait HelperTrait
         return 'api/v1/discount'.$endpoint;
     }
 
-
     public function superAdminUser(): User
     {
         return User::factory()->superAdmin()->create();
@@ -63,7 +62,6 @@ trait HelperTrait
 
         return ['coupon' => $coupon, 'promotion' => $promotion, 'product' => $product, 'category' => $category, 'redemption' => $redemption];
     }
-
 
     /**
      * Export through the module's own data endpoint and return the

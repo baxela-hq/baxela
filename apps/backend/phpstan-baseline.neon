@@ -2065,12 +2065,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Cart\\Models\\Cart\:\:\$coupon_code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2084,30 +2078,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\Variant\:\:\$price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
@@ -2197,12 +2167,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
 
 		-
-			message: '#^Function applyCouponToCart\(\) should return Modules\\Discount\\Models\\Coupon but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<float\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -2210,18 +2174,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$base_price\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
@@ -2579,12 +2531,6 @@ parameters:
 			identifier: argument.templateType
 			count: 3
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CouponTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Cart\\Models\\Cart\:\:\$coupon_code\.$#'
@@ -7099,20 +7045,8 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
 			message: '#^Access to an undefined property Pest\\Expectation\<mixed\>\:\:\$price\.$#'
 			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:syncScope\(\)\.$#'
-			identifier: method.notFound
 			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
@@ -11161,184 +11095,10 @@ parameters:
 			path: Modules/Core/tests/Feature/StackHealthTest.php
 
 		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Coupon\\CreateCouponAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/CreateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/DeleteCouponAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Coupon\\ListCouponAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/ListCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$max_discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$min_order_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$per_user_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Coupon\\UpdateCouponAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Coupon/UpdateCouponAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Promotion\\CreatePromotionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/CreatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Actions/Admin/Promotion/ListPromotionAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Promotion\\ListPromotionAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/ListPromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$priority\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$scope\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Actions\\Admin\\Promotion\\UpdatePromotionAction\:\:handle\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
-
-		-
-			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/Coupon/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/app/Exceptions/Coupon/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\HasRedemptionsException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/Coupon/HasRedemptionsException.php
 
 		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\HasRedemptionsException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -11347,22 +11107,10 @@ parameters:
 			path: Modules/Discount/app/Exceptions/Coupon/HasRedemptionsException.php
 
 		-
-			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/Coupon/UpdateFailedException.php
-
-		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/app/Exceptions/Coupon/UpdateFailedException.php
-
-		-
-			message: '#^Method Modules\\Discount\\Exceptions\\DiscountException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/DiscountException.php
 
 		-
 			message: '#^Method Modules\\Discount\\Exceptions\\DiscountException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -11371,22 +11119,10 @@ parameters:
 			path: Modules/Discount/app/Exceptions/DiscountException.php
 
 		-
-			message: '#^Method Modules\\Discount\\Exceptions\\Promotion\\CreationFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/Promotion/CreationFailedException.php
-
-		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Promotion\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/app/Exceptions/Promotion/CreationFailedException.php
-
-		-
-			message: '#^Method Modules\\Discount\\Exceptions\\Promotion\\UpdateFailedException\:\:__construct\(\) has parameter \$code with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Exceptions/Promotion/UpdateFailedException.php
 
 		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Promotion\\UpdateFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -11395,118 +11131,10 @@ parameters:
 			path: Modules/Discount/app/Exceptions/Promotion/UpdateFailedException.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$max_discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$min_order_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$per_user_limit\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_limit\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
 			message: '#^Call to function is_null\(\) with Modules\\Discount\\Models\\Coupon will always evaluate to false\.$#'
 			identifier: function.impossibleType
 			count: 1
 			path: Modules/Discount/app/Gateways/DiscountGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/PromotionGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Discount/app/Gateways/PromotionGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$priority\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/app/Gateways/PromotionGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/PromotionGateway.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Gateways/PromotionGateway.php
 
 		-
 			message: '#^Method Modules\\Discount\\Gateways\\PromotionGateway\:\:categoryCandidates\(\) never returns Illuminate\\Support\\Collection\<int, Modules\\Discount\\Models\\Promotion\> so it can be removed from the return type\.$#'
@@ -11533,114 +11161,6 @@ parameters:
 			path: Modules/Discount/app/Gateways/PromotionGateway.php
 
 		-
-			message: '#^Method Modules\\Discount\\Http\\Requests\\Admin\\Coupon\\CouponRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Http/Requests/Admin/Coupon/CouponRequest.php
-
-		-
-			message: '#^Method Modules\\Discount\\Http\\Requests\\Admin\\Promotion\\PromotionRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Http/Requests/Admin/Promotion/PromotionRequest.php
-
-		-
-			message: '#^Method Modules\\Discount\\Http\\Requests\\Admin\\Promotion\\PromotionRequest\:\:withValidator\(\) has parameter \$validator with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Discount/app/Http/Requests/Admin/Promotion/PromotionRequest.php
-
-		-
-			message: '#^Class Modules\\Discount\\Models\\Coupon uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Coupon.php
-
-		-
-			message: '#^Method Modules\\Discount\\Models\\Coupon\:\:redemptions\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Coupon.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Coupon.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Discount/app/Models/Promotion.php
-
-		-
-			message: '#^Class Modules\\Discount\\Models\\Promotion uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Promotion.php
-
-		-
-			message: '#^Method Modules\\Discount\\Models\\Promotion\:\:syncScope\(\) has parameter \$categoryIds with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Models/Promotion.php
-
-		-
-			message: '#^Method Modules\\Discount\\Models\\Promotion\:\:syncScope\(\) has parameter \$productIds with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Models/Promotion.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Promotion.php
-
-		-
-			message: '#^Class Modules\\Discount\\Models\\Redemption uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Redemption.php
-
-		-
-			message: '#^Method Modules\\Discount\\Models\\Redemption\:\:coupon\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\BelongsTo does not specify its types\: TRelatedModel, TDeclaringModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Redemption.php
-
-		-
-			message: '#^PHPDoc tag @mixin contains generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/app/Models/Redemption.php
-
-		-
-			message: '#^Method Modules\\Discount\\Providers\\DiscountServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Providers/DiscountServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Discount\\Providers\\DiscountServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Providers/DiscountServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Discount\\Providers\\DiscountServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Providers/DiscountServiceProvider.php
-
-		-
-			message: '#^Class Modules\\Core\\Contracts\\Events\\Discount\\ShipmentCreatedEvent not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: Modules/Discount/app/Providers/EventServiceProvider.php
-
-		-
 			message: '#^Class Modules\\Core\\Contracts\\Events\\Discount\\ShipmentDeliveredEvent not found\.$#'
 			identifier: class.notFound
 			count: 1
@@ -11651,366 +11171,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: Modules/Discount/app/Providers/EventServiceProvider.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$max_discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$min_order_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$per_user_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$priority\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$scope\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$coupon\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transfer/DiscountTransfer.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$max_discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$min_order_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$per_user_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$usage_limit\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Method Modules\\Discount\\Transformers\\Admin\\Coupon\\CouponResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Coupon/CouponResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$ends_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$is_active\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$priority\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$scope\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$starts_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:\$value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Method Modules\\Discount\\Transformers\\Admin\\Promotion\\PromotionResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/app/Transformers/Admin/Promotion/PromotionResource.php
-
-		-
-			message: '#^Class Modules\\Discount\\Database\\Factories\\CouponFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/database/factories/CouponFactory.php
-
-		-
-			message: '#^Method Modules\\Discount\\Database\\Factories\\CouponFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/database/factories/CouponFactory.php
-
-		-
-			message: '#^Class Modules\\Discount\\Database\\Factories\\PromotionFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/database/factories/PromotionFactory.php
-
-		-
-			message: '#^Method Modules\\Discount\\Database\\Factories\\PromotionFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/database/factories/PromotionFactory.php
-
-		-
-			message: '#^Class Modules\\Discount\\Database\\Factories\\RedemptionFactory extends generic class Illuminate\\Database\\Eloquent\\Factories\\Factory but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Discount/database/factories/RedemptionFactory.php
-
-		-
-			message: '#^Method Modules\\Discount\\Database\\Factories\\RedemptionFactory\:\:definition\(\) has parameter \$params with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Discount/database/factories/RedemptionFactory.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
-			message: '#^Access to an undefined property Pest\\Expectation\<Illuminate\\Database\\Eloquent\\Model\|null\>\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
@@ -12045,19 +11205,7 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 8
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:selectedProductIds\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:syncScope\(\)\.$#'
-			identifier: method.notFound
-			count: 4
+			count: 3
 			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
@@ -12104,12 +11252,6 @@ parameters:
 
 		-
 			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
@@ -12163,18 +11305,6 @@ parameters:
 			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Discount/tests/Feature/Gateway/EvaluateCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/Gateway/EvaluateCouponTest.php
-
-		-
 			message: '#^Function evaluateCoupon\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -12187,58 +11317,10 @@ parameters:
 			path: Modules/Discount/tests/Feature/Gateway/EvaluateCouponTest.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$coupon_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
 			message: '#^Function couponForRedemption\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Function couponForRedemption\(\) should return Modules\\Discount\\Models\\Coupon but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/RedemptionGatewayTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 4
-			path: Modules/Discount/tests/Feature/Gateway/ResolvePromotionTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Promotion\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 12
-			path: Modules/Discount/tests/Feature/Gateway/ResolvePromotionTest.php
 
 		-
 			message: '#^Function resolvePromotions\(\) has parameter \$productIds with no value type specified in iterable type array\.$#'
@@ -12271,34 +11353,10 @@ parameters:
 			path: Modules/Discount/tests/Feature/Gateway/ResolvePromotionTest.php
 
 		-
-			message: '#^Function scopedPromotion\(\) should return Modules\\Discount\\Models\\Promotion but returns Illuminate\\Database\\Eloquent\\Model\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/ResolvePromotionTest.php
-
-		-
-			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\>\:\:and\(\)$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Discount/tests/Feature/Gateway/ResolvePromotionTest.php
-
-		-
 			message: '#^Trait Modules\\Discount\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Discount/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Unit/RedemptionGuardTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Discount/tests/Unit/RedemptionGuardTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
@@ -16155,12 +15213,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$usage_count\.$#'
-			identifier: property.notFound
 			count: 1
 			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
 
@@ -16321,36 +15373,6 @@ parameters:
 			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$usage_count\.$#'
-			identifier: property.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Coupon\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Discount\\Models\\Redemption\:\:\$discount_amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Order\\Models\\Order\:\:\$coupon_code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -16377,12 +15399,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
 			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
-
-		-
-			message: '#^Parameter \#2 \$coupon of function couponOrderInput expects Modules\\Discount\\Models\\Coupon\|null, Illuminate\\Database\\Eloquent\\Model given\.$#'
-			identifier: argument.type
 			count: 3
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
 

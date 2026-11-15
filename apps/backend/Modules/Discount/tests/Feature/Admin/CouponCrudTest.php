@@ -76,9 +76,11 @@ it('shows and updates a coupon', function () {
         ->assertOk()
         ->assertJsonPath('data.'.CouponSchema::CODE, 'NEW');
 
-    expect($coupon->refresh())
-        ->{CouponSchema::CODE}->toBe('NEW')
-        ->{CouponSchema::IS_ACTIVE}->toBeFalse();
+    $fresh = $coupon->refresh();
+    expect($fresh)
+        ->not->toBeNull()
+        ->and($fresh->{CouponSchema::CODE})->toBe('NEW')
+        ->and($fresh->{CouponSchema::IS_ACTIVE})->toBeFalse();
 });
 
 it('deletes a coupon that was never redeemed', function () {

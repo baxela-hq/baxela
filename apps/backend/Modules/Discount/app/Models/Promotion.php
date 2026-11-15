@@ -2,11 +2,14 @@
 
 namespace Modules\Discount\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Modules\Catalog\Models\Category;
+use Modules\Catalog\Models\Product;
 use Modules\Discount\Database\Factories\PromotionFactory;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 use Modules\Discount\Schemas\Promotion\PromotionCategorySchema;
@@ -17,8 +20,24 @@ use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
 /**
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property string $name
+ * @property ScopeTypeEnum $scope
+ * @property CouponTypeEnum $type
+ * @property string $value
+ * @property CarbonInterface|null $starts_at
+ * @property CarbonInterface|null $ends_at
+ * @property int $priority
+ * @property bool $is_active
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Product> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
+ */
 class Promotion extends Model
 {
+    /** @use HasFactory<PromotionFactory> */
     use HasFactory;
 
     protected $table = PromotionSchema::TABLE;
@@ -79,6 +98,10 @@ class Promotion extends Model
     /**
      * Replace the scope selections. Called inside the create/update
      * transaction so a pivot failure rolls the whole mutation back.
+     */
+    /**
+     * @param  list<int>  $productIds
+     * @param  list<int>  $categoryIds
      */
     public function syncScope(array $productIds, array $categoryIds): void
     {

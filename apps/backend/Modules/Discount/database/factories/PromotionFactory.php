@@ -8,6 +8,7 @@ use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 use Modules\Discount\Schemas\Promotion\PromotionSchema;
 use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
 
+/** @extends Factory<Promotion> */
 class PromotionFactory extends Factory
 {
     /**
@@ -18,6 +19,7 @@ class PromotionFactory extends Factory
     /**
      * Define the model's default state.
      */
+    /** @param  array<string, mixed>  $params */
     public function definition(array $params = []): array
     {
         $type = $params[PromotionSchema::TYPE] ?? CouponTypeEnum::PERCENT->value;

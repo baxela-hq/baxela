@@ -4,7 +4,11 @@ namespace Modules\Discount\Http\Requests\Admin\Promotion;
 
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ConditionalRules;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\ProhibitedIf;
+use Illuminate\Validation\Validator;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 use Modules\Discount\Schemas\Promotion\PromotionSchema;
@@ -12,6 +16,7 @@ use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
 
 class PromotionRequest extends FormRequest
 {
+    /** @return array<string, list<string|Closure|ConditionalRules|Enum|ProhibitedIf>> */
     public function rules(): array
     {
         $isPercent = $this->input(PromotionSchema::TYPE) === CouponTypeEnum::PERCENT->value;
@@ -67,7 +72,7 @@ class PromotionRequest extends FormRequest
      * scope=specific must carry at least one selection — an empty specific
      * scope is rejected instead of silently degrading to store-wide.
      */
-    public function withValidator($validator): void
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator): void {
             if ($this->input(PromotionSchema::SCOPE) !== ScopeTypeEnum::SPECIFIC->value) {

@@ -3,9 +3,9 @@
 namespace Modules\Discount\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Core\Contracts\Events\Discount\ShipmentCreatedEvent;
 use Modules\Core\Contracts\Events\Discount\ShipmentDeliveredEvent;
 use Modules\Core\Contracts\Events\Discount\ShipmentShippedEvent;
+use Modules\Core\Contracts\Events\Shipping\ShipmentCreatedEvent;
 use Modules\Core\Listeners\LogAllEvents;
 
 class EventServiceProvider extends ServiceProvider

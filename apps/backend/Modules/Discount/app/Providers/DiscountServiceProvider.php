@@ -20,6 +20,7 @@ class DiscountServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'discount';
 
+    /** @var array<class-string, class-string> */
     public array $bindings = [
         DiscountGatewayInterface::class => DiscountGateway::class,
         PromotionGatewayInterface::class => PromotionGateway::class,
@@ -144,11 +145,13 @@ class DiscountServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

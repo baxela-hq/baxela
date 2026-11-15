@@ -13,6 +13,7 @@ class UpdateCouponAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Coupon
     {
         /** @var Coupon $record */

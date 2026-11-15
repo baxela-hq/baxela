@@ -14,6 +14,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListPromotionAction
 {
+    /** @return LengthAwarePaginator<int, Promotion> */
     public function handle(): LengthAwarePaginator
     {
         $id = PromotionSchema::TABLE.'.'.PromotionSchema::ID;

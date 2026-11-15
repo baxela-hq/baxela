@@ -3,7 +3,11 @@
 namespace Modules\Discount\Http\Requests\Admin\Coupon;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\ConditionalRules;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\ProhibitedIf;
+use Illuminate\Validation\Rules\Unique;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 
@@ -20,6 +24,7 @@ class CouponRequest extends FormRequest
         }
     }
 
+    /** @return array<string, list<string|ConditionalRules|Enum|ProhibitedIf|Unique>> */
     public function rules(): array
     {
         $id = $this->route('id');

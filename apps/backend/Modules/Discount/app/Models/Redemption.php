@@ -2,6 +2,7 @@
 
 namespace Modules\Discount\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +24,19 @@ use Modules\Discount\Schemas\Redemption\RedemptionSchema;
  *
  * @mixin Builder
  */
+/**
+ * @property int $id
+ * @property int $coupon_id
+ * @property int $order_id
+ * @property int|null $user_id
+ * @property string $discount_amount
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read Coupon $coupon
+ */
 class Redemption extends Model
 {
+    /** @use HasFactory<RedemptionFactory> */
     use HasFactory;
 
     protected $table = RedemptionSchema::TABLE;
@@ -36,6 +48,7 @@ class Redemption extends Model
         RedemptionSchema::DISCOUNT_AMOUNT,
     ];
 
+    /** @return BelongsTo<Coupon, $this> */
     public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);

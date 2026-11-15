@@ -4,13 +4,16 @@ namespace Modules\Discount\Transformers\Admin\Coupon;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Discount\Models\Coupon;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 
+/** @mixin Coupon */
 class CouponResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [
