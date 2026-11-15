@@ -2,14 +2,26 @@
 
 namespace Modules\Menu\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Menu\Database\Factories\MenuLinkTranslationFactory;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTranslationSchema;
 
+/**
+ * @property int $id
+ * @property int $menu_link_id
+ * @property int $language_id
+ * @property string $title
+ * @property string|null $description
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
+ * @property-read MenuLink $menulink
+ */
 class MenuLinkTranslation extends Model
 {
+    /** @use HasFactory<MenuLinkTranslationFactory> */
     use HasFactory;
 
     protected $table = MenuLinkTranslationSchema::TABLE;

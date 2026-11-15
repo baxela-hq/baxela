@@ -7,6 +7,7 @@ use Modules\Menu\Models\MenuLink;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTargetEnum;
 
+/** @extends Factory<MenuLink> */
 class MenuLinkFactory extends Factory
 {
     /**

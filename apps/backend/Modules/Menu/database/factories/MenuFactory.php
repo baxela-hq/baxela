@@ -7,6 +7,7 @@ use Modules\Menu\Models\Menu;
 use Modules\Menu\Schemas\Menu\MenuLocationEnum;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 
+/** @extends Factory<Menu> */
 class MenuFactory extends Factory
 {
     /**

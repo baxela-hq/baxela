@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Support\PicksTranslation;
 use Modules\Core\Support\ResolvesPublicLanguage;
+use Modules\Menu\Models\MenuLink;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTranslationSchema as MLTSchema;
 
+/** @mixin MenuLink */
 class MenuLinkResource extends JsonResource
 {
     use ResolvesPublicLanguage;
@@ -18,6 +20,7 @@ class MenuLinkResource extends JsonResource
      * Accept-Language and children nest recursively (already eager-loaded
      * and ordered).
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         $translation = $this->resource->translations

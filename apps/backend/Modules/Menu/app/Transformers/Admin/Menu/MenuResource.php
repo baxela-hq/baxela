@@ -4,14 +4,17 @@ namespace Modules\Menu\Transformers\Admin\Menu;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Menu\Models\Menu;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Transformers\Admin\MenuLink\MenuLinkResource;
 
+/** @mixin Menu */
 class MenuResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

@@ -19,7 +19,6 @@ trait HelperTrait
         return 'api/v1/menu'.$endpoint;
     }
 
-
     public function superAdminUser(): User
     {
         return User::factory()->superAdmin()->create();
@@ -54,7 +53,6 @@ trait HelperTrait
 
         return ['menu' => $menu, 'parent' => $parent, 'child' => $child];
     }
-
 
     /**
      * Export through the module's own data endpoint and return the

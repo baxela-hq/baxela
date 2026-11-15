@@ -5,8 +5,10 @@ namespace Modules\Menu\Transformers\Admin\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
+use Modules\Menu\Models\MenuTranslation;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as Schema;
 
+/** @mixin MenuTranslation */
 class MenuTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;
@@ -14,6 +16,7 @@ class MenuTranslationResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+    /** @return array<string, mixed> */
     public function toArray(Request $request): array
     {
         return [

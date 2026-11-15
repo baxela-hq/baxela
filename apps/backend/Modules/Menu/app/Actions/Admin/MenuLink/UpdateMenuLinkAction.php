@@ -2,7 +2,6 @@
 
 namespace Modules\Menu\Actions\Admin\MenuLink;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Events\Menu\MenuLinkUpdatedEvent;
 use Modules\Menu\Exceptions\MenuLink\CircularMoveException;
@@ -16,6 +15,7 @@ class UpdateMenuLinkAction extends AbstractMenuLinkAction
     /**
      * @throws CircularMoveException|UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $menuId, string $linkId, array $data): MenuLink
     {
         $record = MenuLink::query()
@@ -79,9 +79,7 @@ class UpdateMenuLinkAction extends AbstractMenuLinkAction
                 throw new CircularMoveException;
             }
 
-            $cursor = $ancestors instanceof Collection
-                ? ($ancestors->has($cursor) ? $ancestors->get($cursor) : null)
-                : ($ancestors[$cursor] ?? null);
+            $cursor = $ancestors->has($cursor) ? $ancestors->get($cursor) : null;
         }
     }
 }

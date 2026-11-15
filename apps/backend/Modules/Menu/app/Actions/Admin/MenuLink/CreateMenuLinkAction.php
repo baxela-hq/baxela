@@ -15,6 +15,7 @@ class CreateMenuLinkAction extends AbstractMenuLinkAction
     /**
      * @throws CreationFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $menuId, array $data): MenuLink
     {
         Menu::query()->findOrFail($menuId);

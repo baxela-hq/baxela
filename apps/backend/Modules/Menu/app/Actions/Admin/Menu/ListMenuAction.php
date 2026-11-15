@@ -13,6 +13,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ListMenuAction extends AbstractMenuAction
 {
+    /** @return LengthAwarePaginator<int, Menu> */
     public function handle(): LengthAwarePaginator
     {
         $id = MenuSchema::TABLE.'.'.MenuSchema::ID;

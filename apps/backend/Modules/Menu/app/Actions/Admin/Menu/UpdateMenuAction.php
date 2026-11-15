@@ -14,6 +14,7 @@ class UpdateMenuAction extends AbstractMenuAction
     /**
      * @throws UpdateFailedException|Throwable
      */
+    /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Menu
     {
         $record = Menu::query()->findOrFail($id);

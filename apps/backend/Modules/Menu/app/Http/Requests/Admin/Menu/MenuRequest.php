@@ -5,6 +5,7 @@ namespace Modules\Menu\Http\Requests\Admin\Menu;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\In;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Menu\Schemas\Menu\MenuLocationEnum;
 use Modules\Menu\Schemas\Menu\MenuSchema;
@@ -19,6 +20,7 @@ class MenuRequest extends FormRequest
         $this->resolveLanguages();
     }
 
+    /** @return array<string, array<int, string|array<int, string>|Enum|In>> */
     public function rules(): array
     {
         $id = $this->route('id');

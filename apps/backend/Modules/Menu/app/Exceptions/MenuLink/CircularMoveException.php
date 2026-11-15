@@ -9,8 +9,9 @@ use Throwable;
 class CircularMoveException extends BaseException
 {
     public function __construct(
-        $code = null,
+        ?string $code = null,
         int $httpStatus = 422,
+        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

@@ -36,6 +36,7 @@ class MenuDatabaseSeeder extends Seeder
         $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
         $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
 
+        /** @var array<string, non-empty-array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: non-empty-array<string, mixed>, children?: array<string, mixed>}>}>> $data */
         $data = [];
         foreach ($langs as $lang) {
             $data[$lang] = Lang::get($moduleKey, [], $lang) ?? [];
@@ -52,7 +53,7 @@ class MenuDatabaseSeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array>  $data  lang => seeder payload
+     * @param  array<string, array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: array, children?: array}>}>>  $data  lang => seeder payload
      * @param  array<int, string>  $langs
      */
     private function seedMenu(string $location, array $data, array $langs, string $masterLang): void

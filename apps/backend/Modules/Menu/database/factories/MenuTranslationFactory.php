@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Menu\Models\MenuTranslation;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema;
 
+/** @extends Factory<MenuTranslation> */
 class MenuTranslationFactory extends Factory
 {
     /**
