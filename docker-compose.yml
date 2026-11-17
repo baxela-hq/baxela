@@ -35,6 +35,10 @@ services:
         environment:
             WWWUSER: ${WWWUSER:-1000}
             WWWGROUP: ${WWWGROUP:-1000}
+            # Real env vars win over the copied apps/backend/.env, so this
+            # keeps TRUSTED_PROXIES in sync with the proxy subnet below from
+            # a single root .env (matters when two stacks run side by side).
+            TRUSTED_PROXIES: ${TRUSTED_PROXIES:-172.28.0.0/29}
             # Server→Reverb broadcasts stay on the compose network; the
             # REVERB_HOST in apps/backend/.env is the browser-facing host.
             REVERB_HOST: reverb
@@ -61,7 +65,7 @@ services:
                 # DNS alias advertised ONLY on the isolated proxy network —
                 # nginx resolves the Octane HTTP listener through it, so the
                 # connection source IP Laravel sees stays inside
-                # TRUSTED_PROXIES (172.28.0.0/29). DNS aliasing does not set
+                # TRUSTED_PROXIES (default 172.28.0.0/29). DNS aliasing does not set
                 # that source IP by itself; the pinned proxy subnet does.
                 aliases:
                     - app-upstream
@@ -267,5 +271,5 @@ networks:
     proxy:
         ipam:
             config:
-                - subnet: 172.28.0.0/29
-                  gateway: 172.28.0.1
+                - subnet: ${PROXY_SUBNET:-172.28.0.0/29}
+                  gateway: ${PROXY_GATEWAY:-172.28.0.1}
