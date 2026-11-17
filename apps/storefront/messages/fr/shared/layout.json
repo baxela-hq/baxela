@@ -28,7 +28,13 @@
         "empty": "Vous n'avez aucune notification."
       },
       "actions": {
-        "view_all": "Voir toutes les notifications"
+        "view_all": "Voir toutes les notifications",
+        "mark_all_read": "Tout marquer comme lu"
+      },
+      "messages": {
+        "error": {
+          "mark_all_read_failed": "Impossible de marquer vos notifications comme lues. Veuillez réessayer."
+        }
       }
     },
     "cart": {

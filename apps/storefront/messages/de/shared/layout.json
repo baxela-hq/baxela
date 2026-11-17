@@ -28,7 +28,13 @@
         "empty": "Sie haben keine Benachrichtigungen."
       },
       "actions": {
-        "view_all": "Alle Benachrichtigungen ansehen"
+        "view_all": "Alle Benachrichtigungen ansehen",
+        "mark_all_read": "Alle als gelesen markieren"
+      },
+      "messages": {
+        "error": {
+          "mark_all_read_failed": "Ihre Benachrichtigungen konnten nicht als gelesen markiert werden. Bitte versuchen Sie es erneut."
+        }
       }
     },
     "cart": {
