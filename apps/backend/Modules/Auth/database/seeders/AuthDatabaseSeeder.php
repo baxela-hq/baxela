@@ -3,6 +3,7 @@
 namespace Modules\Auth\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Auth\Models\User;
@@ -20,7 +21,7 @@ class AuthDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $password = env('ADMIN_USER_PASSWORD') ?? Str::password(24);
+        $password = Env::get('ADMIN_USER_PASSWORD') ?? Str::password(24);
 
         collect(['info@baxela.com', 'admin@baxela.com'])->each(function (string $email) use ($password): void {
             User::query()->create([
@@ -32,7 +33,7 @@ class AuthDatabaseSeeder extends Seeder
             ]);
         });
 
-        if (! env('ADMIN_USER_PASSWORD') && $this->command) {
+        if (! Env::get('ADMIN_USER_PASSWORD') && $this->command) {
             $this->command->warn('Generated admin password (not persisted anywhere else, copy it now):');
             $this->command->info($password);
         }

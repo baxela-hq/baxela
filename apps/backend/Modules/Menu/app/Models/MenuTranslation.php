@@ -41,6 +41,7 @@ class MenuTranslation extends Model
         return MenuTranslationFactory::new();
     }
 
+    /** @return BelongsTo<Menu, $this> */
     public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);

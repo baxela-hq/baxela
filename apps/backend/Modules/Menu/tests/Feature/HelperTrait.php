@@ -24,7 +24,9 @@ trait HelperTrait
         return User::factory()->superAdmin()->create();
     }
 
-    /** A translated header menu with a two-level link tree. */
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferMenu(int $languageId): array
     {
         $menu = Menu::query()->create([

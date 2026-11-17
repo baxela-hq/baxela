@@ -18,10 +18,12 @@ class TelegramApiException extends NotificationException
 
     public const string META_DESCRIPTION = 'description';
 
+    /**
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         ?string $code = null,
         int $httpStatus = 400,
-        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

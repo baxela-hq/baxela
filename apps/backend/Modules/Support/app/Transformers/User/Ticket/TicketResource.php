@@ -4,15 +4,18 @@ namespace Modules\Support\Transformers\User\Ticket;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Support\Models\Ticket;
 use Modules\Support\Schemas\Ticket\TicketSchema;
 use Modules\Support\Transformers\User\TicketMessage\TicketMessageResource;
 
-/** @mixin \Modules\Support\Models\Ticket */
+/** @mixin Ticket */
 class TicketResource extends JsonResource
 {
     /**
      * Transform the resource into an array. The ownership scope already
      * guarantees every record here belongs to the authenticated customer.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {

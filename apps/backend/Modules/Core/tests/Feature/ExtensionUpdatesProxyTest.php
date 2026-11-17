@@ -34,7 +34,9 @@ beforeEach(function () {
     config(['core.extensions.marketplace_url' => 'https://'.MARKETPLACE_HOST]);
 });
 
-/** @param array<string, ?string> $map */
+/**
+ * @param  array<string, mixed>  $map
+ */
 function mockInstalledExtensions(array $map): void
 {
     test()->mock(ComposerPackages::class, function (MockInterface $mock) use ($map) {
@@ -45,7 +47,9 @@ function mockInstalledExtensions(array $map): void
     });
 }
 
-/** @param array<string, mixed> $data */
+/**
+ * @param  array<string, mixed>  $data
+ */
 function marketplaceOk(array $data = []): void
 {
     Http::fake([

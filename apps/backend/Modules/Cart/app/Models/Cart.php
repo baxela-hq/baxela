@@ -12,7 +12,7 @@ use Modules\Cart\Database\Factories\CartFactory;
 use Modules\Cart\Schemas\Cart\CartSchema;
 
 /**
- * @mixin Builder
+ * @mixin Builder<Cart>
  */
 /**
  * @property int $id

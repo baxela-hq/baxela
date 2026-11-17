@@ -12,6 +12,9 @@ use Modules\Notification\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @return array<string, mixed>
+ */
 function pushSubscriptionPayload(string $endpoint = 'https://fcm.googleapis.com/fcm/send/dQw4w9WgXcQ'): array
 {
     return [

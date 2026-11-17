@@ -52,7 +52,7 @@ it('lists only featured brands ordered by featured position when filtered', func
     $response = $this->getJson($this->baseUrl('/public/brands').'?featured=true')
         ->assertOk();
 
-    $brands = collect($response->json('data'));
+    $brands = collect((array) $response->json('data'));
 
     expect($brands->pluck('slug')->all())->toBe(['first', 'second'])
         ->and($brands->last()['image_url'])->toBe('/storage/brands/second.png');
@@ -65,7 +65,7 @@ it('lists every brand regardless of featured items when unfiltered', function ()
     $response = $this->getJson($this->baseUrl('/public/brands'))
         ->assertOk();
 
-    expect(collect($response->json('data'))->pluck('slug'))->toHaveCount(2);
+    expect(collect((array) $response->json('data'))->pluck('slug'))->toHaveCount(2);
 });
 
 it('shows a brand by slug', function () {

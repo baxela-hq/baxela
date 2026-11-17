@@ -29,6 +29,7 @@ class CatalogGateway implements CatalogGatewayInterface
 
     public function __construct(protected AppliesProductPromotions $appliesProductPromotions) {}
 
+    /** @return Collection<int, ProductSummary> */
     public function getProductSummaries(array $productIds): Collection
     {
         if ($productIds === []) {
@@ -66,6 +67,7 @@ class CatalogGateway implements CatalogGatewayInterface
         return Category::query()->whereKey($categoryId)->exists();
     }
 
+    /** @return Collection<int, VariantSummary> */
     public function getVariantSummaries(array $variantIds): Collection
     {
         if ($variantIds === []) {

@@ -12,6 +12,9 @@ use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
  */
 class WebhookDeliveryResource extends JsonResource
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return [

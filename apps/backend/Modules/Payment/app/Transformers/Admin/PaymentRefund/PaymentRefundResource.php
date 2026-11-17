@@ -4,13 +4,16 @@ namespace Modules\Payment\Transformers\Admin\PaymentRefund;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Payment\Models\PaymentRefund;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 
-/** @mixin \Modules\Payment\Models\PaymentRefund */
+/** @mixin PaymentRefund */
 class PaymentRefundResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {

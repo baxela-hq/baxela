@@ -7,6 +7,10 @@ use Throwable;
 
 class BaseException extends Exception
 {
+    /**
+     * @param  string|null  $code
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         public $code,
         public int $httpStatus = 400,

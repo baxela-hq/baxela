@@ -4,6 +4,7 @@ namespace Modules\Payment\Exceptions;
 
 use Modules\Core\Exceptions\BaseException;
 use RuntimeException;
+use Throwable;
 
 class PaymentException extends BaseException
 {

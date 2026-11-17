@@ -39,6 +39,9 @@ class ProductRequest extends FormRequest
         $this->resolveLanguagesFor(Schema::RES_SEO);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         $id = $this->route('id');

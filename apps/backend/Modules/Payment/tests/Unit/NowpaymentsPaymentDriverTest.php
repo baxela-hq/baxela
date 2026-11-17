@@ -35,8 +35,8 @@ function nowpaymentsDriver(callable $configureClient): NowpaymentsPaymentDriver
 }
 
 /**
- * Default finished IPN for payment 9; URL-ish fields exercise the
- * unescaped-slashes re-encoding the signature depends on.
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
  */
 function nowpaymentsIpn(array $overrides = []): array
 {
@@ -57,10 +57,7 @@ function nowpaymentsIpn(array $overrides = []): array
 }
 
 /**
- * Real signed IPN delivery — exercises the actual HMAC-SHA512
- * verification path. $signIpn (defaults to $ipn) lets tests tamper with
- * the delivered body while signing the original; $sign = false omits the
- * signature header entirely.
+ * @param  array<string, mixed>  $ipn
  */
 function nowpaymentsSignedRequest(array $ipn, ?array $signIpn = null, bool $sign = true, string $secret = 'np-ipn-test'): Request
 {
@@ -74,10 +71,7 @@ function nowpaymentsSignedRequest(array $ipn, ?array $signIpn = null, bool $sign
 }
 
 /**
- * NowPayments' documented signing recipe, mirrored here so the driver is
- * verified against independently computed signatures: HMAC-SHA512 over
- * the body re-serialized with keys sorted alphabetically (recursively),
- * without escaping slashes or unicode.
+ * @param  array<string, mixed>  $ipn
  */
 function nowpaymentsSignature(array $ipn, string $secret): string
 {
@@ -90,7 +84,6 @@ function nowpaymentsSignature(array $ipn, string $secret): string
 
 /**
  * @param  array<string, mixed>  $value
- * @return array<string, mixed>
  */
 function nowpaymentsSortKeys(array $value): array
 {

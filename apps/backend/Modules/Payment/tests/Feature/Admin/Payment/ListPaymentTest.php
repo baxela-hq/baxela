@@ -31,7 +31,7 @@ it('lists payments with ids and timestamps for the admin grid', function () {
 
     $response = $this->getJson($this->baseUrl('/admin/payments'))->assertOk();
 
-    $row = collect($response->json('data'))->firstWhere(PaymentSchema::ID, $payment->id);
+    $row = collect((array) $response->json('data'))->firstWhere(PaymentSchema::ID, $payment->id);
 
     expect($row)->not->toBeNull()
         ->and($row[PaymentSchema::ORDER_ID])->toBe($order->id)

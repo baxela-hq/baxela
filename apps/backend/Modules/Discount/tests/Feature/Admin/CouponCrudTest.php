@@ -11,6 +11,10 @@ use Modules\Discount\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function couponPayload(array $overrides = []): array
 {
     return array_merge([

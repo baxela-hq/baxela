@@ -85,6 +85,7 @@ class CoreGateway implements CoreGatewayInterface
             ->toArray();
     }
 
+    /** @return Collection<int, Language> */
     public function getActiveLanguages(): Collection
     {
         return Language::query()->where(LanguageSchema::IS_ACTIVE, true)->get();

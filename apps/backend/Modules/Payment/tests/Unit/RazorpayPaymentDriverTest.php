@@ -48,7 +48,8 @@ function razorpayLinkResponse(): object
 }
 
 /**
- * Default paid webhook for payment 9.
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
  */
 function razorpayEventPayload(array $overrides = []): array
 {
@@ -77,10 +78,7 @@ function razorpayEventPayload(array $overrides = []): array
 }
 
 /**
- * Real signed webhook delivery — exercises the actual raw-body HMAC
- * verification path. $rawBodyOverride delivers different bytes than the
- * ones signed, simulating post-signing tampering; $sign = false omits the
- * header entirely.
+ * @param  array<string, mixed>  $payload
  */
 function razorpayEvent(array $payload, ?string $rawBodyOverride = null, bool $sign = true, string $secret = 'rzp-webhook-test'): Request
 {

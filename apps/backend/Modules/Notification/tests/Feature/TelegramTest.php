@@ -55,6 +55,9 @@ function fakeTelegramBlocked(): void
     ], 403)]);
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function webhookHeaders(): array
 {
     return ['X-Telegram-Bot-Api-Secret-Token' => TELEGRAM_SECRET];

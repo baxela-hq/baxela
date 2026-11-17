@@ -266,7 +266,7 @@ class CheckoutAction
                     )) {
                         throw new OutOfStockException(
                             VariantDisplayName::fromSummary(
-                                app(CatalogGatewayInterface::class)->getVariantSummaries([$variantId])->get($variantId)
+                                app(CatalogGatewayInterface::class)->getVariantSummaries([$variantId])->get((int) $variantId)
                             ),
                             $inventoryGateway->availableQuantity((string) $variantId) ?? 0,
                             (int) $variantId,

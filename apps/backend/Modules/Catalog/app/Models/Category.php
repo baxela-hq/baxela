@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +17,13 @@ use Modules\Core\Models\Traits\SlugTrait;
 /**
  * @property int $id
  * @property bool $is_featured
+ * @property int|null $parent_id
+ * @property int|null $position
+ * @property int|null $image_media_id
+ * @property string|null $image_url
+ * @property bool $is_featured
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
  */
 class Category extends Model
 {
@@ -71,6 +79,7 @@ class Category extends Model
         return $this->hasMany(CategoryTranslation::class);
     }
 
+    /** @return MorphOne<FeaturedItem, $this> */
     public function featuredItem(): MorphOne
     {
         return $this->morphOne(FeaturedItem::class, 'featuredable');

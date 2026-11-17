@@ -11,7 +11,7 @@ use Modules\Tax\Database\Factories\TaxRateFactory;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 
 /**
- * @mixin Builder
+ * @mixin Builder<TaxRate>
  */
 /**
  * @property int $id

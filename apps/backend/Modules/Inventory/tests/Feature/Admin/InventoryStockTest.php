@@ -148,7 +148,7 @@ it('sorts stocks by quantity', function () {
         ->assertOk()
         ->assertJsonCount(2, 'data');
 
-    $quantities = collect($response->json('data'))->pluck('quantity');
+    $quantities = collect((array) $response->json('data'))->pluck('quantity');
 
     expect($quantities->first())->toBeLessThan($quantities->last());
 });

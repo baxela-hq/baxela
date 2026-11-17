@@ -36,7 +36,7 @@ class MenuDatabaseSeeder extends Seeder
         $langs = $this->coreGateway->getActiveLanguages()->pluck(LanguageSchema::CODE)->toArray();
         $masterLang = in_array('en', $langs, true) ? 'en' : ($langs[0] ?? 'en');
 
-        /** @var array<string, non-empty-array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: non-empty-array<string, mixed>, children?: array<string, mixed>}>}>> $data */
+        /** @var array<string, non-empty-array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: non-empty-array<string, mixed>, children?: array<string, mixed>, description?: mixed}>}>> $data */
         $data = [];
         foreach ($langs as $lang) {
             $data[$lang] = Lang::get($moduleKey, [], $lang) ?? [];
@@ -53,7 +53,7 @@ class MenuDatabaseSeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: array, children?: array}>}>>  $data  lang => seeder payload
+     * @param  array<string, array<string, array{title: string, description?: string, links: array<string, array{url: string, translations: list<array<string, mixed>>, children?: array<string, mixed>, description?: mixed}>}>>  $data  lang => seeder payload
      * @param  array<int, string>  $langs
      */
     private function seedMenu(string $location, array $data, array $langs, string $masterLang): void
@@ -89,8 +89,8 @@ class MenuDatabaseSeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array{url: string, translations: array, children?: array}>  $nodes
-     * @param  array<string, array<string, array{url: string, translations: array, children?: array}>>  $flat  lang => key => node
+     * @param  array<string, array{url: string, translations: list<array<string, mixed>>, children?: array<string, mixed>, description?: mixed}>  $nodes
+     * @param  array<string, array<string, array{url: string, translations: list<array<string, mixed>>, children?: array<string, mixed>, description?: mixed}>>  $flat  lang => key => node
      * @param  array<int, string>  $langs
      */
     private function seedLinks(array $nodes, array $flat, array $langs, int $menuId, ?int $parentId): void
@@ -128,8 +128,8 @@ class MenuDatabaseSeeder extends Seeder
     /**
      * Collapse the nested link tree into a key => node lookup.
      *
-     * @param  array<string, array{url: string, translations: array, children?: array}>  $nodes
-     * @return array<string, array{url: string, translations: array, children?: array}>
+     * @param  array<string, array{url: string, translations: list<array<string, mixed>>, children?: array<string, mixed>, description?: mixed}>  $nodes
+     * @return array<string, array{url: string, translations: list<array<string, mixed>>, children?: array<string, mixed>, description?: mixed}>
      */
     private function flatten(array $nodes, ?array $carry = null): array
     {

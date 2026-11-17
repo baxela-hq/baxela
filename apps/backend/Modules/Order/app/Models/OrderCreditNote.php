@@ -15,7 +15,7 @@ use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
  * invoice, optionally the finalized refund that triggered it. refund_uuid
  * is unique when set — the idempotency key of the refund automation.
  *
- * @mixin Builder
+ * @mixin Builder<OrderCreditNote>
  */
 /**
  * @property int $id

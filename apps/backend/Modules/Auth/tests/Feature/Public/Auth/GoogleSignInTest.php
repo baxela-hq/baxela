@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
@@ -61,6 +62,10 @@ function googleIdentity(string $email, bool $verified, GoogleEmailClass $class, 
     );
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return TestResponse<Response>
+ */
 function googleSignIn(string $email, bool $verified, GoogleEmailClass $class, array $overrides = []): TestResponse
 {
     /** @var FakeGoogleVerifier $fake */

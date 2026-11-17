@@ -21,11 +21,7 @@ uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 /**
- * gap-B1 Phase 3 / D10: every successful refund finalization — the
- * direct admin flow, the webhook confirm, and the ambiguity resolution
- * — dispatches RefundFinalizedEvent exactly once, after commit, with
- * the refund's identity on it. The credit-note automation (Phase 4)
- * keys its idempotency on that refund_uuid.
+ * @return array{0: Order, 1: Payment}
  */
 function refundablePaidOrderWithManualPayment(): array
 {

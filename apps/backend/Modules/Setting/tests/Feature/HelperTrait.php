@@ -19,7 +19,9 @@ trait HelperTrait
         return User::factory()->superAdmin()->create();
     }
 
-    /** A translatable setting plus the two id-reference settings. */
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferSettings(int $languageId, string $currencyId): array
     {
         $title = Setting::factory()->create(['name' => 'website_title', 'value' => 'Old Shop']);

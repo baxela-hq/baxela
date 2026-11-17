@@ -77,8 +77,6 @@ function fullMapping(): array
 
 /**
  * @param  array<string, mixed>  $mapping
- * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function importPayload(Media $media, array $mapping, array $overrides = []): array
 {
@@ -119,8 +117,7 @@ function multiVariantMapping(): array
 }
 
 /**
- * A global option titled in the default language, with its values in
- * the given order — the catalog the strict importer matches against.
+ * @param  array<string, mixed>  $values
  */
 function importOptionWithValues(string $title, array $values): Option
 {
@@ -703,7 +700,7 @@ it('lists import history latest first', function () {
     $response = $this->getJson($this->baseUrl('/admin/products/import'));
 
     $response->assertOk();
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
     expect($ids->first())->toBe($newer->id)
         ->and($ids)->toContain($older->id)
         ->and($response->json('data.0.filename'))->not->toBeEmpty();

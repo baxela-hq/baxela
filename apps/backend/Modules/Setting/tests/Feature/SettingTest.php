@@ -21,7 +21,7 @@ it('exposes only the public settings publicly', function () {
     $response = $this->getJson($this->baseUrl('/public/settings'))
         ->assertOk();
 
-    $names = collect($response->json('data'))->pluck('name');
+    $names = collect((array) $response->json('data'))->pluck('name');
 
     expect($names)->toContain('website_title')
         ->not->toContain('language_id');
@@ -33,7 +33,7 @@ it('exposes the storefront theme setting publicly', function () {
     $response = $this->getJson($this->baseUrl('/public/settings'))
         ->assertOk();
 
-    $theme = collect($response->json('data'))
+    $theme = collect((array) $response->json('data'))
         ->firstWhere('name', 'storefront_theme');
 
     expect($theme)->not->toBeNull()

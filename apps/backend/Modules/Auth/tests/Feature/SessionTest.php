@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
 use Modules\Auth\Models\User;
 use Modules\Auth\Tests\Feature\HelperTrait;
@@ -14,6 +15,9 @@ function activeUser(): User
     return User::factory()->active()->create(['password' => 'Passw0rd!']);
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function signInToken(User $user, array $overrides = []): string
 {
     $payload = array_merge([
@@ -27,10 +31,8 @@ function signInToken(User $user, array $overrides = []): string
 }
 
 /**
- * Authenticated JSON call. Guard instances are cached for the container's
- * lifetime, and a feature test shares one container across requests — without
- * forgetting them, the user resolved by an earlier request would leak into
- * the next one and mask revoked/expired tokens.
+ * @param  array<string, mixed>  $data
+ * @return TestResponse<Response>
  */
 function jsonAs(string $token, string $method, string $endpoint, array $data = []): TestResponse
 {
@@ -121,7 +123,7 @@ it('lists sessions and marks the current one', function () {
 
     $response = jsonAs($phone, 'get', '/user/account/sessions')->assertOk();
 
-    $sessions = collect($response->json('data'))->keyBy('name');
+    $sessions = collect((array) $response->json('data'))->keyBy('name');
 
     expect($sessions)->toHaveCount(2)
         ->and($sessions['phone']['is_current'])->toBeTrue()

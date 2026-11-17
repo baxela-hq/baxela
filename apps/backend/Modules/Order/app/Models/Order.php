@@ -38,6 +38,11 @@ use Modules\Order\Utils\OrderCodeGenerator;
  * @property CarbonInterface|null $updated_at
  *
  * @mixin Builder<Order>
+ *
+ * @property bool $prices_contain_tax
+ * @property string|null $buyer_vat_id
+ * @property string|null $display_currency_code
+ * @property string|null $display_fx_rate
  */
 class Order extends Model
 {
@@ -90,16 +95,19 @@ class Order extends Model
         ];
     }
 
+    /** @return HasMany<OrderItem, $this> */
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
     }
 
+    /** @return HasMany<OrderAddress, $this> */
     public function addresses(): HasMany
     {
         return $this->hasMany(OrderAddress::class);
     }
 
+    /** @return HasMany<OrderInvoice, $this> */
     public function invoices(): HasMany
     {
         return $this->hasMany(OrderInvoice::class);

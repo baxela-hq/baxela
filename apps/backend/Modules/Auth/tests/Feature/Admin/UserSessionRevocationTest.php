@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\AuthManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Testing\TestResponse;
 use Modules\Audit\Models\AuditLog;
 use Modules\Auth\Models\TwoFactorChallenge;
@@ -32,8 +33,7 @@ function s2SignInToken(User $user, string $device): string
 }
 
 /**
- * Same guard-caching caveat as SessionTest: forget guards between calls
- * so a revoked token cannot ride an earlier request's resolved user.
+ * @return TestResponse<Response>
  */
 function s2JsonAs(string $token, string $method, string $endpoint): TestResponse
 {
@@ -57,7 +57,7 @@ it('lists another user\'s sessions as super-admin', function () {
     $response = $this->getJson($this->baseUrl("/admin/users/{$target->id}/sessions"))
         ->assertOk();
 
-    $sessions = collect($response->json('data'))->keyBy('name');
+    $sessions = collect((array) $response->json('data'))->keyBy('name');
 
     expect($sessions)->toHaveCount(2)
         // the sessions belong to the target, not the acting admin

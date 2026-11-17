@@ -8,6 +8,7 @@ use Modules\Auth\Schemas\Permission\PermissionSchema;
 
 class ListPermissionsAction
 {
+    /** @return Collection<int, Permission> */
     public function handle(): Collection
     {
         return Permission::query()

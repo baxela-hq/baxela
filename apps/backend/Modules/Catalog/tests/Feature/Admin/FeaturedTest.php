@@ -79,11 +79,11 @@ it('lists the featured sections ordered by position', function () {
     $response = $this->getJson($this->baseUrl('/admin/featured'))
         ->assertOk();
 
-    expect(collect($response->json('data.product'))->pluck('id')->all())->toBe([$first->id, $second->id])
+    expect(collect((array) $response->json('data.product'))->pluck('id')->all())->toBe([$first->id, $second->id])
         ->and($response->json('data.product.0.translations'))->toBeArray()
         ->and($response->json('data.product.0.images'))->toHaveCount(2)
-        ->and(collect($response->json('data.product.1.images'))->count())->toBe(0)
-        ->and(collect($response->json('data.category'))->pluck('id')->all())->toBeArray();
+        ->and(collect((array) $response->json('data.product.1.images'))->count())->toBe(0)
+        ->and(collect((array) $response->json('data.category'))->pluck('id')->all())->toBeArray();
 });
 
 it('syncs the featured selections, array order encoding position', function () {
@@ -117,7 +117,7 @@ it('syncs the featured selections, array order encoding position', function () {
 
     // The response mirrors the persisted selection.
     $response = $this->getJson($this->baseUrl('/admin/featured'))->assertOk();
-    expect(collect($response->json('data.product'))->pluck('id')->all())->toBe([$a->id])
+    expect(collect((array) $response->json('data.product'))->pluck('id')->all())->toBe([$a->id])
         ->and($response->json('data.category'))->toBe([]);
 });
 

@@ -24,6 +24,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $updated_at
  * @property bool $is_active
  * @property string|null $comment
+ * @property string|null $two_factor_secret
+ * @property array<array-key, string>|null $two_factor_recovery_codes
+ * @property Carbon|null $two_factor_confirmed_at
+ * @property int|null $two_factor_last_used_step
  */
 class User extends Authenticatable
 {
@@ -81,7 +85,7 @@ class User extends Authenticatable
         return UserFactory::new();
     }
 
-    /** Third-party identities linked to this account (Google sign-in). */
+    /** @return HasMany<SocialAccount, $this> */
     public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class, SocialAccountSchema::USER_ID);

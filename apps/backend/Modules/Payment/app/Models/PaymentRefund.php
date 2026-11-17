@@ -12,7 +12,7 @@ use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 
 /**
- * @mixin Builder
+ * @mixin Builder<PaymentRefund>
  */
 /**
  * @property int $id

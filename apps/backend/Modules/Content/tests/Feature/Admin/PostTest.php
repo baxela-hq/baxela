@@ -27,6 +27,10 @@ function postCategory(string $slug = 'news'): PostCategory
     return $category;
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function postPayload(array $overrides = []): array
 {
     TestCase::defaultLanguage();

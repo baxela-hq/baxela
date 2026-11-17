@@ -48,7 +48,7 @@ it('lists the featured posts ordered by position', function () {
     $response = $this->getJson($this->baseUrl('/admin/featured'))
         ->assertOk();
 
-    expect(collect($response->json('data.post'))->pluck('id')->all())->toBe([$first->id, $second->id])
+    expect(collect((array) $response->json('data.post'))->pluck('id')->all())->toBe([$first->id, $second->id])
         ->and($response->json('data.post.0.translations'))->toBeArray();
 });
 
@@ -77,7 +77,7 @@ it('syncs the featured selection, array order encoding position', function () {
 
     // The response mirrors the persisted selection.
     $response = $this->getJson($this->baseUrl('/admin/featured'))->assertOk();
-    expect(collect($response->json('data.post'))->pluck('id')->all())->toBe([$a->id]);
+    expect(collect((array) $response->json('data.post'))->pluck('id')->all())->toBe([$a->id]);
 });
 
 it('rejects unknown or duplicate ids', function () {

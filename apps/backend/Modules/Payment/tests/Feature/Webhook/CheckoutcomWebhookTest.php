@@ -56,9 +56,8 @@ function checkoutcomEventBody(string $reference, string $type = 'payment_capture
 }
 
 /**
- * Signed delivery headers — the real raw-body HMAC path runs inside the
- * driver, so no client stubbing is needed at all. Signing different bytes
- * than the ones delivered simulates tampering.
+ * @param  array<string, mixed>  $body
+ * @return array<string, mixed>
  */
 function checkoutcomSignedHeaders(array $body, ?array $signBody = null): array
 {

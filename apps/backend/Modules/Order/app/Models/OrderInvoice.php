@@ -20,7 +20,7 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  * time (D4) — the row is the legal record; the PDF is a regenerable
  * representation tracked by the pdf_* columns (D7/D16).
  *
- * @mixin Builder
+ * @mixin Builder<OrderInvoice>
  */
 /**
  * @property int $id
@@ -117,6 +117,7 @@ class OrderInvoice extends Model
         return $this->hasMany(OrderInvoiceItem::class, OrderInvoiceItemSchema::INVOICE_ID);
     }
 
+    /** @return HasMany<OrderCreditNote, $this> */
     public function creditNotes(): HasMany
     {
         return $this->hasMany(OrderCreditNote::class, OrderCreditNoteSchema::INVOICE_ID);

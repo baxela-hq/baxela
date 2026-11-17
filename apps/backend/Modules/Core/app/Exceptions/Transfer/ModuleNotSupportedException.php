@@ -7,10 +7,12 @@ use Throwable;
 
 class ModuleNotSupportedException extends BaseException
 {
+    /**
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         ?string $code = null,
         int $httpStatus = 404,
-        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

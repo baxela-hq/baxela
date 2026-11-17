@@ -9,6 +9,12 @@ class NotificationMessage implements MessageInterface
 {
     use ToArrayTrait;
 
+    /**
+     * @param  list<string|int>|array<string, list<int|string>>  $recipients
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>|null  $channel
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         public readonly string $code,
         public readonly string $audience,
@@ -32,6 +38,7 @@ class NotificationMessage implements MessageInterface
      * Immutable copy with a replaced recipient map (per-channel lists),
      * e.g. after recipient filtering — everything else is carried over.
      */
+    /** @param  list<string|int>|array<string, list<int|string>>  $recipients */
     public function withRecipients(array $recipients): self
     {
         return new self(

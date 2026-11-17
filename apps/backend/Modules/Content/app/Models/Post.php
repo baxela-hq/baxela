@@ -25,6 +25,8 @@ use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
  * @property-read Collection<int, PostProduct> $products
  * @property-read Collection<int, PostSeoTranslation> $seo
  * @property-read Collection<int, PostComment> $comments
+ * @property int|null $image_media_id
+ * @property string|null $image_url
  */
 class Post extends Model
 {
@@ -87,6 +89,7 @@ class Post extends Model
         return $this->hasMany(PostComment::class);
     }
 
+    /** @return MorphOne<FeaturedItem, $this> */
     public function featuredItem(): MorphOne
     {
         return $this->morphOne(FeaturedItem::class, 'featuredable');

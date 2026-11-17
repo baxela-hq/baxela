@@ -20,6 +20,9 @@ function contentTransferTransferFile(string $content): File
     return UploadedFile::fake()->createWithContent('transfer.json', $content);
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function seedContentTransferData(): array
 {
     $en = TestCase::defaultLanguage();

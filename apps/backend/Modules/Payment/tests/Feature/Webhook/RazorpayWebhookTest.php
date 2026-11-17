@@ -60,9 +60,8 @@ function razorpayEventBody(string $reference, string $event = 'payment_link.paid
 }
 
 /**
- * Signed delivery headers — the real raw-body HMAC path runs inside the
- * driver, so no client stubbing is needed at all. Signing different bytes
- * than the ones delivered simulates tampering.
+ * @param  array<string, mixed>  $body
+ * @return array<string, mixed>
  */
 function razorpaySignedHeaders(array $body, ?array $signBody = null): array
 {

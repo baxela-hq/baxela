@@ -12,7 +12,7 @@ use Modules\Order\Schemas\OrderReturn\OrderReturnSchema;
 use Modules\Order\Schemas\OrderReturn\OrderReturnStatusEnum;
 
 /**
- * @mixin Builder
+ * @mixin Builder<OrderReturn>
  */
 /**
  * @property int $id

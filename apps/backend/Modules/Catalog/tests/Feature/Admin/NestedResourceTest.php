@@ -40,7 +40,7 @@ it('creates an option and nests option values under it', function () {
         ->assertOk()
         ->assertJsonCount(2, 'data');
 
-    $titles = collect($response->json('data'))->pluck('translations')->flatten(1)->pluck('title');
+    $titles = collect((array) $response->json('data'))->pluck('translations')->flatten(1)->pluck('title');
 
     expect($titles)->toContain('Red', 'Blue')
         ->and(OptionValue::query()->where('option_id', $optionId)->count())->toBe(2);

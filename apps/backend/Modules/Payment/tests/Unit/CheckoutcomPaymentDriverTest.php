@@ -47,7 +47,8 @@ function checkoutcomLinkResponse(): object
 }
 
 /**
- * Default captured event for payment 9.
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
  */
 function checkoutcomEventPayload(array $overrides = []): array
 {
@@ -65,10 +66,7 @@ function checkoutcomEventPayload(array $overrides = []): array
 }
 
 /**
- * Real signed webhook delivery — exercises the actual raw-body HMAC
- * verification path. $rawBodyOverride delivers different bytes than the
- * ones signed, simulating post-signing tampering; $sign = false omits the
- * header entirely.
+ * @param  array<string, mixed>  $payload
  */
 function checkoutcomEvent(array $payload, ?string $rawBodyOverride = null, bool $sign = true, string $secret = 'cko-webhook-test'): Request
 {

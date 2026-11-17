@@ -20,6 +20,9 @@ class AttributeRequest extends FormRequest
         $this->resolveLanguages();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         $id = $this->route('id');

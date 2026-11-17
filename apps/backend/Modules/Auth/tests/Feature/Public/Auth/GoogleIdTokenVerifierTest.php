@@ -14,8 +14,7 @@ const VERIFIER_CLIENT_ID = 'test-client-id.apps.googleusercontent.com';
 const JWKS_URL = 'https://www.googleapis.com/oauth2/v3/certs';
 
 /**
- * A real RSA key pair published through Http::fake — the suite verifies
- * actual signatures and claims, never a faked verifier.
+ * @return array<string, mixed>
  */
 function verifierKeypair(string $kid): array
 {
@@ -41,6 +40,9 @@ function verifierKeypair(string $kid): array
     ];
 }
 
+/**
+ * @param  list<array<string, mixed>>  $keys
+ */
 function publishJwks(array $keys): void
 {
     Http::fake([
@@ -53,6 +55,9 @@ function verifier(): GoogleIdTokenVerifier
     return new GoogleIdTokenVerifier(app(SignInNonceService::class));
 }
 
+/**
+ * @param  array<string, mixed>  $claims
+ */
 function verifierToken(array $claims, string $privateKey, string $kid): string
 {
     $now = time();

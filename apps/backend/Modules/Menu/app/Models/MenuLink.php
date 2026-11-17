@@ -74,6 +74,7 @@ class MenuLink extends Model
         return $this->hasMany(MenuLink::class, MenuLinkSchema::PARENT_ID);
     }
 
+    /** @return HasMany<MenuLinkTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(MenuLinkTranslation::class);

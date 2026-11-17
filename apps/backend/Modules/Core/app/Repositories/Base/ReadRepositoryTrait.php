@@ -21,6 +21,10 @@ trait ReadRepositoryTrait
         return $this->model->find($id);
     }
 
+    /**
+     * @param  array<string, mixed>  $criteria
+     * @param  array<string, string>|null  $orderBy
+     */
     public function findOneBy(array $criteria, ?array $orderBy = null): ?Model
     {
         $query = $this->model->newQuery();
@@ -42,6 +46,11 @@ trait ReadRepositoryTrait
         return $query->first();
     }
 
+    /**
+     * @param  array<string, mixed>  $criteria
+     * @param  array<string, string>|null  $orderBy
+     * @return Collection<int, TModel>
+     */
     public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): Collection
     {
         $query = $this->model->newQuery();

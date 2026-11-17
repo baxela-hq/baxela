@@ -2,6 +2,8 @@
 
 namespace Modules\Notification\Services\Notification\Contracts;
 
+use Modules\Notification\Services\Notification\DTOs\NotificationContext;
+
 interface ChannelResolverInterface
 {
     /**

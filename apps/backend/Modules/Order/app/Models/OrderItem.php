@@ -24,6 +24,9 @@ use Modules\Order\Schemas\OrderItem\OrderItemSchema;
  * @property int|null $tax_class_id
  * @property CarbonInterface|null $created_at
  * @property-read Order $order
+ * @property string|null $base_price
+ * @property string|null $promotion_discount
+ * @property int|null $promotion_id
  */
 class OrderItem extends Model
 {

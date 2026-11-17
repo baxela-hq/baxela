@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 
 /**
  * @property int $id
+ * @property int $featuredable_id
  */
 class FeaturedItem extends Model
 {

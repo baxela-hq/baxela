@@ -13,6 +13,7 @@ use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 
 /**
  * @property int $id
+ * @property int|null $position
  */
 class Option extends Model
 {

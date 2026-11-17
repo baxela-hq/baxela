@@ -14,6 +14,7 @@ it('protects every admin route with auth and permission middleware', function ()
     $offenders = $adminRoutes
         ->map(fn ($route) => [
             'uri' => $route->uri(),
+            'method' => implode('|', $route->methods()),
             'middleware' => $route->gatherMiddleware(),
         ])
         ->filter(function (array $route) {

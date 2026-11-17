@@ -68,7 +68,9 @@ trait HelperTrait
         );
     }
 
-    /** Compact but complete tax data: two classes, one rate. */
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferTax(): array
     {
         $default = TaxClass::query()->create([

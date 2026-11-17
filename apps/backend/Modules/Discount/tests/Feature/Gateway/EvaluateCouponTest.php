@@ -9,6 +9,9 @@ use Modules\Discount\Schemas\Redemption\RedemptionSchema;
 
 uses(RefreshDatabase::class);
 
+/**
+ * @param  array<string, mixed>  $couponOverrides
+ */
 function evaluateCoupon(array $couponOverrides = [], int $subtotalMinor = 20000, int $userId = 1)
 {
     $coupon = Coupon::factory()->create($couponOverrides);

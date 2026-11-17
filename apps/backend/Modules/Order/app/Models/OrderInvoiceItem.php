@@ -13,7 +13,7 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  * finalized figures (D11: tax_amount and line_total are copied, never
  * recalculated at issue time).
  *
- * @mixin Builder
+ * @mixin Builder<OrderInvoiceItem>
  */
 /**
  * @property int $id

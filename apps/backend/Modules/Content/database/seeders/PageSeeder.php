@@ -59,8 +59,8 @@ class PageSeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array{translations: array}>  $pages
-     * @param  array<string, array<string, array{translations: array}>>  $data
+     * @param  array<string, array{translations: array<string, mixed>}>  $pages
+     * @param  array<string, array<string, array{translations: array<string, mixed>}>>  $data
      * @param  array<int, string>  $langs
      */
     private function generate(array $pages, array $data, array $langs): void

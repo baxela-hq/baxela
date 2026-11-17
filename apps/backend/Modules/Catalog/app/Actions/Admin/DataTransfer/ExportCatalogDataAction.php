@@ -89,6 +89,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function attributeGroupRows(array $codeByLanguageId): array
@@ -117,6 +118,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function attributeRows(array $codeByLanguageId): array
@@ -150,6 +152,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function attributeValueRows(array $codeByLanguageId): array
@@ -181,6 +184,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function optionRows(array $codeByLanguageId): array
@@ -209,6 +213,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function optionValueRows(array $codeByLanguageId): array
@@ -243,6 +248,7 @@ class ExportCatalogDataAction
      * Categories parents-first, so a sequential import can resolve every
      * parent_id before its child row arrives.
      *
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function categoryRows(array $codeByLanguageId): array
@@ -291,6 +297,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function brandRows(array $codeByLanguageId): array
@@ -322,6 +329,7 @@ class ExportCatalogDataAction
     }
 
     /**
+     * @param  array<int, string>  $codeByLanguageId
      * @return array<int, array<string, mixed>>
      */
     private function productRows(array $codeByLanguageId): array

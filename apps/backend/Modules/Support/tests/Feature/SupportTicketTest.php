@@ -14,7 +14,6 @@ uses(HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function ticketPayload(array $overrides = []): array
 {

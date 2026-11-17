@@ -28,9 +28,8 @@ beforeEach(function () {
 });
 
 /**
- * A paid order with a settled gateway payment. The webhook stand-in
- * ('test' driver) routes refund outcomes; the payment method itself is
- * irrelevant to the confirm path.
+ * @param  array<string, mixed>  $paymentOverrides
+ * @return array{0: Order, 1: Payment}
  */
 function paidGatewayOrder(float $amount = 100.0, array $paymentOverrides = []): array
 {
@@ -73,7 +72,6 @@ function refundFor(Payment $payment, array $overrides = []): PaymentRefund
 
 /**
  * @param  array<string, mixed>  $outcome
- * @return array{0: array<string, mixed>, 1: array<string, string>}
  */
 function refundWebhook(array $outcome): array
 {

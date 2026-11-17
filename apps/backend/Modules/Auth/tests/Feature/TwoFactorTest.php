@@ -22,6 +22,9 @@ afterEach(function () {
     config(['auth.two_factor.enabled' => true]);
 });
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function twoFactorUser(array $overrides = []): User
 {
     $user = User::factory()->create(array_merge([
@@ -33,6 +36,9 @@ function twoFactorUser(array $overrides = []): User
     return $user;
 }
 
+/**
+ * @return array{0: User, 1: string, 2: list<string>, 3: Google2FA}
+ */
 function enrolledUser(string $secret = ''): array
 {
     $g2fa = app(Google2FA::class);
@@ -264,6 +270,9 @@ it('forced enrollment is off when the config says so', function () {
 
 // --- Forced-enrollment completion (public challenge-token endpoints) ---
 
+/**
+ * @return list<string|User>
+ */
 function forcedEnrollmentChallenge(): array
 {
     config(['auth.two_factor.force_super_admin' => true]);

@@ -11,10 +11,12 @@ use Throwable;
  */
 class LastActiveLanguageException extends BaseException
 {
+    /**
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         string $code = 'core.language.last_active',
         int $httpStatus = 400,
-        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

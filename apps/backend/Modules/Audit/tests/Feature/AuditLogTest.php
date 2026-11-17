@@ -14,7 +14,6 @@ uses(RefreshDatabase::class, HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function auditLogRow(array $overrides = []): array
 {

@@ -4,13 +4,16 @@ namespace Modules\Catalog\Exceptions\AttributeGroup;
 
 use Modules\Catalog\Exceptions\ErrorCodeEnum;
 use Modules\Core\Exceptions\BaseException;
+use Throwable;
 
 class NotEmptyException extends BaseException
 {
+    /**
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         ?string $code = null,
         int $httpStatus = 409,
-        /** @var array<string, mixed> */
         array $meta = [],
         bool $isSafe = true,
         ?Throwable $previous = null

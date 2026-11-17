@@ -13,7 +13,7 @@ use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 
 /**
- * @mixin Builder
+ * @mixin Builder<Coupon>
  */
 /**
  * @property int $id

@@ -74,7 +74,9 @@ trait HelperTrait
         return $zone;
     }
 
-    /** Zone (country-coded) + method (translated) + a rate tying them. */
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferShipping(string $languageId): array
     {
         $zone = $this->activeZone('DE');

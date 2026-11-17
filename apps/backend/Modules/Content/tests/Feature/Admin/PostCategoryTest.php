@@ -9,6 +9,10 @@ use Tests\TestCase;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
+ */
 function postCategoryPayload(array $overrides = []): array
 {
     TestCase::defaultLanguage();

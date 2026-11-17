@@ -10,6 +10,7 @@ use Modules\Core\Actions\Admin\Currency\SyncExchangeRatesAction;
 use Modules\Core\Models\Currency;
 use Modules\Setting\Models\Setting;
 use Modules\Setting\Support\ResolvesFxSettings;
+use Throwable;
 
 uses(RefreshDatabase::class);
 
@@ -51,8 +52,6 @@ function fxSetting(string $name, string $value): void
 }
 
 /**
- * Write the machine-managed status payload (as the engine would).
- *
  * @param  array<string, mixed>  $status
  */
 function fxWriteStatus(array $status): void
@@ -71,9 +70,7 @@ function fxReadStatus(): ?array
 }
 
 /**
- * Hand-built snapshot body — literal precision is hand-controlled.
- *
- * @param  array<string, string>  $rates
+ * @param  array<string, mixed>  $rates
  */
 function fxSnapshotBody(string $base, int $timestamp, array $rates, int $status = 200): string
 {
@@ -108,6 +105,9 @@ function &fxMutableStub(string $base = 'USD', ?int $timestamp = null): array
     return $ref;
 }
 
+/**
+ * @param  array<string, mixed>  $rates
+ */
 function fxStubRates(array $rates, string $base = 'USD', ?int $timestamp = null, int $status = 200): void
 {
     Http::fake([

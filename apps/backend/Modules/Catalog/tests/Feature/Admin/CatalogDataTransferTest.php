@@ -58,8 +58,7 @@ function transferMedia(string $content): Media
 }
 
 /**
- * Seed a compact but complete catalog: attributes chain, options chain,
- * a category tree and one multi-variant, two-language product.
+ * @return array<string, mixed>
  */
 function seedTransferCatalog(): array
 {
@@ -161,7 +160,6 @@ function exportedSections(string $content): array
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function transferImportPayload(Media $media, array $overrides = []): array
 {
@@ -547,8 +545,8 @@ it('previews section counts and totals', function () {
         ->and($response->json('data.total_rows'))->toBe(9)
         ->and($response->json('data.row_cap'))->toBe(5000)
         ->and($response->json('data.warnings'))->toBe([])
-        ->and(collect($response->json('data.sections'))->where('entity', 'products')->first()['rows'])->toBe(1)
-        ->and(collect($response->json('data.sections'))->where('entity', 'categories')->first()['rows'])->toBe(2);
+        ->and(collect((array) $response->json('data.sections'))->where('entity', 'products')->first()['rows'])->toBe(1)
+        ->and(collect((array) $response->json('data.sections'))->where('entity', 'categories')->first()['rows'])->toBe(2);
 });
 
 it('lists and shows catalog import history scoped to the catalog entity', function () {

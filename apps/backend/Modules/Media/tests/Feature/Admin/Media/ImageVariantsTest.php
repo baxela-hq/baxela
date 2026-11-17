@@ -42,7 +42,7 @@ function realImage(int $width, int $height, string $format = 'jpg'): string
 }
 
 /**
- * A media row whose bytes live on the fake disk; mime defaults to jpeg.
+ * @param  array<string, mixed>  $overrides
  */
 function mediaWithBytes(string $contents, array $overrides = []): Media
 {
@@ -64,6 +64,9 @@ function mediaWithBytes(string $contents, array $overrides = []): Media
     ], $overrides));
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function variantsOf(Media $media): array
 {
     return (array) ($media->refresh()->{MediaSchema::METADATA}['variants'] ?? []);

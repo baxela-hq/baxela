@@ -22,7 +22,7 @@ use Modules\Discount\Schemas\Redemption\RedemptionSchema;
  * permanent audit history: releasing a redemption physically deletes the
  * row (by design — released capacity becomes reusable).
  *
- * @mixin Builder
+ * @mixin Builder<Redemption>
  */
 /**
  * @property int $id

@@ -22,7 +22,7 @@ beforeEach(function () {
 });
 
 /**
- * @param  array<string, mixed>|null  $package  the record ComposerPackages::package() reports for SLUG
+ * @param  array<string, mixed>  $package
  */
 function mockComposerPackages(?array $package): void
 {
@@ -231,6 +231,9 @@ it('treats an absent compat constraint as incompatible without type errors', fun
     $packages = new class extends ComposerPackages
     {
         /** @return list<array<string, mixed>> */
+        /**
+         * @return array<string, mixed>
+         */
         protected function installed(): array
         {
             return [

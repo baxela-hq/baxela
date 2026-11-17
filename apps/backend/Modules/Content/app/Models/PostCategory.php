@@ -18,6 +18,8 @@ use Modules\Content\Schemas\PostCategory\PostCategorySchema;
  * @property CarbonInterface|null $updated_at
  * @property-read Collection<int, Post> $posts
  * @property-read Collection<int, PostCategoryTranslation> $translations
+ * @property int|null $parent_id
+ * @property int|null $position
  */
 class PostCategory extends Model
 {

@@ -96,7 +96,7 @@ function mercadopagoSignature(string $dataId, string $requestId, string $secret,
 }
 
 /**
- * Payment resource as GET /v1/payments/{id} returns it.
+ * @param  array<string, mixed>  $refunds
  */
 function mercadopagoPaymentResource(string $status, string $reference = '9', array $refunds = []): object
 {

@@ -34,6 +34,10 @@ beforeEach(function () {
     );
 });
 
+/**
+ * @param  array<string, mixed>  $override
+ * @return array<string, mixed>
+ */
 function zonePayload(array $override = []): array
 {
     return array_merge([

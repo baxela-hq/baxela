@@ -36,8 +36,8 @@ function adyenDriver(callable $configureClient): AdyenPaymentDriver
 }
 
 /**
- * Default AUTHORISATION NotificationRequestItem for payment 9; no
- * originalReference — first events on a payment never carry one.
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
  */
 function adyenItem(array $overrides = []): array
 {
@@ -51,10 +51,7 @@ function adyenItem(array $overrides = []): array
 }
 
 /**
- * Real signed standard-webhook delivery — exercises the actual HMAC
- * verification path. $signItem (defaults to $item) lets tests tamper with
- * the delivered item while signing the original; $sign = false omits the
- * signature entirely.
+ * @param  array<string, mixed>  $item
  */
 function adyenWebhook(array $item, ?array $signItem = null, bool $sign = true, string $rawKey = 'adyen-hmac-test'): Request
 {
@@ -68,8 +65,7 @@ function adyenWebhook(array $item, ?array $signItem = null, bool $sign = true, s
 }
 
 /**
- * Adyen's documented signing recipe, mirrored here so the driver is
- * verified against independently computed signatures.
+ * @param  array<string, mixed>  $item
  */
 function adyenSignature(array $item, string $rawKey): string
 {

@@ -14,6 +14,15 @@ parameters:
         # so static analysis cannot verify method names on them.
         - Pest\PendingCalls\TestCall
         - Pest\Support\HigherOrderTapProxy
+    ignoreErrors:
+        # Larastan's env() rule defaults to the root config/ dir only;
+        # the modular-monolith config files under Modules/*/config are
+        # equally "config" and must be exempted from
+        # larastan.noEnvCallsOutsideOfConfig.
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            paths:
+                - Modules/*/config/*.php
     paths:
         - app
         - Modules

@@ -14,7 +14,7 @@ use Modules\Content\Schemas\PostComment\PostCommentSchema;
 use Modules\Content\Schemas\PostComment\PostCommentStatusEnum;
 
 /**
- * @mixin Builder
+ * @mixin Builder<PostComment>
  */
 /**
  * @property int $id

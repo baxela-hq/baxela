@@ -42,6 +42,9 @@ function targetUser(): User
     ]);
 }
 
+/**
+ * @param  array<string, mixed>  $payload
+ */
 function patchUser(User $target, array $payload)
 {
     return test()->patchJson('api/v1/auth/admin/users/'.$target->id, $payload);

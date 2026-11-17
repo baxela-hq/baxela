@@ -12,6 +12,8 @@ class WebhookEndpointRequest extends FormRequest
      * Fixed payload shape (repo convention — no `sometimes`): create and
      * update share it; the URL's SSRF validity is checked in the action
      * (parse-time) and re-validated at every delivery.
+     *
+     * @return array<string, mixed>
      */
     public function rules(): array
     {

@@ -17,7 +17,6 @@ uses(HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function productPayload(array $overrides = []): array
 {

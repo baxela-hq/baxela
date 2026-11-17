@@ -39,6 +39,9 @@ function couponCart(User $user, Variant $variant, int $quantity = 2): Cart
     return $cart;
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function applyCouponToCart(User $user, Cart $cart, array $overrides = []): Coupon
 {
     $coupon = Coupon::factory()->create(array_merge([

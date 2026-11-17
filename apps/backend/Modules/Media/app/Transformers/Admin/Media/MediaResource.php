@@ -5,13 +5,16 @@ namespace Modules\Media\Transformers\Admin\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Modules\Media\Models\Media;
 use Modules\Media\Schemas\Media\MediaSchema;
 
-/** @mixin \Modules\Media\Models\Media */
+/** @mixin Media */
 class MediaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {

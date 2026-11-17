@@ -2,6 +2,7 @@
 
 use Illuminate\Events\CallQueuedListener;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -58,6 +59,9 @@ function ndEnrolledUser(): array
     return [$user, $secret, $g2fa];
 }
 
+/**
+ * @return TestResponse<Response>
+ */
 function ndSignIn(User $user, string $device, string $password = 'Passw0rd!'): TestResponse
 {
     return test()->postJson(test()->baseUrl(ND_SIGN_IN), [

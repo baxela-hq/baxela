@@ -4,6 +4,7 @@ namespace Modules\Webhooks\Http\Controllers\Admin\WebhookDelivery;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\Webhooks\Exceptions\WebhooksException;
 use Modules\Webhooks\Jobs\DeliverWebhookJob;
 use Modules\Webhooks\Models\WebhookDelivery;

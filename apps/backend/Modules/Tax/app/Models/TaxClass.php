@@ -13,7 +13,7 @@ use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 
 /**
- * @mixin Builder
+ * @mixin Builder<TaxClass>
  */
 /**
  * @property int $id

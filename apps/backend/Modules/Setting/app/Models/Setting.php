@@ -63,6 +63,7 @@ class Setting extends Model
         return SettingFactory::new();
     }
 
+    /** @return HasMany<Translation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(Translation::class);

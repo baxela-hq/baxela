@@ -30,7 +30,7 @@ it('lists root folders via filter[parent_id]=null', function () {
     $response = $this->getJson($this->baseUrl('/folders?filter[parent_id]=null'));
 
     $response->assertOk();
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids)->toHaveCount(2)
         ->and($ids)->toContain($rootA->id, $rootB->id)
@@ -58,7 +58,7 @@ it('lists child folders via filter[parent_id]={id}', function () {
     $response = $this->getJson($this->baseUrl('/folders?filter[parent_id]='.$parent->id));
 
     $response->assertOk();
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids)->toHaveCount(1)
         ->and($ids)->toContain($child->id)

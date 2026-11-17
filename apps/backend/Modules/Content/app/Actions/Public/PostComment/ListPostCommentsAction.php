@@ -14,6 +14,7 @@ class ListPostCommentsAction
 {
     public function __construct(protected UserGatewayInterface $userGateway) {}
 
+    /** @return LengthAwarePaginator<int, PostComment> */
     public function handle(string $postId): LengthAwarePaginator
     {
         $comments = PostComment::query()

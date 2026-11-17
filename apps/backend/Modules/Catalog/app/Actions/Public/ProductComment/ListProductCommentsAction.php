@@ -15,6 +15,7 @@ class ListProductCommentsAction
 {
     public function __construct(protected UserGatewayInterface $userGateway) {}
 
+    /** @return LengthAwarePaginator<int, ProductComment> */
     public function handle(string $productId): LengthAwarePaginator
     {
         $comments = ProductComment::query()

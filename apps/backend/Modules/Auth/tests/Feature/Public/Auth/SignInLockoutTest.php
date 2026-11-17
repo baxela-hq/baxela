@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,9 @@ function s4EnrolledUser(): array
     return [$user, $secret, $g2fa];
 }
 
+/**
+ * @return TestResponse<Response>
+ */
 function s4FailedSignIn(User $user, string $password = 'wrong-password'): TestResponse
 {
     return test()->postJson(test()->baseUrl(S4_SIGN_IN), [

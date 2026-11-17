@@ -12,6 +12,12 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
 
 /**
  * @property int $id
+ * @property CatalogImportEntityEnum $entity
+ * @property CatalogImportStatusEnum $status
+ * @property CatalogImportStrategyEnum $strategy
+ * @property bool $dry_run
+ * @property array<array-key, mixed>|null $errors
+ * @property array<array-key, mixed>|null $summary
  */
 class CatalogImport extends Model
 {

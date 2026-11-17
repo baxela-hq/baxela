@@ -44,7 +44,7 @@ it('lazily creates disabled rows for every registered driver', function () {
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
-    $rows = collect($response->json('data'));
+    $rows = collect((array) $response->json('data'));
 
     expect($rows->pluck('method')->all())->toEqualCanonicalizing(['manual', 'stripe', 'paypal', 'adyen', 'nowpayments', 'mercadopago', 'checkoutcom', 'razorpay'])
         ->and(PaymentMethod::count())->toBe(8);
@@ -73,7 +73,7 @@ it('does not create rows for drivers without an implementation', function () {
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())
+    expect(collect((array) $response->json('data'))->pluck('method')->all())
         ->not->toContain('paypal')
         ->and(PaymentMethod::count())->toBe(7);
 });
@@ -83,6 +83,9 @@ it('lazily creates an inactive row for a driver an extension registers', functio
     // no core change — the admin list picks it up as disabled.
     $driver = new class implements ConfigurableDriver, PaymentDriverInterface
     {
+        /**
+         * @return array<string, mixed>
+         */
         public function credentialKeys(): array
         {
             return ['api_key'];
@@ -111,7 +114,7 @@ it('lazily creates an inactive row for a driver an extension registers', functio
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
-    $sandbox = collect($response->json('data'))->firstWhere('method', 'sandbox');
+    $sandbox = collect((array) $response->json('data'))->firstWhere('method', 'sandbox');
 
     expect($sandbox)->not->toBeNull()
         ->and($sandbox[PaymentMethodSchema::IS_ACTIVE])->toBeFalse()
@@ -125,7 +128,7 @@ it('flags a gateway whose credentials are missing', function () {
 
     $response = $this->getJson($this->baseUrl('/admin/methods'))->assertOk();
 
-    $stripe = collect($response->json('data'))->firstWhere('method', 'stripe');
+    $stripe = collect((array) $response->json('data'))->firstWhere('method', 'stripe');
 
     expect($stripe[PaymentMethodSchema::IS_CONFIGURED])->toBeFalse()
         ->and($stripe[PaymentMethodSchema::IS_REGISTERED])->toBeTrue();

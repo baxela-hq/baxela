@@ -14,7 +14,7 @@ use Modules\Auth\Schemas\SignInLockout\SignInLockoutSchema;
  * addresses never land in the database. Rows are inert once their lock is
  * past AND the failure counter is stale — pruned daily.
  *
- * @mixin Builder
+ * @mixin Builder<SignInLockout>
  */
 /**
  * @property string $email_hash

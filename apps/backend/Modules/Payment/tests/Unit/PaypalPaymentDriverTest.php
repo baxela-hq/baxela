@@ -37,8 +37,7 @@ function paypalDriver(callable $configureClient): PaypalPaymentDriver
 }
 
 /**
- * Webhook request carrying the PAYPAL-* transmission headers the
- * certificate-based signature verification needs.
+ * @param  array<string, mixed>  $resource
  */
 function paypalEvent(string $type, array $resource): Request
 {

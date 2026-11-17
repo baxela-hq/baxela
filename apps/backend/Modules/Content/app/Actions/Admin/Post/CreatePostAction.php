@@ -15,6 +15,8 @@ class CreatePostAction
     use FiltersPostSeoTrait;
 
     /**
+     * @param  array<string, mixed>  $data
+     *
      * @throws CreationFailedException|Throwable
      */
     public function handle(array $data): Post

@@ -5,6 +5,7 @@ namespace Modules\Core\Contracts\Gateways\Core;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Contracts\Gateways\Core\DTOs\CurrencyDto;
 use Modules\Core\Contracts\Gateways\Core\DTOs\LanguageDto;
+use Modules\Core\Models\Language;
 
 interface CoreGatewayInterface
 {
@@ -26,6 +27,7 @@ interface CoreGatewayInterface
 
     public function getLanguageIdsByCodes(array $codes): array;
 
+    /** @return Collection<int, Language> */
     public function getActiveLanguages(): Collection;
 
     /**

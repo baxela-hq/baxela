@@ -12,8 +12,7 @@ uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 /**
- * @param  list<int>  $ratings
- * @param  list<int>  $pendingRatings
+ * @param  array<string, mixed>  $ratings
  */
 function ratedProduct(string $slug, array $ratings, array $pendingRatings = []): Product
 {
@@ -59,7 +58,7 @@ it('sorts the public product list by rating', function () {
 
     $response = $this->getJson($this->baseUrl('/public/products?sort=-rating'))->assertOk();
 
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids[0])->toBe($high->id)
         ->and($ids[1])->toBe($low->id)

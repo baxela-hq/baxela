@@ -13,7 +13,7 @@ uses(HelperTrait::class);
 afterEach(function () {
     // Config mutations leak across tests in one process — restore the
     // default disk so later suites record uploads on the expected disk.
-    config(['filesystems.default' => env('FILESYSTEM_DISK', 'public')]);
+    config(['filesystems.default' => config('filesystems.default', 'public')]);
 });
 
 /**
@@ -59,7 +59,7 @@ it('resolves the URL against the record disk, not the default disk', function ()
     $response = $this->withHeaders(['Accept' => 'application/json'])->get($this->baseUrl('/media'));
     $response->assertOk();
 
-    $row = collect($response->json('data'))->firstWhere('id', $media->id);
+    $row = collect((array) $response->json('data'))->firstWhere('id', $media->id);
     expect($row['url'])->toBe(Storage::disk('s3')->url('catalog/product/cover.jpg'));
 });
 

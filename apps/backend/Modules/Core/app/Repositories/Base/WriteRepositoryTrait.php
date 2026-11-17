@@ -17,6 +17,7 @@ trait WriteRepositoryTrait
         return $this->model->create($data);
     }
 
+    /** @param  array<string, mixed>  $data */
     public function update(mixed $id, array $data): bool
     {
         $model = $this->find($id); // Relies on the class having a 'find' method

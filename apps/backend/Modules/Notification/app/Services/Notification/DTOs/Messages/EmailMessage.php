@@ -9,6 +9,10 @@ class EmailMessage implements MessageInterface
 {
     use ToArrayTrait;
 
+    /**
+     * @param  list<string|int>|array<string, list<int|string>>  $recipients
+     * @param  array<string, mixed>  $meta
+     */
     public function __construct(
         public array $recipients,
         public string $subject,

@@ -76,7 +76,10 @@ trait ResolvesLanguagesTrait
         ]);
     }
 
-    /** @param  list<string>  $codes @return array<string, int> */
+    /**
+     * @param  list<string>  $codes
+     * @return array<string, int>
+     */
     private function languageResolve(array $codes): array
     {
         return Language::query()

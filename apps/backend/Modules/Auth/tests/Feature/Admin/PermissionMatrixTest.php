@@ -17,6 +17,9 @@ function createPermission(string $name): Permission
     ]);
 }
 
+/**
+ * @param  array<string, mixed>  $permissionNames
+ */
 function createUserWithRole(string $roleName, array $permissionNames): User
 {
     $role = Role::query()->firstOrCreate([

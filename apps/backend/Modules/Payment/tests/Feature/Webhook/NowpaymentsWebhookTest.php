@@ -39,7 +39,6 @@ function nowpaymentsPendingPayment(Order $order): Payment
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function nowpaymentsIpnBody(string $reference, array $overrides = []): array
 {
@@ -60,10 +59,8 @@ function nowpaymentsIpnBody(string $reference, array $overrides = []): array
 }
 
 /**
- * Signed delivery headers — the real HMAC-SHA512 path runs inside the
- * driver, so no client stubbing is needed (unlike PayPal's certificate
- * check). Signing a different body than the one delivered simulates
- * tampering.
+ * @param  array<string, mixed>  $ipn
+ * @return array<string, mixed>
  */
 function nowpaymentsSigHeader(array $ipn, string $secret = 'np-ipn-test'): array
 {
@@ -84,7 +81,6 @@ function nowpaymentsIpnSignature(array $ipn, string $secret): string
 
 /**
  * @param  array<string, mixed>  $value
- * @return array<string, mixed>
  */
 function nowpaymentsSortedKeys(array $value): array
 {

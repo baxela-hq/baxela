@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +12,9 @@ use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 
 /**
  * @property int $id
+ * @property int|null $position
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
  */
 class AttributeGroup extends Model
 {

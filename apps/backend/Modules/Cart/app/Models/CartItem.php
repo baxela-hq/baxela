@@ -11,7 +11,7 @@ use Modules\Cart\Database\Factories\CartItemFactory;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
 
 /**
- * @mixin Builder
+ * @mixin Builder<CartItem>
  */
 /**
  * @property int $id

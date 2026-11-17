@@ -10,7 +10,6 @@ uses(HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function messagePayload(array $overrides = []): array
 {

@@ -12,7 +12,6 @@ uses(HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function categoryPayload(array $overrides = []): array
 {

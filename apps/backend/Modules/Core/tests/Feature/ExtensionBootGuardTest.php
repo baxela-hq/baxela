@@ -15,18 +15,15 @@ beforeEach(function () {
 });
 
 /**
- * A minimal real extension: registers a payment driver slug in its
- * extensionBoot — exactly how a gateway extension merges itself in.
- * The merged config key is the observable for whether the guarded
- * boot path ran.
- *
  * @param  array<string, mixed>  $manifest
  */
 function guardExtensionProvider(array $manifest): Extension
 {
     return new class($manifest) extends Extension
     {
-        /** @param array<string, mixed> $manifestArg */
+        /**
+         * @param  array<string, mixed>  $manifestArg
+         */
         public function __construct(protected array $manifestArg)
         {
             parent::__construct(app());
@@ -47,7 +44,6 @@ function guardExtensionProvider(array $manifest): Extension
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function guardManifest(array $overrides = []): array
 {

@@ -16,10 +16,9 @@ use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
 uses(RefreshDatabase::class);
 
 /**
- * Resolve via the gateway with a caller-supplied category map — mirroring
- * how Catalog invokes it (Discount itself never reaches into Catalog).
- *
- * @param  array<int, int[]>  $categoryMap
+ * @param  list<int>  $productIds
+ * @param  array<int, list<int>>  $categoryMap
+ * @return Collection<int, mixed>
  */
 function resolvePromotions(array $productIds, array $categoryMap = []): Collection
 {
@@ -27,6 +26,9 @@ function resolvePromotions(array $productIds, array $categoryMap = []): Collecti
         ->resolveForProducts($productIds, collect($categoryMap));
 }
 
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function scopedPromotion(array $overrides = [], array $productIds = [], array $categoryIds = []): Promotion
 {
     $promotion = Promotion::factory()->create(array_merge(

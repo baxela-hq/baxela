@@ -27,7 +27,6 @@ uses(HelperTrait::class);
 
 /**
  * @param  array<string, mixed>  $orderOverrides
- * @return array{0: Order, 1: Payment}
  */
 function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides = []): array
 {
@@ -53,8 +52,7 @@ function paidOrderWithManualPayment(float $amount = 100.0, array $orderOverrides
 }
 
 /**
- * Same as above but for a gateway method, carrying the gateway-side
- * payment id the refund APIs key on.
+ * @return array{0: Order, 1: Payment}
  */
 function paidOrderWithGatewayPayment(float $amount = 100.0, string $method = 'manual'): array
 {

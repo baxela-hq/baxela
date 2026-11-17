@@ -63,9 +63,9 @@ class AttributeSeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array{translations: array, attributes: array}>  $groups
-     * @param  array<string, array{description: string, groups: array}>  $templates
-     * @param  array<string, array<string, array{translations: array, attributes: array}>>  $groupsData
+     * @param  array<string, array{translations: array<string, mixed>, attributes: array<string, mixed>}>  $groups
+     * @param  array<string, array{description: string, groups: array<string, mixed>}>  $templates
+     * @param  array<string, array<string, array{translations: array<string, mixed>, attributes: array<string, mixed>}>>  $groupsData
      * @param  array<int, string>  $langs
      * @param  array<string, mixed>  $groups
      * @param  array<string, mixed>  $templates

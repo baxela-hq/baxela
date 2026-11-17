@@ -41,6 +41,7 @@ class MenuLinkTranslation extends Model
         return MenuLinkTranslationFactory::new();
     }
 
+    /** @return BelongsTo<MenuLink, $this> */
     public function link(): BelongsTo
     {
         return $this->belongsTo(MenuLink::class);

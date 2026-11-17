@@ -52,7 +52,7 @@ it('lists only featured categories ordered by featured position when filtered', 
     $response = $this->getJson($this->baseUrl('/public/categories').'?featured=true')
         ->assertOk();
 
-    $categories = collect($response->json('data'));
+    $categories = collect((array) $response->json('data'));
 
     expect($categories->pluck('slug')->all())->toBe(['first', 'second'])
         ->and($categories->last()['image_url'])->toBe('/storage/categories/second.png');
@@ -65,5 +65,5 @@ it('lists every category regardless of featured items when unfiltered', function
     $response = $this->getJson($this->baseUrl('/public/categories'))
         ->assertOk();
 
-    expect(collect($response->json('data'))->pluck('slug'))->toHaveCount(2);
+    expect(collect((array) $response->json('data'))->pluck('slug'))->toHaveCount(2);
 });

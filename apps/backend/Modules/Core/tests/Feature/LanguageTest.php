@@ -11,6 +11,9 @@ beforeEach(function () {
     $this->superAdmin = User::factory()->superAdmin()->create();
 });
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function languageRow(array $attributes = []): Language
 {
     return Language::query()->create(array_merge([

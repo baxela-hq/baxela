@@ -66,7 +66,9 @@ function grantCredentialPermission(string $permission): void
     test()->actingAs($user);
 }
 
-/** @param array<string, string> $credentials */
+/**
+ * @param  array<string, mixed>  $credentials
+ */
 function seedEnvCredentials(array $credentials): void
 {
     foreach ($credentials as $key => $value) {
@@ -75,8 +77,7 @@ function seedEnvCredentials(array $credentials): void
 }
 
 /**
- * @param  array<int, array<string, mixed>>  $data
- * @return array<string, mixed>
+ * @param  array<string, mixed>  $data
  */
 function stripeState(array $data): array
 {
@@ -85,8 +86,7 @@ function stripeState(array $data): array
 
 /** Methods-listing rows are keyed by 'method', not 'driver'. */
 /**
- * @param  array<int, array<string, mixed>>  $data
- * @return array<string, mixed>
+ * @param  array<string, mixed>  $data
  */
 function stripeMethod(array $data): array
 {

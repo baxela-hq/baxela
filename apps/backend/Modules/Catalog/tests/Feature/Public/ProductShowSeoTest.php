@@ -18,8 +18,7 @@ uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 /**
- * A published product with one default variant and an en translation;
- * $stock null = untracked (no inventory row), an int = tracked quantity.
+ * @return array{0: Product, 1: Variant}
  */
 function seoProduct(?int $stock): array
 {

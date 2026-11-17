@@ -75,7 +75,7 @@ it('lists published in-stock products only', function () {
     $response = $this->getJson($this->baseUrl('/public/products'))
         ->assertOk();
 
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids)->toContain($visible->id)->toHaveCount(1);
 });
@@ -184,7 +184,7 @@ it('filters the storefront list by brand and surfaces the brand on products', fu
     $response = $this->getJson($this->baseUrl('/public/products?filter[brand.id]='.$urbanEdge->id))
         ->assertOk();
 
-    $items = collect($response->json('data'));
+    $items = collect((array) $response->json('data'));
 
     expect($items->pluck('id')->all())->toBe([$product->id])
         ->and($items->first()['brand']['slug'])->toBe('urban-edge')

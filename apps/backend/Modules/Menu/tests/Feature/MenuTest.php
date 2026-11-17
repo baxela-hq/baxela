@@ -9,6 +9,9 @@ use Tests\TestCase;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @return array<string, mixed>
+ */
 function menuPayload(string $location = 'header'): array
 {
     return [
@@ -22,6 +25,9 @@ function menuPayload(string $location = 'header'): array
     ];
 }
 
+/**
+ * @return array<string, mixed>
+ */
 function linkPayload(?int $parentId, string $url): array
 {
     return [

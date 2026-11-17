@@ -24,6 +24,9 @@ trait HelperTrait
         return User::factory()->superAdmin()->create();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferContact(): array
     {
         $subscriber = NewsletterSubscriber::query()->create([

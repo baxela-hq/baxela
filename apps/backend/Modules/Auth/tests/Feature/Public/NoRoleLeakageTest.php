@@ -24,7 +24,7 @@ it('exposes no roles or is_admin in the sign-in response', function () {
 
     $response->assertOk();
 
-    $userPayload = collect($response->json('data.user'));
+    $userPayload = collect((array) $response->json('data.user'));
     expect($userPayload->has('roles'))->toBeFalse()
         ->and($userPayload->has('is_admin'))->toBeFalse();
 });
@@ -40,7 +40,7 @@ it('exposes no roles or is_admin in the account me response', function () {
 
     $response->assertOk();
 
-    $payload = collect($response->json('data'));
+    $payload = collect((array) $response->json('data'));
     expect($payload->has('roles'))->toBeFalse()
         ->and($payload->has('is_admin'))->toBeFalse();
 });

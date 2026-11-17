@@ -16,10 +16,8 @@ uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 /**
- * A payload envelope shaped like the framework's real queue payload (uuid,
- * displayName, job, data.command with a valid serialized command blob). The
- * display/redaction paths here never parse the blob; the retry end-to-end
- * runs against a genuinely failing fixture job instead of this row.
+ * @param  array<string, mixed>  $overrides
+ * @return array<string, mixed>
  */
 function failedJobRow(array $overrides = []): array
 {

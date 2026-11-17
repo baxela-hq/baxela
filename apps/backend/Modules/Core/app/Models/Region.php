@@ -11,7 +11,7 @@ use Modules\Core\Schemas\Region\RegionSchema;
  * An ISO 3166-2 subdivision (gap-C1a D6): seed-maintained (no admin CRUD
  * in v1), consumed by RegionCodeRule and the public regions endpoint.
  *
- * @mixin Builder
+ * @mixin Builder<Region>
  */
 /**
  * @property int $id

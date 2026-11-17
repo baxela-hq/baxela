@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,6 +12,12 @@ use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
 
 /**
  * @property int $id
+ * @property string $title
+ * @property string|null $description
+ * @property bool $is_active
+ * @property int|null $position
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
  */
 class AttributeTemplate extends Model
 {

@@ -14,9 +14,9 @@ use Modules\Core\Support\Erd\TableInfo;
 
 /**
  * @param  array<string, TableInfo>  $tables
- * @param  array<int, ErdEdge>  $fkEdges
- * @param  array<int, ErdEdge>  $appEdges
- * @param  array<int, MorphNote>  $morphNotes
+ * @param  list<ErdEdge>  $fkEdges
+ * @param  list<ErdEdge>  $appEdges
+ * @param  list<MorphNote>  $morphNotes
  * @param  array<string, string>  $tableModules
  */
 function erdTestGenerator(array $tables, array $fkEdges, array $appEdges, array $morphNotes = [], array $tableModules = []): ErdGenerator
@@ -48,9 +48,15 @@ function erdTestGenerator(array $tables, array $fkEdges, array $appEdges, array 
 
     $resolver = new class($map) extends ModuleTableResolver
     {
-        /** @param array<string, string> $testMap */
+        /**
+         * @param  array<string, mixed>  $testMap
+         */
         public function __construct(protected readonly array $testMap) {}
 
+        /**
+         * @param  array<string, mixed>  $tableModules
+         * @return array<string, mixed>
+         */
         public function resolve(array $tableModules, array $allTables): array
         {
             return $this->testMap;
@@ -61,8 +67,8 @@ function erdTestGenerator(array $tables, array $fkEdges, array $appEdges, array 
 }
 
 /**
- * @param  array<int, ColumnInfo>  $columns
- * @param  array<int, IndexInfo>  $indexes
+ * @param  list<ColumnInfo>  $columns
+ * @param  list<IndexInfo>  $indexes
  */
 function erdTableFixture(string $name, array $columns, array $indexes = []): TableInfo
 {

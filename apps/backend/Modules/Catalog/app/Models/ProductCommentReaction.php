@@ -9,10 +9,13 @@ use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
 
 /**
- * @mixin Builder
+ * @mixin Builder<ProductCommentReaction>
  */
 /**
  * @property int $id
+ * @property int $product_comment_id
+ * @property int $user_id
+ * @property ProductCommentReactionEnum $reaction
  */
 class ProductCommentReaction extends Model
 {

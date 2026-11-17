@@ -5,13 +5,16 @@ namespace Modules\Payment\Transformers\Admin\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Payment\Gateways\PaymentDriverManager;
+use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 
-/** @mixin \Modules\Payment\Models\Payment */
+/** @mixin Payment */
 class PaymentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(Request $request): array
     {

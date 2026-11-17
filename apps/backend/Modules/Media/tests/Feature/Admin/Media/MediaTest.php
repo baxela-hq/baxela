@@ -34,7 +34,7 @@ it('lists root media via filter[folder_id]=null', function () {
     $response = $this->getJson($this->baseUrl('/media?filter[folder_id]=null'));
 
     $response->assertOk();
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids)->toHaveCount(1)
         ->and($ids)->toContain($rootMedia->id)
@@ -63,7 +63,7 @@ it('lists media by folder via filter[folder_id]={id}', function () {
     $response = $this->getJson($this->baseUrl('/media?filter[folder_id]='.$folder->id));
 
     $response->assertOk();
-    $ids = collect($response->json('data'))->pluck('id');
+    $ids = collect((array) $response->json('data'))->pluck('id');
 
     expect($ids)->toHaveCount(1)
         ->and($ids)->toContain($inFolder->id)

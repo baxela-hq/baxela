@@ -19,6 +19,9 @@ use Modules\Order\Models\Order;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @return array<string, mixed>
+ */
 function orderCreatedPayload(int $userId, ?string $locale = null): array
 {
     return [

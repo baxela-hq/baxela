@@ -18,6 +18,9 @@ use Tests\TestCase;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function sitemapPost(string $slug, array $attributes = []): Post
 {
     $post = Post::factory()->create([
@@ -35,6 +38,9 @@ function sitemapPost(string $slug, array $attributes = []): Post
     return $post;
 }
 
+/**
+ * @param  array<string, mixed>  $attributes
+ */
 function sitemapPage(string $slug, array $attributes = []): Page
 {
     $page = Page::factory()->create([

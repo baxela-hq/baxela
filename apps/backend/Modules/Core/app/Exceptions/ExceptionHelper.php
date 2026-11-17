@@ -50,6 +50,10 @@ class ExceptionHelper
         return $code;
     }
 
+    /**
+     * @param  array<string, mixed>  $meta
+     * @return array<string, mixed>
+     */
     public static function filter_exception_meta(array $meta): array
     {
         unset($meta['errors']);

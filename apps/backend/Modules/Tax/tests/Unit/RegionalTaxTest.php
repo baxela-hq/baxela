@@ -170,7 +170,7 @@ it("lists a country's seeded regions through the public endpoint", function () {
 
     $response = $this->getJson('api/v1/core/public/regions?country_code=US')->assertOk();
 
-    $codes = collect($response->json('data'))->pluck('code');
+    $codes = collect((array) $response->json('data'))->pluck('code');
 
     expect($codes->all())->toEqualCanonicalizing(['US-CA', 'US-NY'])
         ->and($codes->all())->not->toContain('DE-BY');

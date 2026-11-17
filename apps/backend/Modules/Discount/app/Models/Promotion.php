@@ -18,7 +18,7 @@ use Modules\Discount\Schemas\Promotion\PromotionSchema;
 use Modules\Discount\Schemas\Promotion\ScopeTypeEnum;
 
 /**
- * @mixin Builder
+ * @mixin Builder<Promotion>
  */
 /**
  * @property int $id

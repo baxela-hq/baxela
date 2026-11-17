@@ -34,7 +34,7 @@ function stripeDriver(callable $configureCheckout): StripePaymentDriver
 }
 
 /**
- * Real signed webhook request — exercises the actual HMAC verification path.
+ * @param  array<string, mixed>  $payload
  */
 function signedStripeEvent(array $payload, ?string $secret = 'whsec_test', ?string $signature = null): Request
 {

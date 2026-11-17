@@ -38,7 +38,7 @@ it('lists active methods that have a registered, configured driver', function ()
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['manual', 'stripe']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['manual', 'stripe']);
 });
 
 it('orders the checkout picker by the admin-set position', function () {
@@ -52,7 +52,7 @@ it('orders the checkout picker by the admin-set position', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['stripe', 'manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['stripe', 'manual']);
 });
 
 it('hides a method an admin deactivated', function () {
@@ -70,7 +70,7 @@ it('hides a method an admin deactivated', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['manual']);
 });
 
 it('treats a method without a row (a new driver) as disabled', function () {
@@ -83,7 +83,7 @@ it('treats a method without a row (a new driver) as disabled', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['manual']);
 });
 
 it('hides methods whose driver is not registered', function () {
@@ -98,7 +98,7 @@ it('hides methods whose driver is not registered', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['manual']);
 });
 
 it('hides a gateway whose credentials are missing', function () {
@@ -112,7 +112,7 @@ it('hides a gateway whose credentials are missing', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['manual']);
 });
 
 it('offers an extension-registered method like a built-in one', function () {
@@ -120,6 +120,9 @@ it('offers an extension-registered method like a built-in one', function () {
     // declaring its own credentials — no core code knows the slug.
     $driver = new class implements ConfigurableDriver, PaymentDriverInterface
     {
+        /**
+         * @return array<string, mixed>
+         */
         public function credentialKeys(): array
         {
             return ['api_key'];
@@ -150,7 +153,7 @@ it('offers an extension-registered method like a built-in one', function () {
 
     $response = $this->getJson($this->baseUrl('/user/methods'))->assertOk();
 
-    expect(collect($response->json('data'))->pluck('method')->all())->toBe(['sandbox', 'manual']);
+    expect(collect((array) $response->json('data'))->pluck('method')->all())->toBe(['sandbox', 'manual']);
 });
 
 it('rejects unauthenticated callers', function () {

@@ -15,7 +15,7 @@ use Modules\Auth\Schemas\TwoFactorChallenge\TwoFactorChallengeTypeEnum;
  * once; only its SHA-256 hash is stored as the PK. Context (device,
  * remember, cart token) is encrypted; nulled on consumption.
  *
- * @mixin Builder
+ * @mixin Builder<TwoFactorChallenge>
  */
 /**
  * @property string $token_hash

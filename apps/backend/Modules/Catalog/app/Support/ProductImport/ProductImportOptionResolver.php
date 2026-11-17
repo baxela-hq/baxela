@@ -23,12 +23,14 @@ use Modules\Core\Support\Slug;
 final class ProductImportOptionResolver
 {
     /** Normalized option title => option id, false when ambiguous. @var array<string, int|false> */
+    /** @var array<string, int> */
     private array $optionIdByTitle = [];
 
     /** "optionId|normalized value title" => value id, false when ambiguous. @var array<string, int|false> */
     private array $valueIdByKey = [];
 
     /** Map keys added since the last mark(), evicted when a transaction rolls back. @var array<int, string[]>[] */
+    /** @var array<string, array<string, list<int>>> */
     private array $addedKeys = ['option' => [], 'value' => []];
 
     public function __construct(

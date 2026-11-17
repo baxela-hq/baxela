@@ -23,11 +23,7 @@ trait HelperTrait
     }
 
     /**
-     * A public-URL endpoint subscribed to the given event types; the
-     * plaintext secret is returned alongside the row.
-     *
-     * @param  list<string>  $events
-     * @return array{0: WebhookEndpoint, 1: string}
+     * @param  array<string, mixed>  $events
      */
     public function webhookEndpoint(array $events = ['order.paid'], array $overrides = []): array
     {

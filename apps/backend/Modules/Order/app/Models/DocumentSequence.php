@@ -13,7 +13,7 @@ use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
  * numbering (D3). Rows are created under a lock on first allocation for
  * the year and incremented inside the issuing transaction.
  *
- * @mixin Builder
+ * @mixin Builder<DocumentSequence>
  */
 /**
  * @property int $id

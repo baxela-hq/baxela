@@ -39,7 +39,6 @@ function adyenPendingPayment(Order $order): Payment
 
 /**
  * @param  array<string, mixed>  $overrides
- * @return array<string, mixed>
  */
 function adyenAuthItem(string $reference, array $overrides = []): array
 {
@@ -53,10 +52,8 @@ function adyenAuthItem(string $reference, array $overrides = []): array
 }
 
 /**
- * Signed delivery body — the real HMAC path runs inside the driver, so no
- * client stubbing is needed (unlike PayPal's certificate check). $signItem
- * (defaults to $item) lets tests tamper with the delivered item while
- * signing the original.
+ * @param  array<string, mixed>  $item
+ * @return array<string, mixed>
  */
 function adyenDelivery(array $item, ?array $signItem = null): array
 {

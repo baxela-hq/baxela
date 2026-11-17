@@ -28,7 +28,9 @@ trait HelperTrait
         return User::factory()->superAdmin()->create();
     }
 
-    /** Coupon + promotion (scoped to a real catalog product/category) + one redemption. */
+    /**
+     * @return array<string, mixed>
+     */
     public function seedTransferDiscount(): array
     {
         $coupon = Coupon::query()->create([

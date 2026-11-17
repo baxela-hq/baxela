@@ -8,6 +8,7 @@ use Modules\Core\Schemas\Country\CountrySchema;
 
 class ListCountryAction
 {
+    /** @return Collection<int, Country> */
     public function handle(): Collection
     {
         return Country::query()

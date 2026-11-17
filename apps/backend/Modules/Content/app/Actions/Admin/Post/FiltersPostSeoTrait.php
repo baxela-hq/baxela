@@ -11,6 +11,10 @@ trait FiltersPostSeoTrait
      * least one filled field become rows, and empty strings are stored
      * as null.
      */
+    /**
+     * @param  list<array<string, mixed>>  $items
+     * @return list<array<string, mixed>>
+     */
     private function filterPostSeo(array $items): array
     {
         $fields = [

@@ -18,6 +18,9 @@ use Modules\Notification\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
+/**
+ * @return array<string, mixed>
+ */
 function preferencePayload(string $code, string $channel, bool $isEnabled): array
 {
     return [

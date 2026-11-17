@@ -54,7 +54,7 @@ it('serves promoted prices and promotion info on the public list', function () {
     $response = $this->getJson($this->baseUrl('/public/products'))
         ->assertOk();
 
-    $rows = collect($response->json('data'))->keyBy('id');
+    $rows = collect((array) $response->json('data'))->keyBy('id');
 
     expect($rows->get($promoted->id))
         ->price->toBe('80.00')

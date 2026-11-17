@@ -17,6 +17,9 @@ class AttributeValueRequest extends FormRequest
         $this->resolveLanguages();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
         return self::rulesFor($this->languageMap);

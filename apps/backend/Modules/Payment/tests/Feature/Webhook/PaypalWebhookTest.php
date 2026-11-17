@@ -36,8 +36,7 @@ function paypalPendingPayment(Order $order, string $paypalOrderId): Payment
 }
 
 /**
- * Real PayPal deliveries sign the PAYPAL-* transmission headers; the
- * certificate check itself is the API call stubbed via PaypalClient.
+ * @return array<string, mixed>
  */
 function paypalTransmission(): array
 {

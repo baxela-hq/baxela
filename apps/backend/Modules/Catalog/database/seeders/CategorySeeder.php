@@ -95,10 +95,15 @@ class CategorySeeder extends Seeder
     /**
      * Collapse the nested category tree into a slug => translations lookup.
      *
-     * @param  array<string, array{translations: array, children?: array}>  $nodes
+     * @param  array<string, array{translations: array<string, mixed>, children?: array<string, mixed>}>  $nodes
      * @param  array<string, mixed>  $nodes
      * @param  array<string, mixed>  $carry
-     * @return array<string, array<string, array{translations: array, children?: array}>>
+     * @return array<string, array<string, array{translations: array<string, mixed>, children?: array<array-key, mixed>}>>
+     */
+    /**
+     * @param  array<string, mixed>  $nodes
+     * @param  array<string, mixed>|null  $carry
+     * @return array<string, array<string, array{translations: array<string, mixed>, children?: array<array-key, mixed>}>>
      */
     private function flatten(array $nodes, ?array $carry = null): array
     {
@@ -116,8 +121,13 @@ class CategorySeeder extends Seeder
     }
 
     /**
-     * @param  array<string, array{translations: array, children?: array, featured?: bool}>  $nodes
-     * @param  array<string, array<string, array{translations: array, children?: array}>>  $data
+     * @param  array<string, array{translations: array<string, mixed>, children?: array<string, mixed>, featured?: bool}>  $nodes
+     * @param  array<string, array<string, array{translations: array<string, mixed>, children?: array<string, mixed>}>>  $data
+     * @param  array<int, string>  $langs
+     */
+    /**
+     * @param  array<string, mixed>  $nodes
+     * @param  array<string, mixed>  $data
      * @param  array<int, string>  $langs
      */
     private function generate(array $nodes, array $data, array $langs, ?int $parentId): void

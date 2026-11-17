@@ -53,9 +53,7 @@ function mercadopagoFetchedPayment(string $status, string $reference): object
 }
 
 /**
- * Signed shadow-notification headers — the real x-signature verification
- * runs inside the driver. Signing for a different payment id simulates
- * tampering.
+ * @return array<string, mixed>
  */
 function mercadopagoSignedHeaders(string $dataId = '123456789', string $secret = 'mp-webhook-test'): array
 {
