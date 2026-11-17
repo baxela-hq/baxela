@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Support\Schemas\Ticket\TicketSchema;
 use Modules\Support\Transformers\Admin\TicketMessage\TicketMessageResource;
 
+/** @mixin \Modules\Support\Models\Ticket */
 class TicketResource extends JsonResource
 {
     /**

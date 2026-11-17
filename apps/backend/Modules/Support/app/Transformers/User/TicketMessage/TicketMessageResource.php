@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Support\Schemas\TicketMessage\TicketMessageSchema;
 
+/** @mixin \Modules\Support\Models\TicketMessage */
 class TicketMessageResource extends JsonResource
 {
     /**

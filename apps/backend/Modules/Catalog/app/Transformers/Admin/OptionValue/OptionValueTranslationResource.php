@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin \Modules\Catalog\Models\OptionValueTranslation */
 class OptionValueTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

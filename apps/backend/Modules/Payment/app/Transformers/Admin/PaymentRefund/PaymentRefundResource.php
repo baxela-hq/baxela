@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 
+/** @mixin \Modules\Payment\Models\PaymentRefund */
 class PaymentRefundResource extends JsonResource
 {
     /**

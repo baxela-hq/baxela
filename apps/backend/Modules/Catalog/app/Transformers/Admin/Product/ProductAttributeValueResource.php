@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Transformers\Admin\Attribute\AttributeResource;
 use Modules\Catalog\Transformers\Admin\AttributeValue\AttributeValueResource;
 
+/** @mixin \Modules\Catalog\Models\ProductAttributeValue */
 class ProductAttributeValueResource extends JsonResource
 {
     /**

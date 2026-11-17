@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin \Modules\Catalog\Models\CategoryTranslation */
 class CategoryTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

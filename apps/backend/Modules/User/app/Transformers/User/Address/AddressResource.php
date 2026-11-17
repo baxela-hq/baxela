@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Schemas\Address\AddressSchema;
 
+/** @mixin \Modules\User\Models\Address */
 class AddressResource extends JsonResource
 {
     /**

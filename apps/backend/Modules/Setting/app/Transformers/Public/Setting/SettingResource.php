@@ -8,6 +8,7 @@ use Modules\Core\Support\ResolvesPublicLanguage;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Schemas\Translation\TranslationSchema;
 
+/** @mixin \Modules\Setting\Models\Setting */
 class SettingResource extends JsonResource
 {
     use ResolvesPublicLanguage;

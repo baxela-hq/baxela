@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Transformers\Admin\OptionValue\OptionValueTranslationResource as OVTResource;
 
+/** @mixin \Modules\Catalog\Models\OptionValue */
 class OptionValueResource extends JsonResource
 {
     /**

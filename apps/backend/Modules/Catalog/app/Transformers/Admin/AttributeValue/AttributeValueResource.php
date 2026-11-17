@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Transformers\Admin\AttributeValue\AttributeValueTranslationResource as AVTResource;
 
+/** @mixin \Modules\Catalog\Models\AttributeValue */
 class AttributeValueResource extends JsonResource
 {
     /**

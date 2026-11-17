@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 
+/** @mixin \Modules\Catalog\Models\ProductComment */
 class ProductCommentResource extends JsonResource
 {
     /**

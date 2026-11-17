@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BTSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
 
+/** @mixin \Modules\Catalog\Models\Brand */
 class BrandResource extends JsonResource
 {
     use ResolvesPublicLanguage;

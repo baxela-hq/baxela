@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Setting\Schemas\Translation\TranslationSchema;
 
+/** @mixin \Modules\Setting\Models\Translation */
 class TranslationResource extends JsonResource
 {
     /** @return array<string, mixed> */

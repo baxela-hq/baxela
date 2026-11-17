@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\User\Schemas\Profile\ProfileSchema;
 
+/** @mixin \Modules\User\Models\Profile */
 class ProfileResource extends JsonResource
 {
     /**

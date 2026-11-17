@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Schemas\Permission\PermissionSchema;
 
+/** @mixin \Modules\Auth\Models\Permission */
 class PermissionResource extends JsonResource
 {
     /**

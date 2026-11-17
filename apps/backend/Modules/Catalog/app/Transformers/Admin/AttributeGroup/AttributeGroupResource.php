@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Transformers\Admin\Attribute\AttributeResource;
 
+/** @mixin \Modules\Catalog\Models\AttributeGroup */
 class AttributeGroupResource extends JsonResource
 {
     /**

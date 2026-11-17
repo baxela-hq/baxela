@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
+/** @mixin \Modules\Inventory\Models\InventoryStock */
 class InventoryStockResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

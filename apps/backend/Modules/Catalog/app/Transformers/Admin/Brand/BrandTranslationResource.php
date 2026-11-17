@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin \Modules\Catalog\Models\BrandTranslation */
 class BrandTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

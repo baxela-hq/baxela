@@ -21,6 +21,7 @@ use Modules\Auth\Schemas\User\UserSchema;
  * @property Carbon|null $created_at
  * @property User|null $user
  */
+/** @mixin \Modules\Audit\Models\AuditLog */
 class AuditLogResource extends JsonResource
 {
     /**

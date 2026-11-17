@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Product\ProductShippingSchema as Schema;
 
+/** @mixin \Modules\Catalog\Models\ProductShipping */
 class ProductShippingResource extends JsonResource
 {
     /**

@@ -8,6 +8,7 @@ use Modules\Setting\Models\Setting;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 
+/** @mixin \Modules\Setting\Models\Setting */
 class SettingResource extends JsonResource
 {
     /** @return array<string, mixed> */

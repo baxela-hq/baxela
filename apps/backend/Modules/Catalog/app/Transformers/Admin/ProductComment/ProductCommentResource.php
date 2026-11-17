@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Product\ProductSchema as PSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 use Modules\Catalog\Transformers\Admin\Product\ProductTranslationResource;
 
+/** @mixin \Modules\Catalog\Models\ProductComment */
 class ProductCommentResource extends JsonResource
 {
     /**

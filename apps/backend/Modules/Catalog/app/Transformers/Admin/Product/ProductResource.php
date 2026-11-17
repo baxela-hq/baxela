@@ -11,6 +11,7 @@ use Modules\Catalog\Transformers\Admin\Image\ImageResource;
 use Modules\Catalog\Transformers\Admin\Option\OptionResource;
 use Modules\Catalog\Transformers\Admin\Variant\VariantResource;
 
+/** @mixin \Modules\Catalog\Models\Product */
 class ProductResource extends JsonResource
 {
     /**

@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 use Modules\Media\Schemas\Media\MediaSchema;
 
+/** @mixin \Modules\Media\Models\Media */
 class MediaResource extends JsonResource
 {
     /**

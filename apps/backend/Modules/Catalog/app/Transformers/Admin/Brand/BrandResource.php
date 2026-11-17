@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 
+/** @mixin \Modules\Catalog\Models\Brand */
 class BrandResource extends JsonResource
 {
     /**

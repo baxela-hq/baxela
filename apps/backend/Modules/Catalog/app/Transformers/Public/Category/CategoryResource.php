@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
 
+/** @mixin \Modules\Catalog\Models\Category */
 class CategoryResource extends JsonResource
 {
     use ResolvesPublicLanguage;

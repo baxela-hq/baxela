@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin \Modules\Catalog\Models\ProductSeoTranslation */
 class ProductSeoTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

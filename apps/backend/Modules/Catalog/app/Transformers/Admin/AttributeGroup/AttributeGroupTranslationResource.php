@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema as Schema;
 use Modules\Core\Transformers\ResolvesLanguageCodesTrait;
 
+/** @mixin \Modules\Catalog\Models\AttributeGroupTranslation */
 class AttributeGroupTranslationResource extends JsonResource
 {
     use ResolvesLanguageCodesTrait;

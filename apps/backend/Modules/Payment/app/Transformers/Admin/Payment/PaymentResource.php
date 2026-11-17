@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Payment\Gateways\PaymentDriverManager;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 
+/** @mixin \Modules\Payment\Models\Payment */
 class PaymentResource extends JsonResource
 {
     /**

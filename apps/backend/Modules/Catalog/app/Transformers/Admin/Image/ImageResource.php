@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 
+/** @mixin \Modules\Catalog\Models\Image */
 class ImageResource extends JsonResource
 {
     /**

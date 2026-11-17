@@ -1933,73 +1933,7 @@ parameters:
 			path: Modules/Catalog/app/Support/RecalculatesProductRating.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$data_type\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$group_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$is_filterable\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Attribute\\AttributeResource\:\:\$values_count\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Attribute/AttributeResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupResource\:\:\$attributes_count\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeGroup\\AttributeGroupResource\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/AttributeGroup/AttributeGroupResource.php
@@ -2029,18 +1963,6 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeTemplate\\AttributeTemplateResource\:\:\$groups_count\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeTemplate\\AttributeTemplateResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeTemplate\\AttributeTemplateResource\:\:\$is_active\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2065,43 +1987,7 @@ parameters:
 			path: Modules/Catalog/app/Transformers/Admin/AttributeTemplate/AttributeTemplateResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$attribute_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\AttributeValue\\AttributeValueResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/AttributeValue/AttributeValueResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Brand\\BrandResource\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Brand/BrandResource.php
@@ -2132,12 +2018,6 @@ parameters:
 
 		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Category\\CategoryResource\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/Category/CategoryResource.php
@@ -2183,126 +2063,6 @@ parameters:
 			identifier: mixin.nonObject
 			count: 1
 			path: Modules/Catalog/app/Transformers/Admin/DataTransfer/CatalogImportResultResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$collection\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$media_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$product_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$url\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Image\\ImageResource\:\:\$variant_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Image/ImageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$option_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$position\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\OptionValue\\OptionValueResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/OptionValue/OptionValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$attribute_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$attribute_value_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$boolean_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$number_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Catalog\\Transformers\\Admin\\Product\\ProductAttributeValueResource\:\:\$text_value\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Catalog/app/Transformers/Admin/Product/ProductAttributeValueResource.php
 
 		-
 			message: '#^PHPDoc tag @mixin contains non\-object type array\<string, mixed\>\.$#'
@@ -5989,72 +5749,6 @@ parameters:
 			path: Modules/Payment/app/Transformers/Admin/Payment/PaymentResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$amount\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$order_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$payment_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$reason\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$refunded_by\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$transaction_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:\$uuid\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
-
-		-
 			message: '#^Method Modules\\Payment\\Transformers\\Admin\\PaymentRefund\\PaymentRefundResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6787,12 +6481,6 @@ parameters:
 			path: Modules/Support/app/Transfer/SupportTransfer.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$customer_email\.$#'
 			identifier: property.notFound
 			count: 1
@@ -6805,94 +6493,10 @@ parameters:
 			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$last_message_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$messages\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
 			message: '#^Method Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Support/app/Transformers/Admin/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$sender\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$ticket_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
 
 		-
 			message: '#^Method Modules\\Support\\Transformers\\Admin\\TicketMessage\\TicketMessageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
@@ -6901,82 +6505,10 @@ parameters:
 			path: Modules/Support/app/Transformers/Admin/TicketMessage/TicketMessageResource.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$last_message_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$messages\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$order_code\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$subject\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
 			message: '#^Method Modules\\Support\\Transformers\\User\\Ticket\\TicketResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Support/app/Transformers/User/Ticket/TicketResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\TicketMessage\\TicketMessageResource\:\:\$body\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\TicketMessage\\TicketMessageResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\TicketMessage\\TicketMessageResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/TicketMessage/TicketMessageResource.php
-
-		-
-			message: '#^Access to an undefined property Modules\\Support\\Transformers\\User\\TicketMessage\\TicketMessageResource\:\:\$sender\.$#'
-			identifier: property.notFound
-			count: 1
-			path: Modules/Support/app/Transformers/User/TicketMessage/TicketMessageResource.php
 
 		-
 			message: '#^Method Modules\\Support\\Transformers\\User\\TicketMessage\\TicketMessageResource\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'

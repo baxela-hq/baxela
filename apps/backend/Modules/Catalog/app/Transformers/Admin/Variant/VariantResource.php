@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Transformers\Admin\Image\ImageResource;
 
+/** @mixin \Modules\Catalog\Models\Variant */
 class VariantResource extends JsonResource
 {
     /**

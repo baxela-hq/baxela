@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Transformers\Admin\Attribute\AttributeResource;
 
+/** @mixin \Modules\Catalog\Models\Category */
 class CategoryResource extends JsonResource
 {
     /**

@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 
+/** @mixin \Modules\Catalog\Models\ProductCommentReaction */
 class ProductCommentReactionResource extends JsonResource
 {
     /**

@@ -5,6 +5,7 @@ namespace Modules\Payment\Transformers\User\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \Modules\Payment\Models\PaymentMethod */
 class PaymentMethodResource extends JsonResource
 {
     /**

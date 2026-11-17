@@ -11,6 +11,7 @@ use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchem
 use Modules\Catalog\Support\ResolvesPublicLanguage;
 use Modules\Core\Support\PicksTranslation;
 
+/** @mixin \Modules\Catalog\Models\Option */
 class OptionResource extends JsonResource
 {
     use ResolvesPublicLanguage;

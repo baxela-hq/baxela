@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Transformers\Admin\Role\RoleResource;
 
+/** @mixin \Modules\Auth\Models\User */
 class UserResource extends JsonResource
 {
     /**
