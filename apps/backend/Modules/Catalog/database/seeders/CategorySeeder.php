@@ -96,6 +96,8 @@ class CategorySeeder extends Seeder
      * Collapse the nested category tree into a slug => translations lookup.
      *
      * @param  array<string, array{translations: array, children?: array}>  $nodes
+     * @param  array<string, mixed>  $nodes
+     * @param  array<string, mixed>  $carry
      * @return array<string, array<string, array{translations: array, children?: array}>>
      */
     private function flatten(array $nodes, ?array $carry = null): array

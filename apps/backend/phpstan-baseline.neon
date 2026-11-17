@@ -1039,12 +1039,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Admin/Featured/UpdateFeaturedAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Admin\\Featured\\UpdateFeaturedAction\:\:insert\(\) has parameter \$ids with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/Featured/UpdateFeaturedAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\OptionValue\\ListOptionValueAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
@@ -1549,72 +1543,6 @@ parameters:
 			path: Modules/Catalog/app/Gateways/CatalogGateway.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:create\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:destroy\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:destroy\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:edit\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:edit\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:index\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:show\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:show\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:store\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:update\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Http\\Controllers\\Admin\\Product\\ProductOptionController\:\:update\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Catalog/app/Http/Controllers/Admin/Product/ProductOptionController.php
-
-		-
 			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
 			identifier: argument.type
 			count: 3
@@ -2021,24 +1949,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Catalog/app/Models/ProductTranslation.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Providers\\CatalogServiceProvider\:\:getPublishableViewPaths\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Providers/CatalogServiceProvider.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Providers\\CatalogServiceProvider\:\:provides\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Providers/CatalogServiceProvider.php
-
-		-
-			message: '#^Property Modules\\Catalog\\Providers\\CatalogServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/app/Providers/CatalogServiceProvider.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Repositories\\Queries\\ProductQuery\:\:build\(\) return type with generic class Spatie\\QueryBuilder\\QueryBuilder does not specify its types\: TModel$#'
@@ -2575,30 +2485,6 @@ parameters:
 			path: Modules/Catalog/database/seeders/AttributeSeeder.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\AttributeSeeder\:\:generate\(\) has parameter \$groups with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/AttributeSeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\AttributeSeeder\:\:generate\(\) has parameter \$groupsData with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/AttributeSeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\AttributeSeeder\:\:generate\(\) has parameter \$templates with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/AttributeSeeder.php
-
-		-
-			message: '#^Offset ''description'' on array\{description\: string, groups\: array\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Catalog/database/seeders/AttributeSeeder.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
 			count: 1
@@ -2607,18 +2493,6 @@ parameters:
 		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
-			count: 1
-			path: Modules/Catalog/database/seeders/CategorySeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\CategorySeeder\:\:flatten\(\) has parameter \$carry with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/CategorySeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\CategorySeeder\:\:flatten\(\) has parameter \$nodes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/database/seeders/CategorySeeder.php
 
@@ -2647,56 +2521,8 @@ parameters:
 			path: Modules/Catalog/database/seeders/OptionSeeder.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\OptionSeeder\:\:generate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/OptionSeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\OptionSeeder\:\:generate\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/OptionSeeder.php
-
-		-
-			message: '#^Offset ''values'' on array\{translations\: array, values\: array\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: Modules/Catalog/database/seeders/OptionSeeder.php
-
-		-
 			message: '#^Expression on left side of \?\? is not nullable\.$#'
 			identifier: nullCoalesce.expr
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\ProductSeeder\:\:generate\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
-			message: '#^Method Modules\\Catalog\\Database\\Seeders\\ProductSeeder\:\:generate\(\) has parameter \$products with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
-			message: '#^Offset ''attributes'' on array\{type\: string, categories\: array, variants\: array, translations\?\: array\} in isset\(\) does not exist\.$#'
-			identifier: isset.offset
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
-			message: '#^Offset ''brand'' on array\{type\: string, categories\: array, variants\: array, translations\?\: array\} in isset\(\) does not exist\.$#'
-			identifier: isset.offset
-			count: 1
-			path: Modules/Catalog/database/seeders/ProductSeeder.php
-
-		-
-			message: '#^Offset ''shipping'' on array\{type\: string, categories\: array, variants\: array, translations\?\: array\} in isset\(\) does not exist\.$#'
-			identifier: isset.offset
 			count: 1
 			path: Modules/Catalog/database/seeders/ProductSeeder.php
 

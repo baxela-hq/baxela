@@ -33,6 +33,7 @@ class UpdateFeaturedAction
         return $this->listAction->handle();
     }
 
+    /** @param  list<int>  $ids */
     private function insert(string $type, array $ids): void
     {
         $now = now();

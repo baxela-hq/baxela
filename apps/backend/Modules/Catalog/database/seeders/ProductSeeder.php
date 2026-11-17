@@ -111,6 +111,9 @@ class ProductSeeder extends Seeder
      * @param  array<string, array{type: string, categories: array, variants: array, translations?: array}>  $products
      * @param  array<string, array<string, array{translations?: array}>>  $data
      * @param  array<int, string>  $langs
+     * @param  array<string, mixed>  $products
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $langs
      *
      * @throws CreationFailedException
      * @throws Throwable

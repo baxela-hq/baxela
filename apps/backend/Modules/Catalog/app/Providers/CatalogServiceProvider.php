@@ -23,6 +23,7 @@ class CatalogServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'catalog';
 
+    /** @var array<class-string, class-string> */
     public array $bindings = [
         CatalogGatewayInterface::class => CatalogGateway::class,
     ];
@@ -152,11 +153,13 @@ class CatalogServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    /** @return list<string> */
     public function provides(): array
     {
         return [];
     }
 
+    /** @return list<string> */
     private function getPublishableViewPaths(): array
     {
         $paths = [];

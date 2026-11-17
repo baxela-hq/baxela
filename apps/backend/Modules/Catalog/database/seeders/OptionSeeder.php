@@ -54,6 +54,9 @@ class OptionSeeder extends Seeder
      * @param  array<string, array{translations: array, values: array}>  $options
      * @param  array<string, array<string, array{translations: array, values: array}>>  $data
      * @param  array<int, string>  $langs
+     * @param  array<string, mixed>  $options
+     * @param  array<string, mixed>  $data
+     * @param  array<string, mixed>  $langs
      */
     private function generate(array $options, array $data, array $langs): void
     {
