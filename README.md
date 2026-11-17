@@ -57,7 +57,7 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
   security headers, and a permission system derived from route names
 - **Operability** — failed-job visibility, queue-depth monitoring, data
   import/export per module, stack-health endpoint, module dependency graph
-- **Tested** — 1,300+ Pest tests on the backend, a Playwright e2e suite on the
+- **Tested** — 1,400+ Pest tests on the backend, a Playwright e2e suite on the
   storefront, and static analysis (Larastan) gated in CI
 - **Documented APIs** — interactive OpenAPI docs (`/docs/api`) plus a
   ready-to-import Bruno/Postman collection (305 requests)
@@ -70,7 +70,7 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
 | Payment gateways with verified webhooks | 8 — signatures verified | 100+ (hosted) | via extensions | via plugins | via extensions |
 | Per-gateway refund capability documented | ✓ | — | — | — | — |
 | RTL storefront (fa, ar) | ✓ | theme-dependent | ✓ | — | ✓ |
-| Backend test suite in-repo | 1,300+ Pest + e2e | closed source | ✓ | ✓ | ✓ |
+| Backend test suite in-repo | 1,400+ Pest + e2e | closed source | ✓ | ✓ | ✓ |
 | Ready-to-import API collection | ✓ — 305 requests | — | — | — | — |
 | OpenAPI docs | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Display-currency conversion with auto FX sync | ✓¹ | ✓ | via extensions | ✓ | ✓ |
@@ -105,7 +105,7 @@ baxela/
 ## Architecture at a glance
 
 An interactive [module dependency graph](docs/module-dependency-graph.html)
-maps the 20 backend modules, the admin feature areas, and the storefront parts
+maps the 21 backend modules, the admin feature areas, and the storefront parts
 with their cross-references, aggregated from the codegraph index. Open the file
 in a browser, or view it rendered on
 [htmlpreview](https://htmlpreview.github.io/?https://github.com/baxela-hq/baxela/blob/main/docs/module-dependency-graph.html).

@@ -8,6 +8,14 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ## [Unreleased]
 
+## [v0.1.0-alpha.1] - 2026-11-17
+
+**The first public release of Baxela**: a modular-monolith e-commerce platform —
+Laravel 13 backend in 21 modules, Next.js 16 storefront, React admin panel —
+shipping multi-vendor-ready catalog/cart/checkout/orders, six locales with full
+RTL, multi-currency display, invoices & credit notes with PDFs, webhooks, an
+extension marketplace skeleton, and an e2e-tested checkout happy path.
+
 ### Added
 
 - **FX rate auto-sync (launch-readiness Part E)**: opt-in synchronization of
