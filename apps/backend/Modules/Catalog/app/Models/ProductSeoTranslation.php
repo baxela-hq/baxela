@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Database\Factories\ProductSeoTranslationFactory;
@@ -9,6 +10,14 @@ use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema;
 
 /**
  * @property int $id
+ * @property int $product_id
+ * @property int|null $language_id
+ * @property string|null $meta_title
+ * @property string|null $meta_description
+ * @property string|null $open_graph_title
+ * @property string|null $open_graph_description
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
  */
 class ProductSeoTranslation extends Model
 {

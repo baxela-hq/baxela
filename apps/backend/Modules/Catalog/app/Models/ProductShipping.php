@@ -2,6 +2,7 @@
 
 namespace Modules\Catalog\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\Product\DimensionUnitEnum;
@@ -10,6 +11,16 @@ use Modules\Catalog\Schemas\Product\WeightUnitEnum;
 
 /**
  * @property int $id
+ * @property int $product_id
+ * @property string|null $weight
+ * @property WeightUnitEnum|null $weight_unit
+ * @property string|null $package_length
+ * @property string|null $package_width
+ * @property string|null $package_height
+ * @property DimensionUnitEnum|null $dimension_unit
+ * @property bool $requires_shipping
+ * @property CarbonInterface|null $created_at
+ * @property CarbonInterface|null $updated_at
  */
 class ProductShipping extends Model
 {

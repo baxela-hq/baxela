@@ -88,6 +88,7 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    /** @return MorphOne<FeaturedItem, $this> */
     public function featuredItem(): MorphOne
     {
         return $this->morphOne(FeaturedItem::class, 'featuredable');
@@ -106,11 +107,13 @@ class Product extends Model
             VariantOptionValueSchema::VARIANT_ID, VariantOptionValueSchema::OPTION_VALUE_ID);
     }
 
+    /** @return HasMany<Variant, $this> */
     public function variants(): HasMany
     {
         return $this->hasMany(Variant::class);
     }
 
+    /** @return HasMany<Image, $this> */
     public function images(): HasMany
     {
         // Variant photos live in the same table carrying a variant_id; the
@@ -118,26 +121,31 @@ class Product extends Model
         return $this->hasMany(Image::class)->whereNull(ImageSchema::VARIANT_ID);
     }
 
+    /** @return HasMany<ProductAttributeValue, $this> */
     public function attributeValues(): HasMany
     {
         return $this->hasMany(ProductAttributeValue::class);
     }
 
+    /** @return HasMany<ProductComment, $this> */
     public function comments(): HasMany
     {
         return $this->hasMany(ProductComment::class);
     }
 
+    /** @return HasMany<ProductTranslation, $this> */
     public function translations(): HasMany
     {
         return $this->hasMany(ProductTranslation::class);
     }
 
+    /** @return HasOne<ProductShipping, $this> */
     public function shipping(): HasOne
     {
         return $this->hasOne(ProductShipping::class);
     }
 
+    /** @return HasMany<ProductSeoTranslation, $this> */
     public function seo(): HasMany
     {
         return $this->hasMany(ProductSeoTranslation::class);
