@@ -1,36 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 11
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Audit/tests/Feature/AuditLogTest.php
-
-		-
 			message: '#^Trait Modules\\Audit\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
@@ -289,106 +259,10 @@ parameters:
 			path: Modules/Auth/database/seeders/AuthDatabaseSeeder.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/AdminAccessTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/AdminAccessTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/AdminAccessTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/AdminAccountRolesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/AdminAccountRolesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/AdminAccountRolesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/AdminAccountRolesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/AdminAccountRolesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/PermissionMatrixTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/PermissionMatrixTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/PermissionMatrixTest.php
-
-		-
 			message: '#^Function createUserWithRole\(\) has parameter \$permissionNames with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/tests/Feature/Admin/PermissionMatrixTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/SyncPermissionsTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
@@ -409,72 +283,6 @@ parameters:
 			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Auth/tests/Feature/Admin/UserManagementTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
 			message: '#^Function patchUser\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
@@ -485,54 +293,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Auth/tests/Feature/Admin/UserRoleAssignmentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Admin/UserSessionRevocationTest.php
 
 		-
 			message: '#^Function s2JsonAs\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
@@ -577,64 +337,10 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/GoogleIdTokenVerifierTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
 			message: '#^Parameter \#1 \$redis of class Modules\\Auth\\Support\\Google\\SignInNonceService constructor expects Illuminate\\Contracts\\Redis\\Factory, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInNonceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/GoogleSignInTest.php
 
 		-
 			message: '#^Call to an undefined static method Illuminate\\Support\\Facades\\Log\:\:shouldHaveReceived\(\)\.$#'
@@ -673,70 +379,10 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
 			message: '#^Function ndSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/NewDeviceSignInNotificationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Auth/tests/Feature/Public/Auth/RateLimitTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Auth/tests/Feature/Public/Auth/RateLimitTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/RequestAccountActivationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/RequestAccountActivationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/RequestPasswordResetTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/Public/Auth/RequestPasswordResetTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:markTestSkipped\(\)\.$#'
@@ -751,118 +397,10 @@ parameters:
 			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutConcurrencyTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 13
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 13
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
 			message: '#^Function s4FailedSignIn\(\) return type with generic class Illuminate\\Testing\\TestResponse does not specify its types\: TResponse$#'
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Auth/tests/Feature/Public/Auth/SignInLockoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/SignInTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/SignUpTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/SignUpTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/VerifyAccountActivationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/Auth/VerifyAccountActivationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Auth/tests/Feature/Public/Auth/VerifyPasswordResetActionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/Auth/VerifyPasswordResetActionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Auth/tests/Feature/Public/Auth/VerifyPasswordResetActionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
@@ -875,42 +413,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/Auth/tests/Feature/Public/NoRoleLeakageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/SessionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/SessionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Auth/tests/Feature/SessionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Auth/tests/Feature/SessionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/SessionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/SessionTest.php
 
 		-
 			message: '#^Called ''first'' on Laravel collection, but could have been retrieved as a query\.$#'
@@ -952,48 +454,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$two_factor_confirmed_at\.$#'
 			identifier: property.notFound
 			count: 2
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 39
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 30
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Auth/tests/Feature/TwoFactorTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:superAdminRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
 			path: Modules/Auth/tests/Feature/TwoFactorTest.php
 
 		-
@@ -1159,43 +619,7 @@ parameters:
 			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/Auth/MergeGuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedCartDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Cart/tests/Feature/CartDataTransferTest.php
@@ -1207,94 +631,10 @@ parameters:
 			path: Modules/Cart/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:cartToken\(\)\.$#'
 			identifier: method.notFound
 			count: 10
 			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Cart/tests/Feature/Public/GuestCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultTaxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:shippingMethodForCountry\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutCouponTest.php
 
 		-
 			message: '#^Function applyCouponToCart\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
@@ -1333,48 +673,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultTaxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:shippingMethodForCountry\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/CheckoutPromotionTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -1393,18 +691,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:cartWithItem\(\)\.$#'
 			identifier: method.notFound
 			count: 5
@@ -1414,36 +700,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:checkoutCart\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultTaxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:shippingMethodForCountry\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxRate\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 5
 			path: Modules/Cart/tests/Feature/User/CheckoutTaxTest.php
 
 		-
@@ -1459,48 +715,6 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultTaxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:shippingMethodForCountry\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -1513,51 +727,9 @@ parameters:
 			path: Modules/Cart/tests/Feature/User/CheckoutTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 12
-			path: Modules/Cart/tests/Feature/User/CouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 12
-			path: Modules/Cart/tests/Feature/User/CouponTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:addressForUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:cartWithItem\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultTaxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
 			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
 
 		-
@@ -1565,72 +737,6 @@ parameters:
 			identifier: method.notFound
 			count: 6
 			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:shippingMethodForCountry\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxRate\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Cart/tests/Feature/User/TaxPreviewTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:variantWithStock\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Cart/tests/Feature/User/UserCartTest.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Actions\\Admin\\AttributeGroup\\ListAttributeGroupAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
@@ -3607,42 +2713,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/BrandTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -3676,36 +2746,6 @@ parameters:
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:optionValues\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 15
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 29
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 13
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 14
 			path: Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
 
 		-
@@ -3763,36 +2803,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<mixed\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -3805,48 +2815,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/CategoryTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedMigrationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 11
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:putJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 4
@@ -3857,36 +2825,6 @@ parameters:
 			identifier: argument.templateType
 			count: 4
 			path: Modules/Catalog/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Admin/NestedResourceTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
@@ -3919,48 +2857,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:commentableProduct\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductCommentModerationTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$price\.$#'
 			identifier: property.notFound
 			count: 1
@@ -3982,42 +2878,6 @@ parameters:
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:optionValues\(\)\.$#'
 			identifier: method.notFound
 			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 27
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:assertDatabaseHas\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 37
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 31
-			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 26
 			path: Modules/Catalog/tests/Feature/Admin/ProductImportTest.php
 
 		-
@@ -4081,48 +2941,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/Admin/ProductTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -4159,18 +2977,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Public/BrandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Catalog/tests/Feature/Public/BrandTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -4183,18 +2989,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/BrandTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -4205,18 +2999,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/Catalog/tests/Feature/Public/CategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductCommentPerPageTest.php
 
 		-
 			message: '#^Access to an undefined property Pest\\Expectation\<mixed\>\:\:\$price\.$#'
@@ -4225,18 +3007,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -4249,30 +3019,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductPromotionTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:commentableProduct\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:commentableProduct\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -4283,18 +3029,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductRatingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Catalog/tests/Feature/Public/ProductShowSeoTest.php
 
 		-
 			message: '#^Function seoProduct\(\) return type has no value type specified in iterable type array\.$#'
@@ -4309,18 +3043,6 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 3
@@ -4333,51 +3055,9 @@ parameters:
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/Public/SitemapTest.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Catalog\\Models\\ProductCommentReaction\:\:\$reaction\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:commentableProduct\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
 			path: Modules/Catalog/tests/Feature/User/ProductCommentReactionTest.php
 
 		-
@@ -4408,30 +3088,6 @@ parameters:
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\ProductComment\>\|Modules\\Catalog\\Models\\ProductComment\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:commentableProduct\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
 			path: Modules/Catalog/tests/Feature/User/ProductCommentTest.php
 
 		-
@@ -4471,31 +3127,7 @@ parameters:
 			path: Modules/Contact/config/config.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedContactDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
@@ -4507,106 +3139,10 @@ parameters:
 			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/ContactMessageTest.php
-
-		-
 			message: '#^Trait Modules\\Contact\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: Modules/Contact/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Contact/tests/Feature/NewsletterSubscriberTest.php
 
 		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
@@ -5017,42 +3553,6 @@ parameters:
 			path: Modules/Content/database/seeders/PostSeeder.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:putJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/FeaturedTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -5077,36 +3577,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
-
-		-
 			message: '#^Function postCategoryPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -5125,42 +3595,6 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostCategoryTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/PostCommentTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Content\\Models\\Post\>\|Modules\\Content\\Models\\Post\:\:\$image_media_id\.$#'
 			identifier: property.notFound
 			count: 2
@@ -5173,51 +3607,9 @@ parameters:
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:freezeTime\(\)\.$#'
 			identifier: method.notFound
 			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Content/tests/Feature/Admin/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 8
 			path: Modules/Content/tests/Feature/Admin/PostTest.php
 
 		-
@@ -5251,37 +3643,7 @@ parameters:
 			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedContentDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 3
 			path: Modules/Content/tests/Feature/ContentDataTransferTest.php
@@ -5303,42 +3665,6 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Content/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Content/tests/Feature/PageTest.php
 
 		-
 			message: '#^Function pagePayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
@@ -5365,12 +3691,6 @@ parameters:
 			path: Modules/Content/tests/Feature/PostSeederTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/PostSeederTest.php
-
-		-
 			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<int\<0, max\>\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
@@ -5383,46 +3703,10 @@ parameters:
 			path: Modules/Content/tests/Feature/PostSeederTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Public/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Content/tests/Feature/Public/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travelTo\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Content/tests/Feature/Public/PostTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/Public/SitemapTest.php
 
 		-
 			message: '#^Function sitemapPage\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
@@ -5435,24 +3719,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/tests/Feature/Public/SitemapTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Content/tests/Feature/User/PostCommentTest.php
 
 		-
 			message: '#^Method Modules\\Core\\Actions\\Admin\\Country\\ListCountryAction\:\:handle\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
@@ -6097,45 +4363,9 @@ parameters:
 			path: Modules/Core/config/fx.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Core/tests/Feature/BaxelaCommandsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/BaxelaCommandsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedCoreFile\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
 			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
 
 		-
@@ -6145,238 +4375,10 @@ parameters:
 			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/CoreDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Core/tests/Feature/CoreSeederTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/CurrencyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionAdminApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionBootGuardTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:spy\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionToggleApiTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 21
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 20
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 12
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:travel\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:assertIsString\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/ExtensionUpdatesProxyTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 11
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Core/tests/Feature/FailedJobTest.php
 
 		-
 			message: '#^Function failedJobRow\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
@@ -6389,24 +4391,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/tests/Feature/FailedJobTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/FxSyncTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Core/tests/Feature/FxSyncTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/FxSyncTest.php
 
 		-
 			message: '#^Function fxMutableStub\(\) should return array\<int\> but returns array\<string, array\|int\|null\>\.$#'
@@ -6439,18 +4423,6 @@ parameters:
 			path: Modules/Core/tests/Feature/HelperTransferTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:fail\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
-
-		-
 			message: '#^Offset ''method'' does not exist on array\{uri\: mixed, middleware\: mixed\}\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
@@ -6469,57 +4441,9 @@ parameters:
 			path: Modules/Core/tests/Feature/Http/Middleware/AdminRouteProtectionTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/Http/Middleware/IdempotencyMiddlewareTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Core/tests/Feature/Http/Middleware/IdempotencyMiddlewareTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/Http/Middleware/PermissionMiddlewareTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/Http/Middleware/PermissionMiddlewareTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
 			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
 
 		-
@@ -6529,34 +4453,10 @@ parameters:
 			path: Modules/Core/tests/Feature/Http/Middleware/SecurityHeadersTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
 			message: '#^Function languageRow\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Core/tests/Feature/LanguageTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Core/tests/Feature/QueueBacklogMonitorTest.php
 
 		-
 			message: '#^Static method Illuminate\\Support\\Testing\\Fakes\\EventFake\:\:assertDispatched\(\) invoked with 3 parameters, 1\-2 required\.$#'
@@ -6575,12 +4475,6 @@ parameters:
 			identifier: offsetAccess.nonArray
 			count: 1
 			path: Modules/Core/tests/Feature/Sentry/ErrorReportingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Core/tests/Feature/StackHealthTest.php
 
 		-
 			message: '#^Method Modules\\Discount\\Exceptions\\Coupon\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -6661,24 +4555,6 @@ parameters:
 			path: Modules/Discount/app/Providers/EventServiceProvider.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
 			message: '#^Function couponPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -6689,30 +4565,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Discount/tests/Feature/Admin/CouponCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
 			message: '#^Function promotionPayload\(\) has parameter \$overrides with no value type specified in iterable type array\.$#'
@@ -6739,49 +4591,13 @@ parameters:
 			path: Modules/Discount/tests/Feature/Admin/PromotionCrudTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedDiscountDataFile\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferDiscount\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Discount/tests/Feature/DiscountDataTransferTest.php
@@ -6841,54 +4657,6 @@ parameters:
 			path: Modules/Discount/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Discount/tests/Unit/RedemptionGuardTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Inventory/tests/Feature/Admin/InventoryStockTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -6905,36 +4673,6 @@ parameters:
 			identifier: trait.unused
 			count: 1
 			path: Modules/Inventory/tests/Feature/HelperTrait.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Inventory/tests/Feature/InventoryDataTransferTest.php
 
 		-
 			message: '#^Class Modules\\Media\\DTOs\\Admin\\CreateMediaInput referenced with incorrect case\: Modules\\Media\\Dtos\\Admin\\CreateMediaInput\.$#'
@@ -6991,54 +4729,6 @@ parameters:
 			path: Modules/Media/app/Transformers/Admin/Media/MediaResource.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 13
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:assertDatabaseHas\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Folder/FolderTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 3
@@ -7052,30 +4742,6 @@ parameters:
 
 		-
 			message: '#^Call to an undefined method Pest\\Expectation\<mixed\>\:\:assertNoContent\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
@@ -7099,34 +4765,10 @@ parameters:
 			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function expect$#'
-			identifier: argument.templateType
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>\(Expression\)" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Media/tests/Feature/Admin/Media/ImageVariantsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/MediaDiskTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/MediaDiskTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/MediaDiskTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:withHeaders\(\)\.$#'
@@ -7151,54 +4793,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Media/tests/Feature/Admin/Media/MediaDiskTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 13
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:adminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:assertDatabaseHas\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:assertDatabaseMissing\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Media/tests/Feature/Admin/Media/MediaTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:withHeaders\(\)\.$#'
@@ -7405,18 +4999,6 @@ parameters:
 			path: Modules/Menu/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -7429,76 +5011,10 @@ parameters:
 			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferMenu\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 14
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Menu/tests/Feature/MenuTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Menu/tests/Feature/MenuTest.php
 
 		-
 			message: '#^Function linkPayload\(\) return type has no value type specified in iterable type array\.$#'
@@ -7927,31 +5443,7 @@ parameters:
 			path: Modules/Notification/config/notifications.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Notification/tests/Feature/BroadcastingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Notification/tests/Feature/BroadcastingTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:forgetInstance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/BroadcastingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/BroadcastingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Notification/tests/Feature/BroadcastingTest.php
@@ -7963,31 +5455,7 @@ parameters:
 			path: Modules/Notification/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedNotificationDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Notification/tests/Feature/NotificationDataTransferTest.php
@@ -8017,24 +5485,6 @@ parameters:
 			path: Modules/Notification/tests/Feature/NotificationPreferenceTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Notification/tests/Feature/NotificationPreferenceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Notification/tests/Feature/NotificationPreferenceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Notification/tests/Feature/NotificationPreferenceTest.php
-
-		-
 			message: '#^Function preferencePayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -8053,12 +5503,6 @@ parameters:
 			path: Modules/Notification/tests/Feature/NotificationPreferenceTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Notification/tests/Feature/OrderPaymentListenersTest.php
-
-		-
 			message: '#^Function orderCreatedPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -8071,34 +5515,10 @@ parameters:
 			path: Modules/Notification/tests/Feature/PostCommentApprovedListenerTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
 			message: '#^Function postCommentCreatedPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Notification/tests/Feature/PostCommentListenerTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Notification/tests/Feature/QueueVisibilityAlertsTest.php
 
 		-
 			message: '#^Access to an undefined property Modules\\Notification\\Models\\TelegramSubscription\:\:\$chat_id\.$#'
@@ -8116,30 +5536,6 @@ parameters:
 			message: '#^Access to an undefined property Modules\\Notification\\Models\\TelegramSubscription\:\:\$username\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Notification/tests/Feature/TelegramTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Notification/tests/Feature/TelegramTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Notification/tests/Feature/TelegramTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Notification/tests/Feature/TelegramTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
 			path: Modules/Notification/tests/Feature/TelegramTest.php
 
 		-
@@ -8185,30 +5581,6 @@ parameters:
 			path: Modules/Notification/tests/Feature/WebPushTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Notification/tests/Feature/WebPushTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Notification/tests/Feature/WebPushTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Notification/tests/Feature/WebPushTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Notification/tests/Feature/WebPushTest.php
-
-		-
 			message: '#^Function pushSubscriptionPayload\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -8221,12 +5593,6 @@ parameters:
 			path: Modules/Notification/tests/Feature/WebPushTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Notification/tests/Unit/TelegramPayloadBuilderTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
 			identifier: property.notFound
 			count: 1
@@ -8235,12 +5601,6 @@ parameters:
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_rtl\.$#'
 			identifier: property.notFound
-			count: 1
-			path: Modules/Notification/tests/Unit/WebPushPayloadBuilderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
-			identifier: method.notFound
 			count: 1
 			path: Modules/Notification/tests/Unit/WebPushPayloadBuilderTest.php
 
@@ -8635,166 +5995,10 @@ parameters:
 			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/AdminOrderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:bind\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 15
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/InvoiceTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Admin/StatsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/Console/CancelExpiredOrdersCommandTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CouponLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/CreditNoteLifecycleTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayCouponTest.php
 
 		-
 			message: '#^Property Modules\\Core\\Contracts\\Gateways\\Order\\DTOs\\CreateOrderInput\:\:\$cart_items \(array\<int, array\{variant_id\: int, price_snapshot\: string, product_name_snapshot\: string, quantity\: int\}\>\) does not accept array\{array\{variant_id\: int, price_snapshot\: 150, product_name_snapshot\: ''Test Product'', quantity\: 2\}\}\.$#'
@@ -8863,12 +6067,6 @@ parameters:
 			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Order/tests/Feature/Gateway/OrderGatewayTest.php
-
-		-
 			message: '#^Property Modules\\Core\\Contracts\\Gateways\\Order\\DTOs\\CreateOrderInput\:\:\$cart_items \(array\<int, array\{variant_id\: int, price_snapshot\: string, product_name_snapshot\: string, quantity\: int\}\>\) does not accept array\{array\{variant_id\: int, price_snapshot\: 150, product_name_snapshot\: ''Test Product'', quantity\: 2\}\}\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -8929,55 +6127,7 @@ parameters:
 			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/InvoiceAutomationTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedOrderDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Order/tests/Feature/OrderDataTransferTest.php
@@ -8989,52 +6139,10 @@ parameters:
 			path: Modules/Order/tests/Feature/OrderReturnTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
 			message: '#^Function requestReturn\(\) has no return type specified\.$#'
 			identifier: missingType.return
 			count: 1
 			path: Modules/Order/tests/Feature/OrderReturnTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Order/tests/Feature/User/UserOrderTest.php
 
 		-
 			message: '#^Method Modules\\Payment\\Actions\\Admin\\Payment\\ListPaymentAction\:\:handle\(\) return type with generic class Illuminate\\Pagination\\LengthAwarePaginator does not specify its types\: TKey, TValue$#'
@@ -9313,78 +6421,6 @@ parameters:
 			path: Modules/Payment/config/payment.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 15
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 23
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -9397,36 +6433,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Admin/Payment/ListPaymentTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 11
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 7
@@ -9437,54 +6443,6 @@ parameters:
 			identifier: argument.templateType
 			count: 7
 			path: Modules/Payment/tests/Feature/Admin/Payment/PaymentMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:mock\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 18
-			path: Modules/Payment/tests/Feature/Admin/RefundTest.php
 
 		-
 			message: '#^Function paidOrderWithGatewayPayment\(\) return type has no value type specified in iterable type array\.$#'
@@ -9499,64 +6457,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedPaymentDataFile\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/PaymentDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
 
 		-
 			message: '#^Function refundablePaidOrderWithManualPayment\(\) return type has no value type specified in iterable type array\.$#'
@@ -9565,30 +6469,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/RefundFinalizedEventTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 21
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 21
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 21
-			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -9601,24 +6481,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/User/CreatePaymentTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 7
@@ -9629,18 +6491,6 @@ parameters:
 			identifier: argument.templateType
 			count: 7
 			path: Modules/Payment/tests/Feature/User/ListPaymentMethodsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
 
 		-
 			message: '#^Function adyenDelivery\(\) has parameter \$item with no value type specified in iterable type array\.$#'
@@ -9661,18 +6511,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/AdyenWebhookTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
-
-		-
 			message: '#^Function checkoutcomSignedHeaders\(\) has parameter \$body with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -9691,52 +6529,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/CheckoutcomWebhookTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Payment/tests/Feature/Webhook/HandleWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
 			message: '#^Function mercadopagoSignedHeaders\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/MercadopagoWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
 
 		-
 			message: '#^Function nowpaymentsSigHeader\(\) has parameter \$ipn with no value type specified in iterable type array\.$#'
@@ -9751,40 +6547,10 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/NowpaymentsWebhookTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:instance\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
 			message: '#^Function paypalTransmission\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/PaypalWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
 
 		-
 			message: '#^Function razorpaySignedHeaders\(\) has parameter \$body with no value type specified in iterable type array\.$#'
@@ -9805,30 +6571,6 @@ parameters:
 			path: Modules/Payment/tests/Feature/Webhook/RazorpayWebhookTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 22
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 19
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
 			message: '#^Function paidGatewayOrder\(\) has parameter \$paymentOverrides with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -9839,12 +6581,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Payment/tests/Feature/Webhook/StripeWebhookTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:call\(\)\.$#'
@@ -10111,42 +6847,6 @@ parameters:
 			path: Modules/Setting/database/seeders/SettingDatabaseSeeder.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:artisan\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Setting/tests/Feature/FxSettingsTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -10165,18 +6865,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -10189,31 +6877,7 @@ parameters:
 			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferSettings\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Setting/tests/Feature/SettingDataTransferTest.php
@@ -10237,36 +6901,6 @@ parameters:
 			path: Modules/Setting/tests/Feature/SettingTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 2
@@ -10277,36 +6911,6 @@ parameters:
 			identifier: argument.templateType
 			count: 2
 			path: Modules/Setting/tests/Feature/SettingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\|Pest\\Support\\HigherOrderTapProxy\:\:seed\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Setting/tests/Feature/StoreIdentitySettingsTest.php
 
 		-
 			message: '#^PHPDoc tag @throws with type Modules\\Shipping\\Actions\\User\\Shipment\\Throwable\|Modules\\Shipping\\Exceptions\\Shipment\\NotFoundException is not subtype of Throwable$#'
@@ -10441,48 +7045,6 @@ parameters:
 			path: Modules/Shipping/database/seeders/ShippingDatabaseSeeder.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 24
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/Admin/ShippingAdminTest.php
-
-		-
 			message: '#^Function zonePayload\(\) has parameter \$override with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -10501,18 +7063,6 @@ parameters:
 			path: Modules/Shipping/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:defaultLanguage\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -10525,40 +7075,10 @@ parameters:
 			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedTransferShipping\(\)\.$#'
 			identifier: method.notFound
 			count: 2
 			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Shipping/tests/Feature/ShippingDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
 
 		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:activeMethod\(\)\.$#'
@@ -10570,18 +7090,6 @@ parameters:
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:activeZone\(\)\.$#'
 			identifier: method.notFound
 			count: 3
-			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
 			path: Modules/Shipping/tests/Feature/User/ShippingMethodTest.php
 
 		-
@@ -10855,76 +7363,10 @@ parameters:
 			path: Modules/Support/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedSupportDataFile\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 17
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Support/tests/Feature/SupportTicketTest.php
 
 		-
 			message: '#^Method Modules\\Tax\\Exceptions\\TaxClass\\CreationFailedException\:\:__construct\(\) has parameter \$meta with no value type specified in iterable type array\.$#'
@@ -10963,93 +7405,9 @@ parameters:
 			path: Modules/Tax/app/Exceptions/TaxRate/UpdateFailedException.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Tax/tests/Feature/Admin/TaxClassTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 10
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seedCountries\(\)\.$#'
 			identifier: method.notFound
 			count: 2
-			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
 			path: Modules/Tax/tests/Feature/Admin/TaxRateTest.php
 
 		-
@@ -11071,33 +7429,9 @@ parameters:
 			path: Modules/Tax/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 11
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedTaxFile\(\)\.$#'
 			identifier: method.notFound
 			count: 4
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 8
 			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
 
 		-
@@ -11113,18 +7447,6 @@ parameters:
 			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:transferFile\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -11137,49 +7459,7 @@ parameters:
 			path: Modules/Tax/tests/Feature/TaxDataTransferTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Tax/tests/Unit/InclusivePricingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxRate\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Tax/tests/Unit/InclusivePricingTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:expectException\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:seed\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
@@ -11197,36 +7477,6 @@ parameters:
 			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxRate\(\)\.$#'
-			identifier: method.notFound
-			count: 8
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Parameter \#1 \$value of function expect contains unresolvable type\.$#'
-			identifier: argument.unresolvableType
-			count: 1
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Return type of call to function expect contains unresolvable type\.$#'
-			identifier: function.unresolvableReturnType
-			count: 1
-			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
 			message: '#^Unable to resolve the template type TKey in call to function collect$#'
 			identifier: argument.templateType
 			count: 1
@@ -11237,18 +7487,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Tax/tests/Unit/RegionalTaxTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxClass\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/Tax/tests/Unit/TaxGatewayTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:taxRate\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Tax/tests/Unit/TaxGatewayTest.php
 
 		-
 			message: '#^Trait Modules\\Transfer\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -11257,70 +7495,10 @@ parameters:
 			path: Modules/Transfer/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/Transfer/tests/Feature/TransferCapabilitiesTest.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$user_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: Modules/User/app/Models/User/Address.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/AddressTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/User/tests/Feature/AddressTest.php
 
 		-
 			message: '#^Trait Modules\\User\\Tests\\Feature\\HelperTrait is used zero times and is not analysed\.$#'
@@ -11329,55 +7507,7 @@ parameters:
 			path: Modules/User/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/User/tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/User/tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:patchJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/User/tests/Feature/ProfileTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
-
-		-
 			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:exportedUserDataFile\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/User/tests/Feature/UserDataTransferTest.php
@@ -11393,54 +7523,6 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/User/tests/Feature/UserDataTransferTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: Modules/User/tests/Feature/VatIdTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/User/tests/Feature/WishlistTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 9
-			path: Modules/User/tests/Feature/WishlistTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/User/tests/Feature/WishlistTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/User/tests/Feature/WishlistTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/User/tests/Feature/WishlistTest.php
 
 		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookDelivery\>\:\:jsonPaginate\(\)\.$#'
@@ -11518,42 +7600,6 @@ parameters:
 			message: '#^Access to an undefined property Pest\\Mixins\\Expectation\<mixed\>\:\:\$not\.$#'
 			identifier: property.notFound
 			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:actingAs\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:baseUrl\(\)\.$#'
-			identifier: method.notFound
-			count: 7
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:deleteJson\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:getJson\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:postJson\(\)\.$#'
-			identifier: method.notFound
-			count: 4
-			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
-
-		-
-			message: '#^Call to an undefined method Pest\\PendingCalls\\TestCall\:\:superAdminUser\(\)\.$#'
-			identifier: method.notFound
-			count: 5
 			path: Modules/Webhooks/tests/Feature/Admin/WebhookEndpointTest.php
 
 		-

@@ -4,6 +4,11 @@ includes:
 
 parameters:
     level: 6
+    stubFiles:
+        # Models Pest's bare test() helper as the running Tests\TestCase
+        # (conditional return type) — the runtime proxy is opaque to
+        # static analysis otherwise.
+        - phpstan/test-stub.php
     universalObjectCratesClasses:
         # Fluent pending-call proxies — method calls resolve at runtime,
         # so static analysis cannot verify method names on them.
