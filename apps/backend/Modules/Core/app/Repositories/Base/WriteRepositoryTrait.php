@@ -4,8 +4,14 @@ namespace Modules\Core\Repositories\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @template TModel of Model
+ */
 trait WriteRepositoryTrait
 {
+    /**
+     * @param  array<string, mixed>  $data
+     */
     public function create(array $data): Model
     {
         return $this->model->create($data);

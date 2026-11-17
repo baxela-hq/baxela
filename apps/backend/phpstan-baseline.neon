@@ -3343,30 +3343,6 @@ parameters:
 			path: Modules/Core/app/Providers/SentryContextServiceProvider.php
 
 		-
-			message: '#^Access to an undefined property Modules\\Core\\Repositories\\Base\\BaseRepository\:\:\$model\.$#'
-			identifier: property.notFound
-			count: 6
-			path: Modules/Core/app/Repositories/Base/BaseRepository.php
-
-		-
-			message: '#^Constructor of class Modules\\Core\\Repositories\\Base\\BaseRepository has an unused parameter \$model\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: Modules/Core/app/Repositories/Base/BaseRepository.php
-
-		-
-			message: '#^Method Modules\\Core\\Repositories\\Base\\BaseRepository\:\:all\(\) return type with generic class Illuminate\\Database\\Eloquent\\Collection does not specify its types\: TKey, TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Core/app/Repositories/Base/BaseRepository.php
-
-		-
-			message: '#^Method Modules\\Core\\Repositories\\Base\\BaseRepository\:\:create\(\) has parameter \$data with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Repositories/Base/BaseRepository.php
-
-		-
 			message: '#^Method Modules\\Core\\Repositories\\Base\\BaseRepository\:\:findBy\(\) has parameter \$criteria with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -4979,72 +4955,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Order/app/Gateways/OrderGateway.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:create\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:destroy\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:destroy\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:edit\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:edit\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:index\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:show\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:show\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:store\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:update\(\) has no return type specified\.$#'
-			identifier: missingType.return
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
-
-		-
-			message: '#^Method Modules\\Order\\Http\\Controllers\\User\\OrderItem\\ShowOrderItemController\:\:update\(\) has parameter \$id with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Order/app/Http/Controllers/User/OrderItem/ShowOrderItemController.php
 
 		-
 			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
