@@ -9,6 +9,15 @@ Defined in [`docker-compose.yml`](../../../docker-compose.yml) at the repo
 root (this directory only holds the build assets: the per-app Dockerfiles,
 php.ini, and the nginx vhost).
 
+## Running two stacks side by side
+
+A second develop stack (e.g. a clean-clone check) needs its own ports **and**
+its own proxy subnet — the default `172.28.0.0/29` is pinned for the
+nginx → Octane trusted-proxy path. In the second clone's root `.env` set
+`COMPOSE_PROJECT_NAME`, shifted `*_PORT`/`BACKEND_*_PORT` values, and the
+`PROXY_SUBNET` / `PROXY_GATEWAY` / `TRUSTED_PROXIES` triplet (keep
+`TRUSTED_PROXIES` equal to `PROXY_SUBNET`) — see `.env.example`.
+
 ## Quickstart
 
 From the repo root:
