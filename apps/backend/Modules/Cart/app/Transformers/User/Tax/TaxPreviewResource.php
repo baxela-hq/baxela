@@ -27,7 +27,7 @@ class TaxPreviewResource extends JsonResource
             // Store pricing mode (gap-C1b D7): the storefront's
             // "incl. VAT" marker key.
             'prices_contain_tax' => $result->prices_contain_tax,
-            'lines' => collect($result->lines)
+            'lines' => collect((array) $result->lines)
                 ->map(fn (TaxedLine $line, $variantId): array => [
                     'variant_id' => (int) $variantId,
                     'tax_amount' => Money::toDecimal($line->tax_minor),

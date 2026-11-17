@@ -24,7 +24,7 @@ class SettingRequest extends FormRequest
     {
         /** @var list<array<string, mixed>> $input */
         $input = $this->input();
-        $items = collect($input);
+        $items = collect((array) $input);
 
         $codes = [];
         foreach ($items as $setting) {
@@ -51,7 +51,7 @@ class SettingRequest extends FormRequest
 
         $settings = $items->map(function ($setting) {
             if (! empty($setting[SettingSchema::RES_TRANSLATIONS])) {
-                $setting[SettingSchema::RES_TRANSLATIONS] = collect($setting[SettingSchema::RES_TRANSLATIONS])
+                $setting[SettingSchema::RES_TRANSLATIONS] = collect((array) $setting[SettingSchema::RES_TRANSLATIONS])
                     ->map(function ($translation) {
                         $translation[TSchema::LANGUAGE_ID] = $this->languageMap[$translation[TSchema::LANGUAGE]] ?? null;
 

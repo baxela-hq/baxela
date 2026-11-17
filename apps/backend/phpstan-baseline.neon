@@ -589,18 +589,6 @@ parameters:
 			path: Modules/Cart/app/Transformers/User/Coupon/AppliedCouponResource.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Cart/app/Transformers/User/Tax/TaxPreviewResource.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 1
-			path: Modules/Cart/app/Transformers/User/Tax/TaxPreviewResource.php
-
-		-
 			message: '#^Called ''env'' outside of the config directory which returns null when the config is cached, use ''config''\.$#'
 			identifier: larastan.noEnvCallsOutsideOfConfig
 			count: 1
@@ -1561,18 +1549,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1582,18 +1558,6 @@ parameters:
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\AttributeGroup\\AttributeGroupRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeGroup/AttributeGroupRequest.php
 
 		-
@@ -1609,18 +1573,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/AttributeValue/AttributeValueRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Brand\\BrandRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1630,18 +1582,6 @@ parameters:
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Brand\\BrandRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
 
 		-
@@ -1657,18 +1597,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Option\\OptionRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1681,18 +1609,6 @@ parameters:
 			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -1702,18 +1618,6 @@ parameters:
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\OptionValue\\OptionValueRequest\:\:rules\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
 
 		-
@@ -1750,18 +1654,6 @@ parameters:
 			message: '#^Method Modules\\Catalog\\Http\\Requests\\Admin\\Product\\ProductRequest\:\:validateAttributeValueType\(\) has parameter \$attributeValue with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
 
 		-
@@ -3199,51 +3091,15 @@ parameters:
 			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\Post\\PostRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
-
-		-
 			message: '#^Method Modules\\Content\\Http\\Requests\\Admin\\PostCategory\\PostCategoryRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
 
 		-
@@ -4717,33 +4573,9 @@ parameters:
 			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
-
-		-
 			message: '#^Method Modules\\Menu\\Http\\Requests\\Admin\\MenuLink\\MenuLinkRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
 
 		-
@@ -6619,18 +6451,6 @@ parameters:
 			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 5
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 5
-			path: Modules/Setting/app/Http/Requests/Admin/Setting/SettingRequest.php
-
-		-
 			message: '#^Method Modules\\Setting\\Models\\Setting\:\:translations\(\) return type with generic class Illuminate\\Database\\Eloquent\\Relations\\HasMany does not specify its types\: TRelatedModel, TDeclaringModel$#'
 			identifier: missingType.generics
 			count: 1
@@ -6838,18 +6658,6 @@ parameters:
 			message: '#^Method Modules\\Shipping\\Http\\Requests\\Admin\\Method\\MethodRequest\:\:languageResolve\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
-			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
-			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
-
-		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
-			identifier: argument.templateType
-			count: 4
 			path: Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
 
 		-

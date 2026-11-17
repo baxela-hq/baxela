@@ -16,7 +16,7 @@ trait ResolvesLanguagesTrait
             return;
         }
 
-        $codes = collect($this->input('translations'))
+        $codes = collect((array) $this->input('translations'))
             ->pluck('language')
             ->unique()
             ->all();
@@ -31,7 +31,7 @@ trait ResolvesLanguagesTrait
         //            array_keys($this->languageMap)
         //        );
 
-        $translations = collect($this->input('translations'))
+        $translations = collect((array) $this->input('translations'))
             ->map(function ($translation) {
                 $translation['language_id'] =
                     $this->languageMap[$translation['language']] ?? null;
@@ -52,7 +52,7 @@ trait ResolvesLanguagesTrait
             return;
         }
 
-        $codes = collect($this->input($key))
+        $codes = collect((array) $this->input($key))
             ->pluck('language')
             ->unique()
             ->all();
@@ -62,7 +62,7 @@ trait ResolvesLanguagesTrait
             return;
         }
 
-        $items = collect($this->input($key))
+        $items = collect((array) $this->input($key))
             ->map(function ($item) {
                 $item['language_id'] =
                     $this->languageMap[$item['language']] ?? null;
