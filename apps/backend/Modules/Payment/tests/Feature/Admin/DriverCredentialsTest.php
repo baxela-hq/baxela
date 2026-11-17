@@ -84,8 +84,8 @@ function stripeState(array $data): array
     return collect($data)->firstWhere('driver', 'stripe');
 }
 
-/** Methods-listing rows are keyed by 'method', not 'driver'. */
-/**
+/** Methods-listing rows are keyed by 'method', not 'driver'.
+ *
  * @param  array<string, mixed>  $data
  */
 function stripeMethod(array $data): array

@@ -17,9 +17,9 @@ uses(HelperTrait::class);
  * as rows — the admin settings form always submits all four fields and
  * UpdateSettingAction resolves each by name with firstOrFail, so missing
  * rows made every settings PATCH fail. The idempotent seeder is the row
- * source (the FX-settings pattern).
+ * source (the FX-settings pattern). The seeder reads the default
+ * language/currency through the Core gateway.
  */
-/** The seeder reads the default language/currency through the Core gateway. */
 function identitySeedOnce(): void
 {
     Language::factory()->create(['is_default' => true]);

@@ -231,9 +231,6 @@ it('treats an absent compat constraint as incompatible without type errors', fun
     $packages = new class extends ComposerPackages
     {
         /** @return list<array<string, mixed>> */
-        /**
-         * @return array<string, mixed>
-         */
         protected function installed(): array
         {
             return [
