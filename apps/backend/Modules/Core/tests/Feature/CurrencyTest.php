@@ -119,3 +119,22 @@ it('denies currency management without permissions', function () {
         'exchange_rate' => '2.00000000',
     ])->assertStatus(403);
 });
+
+it('resolves currency metadata by code regardless of active state', function () {
+    Currency::factory()->create(['code' => 'IRR', 'is_active' => false, 'exchange_rate' => '600000.00000000']);
+
+    $gateway = app(\Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface::class);
+
+    // Inactive rows keep their identity for historical reads (notification
+    // display metadata for a currency deactivated after checkout).
+    $resolved = $gateway->getCurrencyByCode('IRR');
+    expect($resolved)->not->toBeNull()
+        ->and($resolved->code)->toBe('IRR')
+        ->and($resolved->exchange_rate)->toBe('600000.00000000');
+
+    // The active-filtered lookup (storefront switcher) still excludes it.
+    expect($gateway->getActiveCurrencyByCode('IRR'))->toBeNull();
+
+    // Unknown codes resolve to null on both lookups.
+    expect($gateway->getCurrencyByCode('XXX'))->toBeNull();
+});

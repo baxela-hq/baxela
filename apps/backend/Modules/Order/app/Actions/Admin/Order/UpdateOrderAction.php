@@ -139,6 +139,9 @@ class UpdateOrderAction extends AbstractOrderAction
                 event($event::fill($payload + [
                     OrderSchema::PAYMENT_STATUS => $paymentStatus->value,
                     OrderSchema::TOTAL_AMOUNT => (float) $record->{OrderSchema::TOTAL_AMOUNT},
+                    OrderSchema::CURRENCY_ID => $record->{OrderSchema::CURRENCY_ID},
+                    OrderSchema::DISPLAY_CURRENCY_CODE => $record->{OrderSchema::DISPLAY_CURRENCY_CODE},
+                    OrderSchema::DISPLAY_FX_RATE => $record->{OrderSchema::DISPLAY_FX_RATE},
                 ]));
             }
         }

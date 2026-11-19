@@ -6,9 +6,12 @@ use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Models\ProductTranslation;
 use Modules\Catalog\Models\Variant;
+use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
 use Modules\Core\Contracts\Events\Order\OrderPaidEvent;
+use Modules\Core\Contracts\Events\Order\OrderRefundedEvent;
 use Modules\Core\Contracts\Gateways\Order\DTOs\CreateOrderInput;
 use Modules\Core\Contracts\Gateways\User\DTOs\AddressDto;
+use Modules\Core\Models\Currency;
 use Modules\Order\Gateways\OrderGateway;
 use Modules\Order\Models\Order;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
@@ -41,6 +44,17 @@ function createInputFor(Variant $variant): CreateOrderInput
     $input->shipping_method_id = 9;
     $input->shipping_method_name = 'Express';
     $input->shipping_cost = 5.0;
+
+    return $input;
+}
+
+/** Minimal input carrying the transaction-time currency identity. */
+function createSnapshotInputFor(Variant $variant, int $currencyId): CreateOrderInput
+{
+    $input = createInputFor($variant);
+    $input->currency_id = $currencyId;
+    $input->display_currency_code = 'EUR';
+    $input->display_fx_rate = '0.92000000';
 
     return $input;
 }
@@ -208,4 +222,105 @@ it('rejects fulfilment transitions the status machine forbids', function () {
     ]);
     expect($gateway->markAsRefunded($unpaid->id))->toBeFalse()
         ->and($unpaid->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::UNPAID);
+});
+
+it('carries the transaction-time currency identity on order lifecycle events', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+    $variant = Variant::factory()->ofProduct($product)->create();
+    $currency = Currency::factory()->create([
+        'code' => 'EUR', 'exchange_rate' => '0.92000000',
+    ]);
+    $gateway = app(OrderGateway::class);
+
+    // Targeted fakes (not Event::fakeFor): the blanket fake also swallows
+    // model events, and Order::creating generates order_code.
+    Event::fake([OrderCreatedEvent::class]);
+    $orderCode = $gateway->createFromCart(createSnapshotInputFor($variant, $currency->id));
+    expect($orderCode)->not->toBeNull();
+
+    // createFromCart: the toArray() payload already carries the snapshot;
+    // the event contract must surface it (FillTrait drops undeclared keys).
+    Event::assertDispatched(OrderCreatedEvent::class, fn (OrderCreatedEvent $e) => $e->currency_id === $currency->id
+        && $e->display_currency_code === 'EUR'
+        && (float) $e->display_fx_rate === 0.92);
+
+    $order = Order::query()->where(OrderSchema::ORDER_CODE, $orderCode)->first();
+
+    // markAsPaid: the explicit payload must carry the same identity.
+    Event::fake([OrderPaidEvent::class]);
+    expect($gateway->markAsPaid($order->id))->toBeTrue();
+    Event::assertDispatched(OrderPaidEvent::class, fn (OrderPaidEvent $e) => $e->currency_id === $currency->id
+        && $e->display_currency_code === 'EUR'
+        && (float) $e->display_fx_rate === 0.92);
+
+    // applyRefund (ledger-owned full refund) carries it too.
+    Event::fake([OrderRefundedEvent::class]);
+    $totalMinor = (int) round((float) $order->{OrderSchema::TOTAL_AMOUNT} * 100);
+    expect($gateway->applyRefund($order->id, $totalMinor, $totalMinor))->toBeTrue();
+    Event::assertDispatched(OrderRefundedEvent::class, fn (OrderRefundedEvent $e) => $e->currency_id === $currency->id
+        && $e->display_currency_code === 'EUR'
+        && (float) $e->display_fx_rate === 0.92);
+});
+
+it('keeps identical snapshot values through webhook and admin paid transitions', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $product = Product::factory()->create();
+    $variant = Variant::factory()->ofProduct($product)->create();
+    $currency = Currency::factory()->create([
+        'code' => 'EUR', 'exchange_rate' => '0.92000000',
+    ]);
+
+    // Same checkout facts reaching paid through two different mechanisms.
+    $orderCodes = [
+        app(OrderGateway::class)->createFromCart(createSnapshotInputFor($variant, $currency->id)),
+        app(OrderGateway::class)->createFromCart(createSnapshotInputFor($variant, $currency->id)),
+    ];
+    $orders = Order::query()
+        ->whereIn(OrderSchema::ORDER_CODE, $orderCodes)
+        ->get()
+        ->keyBy(OrderSchema::ORDER_CODE);
+
+    Event::fake([OrderPaidEvent::class]);
+
+    // Path A: the webhook funnel (markAsPaid).
+    app(OrderGateway::class)->markAsPaid($orders[$orderCodes[0]]->id);
+
+    // Path B: the admin panel payment-status transition.
+    $this->actingAs($this->superAdminUser());
+    $this->patchJson('api/v1/order/admin/orders/'.$orders[$orderCodes[1]]->id, [
+        OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID->value,
+    ])->assertOk();
+
+    // Both paths must carry the identical transaction-time identity for the
+    // same checkout facts — notification rendering cannot depend on which
+    // mechanism processed the transition.
+    $captured = [];
+    Event::assertDispatched(OrderPaidEvent::class, function (OrderPaidEvent $e) use (&$captured): bool {
+        $captured[] = [$e->currency_id, $e->display_currency_code, (float) $e->display_fx_rate];
+
+        return true;
+    });
+    expect($captured)->toHaveCount(2)
+        ->and($captured[0])->toBe([$currency->id, 'EUR', 0.92])
+        ->and($captured[1])->toBe($captured[0]);
+});
+
+it('hydrates the currency fields as null when a payload omits them (legacy FillTrait payloads)', function () {
+    /** @var OrderRefundedEvent $event */
+    $event = OrderRefundedEvent::fill([
+        'id' => 1,
+        'user_id' => 2,
+        'order_code' => 'ORD-1',
+        'payment_status' => 'refunded',
+        'total_amount' => 150.50,
+    ]);
+
+    expect($event->currency_id)->toBeNull()
+        ->and($event->display_currency_code)->toBeNull()
+        ->and($event->display_fx_rate)->toBeNull();
 });

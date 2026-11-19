@@ -38,4 +38,13 @@ interface CoreGatewayInterface
     public function getActiveCurrencies(): Collection;
 
     public function getActiveCurrencyByCode(string $code): ?CurrencyDto;
+
+    /**
+     * Currency metadata by ISO code regardless of active state —
+     * historical reads (notification display metadata for a currency
+     * deactivated after checkout) must not lose symbol/precision.
+     * Active-only consumers (the storefront switcher) use
+     * getActiveCurrencyByCode() instead.
+     */
+    public function getCurrencyByCode(string $code): ?CurrencyDto;
 }

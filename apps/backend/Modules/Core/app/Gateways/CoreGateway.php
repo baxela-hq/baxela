@@ -108,4 +108,13 @@ class CoreGateway implements CoreGatewayInterface
 
         return $record ? CurrencyDto::fill($record->toArray()) : null;
     }
+
+    public function getCurrencyByCode(string $code): ?CurrencyDto
+    {
+        $record = Currency::query()
+            ->where(CurrencySchema::CODE, $code)
+            ->first();
+
+        return $record ? CurrencyDto::fill($record->toArray()) : null;
+    }
 }

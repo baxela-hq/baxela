@@ -266,6 +266,9 @@ class OrderGateway implements OrderGatewayInterface
             OrderSchema::STATUS => $order->{OrderSchema::STATUS}->value,
             OrderSchema::PAYMENT_STATUS => OrderPaymentStatusEnum::PAID->value,
             OrderSchema::TOTAL_AMOUNT => (float) $order->{OrderSchema::TOTAL_AMOUNT},
+            OrderSchema::CURRENCY_ID => $order->{OrderSchema::CURRENCY_ID},
+            OrderSchema::DISPLAY_CURRENCY_CODE => $order->{OrderSchema::DISPLAY_CURRENCY_CODE},
+            OrderSchema::DISPLAY_FX_RATE => $order->{OrderSchema::DISPLAY_FX_RATE},
             'locale' => Locale::fromRequest(),
         ]));
 
@@ -312,6 +315,9 @@ class OrderGateway implements OrderGatewayInterface
                 OrderSchema::ORDER_CODE => $order->{OrderSchema::ORDER_CODE},
                 OrderSchema::PAYMENT_STATUS => $status->value,
                 OrderSchema::TOTAL_AMOUNT => (float) $order->{OrderSchema::TOTAL_AMOUNT},
+                OrderSchema::CURRENCY_ID => $order->{OrderSchema::CURRENCY_ID},
+                OrderSchema::DISPLAY_CURRENCY_CODE => $order->{OrderSchema::DISPLAY_CURRENCY_CODE},
+                OrderSchema::DISPLAY_FX_RATE => $order->{OrderSchema::DISPLAY_FX_RATE},
             ]));
         }
 
