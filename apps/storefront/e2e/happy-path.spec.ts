@@ -184,25 +184,33 @@ test("first visit defaults to the locale's currency until the visitor picks one"
 test("header search suggests and finds the seeded product", async ({ page }) => {
   await page.goto("/en/products");
 
-  // Open the dialog and type a partial title: the suggestion panel must
-  // render the seeded product before any submit (instant search).
-  await page.getByRole("button", { name: "Search" }).click();
-  await page.getByLabel("Search input").fill("Test");
+  // The trigger is scoped by aria-controls: the products page has other
+  // "Search"-named controls, so role+name alone is ambiguous.
+  const searchTrigger = page.locator('button[aria-controls="search-menu"]');
+  const dialog = page.locator("#search-menu");
+  const searchInput = dialog.getByLabel("Search input");
 
-  const suggestion = page.locator("#search-menu ul li").first();
+  // Open the dialog and type a partial seeded title ("Men's Slim Fit
+  // Cotton T-Shirt"): the suggestion panel must render the product
+  // before any submit (instant search).
+  await searchTrigger.click();
+  await searchInput.fill("Cotton");
+
+  const suggestion = dialog.locator("ul li").first();
   await expect(suggestion).toBeVisible({ timeout: 15_000 });
+  await expect(suggestion).toContainText("Cotton", { ignoreCase: true });
 
   // Submitting the query lands on the products page with the product.
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/en\/products\?q=Test/);
+  await expect(page).toHaveURL(/\/en\/products\?q=Cotton/);
   await expect(
-    page.getByRole("link", { name: /Test Shirt|Seeded Product/ }).first(),
+    page.getByRole("link", { name: /Slim Fit Cotton T-Shirt/ }).first(),
   ).toBeVisible({ timeout: 15_000 });
 
   // Typing a garbage term shows the empty state, not stale results.
-  await page.getByRole("button", { name: "Search" }).click();
-  await page.getByLabel("Search input").fill("zzqqxx_no_match");
+  await searchTrigger.click();
+  await searchInput.fill("zzqqxx_no_match");
   await expect(
-    page.locator("#search-menu").getByText(/no products/i, { exact: false }),
+    dialog.getByText(/no products matched/i, { exact: false }),
   ).toBeVisible({ timeout: 15_000 });
 });
