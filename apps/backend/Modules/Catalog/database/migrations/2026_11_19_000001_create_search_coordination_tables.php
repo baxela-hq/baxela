@@ -48,6 +48,7 @@ return new class extends Migration
             $table->timestamp(SearchCoordinationSchema::ACQUIRED_AT);
             $table->timestamp(SearchCoordinationSchema::RELEASED_AT)->nullable();
             $table->index([SearchCoordinationSchema::RELEASED_AT, SearchCoordinationSchema::ACQUIRED_AT]);
+            $table->timestamps();
         });
 
         Schema::create(SearchCoordinationSchema::LEASES_TABLE, function (Blueprint $table) {
