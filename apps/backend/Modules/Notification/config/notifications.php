@@ -74,14 +74,11 @@ return [
                 'cancelled' => [
                     'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
-                // Database-only for now: the email channel needs blade
-                // views (resources/views/notifications/order/*/user/order/
-                // refunded/) that do not exist yet — enabling email here
-                // would send empty bodies. Discovered while wiring the
-                // currency-aware amounts: this entry was missing ENTIRELY,
-                // so refunded notifications never fired at all.
+                // Discovered while wiring the currency-aware amounts: this
+                // entry was missing ENTIRELY, so refunded notifications
+                // never fired at all.
                 'refunded' => [
-                    'user' => ['database', 'webpush', 'telegram'],
+                    'user' => ['database', 'email', 'webpush', 'telegram'],
                 ],
             ],
             // The email carries the stored PDF as an attachment; the

@@ -8,6 +8,34 @@ from its first stable release. Pre-alpha development happens on `main`.
 
 ## [Unreleased]
 
+### Added
+
+- **Currency-aware notification amounts (alpha.2 "currency everywhere")**:
+  order and payment notifications now render money the way the customer saw
+  it — customer-facing order notifications (created / paid / refunded) convert
+  with the immutable checkout-time snapshot rate and the display currency's
+  symbol, placement and precision; payment and admin notifications always
+  show the transaction-time base currency with its ISO code. Base identity
+  comes from the order row (never the mutable store default), deactivated
+  display currencies keep their symbol and precision for historical reads,
+  and unresolvable currency identity warns and renders bare rather than
+  silently substituting another currency. Order lifecycle events now carry
+  the transaction-time currency identity; `CoreGateway::getCurrencyByCode()`
+  exposes metadata regardless of active state.
+
+### Fixed
+
+- **Order-refunded notifications never fired**: the notification was absent
+  from `config/notifications.php` entirely, so full refunds produced no
+  customer notification at all. Now sends on database / email / webpush /
+  telegram, with new email templates (en / fa; other locales fall back
+  through the template engine).
+- **Money arithmetic boundaries**: `Money::convert()` silently degraded to
+  float past int64 on realistic values (a `decimal(12,2)`-ceiling amount
+  against an IRR-scale rate reaches ~10²⁶) — now exact via a guarded
+  native-int fast path with a bcmath fallback; `Money::toDecimal()` no longer
+  emits a bogus trailing `.0` for zero-decimal currencies (IRR, JPY).
+
 ## [v0.1.0-alpha.1] - 2026-11-17
 
 **The first public release of Baxela**: a modular-monolith e-commerce platform —

@@ -270,6 +270,10 @@ it('shows the checkout currency on the order-paid and order-refunded notificatio
             ->where('code', NotificationCodeEnum::ORDER_ORDER_REFUNDED->value)
             ->first()->body
     )->toContain('138.46 €');
+
+    // The refunded notification now emails too (blade views en/fa; other
+    // locales fall back through the template engine) — same display string.
+    Mail::assertSent(DynamicNotification::class, fn (DynamicNotification $mail) => str_contains($mail->body, '138.46 €'));
 });
 
 it('labels payment notifications with the order base currency, not a display currency', function () {
