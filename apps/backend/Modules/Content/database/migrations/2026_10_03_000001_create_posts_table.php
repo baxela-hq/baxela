@@ -18,6 +18,10 @@ return new class extends Migration
             $table->id();
             $table->enum(PostSchema::STATUS, PostStatusEnum::cases());
             $table->timestamp(PostSchema::PUBLISHED_AT)->nullable();
+            // Cover photo columns follow the categories precedent: plain
+            // columns, no FK to the media table.
+            $table->unsignedBigInteger(PostSchema::IMAGE_MEDIA_ID)->nullable();
+            $table->string(PostSchema::IMAGE_URL, 500)->nullable();
             $table->timestamps();
         });
 

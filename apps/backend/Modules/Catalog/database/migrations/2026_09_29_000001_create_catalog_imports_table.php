@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
@@ -18,6 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger(CatalogImportSchema::USER_ID)->index();
             $table->unsignedBigInteger(CatalogImportSchema::MEDIA_ID)->index();
             $table->string(CatalogImportSchema::FILENAME);
+            // The audit table serves both the product CSV import and the
+            // whole-module JSON data transfer; entity separates their runs.
+            $table->enum(CatalogImportSchema::ENTITY, CatalogImportEntityEnum::cases())
+                ->default(CatalogImportEntityEnum::PRODUCT->value);
             $table->enum(CatalogImportSchema::STATUS, CatalogImportStatusEnum::cases())
                 ->default(CatalogImportStatusEnum::COMPLETED->value);
             $table->enum(CatalogImportSchema::STRATEGY, CatalogImportStrategyEnum::cases())
@@ -30,6 +35,8 @@ return new class extends Migration
             $table->unsignedInteger(CatalogImportSchema::FAILED_COUNT)->default(0);
             $table->unsignedInteger(CatalogImportSchema::DURATION_MS)->default(0);
             $table->json(CatalogImportSchema::ERRORS)->nullable();
+            // Per-section counts for multi-section (JSON) runs.
+            $table->json(CatalogImportSchema::SUMMARY)->nullable();
             $table->timestamps();
         });
     }

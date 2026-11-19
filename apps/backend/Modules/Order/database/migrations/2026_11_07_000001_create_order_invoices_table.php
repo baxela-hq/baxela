@@ -39,6 +39,10 @@ return new class extends Migration
             $table->decimal(OrderInvoiceSchema::SHIPPING_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderInvoiceSchema::SHIPPING_TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderInvoiceSchema::TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            // Invoices copy the order's frozen pricing mode at issuance
+            // (gap-C1b D5) — documents stay self-contained; the figures they
+            // carry were already frozen by the order.
+            $table->boolean(OrderInvoiceSchema::PRICES_CONTAIN_TAX)->default(false);
             $table->decimal(OrderInvoiceSchema::TOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->json(OrderInvoiceSchema::BILLING_ADDRESS);
             $table->json(OrderInvoiceSchema::BUYER_IDENTITY);

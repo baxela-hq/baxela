@@ -37,6 +37,15 @@ return new class extends Migration
             // Tax snapshot: tax_amount = Σ item taxes + shipping tax; the
             // shipping_tax_* columns explain the shipping portion alone
             $table->decimal(OrderSchema::TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
+            // Pricing-mode snapshot (gap-C1b D5): false is the historical
+            // default — every pre-existing order was priced exclusive. A
+            // mid-life mode flip never rewrites frozen figures (policy:
+            // money is reproducible).
+            $table->boolean(OrderSchema::PRICES_CONTAIN_TAX)->default(false);
+            // Frozen VAT evidence (gap-C1c D4): the submitted identifier is
+            // snapshotted on the order; later customer edits never rewrite
+            // history (policy: money is reproducible).
+            $table->string(OrderSchema::BUYER_VAT_ID, 32)->nullable();
             $table->decimal(OrderSchema::SHIPPING_TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderSchema::SHIPPING_TAX_RATE, 7, 4)->unsigned()->default(0.0000);
             $table->unsignedBigInteger(OrderSchema::SHIPPING_TAX_CLASS_ID)->nullable();
@@ -45,6 +54,10 @@ return new class extends Migration
             // paid total — both maintained by OrderGateway::applyRefund()
             $table->decimal(OrderSchema::REFUNDED_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->timestamp(OrderSchema::EXPIRES_AT)->nullable();
+            // What the customer saw at checkout when a non-base display
+            // currency was selected. Amounts stay in the base currency.
+            $table->string(OrderSchema::DISPLAY_CURRENCY_CODE, 3)->nullable();
+            $table->decimal(OrderSchema::DISPLAY_FX_RATE, 16, 8)->nullable();
             $table->timestamps();
         });
     }

@@ -23,6 +23,14 @@ return new class extends Migration
             $table->string(AddressSchema::CITY);
             $table->string(AddressSchema::POSTAL_CODE)->nullable();
             $table->char(AddressSchema::COUNTRY_CODE, 2)->nullable();
+            // Regional tax plumbing (gap-C1a D3). Nullable: stored customer
+            // addresses and historical rows are never re-validated against
+            // the seed — only NEW input is pair-validated (RegionCodeRule).
+            $table->string(AddressSchema::REGION_CODE, 10)->nullable();
+            // VAT identifier for business customers (gap-C1c D1): collection
+            // at the address, offline format validation only — never a claim
+            // of registration verification.
+            $table->string(AddressSchema::VAT_ID, 32)->nullable();
             $table->boolean(AddressSchema::IS_DEFAULT)->default(false);
             $table->timestamps();
         });

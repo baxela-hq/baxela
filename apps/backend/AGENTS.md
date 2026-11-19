@@ -182,7 +182,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 - Migrations live in `Modules\{Name}\database\migrations` (auto-loaded by the module's ServiceProvider). They use Schema constants for the table and every column.
 - **Column removals/changes (pre-v1):** edit the original table migration in place instead of adding a `drop_*` migration. No release has shipped yet, so rewriting history keeps it clean, and the per-entity Schema classes (e.g. `CategorySchema`) make every affected reference easy to locate. **After v1 is published this flips** — schema changes must then go through new, dedicated migrations.
 - Pivot/relational tables (e.g. `variant_option_values`) are created in the owning module.
-- **Composite index names must stay under MySQL's 64-character identifier limit.** The Laravel-generated name (`table_col1_col2_unique`) easily overruns it — pass an explicit short name: `$table->unique([...], 'tax_rates_country_class_unique')`.
+- **Composite index names must stay under MySQL's 64-character identifier limit.** The Laravel-generated name (`table_col1_col2_unique`) easily overruns it — pass an explicit short name: `$table->unique([...], 'tax_rates_country_region_class_unique')`.
 - Soft-deleted entities use `SoftDeletes` and `SoftDeleteTrait` constants.
 - Seeders are per-module under `database/seeders`; seed data for catalog uses lang files (`Modules\Catalog\lang\{en}\seeder.php`). Core seeds `languages`, `currencies`, `countries`.
 - Run migrations with `php artisan migrate`; seed individual modules with `php artisan db:seed --class="Modules\{Name}\Database\Seeders\...Seeder"`.

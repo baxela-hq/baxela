@@ -26,6 +26,12 @@ return new class extends Migration
             $table->decimal(OrderItemSchema::TAX_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderItemSchema::TAX_RATE, 7, 4)->unsigned()->default(0.0000);
             $table->unsignedBigInteger(OrderItemSchema::TAX_CLASS_ID)->nullable();
+            // Additive promotion-history columns — nullable: legacy and
+            // non-promoted lines simply have no promotion facts
+            $table->decimal(OrderItemSchema::BASE_PRICE, 12, 2)->unsigned()->nullable();
+            $table->decimal(OrderItemSchema::PROMOTION_DISCOUNT, 12, 2)->unsigned()->nullable();
+            // Plain discount promotion id — no cross-module FK by convention
+            $table->unsignedBigInteger(OrderItemSchema::PROMOTION_ID)->nullable();
             $table->timestamp(OrderItemSchema::CREATED_AT)->nullable();
         });
     }

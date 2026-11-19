@@ -34,6 +34,8 @@ return new class extends Migration
 
             $table->index(PaymentRefundSchema::STATUS);
             $table->index(PaymentRefundSchema::ORDER_ID);
+            // Gateway-refund-id lookups (manual reconciliation).
+            $table->index(PaymentRefundSchema::TRANSACTION_ID);
         });
     }
 

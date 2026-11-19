@@ -18,6 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger(PaymentSchema::ORDER_ID)->index();
             // Alphanumeric gateway ids (Stripe cs_…, PayPal 5O190…), not ints.
             $table->string(PaymentSchema::TRANSACTION_ID)->nullable();
+            // Gateway refund coverage (gap-B4): the gateway-side payment
+            // identifier the refund APIs key on.
+            $table->string(PaymentSchema::GATEWAY_TRANSACTION_ID)->nullable();
             $table->string(PaymentSchema::METHOD);
             $table->decimal(PaymentSchema::AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->unsignedBigInteger(PaymentSchema::CURRENCY_ID)->nullable()->index();

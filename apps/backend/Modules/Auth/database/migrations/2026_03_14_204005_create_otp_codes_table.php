@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string(OtpCodeSchema::CODE);
             $table->timestamp(OtpCodeSchema::EXPIRES_AT);
             $table->boolean(OtpCodeSchema::IS_USED)->default(false);
+            // Failed-verification counter: an OTP is invalidated after
+            // OtpCodeSchema::MAX_ATTEMPTS wrong codes, so guessing a 6-digit
+            // code is infeasible even with distributed IP-based throttle
+            // evasion.
+            $table->unsignedSmallInteger(OtpCodeSchema::ATTEMPTS)->default(0);
             $table->timestamps();
         });
     }

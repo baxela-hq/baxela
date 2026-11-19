@@ -16,12 +16,10 @@ use Modules\Core\Models\Traits\SlugTrait;
 
 /**
  * @property int $id
- * @property bool $is_featured
  * @property int|null $parent_id
  * @property int|null $position
  * @property int|null $image_media_id
  * @property string|null $image_url
- * @property bool $is_featured
  * @property CarbonInterface|null $created_at
  * @property CarbonInterface|null $updated_at
  */

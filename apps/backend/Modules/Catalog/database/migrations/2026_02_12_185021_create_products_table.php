@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
@@ -28,6 +29,12 @@ return new class extends Migration
             // Denormalized review aggregate, recalculated by RecalculatesProductRating
             $table->decimal(ProductSchema::RATING_AVG, 3, 2)->nullable();
             $table->unsignedInteger(ProductSchema::RATING_COUNT)->default(0);
+            // Deleting a brand unassigns it from its products; the products
+            // themselves always survive.
+            $table->foreignId(ProductSchema::BRAND_ID)
+                ->nullable()
+                ->constrained(BrandSchema::TABLE)
+                ->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

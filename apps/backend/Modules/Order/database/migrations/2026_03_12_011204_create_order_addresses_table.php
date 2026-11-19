@@ -24,6 +24,14 @@ return new class extends Migration
             $table->string(OrderAddressSchema::CITY);
             $table->string(OrderAddressSchema::POSTAL_CODE)->nullable();
             $table->char(OrderAddressSchema::COUNTRY_CODE, 2)->nullable();
+            // Checkout snapshot column (gap-C1a D3): freezes the region that
+            // was actually taxed — historical snapshots stay valid and
+            // untouched through later seed changes.
+            $table->string(OrderAddressSchema::REGION_CODE, 10)->nullable();
+            // Frozen VAT evidence (gap-C1c D4): the submitted identifier is
+            // snapshotted on the order; later customer edits never rewrite
+            // history (policy: money is reproducible).
+            $table->string(OrderAddressSchema::VAT_ID, 32)->nullable();
             $table->timestamp(OrderAddressSchema::CREATED_AT);
         });
     }
