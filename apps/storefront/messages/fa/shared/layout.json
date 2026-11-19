@@ -57,7 +57,10 @@
     },
     "texts": {
       "title": "جستجوی محصولات",
-      "popular_categories": "دسته‌های محبوب"
+      "popular_categories": "دسته‌های محبوب",
+      "suggesting": "در حال جست‌وجو…",
+      "suggest_error": "جست‌وجو موقتاً در دسترس نیست — لطفاً دوباره تلاش کنید.",
+      "no_suggestions": "هیچ محصولی با جست‌وجوی شما مطابقت نداشت."
     },
     "placeholders": {
       "query": "جستجوی محصولات…"

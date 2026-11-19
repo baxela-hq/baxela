@@ -57,7 +57,10 @@
     },
     "texts": {
       "title": "البحث عن منتجات",
-      "popular_categories": "فئات شائعة"
+      "popular_categories": "فئات شائعة",
+      "suggesting": "جارٍ البحث…",
+      "suggest_error": "البحث غير متاح مؤقتًا — يُرجى المحاولة مرة أخرى.",
+      "no_suggestions": "لم يتطابق أي منتج مع بحثك."
     },
     "placeholders": {
       "query": "ابحث عن منتجات…"

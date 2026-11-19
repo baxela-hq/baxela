@@ -180,3 +180,29 @@ test("first visit defaults to the locale's currency until the visitor picks one"
     "an explicit cookie choice beats the locale default"
   ).toContainText("$", { timeout: 15_000 });
 });
+
+test("header search suggests and finds the seeded product", async ({ page }) => {
+  await page.goto("/en/products");
+
+  // Open the dialog and type a partial title: the suggestion panel must
+  // render the seeded product before any submit (instant search).
+  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByLabel("Search input").fill("Test");
+
+  const suggestion = page.locator("#search-menu ul li").first();
+  await expect(suggestion).toBeVisible({ timeout: 15_000 });
+
+  // Submitting the query lands on the products page with the product.
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/en\/products\?q=Test/);
+  await expect(
+    page.getByRole("link", { name: /Test Shirt|Seeded Product/ }).first(),
+  ).toBeVisible({ timeout: 15_000 });
+
+  // Typing a garbage term shows the empty state, not stale results.
+  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByLabel("Search input").fill("zzqqxx_no_match");
+  await expect(
+    page.locator("#search-menu").getByText(/no products/i, { exact: false }),
+  ).toBeVisible({ timeout: 15_000 });
+});

@@ -57,7 +57,10 @@
     },
     "texts": {
       "title": "Search products",
-      "popular_categories": "Popular categories"
+      "popular_categories": "Popular categories",
+      "suggesting": "Searching…",
+      "suggest_error": "Search is temporarily unavailable — please try again.",
+      "no_suggestions": "No products matched your search."
     },
     "placeholders": {
       "query": "Search products…"

@@ -57,7 +57,10 @@
     },
     "texts": {
       "title": "Rechercher des produits",
-      "popular_categories": "Catégories populaires"
+      "popular_categories": "Catégories populaires",
+      "suggesting": "Recherche…",
+      "suggest_error": "La recherche est temporairement indisponible — veuillez réessayer.",
+      "no_suggestions": "Aucun produit ne correspond à votre recherche."
     },
     "placeholders": {
       "query": "Rechercher des produits…"
