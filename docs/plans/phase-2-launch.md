@@ -4,6 +4,11 @@
 > met. This phase is mostly assets + marketing operations; only 2.1 and 2.2 touch the repo.
 > Do not post anywhere before the tag exists (2.1).
 >
+> **Deferred (2026-11-20):** the launch — and its tag — wait until the owner decides
+> the feature wave is complete (see `docs/RELEASE_LIFECYCLE.md` "Status: tagging
+> deferred"). The demo runs from `main` without a tag meanwhile; the tag name is
+> decided at launch time.
+>
 > **Timing:** Tue–Thu launch morning Eastern time. Avoid late December. November or
 > mid-January are the windows.
 >

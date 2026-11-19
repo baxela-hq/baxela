@@ -238,6 +238,8 @@ Goal: one coordinated launch moment. Do not leak the announcement before the tag
 - [ ] **2.1 Tag `v0.1.0-alpha.1`** + GitHub Release (marked pre-release) with notes
   (highlights, known limitations
   — LIKE search, manual FX rates, no multi-vendor — stated honestly; upgrade path).
+  *(Deferred — see `docs/RELEASE_LIFECYCLE.md` "Status: tagging deferred"; tag name
+  decided at launch.)*
 - [ ] **2.2 Launch assets.** 60–90s demo GIF (README top), architecture diagram (monorepo
   + contracts/events layer), honest comparison table vs Bagisto/BeikeShop/InnoShop/Velstore,
   `docker compose up -d`-to-store quickstart section, screenshots of admin + storefront +

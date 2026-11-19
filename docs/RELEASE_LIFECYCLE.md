@@ -9,6 +9,30 @@
 > Created: 2026-10-22 · Scheme adopted: `v0.1.0-alpha.1 → alpha.2 → beta.1 → rc.1 → 0.1.0`
 > (dot-separated pre-release identifiers so `alpha.10` sorts after `alpha.9`).
 
+## Status: tagging deferred (2026-11-20)
+
+The `v0.1.0-alpha.1` tag (2026-11-17) was removed after being cut early; **no new git
+tags until the current feature wave ships** (ROADMAP Phase 3 scope).
+
+**When to tag is the owner's call** — a single, deliberate decision made when the
+platform is ready, not a release cadence. Tagging sooner would trigger the full
+release SOP per tag (changelog section, GitHub Release, notes, GIF), piling up many
+tags, many changelog sections, and repeated release ceremony that nothing consumes
+while the project is pre-launch — overhead without benefit. Until then:
+
+- Demo and production deploy straight from `main` — `git pull && docker compose up -d
+  --build` per `infrastructure/docker/production/README.md`. Nothing in the deploy path
+  reads git tags (compose builds local images under fixed names, CI has no tag triggers),
+  so deploys run without any tag. To freeze the demo at a known-good state instead of
+  floating with `main`, check out a specific commit SHA on the server — still no tag needed.
+- `CHANGELOG.md` keeps accumulating under `[Unreleased]`; no version sections are cut.
+  The `alpha.N` mentions inside entries refer to planned feature batches, not existing tags.
+- The first tag starts the scheme below whenever the owner decides the time has come —
+  the cadence column in "At a glance" applies only from that first tag onward. Whether
+  it re-cuts `v0.1.0-alpha.1` (with a fresh changelog section for that snapshot) or
+  continues from `alpha.2` is decided then; the 2026-11-17 changelog section stays as
+  dated history.
+
 ## At a glance
 
 | Stage | Means | Allowed changes | Cadence | Projected window |
@@ -21,9 +45,10 @@
 | `1.0.0` | Stability promises (see gate) | Backward-compatible within major | 6–8 weeks | When gates met — **do not rush** |
 
 Every pre-release tag is marked **pre-release on GitHub** so the "Latest" badge stays
-reserved for `0.1.0`. The Phase 2 launch (Show HN / Laravel News / etc.) rides
-`v0.1.0-alpha.1` — you only get that moment once, and it costs nothing to spend it on
-the first *stable-ward* tag.
+reserved for `0.1.0`. The Phase 2 launch (Show HN / Laravel News / etc.) rides the
+first tag cut after the feature wave completes (see "Status: tagging deferred" above)
+— you only get that moment once, and it costs nothing to spend it on the first
+*stable-ward* tag.
 
 ## Stage 1 — `v0.1.0-alpha` (development in public)
 
