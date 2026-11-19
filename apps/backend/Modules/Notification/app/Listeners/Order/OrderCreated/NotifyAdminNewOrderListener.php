@@ -9,6 +9,7 @@ use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
 use Modules\Notification\Support\AdminRecipients;
+use Modules\Notification\Support\AmountFormatter;
 
 class NotifyAdminNewOrderListener implements ShouldQueue
 {
@@ -17,14 +18,20 @@ class NotifyAdminNewOrderListener implements ShouldQueue
     /**
      * Create the event listener.
      */
-    public function __construct(private readonly NotificationDispatcherInterface $notificationDispatcher) {}
+    public function __construct(
+        private readonly NotificationDispatcherInterface $notificationDispatcher,
+        private readonly AmountFormatter $amountFormatter,
+    ) {}
 
     /**
      * Handle the event.
      */
     public function handle(OrderCreatedEvent $event): void
     {
-        $amount = number_format((float) $event->total_amount, 2);
+        $amount = $this->amountFormatter->forCharge(
+            $event->total_amount,
+            $this->amountFormatter->baseForOrder($event->currency_id),
+        );
 
         $message = new NotificationMessage(
             code: NotificationCodeEnum::ORDER_ORDER_CREATED->value,

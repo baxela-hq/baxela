@@ -9,6 +9,7 @@ use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
+use Modules\Notification\Support\AmountFormatter;
 
 class SendPaymentFailedNotificationToUserListener implements ShouldQueue
 {
@@ -20,6 +21,7 @@ class SendPaymentFailedNotificationToUserListener implements ShouldQueue
     public function __construct(
         private readonly NotificationDispatcherInterface $notificationDispatcher,
         private readonly OrderGatewayInterface $orderGateway,
+        private readonly AmountFormatter $amountFormatter,
     ) {}
 
     /**
@@ -42,7 +44,7 @@ class SendPaymentFailedNotificationToUserListener implements ShouldQueue
             data: [
                 'database' => [
                     'order_code' => $order->order_code,
-                    'amount' => number_format((float) $event->amount, 2),
+                    'amount' => $this->amountFormatter->forCharge((float) $event->amount, $order->currency_code),
                 ],
             ],
             meta: ['order_code' => $order->order_code],

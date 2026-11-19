@@ -9,6 +9,7 @@ use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
+use Modules\Notification\Support\AmountFormatter;
 
 class SendOrderConfirmationToUserListener implements ShouldQueue
 {
@@ -20,6 +21,7 @@ class SendOrderConfirmationToUserListener implements ShouldQueue
     public function __construct(
         private readonly NotificationDispatcherInterface $notificationDispatcher,
         private readonly AccessGatewayInterface $accessGateway,
+        private readonly AmountFormatter $amountFormatter,
     ) {}
 
     /**
@@ -28,7 +30,12 @@ class SendOrderConfirmationToUserListener implements ShouldQueue
     public function handle(OrderCreatedEvent $event): void
     {
         $email = $this->accessGateway->getUserEmailsByIds([$event->user_id])[$event->user_id] ?? null;
-        $amount = number_format((float) $event->total_amount, 2);
+        $amount = $this->amountFormatter->forCustomer(
+            $event->total_amount,
+            $this->amountFormatter->baseForOrder($event->currency_id),
+            $event->display_currency_code,
+            $event->display_fx_rate,
+        );
 
         $message = new NotificationMessage(
             code: NotificationCodeEnum::ORDER_ORDER_CREATED->value,

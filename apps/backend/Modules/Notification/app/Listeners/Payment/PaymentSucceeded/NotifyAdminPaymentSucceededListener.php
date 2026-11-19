@@ -10,6 +10,7 @@ use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
 use Modules\Notification\Support\AdminRecipients;
+use Modules\Notification\Support\AmountFormatter;
 
 /**
  * Staff-side payment alert. Order-level notifications already reach the
@@ -26,6 +27,7 @@ class NotifyAdminPaymentSucceededListener implements ShouldQueue
     public function __construct(
         private readonly NotificationDispatcherInterface $notificationDispatcher,
         private readonly OrderGatewayInterface $orderGateway,
+        private readonly AmountFormatter $amountFormatter,
     ) {}
 
     /**
@@ -48,7 +50,7 @@ class NotifyAdminPaymentSucceededListener implements ShouldQueue
             data: [
                 'database' => [
                     'order_code' => $order->order_code,
-                    'amount' => number_format((float) $event->amount, 2),
+                    'amount' => $this->amountFormatter->forCharge((float) $event->amount, $order->currency_code),
                 ],
             ],
             meta: ['order_code' => $order->order_code, 'order_id' => (int) $order->id],
