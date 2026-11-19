@@ -260,9 +260,33 @@ services:
         ports:
             - "${MAILPIT_PORT:-8025}:8025"
 
+    search:
+        logging: *default-logging
+        # Version pinned deliberately; upgrade = bump this variable + full
+        # `catalog:reindex` (see infrastructure/docker/develop/README.md).
+        image: ${MEILISEARCH_IMAGE:-getmeili/meilisearch:v1.57.0}
+        profiles:
+            - search
+        restart: unless-stopped
+        ports:
+            # Loopback only: an unauthenticated dev search engine must not
+            # be reachable from the network (same rule as mysql/redis).
+            - "127.0.0.1:${MEILISEARCH_PORT:-7700}:7700"
+        environment:
+            MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-}
+            MEILI_ENV: development
+        volumes:
+            - search-data:/meili_data
+        healthcheck:
+            test: ["CMD-SHELL", "wget -q -O- http://localhost:7700/health || exit 1"]
+            interval: 5s
+            timeout: 3s
+            retries: 20
+
 volumes:
     mysql-data:
     redis-data:
+    search-data:
 
 # S.3: mirrors the production stack — the ONLY network path to the Octane
 # HTTP listener (:8000). Set TRUSTED_PROXIES to this subnet in

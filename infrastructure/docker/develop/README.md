@@ -9,6 +9,26 @@ Defined in [`docker-compose.yml`](../../../docker-compose.yml) at the repo
 root (this directory only holds the build assets: the per-app Dockerfiles,
 php.ini, and the nginx vhost).
 
+## Instant search (Meilisearch, `search` profile)
+
+Search is optional and env-gated: with `MEILI_MASTER_KEY` empty the backend
+uses the same SQL filtering as always. To enable:
+
+1. Start the engine: `docker compose --profile search up -d`
+2. Generate a master key (`openssl rand -hex 32`) and set `MEILI_MASTER_KEY`
+   in the root `.env`, plus the same value as `MEILISEARCH_HOST`/
+   `MEILISEARCH_MASTER_KEY` in `apps/backend/.env` (`MEILISEARCH_HOST=http://
+   search:7700` — the compose service name, not localhost).
+3. Build the index: `docker compose exec app php artisan catalog:search:install`
+   then `catalog:reindex`.
+4. Verify: a typo'd product title still matches on the storefront; the
+   backend log line shows `engine=meili`. Stop the search container and
+   requests fall back to SQL (log line `engine=sql`, warning recorded).
+
+Upgrade policy: the image version is pinned via `MEILISEARCH_IMAGE`; bump it
+deliberately and run a full `catalog:reindex` afterwards. Never reuse a
+generation number — failed builds consume theirs permanently.
+
 ## Running two stacks side by side
 
 A second develop stack (e.g. a clean-clone check) needs its own ports **and**
