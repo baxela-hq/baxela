@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "ext-bcmath": "*",
         "bacon/bacon-qr-code": "^3.1",
         "composer/semver": "^3.6",
         "dedoc/scramble": "^0.13.14",

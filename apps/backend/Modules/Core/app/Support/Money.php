@@ -43,6 +43,13 @@ class Money
             throw new InvalidArgumentException('Minor units cannot be negative.');
         }
 
+        if ($precision === 0) {
+            // Zero-decimal currencies (IRR, JPY…) carry no fraction part —
+            // str_pad does not truncate, so the general branch would emit
+            // a bogus trailing ".0" here.
+            return (string) $minor;
+        }
+
         $scale = 10 ** $precision;
 
         return intdiv($minor, $scale).'.'.str_pad((string) ($minor % $scale), $precision, '0', STR_PAD_LEFT);
@@ -84,6 +91,11 @@ class Money
      * fraction digits, no sign. Integer math only — the rate is scaled to
      * an 8-digit integer, so the result is
      * minor × rate × 10^to / (10^8 × 10^from) with one half-up rounding.
+     *
+     * The intermediate numerator can legitimately exceed int64 (a
+     * decimal(12,2)-ceiling amount ~1e10 majors against an IRR-scale rate
+     * reaches ~1e26), so the native-int fast path hands off to bcmath —
+     * same formula, same single half-up rounding, arbitrary precision.
      */
     public static function convert(int $minor, string $rate, int $fromPrecision = 2, int $toPrecision = 2): int
     {
@@ -100,17 +112,41 @@ class Money
 
         $rateMinor = self::fromDecimal($rate, 8);
 
-        $numerator = $minor * $rateMinor * (10 ** $toPrecision);
-        $denominator = (10 ** 8) * (10 ** $fromPrecision);
+        // int64 fast path, guarded by explicit magnitude checks (int
+        // multiplication silently degrades to float past PHP_INT_MAX —
+        // the guards prove every product below stays representable).
+        if ($rateMinor <= intdiv(PHP_INT_MAX, max($minor, 1))) {
+            $numerator = $minor * $rateMinor;
 
-        $quotient = intdiv($numerator, $denominator);
-        $remainder = $numerator % $denominator;
+            if ($numerator <= intdiv(PHP_INT_MAX, 10 ** $toPrecision)) {
+                $numerator *= (10 ** $toPrecision);
+                $denominator = (10 ** 8) * (10 ** $fromPrecision);
 
-        if ($remainder * 2 >= $denominator) {
-            $quotient++;
+                $quotient = intdiv($numerator, $denominator);
+                $remainder = $numerator % $denominator;
+
+                if ($remainder * 2 >= $denominator) {
+                    $quotient++;
+                }
+
+                return $quotient;
+            }
         }
 
-        return $quotient;
+        // Arbitrary-precision fallback (numerator beyond int64): identical
+        // formula — truncating division plus one half-up adjustment.
+        $n = bcmul((string) $minor, (string) $rateMinor);
+        $n = bcmul($n, (string) (10 ** $toPrecision));
+        $d = (string) ((10 ** 8) * (10 ** $fromPrecision));
+
+        $quotient = bcdiv($n, $d, 0);
+        $remainder = bcsub($n, bcmul($quotient, $d));
+
+        if (bccomp(bcmul($remainder, '2'), $d) >= 0) {
+            $quotient = bcadd($quotient, '1');
+        }
+
+        return (int) $quotient;
     }
 
     public static function min(int ...$values): int

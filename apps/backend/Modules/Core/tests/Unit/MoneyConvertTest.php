@@ -49,3 +49,15 @@ it('keeps a zero result representable', function () {
     expect(Money::convert(1, '0.5'))->toBe(1)
         ->and(Money::convert(1, '0.004'))->toBe(0);
 });
+
+it('stays exact when the intermediate numerator exceeds int64', function () {
+    // 9,999,999,999.99 (decimal(12,2) ceiling, minor 999999999999) at
+    // 0.92: the numerator 999999999999 × 92000000 × 100 ≈ 9.2e21 needs
+    // the bcmath path; result 9,199,999,999.9908 → half-up at 2dp.
+    expect(Money::convert(999999999999, '0.92000000'))->toBe(919999999999)
+        // IRR-scale rate on the same ceiling: 999999999999 × 600000 × 100
+        // ≈ 6e25 — far beyond int64, exact via bcmath.
+        ->and(Money::convert(999999999999, '600000.00000000', 2, 0))->toBe(5999999999994000)
+        // The int fast path is untouched for everything that fits.
+        ->and(Money::convert(1250, '0.05000000'))->toBe(63);
+});
