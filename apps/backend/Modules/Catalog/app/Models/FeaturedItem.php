@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 /**
  * @property int $id
  * @property int $featuredable_id
+ * @property int $position
  */
 class FeaturedItem extends Model
 {

@@ -10,6 +10,13 @@ use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
+use Modules\Catalog\Search\MeilisearchSearchClient;
+use Modules\Catalog\Search\NullSearchClient;
+use Modules\Catalog\Search\SearchClientInterface;
+use Modules\Catalog\Search\SearchGenerationGuard;
+use Modules\Catalog\Search\SearchIndexSettings;
+use Modules\Catalog\Search\SearchMutationGate;
+use Modules\Catalog\Search\SearchOutbox;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -54,6 +61,35 @@ class CatalogServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+
+        $this->app->bind(SearchClientInterface::class, function ($app) {
+            $host = (string) config('catalog.search.host');
+
+            if ($host === '') {
+                return new NullSearchClient;
+            }
+
+            return new MeilisearchSearchClient(
+                $host,
+                (string) config('catalog.search.master_key'),
+                (int) config('catalog.search.request_timeout'),
+                (int) config('catalog.search.task_await'),
+                new SearchIndexSettings,
+            );
+        });
+
+        $this->app->singleton(SearchGenerationGuard::class, fn () => new SearchGenerationGuard(
+            (string) config('catalog.search.uid_base', 'catalog_products'),
+        ));
+
+        $this->app->bind(SearchMutationGate::class, fn ($app) => new SearchMutationGate(
+            $app->make(SearchGenerationGuard::class),
+            (int) config('catalog.search.drain_timeout', 30),
+        ));
+
+        $this->app->bind(SearchOutbox::class, fn ($app) => new SearchOutbox(
+            $app->make(SearchGenerationGuard::class),
+        ));
     }
 
     /**

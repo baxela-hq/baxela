@@ -3,12 +3,14 @@
 namespace Modules\Catalog\Actions\Admin\Product;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
+use Modules\Catalog\Search\SearchOutbox;
 use Modules\Core\Contracts\Events\Catalog\ProductUpdatedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
@@ -19,73 +21,82 @@ class UpdateProductAction
     /** @param  array<string, mixed>  $data */
     public function handle(string $id, array $data): Model
     {
-        $record = Product::query()->findOrFail($id);
-        $record->update($data);
-        $record->categories()->sync($data[ProductSchema::RES_CATEGORIES]);
+        // Explicit transaction (search audit: this path was previously
+        // unwrapped while rebuilding every relation) — the journal entry
+        // and the mutation commit atomically.
+        return DB::transaction(function () use ($id, $data): Model {
+            $record = Product::query()->findOrFail($id);
+            $record->update($data);
+            $record->categories()->sync($data[ProductSchema::RES_CATEGORIES]);
 
-        $record->shipping()->delete();
-        if (isset($data[ProductSchema::RES_SHIPPING])) {
-            $record->shipping()->create($data[ProductSchema::RES_SHIPPING]);
-        }
-
-        if (! empty($data[ProductSchema::RES_IMAGES])) {
-            $record->images()->delete();
-            foreach ($data[ProductSchema::RES_IMAGES] as $image) {
-                $record->images()->create($image);
-            }
-        }
-
-        $record->translations()->delete();
-        foreach ($data[ProductSchema::RES_TRANSLATIONS] as $translation) {
-            $record->translations()->create($translation);
-        }
-
-        $record->seo()->delete();
-        foreach ($this->filterProductSeo($data[ProductSchema::RES_SEO] ?? []) as $seo) {
-            $record->seo()->create($seo);
-        }
-
-        $record->variants()->delete();
-        foreach ($data[ProductSchema::RES_VARIANTS] as $variant) {
-            $variantRecord = $record->variants()->create($variant);
-            if (! empty($variant[VSchema::REQ_OPTION_VALUE_IDS])) {
-                $variantRecord->optionValues()->attach(array_values($variant[VSchema::REQ_OPTION_VALUE_IDS]));
+            $record->shipping()->delete();
+            if (isset($data[ProductSchema::RES_SHIPPING])) {
+                $record->shipping()->create($data[ProductSchema::RES_SHIPPING]);
             }
 
-            // One optional photo per variant: a catalog_images row tied to
-            // both the product and the fresh variant id. Variants are deleted
-            // and recreated above, so the old rows are already cascade-gone —
-            // sending image: null simply leaves the new variant without one.
-            $image = $variant[VSchema::RES_IMAGE] ?? null;
-            if (! empty($image)) {
-                $variantRecord->images()->create([
-                    ImageSchema::PRODUCT_ID => $record->{ProductSchema::ID},
-                    ImageSchema::MEDIA_ID => $image[ImageSchema::MEDIA_ID],
-                    ImageSchema::URL => $image[ImageSchema::URL],
-                    ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
-                ]);
+            if (! empty($data[ProductSchema::RES_IMAGES])) {
+                $record->images()->delete();
+                foreach ($data[ProductSchema::RES_IMAGES] as $image) {
+                    $record->images()->create($image);
+                }
             }
 
-            // The variant quantity is the stock level the admin manages;
-            // mirror it into the inventory ledger the shop sells from.
-            app(InventoryGatewayInterface::class)->upsertStock(
-                (int) $variantRecord->{VSchema::ID},
-                (int) $variant[VSchema::QUANTITY],
-            );
-        }
+            $record->translations()->delete();
+            foreach ($data[ProductSchema::RES_TRANSLATIONS] as $translation) {
+                $record->translations()->create($translation);
+            }
 
-        // Variants are recreated with fresh ids on every save, so the old
-        // ids' ledger rows are now orphans.
-        app(InventoryGatewayInterface::class)->pruneOrphanedStocks();
+            $record->seo()->delete();
+            foreach ($this->filterProductSeo($data[ProductSchema::RES_SEO] ?? []) as $seo) {
+                $record->seo()->create($seo);
+            }
 
-        $record->attributeValues()->delete();
-        foreach ($data[ProductAttributeValueSchema::REQ_ATTRIBUTE_VALUES] ?? [] as $attributeValue) {
-            $record->attributeValues()->create($attributeValue);
-        }
+            $record->variants()->delete();
+            foreach ($data[ProductSchema::RES_VARIANTS] as $variant) {
+                $variantRecord = $record->variants()->create($variant);
+                if (! empty($variant[VSchema::REQ_OPTION_VALUE_IDS])) {
+                    $variantRecord->optionValues()->attach(array_values($variant[VSchema::REQ_OPTION_VALUE_IDS]));
+                }
 
-        //        event(ProductUpdatedEvent::fill($record->toArray()));
+                // One optional photo per variant: a catalog_images row tied to
+                // both the product and the fresh variant id. Variants are deleted
+                // and recreated above, so the old rows are already cascade-gone —
+                // sending image: null simply leaves the new variant without one.
+                $image = $variant[VSchema::RES_IMAGE] ?? null;
+                if (! empty($image)) {
+                    $variantRecord->images()->create([
+                        ImageSchema::PRODUCT_ID => $record->{ProductSchema::ID},
+                        ImageSchema::MEDIA_ID => $image[ImageSchema::MEDIA_ID],
+                        ImageSchema::URL => $image[ImageSchema::URL],
+                        ImageSchema::COLLECTION => ImageCollectionEnum::PHOTOS->value,
+                    ]);
+                }
 
-        return $record->load(
+                // The variant quantity is the stock level the admin manages;
+                // mirror it into the inventory ledger the shop sells from.
+                app(InventoryGatewayInterface::class)->upsertStock(
+                    (int) $variantRecord->{VSchema::ID},
+                    (int) $variant[VSchema::QUANTITY],
+                );
+            }
+
+            // Variants are recreated with fresh ids on every save, so the old
+            // ids' ledger rows are now orphans.
+            app(InventoryGatewayInterface::class)->pruneOrphanedStocks();
+
+            $record->attributeValues()->delete();
+            foreach ($data[ProductAttributeValueSchema::REQ_ATTRIBUTE_VALUES] ?? [] as $attributeValue) {
+                $record->attributeValues()->create($attributeValue);
+            }
+
+            // Transactional journal entry (durable with the mutation).
+            app(SearchOutbox::class)->record($record->{ProductSchema::ID});
+
+            // Search indexing rides the product event (queued, afterCommit).
+            event(ProductUpdatedEvent::fill($record->toArray()));
+
+            return $record;
+        })->load(
             [
                 ProductSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_SEO,

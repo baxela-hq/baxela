@@ -11,6 +11,7 @@ use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
+use Modules\Catalog\Search\SearchOutbox;
 use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Throwable;
@@ -77,6 +78,10 @@ class CreateProductAction
                 $record->attributeValues()->create($attributeValue);
             }
 
+            // Transactional journal entry (durable with the mutation —
+            // review v9 F2): the search writer/recovery path resolves it.
+            app(SearchOutbox::class)->record($record->{ProductSchema::ID});
+
             DB::commit();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -86,7 +91,9 @@ class CreateProductAction
 
         $record = $record->fresh();
 
-        //        event(ProductCreatedEvent::fill($record->toArray()));
+        // Search indexing rides the product event (listener is queued and
+        // afterCommit; see Modules/Catalog/docs/search-indexing.md).
+        event(ProductCreatedEvent::fill($record->toArray()));
 
         return $record->load(
             [

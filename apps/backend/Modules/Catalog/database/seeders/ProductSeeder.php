@@ -37,6 +37,8 @@ use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema as PSTSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Catalog\Search\SearchMutationGate;
+use Modules\Catalog\Search\SearchOutbox;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -96,15 +98,32 @@ class ProductSeeder extends Seeder
 
         Model::reguard();
 
-        ProductSeoTranslation::query()->delete();
-        ProductTranslation::query()->delete();
-        ProductShipping::query()->delete();
-        ProductAttributeValue::query()->delete();
-        Variant::query()->delete();
-        DB::table(CategoryProductSchema::TABLE)->delete();
-        Product::query()->delete();
+        // Seeding touches the products/variants tables — the search
+        // mutation gate applies here too (a concurrent cutover must not
+        // miss seeder writes), and the wipe journals every removed
+        // product id so the index follows the database.
+        app(SearchMutationGate::class)->enter();
 
-        $this->generate($products, $data, $langs);
+        try {
+            DB::transaction(function () use ($products, $data, $langs): void {
+                ProductSeoTranslation::query()->delete();
+                ProductTranslation::query()->delete();
+                ProductShipping::query()->delete();
+                ProductAttributeValue::query()->delete();
+                Variant::query()->delete();
+                DB::table(CategoryProductSchema::TABLE)->delete();
+
+                foreach (Product::withTrashed()->get() as $product) {
+                    app(SearchOutbox::class)->record($product->id);
+                }
+
+                Product::query()->delete();
+
+                $this->generate($products, $data, $langs);
+            });
+        } finally {
+            app(SearchMutationGate::class)->exit();
+        }
     }
 
     /**

@@ -511,12 +511,6 @@ parameters:
 			path: Modules/Catalog/app/Actions/Public/Product/ListProductAction.php
 
 		-
-			message: '#^Method Modules\\Catalog\\Actions\\Public\\Product\\ListProductAction\:\:handle\(\) should return Illuminate\\Pagination\\LengthAwarePaginator but returns Illuminate\\Pagination\\AbstractPaginator\.$#'
-			identifier: return.type
-			count: 1
-			path: Modules/Catalog/app/Actions/Public/Product/ListProductAction.php
-
-		-
 			message: '#^Method Modules\\Catalog\\Actions\\Public\\ProductComment\\ListProductCommentsAction\:\:enrichWithUserNames\(\) has parameter \$comments with no value type specified in iterable type iterable\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -719,6 +713,18 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: Modules/Catalog/app/Schemas/Attribute/AttributeTypeEnum.php
+
+		-
+			message: '#^Property Modules\\Catalog\\Search\\MeilisearchSearchClient\:\:\$settings is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: Modules/Catalog/app/Search/MeilisearchSearchClient.php
+
+		-
+			message: '#^Method Modules\\Catalog\\Search\\OwnerIncarnation\:\:provenDead\(\) has parameter \$incarnation with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Modules/Catalog/app/Search/OwnerIncarnation.php
 
 		-
 			message: '#^Method Modules\\Catalog\\Support\\AppliesProductPromotions\:\:applyToVariant\(\) has parameter \$variant with no type specified\.$#'
@@ -947,6 +953,30 @@ parameters:
 			identifier: argument.templateType
 			count: 1
 			path: Modules/Catalog/tests/Feature/Public/ProductTest.php
+
+		-
+			message: '#^Cannot access an offset on int\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
+
+		-
+			message: '#^Method RecordingSearchClient\:\:taskStatus\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
+
+		-
+			message: '#^Offset string on list\<array\<string, mixed\>\> on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
+
+		-
+			message: '#^Variable \$category on left side of \?\? is never defined\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\ProductComment\>\|Modules\\Catalog\\Models\\ProductComment\:\:\$body\.$#'

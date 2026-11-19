@@ -246,7 +246,8 @@ it('round-trips: wipes the catalog and re-imports the export', function () {
     $seeded = seedTransferCatalog();
     $this->actingAs($this->superAdminUser());
 
-    $export = $this->getJson($this->baseUrl('/admin/data/export'))->streamedContent();
+    $response = $this->getJson($this->baseUrl('/admin/data/export'));
+    $export = $response->streamedContent();
     wipeCatalogTables();
 
     expect(Product::query()->count())->toBe(0);

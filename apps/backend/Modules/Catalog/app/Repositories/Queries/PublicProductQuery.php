@@ -43,6 +43,34 @@ class PublicProductQuery implements QueryInterface
         private readonly bool $featured = false,
     ) {}
 
+    /**
+     * Search-engine hydration path (alpha.3): the forced public scopes
+     * and eager loads, restricted to the given ids. Deliberately
+     * filter-free — the engine already applied the request filters;
+     * spatie's request pipeline must not re-apply them here. The caller
+     * restores relevance order and drops stale ids.
+     *
+     * @param  list<int>  $ids
+     */
+    /**
+     * @param  list<int>  $ids
+     * @return Builder<Product>
+     */
+    public static function hydrationQuery(array $ids): Builder
+    {
+        return Product::query()
+            ->whereIn(ProductSchema::ID, $ids)
+            ->where(ProductSchema::STATUS, ProductStatusEnum::IN_STOCK)
+            ->where(ProductSchema::IS_PUBLISHED, true)
+            ->with([
+                ProductSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_BRAND.'.'.BrandSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_VARIANTS.'.'.VariantSchema::RES_OPTION_VALUES.'.'.OptionValueSchema::RES_TRANSLATIONS,
+                ProductSchema::RES_IMAGES,
+                ProductSchema::RES_CATEGORIES.'.'.CategorySchema::RES_TRANSLATIONS,
+            ]);
+    }
+
     public function build(): QueryBuilder
     {
         return QueryBuilder::for(Product::class)
