@@ -1,6 +1,6 @@
 # 🔄 Module Data-Transfer Standard (Import/Export)
 
-Every module can expose its **data** (never binary files — those live in
+Every participating module can expose its **data** (never binary files — those live in
 Media) for export and import through one platform standard. The
 `Transfer` module orchestrates; each participating module describes and
 replays its own rows.
@@ -12,31 +12,169 @@ Modules/{Name}/config/config.php  →  'transfer' => ['class' => ...]        # r
 Modules/Transfer/                                                          # engine + admin API
 ```
 
+## Scope of the guarantee
+
+The standard makes a backup of all **participating transferable business
+data** restorable into an installation with **completely different
+database ids** — preserving entity identity, historical records,
+relationships and security boundaries. It is deliberately NOT a claim of
+whole-install restoration:
+
+- **Media** — binary files stay out (metadata export only, if ever).
+  Business records referencing media ids keep the references; the files
+  themselves must be migrated separately.
+- **Auth** — credentials, roles and permissions are security-sensitive
+  and never transfer. Imported users are inert placeholders (below);
+  roles are not restored.
+- **Audit** — an immutable log; importing it would forge history.
+- **Cart & Notification** — ephemeral checkout state and runtime/device-
+  bound notification data (sent-notification log, push/telegram
+  subscriptions). Deliberately deregistered from the standard: no export,
+  no import. Older v1 files declaring these modules are rejected
+  explicitly (`module_mismatch`) — no silent success.
+
 ## The contract
 
 A module implements `ModuleTransferInterface`:
 
 | Method | Meaning |
 |---|---|
-| `sections(): TransferSection[]` | The module's row groups **in dependency order** — a section may only reference rows of sections before it. Each section flags itself `exportable` / `importable` (transactional data ships export-only). |
-| `exportRows(string $section): list<row>` | Rows as `['source_id' => int, 'payload' => array]`. The payload carries the **exact JSON shape the module's own admin create/update endpoints accept**. |
-| `importRows(string $section, array $rows, ImportOptions $options): ImportResult` | Replays rows (remap ids, resolve language codes, match by natural key, then create/update **through the module's own admin Actions** so invariants and events behave like a manual save). Per-row failures are recorded, never thrown. |
+| `sections(): TransferSection[]` | The module's row groups **in dependency order** — a section may only reference rows of sections before it. Each section flags itself `exportable` / `importable`. |
+| `exportRows(string $section): list<row>` | Rows as `['source_id' => int, 'payload' => array]`. The payload carries the **exact JSON shape the module's own admin create/update endpoints accept** (or, for history modules, the faithful column export). |
+| `importRows(string $section, array $rows, ImportOptions $options): ImportResult` | Replays rows through the module's invariants. Per-row failures are recorded, never thrown. |
 
 ### Payload rules
 
 - **Translations carry language codes** (`'language' => 'en'`), never ids — the import resolves codes through `CoreGatewayInterface`.
-- **Cross-record references carry the exporting store's source ids** (`source_id` / foreign keys inside the payload). Portability comes from the importer's remapping, not from the export. References into *other* modules (e.g. promotion → catalog products) are validated through that module's **gateway** (`productExists()`, …), and rows pointing at records the importing store lacks fail per-row instead of guessing.
-- **Runtime state stays behind** (counters like `usage_count`). Configuration travels; history does not get replayed.
+- **Cross-record references carry the exporting store's source ids** (see *Reference resolution* below for how imports resolve them).
+- **Runtime state stays behind** (counters like `usage_count` — recomputed from the imported dataset, never replayed).
 - Rows failing validation are recorded as `"{section}[{n}]: {reason}"` on the `ImportResult` — one bad row never sinks a section.
 
 ### Dry runs
 
-`ImportOptions` carries the duplicate strategy (`update` | `skip` — what
-happens to a row that matches an existing record by its natural key)
-and a dry-run flag. A dry run validates and counts what *would* happen
-(created/updated/skipped) and writes nothing; references to rows the run
-itself would create resolve through **sentinel ids** (negative ints),
-so a file is previewable on an empty store.
+`ImportOptions` carries the duplicate strategy (`update` | `skip`), a
+dry-run flag and the C2 resolution context. A dry run validates and
+counts what *would* happen and writes **nothing** — including the remap
+ledger. Within-file references resolve through **sentinel ids** (negative
+ints). Cross-module references that only a *previous real import* could
+satisfy are reported as warnings (`unresolved_in_dry_run`-class), so a
+dry run's result classifies references as validated / deferred /
+unresolvable — a preview with deferred required references is NOT a full
+validation.
+
+### Absent vs empty sections
+
+Exporters emit **every declared section** (empty `rows: []` when no
+data). On import: an **absent** section is a no-op (partial files
+compose — the destination's rows for that entity stay untouched); an
+**empty** section is authoritative emptiness (for the Order module's
+child sections this means stale children are removed).
+
+## Source-installation identity (C1)
+
+Every installation has a stable public uuid (`transfer_installation`,
+generated lazily on first export) stamped into the envelope's additive
+`source_installation` key. v1 stays intact: legacy readers ignore the
+key; legacy files (no key) import into the reserved `unidentified`
+namespace.
+
+- The uuid identifies this installation **when it exports** (outbound).
+- `transfer_remaps` rows are keyed by the **source** installation of each
+  import (inbound history) — they survive outbound rotation and database
+  cloning on purpose: a cloned database also holds the local rows those
+  mappings point at, so they stay valid.
+- `transfer:reset-identity` rotates the outbound identity ONLY — the
+  **mandatory clone-init step** after booting a database clone (snapshot,
+  staging-from-prod, pre-populated image).
+- `transfer:clear-remaps --source={uuid} --confirm` deletes ONE source
+  namespace's mappings — the explicit escape hatch, never automatic.
+
+## Reference resolution (C2)
+
+Every cross-module reference resolves through the tiers, uniformly:
+
+1. **Persisted remap** for the file's source namespace — the previous
+   real import's ledger. A mapping pointing at a since-deleted local row
+   is *dangling*: warned, never trusted.
+2. **Natural key** where the payload carries one — normalized email
+   (users), `order_code` (orders), `coupon_code` (coupons), `method`
+   (payment methods), `uuid` (refunds), verified SKU (catalog products).
+   Exactly-one semantics: zero matches → unresolved, one → resolve,
+   multiple → ambiguity error. A natural key wins over a colliding raw
+   id (warned).
+3. **Raw source id** — legacy same-store tolerance. Automatic for
+   **identified** files (valid `source_installation`); for legacy
+   **unidentified** files it is gated behind the explicit
+   `allow_raw_ids=true` request flag (default false → the reference
+   fails/nulls with `ref_unresolvable_legacy`). Compatibility never
+   silently sacrifices integrity.
+4. **Column policy** — non-nullable identity refs fail the row; nullable
+   loose refs null out with a warning.
+
+Resolution diagnostics (`source_installation`, `raw_id_resolutions`)
+land in every run's audit summary.
+
+## Import concurrency & session safety (C7)
+
+An import run holds a **destination-module named lock**
+(`transfer:import:{module}`, bounded wait → `import_in_progress`): all
+imports into a module serialize — whatever the source — because natural
+keys are a shared destination namespace. The lock-owning database
+session is proven before every statement (a `beforeExecuting`
+ownership hook) and before every commit; a lost session is **fatal**
+for the run (`lock_session_lost`, audited with the partial counts),
+never a row failure, and importers re-prove ownership inside their
+per-row catches so an action-level exception rewrap cannot mask it.
+Rollbacks after session loss are best-effort and never mask the
+classification. Retry from the beginning is always safe: every unit is
+idempotent by remap/natural key. The ownership hook is registered once
+per connection (a stable registry — repeated imports accumulate
+nothing) and deactivates itself when the run ends; after teardown it is
+inert for ordinary queries.
+
+## Write-unit rules
+
+- Entity write + remap record share one ownership-verified transaction
+  (`TransferImportTransaction`) — a mapping and the row it describes are
+  born together.
+- Historical hydration (Order/Payment/Support/Redemptions) writes
+  through the query builder: **no Eloquent events, no business
+  actions**, no checkout paths — statuses, money snapshots and
+  timestamps restored exactly as exported. Payment import is strictly
+  inert: no gateway/driver code, no state transitions, no order updates.
+- Per-row failures are isolated; the run continues. Order children are
+  the one coarser unit: per (parent order × section), all-or-nothing,
+  with children of failed/skipped parents never importing.
+
+## Two-pass Discount restore
+
+`redemptions` are order-linked history: pass 1 (before Order import)
+skips them with the expected `pending_order_import` warning — that run
+is incomplete BY DESIGN, not failed; pass 2 (after Order) resolves them
+through the ledger. `usage_count` recomputes from the local dataset
+after each run.
+
+## Recommended whole-install import order
+
+Core → Setting → Catalog → Inventory → Content → User → Tax → Shipping
+→ Discount (pass 1) → Order → Payment → Menu → Contact → Support →
+Discount (pass 2). Catalog before User/Content/Order so product/variant
+references resolve; User before Order/Payment/Support so identity
+remaps exist; Discount's second pass after Order closes the
+redemptions.
+
+## Security notes
+
+- All `data.*` endpoints sit behind `auth:sanctum` +
+  `PermissionMiddleware` with `{module}.admin.data.*` permissions —
+  export grantable without import.
+- Exports contain **PII** (user emails). Admin-only by permission;
+  handle files accordingly.
+- Imported user accounts are **inert placeholders** (inactive,
+  unverified, random password, no roles): created for emails the
+  destination has never seen, unusable until Auth's activation or
+  verification flow runs. The gate is Auth's own (`is_active` re-check
+  under a row lock at token issuance) — the import cannot weaken it.
 
 ## Registration
 
@@ -54,20 +192,16 @@ don't participate.
 
 ## HTTP surface (admin audience, permission-derived from route names)
 
-> **Post phase-3/4 state.** File export/import live in each module's own
-> routes; the central Transfer module is the registry + audit plane only.
-
 ### Per-module data endpoints — `{module}/admin/data/*`
 
-Available for every wired module (`tax`, `setting`, `shipping`,
-`discount`, `contact`, `menu`), with permissions deriving as
+Available for every wired module, with permissions deriving as
 `{module}.admin.data.*`:
 
 | Route | Purpose |
 |---|---|
 | `GET api/v1/{module}/admin/data/export` | Streams the module's transfer file (`transfer-{module}-{timestamp}.json`). |
 | `POST api/v1/{module}/admin/data/import/preview` | Structure check of an uploaded file (envelope, sections, row cap, export-only warnings). Rejects files declaring another module. |
-| `POST api/v1/{module}/admin/data/import` | Replays a file; dry runs validate without writing. Body: `file` (multipart JSON), `on_duplicate` (`update`\|`skip`), `dry_run`. |
+| `POST api/v1/{module}/admin/data/import` | Replays a file; dry runs validate without writing. Body: `file` (multipart JSON), `on_duplicate` (`update`\|`skip`), `dry_run`, `allow_raw_ids` (legacy compatibility, default false). |
 | `GET api/v1/{module}/admin/data/imports` | This module's run history from the central audit table. |
 
 ### Central endpoints — `transfer/admin/*`
@@ -87,6 +221,7 @@ One JSON file per module — `baxela.module-export` v1:
     "module": "tax",
     "version": 1,
     "exported_at": "2026-11-07T10:00:00+00:00",
+    "source_installation": "0c9a6e5f-…",
     "sections": [
         { "entity": "tax-classes", "rows": [ { "source_id": 1, "payload": { "...": "admin API shape" } } ] },
         { "entity": "tax-rates",   "rows": [] }
@@ -94,68 +229,30 @@ One JSON file per module — `baxela.module-export` v1:
 }
 ```
 
-Row cap: 5000 total rows per file (imports and exports both enforce it,
-keeping runs synchronous and memory-bounded). Upload cap: 20 MB.
-
-## Architecture decision: per-module endpoints (microservice readiness)
-
-> **Decided 2026-11-07 · phases 1–4 complete (2026-11-07).** Each module exposes its own
-> import/export HTTP surface, so extracting a module to a microservice
-> carries its data, its transfer logic *and* its endpoints — no central
-> dependency beyond the shared format contract.
-
-### Why
-
-- The data plane (`{Name}Transfer`) already lives inside each module;
-  the HTTP surface is the remaining coupling to the central Transfer
-  module.
-- Per-module routes yield granular permissions (`tax.admin.data.export`
-  grantable without import) and self-documenting Scramble surfaces under
-  each module's own prefix. Catalog already proves the shape with its
-  pre-standard `catalog/admin/data/*` endpoints.
-
-### Target shape
-
-| Concern | Home |
-|---|---|
-| Envelope encode/decode (`TransferFormat`, `TransferFile`) | `Modules/Core/app/Support/Transfer/` — format-level, shared; graduates into the `baxela/contracts` package per the extension roadmap |
-| Export/import/preview/history controllers | Core base controllers doing the whole file plane; each module ships ~15-line subclasses binding `module()` + `transfer()` |
-| Routes | Each module's `routes/api/admin.php` — `data.export`, `data.import`, `data.imports.*`; permissions derive as `api.{module}.admin.data.*` |
-| Capabilities matrix | Stays central in the Transfer module, extended with each module's endpoint base URLs so the admin UI stays one page |
-| Run history | Central `transfer_imports` as the audit plane for now; an extracted service posts its runs there (or keeps its own) |
-
-Deliberately **not** done: duplicating envelope/history machinery per
-module (the Core base layer prevents it), and moving discovery into the
-modules (a registry is inherently cross-cutting — microservice estates
-still keep a service catalog).
-
-### Phase plan
-
-1. [x] Move envelope support to Core; add Core base export/import controllers; wire **Tax as the pilot** (`tax/admin/data/*`), keeping the central endpoints working. *(Done 2026-11-07: envelope, run model, resources, requests and exceptions live in Core now, with `ModuleTransferRunner` as the shared file plane and `core.transfer.*` as the policy config.)*
-2. [x] Roll the base out to the remaining Wave-1 modules (mechanical). *(Done 2026-11-07: Setting, Shipping, Discount, Contact and Menu all expose `{module}/admin/data/*` with `data.imports` history scoping.)*
-3. [x] Capabilities payload publishes per-module `endpoints`; the admin UI's transfer page switches to those URLs. *(Done 2026-11-07: URLs resolve from the registered routes and the import card routes uploads by the file's declared module.)*
-4. [x] Central Transfer file endpoints removed — the central module is capabilities + audit history only; their generic guard coverage moved to the Tax pilot tests.
+`source_installation` is additive-optional (C1). Row cap: 5000 total
+rows per file (imports and exports both enforce it, keeping runs
+synchronous and memory-bounded). Upload cap: 20 MB.
 
 ## Rollout status
 
 | Module | Status | Sections |
 |---|---|---|
-| Tax | ✅ export + import · own endpoints | `tax-classes`, `tax-rates` — also exposed at `tax/admin/data/*` (phase-1 pilot) |
+| Tax | ✅ export + import · own endpoints | `tax-classes`, `tax-rates` — also exposed at `tax/admin/data/*` |
 | Setting | ✅ export + import | `settings` (id-reference settings travel as codes) |
 | Shipping | ✅ export + import | `zones` (country codes), `methods` (translations), `rates` |
-| Discount | ✅ export + import | `coupons`, `promotions` (catalog ids via gateway), `redemptions` (export-only) |
+| Discount | ✅ export + import | `coupons`, `promotions` (catalog ids via tiered resolution), `redemptions` (two-pass, see above) |
 | Contact | ✅ export + import | `newsletter-subscribers`, `contact-messages` (export-only) |
 | Menu | ✅ export + import | `menus`, `menu-links` (parents-first tree) |
-| Catalog | 🔀 separate implementation | Pre-dates the standard: `catalog/admin/data/*` (JSON module transfer) + product CSV import. Migration onto the standard is possible via an adapter. |
-| Core | ✅ export + import · own endpoints | `languages` (default flag demotes others), `currencies`, `countries` — upsert by code, mirroring the seeder |
-| Content | ✅ export + import · own endpoints | `pages`, `post-categories` (parents-first tree), `posts` (translations, SEO, catalog ids via gateway) |
-| Inventory | ✅ export + import · own endpoints | `stocks` (variant ids via gateway; replay through `upsertStock`) |
-| User | ✅ export-only · own endpoints | `profiles`, `addresses`, `wishlist-items` — user refs are store-specific, so no import |
-| Notification | ✅ export-only · own endpoints | `notifications`, `notification-preferences`, `push-subscriptions`, `telegram-subscriptions` — per-user/per-device state |
-| Order | ✅ export-only · own endpoints | `orders`, `order-items`, `order-addresses`, `order-returns` — faithful attribute export; replaying would forge history |
-| Payment | ✅ export-only · own endpoints | `payment-methods`, `payments`, `refunds` — the money trail never replays |
-| Cart | ✅ export-only · own endpoints | `carts`, `cart-items` — ephemeral storefront state |
-| Support | ✅ export-only · own endpoints | `tickets`, `ticket-messages` — per-user correspondence |
-| Media | 🚫 out of scope | Binary files are explicitly excluded from transfers; metadata export only, if ever. |
-| Auth | 🚫 out of scope | Users/roles/permissions are security-sensitive; no bulk import surface. |
+| Catalog | 🔀 separate implementation | Pre-dates the standard: `catalog/admin/data/*`; imports record the remap ledger so other modules resolve catalog refs. |
+| Core | ✅ export + import · own endpoints | `languages`, `currencies`, `countries` — upsert by code |
+| Content | ✅ export + import · own endpoints | `pages`, `post-categories`, `posts` (catalog refs via tiered resolution) |
+| Inventory | ✅ export + import · own endpoints | `stocks` (variant refs via tiered resolution) |
+| User | ✅ export + import · own endpoints | `profiles` (the user DIRECTORY: email + `has_profile` + profile fields), `addresses` (region_code/vat_id since the e-mail-aware export), `wishlist-items` — identity by email; unknown emails become inert placeholder accounts |
+| Order | ✅ export + import · own endpoints | `orders`, `order-items`, `order-addresses`, `order-returns` — immutable-history hydration; per-(order × section) atomicity; coupon refs via `coupon_code` |
+| Payment | ✅ export + import · own endpoints | `payment-methods` (upsert by driver key), `payments` (insert-only, remap identity + exactly-one adoption via transaction tuple), `refunds` (uuid-keyed) — strictly inert |
+| Support | ✅ export + import · own endpoints | `tickets`, `ticket-messages` — append-only history, remap-as-idempotency, no events |
+| Cart | 🚫 deregistered | Ephemeral checkout state (guest tokens, consumed at checkout). Legacy files rejected explicitly. |
+| Notification | 🚫 deregistered | Runtime/device-bound notification data (sent log, push/telegram subscriptions). Legacy files rejected explicitly. |
+| Media | 🚫 out of scope | Binary files stay out of transfers. Future: a binary bundle format (a sidecar archive keyed by media ids) could close the gap — deliberately not built here. |
+| Auth | 🚫 out of scope | Users/roles/permissions are security-sensitive; the only Auth surface in the standard is the gateway seam (`AccessGatewayInterface`: email directory + `ensureUserByEmail`), owned by Auth. |
 | Audit | 🚫 out of scope | Immutable log — export/import would forge history. |
