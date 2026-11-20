@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\Permission;
 use Modules\Auth\Models\User;
+use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Models\Currency;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 
@@ -123,7 +124,7 @@ it('denies currency management without permissions', function () {
 it('resolves currency metadata by code regardless of active state', function () {
     Currency::factory()->create(['code' => 'IRR', 'is_active' => false, 'exchange_rate' => '600000.00000000']);
 
-    $gateway = app(\Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface::class);
+    $gateway = app(CoreGatewayInterface::class);
 
     // Inactive rows keep their identity for historical reads (notification
     // display metadata for a currency deactivated after checkout).
