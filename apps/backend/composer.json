@@ -7,7 +7,7 @@
         "laravel",
         "framework"
     ],
-    "license": "MIT",
+    "license": "Apache-2.0",
     "repositories": [
         {
             "type": "vcs",

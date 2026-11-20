@@ -146,8 +146,15 @@ Prefer Postman? The same collection can be imported into
 
 ## License
 
-Released under the [MIT License](LICENSE). The admin panel (`apps/admin`) builds on
-[shadcn-admin](https://github.com/satnaing/shadcn-admin) (also MIT) — see
+Released under the [Apache License 2.0](LICENSE). Attribution is governed by the
+[NOTICE](NOTICE) file: any redistribution of Baxela or a derivative work must
+include a readable copy of the NOTICE, keeping the Baxela name and logo
+attribution intact (Apache-2.0 §4(d)). The Baxela name and logo are trademarks
+of the Baxela project; beyond that attribution, the license grants no branding
+rights (§6).
+
+The admin panel (`apps/admin`) builds on
+[shadcn-admin](https://github.com/satnaing/shadcn-admin) (MIT) — see
 [apps/admin/LICENSE](apps/admin/LICENSE) and its Credits section.
 
 ## Moving apps
