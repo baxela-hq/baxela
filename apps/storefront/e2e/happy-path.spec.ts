@@ -190,7 +190,7 @@ test("header search suggests and finds the seeded product", async ({ page }) => 
   const dialog = page.locator("#search-menu");
   // The en label value is "Search products" (shared.layout.search.labels.input);
   // match by role+name inside the dialog to stay locale-shape safe.
-  const searchInput = dialog.getByRole("textbox");
+  const searchInput = dialog.getByRole("searchbox"); // type=search maps to searchbox, not textbox
 
   // Open the dialog and type a partial seeded title ("Men's Slim Fit
   // Cotton T-Shirt"): the suggestion panel must render the product
