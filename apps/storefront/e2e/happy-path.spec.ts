@@ -194,8 +194,14 @@ test("header search suggests and finds the seeded product", async ({ page }) => 
 
   // Open the dialog and type a partial seeded title ("Men's Slim Fit
   // Cotton T-Shirt"): the suggestion panel must render the product
-  // before any submit (instant search).
-  await searchTrigger.click();
+  // before any submit (instant search). The SSR dialog ships with
+  // inert="" and the click handler only exists after hydration — a
+  // pre-hydration click is a no-op, so retry the click until the dialog
+  // actually turns interactive (inert attribute gone).
+  await expect(async () => {
+    await searchTrigger.click();
+    await expect(dialog).not.toHaveAttribute("inert", /.*/);
+  }).toPass({ timeout: 30_000 });
   await searchInput.fill("Cotton");
 
   const suggestion = dialog.locator("ul li").first();
