@@ -33,7 +33,8 @@ type NavCollapsible = BaseNavItem & {
 type NavItem = NavCollapsible | NavLink
 
 type NavGroup = {
-  title: string
+  /** Omit for a label-less group (e.g. one holding a single collapsible menu). */
+  title?: string
   items: NavItem[]
 }
 

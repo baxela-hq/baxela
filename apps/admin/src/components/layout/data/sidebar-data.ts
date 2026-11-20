@@ -1,5 +1,5 @@
 import { hasPermission } from '@/shared/hooks/use-permissions'
-import { ArrowLeftRight, Bell, Boxes, CircleAlert, CreditCard, GalleryVerticalEnd, Images, Inbox, LayoutDashboard, Menu as MenuIcon, Newspaper, Package, Percent, ScrollText, Settings, ShieldCheck, Ticket as TicketIcon, TicketPercent, Truck, Users, Webhook } from 'lucide-react'
+import { ArrowLeftRight, Bell, Boxes, CircleAlert, Cog, CreditCard, GalleryVerticalEnd, Images, Inbox, LayoutDashboard, Menu as MenuIcon, Newspaper, Package, Percent, ScrollText, Settings, ShieldCheck, Ticket as TicketIcon, TicketPercent, Truck, Users, Webhook } from 'lucide-react'
 import { BaxelaMark } from '@/assets/logo'
 import { useAuthStore } from '@/stores/auth-store'
 import { useAppTranslation } from '@/hooks/useAppTranslation'
@@ -66,6 +66,41 @@ export const useSidebarData = (): SidebarData => {
             title: t('sidebar.notifications-inbox'),
             url: '/notifications',
             icon: Bell,
+          },
+          {
+            title: t('sidebar.system'),
+            icon: Cog,
+            items: [
+              {
+                title: t('sidebar.security'),
+                url: '/settings/security',
+                icon: ShieldCheck,
+              },
+              {
+                title: t('sidebar.audit-logs'),
+                url: '/audit/logs',
+                icon: ScrollText,
+                permission: 'audit.admin.logs.list',
+              },
+              {
+                title: t('sidebar.transfer-data'),
+                url: '/transfer',
+                icon: ArrowLeftRight,
+                permission: 'transfer.admin.capabilities.show',
+              },
+              {
+                title: t('sidebar.failed-jobs'),
+                url: '/failed-jobs',
+                icon: CircleAlert,
+                permission: 'core.admin.failed-jobs.list',
+              },
+              {
+                title: t('sidebar.webhooks'),
+                url: '/webhooks',
+                icon: Webhook,
+                permission: 'webhooks.admin.endpoints.list',
+              },
+            ],
           },
         ],
       },
@@ -275,40 +310,6 @@ export const useSidebarData = (): SidebarData => {
                 url: '/discount/promotions',
               },
             ],
-          },
-        ],
-      },
-      {
-        title: t('sidebar.system'),
-        items: [
-          {
-            title: t('sidebar.security'),
-            url: '/settings/security',
-            icon: ShieldCheck,
-          },
-          {
-            title: t('sidebar.audit-logs'),
-            url: '/audit/logs',
-            icon: ScrollText,
-            permission: 'audit.admin.logs.list',
-          },
-          {
-            title: t('sidebar.transfer-data'),
-            url: '/transfer',
-            icon: ArrowLeftRight,
-            permission: 'transfer.admin.capabilities.show',
-          },
-          {
-            title: t('sidebar.failed-jobs'),
-            url: '/failed-jobs',
-            icon: CircleAlert,
-            permission: 'core.admin.failed-jobs.list',
-          },
-          {
-            title: t('sidebar.webhooks'),
-            url: '/webhooks',
-            icon: Webhook,
-            permission: 'webhooks.admin.endpoints.list',
           },
         ],
       },
