@@ -11,10 +11,12 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\UniquePair;
 use Modules\Core\Schemas\Country\CountrySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Transfer\RecordsTransferRemaps;
 use Modules\Shipping\Actions\Admin\Method\CreateMethodAction;
 use Modules\Shipping\Actions\Admin\Method\UpdateMethodAction;
 use Modules\Shipping\Actions\Admin\Rate\CreateRateAction;
@@ -26,6 +28,7 @@ use Modules\Shipping\Models\Rate;
 use Modules\Shipping\Models\Zone;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema;
+use Modules\Shipping\Schemas\Module;
 use Modules\Shipping\Schemas\Rate\RateSchema;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
 use Throwable;
@@ -39,6 +42,8 @@ use Throwable;
  */
 class ShippingTransfer implements ModuleTransferInterface
 {
+    use RecordsTransferRemaps;
+
     public const string SECTION_ZONES = 'zones';
 
     public const string SECTION_METHODS = 'methods';
@@ -71,7 +76,9 @@ class ShippingTransfer implements ModuleTransferInterface
         protected CreateRateAction $createRate,
         protected UpdateRateAction $updateRate,
         protected CoreGatewayInterface $coreGateway,
-    ) {}
+    ) {
+        $this->initTransferRecording();
+    }
 
     public function sections(): array
     {
@@ -245,16 +252,29 @@ class ShippingTransfer implements ModuleTransferInterface
                         continue;
                     }
 
-                    $this->updateZone->handle((string) $existing->getKey(), $payload);
+                    // Write + remap record share the import unit (C7/F11).
+                    $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_ZONES, (int) $sourceId, function () use ($existing, $payload): int {
+                        $this->updateZone->handle((string) $existing->getKey(), $payload);
+
+                        return (int) $existing->getKey();
+                    });
                     $result->recordUpdated();
 
                     continue;
                 }
 
-                $record = $this->createZone->handle($payload);
-                $this->zoneIdBySource[(int) $sourceId] = (int) $record->getKey();
+                // Write + remap record share the import unit (C7/F11).
+                $localZoneId = null;
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_ZONES, (int) $sourceId, function () use ($payload, &$localZoneId): int {
+                    $record = $this->createZone->handle($payload);
+                    $localZoneId = (int) $record->getKey();
+
+                    return $localZoneId;
+                });
+                $this->zoneIdBySource[(int) $sourceId] = $localZoneId;
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -324,16 +344,29 @@ class ShippingTransfer implements ModuleTransferInterface
                         continue;
                     }
 
-                    $this->updateMethod->handle((string) $existing->getKey(), $item);
+                    // Write + remap record share the import unit (C7/F11).
+                    $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_METHODS, (int) $sourceId, function () use ($existing, $item): int {
+                        $this->updateMethod->handle((string) $existing->getKey(), $item);
+
+                        return (int) $existing->getKey();
+                    });
                     $result->recordUpdated();
 
                     continue;
                 }
 
-                $record = $this->createMethod->handle($item);
-                $this->methodIdBySource[(int) $sourceId] = (int) $record->getKey();
+                // Write + remap record share the import unit (C7/F11).
+                $localMethodId = null;
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_METHODS, (int) $sourceId, function () use ($item, &$localMethodId): int {
+                    $record = $this->createMethod->handle($item);
+                    $localMethodId = (int) $record->getKey();
+
+                    return $localMethodId;
+                });
+                $this->methodIdBySource[(int) $sourceId] = $localMethodId;
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -400,15 +433,26 @@ class ShippingTransfer implements ModuleTransferInterface
                         continue;
                     }
 
-                    $this->updateRate->handle((string) $existing->getKey(), $payload);
+                    // Write + remap record share the import unit (C7/F11).
+                    $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_RATES, (int) $sourceId, function () use ($existing, $payload): int {
+                        $this->updateRate->handle((string) $existing->getKey(), $payload);
+
+                        return (int) $existing->getKey();
+                    });
                     $result->recordUpdated();
 
                     continue;
                 }
 
-                $this->createRate->handle($payload);
+                // Write + remap record share the import unit (C7/F11).
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_RATES, (int) $sourceId, function () use ($payload): int {
+                    $record = $this->createRate->handle($payload);
+
+                    return (int) $record->getKey();
+                });
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

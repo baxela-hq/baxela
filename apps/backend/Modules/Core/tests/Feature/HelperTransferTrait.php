@@ -10,6 +10,7 @@ use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Transfer\TransferFormat;
 
 trait HelperTransferTrait
 {
@@ -72,5 +73,32 @@ trait HelperTransferTrait
     public function transferFile(string $content, string $name = 'transfer.json'): File
     {
         return UploadedFile::fake()->createWithContent($name, $content);
+    }
+
+    /**
+     * A minimal identified transfer file for the tax module with one
+     * importable row — the payload shape Tax's admin create accepts.
+     */
+    public function taxTransferFileContent(string $sourceInstallation): string
+    {
+        return json_encode([
+            TransferFormat::KEY_FORMAT => TransferFormat::FORMAT,
+            TransferFormat::KEY_MODULE => 'tax',
+            TransferFormat::KEY_VERSION => TransferFormat::VERSION,
+            TransferFormat::KEY_EXPORTED_AT => now()->toIso8601String(),
+            TransferFormat::KEY_SOURCE_INSTALLATION => $sourceInstallation,
+            TransferFormat::KEY_SECTIONS => [
+                [
+                    TransferFormat::KEY_ENTITY => 'tax-classes',
+                    TransferFormat::KEY_ROWS => [
+                        ['source_id' => 1, 'payload' => [
+                            'name' => 'Standard',
+                            'is_default' => false,
+                            'is_shipping' => true,
+                        ]],
+                    ],
+                ],
+            ],
+        ]);
     }
 }

@@ -11,6 +11,7 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Setting\Actions\Admin\Setting\UpdateSettingAction;
@@ -144,6 +145,7 @@ class SettingTransfer implements ModuleTransferInterface
                 $this->updateSetting->handle([$item]);
                 $result->recordUpdated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

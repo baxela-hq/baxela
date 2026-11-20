@@ -5,8 +5,10 @@ namespace Modules\Core\Support\Transfer;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportOptions;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
+use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\ImportFailedException;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Models\TransferImport;
 use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
@@ -27,9 +29,17 @@ use Throwable;
  */
 final class ModuleTransferRunner
 {
+    public function __construct(
+        private InstallationIdentity $installation,
+        private TransferImportSession $session,
+    ) {}
+
     /**
      * Build a module's transfer envelope: sections in the module's
      * declared dependency order, each filled with request-shaped rows.
+     * Carries this installation's outbound identity (C1) — the additive
+     * `source_installation` key that names the source store when the file
+     * is imported elsewhere.
      *
      * @return array<string, mixed>
      *
@@ -61,6 +71,7 @@ final class ModuleTransferRunner
             TransferFormat::KEY_MODULE => $module,
             TransferFormat::KEY_VERSION => TransferFormat::VERSION,
             TransferFormat::KEY_EXPORTED_AT => now()->toIso8601String(),
+            TransferFormat::KEY_SOURCE_INSTALLATION => $this->installation->current(),
             TransferFormat::KEY_SECTIONS => $sections,
         ];
     }
@@ -121,6 +132,7 @@ final class ModuleTransferRunner
             'module' => $module,
             'version' => (int) $file[TransferFormat::KEY_VERSION],
             'exported_at' => $file[TransferFormat::KEY_EXPORTED_AT] ?? null,
+            'source_installation' => TransferFile::rawSourceInstallation($file),
             'sections' => $sectionRows,
             'total_rows' => $totalRows,
             'row_cap' => $rowCap,
@@ -134,6 +146,15 @@ final class ModuleTransferRunner
      * implementation. Per-row failures are recorded, not thrown; the run
      * (dry runs included) is persisted as an auditable TransferImport.
      *
+     * The whole replay lives inside the destination-module import session
+     * (C7): the module's named lock serializes concurrent imports into
+     * its shared natural-key namespace, and the run context's ownership
+     * hook guarantees no importer statement executes on a session other
+     * than the lock-owning one. A lost session is fatal for the run (F28):
+     * committed units stay committed and the audit row records
+     * `lock_session_lost` — the retry is a plain re-import (idempotent by
+     * remap and natural key).
+     *
      * @return array<string, mixed>
      *
      * @throws ImportFailedException
@@ -145,6 +166,7 @@ final class ModuleTransferRunner
         bool $dryRun,
         string $module,
         ModuleTransferInterface $transfer,
+        bool $allowRawIds = false,
     ): array {
         $startedAt = microtime(true);
 
@@ -161,67 +183,119 @@ final class ModuleTransferRunner
             throw new ImportFailedException(meta: ['reason' => 'row_cap_exceeded']);
         }
 
-        $options = new ImportOptions($strategy, $dryRun);
+        // Source-installation namespace (C1): a valid uuid imports into an
+        // identified namespace; a legacy file (or a malformed declaration)
+        // lands in the reserved unidentified bucket, where raw-id fallback
+        // stays off unless explicitly requested (C2).
+        $rawSource = TransferFile::rawSourceInstallation($file);
+        $identified = TransferFile::isValidSourceInstallation($rawSource);
+        $namespace = $identified ? $rawSource : TransferRemapInterface::UNIDENTIFIED;
+
+        $options = new ImportOptions($strategy, $dryRun, $namespace, $identified, $allowRawIds);
         $importableBySection = [];
         foreach ($transfer->sections() as $section) {
             $importableBySection[$section->key] = $section->importable;
         }
 
-        $sectionSummary = [];
-        $created = 0;
-        $updated = 0;
-        $skipped = 0;
-        $failed = 0;
-        $errors = [];
-        $warnings = [];
+        // The tally is filled by reference so a session-loss abort keeps
+        // the partial counts for the audit row (committed units stay).
+        $tally = [
+            'sectionSummary' => [],
+            'created' => 0,
+            'updated' => 0,
+            'skipped' => 0,
+            'failed' => 0,
+            'errors' => [],
+            'warnings' => $rawSource !== null && ! $identified ? ['invalid_source_installation'] : [],
+        ];
+        $sessionLost = false;
 
-        foreach ($sections as $sectionKey => $rows) {
-            $rows = array_values($rows);
+        try {
+            $this->session->run($module, $namespace, $identified, function (TransferRunContext $context) use ($sections, $importableBySection, $options, $transfer, &$tally): void {
+                foreach ($sections as $sectionKey => $rows) {
+                    // Per-section ownership pre-check (F28): a lost session
+                    // aborts before the next section's importRows() runs.
+                    $context->assertOwnership();
 
-            if (! $importableBySection[$sectionKey]) {
-                $skipped += count($rows);
-                $warnings[] = 'not_importable:'.$sectionKey;
-                $sectionSummary[$sectionKey] = ['created' => 0, 'updated' => 0, 'skipped' => count($rows), 'failed' => 0];
+                    $rows = array_values($rows);
 
-                continue;
-            }
+                    if (! $importableBySection[$sectionKey]) {
+                        $tally['skipped'] += count($rows);
+                        $tally['warnings'][] = 'not_importable:'.$sectionKey;
+                        $tally['sectionSummary'][$sectionKey] = ['created' => 0, 'updated' => 0, 'skipped' => count($rows), 'failed' => 0];
 
-            $result = $transfer->importRows($sectionKey, $rows, $options);
-            $counts = $result->counts();
-            $sectionSummary[$sectionKey] = $counts;
+                        continue;
+                    }
 
-            $created += $counts['created'];
-            $updated += $counts['updated'];
-            $skipped += $counts['skipped'];
-            $failed += $counts['failed'];
-            $errors = array_merge($errors, $result->errors);
-            $warnings = array_merge($warnings, $result->warnings);
+                    $result = $transfer->importRows($sectionKey, $rows, $options);
+                    $counts = $result->counts();
+                    $tally['sectionSummary'][$sectionKey] = $counts;
+
+                    $tally['created'] += $counts['created'];
+                    $tally['updated'] += $counts['updated'];
+                    $tally['skipped'] += $counts['skipped'];
+                    $tally['failed'] += $counts['failed'];
+                    $tally['errors'] = array_merge($tally['errors'], $result->errors);
+                    $tally['warnings'] = array_merge($tally['warnings'], $result->warnings);
+                }
+            });
+        } catch (TransferLockSessionLostException) {
+            $sessionLost = true;
         }
 
         $durationMs = (int) round((microtime(true) - $startedAt) * 1000);
         $errorCap = (int) config('core.transfer.error_cap');
-        $errors = array_slice($errors, 0, $errorCap);
-        $warnings = array_values(array_unique($warnings));
-        $status = ($failed > 0 && $created + $updated + $skipped === 0)
-            ? TransferImportStatusEnum::FAILED
-            : TransferImportStatusEnum::COMPLETED;
+        $errors = array_slice($tally['errors'], 0, $errorCap);
+        $warnings = array_values(array_unique($tally['warnings']));
+        // Resolution diagnostics (C2): how often the legacy raw-id tier
+        // carried a reference — the operator's signal for how much of the
+        // restore leaned on the single-store assumption.
+        $rawIdResolutions = count(array_filter(
+            $tally['warnings'],
+            fn (string $warning): bool => str_starts_with($warning, 'raw_id_fallback:'),
+        ));
 
-        $record = $this->persist(
-            $module,
-            $filename,
-            $status,
-            $strategy,
-            $dryRun,
-            $totalRows,
-            $created,
-            $updated,
-            $skipped,
-            $failed,
-            $durationMs,
-            $errors,
-            $sectionSummary,
-            $warnings,
-        );
+        if ($sessionLost) {
+            $status = TransferImportStatusEnum::FAILED;
+            $warnings[] = 'lock_session_lost';
+        } else {
+            $status = ($tally['failed'] > 0 && $tally['created'] + $tally['updated'] + $tally['skipped'] === 0)
+                ? TransferImportStatusEnum::FAILED
+                : TransferImportStatusEnum::COMPLETED;
+        }
+
+        // Control-plane audit write (F30): runs strictly after session
+        // teardown — the ownership hook is inert here, and after a session
+        // loss the write gets a fresh connection.
+        if ($sessionLost) {
+            DB::reconnect();
+        }
+
+        try {
+            $record = $this->persist(
+                $module,
+                $filename,
+                $status,
+                $strategy,
+                $dryRun,
+                $totalRows,
+                $tally['created'],
+                $tally['updated'],
+                $tally['skipped'],
+                $tally['failed'],
+                $durationMs,
+                $errors,
+                $tally['sectionSummary'],
+                $warnings,
+                $namespace,
+                $sessionLost,
+                $rawIdResolutions,
+            );
+        } catch (Throwable $e) {
+            report($e);
+
+            throw new ImportFailedException(meta: ['reason' => 'audit_persistence_failed']);
+        }
 
         return [
             'id' => (int) $record->getKey(),
@@ -230,14 +304,15 @@ final class ModuleTransferRunner
             'strategy' => $strategy->value,
             'dry_run' => $dryRun,
             'total_rows' => $totalRows,
-            'created_count' => $created,
-            'updated_count' => $updated,
-            'skipped_count' => $skipped,
-            'failed_count' => $failed,
+            'created_count' => $tally['created'],
+            'updated_count' => $tally['updated'],
+            'skipped_count' => $tally['skipped'],
+            'failed_count' => $tally['failed'],
             'duration_ms' => $durationMs,
-            'sections' => $sectionSummary,
+            'sections' => $tally['sectionSummary'],
             'warnings' => $warnings,
             'errors' => $errors,
+            'raw_id_resolutions' => $rawIdResolutions,
         ];
     }
 
@@ -268,7 +343,9 @@ final class ModuleTransferRunner
     /**
      * Replay transaction boundaries belong to the module implementations
      * (per-section or per-row), so a partial run's writes stay committed;
-     * only this audit row is wrapped in its own transaction.
+     * only this audit row is wrapped in its own transaction. Runs after a
+     * session loss carry the failure reason in the summary; the caller
+     * classifies audit-write failures as `audit_persistence_failed` (F30).
      *
      * @param  array<string, array<string, int>>  $sectionSummary
      * @param  list<string>  $errors
@@ -291,7 +368,23 @@ final class ModuleTransferRunner
         array $errors,
         array $sectionSummary,
         array $warnings,
+        string $sourceInstallation,
+        bool $sessionLost,
+        int $rawIdResolutions = 0,
     ): TransferImport {
+        $summary = [
+            'sections' => $sectionSummary,
+            'warnings' => $warnings,
+            // Diagnostics (C1/C2): which source namespace the file
+            // imported into, how the run ended, and how often the legacy
+            // raw-id tier carried a reference.
+            'source_installation' => $sourceInstallation === TransferRemapInterface::UNIDENTIFIED ? null : $sourceInstallation,
+            'raw_id_resolutions' => $rawIdResolutions,
+        ];
+        if ($sessionLost) {
+            $summary['failure_reason'] = 'lock_session_lost';
+        }
+
         DB::beginTransaction();
 
         try {
@@ -309,10 +402,7 @@ final class ModuleTransferRunner
                 TransferImportSchema::FAILED_COUNT => $failed,
                 TransferImportSchema::DURATION_MS => $durationMs,
                 TransferImportSchema::ERRORS => $errors,
-                TransferImportSchema::SUMMARY => [
-                    'sections' => $sectionSummary,
-                    'warnings' => $warnings,
-                ],
+                TransferImportSchema::SUMMARY => $summary,
             ]);
 
             DB::commit();
@@ -320,7 +410,6 @@ final class ModuleTransferRunner
             return $record;
         } catch (Throwable $e) {
             DB::rollBack();
-            report($e);
 
             throw $e;
         }

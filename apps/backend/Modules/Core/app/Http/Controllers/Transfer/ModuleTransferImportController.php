@@ -38,6 +38,7 @@ abstract class ModuleTransferImportController extends Controller
             (bool) $validated[TransferImportSchema::REQ_DRY_RUN],
             $this->moduleName(),
             $this->transfer(),
+            (bool) $validated[TransferImportSchema::REQ_ALLOW_RAW_IDS],
         );
 
         return TransferImportResultResource::make($summary);

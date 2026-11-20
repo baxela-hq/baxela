@@ -16,6 +16,7 @@ class TransferImportRequest extends FormRequest
         // the action always sees both keys. The import is multipart, so
         // booleans arrive as strings — `(bool) 'false'` would be true.
         $dryRun = $this->input(TransferImportSchema::REQ_DRY_RUN, false);
+        $allowRawIds = $this->input(TransferImportSchema::REQ_ALLOW_RAW_IDS, false);
 
         $this->merge([
             TransferImportSchema::REQ_ON_DUPLICATE => $this->input(TransferImportSchema::REQ_ON_DUPLICATE)
@@ -23,6 +24,9 @@ class TransferImportRequest extends FormRequest
             TransferImportSchema::REQ_DRY_RUN => is_bool($dryRun)
                 ? $dryRun
                 : filter_var($dryRun, FILTER_VALIDATE_BOOLEAN),
+            TransferImportSchema::REQ_ALLOW_RAW_IDS => is_bool($allowRawIds)
+                ? $allowRawIds
+                : filter_var($allowRawIds, FILTER_VALIDATE_BOOLEAN),
         ]);
     }
 
@@ -41,6 +45,10 @@ class TransferImportRequest extends FormRequest
                 TransferStrategyEnum::SKIP->value,
             ])],
             TransferImportSchema::REQ_DRY_RUN => ['required', 'boolean'],
+            // Legacy compatibility mode (C2/F16): unidentified (pre-source-
+            // identity) files resolve cross-module raw ids ONLY when the
+            // operator explicitly accepts the single-store assumption.
+            TransferImportSchema::REQ_ALLOW_RAW_IDS => ['required', 'boolean'],
         ];
     }
 

@@ -67,6 +67,32 @@ final class TransferFile
     }
 
     /**
+     * The file's declared source installation, exactly as carried —
+     * `null` when the key is absent (a legacy v1 file). Validity is the
+     * caller's concern: `isValidSourceInstallation()` separates identified
+     * files from malformed declarations, and both land in a namespace the
+     * remap store can key.
+     *
+     * @param  array<string, mixed>  $file
+     */
+    public static function rawSourceInstallation(array $file): ?string
+    {
+        $value = $file[TransferFormat::KEY_SOURCE_INSTALLATION] ?? null;
+
+        return is_string($value) && $value !== '' ? $value : null;
+    }
+
+    /**
+     * Whether the file's source installation is a well-formed uuid — the
+     * condition for importing into an identified namespace (C1/C2).
+     */
+    public static function isValidSourceInstallation(?string $value): bool
+    {
+        return $value !== null
+            && preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $value) === 1;
+    }
+
+    /**
      * File sections keyed by entity, preserving the file's own order
      * (exporters emit sections in dependency order; the import path
      * re-orders against the module's declared order).

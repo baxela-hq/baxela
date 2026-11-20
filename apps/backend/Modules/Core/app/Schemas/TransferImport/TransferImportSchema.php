@@ -43,4 +43,11 @@ class TransferImportSchema
     public const string REQ_ON_DUPLICATE = 'on_duplicate';
 
     public const string REQ_DRY_RUN = 'dry_run';
+
+    /**
+     * Legacy compatibility mode (C2/F16): allow raw-id resolution of
+     * cross-module references when the file carries no (or an invalid)
+     * source installation.
+     */
+    public const string REQ_ALLOW_RAW_IDS = 'allow_raw_ids';
 }

@@ -13,6 +13,7 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Menu\Actions\Admin\Menu\CreateMenuAction;
 use Modules\Menu\Actions\Admin\Menu\UpdateMenuAction;
@@ -254,6 +255,7 @@ class MenuTransfer implements ModuleTransferInterface
                 $this->menuIdBySource[(int) $sourceId] = (int) $record->getKey();
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -354,6 +356,7 @@ class MenuTransfer implements ModuleTransferInterface
                 $this->linkIdBySource[(int) $sourceId] = (int) $record->getKey();
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

@@ -15,6 +15,7 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Throwable;
 
 /**
@@ -175,6 +176,7 @@ class ContactTransfer implements ModuleTransferInterface
                     $result->recordUpdated();
                 }
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

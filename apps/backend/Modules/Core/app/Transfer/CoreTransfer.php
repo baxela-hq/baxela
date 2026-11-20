@@ -10,12 +10,15 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Models\Country;
 use Modules\Core\Models\Currency;
 use Modules\Core\Models\Language;
 use Modules\Core\Schemas\Country\CountrySchema;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Schemas\Module;
+use Modules\Core\Support\Transfer\RecordsTransferRemaps;
 use Throwable;
 
 /**
@@ -31,6 +34,13 @@ use Throwable;
  */
 class CoreTransfer implements ModuleTransferInterface
 {
+    use RecordsTransferRemaps;
+
+    public function __construct()
+    {
+        $this->initTransferRecording();
+    }
+
     public const string SECTION_LANGUAGES = 'languages';
 
     public const string SECTION_CURRENCIES = 'currencies';
@@ -190,28 +200,38 @@ class CoreTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                $wasCreated = false;
-                if ($existing !== null) {
-                    if ($options->strategy === TransferStrategyEnum::SKIP) {
-                        $result->recordSkipped();
+                if ($existing !== null && $options->strategy === TransferStrategyEnum::SKIP) {
+                    $result->recordSkipped();
 
-                        continue;
+                    continue;
+                }
+
+                $sourceId = (int) $row[self::KEY_SOURCE_ID];
+
+                // Write + remap record share the import unit (C7/F11).
+                $localId = null;
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_LANGUAGES, $sourceId, function () use ($payload, &$existing, &$wasCreated): int {
+                    $wasCreated = false;
+                    if ($existing !== null) {
+                        $existing->update($payload);
+                    } else {
+                        // Seeder-owned data: new rows mirror the seeder defaults.
+                        $existing = Language::query()->create($payload);
+                        $wasCreated = true;
                     }
 
-                    $existing->update($payload);
-                } else {
-                    // Seeder-owned data: new rows mirror the seeder defaults.
-                    $existing = Language::query()->create($payload);
-                    $wasCreated = true;
-                }
+                    if ($payload[LanguageSchema::IS_DEFAULT]) {
+                        // Exactly one default language, like the settings sync.
+                        Language::query()
+                            ->whereKeyNot($existing->getKey())
+                            ->update([LanguageSchema::IS_DEFAULT => false]);
+                        $existing->update([LanguageSchema::IS_DEFAULT => true]);
+                    }
 
-                if ($payload[LanguageSchema::IS_DEFAULT]) {
-                    // Exactly one default language, like the settings sync.
-                    Language::query()
-                        ->whereKeyNot($existing->getKey())
-                        ->update([LanguageSchema::IS_DEFAULT => false]);
-                    $existing->update([LanguageSchema::IS_DEFAULT => true]);
-                }
+                    $localId = (int) $existing->getKey();
+
+                    return $localId;
+                });
 
                 if ($wasCreated) {
                     $result->recordCreated();
@@ -219,6 +239,7 @@ class CoreTransfer implements ModuleTransferInterface
                     $result->recordUpdated();
                 }
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -265,26 +286,33 @@ class CoreTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                $wasCreated = false;
-                if ($existing !== null) {
-                    if ($options->strategy === TransferStrategyEnum::SKIP) {
-                        $result->recordSkipped();
+                if ($existing !== null && $options->strategy === TransferStrategyEnum::SKIP) {
+                    $result->recordSkipped();
 
-                        continue;
+                    continue;
+                }
+
+                $sourceId = (int) $row[self::KEY_SOURCE_ID];
+
+                // Write + remap record share the import unit (C7/F11).
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_CURRENCIES, $sourceId, function () use ($payload, &$existing, &$wasCreated): int {
+                    $wasCreated = false;
+                    if ($existing !== null) {
+                        $existing->update($payload);
+                    } else {
+                        $existing = Currency::query()->create($payload);
+                        $wasCreated = true;
                     }
 
-                    $existing->update($payload);
-                } else {
-                    $existing = Currency::query()->create($payload);
-                    $wasCreated = true;
-                }
+                    if ($payload[CurrencySchema::IS_DEFAULT]) {
+                        Currency::query()
+                            ->whereKeyNot($existing->getKey())
+                            ->update([CurrencySchema::IS_DEFAULT => false]);
+                        $existing->update([CurrencySchema::IS_DEFAULT => true]);
+                    }
 
-                if ($payload[CurrencySchema::IS_DEFAULT]) {
-                    Currency::query()
-                        ->whereKeyNot($existing->getKey())
-                        ->update([CurrencySchema::IS_DEFAULT => false]);
-                    $existing->update([CurrencySchema::IS_DEFAULT => true]);
-                }
+                    return (int) $existing->getKey();
+                });
 
                 if ($wasCreated) {
                     $result->recordCreated();
@@ -292,6 +320,7 @@ class CoreTransfer implements ModuleTransferInterface
                     $result->recordUpdated();
                 }
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -337,22 +366,31 @@ class CoreTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                if ($existing !== null) {
-                    if ($options->strategy === TransferStrategyEnum::SKIP) {
-                        $result->recordSkipped();
-
-                        continue;
-                    }
-
-                    $existing->update($payload);
-                    $result->recordUpdated();
+                if ($existing !== null && $options->strategy === TransferStrategyEnum::SKIP) {
+                    $result->recordSkipped();
 
                     continue;
                 }
 
-                Country::query()->create($payload);
-                $result->recordCreated();
+                $sourceId = (int) $row[self::KEY_SOURCE_ID];
+
+                // Write + remap record share the import unit (C7/F11).
+                $wasCreated = $existing === null;
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_COUNTRIES, $sourceId, function () use ($payload, $existing): int {
+                    $localId = $existing !== null
+                        ? tap($existing)->update($payload)->getKey()
+                        : Country::query()->create($payload)->getKey();
+
+                    return (int) $localId;
+                });
+
+                if ($wasCreated) {
+                    $result->recordCreated();
+                } else {
+                    $result->recordUpdated();
+                }
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

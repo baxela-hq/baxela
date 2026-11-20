@@ -66,7 +66,11 @@ use Modules\Catalog\Support\DataTransfer\CatalogTransferFormat;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\DTOs\MediaDto;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
+use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Transfer\TransferFile;
+use Modules\Core\Support\Transfer\TransferImportSession;
 use Modules\Core\Utils\Auth;
 use RuntimeException;
 use Throwable;
@@ -120,6 +124,12 @@ class ImportCatalogDataAction
 
     protected int $sentinel = self::SENTINEL_BASE;
 
+    /**
+     * The importing file's source-installation namespace (C1) — set by
+     * handle() before the replay, used when persisting the in-run maps.
+     */
+    protected string $sourceNamespace = '';
+
     public function __construct(
         protected CoreGatewayInterface $coreGateway,
         protected MediaGatewayInterface $mediaGateway,
@@ -140,6 +150,8 @@ class ImportCatalogDataAction
         protected CreateProductAction $createProduct,
         protected UpdateProductAction $updateProduct,
         protected UpdateFeaturedAction $updateFeatured,
+        protected TransferImportSession $importSession,
+        protected TransferRemapInterface $remaps,
     ) {}
 
     /**
@@ -169,13 +181,23 @@ class ImportCatalogDataAction
             throw new ImportFailedException(meta: ['reason' => 'row_cap_exceeded']);
         }
 
-        foreach ($sections as $entity => $rows) {
-            $this->sectionSummary[$entity] = ['created' => 0, 'updated' => 0, 'skipped' => 0, 'failed' => 0];
+        // The replay lives inside the destination-module import session
+        // (C7) like every standard importer: the catalog lock serializes
+        // concurrent imports, and the run context's ownership hook guards
+        // every statement. Namespace from the file's source identity (C1).
+        $rawSource = TransferFile::rawSourceInstallation($file);
+        $identified = TransferFile::isValidSourceInstallation($rawSource);
+        $this->sourceNamespace = $identified ? $rawSource : TransferRemapInterface::UNIDENTIFIED;
 
-            foreach (array_values($rows) as $index => $row) {
-                $this->runRow($entity, $index + 1, $row);
+        $this->importSession->run(CatalogTransferFormat::MODULE, $this->sourceNamespace, $identified, function () use ($sections): void {
+            foreach ($sections as $entity => $rows) {
+                $this->sectionSummary[$entity] = ['created' => 0, 'updated' => 0, 'skipped' => 0, 'failed' => 0];
+
+                foreach (array_values($rows) as $index => $row) {
+                    $this->runRow($entity, $index + 1, $row);
+                }
             }
-        }
+        });
 
         $durationMs = (int) round((microtime(true) - $startedAt) * 1000);
         $summary = $this->rollup();
@@ -325,6 +347,7 @@ class ImportCatalogDataAction
                 return $this->apply($entity, $payload, $existingId);
             });
         } catch (Throwable $e) {
+            TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
             report($e);
             $this->fail($entity, $rowNumber, ['The row could not be imported.']);
 
@@ -1082,6 +1105,20 @@ class ImportCatalogDataAction
     {
         if ($sourceId > 0) {
             $this->maps[$entity][$sourceId] = $localId;
+        }
+
+        // Persist the mapping for real runs (C1): other modules' imports
+        // resolve their catalog references through the ledger. Dry-run
+        // sentinels never persist (C4). A dropped record self-heals —
+        // catalog rows match by natural key (slug/SKU/code) — so the
+        // ledger write is best-effort with a warning, not a row failure.
+        if (! $this->dryRun && $sourceId > 0 && $localId > 0) {
+            try {
+                $this->remaps->record($this->sourceNamespace, CatalogTransferFormat::MODULE, $entity, $sourceId, $localId);
+            } catch (Throwable $e) {
+                report($e);
+                $this->warnings[] = 'remap_record_failed:'.$entity.':'.$sourceId;
+            }
         }
     }
 

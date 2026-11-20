@@ -24,6 +24,14 @@ final class TransferFormat
 
     public const string KEY_EXPORTED_AT = 'exported_at';
 
+    /**
+     * Additive v1 envelope key (C1): the exporting installation's public
+     * identity. Optional by design — legacy readers ignore unknown keys,
+     * and legacy files without it import into the reserved
+     * `unidentified` remap namespace.
+     */
+    public const string KEY_SOURCE_INSTALLATION = 'source_installation';
+
     public const string KEY_SECTIONS = 'sections';
 
     public const string KEY_ENTITY = 'entity';

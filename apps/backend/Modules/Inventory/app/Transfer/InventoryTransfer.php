@@ -11,6 +11,8 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Support\Transfer\CrossModuleResolver;
 use Modules\Inventory\Models\InventoryStock;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 use Throwable;
@@ -33,6 +35,7 @@ class InventoryTransfer implements ModuleTransferInterface
     public function __construct(
         protected InventoryGatewayInterface $inventoryGateway,
         protected CatalogGatewayInterface $catalogGateway,
+        protected CrossModuleResolver $variantResolver,
     ) {}
 
     public function sections(): array
@@ -97,19 +100,37 @@ class InventoryTransfer implements ModuleTransferInterface
             }
 
             try {
-                $variantId = (int) $payload[InventoryStockSchema::VARIANT_ID];
                 $quantity = (int) $payload[InventoryStockSchema::QUANTITY];
+
+                // The variant reference resolves through the C2 tiers
+                // (remap → raw, raw gated by the file's identity) before
+                // the ledger invariant check.
+                $variantResolution = $this->variantResolver->resolve(
+                    $options,
+                    'catalog',
+                    'variants',
+                    (int) $payload[InventoryStockSchema::VARIANT_ID],
+                    null,
+                    fn (int $id): bool => $this->catalogGateway->variantExists($id),
+                    nullable: false,
+                );
+
+                if ($variantResolution->failed()) {
+                    $result->recordFailed($label.': '.$variantResolution->error);
+
+                    continue;
+                }
+
+                if ($variantResolution->warning !== null) {
+                    $result->warn($label.': '.$variantResolution->warning);
+                }
+
+                $variantId = (int) $variantResolution->localId;
 
                 // One stock row per variant — the ledger's natural key.
                 $existing = InventoryStock::query()
                     ->where(InventoryStockSchema::VARIANT_ID, $variantId)
                     ->first();
-
-                if ($existing === null && ! $this->catalogGateway->variantExists($variantId)) {
-                    $result->recordFailed($label.': unknown_variant:'.$variantId);
-
-                    continue;
-                }
 
                 if ($options->dryRun) {
                     $this->recordOutcome($result, $options, $existing !== null);
@@ -132,6 +153,7 @@ class InventoryTransfer implements ModuleTransferInterface
                     $result->recordCreated();
                 }
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

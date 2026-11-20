@@ -10,14 +10,17 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\RegionCodeRule;
+use Modules\Core\Support\Transfer\RecordsTransferRemaps;
 use Modules\Tax\Actions\Admin\TaxClass\CreateTaxClassAction;
 use Modules\Tax\Actions\Admin\TaxClass\UpdateTaxClassAction;
 use Modules\Tax\Actions\Admin\TaxRate\CreateTaxRateAction;
 use Modules\Tax\Actions\Admin\TaxRate\UpdateTaxRateAction;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Models\TaxRate;
+use Modules\Tax\Schemas\Module;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 use Throwable;
@@ -30,6 +33,8 @@ use Throwable;
  */
 class TaxTransfer implements ModuleTransferInterface
 {
+    use RecordsTransferRemaps;
+
     public const string SECTION_TAX_CLASSES = 'tax-classes';
 
     public const string SECTION_TAX_RATES = 'tax-rates';
@@ -53,7 +58,9 @@ class TaxTransfer implements ModuleTransferInterface
         protected UpdateTaxClassAction $updateTaxClass,
         protected CreateTaxRateAction $createTaxRate,
         protected UpdateTaxRateAction $updateTaxRate,
-    ) {}
+    ) {
+        $this->initTransferRecording();
+    }
 
     public function sections(): array
     {
@@ -195,16 +202,30 @@ class TaxTransfer implements ModuleTransferInterface
                         continue;
                     }
 
-                    $this->updateTaxClass->handle((string) $existing->getKey(), $payload);
+                    // Write + remap record share the import unit (C7/F11).
+                    $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_TAX_CLASSES, (int) $sourceId, function () use ($existing, $payload): int {
+                        $this->updateTaxClass->handle((string) $existing->getKey(), $payload);
+
+                        return (int) $existing->getKey();
+                    });
                     $result->recordUpdated();
 
                     continue;
                 }
 
-                $record = $this->createTaxClass->handle($payload);
-                $this->taxClassIdBySource[(int) $sourceId] = (int) $record->getKey();
+                // Write + remap record share the import unit (C7/F11); the
+                // in-run map keeps rate references resolvable this run.
+                $localId = null;
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_TAX_CLASSES, (int) $sourceId, function () use ($payload, &$localId): int {
+                    $record = $this->createTaxClass->handle($payload);
+                    $localId = (int) $record->getKey();
+
+                    return $localId;
+                });
+                $this->taxClassIdBySource[(int) $sourceId] = $localId;
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -279,15 +300,26 @@ class TaxTransfer implements ModuleTransferInterface
                         continue;
                     }
 
-                    $this->updateTaxRate->handle((string) $existing->getKey(), $payload);
+                    // Write + remap record share the import unit (C7/F11).
+                    $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_TAX_RATES, (int) $sourceId, function () use ($existing, $payload): int {
+                        $this->updateTaxRate->handle((string) $existing->getKey(), $payload);
+
+                        return (int) $existing->getKey();
+                    });
                     $result->recordUpdated();
 
                     continue;
                 }
 
-                $this->createTaxRate->handle($payload);
+                // Write + remap record share the import unit (C7/F11).
+                $this->remapUnit($options, Module::NAME_LOWER, self::SECTION_TAX_RATES, (int) $sourceId, function () use ($payload): int {
+                    $record = $this->createTaxRate->handle($payload);
+
+                    return (int) $record->getKey();
+                });
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }

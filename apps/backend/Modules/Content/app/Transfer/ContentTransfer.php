@@ -33,7 +33,9 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Transfer\CrossModuleResolver;
 use Throwable;
 
 /**
@@ -72,6 +74,7 @@ class ContentTransfer implements ModuleTransferInterface
         protected UpdatePostAction $updatePost,
         protected CoreGatewayInterface $coreGateway,
         protected CatalogGatewayInterface $catalogGateway,
+        protected CrossModuleResolver $productResolver,
     ) {}
 
     public function sections(): array
@@ -322,6 +325,7 @@ class ContentTransfer implements ModuleTransferInterface
                 $this->createPage->handle($item);
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -433,6 +437,7 @@ class ContentTransfer implements ModuleTransferInterface
                 $this->postCategoryIdBySource[(int) $sourceId] = (int) $record->getKey();
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
@@ -460,16 +465,40 @@ class ContentTransfer implements ModuleTransferInterface
                 continue;
             }
 
-            // Catalog selections are validated through the gateway, never
-            // by touching Catalog's tables.
+            // Catalog selections resolve through the C2 tiers (remap → raw,
+            // raw gated by the file's identity) and are validated through
+            // the gateway, never by touching Catalog's tables.
+            $resolvedProducts = [];
             foreach ($payload[PostSchema::RES_PRODUCTS] ?? [] as $productId) {
-                if (! is_numeric($productId) || ! $this->catalogGateway->productExists((int) $productId)) {
-                    $result->recordFailed($label.': unknown_product:'.
-                        (is_numeric($productId) ? (int) $productId : (string) $productId));
+                if (! is_numeric($productId)) {
+                    $result->recordFailed($label.': unknown_product:'.(string) $productId);
 
                     continue 2;
                 }
+
+                $resolution = $this->productResolver->resolve(
+                    $options,
+                    'catalog',
+                    'products',
+                    (int) $productId,
+                    null,
+                    fn (int $id): bool => $this->catalogGateway->productExists($id),
+                    nullable: false,
+                );
+
+                if ($resolution->failed()) {
+                    $result->recordFailed($label.': '.$resolution->error);
+
+                    continue 2;
+                }
+
+                if ($resolution->warning !== null) {
+                    $result->warn($label.': '.$resolution->warning);
+                }
+
+                $resolvedProducts[] = $resolution->localId;
             }
+            $payload[PostSchema::RES_PRODUCTS] = $resolvedProducts;
 
             // Categories remap through this run's category section.
             $categoryIds = [];
@@ -552,6 +581,7 @@ class ContentTransfer implements ModuleTransferInterface
                 $this->createPost->handle($item);
                 $result->recordCreated();
             } catch (Throwable $e) {
+                TransferLockSessionLostException::rethrow($e); // session loss is fatal (C7), never a row failure
                 report($e);
                 $result->recordFailed($label.': '.($e->getMessage() !== '' ? $e->getMessage() : class_basename($e)));
             }
