@@ -37,6 +37,9 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
   const [suggestions, setSuggestions] = useState<ApiProduct[]>([]);
   const [suggesting, setSuggesting] = useState(false);
   const [suggestError, setSuggestError] = useState(false);
+  // A request completed for the current query (success or failure) — what
+  // separates "no results" from "hasn't queried yet".
+  const [queried, setQueried] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -77,6 +80,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
     setSuggesting(false);
     setSuggestions([]);
     setSuggestError(false);
+    setQueried(false);
   };
 
   const querySuggestions = (term: string) => {
@@ -89,6 +93,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
       setSuggestions([]);
       setSuggesting(false);
       setSuggestError(false);
+      setQueried(false);
 
       return;
     }
@@ -96,6 +101,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
     const requestId = ++requestSeqRef.current;
     setSuggesting(true);
     setSuggestError(false);
+    setQueried(false);
 
     abortRef.current?.abort();
     const controller = new AbortController();
@@ -112,12 +118,14 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
         if (requestId !== requestSeqRef.current) return;
         setSuggestions(page.data);
         setSuggesting(false);
+        setQueried(true);
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted || requestId !== requestSeqRef.current) return;
         setSuggestions([]);
         setSuggestError(true);
         setSuggesting(false);
+        setQueried(true);
         void error;
       });
   };
@@ -148,7 +156,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
   };
 
   const hasSuggestions = suggestions.length > 0;
-  const hasSuggestionState = suggesting || suggestError || hasSuggestions;
+  const hasSuggestionState = suggesting || suggestError || queried;
 
   return (
     <div>
@@ -232,7 +240,7 @@ export function SearchMenu({ categories }: { categories: NavItem[] }) {
               >
                 {t("search.texts.suggest_error")}
               </p>
-            ) : hasSuggestions ? (
+            ) : hasSuggestions && !suggestError ? (
               <ul className="divide-y divide-border-light">
                 {suggestions.map((product) => (
                   <li key={product.id}>
