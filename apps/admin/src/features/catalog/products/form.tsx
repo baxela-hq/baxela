@@ -722,7 +722,7 @@ export function ProductForm() {
                               </Button>
                             </div>
 
-                            <div className="mt-3 max-h-48 space-y-2 overflow-y-auto">
+                            <div className="mt-3 max-h-[168px] space-y-2 overflow-y-auto">
                               {m.values.map((v) => (
                                 <div key={v.id} className="flex items-center gap-2">
                                   <Checkbox
