@@ -17,8 +17,8 @@ use Modules\User\Schemas\Profile\ProfileSchema;
  * @property string|null $display_name
  * @property string|null $bio
  * @property string|null $avatar
- * @property string|null $gender
- * @property string|null $date_of_birth
+ * @property GenderEnum|null $gender
+ * @property CarbonInterface|null $date_of_birth
  * @property CarbonInterface|null $created_at
  * @property CarbonInterface|null $updated_at
  *

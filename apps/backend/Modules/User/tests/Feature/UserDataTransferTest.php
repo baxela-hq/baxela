@@ -40,13 +40,16 @@ it('exports the user directory, addresses and wishlist items', function () {
     expect($file['module'])->toBe('user')
         ->and(array_column($file['sections'], 'entity'))->toBe(['profiles', 'addresses', 'wishlist-items']);
 
-    $directory = collect($file['sections'][0]['rows'])->keyBy(fn ($row) => $row['payload']['email']);
-    expect($directory->get('jane@example.com')['payload']['full_name'])->toBe('Jane Doe')
-        ->and($directory->get('jane@example.com')['payload']['has_profile'])->toBeTrue()
-        ->and($directory->get('jane@example.com')['source_id'])->toBe($user->id)
-        ->and($directory->get('bare@example.com')['payload']['has_profile'])->toBeFalse()
-        ->and($directory->get('bare@example.com')['payload']['full_name'])->toBeNull()
-        ->and($directory->get('bare@example.com')['source_id'])->toBe($bare->id);
+    $directoryRows = [];
+    foreach ($file['sections'][0]['rows'] as $row) {
+        $directoryRows[$row['payload']['email']] = $row;
+    }
+    expect($directoryRows['jane@example.com']['payload']['full_name'])->toBe('Jane Doe')
+        ->and($directoryRows['jane@example.com']['payload']['has_profile'])->toBeTrue()
+        ->and($directoryRows['jane@example.com']['source_id'])->toBe($user->id)
+        ->and($directoryRows['bare@example.com']['payload']['has_profile'])->toBeFalse()
+        ->and($directoryRows['bare@example.com']['payload']['full_name'])->toBeNull()
+        ->and($directoryRows['bare@example.com']['source_id'])->toBe($bare->id);
 
     expect($file['sections'][1]['rows'][0]['payload'][AddressSchema::COUNTRY_CODE])->toBe('DE')
         ->and($file['sections'][1]['rows'][0]['payload'][AddressSchema::REGION_CODE])->toBe('BE')
@@ -72,7 +75,10 @@ it('round-trips users, attaching to local accounts by email (C6)', function () {
     $bare = User::factory()->create(['email' => 'bare@example.com']);
 
     $file = $this->exportedUserDataFile();
-    $sourceIds = collect($file['sections'][0]['rows'])->keyBy(fn ($row) => $row['payload']['email']);
+    $sourceIds = [];
+    foreach ($file['sections'][0]['rows'] as $row) {
+        $sourceIds[$row['payload']['email']] = $row;
+    }
 
     // The destination "store": wipe the data planes but keep the auth
     // users and the catalog — Jane survives here; Bare does not exist in
@@ -109,7 +115,7 @@ it('round-trips users, attaching to local accounts by email (C6)', function () {
         ->and($bareLocal->hasRole('super-admin'))->toBeFalse();
 
     // The ledger: users, addresses, wishlist items all mapped per source.
-    $sourceJane = (int) $sourceIds->get('jane@example.com')['source_id'];
+    $sourceJane = (int) $sourceIds['jane@example.com']['source_id'];
     expect(TransferRemap::query()->where('module', 'user')->where('entity', 'users')->where('source_id', $sourceJane)->value('local_id'))
         ->toBe((int) $janeLocal->id);
 });
@@ -141,7 +147,7 @@ it('fails legacy rows without emails instead of guessing identity (C6)', functio
     );
 
     expect($summary['failed_count'])->toBe(1)
-        ->and(collect($summary['errors'])->first())->toContain('user_unresolvable_no_email')
+        ->and($summary['errors'][0])->toContain('user_unresolvable_no_email')
         // Only the acting admin exists — no account was guessed into being.
         ->and(User::query()->count())->toBe(1);
 });

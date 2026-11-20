@@ -65,7 +65,12 @@ class OrderTransfer implements ModuleTransferInterface
 
     public const string SECTION_ORDER_RETURNS = 'order-returns';
 
-    /** Source order id → ['local' => int, 'ok' => bool, 'skipped' => bool]. */
+    /**
+     * Source order id → this run's parent state: the local id, whether
+     * the parent hydrated successfully, and whether it was subtree-skipped.
+     *
+     * @var array<int, array{local: int, ok: bool, skipped: bool}>
+     */
     private array $orderStateBySource = [];
 
     public function __construct(
@@ -263,7 +268,7 @@ class OrderTransfer implements ModuleTransferInterface
         );
 
         $rowsByParent = [];
-        foreach (array_values($rows) as $index => $row) {
+        foreach ($rows as $index => $row) {
             $label = $section.'['.($index + 1).']';
             $payload = $row[self::KEY_PAYLOAD] ?? null;
             $sourceId = $row[self::KEY_SOURCE_ID] ?? null;
@@ -407,6 +412,9 @@ class OrderTransfer implements ModuleTransferInterface
      * invariant is checked with decimal-string arithmetic as a WARNING —
      * history hydrates faithfully even when it violates today's rules.
      */
+    /**
+     * @param  array<string, mixed>  $values
+     */
     private function resolveItemRefs(array &$values, ImportOptions $options, ImportResult $result, string $label): bool
     {
         $variantId = $this->remaps->resolve($options->sourceInstallation, 'catalog', 'variants', (int) ($values[OrderItemSchema::VARIANT_ID] ?? 0));
@@ -471,8 +479,9 @@ class OrderTransfer implements ModuleTransferInterface
             return;
         }
 
-        if ((int) ($values[OrderSchema::COUPON_ID] ?? 0) !== $resolved && isset($values[OrderSchema::COUPON_ID])) {
-            $result->warn($label.': natural_key_overrides_remap:discount.coupons:'.($values[OrderSchema::COUPON_ID] ?? ''));
+        $sourceCouponId = isset($values[OrderSchema::COUPON_ID]) ? (int) $values[OrderSchema::COUPON_ID] : 0;
+        if ($sourceCouponId > 0 && $sourceCouponId !== $resolved) {
+            $result->warn($label.': natural_key_overrides_remap:discount.coupons:'.$sourceCouponId);
         }
 
         $values[OrderSchema::COUPON_ID] = $resolved;
@@ -583,7 +592,9 @@ class OrderTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @param  Builder  $query
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  Builder<TModel>  $query
      * @return list<array{source_id: int, payload: array<string, mixed>}>
      */
     private function exportRowsOf($query, ?\Closure $payload = null): array
@@ -609,13 +620,17 @@ class OrderTransfer implements ModuleTransferInterface
      *
      * @return array<string, mixed>
      */
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model  $record
+     * @return array<string, mixed>
+     */
     private function attributesToPayload($record): array
     {
         $payload = [];
         foreach ($record->getAttributes() as $key => $value) {
             $payload[$key] = match (true) {
                 $value instanceof BackedEnum => $value->value,
-                $value instanceof DateTimeInterface => $value->toIso8601String(),
+                $value instanceof DateTimeInterface => $value->format(DATE_ATOM),
                 default => $value,
             };
         }

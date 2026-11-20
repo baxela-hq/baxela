@@ -48,8 +48,7 @@ it('cannot sign in with an imported account until Auth activates it (C6/F22)', f
     // could ever set one), the account is refused at the ACTIVATION gate
     // — Auth owns that gate (AbstractAction), not the import (C6/F22).
     $account = User::query()->findOrFail($id);
-    $account->{UserSchema::PASSWORD} = 'correct-horse-battery-staple';
-    $account->save();
+    $account->forceFill([UserSchema::PASSWORD => 'correct-horse-battery-staple'])->save();
 
     $action = $this->app->make(SignInAction::class);
     expect(fn () => $action->handle(

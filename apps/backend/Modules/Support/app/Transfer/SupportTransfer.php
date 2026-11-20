@@ -119,8 +119,9 @@ class SupportTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                $userId = $this->resolveUserId($payload[TicketSchema::USER_ID] ?? null, $options);
-                if ($payload[TicketSchema::USER_ID] !== null && $userId === null) {
+                $payloadUserId = $payload[TicketSchema::USER_ID] ?? null;
+                $userId = $this->resolveUserId($payloadUserId, $options);
+                if ($payloadUserId !== null && $userId === null) {
                     $result->warn($label.': loose_ref_unresolved:user.users:'.($payload[TicketSchema::USER_ID] ?? ''));
                 }
 
@@ -197,8 +198,9 @@ class SupportTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                $userId = $this->resolveUserId($payload[TicketMessageSchema::USER_ID] ?? null, $options);
-                if ($payload[TicketMessageSchema::USER_ID] !== null && $userId === null) {
+                $payloadUserId = $payload[TicketMessageSchema::USER_ID] ?? null;
+                $userId = $this->resolveUserId($payloadUserId, $options);
+                if ($payloadUserId !== null && $userId === null) {
                     $result->warn($label.': loose_ref_unresolved:user.users:'.($payload[TicketMessageSchema::USER_ID] ?? ''));
                 }
 
@@ -267,7 +269,9 @@ class SupportTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @param  Builder  $query
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  Builder<TModel>  $query
      * @return list<array{source_id: int, payload: array<string, mixed>}>
      */
     private function exportRowsOf($query): array

@@ -20,6 +20,9 @@ uses(HelperTrait::class);
  * with an EXPECTED warning; pass 2 (after Order import) resolves them via
  * the ledger; usage_count recomputes from the LOCAL dataset.
  */
+/**
+ * @param  list<array<string, mixed>>  $redemptionRows
+ */
 function redemptionTransferFile(string $source, array $redemptionRows): string
 {
     return json_encode([
@@ -70,7 +73,7 @@ it('skips order-linked redemptions with an expected warning, then resolves them 
 
     expect($pass1['failed_count'])->toBe(0)
         ->and($pass1['skipped_count'])->toBe(1)
-        ->and(collect($pass1['warnings'])->contains(fn ($w) => str_contains((string) $w, 'pending_order_import')))->toBeTrue()
+        ->and(array_filter($pass1['warnings'], fn (string $w): bool => str_contains($w, 'pending_order_import')) !== [])
         ->and(Redemption::query()->count())->toBe(0);
 
     // The Order import happened; its ledger is now known.
@@ -140,5 +143,5 @@ it('fails redemptions whose coupon does not exist locally (config must restore f
     );
 
     expect($summary['failed_count'])->toBe(1)
-        ->and(collect($summary['errors'])->first())->toContain('unknown_coupon:NEVERSEEN');
+        ->and($summary['errors'][0])->toContain('unknown_coupon:NEVERSEEN');
 });

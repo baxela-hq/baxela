@@ -542,6 +542,9 @@ class DiscountTransfer implements ModuleTransferInterface
         return $result;
     }
 
+    /**
+     * @return array<string, list<mixed>>
+     */
     private function promotionRules(): array
     {
         return [

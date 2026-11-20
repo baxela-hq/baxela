@@ -430,7 +430,9 @@ class PaymentTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @param  Builder  $query
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     *
+     * @param  Builder<TModel>  $query
      * @return list<array{source_id: int, payload: array<string, mixed>}>
      */
     private function exportRowsOf($query): array
@@ -454,13 +456,17 @@ class PaymentTransfer implements ModuleTransferInterface
      *
      * @return array<string, mixed>
      */
+    /**
+     * @param  \Illuminate\Database\Eloquent\Model  $record
+     * @return array<string, mixed>
+     */
     private function attributesToPayload($record): array
     {
         $payload = [];
         foreach ($record->getAttributes() as $key => $value) {
             $payload[$key] = match (true) {
                 $value instanceof BackedEnum => $value->value,
-                $value instanceof DateTimeInterface => $value->toIso8601String(),
+                $value instanceof DateTimeInterface => $value->format(DATE_ATOM),
                 default => $value,
             };
         }

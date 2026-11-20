@@ -31,7 +31,7 @@ class DiscountGateway implements DiscountGatewayInterface
             ->where(CouponSchema::CODE, strtoupper(trim($code)))
             ->first();
 
-        if (is_null($coupon)) {
+        if ($coupon === null) {
             return CouponEvaluation::failed(CouponFailureEnum::NOT_FOUND);
         }
 
@@ -130,7 +130,7 @@ class DiscountGateway implements DiscountGatewayInterface
             ->where(RedemptionSchema::ORDER_ID, $orderId)
             ->first();
 
-        if (is_null($redemption)) {
+        if ($redemption === null) {
             return false;
         }
 
@@ -146,7 +146,7 @@ class DiscountGateway implements DiscountGatewayInterface
             ->lockForUpdate()
             ->first();
 
-        if (is_null($redemption)) {
+        if ($redemption === null) {
             return false;
         }
 

@@ -60,7 +60,11 @@ class ContentTransfer implements ModuleTransferInterface
 
     private const int SENTINEL_BASE = -1;
 
-    /** Exported source id → local id (or dry-run sentinel). */
+    /**
+     * Exported source id → local id (or dry-run sentinel).
+     *
+     * @var array<int, int>
+     */
     private array $postCategoryIdBySource = [];
 
     private int $sentinel = self::SENTINEL_BASE;
@@ -255,7 +259,7 @@ class ContentTransfer implements ModuleTransferInterface
         $languageIdByCode = $this->languageIdByCode();
         $defaultLanguageId = $this->defaultLanguageId();
 
-        foreach (array_values($rows) as $index => $row) {
+        foreach ($rows as $index => $row) {
             $label = self::SECTION_PAGES.'['.($index + 1).']';
             $payload = $row[self::KEY_PAYLOAD] ?? null;
 
@@ -343,7 +347,7 @@ class ContentTransfer implements ModuleTransferInterface
         $languageIdByCode = $this->languageIdByCode();
         $defaultLanguageId = $this->defaultLanguageId();
 
-        foreach (array_values($rows) as $index => $row) {
+        foreach ($rows as $index => $row) {
             $label = self::SECTION_POST_CATEGORIES.'['.($index + 1).']';
             $payload = $row[self::KEY_PAYLOAD] ?? null;
             $sourceId = $row[self::KEY_SOURCE_ID] ?? null;
@@ -455,7 +459,7 @@ class ContentTransfer implements ModuleTransferInterface
         $languageIdByCode = $this->languageIdByCode();
         $defaultLanguageId = $this->defaultLanguageId();
 
-        foreach (array_values($rows) as $index => $row) {
+        foreach ($rows as $index => $row) {
             $label = self::SECTION_POSTS.'['.($index + 1).']';
             $payload = $row[self::KEY_PAYLOAD] ?? null;
 

@@ -20,6 +20,10 @@ uses(HelperTrait::class);
  * Support import semantics (C5): append-only history via the query
  * builder — no events, no sender re-attribution, remap-as-idempotency.
  */
+/**
+ * @param  list<array<string, mixed>>  $tickets
+ * @param  list<array<string, mixed>>  $messages
+ */
 function supportTransferFile(string $source, array $tickets, array $messages): string
 {
     return json_encode([
@@ -134,6 +138,6 @@ it('fails messages whose ticket is not from this or a previous import (C5)', fun
     );
 
     expect($summary['failed_count'])->toBe(1)
-        ->and(collect($summary['errors'])->first())->toContain('unresolved_ticket:99')
+        ->and($summary['errors'][0])->toContain('unresolved_ticket:99')
         ->and(DB::table('support_ticket_messages')->count())->toBe(0);
 });

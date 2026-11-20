@@ -52,7 +52,11 @@ class UserTransfer implements ModuleTransferInterface
 
     public const string SECTION_WISHLIST_ITEMS = 'wishlist-items';
 
-    /** Exported source user id → local user id (or dry-run sentinel). */
+    /**
+     * Exported source user id → local user id (or dry-run sentinel).
+     *
+     * @var array<int, int>
+     */
     private array $userIdBySource = [];
 
     /** Dry-run sentinels for users a real run would create. */
@@ -135,6 +139,8 @@ class UserTransfer implements ModuleTransferInterface
         foreach ($emailsById as $userId => $email) {
             $profile = $profileByUserId->get($userId);
 
+            $dateOfBirth = $profile?->{ProfileSchema::DATE_OF_BIRTH}?->format('Y-m-d');
+
             $rows[] = [
                 self::KEY_SOURCE_ID => (int) $userId,
                 self::KEY_PAYLOAD => [
@@ -146,12 +152,26 @@ class UserTransfer implements ModuleTransferInterface
                     ProfileSchema::BIO => $profile?->{ProfileSchema::BIO},
                     ProfileSchema::AVATAR => $profile?->{ProfileSchema::AVATAR},
                     ProfileSchema::GENDER => $profile?->{ProfileSchema::GENDER}?->value,
-                    ProfileSchema::DATE_OF_BIRTH => $profile?->{ProfileSchema::DATE_OF_BIRTH}?->format('Y-m-d'),
+                    ProfileSchema::DATE_OF_BIRTH => $dateOfBirth,
                 ],
             ];
         }
 
         return $rows;
+    }
+
+    /**
+     * Dry-run counting for a matched row under the chosen strategy.
+     */
+    private function recordOutcome(ImportResult $result, ImportOptions $options, bool $exists): void
+    {
+        if ($exists && $options->strategy === TransferStrategyEnum::SKIP) {
+            $result->recordSkipped();
+        } elseif ($exists) {
+            $result->recordUpdated();
+        } else {
+            $result->recordCreated();
+        }
     }
 
     /**
@@ -473,6 +493,9 @@ class UserTransfer implements ModuleTransferInterface
      * The payload's user reference, resolved in-run: profiles ran first
      * (dependency order), so the directory map covers same-file refs;
      * remap covers refs from earlier imports.
+     */
+    /**
+     * @param  array<string, mixed>  $payload
      */
     private function localUserId(array $payload): ?int
     {

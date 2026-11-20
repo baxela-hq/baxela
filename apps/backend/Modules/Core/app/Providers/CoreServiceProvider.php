@@ -40,6 +40,9 @@ class CoreServiceProvider extends ServiceProvider
 
     protected string $nameLower = 'core';
 
+    /**
+     * @var array<class-string, class-string>
+     */
     public array $bindings = [
         CoreGatewayInterface::class => CoreGateway::class,
         TransferRemapInterface::class => TransferRemapStore::class,

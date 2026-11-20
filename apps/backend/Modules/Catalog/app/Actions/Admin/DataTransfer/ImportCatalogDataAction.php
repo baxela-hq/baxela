@@ -267,7 +267,9 @@ class ImportCatalogDataAction
             throw new ImportFailedException(meta: ['reason' => 'no_active_languages']);
         }
 
-        $this->defaultLanguageCode = $this->coreGateway->getDefaultLanguage()?->code
+        // getDefaultLanguage() is typed to always return a model; the
+        // fallback covers a store booted with no seeded languages.
+        $this->defaultLanguageCode = $this->coreGateway->getDefaultLanguage()->code
             ?? array_key_first($this->languageIdByCode);
         $this->defaultLanguageId = $this->languageIdByCode[$this->defaultLanguageCode];
     }
@@ -326,6 +328,9 @@ class ImportCatalogDataAction
 
         if ($existingId !== null && $this->strategy === CatalogImportStrategyEnum::SKIP) {
             $this->register($entity, $sourceId, $existingId);
+            if ($entity === CatalogTransferFormat::SECTION_PRODUCTS) {
+                $this->registerProductVariants($existingId, $payload);
+            }
             $this->sectionSummary[$entity]['skipped']++;
 
             return;
@@ -355,9 +360,53 @@ class ImportCatalogDataAction
         }
 
         $this->register($entity, $sourceId, $id);
+        if ($entity === CatalogTransferFormat::SECTION_PRODUCTS) {
+            $this->registerProductVariants($id, $payload);
+        }
         $existingId !== null
             ? $this->sectionSummary[$entity]['updated']++
             : $this->sectionSummary[$entity]['created']++;
+    }
+
+    /**
+     * Variant-level remaps (C1): exported product payloads carry their
+     * variants' source ids under an internal, index-aligned key; the
+     * imported product's variants are matched by SKU (unique), and each
+     * pair lands in the ledger — Order/Inventory imports resolve variant
+     * references through it, even across divergent ids.
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    protected function registerProductVariants(int $localProductId, array $payload): void
+    {
+        $sourceVariantIds = (array) ($payload[ExportCatalogDataAction::VARIANT_IDS_KEY] ?? []);
+        $variantPayloads = (array) ($payload[ProductSchema::RES_VARIANTS] ?? []);
+
+        if ($sourceVariantIds === [] || $variantPayloads === []) {
+            return;
+        }
+
+        $localBySku = Variant::query()
+            ->where(VSchema::PRODUCT_ID, $localProductId)
+            ->pluck(VSchema::ID, VSchema::SKU);
+
+        foreach (array_values($variantPayloads) as $index => $variantPayload) {
+            $sourceVariantId = (int) ($sourceVariantIds[$index] ?? 0);
+            if ($sourceVariantId <= 0) {
+                continue;
+            }
+
+            $sku = (string) ($variantPayload[VSchema::SKU] ?? '');
+            $localVariantId = $localBySku[$sku] ?? null;
+            if ($localVariantId === null) {
+                $this->warnings[] = 'variant_remap_unmatched:'.$sku;
+
+                continue;
+            }
+
+            // Entity key 'variants': the namespace Order/Inventory resolve under.
+            $this->register('variants', $sourceVariantId, (int) $localVariantId);
+        }
     }
 
     /**
@@ -1016,7 +1065,7 @@ class ImportCatalogDataAction
      */
     protected function publicPayload(array $payload): array
     {
-        unset($payload[self::OWNER_KEY]);
+        unset($payload[self::OWNER_KEY], $payload[ExportCatalogDataAction::VARIANT_IDS_KEY]);
 
         return $payload;
     }

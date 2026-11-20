@@ -32,7 +32,7 @@ trait RecordsTransferRemaps
      * atomically. `$writes` returns the created/updated record's local
      * key (or null when the path wrote nothing worth mapping — SKIP).
      *
-     * @param  callable(): int|null  $writes
+     * @param  callable(): ?int  $writes
      */
     private function remapUnit(ImportOptions $options, string $module, string $entity, int $sourceId, callable $writes): void
     {

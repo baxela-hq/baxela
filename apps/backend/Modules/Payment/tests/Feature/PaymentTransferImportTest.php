@@ -20,6 +20,10 @@ uses(HelperTrait::class);
  * no gateway code, no state transitions, no order updates — with
  * remap-first identity and exactly-one adoption (F24).
  */
+/**
+ * @param  array<string, mixed>  $paymentOverrides
+ * @param  list<array<string, mixed>>  $refundRows
+ */
 function paymentTransferFile(string $source, int $sourceOrderId, int $sourcePaymentId, array $paymentOverrides = [], array $refundRows = []): string
 {
     $now = '2026-01-15T12:00:00+00:00';
@@ -189,7 +193,7 @@ it('fails ambiguous adoption instead of guessing (F24)', function () {
     );
 
     expect($summary['failed_count'])->toBe(1)
-        ->and(collect($summary['errors'])->first())->toContain('ambiguous_payment_match');
+        ->and($summary['errors'][0])->toContain('ambiguous_payment_match');
 });
 
 it('imports refunds keyed by uuid against the remapped payment (C5)', function () {

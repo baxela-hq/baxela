@@ -265,12 +265,6 @@ parameters:
 			path: Modules/Cart/app/Support/CartSubtotal.php
 
 		-
-			message: '#^Method Modules\\Cart\\Transfer\\CartTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Cart/app/Transfer/CartTransfer.php
-
-		-
 			message: '#^PHPDoc tag @mixin contains non\-object type Modules\\Core\\Contracts\\Gateways\\Discount\\DTOs\\CouponDiscountResult\|null\.$#'
 			identifier: mixin.nonObject
 			count: 1
@@ -375,12 +369,6 @@ parameters:
 		-
 			message: '#^Ternary operator condition is always true\.$#'
 			identifier: ternary.alwaysTrue
-			count: 1
-			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
-
-		-
-			message: '#^Using nullsafe property access "\?\-\>code" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
 
@@ -1171,18 +1159,6 @@ parameters:
 			path: Modules/Content/app/Models/PostTranslation.php
 
 		-
-			message: '#^Parameter \#1 \$array \(list\<array\<string, mixed\>\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 3
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
-			message: '#^Property Modules\\Content\\Transfer\\ContentTransfer\:\:\$postCategoryIdBySource type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Content/app/Transfer/ContentTransfer.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between ''mysql'' and ''mysql'' will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 1
@@ -1523,12 +1499,6 @@ parameters:
 			identifier: missingType.generics
 			count: 1
 			path: Modules/Core/app/Models/Scopes/UserScope.php
-
-		-
-			message: '#^Property Modules\\Core\\Providers\\CoreServiceProvider\:\:\$bindings type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: Modules/Core/app/Providers/CoreServiceProvider.php
 
 		-
 			message: '#^Method Modules\\Core\\Providers\\SentryContextServiceProvider\:\:breadcrumb\(\) has parameter \$metadata with no value type specified in iterable type array\.$#'
@@ -2131,18 +2101,6 @@ parameters:
 			path: Modules/Notification/app/Support/RecipientPreferenceFilter.php
 
 		-
-			message: '#^Method Modules\\Notification\\Transfer\\NotificationTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Notification/app/Transfer/NotificationTransfer.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Support\\Carbon\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: Modules/Notification/app/Transfer/NotificationTransfer.php
-
-		-
 			message: '#^Parameter \$channel of class Modules\\Notification\\Services\\Notification\\DTOs\\NotificationMessage constructor expects array\<string, mixed\>\|null, array\<int, string\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2335,24 +2293,6 @@ parameters:
 			path: Modules/Order/app/Schemas/OrderReturn/OrderReturnStatusEnum.php
 
 		-
-			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Order/app/Transfer/OrderTransfer.php
-
-		-
-			message: '#^Method Modules\\Order\\Transfer\\OrderTransfer\:\:attributesToPayload\(\) has parameter \$record with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Order/app/Transfer/OrderTransfer.php
-
-		-
-			message: '#^Method Modules\\Order\\Transfer\\OrderTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Order/app/Transfer/OrderTransfer.php
-
-		-
 			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Database\\Eloquent\\Builder\<Modules\\Order\\Models\\Order\>\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
@@ -2483,24 +2423,6 @@ parameters:
 			identifier: nullsafe.neverNull
 			count: 1
 			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
-
-		-
-			message: '#^Call to an undefined method DateTimeInterface\:\:toIso8601String\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Payment/app/Transfer/PaymentTransfer.php
-
-		-
-			message: '#^Method Modules\\Payment\\Transfer\\PaymentTransfer\:\:attributesToPayload\(\) has parameter \$record with no type specified\.$#'
-			identifier: missingType.parameter
-			count: 1
-			path: Modules/Payment/app/Transfer/PaymentTransfer.php
-
-		-
-			message: '#^Method Modules\\Payment\\Transfer\\PaymentTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Payment/app/Transfer/PaymentTransfer.php
 
 		-
 			message: '#^Function stripeMethod\(\) return type has no value type specified in iterable type array\.$#'
@@ -2845,12 +2767,6 @@ parameters:
 			path: Modules/Support/app/Models/User/Ticket.php
 
 		-
-			message: '#^Method Modules\\Support\\Transfer\\SupportTransfer\:\:exportRowsOf\(\) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types\: TModel$#'
-			identifier: missingType.generics
-			count: 1
-			path: Modules/Support/app/Transfer/SupportTransfer.php
-
-		-
 			message: '#^Access to an undefined property Modules\\Support\\Transformers\\Admin\\Ticket\\TicketResource\:\:\$customer_email\.$#'
 			identifier: property.notFound
 			count: 1
@@ -2923,16 +2839,16 @@ parameters:
 			path: Modules/User/tests/Feature/HelperTrait.php
 
 		-
-			message: '#^Unable to resolve the template type TKey in call to function collect$#'
-			identifier: argument.templateType
+			message: '#^Access to an undefined property Modules\\Auth\\Models\\User\:\:\$password\.$#'
+			identifier: property.notFound
 			count: 1
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
+			path: Modules/User/tests/Feature/TransferImportedAccountSecurityTest.php
 
 		-
-			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			message: '#^Unable to resolve the template type TAndValue in call to method Pest\\Expectation\<Illuminate\\Support\\Carbon\|null\>\:\:and\(\)$#'
 			identifier: argument.templateType
 			count: 1
-			path: Modules/User/tests/Feature/UserDataTransferTest.php
+			path: Modules/User/tests/Feature/TransferImportedAccountSecurityTest.php
 
 		-
 			message: '#^Function vatAddressPayload\(\) return type has no value type specified in iterable type array\.$#'

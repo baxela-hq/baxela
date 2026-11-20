@@ -26,6 +26,9 @@ uses(HelperTrait::class);
  */
 
 /** Build an order transfer file for one order (source ids in parens). */
+/**
+ * @param  array<string, mixed>  $overrides
+ */
 function orderTransferFile(string $source, int $sourceOrderId, int $sourceUserId, int $sourceVariantId, string $orderCode, array $overrides = []): string
 {
     $now = '2026-01-15T10:00:00+00:00';
@@ -234,7 +237,7 @@ it('fails orders whose user cannot resolve, and freezes their children (C5)', fu
         ->and(Order::query()->where(OrderSchema::ORDER_CODE, 'SRC-2026-0003')->count())->toBe(0)
         // The child froze with its parent: no history in the air (C5).
         ->and(OrderItem::query()->count())->toBe(0)
-        ->and(collect($summary['warnings'])->contains(fn ($w) => str_contains((string) $w, 'parent_failed')))->toBeTrue();
+        ->and(array_filter($summary['warnings'], fn (string $w): bool => str_contains($w, 'parent_failed')) !== []);
 });
 
 it('skips the whole subtree under SKIP strategy (C5)', function () {

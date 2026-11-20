@@ -38,6 +38,8 @@ use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
 use Modules\Catalog\Support\DataTransfer\CatalogTransferFormat;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Transfer\InstallationIdentity;
+use Modules\Core\Support\Transfer\TransferFormat;
 
 /**
  * Build the whole-module export file: every catalog entity as a request-
@@ -48,7 +50,17 @@ use Modules\Core\Schemas\Language\LanguageSchema;
  */
 class ExportCatalogDataAction
 {
-    public function __construct(protected CoreGatewayInterface $coreGateway) {}
+    /**
+     * Internal bookkeeping key (stripped by the import before its actions
+     * see the payload): the source ids of a product's variants,
+     * index-aligned with ProductSchema::RES_VARIANTS.
+     */
+    public const string VARIANT_IDS_KEY = '@variant_ids';
+
+    public function __construct(
+        protected CoreGatewayInterface $coreGateway,
+        protected InstallationIdentity $installation,
+    ) {}
 
     /**
      * @return array<string, mixed>
@@ -62,6 +74,10 @@ class ExportCatalogDataAction
             CatalogTransferFormat::KEY_MODULE => CatalogTransferFormat::MODULE,
             CatalogTransferFormat::KEY_VERSION => CatalogTransferFormat::VERSION,
             CatalogTransferFormat::KEY_EXPORTED_AT => now()->toIso8601String(),
+            // Additive-optional (C1): names this store as the source, so
+            // importing stores resolve catalog references through the
+            // identified remap namespace.
+            TransferFormat::KEY_SOURCE_INSTALLATION => $this->installation->current(),
             CatalogTransferFormat::KEY_SECTIONS => [
                 $this->section(CatalogTransferFormat::SECTION_ATTRIBUTE_GROUPS, $this->attributeGroupRows($codeByLanguageId)),
                 $this->section(CatalogTransferFormat::SECTION_ATTRIBUTES, $this->attributeRows($codeByLanguageId)),
@@ -360,6 +376,16 @@ class ExportCatalogDataAction
                             ->map(fn ($id) => (int) $id)
                             ->all(),
                         ProductSchema::RES_VARIANTS => $this->variantPayloads($product),
+                        // Internal bookkeeping (stripped before the import's
+                        // actions see the payload): the source ids of the
+                        // variants above, index-aligned, so the importing
+                        // store can persist variant-level remaps (C1) for
+                        // Order/Inventory reference resolution.
+                        self::VARIANT_IDS_KEY => $product->{ProductSchema::RES_VARIANTS}
+                            ->pluck(VSchema::ID)
+                            ->map(fn ($id) => (int) $id)
+                            ->values()
+                            ->all(),
                         ProductSchema::RES_TRANSLATIONS => $this->translations(
                             $product->{ProductSchema::RES_TRANSLATIONS},
                             $codeByLanguageId,

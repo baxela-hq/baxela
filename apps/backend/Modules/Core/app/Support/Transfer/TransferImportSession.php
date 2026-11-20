@@ -5,6 +5,7 @@ namespace Modules\Core\Support\Transfer;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Exceptions\Transfer\ImportFailedException;
+use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use PDO;
 use Throwable;
 
@@ -55,6 +56,9 @@ final class TransferImportSession
      *
      * @throws ImportFailedException with reason `import_in_progress` when
      *                               the lock is held past the configured wait
+     * @throws TransferLockSessionLostException
+     *                                          when the lock-owning session dies mid-run
+     *                                          (fatal — the runner aborts and audits)
      */
     public function run(string $module, string $sourceInstallation, bool $identified, callable $work): mixed
     {
