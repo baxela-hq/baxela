@@ -39,4 +39,29 @@ interface AccessGatewayInterface
      * @return array<string, int|string>
      */
     public function getUserIdsByEmails(array $emails): array;
+
+    /**
+     * Every local user id (C6: the User transfer exports a complete user
+     * directory — identity lives in Auth, so the directory is Auth's to
+     * enumerate).
+     *
+     * @return array<int, int>
+     */
+    public function listUserIds(): array;
+
+    /**
+     * The local user id for the given email, or — when no account exists —
+     * a freshly created one that is INERT until explicitly activated or
+     * verified: `is_active=false`, unverified email, a random unguessable
+     * password, and no roles. The user-transfer import uses this to
+     * restore identity for customers the destination store has never seen
+     * (C6): the rows become attached and restorable, the accounts cannot
+     * sign in until Auth's activation/verification flows run (enforced by
+     * the token-issuance path's `is_active` re-check, not by the import).
+     *
+     * Emails are canonicalized (trim + lowercase) for both the lookup and
+     * the create; a concurrent create of the same address converges on the
+     * winner via the email unique index.
+     */
+    public function ensureUserByEmail(string $email): int;
 }
