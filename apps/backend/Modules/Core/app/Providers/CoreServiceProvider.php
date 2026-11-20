@@ -15,7 +15,10 @@ use Modules\Core\Console\Commands\BaxelaUpdateCommand;
 use Modules\Core\Console\Commands\ErdGenerateCommand;
 use Modules\Core\Console\Commands\QueueCheckBacklogCommand;
 use Modules\Core\Console\Commands\SyncExchangeRatesCommand;
+use Modules\Core\Console\Commands\TransferClearRemapsCommand;
+use Modules\Core\Console\Commands\TransferResetIdentityCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
+use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
@@ -23,6 +26,8 @@ use Modules\Core\Http\Middleware\RequestLogger;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
 use Modules\Core\Support\Erd\ModuleTableResolver;
+use Modules\Core\Support\Transfer\TransferGuardRegistry;
+use Modules\Core\Support\Transfer\TransferRemapStore;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -37,6 +42,7 @@ class CoreServiceProvider extends ServiceProvider
 
     public array $bindings = [
         CoreGatewayInterface::class => CoreGateway::class,
+        TransferRemapInterface::class => TransferRemapStore::class,
     ];
 
     /**
@@ -74,6 +80,11 @@ class CoreServiceProvider extends ServiceProvider
         // Extension runtime state (extension plan §4): singleton so the
         // per-request state cache and skip-reason map are shared.
         $this->app->singleton(ExtensionManager::class);
+
+        // Transfer import guard lifecycle (C7/F32): one registry per
+        // process holds each connection's single ownership hook and its
+        // active run context, so repeated imports never re-register hooks.
+        $this->app->singleton(TransferGuardRegistry::class);
     }
 
     /**
@@ -91,6 +102,8 @@ class CoreServiceProvider extends ServiceProvider
             ErdGenerateCommand::class,
             QueueCheckBacklogCommand::class,
             SyncExchangeRatesCommand::class,
+            TransferClearRemapsCommand::class,
+            TransferResetIdentityCommand::class,
         ]);
     }
 
