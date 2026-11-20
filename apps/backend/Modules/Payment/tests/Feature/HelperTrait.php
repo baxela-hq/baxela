@@ -3,6 +3,7 @@
 namespace Modules\Payment\Tests\Feature;
 
 use Modules\Auth\Models\User;
+use Modules\Order\Models\Order;
 
 trait HelperTrait
 {
@@ -14,6 +15,24 @@ trait HelperTrait
     public function superAdminUser(): User
     {
         return User::factory()->superAdmin()->create();
+    }
+
+    /**
+     * An order for the payment ledger to reference.
+     *
+     * @return array{order: Order}
+     */
+    public function seedOrderWithPayment(): array
+    {
+        $customer = User::factory()->create();
+        $order = Order::query()->create([
+            'user_id' => $customer->id,
+            'order_code' => 'PAY-TEST-0001',
+            'status' => 'completed',
+            'payment_status' => 'paid',
+        ]);
+
+        return ['order' => $order];
     }
 
     /**
