@@ -199,4 +199,14 @@ class DiscountGateway implements DiscountGatewayInterface
             throw new RuntimeException('DiscountGateway redemption methods require an open database transaction.');
         }
     }
+
+    public function couponIdByCode(string $code): ?int
+    {
+        // Codes are stored uppercase-trimmed (the admin request's shape).
+        $coupon = Coupon::query()
+            ->where(CouponSchema::CODE, mb_strtoupper(trim($code)))
+            ->first();
+
+        return $coupon === null ? null : (int) $coupon->getKey();
+    }
 }

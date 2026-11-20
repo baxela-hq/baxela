@@ -37,4 +37,11 @@ interface DiscountGatewayInterface
      * the coupon row lock.
      */
     public function releaseRedemption(int $orderId): bool;
+
+    /**
+     * The local coupon id for a code (the portable natural key), or null
+     * when no coupon carries it here. Read-only lookup backing the C2
+     * natural-key tier for order/redemption coupon references.
+     */
+    public function couponIdByCode(string $code): ?int;
 }
