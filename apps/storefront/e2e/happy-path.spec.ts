@@ -188,7 +188,9 @@ test("header search suggests and finds the seeded product", async ({ page }) => 
   // "Search"-named controls, so role+name alone is ambiguous.
   const searchTrigger = page.locator('button[aria-controls="search-menu"]');
   const dialog = page.locator("#search-menu");
-  const searchInput = dialog.getByLabel("Search input");
+  // The en label value is "Search products" (shared.layout.search.labels.input);
+  // match by role+name inside the dialog to stay locale-shape safe.
+  const searchInput = dialog.getByRole("textbox");
 
   // Open the dialog and type a partial seeded title ("Men's Slim Fit
   // Cotton T-Shirt"): the suggestion panel must render the product
