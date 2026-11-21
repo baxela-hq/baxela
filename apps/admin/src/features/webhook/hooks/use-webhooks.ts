@@ -12,14 +12,16 @@ export function useWebhookEndpoints(search: Record<string, unknown>) {
   })
 }
 
-/** One endpoint's delivery log (filter endpoint_id; refreshed after retries). */
+/**
+ * One endpoint's delivery log (filter endpoint_id; refreshed after
+ * retries). The backend returns a fixed 25-row window (no pager here).
+ */
 export function useWebhookDeliveries(endpointId: number | null) {
   return useQuery<PaginatedResponse<WebhookDelivery>>({
     queryKey: [FeatureRoutes.CACHE_KEY, 'deliveries', endpointId],
     queryFn: () =>
       fetchWebhookDeliveries({
         'filter[endpoint_id]': endpointId ?? '',
-        'page[size]': 25,
       }),
     enabled: endpointId !== null,
   })
