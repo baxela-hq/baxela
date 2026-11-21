@@ -40,7 +40,8 @@ class ListWebhookDeliveryController extends Controller
                     WebhookDeliverySchema::TABLE.'.'.WebhookDeliverySchema::CREATED_AT,
                 ])
                 ->orderBy($id, 'desc')
-                ->jsonPaginate()
+                // 25: the deliveries dialog shows a single fixed window.
+                ->paginate(25)
         );
     }
 }

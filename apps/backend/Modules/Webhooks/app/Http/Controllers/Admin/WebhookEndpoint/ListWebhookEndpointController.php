@@ -37,7 +37,7 @@ class ListWebhookEndpointController extends Controller
                     WebhookEndpointSchema::TABLE.'.'.WebhookEndpointSchema::UPDATED_AT,
                 ])
                 ->orderBy($id, 'desc')
-                ->jsonPaginate()
+                ->paginate(10)
         );
     }
 }

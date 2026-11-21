@@ -14,7 +14,7 @@ class ListMachineProductsController extends MachineController
         return ProductResource::collection(
             Product::query()
                 ->orderByDesc(ProductSchema::ID)
-                ->jsonPaginate(),
+                ->paginate(),
         );
     }
 }

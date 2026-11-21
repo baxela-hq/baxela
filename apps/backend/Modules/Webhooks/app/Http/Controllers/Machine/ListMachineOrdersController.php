@@ -15,7 +15,7 @@ class ListMachineOrdersController extends MachineController
             Order::query()
                 ->where(OrderSchema::USER_ID, $this->machineUserId())
                 ->orderByDesc(OrderSchema::ID)
-                ->jsonPaginate(),
+                ->paginate(),
         );
     }
 }

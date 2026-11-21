@@ -35,8 +35,6 @@ use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
  * @property-read WebhookEvent $event
  * @property-read WebhookEndpoint $endpoint
  *
- * @method static \Illuminate\Contracts\Pagination\LengthAwarePaginator<int, static> jsonPaginate()
- *
  * @mixin Builder<WebhookDelivery>
  */
 class WebhookDelivery extends Model

@@ -11,6 +11,18 @@ it('denies a guest with 401', function () {
     $this->getJson($this->baseUrl('/admin/endpoints'))->assertStatus(401);
 });
 
+it('lists live endpoints but hides archived ones', function () {
+    [$endpoint] = $this->webhookEndpoint();
+    $this->webhookEndpoint(overrides: [WebhookEndpointSchema::IS_ARCHIVED => true]);
+    $this->actingAs($this->superAdminUser());
+
+    $listed = $this->getJson($this->baseUrl('/admin/endpoints'))->assertOk();
+
+    // Standard paginator shape (data + meta.current_page/last_page/total).
+    $ids = collect($listed->json('data'))->pluck('id');
+    expect($listed->json('meta.total'))->toBe(1)->and($ids)->toContain($endpoint->getKey());
+});
+
 it('creates an endpoint, validates SSRF at the boundary, shows the secret once', function () {
     $this->actingAs($this->superAdminUser());
 
