@@ -77,7 +77,7 @@ class PublicProductQuery implements QueryInterface
             ->allowedFilters(
                 AllowedFilter::callback(PTSchema::TITLE, function (Builder $query, $value): void {
                     $query->whereHas(ProductSchema::RES_TRANSLATIONS, function (Builder $translation) use ($value): void {
-                        $translation->where(PTSchema::TITLE, 'LIKE', "%{$value}%");
+                        $translation->whereRaw('LOWER('.PTSchema::TITLE.') LIKE ?', ['%'.mb_strtolower((string) $value).'%']);
 
                         if (! is_null($this->languageId)) {
                             $translation->where(PTSchema::LANGUAGE_ID, $this->languageId);

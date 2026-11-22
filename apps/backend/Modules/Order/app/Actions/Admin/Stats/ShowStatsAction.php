@@ -3,6 +3,7 @@
 namespace Modules\Order\Actions\Admin\Stats;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\DB;
 use Modules\Order\Models\Order;
 use Modules\Order\Models\OrderItem;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
@@ -96,9 +97,27 @@ class ShowStatsAction
     }
 
     /**
+     * Driver-gated date truncation (postgres-migration DD3): PostgreSQL
+     * has no implicit timestamp->text cast in substr(), so pgsql uses
+     * to_char; MySQL/SQLite keep substr() over their text storage. The
+     * output shape is identical ('YYYY-MM' / 'YYYY-MM-DD').
+     */
+    private function dateTruncExpression(string $column, string $format): string
+    {
+        if (DB::connection()->getDriverName() === 'pgsql') {
+            $pgFormat = $format === 'month' ? 'YYYY-MM' : 'YYYY-MM-DD';
+
+            return "to_char({$column}, '{$pgFormat}')";
+        }
+
+        $length = $format === 'month' ? 7 : 10;
+
+        return "substr({$column}, 1, {$length})";
+    }
+
+    /**
      * Paid-order revenue per month, zero-filled so the chart axis is
-     * continuous. substr() on the timestamp keeps the grouping portable
-     * across MySQL (dev/prod) and SQLite (tests).
+     * continuous.
      *
      * @return array<int, array<string, string>>
      */
@@ -110,7 +129,7 @@ class ShowStatsAction
             ->where(OrderSchema::PAYMENT_STATUS, OrderPaymentStatusEnum::PAID->value)
             ->where(OrderSchema::CREATED_AT, '>=', $start)
             ->selectRaw(
-                'substr('.OrderSchema::CREATED_AT.', 1, 7) as '.StatsSchema::RES_MONTH
+                $this->dateTruncExpression(OrderSchema::CREATED_AT, 'month').' as '.StatsSchema::RES_MONTH
                 .', sum('.OrderSchema::TOTAL_AMOUNT.') as '.StatsSchema::RES_TOTAL
             )
             ->groupBy(StatsSchema::RES_MONTH)
@@ -139,7 +158,7 @@ class ShowStatsAction
         $rows = Order::query()
             ->where(OrderSchema::CREATED_AT, '>=', $start)
             ->selectRaw(
-                'substr('.OrderSchema::CREATED_AT.', 1, 10) as '.StatsSchema::RES_DATE
+                $this->dateTruncExpression(OrderSchema::CREATED_AT, 'day').' as '.StatsSchema::RES_DATE
                 .', count(*) as '.StatsSchema::RES_COUNT
             )
             ->groupBy(StatsSchema::RES_DATE)

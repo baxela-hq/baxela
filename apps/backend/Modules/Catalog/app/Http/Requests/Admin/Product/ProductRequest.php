@@ -3,6 +3,7 @@
 namespace Modules\Catalog\Http\Requests\Admin\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
@@ -62,8 +63,20 @@ class ProductRequest extends FormRequest
                 && ! app(TaxGatewayInterface::class)
                     ->taxClassExists((int) $value)
             ) ? $fail('validation.exists')->translate() : null;
+        // Case-insensitive uniqueness (postgres-migration DD2): parity with the
+        // functional LOWER() unique index on every engine. A closure rule —
+        // per-variant values are only known at validation time.
         $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =
-            Rule::unique(VSchema::TABLE, VSchema::SKU)->ignore($id, VSchema::PRODUCT_ID);
+            function (string $attribute, mixed $value, \Closure $fail) use ($id): void {
+                $taken = DB::table(VSchema::TABLE)
+                    ->whereRaw('LOWER('.VSchema::SKU.') = ?', [mb_strtolower(trim((string) $value))])
+                    ->when($id !== null, fn ($query) => $query->where(VSchema::PRODUCT_ID, '!=', $id))
+                    ->exists();
+
+                if ($taken) {
+                    $fail('validation.unique')->translate();
+                }
+            };
         $rules[Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
             new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id);
         $rules[PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_ID][] =

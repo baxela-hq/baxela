@@ -12,7 +12,7 @@ class TranslationTitleFilter implements Filter
         $languageId = request()->input('language_id');
 
         $query->whereHas('translations', function (Builder $query) use ($value, $property, $languageId) {
-            $query->where($property, 'LIKE', "%{$value}%");
+            $query->whereRaw('LOWER('.$property.') LIKE ?', ['%'.mb_strtolower((string) $value).'%']);
 
             if (intval($languageId)) {
                 $query->where('language_id', $languageId);

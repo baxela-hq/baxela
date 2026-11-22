@@ -16,7 +16,10 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $id = $this->route('id');
-        $unique = Rule::unique(UserSchema::TABLE, UserSchema::EMAIL);
+        // Case-insensitive uniqueness (postgres-migration DD2): parity with the
+        // functional LOWER() unique index on every engine.
+        $unique = Rule::unique(UserSchema::TABLE, UserSchema::EMAIL)
+            ->where(fn ($query) => $query->whereRaw('LOWER('.UserSchema::EMAIL.') = ?', [mb_strtolower(trim((string) request()->input(UserSchema::EMAIL)))]));
 
         return [
             UserSchema::PASSWORD => [$id ? 'nullable' : 'required', Password::default(), 'max:40'],

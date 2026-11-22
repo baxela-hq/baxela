@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Auth\Schemas\User\UserSchema;
 
@@ -14,7 +15,7 @@ return new class extends Migration
     {
         Schema::create(UserSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->string(UserSchema::EMAIL)->unique();
+            $table->string(UserSchema::EMAIL);
             $table->timestamp(UserSchema::EMAIL_VERIFIED_AT)->nullable();
             //            $table->string(UserSchema::MOBILE)->nullable()->unique();
             //            $table->timestamp(UserSchema::MOBILE_VERIFIED_AT)->nullable();
@@ -28,6 +29,15 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        // Functional case-insensitive unique (postgres-migration DD2): the
+        // parity of MySQL's utf8mb4_unicode_ci collation — LOWER()-based
+        // uniqueness across engines (double-paren form on MySQL 8.0.13+).
+        DB::statement('CREATE UNIQUE INDEX users_email_lower_unique ON '.UserSchema::TABLE.' '.(
+            DB::connection()->getDriverName() === 'mysql'
+                ? '((LOWER('.UserSchema::EMAIL.')))'
+                : '(LOWER('.UserSchema::EMAIL.'))'
+        ));
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

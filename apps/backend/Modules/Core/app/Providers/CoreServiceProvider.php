@@ -56,6 +56,21 @@ class CoreServiceProvider extends ServiceProvider
         $router->pushMiddlewareToGroup('api', AssignRequestId::class);
         $router->pushMiddlewareToGroup('api', SetSecurityHeaders::class);
 
+        // Unsigned-preserving pgsql schema grammar (postgres-migration
+        // DD9b): DB::extend re-resolves through this closure on every
+        // connection (re)instantiation — purge, reconnect, and fresh
+        // resolution all re-apply it; inert while the driver is not pgsql.
+        $this->app->extend('db', function ($db) {
+            $db->extend('pgsql', function ($config, $name) {
+                $connection = app(\Illuminate\Database\Connectors\ConnectionFactory::class)->make($config, $name);
+                $connection->setSchemaGrammar(new \Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar($connection));
+
+                return $connection;
+            });
+
+            return $db;
+        });
+
         if (config('core.log_requests')) {
             $router->pushMiddlewareToGroup('api', RequestLogger::class);
         }

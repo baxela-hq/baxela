@@ -27,7 +27,7 @@ class RecalculatesProductRating
             ->toBase()
             ->selectRaw(
                 'COUNT(*) as '.ProductSchema::RATING_COUNT
-                .', AVG(`'.ProductCommentSchema::RATING.'`) as '.ProductSchema::RATING_AVG
+                .', AVG('.ProductCommentSchema::RATING.') as '.ProductSchema::RATING_AVG
             )
             ->first();
 

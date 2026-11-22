@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 
@@ -15,7 +16,7 @@ return new class extends Migration
         Schema::create(CouponSchema::TABLE, function (Blueprint $table) {
             $table->id();
             // Customer-facing code; normalized to uppercase-trimmed on write
-            $table->string(CouponSchema::CODE)->unique();
+            $table->string(CouponSchema::CODE);
             $table->string(CouponSchema::NAME)->nullable();
             $table->enum(CouponSchema::TYPE, ['percent', 'fixed']);
             // percent: 15.00 == 15%; fixed: major-unit amount off the subtotal
@@ -33,6 +34,15 @@ return new class extends Migration
             $table->boolean(CouponSchema::IS_ACTIVE)->default(true);
             $table->timestamps();
         });
+
+        // Functional case-insensitive unique (postgres-migration DD2) —
+        // write-side uppercase-trim normalization plus this index keeps
+        // direct/import writes honest about case collisions too.
+        DB::statement('CREATE UNIQUE INDEX coupons_code_lower_unique ON '.CouponSchema::TABLE.' '.(
+            DB::connection()->getDriverName() === 'mysql'
+                ? '((LOWER('.CouponSchema::CODE.')))'
+                : '(LOWER('.CouponSchema::CODE.'))'
+        ));
     }
 
     /**

@@ -42,16 +42,29 @@ class ProcessOutboxEventAction
                     continue;
                 }
 
-                // insertOrIgnore + the (endpoint_id, event_id) unique make
-                // concurrent processors safe (gap-C2 D4).
-                $inserted = WebhookDelivery::query()->insertOrIgnore([
-                    WebhookDeliverySchema::ID => (string) Str::uuid(),
-                    WebhookDeliverySchema::EVENT_ID => $event->{WebhookEventSchema::ID},
-                    WebhookDeliverySchema::ENDPOINT_ID => $endpoint->getKey(),
-                    WebhookDeliverySchema::EVENT_TYPE => $event->{WebhookEventSchema::EVENT_TYPE},
-                    WebhookDeliverySchema::STATUS => 'pending',
-                    WebhookDeliverySchema::CREATED_AT => now(),
-                ]);
+                $deliveryId = (string) Str::uuid();
+
+                // Scoped conflict (postgres-migration DD13): only the
+                // intended (endpoint_id, event_id) duplicate is ignored —
+                // a targetless ON CONFLICT DO NOTHING on PostgreSQL would
+                // swallow ANY unique violation. The delivery re-fetch
+                // (not the affected-row count) is the existence truth.
+                $inserted = DB::connection()->getDriverName() === 'pgsql'
+                    ? DB::affectingStatement(
+                        'INSERT INTO '.WebhookDeliverySchema::TABLE
+                        .' (id, '.WebhookDeliverySchema::EVENT_ID.', '.WebhookDeliverySchema::ENDPOINT_ID.', '.WebhookDeliverySchema::EVENT_TYPE.', '.WebhookDeliverySchema::STATUS.', '.WebhookDeliverySchema::CREATED_AT.')'
+                        .' VALUES (?, ?, ?, ?, ?, ?)'
+                        .' ON CONFLICT ('.WebhookDeliverySchema::ENDPOINT_ID.', '.WebhookDeliverySchema::EVENT_ID.') DO NOTHING',
+                        [$deliveryId, $event->{WebhookEventSchema::ID}, $endpoint->getKey(), $event->{WebhookEventSchema::EVENT_TYPE}, 'pending', now()],
+                    )
+                    : WebhookDelivery::query()->insertOrIgnore([
+                        WebhookDeliverySchema::ID => $deliveryId,
+                        WebhookDeliverySchema::EVENT_ID => $event->{WebhookEventSchema::ID},
+                        WebhookDeliverySchema::ENDPOINT_ID => $endpoint->getKey(),
+                        WebhookDeliverySchema::EVENT_TYPE => $event->{WebhookEventSchema::EVENT_TYPE},
+                        WebhookDeliverySchema::STATUS => 'pending',
+                        WebhookDeliverySchema::CREATED_AT => now(),
+                    ]);
 
                 $created += (int) $inserted;
             }

@@ -34,6 +34,6 @@ class FailedJobExceptionSearchFilter implements Filter
             ]);
         }
 
-        $query->where(FailedJobSchema::TABLE.'.'.FailedJobSchema::EXCEPTION, 'like', "%{$needle}%");
+        $query->whereRaw('LOWER('.FailedJobSchema::TABLE.'.'.FailedJobSchema::EXCEPTION.') LIKE ?', ['%'.mb_strtolower($needle).'%']);
     }
 }

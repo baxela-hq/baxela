@@ -31,7 +31,7 @@ class ListInventoryStockAction extends AbstractInventoryStockAction
                     'sku',
                     fn ($query, $value) => $query->whereHas(
                         InventoryStockSchema::RES_VARIANT,
-                        fn ($variant) => $variant->where(VariantSchema::SKU, 'like', "%{$value}%")
+                        fn ($variant) => $variant->whereRaw('LOWER('.VariantSchema::SKU.') LIKE ?', ['%'.mb_strtolower((string) $value).'%'])
                     )
                 ),
                 AllowedFilter::callback(

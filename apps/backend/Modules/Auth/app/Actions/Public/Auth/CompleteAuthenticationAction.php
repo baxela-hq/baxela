@@ -201,14 +201,29 @@ class CompleteAuthenticationAction
     {
         $now = now();
 
-        $inserted = DB::table(UserDeviceSchema::TABLE)->insertOrIgnore([
+        $row = [
             UserDeviceSchema::USER_ID => $user->getKey(),
             UserDeviceSchema::DEVICE_NAME => $deviceName,
             UserDeviceSchema::FIRST_SEEN_AT => $now,
             UserDeviceSchema::LAST_SEEN_AT => $now,
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ];
+
+        // Scoped conflict (postgres-migration DD13): only the intended
+        // (user_id, device_name) duplicate is ignored — on PostgreSQL a
+        // targetless ON CONFLICT DO NOTHING would swallow ANY unique
+        // violation; an unrelated one must surface. The existence
+        // re-fetch (not the affected-row count) is the authority.
+        $inserted = DB::connection()->getDriverName() === 'pgsql'
+            ? DB::affectingStatement(
+                'INSERT INTO '.UserDeviceSchema::TABLE
+                .' ('.UserDeviceSchema::USER_ID.', '.UserDeviceSchema::DEVICE_NAME.', '.UserDeviceSchema::FIRST_SEEN_AT.', '.UserDeviceSchema::LAST_SEEN_AT.', created_at, updated_at)'
+                .' VALUES (?, ?, ?, ?, ?, ?)'
+                .' ON CONFLICT ('.UserDeviceSchema::USER_ID.', '.UserDeviceSchema::DEVICE_NAME.') DO NOTHING',
+                [$user->getKey(), $deviceName, $now, $now, $now, $now],
+            )
+            : DB::table(UserDeviceSchema::TABLE)->insertOrIgnore($row);
 
         if ($inserted > 0) {
             return true;
