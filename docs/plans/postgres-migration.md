@@ -1,10 +1,16 @@
-# PostgreSQL Migration Plan (rev 8.2)
+# PostgreSQL Migration Plan (rev 8.2 — IMPLEMENTED)
 
-Status: **architecture approved — final implementation invariant folded in;
-plan-only, not implemented.** Rev 8.2 completes §3.4.1a with atomic,
-lock-serialized pruning against a durable retired-ID registry, and sharpens
-the savepoint-bookkeeping semantics. No code, tests, schema, or
-infrastructure changes — this document is the only artifact, left uncommitted.
+Status: **implemented — phases A–E landed (2026-11-22).** The stack runs
+`postgres:18-alpine` in both compose files, MySQL is gone from the backend,
+and the full suite is green on both engines (1531/1531 on the live
+PostgreSQL server; the SQLite plane keeps its environmental-only failures).
+CI carries a strict full-suite PostgreSQL leg. See the implementation
+record at the end of this document for phase commits, live-server
+corrections, and the honest follow-up list.
+
+Rev 8.2 remains the authoritative reviewed architecture: it completed
+§3.4.1a with atomic, lock-serialized pruning against a durable retired-ID
+registry, and sharpened the savepoint-bookkeeping semantics.
 
 Owner decisions (unchanged): **D-A** fresh start · **D-B** SQLite default test
 plane + full PG CI leg · **D-C** before tenancy Phase 2; RLS deferred (§9) ·
@@ -353,8 +359,52 @@ deliberately off; prepared-statement plans safe; guard bookkeeping follows
 the same per-request reset discipline.
 
 ## 11. Verdict
-Architecture approved; all review rounds (R1 through 8.2) are folded in.
-The plan is **implementation-ready pending the owner's explicit
-phase-by-phase kickoff** — Phase A first, each phase closing with the
-changed-file list, static-analysis, and test results for review before the
-next is authorized. Still plan-only — nothing has been implemented.
+Architecture approved; all review rounds (R1 through 8.2) folded in.
+**Implemented — see the implementation record below.**
+
+---
+
+## Implementation record (2026-11-22)
+
+Phases A–E landed, in order, each closing with tests + static analysis:
+
+| Phase | Commit | Contents |
+|---|---|---|
+| A | `bca07cdb`, `1eb1427d`, `f0c2a911` | transfer lease table + fenced write units, per-product cursors + retired-ID registry, worker heartbeats + /proc death proof, heartbeat-gated writer leases, reconciler, media outbox, dispatch registry + sanctioned wrapper + architecture test |
+| B | `e7662630` | portable LOWER() search, driver-gated stats, functional ci-unique indexes ×5, scoped ON CONFLICT, PostgresUnsignedGrammar |
+| C | `0895a822` | compose cut-over to postgres:18-alpine, database.php clean cut, env examples, gate docblock; live-server corrections (serial-family widening guard, register()-phase grammar wiring) |
+| D | `5eb5bf9f` | CI full PostgreSQL leg, PostgresValidationTest (identifier audit / clock regression / CHECK parity / reconnect), lockout re-gate, rollback/persistence/dump/restore/octane-gate verified on the server |
+| E | `8096443b` | docs sweep + env-example finish |
+| tail | `677edcf0` | full-suite isolation closed: PicksTranslation column-default bug, transfer-installation fillable bug, shipping tie-break, ERD type_name, sequence-real test fixtures — 1531/1531 on PG, CI leg made strict |
+| ops | `36f4db44` | operator runbook (`docs/runbooks/postgres-operations.md`) |
+
+**Amendments made during implementation** (all consistent with the
+reviewed architecture):
+
+- Unsigned widening skips auto-increment columns — the serial family
+  already lands one storage size up, and widening `increments()` broke
+  the migrations table (found on the live server, not statically).
+- The grammar resolver registers in `register()`, not `boot()`: a
+  boot-time DB touch otherwise caches the stock grammar.
+- Variants `down()` uses plain `dropIfExists` — Laravel's SQLite table
+  rebuild cannot round-trip expression indexes (`pragma_index_info`
+  yields no columns for them).
+- MySQL's functional-index branch uses the double-paren form; the
+  postgres/SQLite branch single-paren (per-engine DDL verification).
+- `folders` migration `down()` fixed: `dropIfExists(FolderSchema::TABLE)`
+  — the `::class` argument never dropped anything (silently swallowed
+  by IF EXISTS on MySQL; rollback cycles now complete).
+
+**Honest follow-up list:**
+
+1. `--assume-dead <token>` operator override (§3.2.2, matrix 55–56):
+   designed, not implemented — matters only when an unprovable-dead
+   admission blocks a cutover.
+2. Sentry scope regression from `edeb603b` (pre-existing; the octane
+   gate flags it on both engines) — tracked separately from this
+   migration.
+3. Deferred by design: RLS (waits for the tenancy rollout, §9) and the
+   §8 optimizations (`citext`/ICU, `pg_trgm`, JSONB GIN, partial
+   indexes, `EXCLUDE`, `UNIQUE NULLS NOT DISTINCT`).
+4. The e2e workflow's first PostgreSQL run lands with the next CI pass
+   (the compose boot path it exercises is verified locally).
