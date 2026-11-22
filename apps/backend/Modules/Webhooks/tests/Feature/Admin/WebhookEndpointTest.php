@@ -19,7 +19,9 @@ it('lists live endpoints but hides archived ones', function () {
     $listed = $this->getJson($this->baseUrl('/admin/endpoints'))->assertOk();
 
     // Standard paginator shape (data + meta.current_page/last_page/total).
-    $ids = collect($listed->json('data'))->pluck('id');
+    /** @var list<array<string, mixed>> $rows */
+    $rows = (array) $listed->json('data');
+    $ids = collect($rows)->pluck('id');
     expect($listed->json('meta.total'))->toBe(1)->and($ids)->toContain($endpoint->getKey());
 });
 

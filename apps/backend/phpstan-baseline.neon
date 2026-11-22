@@ -2852,28 +2852,10 @@ parameters:
 			path: Modules/User/tests/Feature/VatIdTest.php
 
 		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookDelivery\>\:\:jsonPaginate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookDelivery/ListWebhookDeliveryController.php
-
-		-
 			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Webhooks\\Models\\WebhookEndpoint\>\:\:allowedSorts\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: Modules/Webhooks/app/Http/Controllers/Admin/WebhookEndpoint/ListWebhookEndpointController.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Order\\Models\\Order\>\:\:jsonPaginate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Machine/ListMachineOrdersController.php
-
-		-
-			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Builder\<Modules\\Catalog\\Models\\Product\>\:\:jsonPaginate\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: Modules/Webhooks/app/Http/Controllers/Machine/ListMachineProductsController.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
