@@ -96,10 +96,10 @@ final class RecordingSearchClient implements SearchClientInterface
 function seedIndexCatalog(): Product
 {
     Currency::factory()->create(['code' => 'USD', 'is_default' => true]);
-    Language::query()->firstOrCreate(['code' => 'en'], ['locale' => 'en', 'name' => 'English', 'code3' => 'eng', 'is_active' => true]);
+    $language = Language::query()->firstOrCreate(['code' => 'en'], ['locale' => 'en', 'name' => 'English', 'code3' => 'eng', 'is_active' => true]);
 
     $category = Category::query()->create(['position' => 1]);
-    $category->translations()->create(['language_id' => 1, 'title' => 'Men', 'slug' => 'men']);
+    $category->translations()->create(['language_id' => $language->id, 'title' => 'Men', 'slug' => 'men']);
 
     $option = Option::query()->create(['position' => 1]);
     $optionValue = OptionValue::query()->create(['option_id' => $option->id, 'position' => 1]);
@@ -113,7 +113,7 @@ function seedIndexCatalog(): Product
         'rating_count' => 3,
     ]);
     $product->categories()->attach([$category->id]);
-    $product->translations()->create(['language_id' => 1, 'title' => 'Test Shirt', 'slug' => 'test-shirt', 'content' => 'Content']);
+    $product->translations()->create(['language_id' => $language->id, 'title' => 'Test Shirt', 'slug' => 'test-shirt', 'content' => 'Content']);
 
     $variant = $product->variants()->create(['sku' => 'SKU-1', 'price' => '25.00', 'quantity' => 5, 'is_default' => true]);
     $variant->optionValues()->attach([$optionValue->id]);
@@ -134,9 +134,11 @@ it('builds a product-level document with locale titles, price bounds and the opt
         ->and($doc['title_en'])->toBe('Test Shirt')
         ->and($doc['price_min'])->toBe(2500)
         ->and($doc['price_max'])->toBe(4000)
-        ->and($doc['option_value_ids'])->toBe([1])
+        // Sequence-real ids (PostgreSQL keeps rolled-back values); the
+        // seeded catalog has exactly one option value.
+        ->and($doc['option_value_ids'])->toBe(OptionValue::query()->pluck('id')->all())
         ->and($doc['rating_avg'])->toBe(4.2)
-        ->and($doc['category_ids'])->toBe([$category->id ?? 1]);
+        ->and($doc['category_ids'])->toBe(Category::query()->pluck('id')->all());
 });
 
 it('indexes the journal entry and releases the uniqueness key on terminal success', function () {

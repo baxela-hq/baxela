@@ -214,11 +214,16 @@ it('writes variants to the record disk (s3) and resolves urls against it', funct
 });
 
 it('refuses deletion while generation holds the lock, then deletes original and variants', function () {
-    $media = mediaWithBytes(realImage(1000, 600));
+    // Owner-scoped fixture: the delete action filters by the ACTING
+    // admin's id — hard-coding user_id 1 only matched while sequences
+    // started at 1 (PostgreSQL sequences keep values from rolled-back
+    // inserts, so ids drift).
+    $admin = $this->adminUser();
+    $media = mediaWithBytes(realImage(1000, 600), [MediaSchema::USER_ID => $admin->id]);
     app(GenerateMediaVariantsAction::class)->handle($media);
 
     $variantPaths = array_column(variantsOf($media), 'path');
-    $this->actingAs($this->adminUser());
+    $this->actingAs($admin);
 
     // A held lock (generation in progress) defers the deletion.
     $generationLock = Cache::lock('media-variants:'.$media->getKey(), 10);

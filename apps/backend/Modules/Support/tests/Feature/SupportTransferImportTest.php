@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Utils\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
@@ -43,7 +44,10 @@ it('imports ticket history append-only without events or re-attribution (C5/C3)'
     $this->actingAs($this->superAdminUser());
 
     $source = (string) Str::uuid();
-    $localUserId = 1; // the acting admin is the only local user.
+    // The acting admin's REAL id: PostgreSQL sequences keep values from
+    // rolled-back inserts, so "the first user is id 1" does not survive a
+    // full-suite run on a shared server database.
+    $localUserId = Auth::id();
 
     // A previous User-directory import recorded source user 500.
     TransferRemap::query()->create([

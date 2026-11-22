@@ -960,11 +960,6 @@ parameters:
 			count: 1
 			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
 
-		-
-			message: '#^Variable \$category on left side of \?\? is never defined\.$#'
-			identifier: nullCoalesce.variable
-			count: 1
-			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
 
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\ProductComment\>\|Modules\\Catalog\\Models\\ProductComment\:\:\$body\.$#'

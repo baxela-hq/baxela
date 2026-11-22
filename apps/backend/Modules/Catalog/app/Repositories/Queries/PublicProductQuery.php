@@ -139,7 +139,14 @@ class PublicProductQuery implements QueryInterface
                 }),
                 // "top rated": unrated products (null average) sink on descending
                 AllowedSort::callback('rating', function (Builder $query, bool $descending): void {
-                    $query->orderBy(ProductSchema::RATING_AVG, $descending ? 'desc' : 'asc');
+                    // NULLS placement is explicit: PostgreSQL's DESC
+                    // defaults to NULLS FIRST (SQLite's to last), and the
+                    // product intent is unrated products sinking on
+                    // descending sorts. SQLite >= 3.30 supports the clause.
+                    $query->orderByRaw(
+                        ProductSchema::RATING_AVG.' '.($descending ? 'desc' : 'asc')
+                        .($descending ? ' nulls last' : ' nulls first'),
+                    );
                 }),
             )
             ->defaultSort($this->featured

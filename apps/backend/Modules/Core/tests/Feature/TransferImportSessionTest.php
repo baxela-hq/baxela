@@ -29,6 +29,14 @@ beforeEach(function () {
 });
 
 afterEach(function () {
+    // The F33 test swaps in a broken foreign PDO; drop it so the next
+    // use reconnects to the real configured engine (on the PostgreSQL
+    // leg a stale sqlite PDO made the following migrate:fresh run
+    // pg_class SQL against sqlite).
+    DB::connection()->disconnect();
+});
+
+afterEach(function () {
     // Shared-server planes (the PostgreSQL CI leg): leave a clean schema
     // for whatever file runs next — these tests own their lifecycle and
     // run outside RefreshDatabase, so their rows would otherwise leak

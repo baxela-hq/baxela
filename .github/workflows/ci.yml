@@ -120,11 +120,7 @@ jobs:
           echo "::error::PostgreSQL did not become healthy"
           exit 1
 
-      # Advisory until the shared-database isolation tail closes (the
-      # affected tests pass in isolation; they trip on cross-file state on
-      # a shared server database — postgres-migration phase D follow-up).
       - name: Run tests (PostgreSQL)
-        continue-on-error: true
         shell: bash
         run: |
           set -o pipefail

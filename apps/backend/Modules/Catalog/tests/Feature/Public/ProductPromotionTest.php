@@ -62,7 +62,9 @@ it('serves promoted prices and promotion info on the public list', function () {
         ->promotion->id->toBe((int) $promotion->id)
         ->promotion->type->toBe('percent')
         ->and($rows->get($fullPrice->id))
-        ->price->toBe(50)
+        // numeric columns serialize per-engine (pgsql strings, sqlite
+        // numbers) — compare numerically.
+        ->price->toEqual(50)
         ->promotion->toBeNull();
 });
 

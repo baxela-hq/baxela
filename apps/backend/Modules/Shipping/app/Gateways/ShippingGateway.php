@@ -75,7 +75,7 @@ class ShippingGateway implements ShippingGatewayInterface
             });
 
         $rates = $query->get()
-            ->sortBy(RateSchema::PRICE)
+            ->sortBy([RateSchema::PRICE, RateSchema::METHOD_ID])
             ->unique(RateSchema::METHOD_ID)
             ->values();
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Core\Utils\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
@@ -46,7 +47,9 @@ it('skips order-linked redemptions with an expected warning, then resolves them 
 
     $source = (string) Str::uuid();
     $localCouponId = $seeded['coupon']->id;
-    $localCustomerId = 1; // the acting admin doubles as the local customer.
+    // The acting admin's REAL id — PostgreSQL sequences keep values from
+    // rolled-back inserts, so id-1 assumptions break full-suite runs.
+    $localCustomerId = Auth::id();
 
     // Prior imports of the restore sequence: User + Order both landed.
     TransferRemap::query()->create([

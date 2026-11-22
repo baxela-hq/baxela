@@ -27,7 +27,13 @@ class PicksTranslation
     public static function pick(
         ?Collection $translations,
         ?int $languageId,
-        string $languageColumn = LanguageSchema::ID,
+        // The translations' language FK — 'language_id' by the cross-module
+        // convention every translation table follows. The previous default
+        // (LanguageSchema::ID = 'id') matched the translation ROW'S OWN
+        // primary key against the language id: it only worked while both
+        // sequences happened to align, and PostgreSQL sequences (which do
+        // not roll back) drift immediately after any re-seed.
+        string $languageColumn = 'language_id',
     ): ?object {
         if (is_null($translations) || $translations->isEmpty()) {
             return null;

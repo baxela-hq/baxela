@@ -30,14 +30,18 @@ class SchemaIntrospector
      */
     protected function columns(string $table): array
     {
-        /** @var array<int, array{name: string, type: string, nullable: bool, auto_increment?: bool}> $raw */
+        /** @var array<int, array{name: string, type: string, type_name?: string, nullable: bool, auto_increment?: bool}> $raw */
         $raw = Schema::getColumns($table);
 
         $columns = [];
         foreach ($raw as $column) {
             $columns[] = new ColumnInfo(
                 $column['name'],
-                $column['type'],
+                // type_name is the engine-normalized native name (varchar
+                // on both sqlite and PostgreSQL); the full `type` differs
+                // per engine ('character varying(255)' on pgsql) and
+                // would leak engine-specific spellings into the docs.
+                $column['type_name'] ?? $column['type'],
                 (bool) $column['nullable'],
                 (bool) ($column['auto_increment'] ?? false),
             );

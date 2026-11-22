@@ -78,7 +78,7 @@ it('reports purchasable availability and the per-locale slug map', function () {
     expect($data['availability'])->toBe('in_stock')
         // Every offered locale's slug, for the storefront's hreflang map.
         ->and($data['slugs'])->toBe(['en' => 'seo-product', 'fa' => 'محصول-سئو'])
-        ->and($data['price'])->toBe(25.5);
+        ->and($data['price'])->toEqual(25.5); // pgsql numeric-string vs sqlite number
 });
 
 it('reports out of stock when every tracked variant is empty', function () {
