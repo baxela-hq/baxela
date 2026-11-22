@@ -65,8 +65,12 @@ final class RecordingSearchClient implements SearchClientInterface
 
     public function getDocument(string $indexUid, int $productId): ?array
     {
-        foreach ($this->documents[$indexUid] ?? [] as $document) {
-            if ((int) ($document['product_id'] ?? 0) === $productId) {
+        if (! array_key_exists($indexUid, $this->documents)) {
+            return null;
+        }
+
+        foreach ($this->documents[$indexUid] as $document) {
+            if (isset($document['product_id']) && (int) $document['product_id'] === $productId) {
                 return $document;
             }
         }

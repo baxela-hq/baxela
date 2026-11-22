@@ -30,10 +30,10 @@ uses(HelperTransferTrait::class);
  *   php artisan test --filter=TransferImportLockTest
  */
 beforeEach(function () {
-    $this->transferLockDb = storage_path('framework/testing/'.Str::uuid()->toString().'.sqlite');
-    @mkdir(dirname($this->transferLockDb), recursive: true);
+    TransferLockTestDb::$path = storage_path('framework/testing/'.Str::uuid()->toString().'.sqlite');
+    @mkdir(dirname(TransferLockTestDb::$path), recursive: true);
 
-    config(['database.connections.'.config('database.default').'.database' => $this->transferLockDb]);
+    config(['database.connections.'.config('database.default').'.database' => TransferLockTestDb::$path]);
     DB::purge();
 
     $this->artisan('migrate', ['--force' => true]);
@@ -41,8 +41,14 @@ beforeEach(function () {
 
 afterEach(function () {
     DB::purge();
-    @unlink($this->transferLockDb);
+    @unlink(TransferLockTestDb::$path);
 });
+
+/** File-scoped holder for the per-test database path. */
+final class TransferLockTestDb
+{
+    public static string $path = '';
+}
 it('rejects an import whose destination-module lease is held past the wait budget (F26)', function () {
     // A foreign, LIVE lease on the tax module — same destination module
     // serializes, whatever the source installation (F26).

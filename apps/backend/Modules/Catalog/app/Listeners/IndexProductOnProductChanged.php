@@ -22,11 +22,13 @@ final class IndexProductOnProductChanged implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    /** The connection must be gone before recovery can claim the write. */
-    /** @var bool */
-    public $afterCommit = true;
-
-    public function __construct(private readonly ProductIndexWriter $writer) {}
+    public function __construct(private readonly ProductIndexWriter $writer)
+    {
+        // afterCommit via constructor: the Queueable trait owns the
+        // property declaration — redeclaring it on the class is a fatal
+        // composition error (found by the dispatch-registry test).
+        $this->afterCommit = true;
+    }
 
     public function handle(ProductCreatedEvent|ProductUpdatedEvent $event): void
     {

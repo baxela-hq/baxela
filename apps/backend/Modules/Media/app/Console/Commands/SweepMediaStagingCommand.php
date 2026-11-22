@@ -56,9 +56,9 @@ final class SweepMediaStagingCommand extends Command
                 continue;
             }
 
-            $modified = Storage::disk($disk)->lastModified($path);
+            $modified = (int) Storage::disk($disk)->lastModified($path);
 
-            if ($modified === false || now()->timestamp - (int) $modified < $graceHours * 3600) {
+            if (now()->timestamp - $modified < $graceHours * 3600) {
                 continue; // Not aged out yet (covers the grace for fresh claims).
             }
 

@@ -197,12 +197,12 @@ it('fails a contended import with import_in_progress past the wait budget (F26)'
 
     $session = new TransferImportSession(app(TransferGuardRegistry::class));
 
-    expect(fn () => $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null))
-        ->toThrow(ImportFailedException::class)
-        ->and(fn () => $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null))
-        ->toThrow(function (ImportFailedException $e): void {
-            expect($e->meta['reason'] ?? null)->toBe('import_in_progress');
-        });
+    try {
+        $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null);
+        $this->fail('The contended import should have failed with import_in_progress.');
+    } catch (ImportFailedException $e) {
+        expect($e->meta['reason'] ?? null)->toBe('import_in_progress');
+    }
 });
 
 it('reclaims an expired lease with an advanced generation on the next import (I3)', function () {

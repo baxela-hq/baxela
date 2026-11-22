@@ -17,10 +17,13 @@ final class DeindexProductOnProductDeleted implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    /** @var bool */
-    public $afterCommit = true;
-
-    public function __construct(private readonly ProductIndexWriter $writer) {}
+    public function __construct(private readonly ProductIndexWriter $writer)
+    {
+        // afterCommit via constructor: the Queueable trait owns the
+        // property declaration — redeclaring it on the class is a fatal
+        // composition error (found by the dispatch-registry test).
+        $this->afterCommit = true;
+    }
 
     public function handle(ProductDeletedEvent $event): void
     {
