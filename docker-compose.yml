@@ -1,5 +1,5 @@
-# Development environment (default compose file): php-fpm + nginx + MySQL +
-# Redis, with the backend source bind-mounted from apps/backend (no host PHP
+# Development environment (default compose file): php-fpm + nginx + PostgreSQL
+# + Redis, with the backend source bind-mounted from apps/backend (no host PHP
 # required), plus the admin and storefront dev servers behind the `frontend`
 # profile (enabled by default via COMPOSE_PROFILES in .env.example). Run from
 # the repo root: docker compose up -d
@@ -55,7 +55,7 @@ services:
             # node_modules.
             INSTALL_NODE_DEPS: 1
         depends_on:
-            mysql:
+            postgres:
                 condition: service_healthy
             redis:
                 condition: service_healthy
@@ -216,23 +216,26 @@ services:
             - web
             - reverb
 
-    mysql:
+    postgres:
         logging: *default-logging
-        image: mysql:8-debian
+        # postgres-migration DD6: PG-18 image layout keeps PGDATA under
+        # /var/lib/postgresql — mount the named volume THERE (not the
+        # pre-18 .../data path). Superuser = POSTGRES_USER (no separate
+        # root password to manage).
+        image: postgres:18-alpine
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: ${DEV_DB_DATABASE:-baxela_backend}
-            MYSQL_USER: ${DEV_DB_USERNAME:-baxela}
-            MYSQL_PASSWORD: ${DEV_DB_PASSWORD:-password}
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+            POSTGRES_DB: ${DEV_DB_DATABASE:-baxela_backend}
+            POSTGRES_USER: ${DEV_DB_USERNAME:-baxela}
+            POSTGRES_PASSWORD: ${DEV_DB_PASSWORD:-password}
         ports:
-            # Loopback only: an unauthenticated dev Redis / weak-password dev
-            # MySQL must not be reachable from the network.
-            - "127.0.0.1:${BACKEND_MYSQL_PORT:-3308}:3306"
+            # Loopback only: a weak-password dev PostgreSQL must not be
+            # reachable from the network (same rule as redis/search).
+            - "127.0.0.1:${BACKEND_DB_PORT:-5433}:5432"
         volumes:
-            - mysql-data:/var/lib/mysql
+            - postgres-data:/var/lib/postgresql
         healthcheck:
-            test: ["CMD-SHELL", "mysqladmin ping -hlocalhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+            test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
             interval: 5s
             timeout: 5s
             retries: 20
@@ -270,7 +273,7 @@ services:
         restart: unless-stopped
         ports:
             # Loopback only: an unauthenticated dev search engine must not
-            # be reachable from the network (same rule as mysql/redis).
+            # be reachable from the network (same rule as postgres/redis).
             - "127.0.0.1:${MEILISEARCH_PORT:-7700}:7700"
         environment:
             MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-}
@@ -284,7 +287,7 @@ services:
             retries: 20
 
 volumes:
-    mysql-data:
+    postgres-data:
     redis-data:
     search-data:
 

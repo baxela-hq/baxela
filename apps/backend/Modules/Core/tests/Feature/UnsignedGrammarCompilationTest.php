@@ -34,7 +34,7 @@ it('compiles unsigned columns to widened storage with non-negativity checks', fu
         $table->decimal('f', 10, 2)->unsigned();
     });
 
-    expect($sql)->toContain('"a" smallint not null')
+    expect($sql)->toContain('"a" integer not null')
         ->and($sql)->toContain('check ("a" >= 0)')
         ->and($sql)->toContain('"b" integer not null')
         ->and($sql)->toContain('check ("b" >= 0)')

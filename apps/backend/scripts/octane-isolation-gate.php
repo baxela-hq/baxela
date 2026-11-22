@@ -19,9 +19,9 @@
  *
  * Requires an octane instance started with the gate endpoints enabled:
  *
- *   docker compose exec mysql mysql -uroot -p"$MYSQL_ROOT_PASSWORD" \
- *       -e "CREATE DATABASE IF NOT EXISTS baxela_octane_gate;
- *           GRANT ALL PRIVILEGES ON baxela_octane_gate.* TO 'baxela'@'%';"
+ *   docker compose exec postgres psql -U baxela -d baxela_backend \
+ *       -c "CREATE DATABASE baxela_octane_gate;" \
+ *       -c "GRANT ALL PRIVILEGES ON DATABASE baxela_octane_gate TO baxela;"
  *   docker compose exec -e DB_DATABASE=baxela_octane_gate app php artisan migrate --force
  *   docker compose exec -d -e DB_DATABASE=baxela_octane_gate -e OCTANE_GATE=1 \
  *       -e LOG_CHANNEL=single -e OCTANE_STATE_FILE=storage/logs/octane-gate-state.json \

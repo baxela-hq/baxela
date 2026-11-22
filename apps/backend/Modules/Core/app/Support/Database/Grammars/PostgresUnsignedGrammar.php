@@ -55,22 +55,32 @@ class PostgresUnsignedGrammar extends PostgresGrammar
         return sprintf(' check (%s >= 0)', $this->wrap((string) $column->__get('name')));
     }
 
-    /** @param Fluent<array-key, mixed> $column */
-    protected function typeTinyInteger(Fluent $column): string
-    {
-        return $this->isUnsigned($column) ? 'smallint' : parent::typeTinyInteger($column);
-    }
-
-    /** @param Fluent<array-key, mixed> $column */
+    /**
+     * Widen only non-auto-incrementing unsigned columns: the serial
+     * family already lands one storage size up (smallserial/serial/
+     * bigserial), and an auto-increment PK never stores negatives —
+     * widening it would silently break serial semantics (the
+     * migrations-table regression this guard prevents).
+     *
+     * @param Fluent<array-key, mixed> $column
+     */
     protected function typeSmallInteger(Fluent $column): string
     {
-        return $this->isUnsigned($column) ? 'integer' : parent::typeSmallInteger($column);
+        if ($this->isUnsigned($column) && ! $this->isAutoIncrement($column)) {
+            return 'integer';
+        }
+
+        return parent::typeSmallInteger($column);
     }
 
     /** @param Fluent<array-key, mixed> $column */
     protected function typeInteger(Fluent $column): string
     {
-        return $this->isUnsigned($column) ? 'bigint' : parent::typeInteger($column);
+        if ($this->isUnsigned($column) && ! $this->isAutoIncrement($column)) {
+            return 'bigint';
+        }
+
+        return parent::typeInteger($column);
     }
 
     /** @param Fluent<array-key, mixed> $column */
@@ -87,5 +97,11 @@ class PostgresUnsignedGrammar extends PostgresGrammar
     private function isUnsigned(Fluent $column): bool
     {
         return (bool) $column->__get('unsigned');
+    }
+
+    /** @param Fluent<array-key, mixed> $column */
+    private function isAutoIncrement(Fluent $column): bool
+    {
+        return (bool) $column->__get('autoIncrement');
     }
 }

@@ -56,20 +56,6 @@ class CoreServiceProvider extends ServiceProvider
         $router->pushMiddlewareToGroup('api', AssignRequestId::class);
         $router->pushMiddlewareToGroup('api', SetSecurityHeaders::class);
 
-        // Unsigned-preserving pgsql schema grammar (postgres-migration
-        // DD9b): DB::extend re-resolves through this closure on every
-        // connection (re)instantiation — purge, reconnect, and fresh
-        // resolution all re-apply it; inert while the driver is not pgsql.
-        $this->app->extend('db', function ($db) {
-            $db->extend('pgsql', function ($config, $name) {
-                $connection = app(\Illuminate\Database\Connectors\ConnectionFactory::class)->make($config, $name);
-                $connection->setSchemaGrammar(new \Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar($connection));
-
-                return $connection;
-            });
-
-            return $db;
-        });
 
         if (config('core.log_requests')) {
             $router->pushMiddlewareToGroup('api', RequestLogger::class);
@@ -88,6 +74,24 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // Unsigned-preserving pgsql schema grammar (postgres-migration
+        // DD9b), registered in register() deliberately: a connection
+        // created during any provider's boot() would otherwise cache with
+        // the stock grammar before this resolver existed. The container
+        // decorator fires on the manager's first resolution — before its
+        // first ->connection() call — so the resolver is in place for
+        // every (re)instantiation: purge, reconnect, fresh resolution.
+        $this->app->extend('db', function ($db) {
+            $db->extend('pgsql', function ($config, $name) {
+                $connection = app(\Illuminate\Database\Connectors\ConnectionFactory::class)->make($config, $name);
+                $connection->setSchemaGrammar(new \Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar($connection));
+
+                return $connection;
+            });
+
+            return $db;
+        });
+
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(SentryContextServiceProvider::class);

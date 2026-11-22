@@ -1,6 +1,6 @@
 # Production environment (single-server deploy): backend fpm + nginx,
 # dedicated one-shot migrate, queue worker, scheduler, admin SPA,
-# MySQL and Redis. Build contexts are the repo root, so both images are
+# PostgreSQL and Redis. Build contexts are the repo root, so both images are
 # self-contained and reusable as-is in Kubernetes later.
 #
 # Run from the repo root:
@@ -37,7 +37,7 @@ x-backend: &backend
     security_opt:
         - no-new-privileges:true
     depends_on:
-        mysql:
+        postgres:
             condition: service_healthy
         redis:
             condition: service_healthy
@@ -109,7 +109,7 @@ services:
         command: php artisan migrate --force
         restart: "no"
         depends_on:
-            mysql:
+            postgres:
                 condition: service_healthy
 
     queue:
@@ -184,21 +184,23 @@ services:
         ports:
             - "${STOREFRONT_PORT:-8082}:3000"
 
-    mysql:
-        image: mysql:8-debian
+    postgres:
+        # postgres-migration DD6: PG-18 layout — named volume mounted at
+        # /var/lib/postgresql (not the pre-18 .../data path). Superuser =
+        # POSTGRES_USER (no separate root password variable).
+        image: postgres:18-alpine
         logging: *default-logging
         restart: unless-stopped
         security_opt:
             - no-new-privileges:true
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE:?set DB_DATABASE in .env.production}
-            MYSQL_USER: ${DB_USERNAME:?set DB_USERNAME in .env.production}
-            MYSQL_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env.production}
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env.production}
+            POSTGRES_DB: ${DB_DATABASE:?set DB_DATABASE in .env.production}
+            POSTGRES_USER: ${DB_USERNAME:?set DB_USERNAME in .env.production}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env.production}
         volumes:
-            - mysql-data:/var/lib/mysql
+            - postgres-data:/var/lib/postgresql
         healthcheck:
-            test: ["CMD-SHELL", "mysqladmin ping -hlocalhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+            test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
             interval: 5s
             timeout: 5s
             retries: 20
@@ -221,11 +223,11 @@ services:
             retries: 20
 
 volumes:
-    mysql-data:
+    postgres-data:
     redis-data:
 
 # S.3: the ONLY network path to the Octane HTTP listener (:8000). Everything
-# else (mysql, redis, queue, reverb, admin, storefront) stays on the default
+# else (postgres, redis, queue, reverb, admin, storefront) stays on the default
 # network, so a container peer cannot feed forwarding headers to the app.
 # Set TRUSTED_PROXIES to this subnet in .env.production; keep both in sync
 # when changing the subnet.
