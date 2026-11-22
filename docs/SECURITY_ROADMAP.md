@@ -221,7 +221,7 @@ as a locked (non-disableable) notification code.
       locked code) + persistent `auth_user_devices` registration.
 - [x] Config: `auth.lockout.{max_attempts,lockout_minutes}`.
 - [x] Tests: lockout triggers after N failures; clears after M minutes;
-      never extends under pressure; concurrency (two-connection MySQL
+      never extends under pressure; concurrency (two-connection PostgreSQL
       bootstrap + forced-interleave cases); new-device notification fires
       on first use only and cannot be disabled; all three completion
       paths (password, 2FA verify, forced enrollment) refuse locked

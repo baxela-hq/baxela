@@ -101,7 +101,7 @@ it('imports the money trail inertly — records land, nothing else moves (C5/C3)
         ->and(str_starts_with((string) $payment->created_at, '2026-01-15'))->toBeTrue();
 
     // The method upserted by its natural key.
-    expect(DB::table('payment_payment_methods')->where('method', 'manual')->value('is_active'))->toBe(1);
+    expect((bool) DB::table('payment_payment_methods')->where('method', 'manual')->value('is_active'))->toBeTrue();
 
     // NOTHING else moved: the order's state is untouched by the
     // payment import (no markAsPaid, no events, no transitions).

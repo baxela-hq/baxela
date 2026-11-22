@@ -2,7 +2,7 @@
 
 Single-server deployment: backend (Laravel Octane + RoadRunner behind nginx),
 one-shot migrate, queue worker, scheduler, admin SPA, storefront (Next.js
-standalone server), MySQL, Redis. Defined in
+standalone server), PostgreSQL, Redis. Defined in
 [`docker-compose.prod.yml`](../../../docker-compose.prod.yml) at the repo
 root; this directory only holds the build assets (Dockerfiles, nginx configs,
 php.ini, entrypoint). Images are built from the **repo root** context, so
@@ -28,7 +28,7 @@ docker compose --env-file .env.production -f docker-compose.prod.yml \
 docker compose --env-file .env.production -f docker-compose.prod.yml up -d --build
 ```
 
-`up` starts MySQL/Redis, runs the one-shot `migrate` service, then brings up
+`up` starts PostgreSQL/Redis, runs the one-shot `migrate` service, then brings up
 Octane (RoadRunner), nginx, queue, scheduler, and the admin panel. `backend`,
 `queue`, and `scheduler` wait for `migrate` to complete, so workers never
 race migrations.
@@ -53,13 +53,21 @@ docker compose logs -f backend
 docker compose run --rm --no-deps --entrypoint php backend artisan <command>
 # (the entrypoint is skipped via --entrypoint; caching already ran at build)
 
-# Enter MySQL
-docker compose exec mysql mysql -u root -p
+# Enter PostgreSQL (psql)
+docker compose exec postgres psql -U baxela -d "$DB_DATABASE"
 
-# Backup / restore
-docker compose exec mysql sh -c 'exec mysqldump -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' \
-    | gzip > backup-$(date +%F).sql.gz
-gunzip -c backup-2026-09-01.sql.gz | docker compose exec -T mysql sh -c 'exec mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"'
+# Backup (custom format — compressed, pg_restore-able, parallel-safe)
+docker compose exec postgres pg_dump -U baxela -d "$DB_DATABASE" -Fc \
+    > backup-$(date +%F).pgdump
+
+# Restore into a FRESH database (never in place — restore-then-swap)
+docker compose exec postgres psql -U baxela -d postgres \
+    -c "CREATE DATABASE ${DB_DATABASE}_restored"
+docker compose exec -T postgres pg_restore -U baxela -d "${DB_DATABASE}_restored" \
+    < backup-2026-09-01.pgdump
+
+# Liveness probe for scripts
+docker compose exec postgres pg_isready -U baxela -d "$DB_DATABASE"
 ```
 
 ## The Octane server (RoadRunner)
@@ -150,7 +158,7 @@ docker compose -f docker-compose.prod.yml exec scheduler php artisan schedule:li
   - `ADMIN_USER_PASSWORD` — password for the staff accounts created by the
     Auth seeder. Required on first deploy; change it in-app afterwards.
   - `SESSION_SECURE_COOKIE=true` — cookies only over TLS.
-- MySQL has **no published host port** by default; reach it through the
+- PostgreSQL has **no published host port** by default; reach it through the
   compose network or add an explicit `ports:` entry if needed.
 - The admin SPA's `VITE_*` values and the storefront's `NEXT_PUBLIC_*` values
   are build args — changing them requires `docker compose build admin` /

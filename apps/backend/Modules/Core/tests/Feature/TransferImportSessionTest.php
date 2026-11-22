@@ -25,7 +25,17 @@ use Modules\Core\Support\Transfer\TransferImportTransaction;
  * per-test migrate gives each test its own unwrapped :memory: database.
  */
 beforeEach(function () {
-    $this->artisan('migrate', ['--force' => true]);
+    $this->artisan('migrate:fresh', ['--force' => true]);
+});
+
+afterEach(function () {
+    // Shared-server planes (the PostgreSQL CI leg): leave a clean schema
+    // for whatever file runs next — these tests own their lifecycle and
+    // run outside RefreshDatabase, so their rows would otherwise leak
+    // into later suites' expectations.
+    if (DB::connection()->getDriverName() !== 'sqlite') {
+        $this->artisan('migrate:fresh', ['--force' => true]);
+    }
 });
 
 it('activates the run context during the run and deactivates it after', function () {

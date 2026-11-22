@@ -91,7 +91,7 @@ Suggested commit: `docs(monorepo): state per-gateway refund coverage honestly`
 > strategies; per-row failure isolation). The admin data-transfer cockpit drives
 > download/upload — application-level backup and restore, deploy-target-agnostic.
 > Standard and payload rules: `apps/backend/docs/transfer.md`. The spatie sketch below is
-> history — do not build it. (The infra-level `mysqldump` procedure in the production
+> history — do not build it. (The infra-level `pg_dump` procedure in the production
 > README remains as a complement for raw database recovery.)
 
 - [x] Backup & restore story. *(resolved 2026-11-10 — Transfer module standard + admin

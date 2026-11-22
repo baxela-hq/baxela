@@ -28,7 +28,7 @@ See `/docs/modules.md`
 ```bash
 git clone ...
 cp .env.example .env         # repo root: compose variables (ports, DB creds)
-docker compose up -d          # Octane (RoadRunner) + nginx + MySQL + Redis
+docker compose up -d          # Octane (RoadRunner) + nginx + PostgreSQL + Redis
 docker compose exec app composer install
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate

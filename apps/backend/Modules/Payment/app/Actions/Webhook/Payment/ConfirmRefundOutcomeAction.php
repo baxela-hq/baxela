@@ -68,7 +68,12 @@ class ConfirmRefundOutcomeAction
     {
         $refund = null;
 
-        if ($outcome->reference !== null && $outcome->reference !== '') {
+        // UUID-shaped only: PostgreSQL's uuid column rejects arbitrary
+        // merchant-reference strings outright (MySQL/SQLite merely
+        // no-match), so non-shaped references skip to the documented
+        // gateway-refund-id fallback instead of querying.
+        if ($outcome->reference !== null && $outcome->reference !== ''
+            && preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $outcome->reference) === 1) {
             $refund = PaymentRefund::query()
                 ->where(PaymentRefundSchema::UUID, $outcome->reference)
                 ->first();

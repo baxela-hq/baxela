@@ -23,7 +23,7 @@ Guiding principles (from README):
 - API docs: `dedoc/scramble` serves OpenAPI 3.1 at `/docs/api` (config: `config/scramble.php`, scoped to `api/v1`, bearer security via middleware strategy; local-only docs access)
 - Tests: **Pest** (`pestphp/pest`) + PHPUnit
 - Code style: **Laravel Pint** (4-space indent, LF — see `.editorconfig`)
-- DB: MySQL in dev (Docker), SQLite `:memory:` in tests
+- DB: PostgreSQL 18 in dev (Docker), SQLite `:memory:` in tests
 - Frontend tooling: Vite + Tailwind (used only for assets, not the product UI)
 
 ## Runtime (Octane / RoadRunner)
@@ -182,7 +182,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 - Migrations live in `Modules\{Name}\database\migrations` (auto-loaded by the module's ServiceProvider). They use Schema constants for the table and every column.
 - **Column removals/changes (pre-v1):** edit the original table migration in place instead of adding a `drop_*` migration. No release has shipped yet, so rewriting history keeps it clean, and the per-entity Schema classes (e.g. `CategorySchema`) make every affected reference easy to locate. **After v1 is published this flips** — schema changes must then go through new, dedicated migrations.
 - Pivot/relational tables (e.g. `variant_option_values`) are created in the owning module.
-- **Composite index names must stay under MySQL's 64-character identifier limit.** The Laravel-generated name (`table_col1_col2_unique`) easily overruns it — pass an explicit short name: `$table->unique([...], 'tax_rates_country_region_class_unique')`.
+- **Composite index names must stay under PostgreSQL's 63-byte identifier limit** (target ≤58 for headroom; the enforced audit test lives in `Modules/Core/tests/Feature/PostgresValidationTest.php`). The Laravel-generated name (`table_col1_col2_unique`) easily overruns it — pass an explicit short name: `$table->unique([...], 'tax_rates_country_region_class_unique')`.
 - Soft-deleted entities use `SoftDeletes` and `SoftDeleteTrait` constants.
 - Seeders are per-module under `database/seeders`; seed data for catalog uses lang files (`Modules\Catalog\lang\{en}\seeder.php`). Core seeds `languages`, `currencies`, `countries`.
 - Run migrations with `php artisan migrate`; seed individual modules with `php artisan db:seed --class="Modules\{Name}\Database\Seeders\...Seeder"`.
@@ -200,7 +200,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 - SQLite returns decimal columns as numbers, not strings: assert DB-level money values with `(float)` casts (`expect((float) $order->{OrderSchema::TOTAL_AMOUNT})->toBe(222.43)`), and remember `toBe()` on arrays compares key **order**, not just contents.
 - `RefreshDatabase` wipes the seeded core rows (`countries`, `languages`, `currencies`). Requests validated by `CountryCodeRule` (or anything checking seeded tables) must re-create the rows they reference in the test.
 - Prefer DB-state assertions over event fakes. Never blanket-`Event::fake()` where listeners carry the behavior under test (stock restore on cancel); use `Event::fakeFor()`/`assertDispatched` for dispatch-count checks and `Mail::fake()` for notification assertions.
-- Tests run against SQLite `:memory:` (configured in `phpunit.xml`) — MySQL-only SQL or enums in `DB::statement` calls can break tests. If an Action uses MySQL-only SQL, test it at the level that works and flag it rather than hacking around it.
+- Tests run against SQLite `:memory:` (configured in `phpunit.xml`), with a full PostgreSQL leg in CI — engine-specific SQL in `DB::statement` calls breaks one of them. Prefer portable SQL, or branch on the driver like `ShowStatsAction`'s date truncation.
 - Some factories are known-broken (`CategoryTranslationFactory` targets the wrong model; `OptionFactory` references removed schema constants) — build such rows through model relations instead.
 - Always run the full suite (`composer test`) and `vendor/bin/pint` on touched paths after changes.
 - **`composer test` is a plain-output wrapper** (`scripts/test.sh`): Pest's collision TUI emits ANSI/binary output that vanishes or reads as binary when piped, hiding failures in agent/CI logs. The wrapper strips escapes, echoes everything, and leaves a greppable log at `storage/logs/pest.log` — grep it with `grep -a`. Use it (not raw `vendor/bin/pest`) whenever output is captured or piped.
@@ -215,7 +215,7 @@ Request payloads must keep a fixed shape: every key is always present — its va
 
 ```bash
 # Dev stack is the root docker-compose.yml (run compose from the repo root)
-docker compose up -d        # MySQL/Redis/nginx dev environment
+docker compose up -d        # PostgreSQL/Redis/nginx dev environment
 docker compose exec app composer install
 docker compose exec app php artisan migrate
 composer test               # Pest via scripts/test.sh (plain, greppable output)

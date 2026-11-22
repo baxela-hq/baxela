@@ -133,7 +133,7 @@ it('a stale worker cannot overwrite a newer claim', function () {
     // Worker A (old token) tries to finalize its run.
     $updated = WebhookDelivery::query()
         ->where(WebhookDeliverySchema::ID, $delivery->getKey())
-        ->where(WebhookDeliverySchema::CLAIM_TOKEN, 'old-token-a')
+        ->where(WebhookDeliverySchema::CLAIM_TOKEN, '00000000-0000-0000-0000-00000000000a')
         ->update([
             WebhookDeliverySchema::STATUS => 'succeeded',
             WebhookDeliverySchema::DELIVERED_AT => now(),

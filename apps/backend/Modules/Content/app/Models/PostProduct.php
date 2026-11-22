@@ -23,6 +23,16 @@ class PostProduct extends Model
 {
     public $timestamps = false;
 
+    /**
+     * Composite primary key (post_id, product_id) with NO id column —
+     * without this, Eloquent's incrementing insert compiles a PostgreSQL
+     * RETURNING "id" that the table cannot answer (sqlite plane never
+     * noticed; the pg leg does).
+     */
+    public $incrementing = false;
+
+    protected $primaryKey = null;
+
     protected $table = PostProductSchema::TABLE;
 
     protected $fillable = [

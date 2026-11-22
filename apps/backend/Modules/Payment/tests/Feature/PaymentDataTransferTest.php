@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Modules\Order\Models\Order;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Models\PaymentMethod;
@@ -30,7 +31,7 @@ it('exports payments, methods and refunds (export-only)', function () {
         'amount' => '150.00', 'currency_id' => 1, 'status' => 'success',
     ]);
     PaymentRefund::query()->create([
-        'uuid' => 'r-1', 'payment_id' => $payment->id, 'order_id' => $order->id,
+        'uuid' => (string) Str::uuid(), 'payment_id' => $payment->id, 'order_id' => $order->id,
         'amount' => '50.00', 'reason' => 'damaged', 'status' => 'success',
     ]);
 

@@ -30,18 +30,29 @@ uses(HelperTransferTrait::class);
  *   php artisan test --filter=TransferImportLockTest
  */
 beforeEach(function () {
-    TransferLockTestDb::$path = storage_path('framework/testing/'.Str::uuid()->toString().'.sqlite');
-    @mkdir(dirname(TransferLockTestDb::$path), recursive: true);
+    if (DB::connection()->getDriverName() === 'sqlite') {
+        // The session-loss test needs a FILE database on sqlite: a lazy
+        // reconnect to :memory: would be an empty database (MySQL-era
+        // artifact). Shared-server planes (the PostgreSQL CI leg) keep
+        // one database and reconnect to the same schema naturally.
+        TransferLockTestDb::$path = storage_path('framework/testing/'.Str::uuid()->toString().'.sqlite');
+        @mkdir(dirname(TransferLockTestDb::$path), recursive: true);
 
-    config(['database.connections.'.config('database.default').'.database' => TransferLockTestDb::$path]);
-    DB::purge();
+        config(['database.connections.'.config('database.default').'.database' => TransferLockTestDb::$path]);
+        DB::purge();
+    }
 
-    $this->artisan('migrate', ['--force' => true]);
+    $this->artisan('migrate:fresh', ['--force' => true]);
 });
 
 afterEach(function () {
-    DB::purge();
-    @unlink(TransferLockTestDb::$path);
+    if (DB::connection()->getDriverName() === 'sqlite') {
+        DB::purge();
+        @unlink(TransferLockTestDb::$path);
+    } else {
+        // Shared-server planes: leave a clean schema for the next file.
+        $this->artisan('migrate:fresh', ['--force' => true]);
+    }
 });
 
 /** File-scoped holder for the per-test database path. */

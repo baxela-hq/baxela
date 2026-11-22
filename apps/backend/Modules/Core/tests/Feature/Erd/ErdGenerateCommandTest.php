@@ -29,6 +29,12 @@ function erdfxSetUp(string $path): void
     app()->bind(ModelRelationsScanner::class, fn () => new ModelRelationsScanner($fixtureRoot));
     app()->bind(ModuleTableResolver::class, fn () => new ModuleTableResolver($fixtureRoot));
 
+    // Shared-server planes (the PostgreSQL CI leg) keep tables across
+    // tests: drop the scratch set first — sqlite :memory: starts empty.
+    foreach (['users', 'erdfx_loose', 'erdfx_post_tag', 'erdfx_tags', 'erdfx_summaries', 'erdfx_notes', 'erdfx_details', 'erdfx_posts'] as $scratch) {
+        Schema::dropIfExists($scratch);
+    }
+
     Schema::create('erdfx_posts', function (Blueprint $table): void {
         $table->id();
         $table->string('title');

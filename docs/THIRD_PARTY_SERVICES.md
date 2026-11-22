@@ -107,13 +107,13 @@ Required to run the production stack (`docker-compose.prod.yml`):
 | TLS reverse proxy | Deliberately outside compose — put Caddy, Traefik, nginx, or a cloud LB in front (HTTPS, HSTS, `X-Forwarded-Proto`). See `infrastructure/docker/production/README.md` |
 | Container registry | Docker Hub / GHCR — only if CI should push images; currently GitHub Actions only builds and tests |
 | GitHub Actions | Already the CI (`.github/workflows/ci.yml`); free tier is fine |
-| Backups | Manual `mysqldump \| gzip` documented in the production README — consider a snapshot service or off-site cron |
+| Backups | Manual `pg_dump -Fc` documented in the production README — consider a snapshot service or off-site cron |
 
 ## Self-hosted — no third party needed
 
 These run as containers, no accounts or keys required:
 
-- **MySQL 8** — database (prod and dev)
+- **PostgreSQL 18** — database (prod and dev)
 - **Redis 7** — cache + queue (prod, AOF enabled)
 - **Laravel Reverb** — websockets for realtime notifications. `pusher-js` in the
   frontends is just the protocol client; Pusher.com / Ably cloud accounts are **not**

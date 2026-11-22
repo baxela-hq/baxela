@@ -13,6 +13,24 @@ use Modules\Discount\Schemas\Coupon\CouponSchema;
 uses(RefreshDatabase::class);
 
 /**
+ * Insert expecting a constraint rejection, in its own savepoint —
+ * PostgreSQL aborts the surrounding transaction on an error, and the
+ * rollback-to-savepoint keeps the (RefreshDatabase) outer transaction
+ * usable for the assertions that follow.
+ */
+function insert_expecting_rejection(callable $insert): bool
+{
+    try {
+        DB::transaction(fn (): bool => $insert());
+
+        return false;
+    } catch (Illuminate\Database\QueryException) {
+        return true;
+    }
+}
+
+
+/**
  * Phase B portability tests (postgres-migration §4 Phase B, matrix 29–31):
  * the case-insensitivity parity delivered by the functional LOWER()
  * unique indexes + normalized comparisons, and the documented collation
@@ -29,11 +47,11 @@ it('rejects a case-variant duplicate user email (functional LOWER unique)', func
         UserSchema::IS_ACTIVE => true,
     ]);
 
-    expect(fn () => User::query()->create([
+    expect(insert_expecting_rejection(fn () => User::query()->create([
         UserSchema::EMAIL => 'Owner@Example.com',
         UserSchema::PASSWORD => 'secret-password',
         UserSchema::IS_ACTIVE => true,
-    ]))->toThrow(Illuminate\Database\QueryException::class);
+    ])))->toBeTrue();
 });
 
 it('rejects a case-variant duplicate newsletter email', function () {
@@ -41,9 +59,9 @@ it('rejects a case-variant duplicate newsletter email', function () {
         NewsletterSubscriberSchema::EMAIL => 'news@example.com',
     ]);
 
-    expect(fn () => DB::table(NewsletterSubscriberSchema::TABLE)->insert([
+    expect(insert_expecting_rejection(fn () => DB::table(NewsletterSubscriberSchema::TABLE)->insert([
         NewsletterSubscriberSchema::EMAIL => 'NEWS@Example.COM',
-    ]))->toThrow(Illuminate\Database\QueryException::class);
+    ])))->toBeTrue();
 });
 
 it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcodes', function () {
@@ -62,11 +80,11 @@ it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcode
     ]);
 
     // Case-variant SKU collides.
-    expect(fn () => DB::table(VariantSchema::TABLE)->insert([
+    expect(insert_expecting_rejection(fn () => DB::table(VariantSchema::TABLE)->insert([
         VariantSchema::PRODUCT_ID => $productId,
         VariantSchema::SKU => 'abc-123',
         VariantSchema::PRICE => 10,
-    ]))->toThrow(Illuminate\Database\QueryException::class);
+    ])))->toBeTrue();
 
     // Nullable barcode: multiple NULLs stay legal on every engine.
     DB::table(VariantSchema::TABLE)->insert([
@@ -91,11 +109,11 @@ it('rejects a case-variant duplicate coupon code', function () {
         CouponSchema::VALUE => 10,
     ]);
 
-    expect(fn () => DB::table(CouponSchema::TABLE)->insert([
+    expect(insert_expecting_rejection(fn () => DB::table(CouponSchema::TABLE)->insert([
         CouponSchema::CODE => 'summer10',
         CouponSchema::TYPE => 'percent',
         CouponSchema::VALUE => 10,
-    ]))->toThrow(Illuminate\Database\QueryException::class);
+    ])))->toBeTrue();
 });
 
 it('documents the accent-insensitivity delta: e-acute and plain e are distinct', function () {

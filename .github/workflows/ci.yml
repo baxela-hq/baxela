@@ -65,7 +65,7 @@ jobs:
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
           php-version: '8.4'
-          extensions: mbstring, pdo_sqlite, sqlite3, intl, bcmath, gd, redis
+          extensions: mbstring, pdo_sqlite, sqlite3, intl, bcmath, gd, redis, pdo_pgsql
           coverage: none
 
       - name: Install dependencies
@@ -105,6 +105,45 @@ jobs:
         env:
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: '6378'
+
+      # The PostgreSQL leg (postgres-migration DD11): the FULL suite runs
+      # against a real postgres:18 — same step-container pattern as Redis
+      # (job services died at setup on this runner). Real env vars outrank
+      # the phpunit.xml sqlite entries, so one phpunit.xml serves both legs.
+      - name: Start PostgreSQL
+        run: |
+          docker run -d --name postgres             -e POSTGRES_DB=baxela_test             -e POSTGRES_USER=baxela             -e POSTGRES_PASSWORD=password             -p 5432:5432 postgres:18-alpine
+          for i in $(seq 1 30); do
+            docker exec postgres pg_isready -U baxela -d baxela_test 2>/dev/null | grep -q accepting && exit 0
+            sleep 2
+          done
+          echo "::error::PostgreSQL did not become healthy"
+          exit 1
+
+      # Advisory until the shared-database isolation tail closes (the
+      # affected tests pass in isolation; they trip on cross-file state on
+      # a shared server database — postgres-migration phase D follow-up).
+      - name: Run tests (PostgreSQL)
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          vendor/bin/pest 2>&1 | tee /tmp/pest-pg.log
+          rc=${PIPESTATUS[0]}
+          if [ $rc -ne 0 ]; then
+            echo "::error::$(grep -a 'FAILED' /tmp/pest-pg.log | head -20 | tr '\n' ' ' || true)"
+            echo "::error::tail: $(tail -c 1500 /tmp/pest-pg.log | tr '\n' ' ')"
+          fi
+          exit $rc
+        env:
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: '6378'
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: '5432'
+          DB_DATABASE: baxela_test
+          DB_USERNAME: baxela
+          DB_PASSWORD: password
 
       - name: Export OpenAPI document
         run: php artisan scramble:export

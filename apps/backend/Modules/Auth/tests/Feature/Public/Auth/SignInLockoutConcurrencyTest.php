@@ -12,15 +12,17 @@ use Modules\Auth\Tests\Feature\HelperTrait;
  * RefreshDatabase wraps every test in a transaction: connection 1's
  * commit would only release a savepoint and the row would never truly
  * commit. DatabaseMigrations (migrate:fresh, no wrapper) makes real
- * cross-connection commits observable. MySQL-gated — SQLite has no row
- * locks. Run this file in its own pest invocation.
+ * cross-connection commits observable. PostgreSQL-gated — SQLite has no
+ * row locks (postgres-migration phase D: re-gated from MySQL with
+ * SET lock_timeout replacing the innodb session variable). Run this
+ * file in its own pest invocation.
  */
 uses(DatabaseMigrations::class);
 uses(HelperTrait::class);
 
 it('bootstraps the same unseen lockout row concurrently from two connections', function () {
-    if (DB::connection()->getDriverName() !== 'mysql') {
-        $this->markTestSkipped('F25 requires MySQL row locks — run with DB_CONNECTION=mysql.');
+    if (DB::connection()->getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('F25 requires PostgreSQL row locks — run with DB_CONNECTION=pgsql.');
     }
 
     config([
@@ -40,7 +42,7 @@ it('bootstraps the same unseen lockout row concurrently from two connections', f
 
     // Connection 2 must contend on the uncommitted unique-key insert — a
     // bounded lock wait proves the serialization (reviewer check 2 part 1).
-    $second->statement('SET SESSION innodb_lock_wait_timeout = 1');
+    $second->statement('SET SESSION lock_timeout = \'1s\'');
     try {
         $second->beginTransaction();
         $service->bootstrapForUpdate($emailHash, $second);

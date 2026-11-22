@@ -1,6 +1,6 @@
 # Develop environment
 
-Laravel Octane (RoadRunner) + nginx + MySQL + Redis for hacking on the
+Laravel Octane (RoadRunner) + nginx + PostgreSQL + Redis for hacking on the
 backend, plus Vite / Next.js dev servers for the admin panel and storefront —
 application sources are bind-mounted from `apps/`, so no host PHP or Node is
 required.
@@ -66,7 +66,7 @@ route).
 | `web` | `nginx:stable-bookworm` | Reverse proxy to Octane (static files served directly, unmatched requests proxied) from `infrastructure/docker/develop/nginx/backend.conf` |
 | `admin` | `baxela/admin:develop` (built from `infrastructure/docker/develop/admin`) | `frontend` profile (on by default): Vite dev server, host port `5173` |
 | `storefront` | `baxela/storefront:develop` (built from `infrastructure/docker/develop/storefront`) | `frontend` profile (on by default): Next.js dev server, host port `3000` |
-| `mysql` | `mysql:8-debian` | credentials from `DEV_DB_*` in `.env`; host port `3308` |
+| `postgres` | `postgres:18-alpine` | credentials from `DEV_DB_*` in `.env`; host port `5433` |
 | `redis` | `redis:7-bookworm` | host port `6378` |
 | `mail` | `axllent/mailpit` | opt-in: `docker compose --profile mail up -d`, UI on port `8025` |
 
@@ -137,7 +137,7 @@ framework lives in memory per worker:
 ## Reset
 
 ```bash
-docker compose down -v   # stops everything; drops the MySQL/Redis volumes and
+docker compose down -v   # stops everything; drops the PostgreSQL/Redis volumes and
                          # the frontends' node_modules (reinstalled on next up)
 ```
 
