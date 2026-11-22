@@ -98,8 +98,13 @@ jobs:
           vendor/bin/pest 2>&1 | tee /tmp/pest.log
           rc=${PIPESTATUS[0]}
           if [ $rc -ne 0 ]; then
-            echo "::error::$(grep -a 'FAILED' /tmp/pest.log | head -20 | tr '\n' ' ' || true)"
-            echo "::error::tail: $(tail -c 1500 /tmp/pest.log | tr '\n' ' ')"
+            i=0
+            while IFS= read -r line && [ $i -lt 8 ]; do
+              [ -n "$line" ] && echo "::error::$(printf %s "$line" | head -c 240)"
+              i=$((i+1))
+            done < <(grep -a 'FAILED' /tmp/pest.log | head -8 || true)
+            echo "::error::tail: $(tail -c 240 /tmp/pest.log | tr '\n' ' ')"
+            grep -aE 'FAILED|Tests:' /tmp/pest.log | head -20 >> "$GITHUB_STEP_SUMMARY" || true
           fi
           exit $rc
         env:
@@ -127,8 +132,13 @@ jobs:
           vendor/bin/pest 2>&1 | tee /tmp/pest-pg.log
           rc=${PIPESTATUS[0]}
           if [ $rc -ne 0 ]; then
-            echo "::error::$(grep -a 'FAILED' /tmp/pest-pg.log | head -20 | tr '\n' ' ' || true)"
-            echo "::error::tail: $(tail -c 1500 /tmp/pest-pg.log | tr '\n' ' ')"
+            i=0
+            while IFS= read -r line && [ $i -lt 8 ]; do
+              [ -n "$line" ] && echo "::error::$(printf %s "$line" | head -c 240)"
+              i=$((i+1))
+            done < <(grep -a 'FAILED' /tmp/pest-pg.log | head -8 || true)
+            echo "::error::tail: $(tail -c 240 /tmp/pest-pg.log | tr '\n' ' ')"
+            grep -aE 'FAILED|Tests:' /tmp/pest-pg.log | head -20 >> "$GITHUB_STEP_SUMMARY" || true
           fi
           exit $rc
         env:
