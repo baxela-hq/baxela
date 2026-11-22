@@ -3,8 +3,13 @@
 namespace Modules\Catalog\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Events\TransactionCommitted;
+use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
+use Modules\Catalog\Console\Commands\ReconcileCatalogSearchCommand;
 use Modules\Catalog\Gateways\CatalogGateway;
 use Modules\Catalog\Models\Brand;
 use Modules\Catalog\Models\Category;
@@ -13,6 +18,7 @@ use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Search\MeilisearchSearchClient;
 use Modules\Catalog\Search\NullSearchClient;
 use Modules\Catalog\Search\SearchClientInterface;
+use Modules\Catalog\Search\SearchCursorManager;
 use Modules\Catalog\Search\SearchGenerationGuard;
 use Modules\Catalog\Search\SearchIndexSettings;
 use Modules\Catalog\Search\SearchMutationGate;
@@ -85,11 +91,23 @@ class CatalogServiceProvider extends ServiceProvider
         $this->app->bind(SearchMutationGate::class, fn ($app) => new SearchMutationGate(
             $app->make(SearchGenerationGuard::class),
             (int) config('catalog.search.drain_timeout', 30),
+            (int) config('catalog.search.worker_stale_after', 60),
         ));
 
         $this->app->bind(SearchOutbox::class, fn ($app) => new SearchOutbox(
             $app->make(SearchGenerationGuard::class),
         ));
+
+        $this->app->singleton(SearchCursorManager::class);
+
+        // Savepoint-aware lock bookkeeping (postgres-migration §3.4.1b C2/C4):
+        // mirror the connection's transaction stack so cursor-lock records
+        // restore to the pre-savepoint snapshot on rollback and clear on
+        // outer commit/rollback.
+        $this->app->booted(function (): void {
+            Event::listen(TransactionCommitted::class, fn () => SearchCursorManager::commitFrame());
+            Event::listen(TransactionRolledBack::class, fn () => SearchCursorManager::rollbackFrame());
+        });
     }
 
     /**
@@ -97,7 +115,9 @@ class CatalogServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            \Modules\Catalog\Console\Commands\ReconcileCatalogSearchCommand::class,
+        ]);
     }
 
     /**
@@ -105,10 +125,19 @@ class CatalogServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function (): void {
+            $schedule = $this->app->make(Schedule::class);
+
+            // The durable search reconciler (postgres-migration §3.4):
+            // drift-repair cadence; the convergence SLO is ~2x this
+            // interval, nightly reindex remains the absolute backstop.
+            $minutes = max(1, intdiv((int) config('catalog.search.reconcile_interval', 300), 60));
+
+            $schedule
+                ->command('catalog:search:reconcile')
+                ->cron(sprintf('*/%d * * * *', $minutes))
+                ->withoutOverlapping();
+        });
     }
 
     /**

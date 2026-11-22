@@ -119,6 +119,19 @@ final class MeilisearchSearchClient implements SearchClientInterface
         }
     }
 
+    public function getDocument(string $indexUid, int $productId): ?array
+    {
+        try {
+            $document = $this->client()
+                ->index($indexUid)
+                ->getDocument((string) $productId);
+
+            return is_array($document) ? $document : null;
+        } catch (Throwable) {
+            return null; // Absent or unreachable: the reconciler fails closed.
+        }
+    }
+
     public function ensureIndex(string $indexUid): void
     {
         try {

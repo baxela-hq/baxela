@@ -52,6 +52,16 @@ interface SearchClientInterface
     public function taskStatus(string $taskUid): ?string;
 
     /**
+     * Fetch one indexed document by primary key, or NULL when absent
+     * (never indexed / deleted). Observation never mutates anything —
+     * the reconciler reads the document's stamped cursor for drift
+     * detection (postgres-migration §3.4).
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getDocument(string $indexUid, int $productId): ?array;
+
+    /**
      * Await a task until terminal. Returns true for `processed`, false
      * for `failed`/`canceled`; throws SearchInfrastructureException when
      * the status cannot be determined within the configured await budget.

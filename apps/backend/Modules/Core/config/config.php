@@ -36,5 +36,12 @@ return [
     // module's registry (see docs/transfer.md).
     'transfer' => [
         'class' => CoreTransfer::class,
+
+        // Import-lease protocol (postgres-migration §3.1): how long an
+        // import waits for a contended destination-module lease before
+        // failing with `import_in_progress`, and how long an acquired
+        // lease lives between write-unit renewals (DB clock).
+        'lock_timeout' => (int) env('TRANSFER_LOCK_TIMEOUT', 10),
+        'lock_lease_ttl' => (int) env('TRANSFER_LOCK_LEASE_TTL', 60),
     ],
 ];

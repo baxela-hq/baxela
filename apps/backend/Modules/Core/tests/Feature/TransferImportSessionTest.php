@@ -5,18 +5,19 @@ use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Exceptions\Transfer\ImportFailedException;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Schemas\TransferLock\TransferLockSchema;
 use Modules\Core\Schemas\TransferRemap\TransferRemapSchema;
 use Modules\Core\Support\Transfer\TransferGuardRegistry;
 use Modules\Core\Support\Transfer\TransferImportSession;
 use Modules\Core\Support\Transfer\TransferImportTransaction;
-use PDO;
 
 /**
- * Session / guard / write-unit semantics on the SQLite test plane: named
- * locks don't exist here, so the run context proves session identity by
- * PDO instance — which catches exactly the disconnect() and reconnect()
- * replacement signals the MySQL probes catch server-side. The MySQL-only
- * named-lock behaviors live in TransferImportMysqlLockTest.
+ * Lease-row / guard / write-unit semantics (postgres-migration §3.1) on
+ * the SQLite test plane: ownership is ROW state (token + generation +
+ * live DB-clock lease), so the whole protocol — acquisition, reclamation
+ * fencing, renewal, fenced write units — is driver-agnostic and testable
+ * here in full. Real-server concurrency semantics (FOR UPDATE blocking,
+ * clock_timestamp pinning) run against MySQL/PostgreSQL in Phase D.
  *
  * Deliberately NOT RefreshDatabase: these tests own the connection's
  * transaction lifecycle (begin/commit/rollback, PDO replacement), which
@@ -108,7 +109,7 @@ it('rolls back the whole unit when a write inside it fails', function () {
     expect(DB::table(TransferRemapSchema::TABLE)->count())->toBe(0);
 });
 
-it('aborts ownership between units when the session is lost (F28)', function () {
+it('aborts ownership when the lease row is reclaimed by another run (F28 successor)', function () {
     $session = new TransferImportSession(app(TransferGuardRegistry::class));
     $captured = null;
 
@@ -116,9 +117,130 @@ it('aborts ownership between units when the session is lost (F28)', function () 
         $captured = $context;
     });
 
-    DB::connection()->disconnect();
+    // Simulate a reclaimer: expiry passed, ownership transferred, the
+    // fencing generation advanced. The stale run must fail closed.
+    reclaimLeaseRow('transfer:import:tax');
 
     expect(fn () => $captured->assertOwnership())->toThrow(TransferLockSessionLostException::class);
+});
+
+it('aborts ownership when the lease merely expires (DB-clock liveness)', function () {
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+    $captured = null;
+
+    $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, function ($context) use (&$captured): void {
+        $captured = $context;
+    });
+
+    // Same token + generation, but the lease is no longer live.
+    DB::table(TransferLockSchema::TABLE)
+        ->where(TransferLockSchema::NAME, 'transfer:import:tax')
+        ->update([TransferLockSchema::EXPIRES_AT => '2000-01-01 00:00:00.000']);
+
+    expect(fn () => $captured->assertOwnership())->toThrow(TransferLockSessionLostException::class);
+});
+
+it('fences a stale owner out of protected writes after reclamation (§3.1.1, matrix 17)', function () {
+    $transactions = new TransferImportTransaction(app(TransferGuardRegistry::class));
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+    $wrote = false;
+
+    try {
+        $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, function () use ($transactions, &$wrote): void {
+            // Mid-run, a reclaimer takes the expired lease (generation+1,
+            // new token) BEFORE the next write unit opens.
+            backdateLeaseRow('transfer:import:tax');
+            reclaimLeaseRow('transfer:import:tax');
+
+            $transactions->run(function () use (&$wrote): void {
+                DB::table(TransferRemapSchema::TABLE)->insert([
+                    TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
+                    TransferRemapSchema::MODULE => 'tax',
+                    TransferRemapSchema::ENTITY => 'tax-classes',
+                    TransferRemapSchema::SOURCE_ID => 42,
+                    TransferRemapSchema::LOCAL_ID => 108,
+                ]);
+                $wrote = true;
+            });
+        });
+
+        $this->fail('The stale owner should have been fenced out of the write unit.');
+    } catch (TransferLockSessionLostException) {
+        // Fenced: the row check inside the unit's transaction refused the
+        // write BEFORE it executed — nothing was persisted.
+    }
+
+    expect($wrote)->toBeFalse()
+        ->and(DB::table(TransferRemapSchema::TABLE)->count())->toBe(0);
+});
+
+it('refuses renewal to an expired owner (invariant I1, matrix 19)', function () {
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+    $captured = null;
+
+    $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, function ($context) use (&$captured): void {
+        $captured = $context;
+    });
+
+    // The lease expires (post-teardown backdate): the still-known owner
+    // token + generation must NOT be enough to renew itself back in.
+    backdateLeaseRow('transfer:import:tax');
+
+    expect(fn () => $captured->renewLease())->toThrow(TransferLockSessionLostException::class);
+});
+
+it('fails a contended import with import_in_progress past the wait budget (F26)', function () {
+    // A foreign, live lease on the same destination module.
+    seedForeignLease('transfer:import:tax');
+
+    config(['core.transfer.lock_timeout' => 0]);
+
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+
+    expect(fn () => $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null))
+        ->toThrow(ImportFailedException::class)
+        ->and(fn () => $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null))
+        ->toThrow(function (ImportFailedException $e): void {
+            expect($e->meta['reason'] ?? null)->toBe('import_in_progress');
+        });
+});
+
+it('reclaims an expired lease with an advanced generation on the next import (I3)', function () {
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+
+    $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null);
+
+    // Teardown expires the lease; the next import reclaims it and the
+    // fencing generation advances exactly once (only path: reclamation).
+    $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null);
+
+    $row = DB::table(TransferLockSchema::TABLE)
+        ->where(TransferLockSchema::NAME, 'transfer:import:tax')
+        ->first();
+
+    expect((int) $row->{TransferLockSchema::GENERATION})->toBe(2);
+});
+
+it('does not reclaim a live lease held by another run (F26)', function () {
+    seedForeignLease('transfer:import:tax');
+
+    $session = new TransferImportSession(app(TransferGuardRegistry::class));
+
+    // The foreign lease is live — reclamation must refuse it.
+    try {
+        $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, fn () => null);
+        $this->fail('A live foreign lease must not be reclaimable.');
+    } catch (ImportFailedException $e) {
+        expect($e->meta['reason'] ?? null)->toBe('import_in_progress');
+    }
+
+    $row = DB::table(TransferLockSchema::TABLE)
+        ->where(TransferLockSchema::NAME, 'transfer:import:tax')
+        ->first();
+
+    // The foreign owner kept its token AND its generation (no increment).
+    expect($row->{TransferLockSchema::OWNER_TOKEN})->toBe('11111111-2222-3333-4444-555555555555')
+        ->and((int) $row->{TransferLockSchema::GENERATION})->toBe(7);
 });
 
 it('intercepts the pending write when the session is lost mid-unit (F29)', function () {
@@ -130,8 +252,9 @@ it('intercepts the pending write when the session is lost mid-unit (F29)', funct
             // The replacement session is an empty :memory: database — any
             // statement that reached it would fail with a missing-table
             // QueryException, NOT lock_session_lost. The exception type
-            // therefore proves the ownership hook intercepted BEFORE the
-            // statement executed (F29: no importer write on a replacement).
+            // therefore proves the unit-boundary check intercepted BEFORE
+            // the statement executed (F29: no importer write on a
+            // replacement session inside a unit).
             DB::connection()->disconnect();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
@@ -152,7 +275,9 @@ it('intercepts the pending write on an explicit mid-unit reconnect (F29)', funct
     $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, function () use ($transactions): void {
         $transactions->run(function (): void {
             // reconnect() replaces the PDO object but keeps the connection
-            // object (and its guards) — the probe must catch exactly this.
+            // object (and its guards) — mid-unit, that swap means the
+            // server dropped the unit's transaction; the boundary check
+            // must catch exactly this.
             DB::connection()->reconnect();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
@@ -269,3 +394,40 @@ it('fails fast on a lock name that exceeds the 64-character limit', function () 
     expect(fn () => $session->lockNameFor(str_repeat('a', 60)))->toThrow(ImportFailedException::class)
         ->and($session->lockNameFor('tax'))->toBe('transfer:import:tax');
 });
+
+// ---------------------------------------------------------------------------
+// Lease-row helpers: direct table surgery standing in for a competitor run.
+// ---------------------------------------------------------------------------
+
+/** Seed a live foreign lease (owner + generation 7, far-future expiry). */
+function seedForeignLease(string $name): void
+{
+    DB::table(TransferLockSchema::TABLE)->insert([
+        TransferLockSchema::NAME => $name,
+        TransferLockSchema::OWNER_TOKEN => '11111111-2222-3333-4444-555555555555',
+        TransferLockSchema::GENERATION => 7,
+        TransferLockSchema::HEARTBEAT_AT => '2000-01-01 00:00:00.000',
+        TransferLockSchema::EXPIRES_AT => '2999-01-01 00:00:00.000',
+    ]);
+}
+
+/** Push a lease row into the past so reclamation becomes legal. */
+function backdateLeaseRow(string $name): void
+{
+    DB::table(TransferLockSchema::TABLE)
+        ->where(TransferLockSchema::NAME, $name)
+        ->update([TransferLockSchema::EXPIRES_AT => '2000-01-01 00:00:00.000']);
+}
+
+/** Simulate a reclaimer taking the (expired) lease: new token, generation+1. */
+function reclaimLeaseRow(string $name): void
+{
+    DB::table(TransferLockSchema::TABLE)
+        ->where(TransferLockSchema::NAME, $name)
+        ->update([
+            TransferLockSchema::OWNER_TOKEN => '99999999-8888-7777-6666-555555555555',
+            TransferLockSchema::GENERATION => DB::raw(TransferLockSchema::GENERATION.' + 1'),
+            TransferLockSchema::HEARTBEAT_AT => '2999-01-01 00:00:00.000',
+            TransferLockSchema::EXPIRES_AT => '2999-01-01 00:00:00.000',
+        ]);
+}

@@ -73,4 +73,9 @@ final class NullSearchClient implements SearchClientInterface
 
         Log::warning('Search engine skipped: MEILISEARCH_HOST is not configured (set it and run catalog:search:install + catalog:reindex).');
     }
+
+    public function getDocument(string $indexUid, int $productId): ?array
+    {
+        return null;
+    }
 }

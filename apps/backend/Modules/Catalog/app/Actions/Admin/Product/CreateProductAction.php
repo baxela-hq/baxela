@@ -11,7 +11,7 @@ use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
-use Modules\Catalog\Search\SearchOutbox;
+use Modules\Catalog\Search\SearchCursorManager;
 use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 use Throwable;
@@ -80,7 +80,7 @@ class CreateProductAction
 
             // Transactional journal entry (durable with the mutation —
             // review v9 F2): the search writer/recovery path resolves it.
-            app(SearchOutbox::class)->record($record->{ProductSchema::ID});
+            app(SearchCursorManager::class)->append($record->{ProductSchema::ID});
 
             DB::commit();
         } catch (Throwable $e) {

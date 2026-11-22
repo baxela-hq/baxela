@@ -8,7 +8,7 @@ use Modules\Catalog\Models\ProductComment;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
-use Modules\Catalog\Search\SearchOutbox;
+use Modules\Catalog\Search\SearchCursorManager;
 
 class RecalculatesProductRating
 {
@@ -45,7 +45,7 @@ class RecalculatesProductRating
                     ]);
             });
 
-            app(SearchOutbox::class)->record((int) $productId);
+            app(SearchCursorManager::class)->append((int) $productId);
         });
     }
 }

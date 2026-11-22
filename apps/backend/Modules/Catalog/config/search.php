@@ -36,4 +36,21 @@ return [
 
     // Mutation-admission drain budget for the cutover barrier (seconds).
     'drain_timeout' => (int) env('MEILISEARCH_DRAIN_TIMEOUT', 30),
+
+    // Worker-heartbeat staleness threshold (§3.2.2): the pre-filter for
+    // dead-admission reclamation and writer-lease claims. Never proof of
+    // death by itself — /proc incarnation proof is also required.
+    'worker_stale_after' => (int) env('MEILISEARCH_WORKER_STALE_AFTER', 60),
+
+    // Reconciler cadence (§3.4): the drift-repair interval. The
+    // convergence SLO is ~2x this value (assumptions documented in the
+    // postgres-migration plan), with the nightly reindex as backstop.
+    'reconcile_interval' => (int) env('MEILISEARCH_RECONCILE_INTERVAL', 300),
+
+    // Reconciler per-pass batch (§3.4 F2 fairness): oldest-lag-first, at
+    // least min(all, K) products per pass — no product starves.
+    'reconcile_batch' => (int) env('MEILISEARCH_RECONCILE_BATCH', 500),
+
+    // Consecutive failed reconciler passes before alerting (§3.4).
+    'reconcile_alert_after' => (int) env('MEILISEARCH_RECONCILE_ALERT_AFTER', 3),
 ];

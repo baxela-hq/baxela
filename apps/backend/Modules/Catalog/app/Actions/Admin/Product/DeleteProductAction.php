@@ -4,7 +4,7 @@ namespace Modules\Catalog\Actions\Admin\Product;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Catalog\Schemas\Product\ProductSchema;
-use Modules\Catalog\Search\SearchOutbox;
+use Modules\Catalog\Search\SearchCursorManager;
 use Modules\Core\Contracts\Events\Catalog\ProductDeletedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
@@ -25,7 +25,7 @@ class DeleteProductAction extends AbstractProductAction
 
                 // Transactional journal entry: the index writer resolves
                 // it into a deletion task (absence is the constraint).
-                app(SearchOutbox::class)->record($record->{ProductSchema::ID});
+                app(SearchCursorManager::class)->append($record->{ProductSchema::ID});
 
                 event(ProductDeletedEvent::fill($record->toArray()));
             }

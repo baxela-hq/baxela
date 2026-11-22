@@ -2,6 +2,7 @@
 
 namespace Modules\Media\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
@@ -50,7 +51,10 @@ class MediaServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            \Modules\Media\Console\Commands\ProcessMediaOutboxCommand::class,
+            \Modules\Media\Console\Commands\SweepMediaStagingCommand::class,
+        ]);
     }
 
     /**
@@ -58,10 +62,15 @@ class MediaServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function (): void {
+            $schedule = $this->app->make(Schedule::class);
+
+            // Media outbox (postgres-migration §3.3): the durable
+            // publication recovery path — inline post-commit processing is
+            // only the latency optimization.
+            $schedule->command('media:outbox:process')->everyMinute()->withoutOverlapping();
+            $schedule->command('media:outbox:sweep')->daily();
+        });
     }
 
     /**

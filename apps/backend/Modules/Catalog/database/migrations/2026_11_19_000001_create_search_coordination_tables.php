@@ -40,10 +40,11 @@ return new class extends Migration
             $table->string(SearchCoordinationSchema::CONTAINER_STARTED_AT);
             $table->unsignedBigInteger(SearchCoordinationSchema::PID);
             $table->unsignedBigInteger(SearchCoordinationSchema::PROCESS_START_TIME);
-            // The process's own MySQL connection id — an admission whose
-            // connection no longer exists was rolled back server-side, so
-            // reclaiming it can never race a live transaction.
-            $table->unsignedBigInteger(SearchCoordinationSchema::DB_CONNECTION_ID)->nullable();
+            // Per-process worker identity (postgres-migration §3.2):
+            // admission liveness reconciles via worker heartbeats +
+            // incarnation death proof — driver-agnostic, no
+            // connection_id()/processlist.
+            $table->string(SearchCoordinationSchema::INSTANCE_TOKEN)->index();
             $table->unsignedBigInteger(SearchCoordinationSchema::GENERATION);
             $table->timestamp(SearchCoordinationSchema::ACQUIRED_AT);
             $table->timestamp(SearchCoordinationSchema::RELEASED_AT)->nullable();
@@ -58,6 +59,10 @@ return new class extends Migration
             // block a newer generation's writer (v17).
             $table->unsignedBigInteger(SearchCoordinationSchema::GENERATION);
             $table->string(SearchCoordinationSchema::OWNER);
+            // Claiming another writer's expired lease additionally requires
+            // that writer's heartbeat to be stale (§3.2.4) — a paused-but-
+            // alive writer keeps its lease.
+            $table->string(SearchCoordinationSchema::INSTANCE_TOKEN)->index();
             $table->timestamp(SearchCoordinationSchema::LEASE_UNTIL);
             $table->timestamp(SearchCoordinationSchema::ACQUIRED_AT);
 
@@ -114,6 +119,47 @@ return new class extends Migration
             ], 'catalog_sra_gen_entry_unique');
         });
 
+        // Per-product journal cursors (postgres-migration §3.4.1): the
+        // explicit, lock-serialized commit-order authority. Every journal
+        // mutation locks this row FOR UPDATE in the same transaction as
+        // its operation insert and advances the cursor under the lock —
+        // values are assigned in commit order by construction (a global
+        // bigserial is NOT commit-ordered). last_operation_id is the
+        // diagnostic key for drift detection.
+        Schema::create(SearchCoordinationSchema::CURSORS_TABLE, function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger(SearchCoordinationSchema::PRODUCT_ID)->unique();
+            $table->unsignedBigInteger(SearchCoordinationSchema::CURSOR)->default(0);
+            $table->unsignedBigInteger(SearchCoordinationSchema::LAST_OPERATION_ID)->nullable();
+            $table->timestamps();
+        });
+
+        // Retired product IDs (§3.4.1a): AUTHORITATIVE gating registry —
+        // an append/restoration for a retired ID hard-errors. Populated
+        // only by the lock-serialized pruning maintenance, which deletes
+        // the cursor row and records the retirement in ONE transaction.
+        Schema::create(SearchCoordinationSchema::RETIRED_TABLE, function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger(SearchCoordinationSchema::PRODUCT_ID)->unique();
+            $table->timestamp(SearchCoordinationSchema::RETIRED_AT);
+            $table->string(SearchCoordinationSchema::RETIRED_BY)->nullable();
+            $table->timestamps();
+        });
+
+        // Worker heartbeats (§3.2.2): per-process liveness for admission
+        // reclamation and writer-lease claims. instance_token is a random
+        // per-process identity; staleness alone is NEVER proof of death —
+        // reclamation additionally requires /proc incarnation proof.
+        Schema::create(SearchCoordinationSchema::WORKER_HEARTBEATS_TABLE, function (Blueprint $table) {
+            $table->string(SearchCoordinationSchema::INSTANCE_TOKEN, 64)->primary();
+            $table->string(SearchCoordinationSchema::WORKER_OWNER);
+            $table->string(SearchCoordinationSchema::INSTANCE_BOOT_ID);
+            $table->string(SearchCoordinationSchema::CONTAINER_ID);
+            $table->unsignedBigInteger(SearchCoordinationSchema::PID);
+            $table->unsignedBigInteger(SearchCoordinationSchema::PROCESS_START_TIME);
+            $table->timestamp(SearchCoordinationSchema::HEARTBEAT_AT)->index();
+        });
+
         // Seed the gate: generation 1 (pre-search state) with its uid.
         DB::table(SearchCoordinationSchema::GATE_TABLE)->insert([
             SearchCoordinationSchema::STATE => SearchCoordinationSchema::STATE_OPEN,
@@ -127,6 +173,9 @@ return new class extends Migration
 
     public function down(): void
     {
+        Schema::dropIfExists(SearchCoordinationSchema::WORKER_HEARTBEATS_TABLE);
+        Schema::dropIfExists(SearchCoordinationSchema::RETIRED_TABLE);
+        Schema::dropIfExists(SearchCoordinationSchema::CURSORS_TABLE);
         Schema::dropIfExists(SearchCoordinationSchema::REPLAY_APPLIED_TABLE);
         Schema::dropIfExists(SearchCoordinationSchema::OPERATIONS_TABLE);
         Schema::dropIfExists(SearchCoordinationSchema::LEASES_TABLE);

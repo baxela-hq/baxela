@@ -60,6 +60,20 @@ final class RecordingSearchClient implements SearchClientInterface
         return 'task-del-'.count($this->deletions[$indexUid]);
     }
 
+    /** @var array<string, array<int, array<string, mixed>>> documents by primary key */
+    public array $documentsById = [];
+
+    public function getDocument(string $indexUid, int $productId): ?array
+    {
+        foreach ($this->documents[$indexUid] ?? [] as $document) {
+            if ((int) ($document['product_id'] ?? 0) === $productId) {
+                return $document;
+            }
+        }
+
+        return null;
+    }
+
     public function ensureIndex(string $indexUid): void {}
 
     public function deleteIndex(string $indexUid): void {}

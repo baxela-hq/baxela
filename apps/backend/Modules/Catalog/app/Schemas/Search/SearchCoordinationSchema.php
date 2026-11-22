@@ -24,6 +24,12 @@ final class SearchCoordinationSchema
 
     public const string REPLAY_APPLIED_TABLE = Module::DB_PREFIX.'search_replay_applied';
 
+    public const string CURSORS_TABLE = Module::DB_PREFIX.'search_product_cursors';
+
+    public const string RETIRED_TABLE = Module::DB_PREFIX.'search_retired_products';
+
+    public const string WORKER_HEARTBEATS_TABLE = Module::DB_PREFIX.'search_worker_heartbeats';
+
     // gate
     public const string STATE = 'state';
 
@@ -52,7 +58,8 @@ final class SearchCoordinationSchema
 
     public const string PROCESS_START_TIME = 'process_start_time';
 
-    public const string DB_CONNECTION_ID = 'db_connection_id';
+    /** Per-process worker identity (§3.2): replaces db_connection_id/processlist. */
+    public const string INSTANCE_TOKEN = 'instance_token';
 
     public const string ACQUIRED_AT = 'acquired_at';
 
@@ -96,4 +103,19 @@ final class SearchCoordinationSchema
     public const string COVERED_BY_OPERATION_ID = 'covered_by_operation_id';
 
     public const string APPLIED_AT = 'applied_at';
+
+    // per-product cursors (§3.4.1): the commit-ordered journal authority
+    public const string CURSOR = 'cursor';
+
+    public const string LAST_OPERATION_ID = 'last_operation_id';
+
+    // retired product IDs (§3.4.1a): authoritative gating registry
+    public const string RETIRED_AT = 'retired_at';
+
+    public const string RETIRED_BY = 'retired_by';
+
+    // worker heartbeats (§3.2.2): liveness for admissions + writer leases
+    public const string INSTANCE_BOOT_ID = 'boot_id';
+
+    public const string WORKER_OWNER = 'owner';
 }

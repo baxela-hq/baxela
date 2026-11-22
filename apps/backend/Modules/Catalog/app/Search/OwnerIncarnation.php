@@ -2,18 +2,29 @@
 
 namespace Modules\Catalog\Search;
 
-use Illuminate\Support\Facades\DB;
-use Throwable;
-
 /**
- * The exact process-incarnation identity (v12 F1): boot_id + container
- * id + pid + process start time — immune to pid reuse and container
- * recreation, verifiable inside the recorded container. Death proof is
- * necessary but never sufficient for a UID-less intent (worker death ≠
- * remote-task quiescence, v20 F1).
+ * The exact process-incarnation identity (v12 F1,
+ * postgres-migration §3.2): boot_id + container id + pid + process start
+ * time — immune to pid reuse and container recreation, verifiable inside
+ * the recorded container. Death proof is necessary but never sufficient
+ * for a UID-less intent (worker death ≠ remote-task quiescence, v20 F1).
+ *
+ * `instanceToken()` is the per-process worker identity for admissions,
+ * writer leases, and the heartbeat table — stable for the process's
+ * lifetime, generated once. The MySQL connection_id()/processlist
+ * machinery is gone: reclamation reconciles via heartbeats + this class's
+ * /proc death proof (topology-scoped — see SearchMutationGate).
  */
 final class OwnerIncarnation
 {
+    private static ?string $instanceToken = null;
+
+    /** Per-process worker identity: random 32-hex, generated once. */
+    public static function instanceToken(): string
+    {
+        return self::$instanceToken ??= bin2hex(random_bytes(16));
+    }
+
     /** @return array<string, int|string> */
     public static function current(): array
     {
@@ -21,6 +32,7 @@ final class OwnerIncarnation
         $containerId = self::containerId();
 
         return [
+            'instance_token' => self::instanceToken(),
             'boot_id' => substr($bootId, 0, 64),
             'container_id' => substr($containerId, 0, 64),
             // pid 1's start time pins the container incarnation (ticks
@@ -28,7 +40,6 @@ final class OwnerIncarnation
             'container_started_at' => self::processStartTime(1),
             'pid' => getmypid() ?: 0,
             'process_start_time' => self::processStartTime(getmypid() ?: 0),
-            'db_connection_id' => self::connectionId(),
             // Diagnostics only — never used for identity decisions.
             'owner' => substr($containerId !== '' ? $containerId : (string) gethostname(), 0, 32)
                 .':'.(getmypid() ?: 0)
@@ -40,6 +51,14 @@ final class OwnerIncarnation
      * Exact-incarnation death proof: the recorded (boot_id, container_id,
      * pid, start_time) no longer resolves to a live process. Fails CLOSED
      * — unreadable /proc or unknown container means "cannot prove death".
+     *
+     * Topology scope (postgres-migration §3.2.1): boot_id is host-global
+     * (shared kernel), so a mismatch proves a host reboot killed every
+     * prior incarnation — including other containers'. Pid-level checks
+     * are only meaningful within the prover's own PID namespace (same
+     * container): a sibling container's /proc is unreadable, and a missing
+     * /proc entry on the prover's host is NEVER proof about another
+     * container/host.
      */
     public static function provenDead(array $incarnation): bool
     {
@@ -48,6 +67,15 @@ final class OwnerIncarnation
         if ($bootId !== (string) ($incarnation['boot_id'] ?? '')) {
             // Host rebooted: every prior incarnation is gone.
             return true;
+        }
+
+        // Cross-container (different PID namespace): the pid-level
+        // evidence below would inspect the WRONG namespace — only the
+        // host-global boot_id check above is valid, and it passed. Death
+        // is unprovable here: fail closed.
+        $proverContainer = self::containerId();
+        if ((string) ($incarnation['container_id'] ?? '') !== $proverContainer) {
+            return false;
         }
 
         $pid = (int) ($incarnation['pid'] ?? 0);
@@ -102,22 +130,11 @@ final class OwnerIncarnation
         return self::readFile('/etc/hostname');
     }
 
-    private static function connectionId(): ?int
-    {
-        try {
-            $row = DB::select('select connection_id() as cid');
-
-            return (int) $row[0]->cid;
-        } catch (Throwable) {
-            return null; // SQLite (tests): liveness reconciliation no-ops.
-        }
-    }
-
     private static function readFile(string $path): string
     {
         try {
             return trim((string) @file_get_contents($path));
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return '';
         }
     }

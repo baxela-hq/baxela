@@ -10,7 +10,7 @@ use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
-use Modules\Catalog\Search\SearchOutbox;
+use Modules\Catalog\Search\SearchCursorManager;
 use Modules\Core\Contracts\Events\Catalog\ProductUpdatedEvent;
 use Modules\Core\Contracts\Gateways\Inventory\InventoryGatewayInterface;
 
@@ -90,7 +90,7 @@ class UpdateProductAction
             }
 
             // Transactional journal entry (durable with the mutation).
-            app(SearchOutbox::class)->record($record->{ProductSchema::ID});
+            app(SearchCursorManager::class)->append($record->{ProductSchema::ID});
 
             // Search indexing rides the product event (queued, afterCommit).
             event(ProductUpdatedEvent::fill($record->toArray()));
