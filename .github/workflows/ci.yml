@@ -157,8 +157,27 @@ jobs:
           DB_USERNAME: baxela
           DB_PASSWORD: password
 
+      # Scramble's model inference reads each model's live table columns, so
+      # the export needs a real, migrated database. It gets its own on the
+      # PostgreSQL step container, so neither test leg can leave the schema
+      # it documents in a rolled-back state.
       - name: Export OpenAPI document
-        run: php artisan scramble:export
+        run: |
+          docker exec postgres psql -U baxela -d postgres -c "CREATE DATABASE baxela_openapi;"
+          php artisan migrate --force
+          if ! output=$(php artisan scramble:export 2>&1); then
+            echo "$output" | tail -30
+            echo "::error::OpenAPI export failed: $(echo "$output" | tr '\n' ' ' | tail -c 220)"
+            exit 1
+          fi
+          echo "$output" | tail -2
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: '5432'
+          DB_DATABASE: baxela_openapi
+          DB_USERNAME: baxela
+          DB_PASSWORD: password
 
       - name: Upload OpenAPI artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
