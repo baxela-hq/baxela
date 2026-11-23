@@ -395,16 +395,19 @@ reviewed architecture):
   — the `::class` argument never dropped anything (silently swallowed
   by IF EXISTS on MySQL; rollback cycles now complete).
 
-**Honest follow-up list:**
+**Follow-up list (kept current):**
 
 1. `--assume-dead <token>` operator override (§3.2.2, matrix 55–56):
-   designed, not implemented — matters only when an unprovable-dead
-   admission blocks a cutover.
-2. Sentry scope regression from `edeb603b` (pre-existing; the octane
-   gate flags it on both engines) — tracked separately from this
-   migration.
+   **implemented** as `catalog:search:assume-dead` — mandatory
+   `--reason`, interactive confirmation, a release conditional on the
+   token's recorded process incarnation, and an audit row written in
+   the same transaction as the release (events marked `MustBeAudited`
+   make the audit listener rethrow instead of swallowing).
+2. Sentry scope regression from `edeb603b`: **fixed** — the octane
+   isolation gate passes on a freshly started worker (the enrichment
+   provider writes the SDK-global scope; a per-request `FlushSentryScope`
+   listener now replaces it before the request swap).
 3. Deferred by design: RLS (waits for the tenancy rollout, §9) and the
    §8 optimizations (`citext`/ICU, `pg_trgm`, JSONB GIN, partial
    indexes, `EXCLUDE`, `UNIQUE NULLS NOT DISTINCT`).
-4. The e2e workflow's first PostgreSQL run lands with the next CI pass
-   (the compose boot path it exercises is verified locally).
+4. The e2e workflow's first PostgreSQL run passed (run #163).

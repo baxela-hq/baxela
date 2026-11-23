@@ -44,19 +44,37 @@ Tables: `catalog_search_gate`, `…_admissions`, `…_writer_leases`,
   3 consecutive failing intervals (`…_RECONCILE_ALERT_AFTER`) log an
   alert (`search reconcile convergence breached`). The nightly
   `catalog:reindex` is the absolute backstop — after any engine outage,
-  run it once manually if the alert fired.
+  run it once manually if the alert fired. Each pass also prunes worker
+  heartbeat rows older than 24 h that hold no open admission (workers get
+  a new row on every process start).
 - **Meilisearch unavailable**: writers and the reconciler back off; the
   journal stays authoritative; convergence pauses (SLO clock suspended)
   and resumes automatically.
 - **Dead admissions**: reclamation requires a stale heartbeat (60 s,
   `MEILISEARCH_WORKER_STALE_AFTER`) AND /proc incarnation proof. A
   paused-but-alive worker is never reclaimed; unprovable cases fail
-  closed (drain timeout aborts the cutover safely). A cutover blocked by an
-  unprovable admission aborts safely at its drain timeout — restart the
-  cutover after the worker's host is verifiably gone. (The plan's
-  `--assume-dead <instance_token>` super-admin override — audited,
-  token-guarded — is designed but not yet implemented; filed as
-  follow-up.)
+  closed (drain timeout aborts the cutover safely). A cutover blocked by
+  an unprovable admission aborts safely at its drain timeout — restart
+  the cutover after the worker's host is verifiably gone.
+- **Operator override (last resort)** — when the worker genuinely cannot
+  be running but its death cannot be *proven* from this host (another
+  container, an unreadable `/proc`):
+
+  ```bash
+  php artisan catalog:search:assume-dead <instance_token> --reason="<why it cannot be running>"
+  ```
+
+  It lists the recorded worker incarnation (boot id, container, pid,
+  process start, last heartbeat, open admission ids) and requires an
+  interactive confirmation — non-interactive runs are refused. Only
+  admissions that are still open AND belong to that exact process
+  incarnation are released; a stale token releases nothing and reports
+  `superseded`, an unknown one `not-found`. Every attempt — including
+  refused ones — writes an audit row (`search_admission_override`) in
+  the same transaction as the release, so an override can never take
+  effect unaudited. Establish out of band that the worker is gone
+  before running it: a worker that merely paused and resumes finds
+  itself fenced out of further writes.
 - **Cursor retirement** (pruning a product from the journal forever):
   the maintenance action requires a terminal tombstone, zero unresolved
   operations, a confirmed deindex, ID-non-reuse (bigserial), and the
@@ -98,10 +116,22 @@ architecture test) and at runtime (the journal-append guard throws
 needs a documented exception entry in the registry — reviewed, not
 sneaked in.
 
-## Known open item
+## Octane persistent workers
 
-The Octane isolation gate's four Sentry-scope assertions fail on both
-engines — a scope-persistence regression from the Sentry
-enrichment commit (`edeb603b`), tracked separately from the database
-migration. The gate's auth/log/permission isolation passes on
-PostgreSQL.
+State must never bleed between the requests a worker serves. Two
+per-request listeners lead `RequestReceived` in `config/octane.php`:
+
+- `FlushSentryScope` starts every request from a clean Sentry scope
+  (tags, user, breadcrumbs) before the request swap. The Sentry
+  integration's own per-request isolation is only active when a DSN is
+  configured, while the enrichment provider writes to the scope
+  regardless — without this listener a DSN-less worker collected every
+  request's tags and breadcrumbs on one scope for its whole lifetime.
+  Guarded by `Modules/Core/tests/Unit/Octane/FlushSentryScopeTest.php`.
+- `FlushExtensionState` re-reads extension state.
+
+Both are regression-proofed by the isolation gate (`scripts/octane-
+isolation-gate.php`; recipe in its header, PostgreSQL-flavoured). When
+touching anything request-scoped, restart the gated instance before
+reading its verdict — a still-running instance keeps serving the code
+it started with.
