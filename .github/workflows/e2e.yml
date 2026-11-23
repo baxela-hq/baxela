@@ -64,8 +64,17 @@ jobs:
             curl -sf -o /dev/null http://localhost:8085/up && break
             sleep 5
           done
+          # The full ps/log dump below needs auth to read; annotations do
+          # not — carry a compact summary of the stack's state in them.
+          summarize_stack() {
+            echo "::error::stack: $(docker compose --profile frontend --profile mail ps --format '{{.Service}}: {{.Status}}' | tr '\n' ';' | cut -c1-230)"
+            for service in "$@"; do
+              echo "::error::${service} log tail: $(docker compose logs "$service" --tail 12 2>&1 | tr '\n' ' ' | tail -c 200)"
+            done
+          }
           curl -sf -o /dev/null http://localhost:8085/up || {
             echo "::error::API did not become healthy in 10 minutes"
+            summarize_stack app web postgres redis
             docker compose --profile frontend --profile mail ps
             docker compose logs app --tail 50
             exit 1
@@ -90,6 +99,7 @@ jobs:
             sleep 5
           done
           echo "::error::storefront/Mailpit did not become healthy in 10 minutes"
+          summarize_stack storefront mail web
           docker compose --profile frontend --profile mail ps
           docker compose logs storefront --tail 50
           exit 1
