@@ -87,27 +87,33 @@ jobs:
           echo "::error::Redis did not become healthy"
           exit 1
 
+      # PHPUnit 12 records even `@`-suppressed PHP warnings against the
+      # test, and phpdotenv's reader emits one for a missing `.env` — so on
+      # a checkout without that file (always, here) every single test is
+      # flagged as a warning. An empty file silences exactly that and keeps
+      # real warnings visible. Test env comes from phpunit.xml.
+      - name: Prepare empty env file
+        run: touch .env
+
       # Pest against SQLite :memory: — env comes from phpunit.xml, except
-      # Redis: a real env var outranks any phpunit.xml entry. On failure,
-      # the failed tests are echoed as annotations — the raw job log
-      # needs auth to read, annotations don't.
+      # Redis: a real env var outranks any phpunit.xml entry. On failure the
+      # failing tests are re-emitted as annotations from the JUnit report —
+      # the raw job log needs auth to read, annotations don't.
       - name: Run tests
         shell: bash
         run: |
-          set -o pipefail
-          vendor/bin/pest 2>&1 | tee /tmp/pest.log
+          # GitHub runs `bash -e -o pipefail` here: a failing pest pipeline
+          # would abort the step before any diagnostics run, leaving only the
+          # generic exit-code annotation. Capture the status explicitly.
+          set +e
+          vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
           rc=${PIPESTATUS[0]}
-          if [ $rc -ne 0 ]; then
-            i=0
-            while IFS= read -r line && [ $i -lt 8 ]; do
-              [ -n "$line" ] && echo "::error::$(printf %s "$line" | head -c 240)"
-              i=$((i+1))
-            done < <(grep -a 'FAILED' /tmp/pest.log | head -8 || true)
-            echo "::error::tail: $(tail -c 240 /tmp/pest.log | tr '\n' ' ')"
-            grep -aE 'FAILED|Tests:' /tmp/pest.log | head -20 >> "$GITHUB_STEP_SUMMARY" || true
+          if [ "$rc" -ne 0 ]; then
+            python3 ../../scripts/ci/pest-failure-annotations.py "/tmp/pest-$PEST_LOG.xml" "/tmp/pest-$PEST_LOG.log" apps/backend
           fi
           exit $rc
         env:
+          PEST_LOG: sqlite
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: '6378'
 
@@ -117,7 +123,11 @@ jobs:
       # the phpunit.xml sqlite entries, so one phpunit.xml serves both legs.
       - name: Start PostgreSQL
         run: |
-          docker run -d --name postgres             -e POSTGRES_DB=baxela_test             -e POSTGRES_USER=baxela             -e POSTGRES_PASSWORD=password             -p 5432:5432 postgres:18-alpine
+          docker run -d --name postgres \
+            -e POSTGRES_DB=baxela_test \
+            -e POSTGRES_USER=baxela \
+            -e POSTGRES_PASSWORD=password \
+            -p 5432:5432 postgres:18-alpine
           for i in $(seq 1 30); do
             docker exec postgres pg_isready -U baxela -d baxela_test 2>/dev/null | grep -q accepting && exit 0
             sleep 2
@@ -128,20 +138,16 @@ jobs:
       - name: Run tests (PostgreSQL)
         shell: bash
         run: |
-          set -o pipefail
-          vendor/bin/pest 2>&1 | tee /tmp/pest-pg.log
+          # Same errexit caveat as the SQLite step above.
+          set +e
+          vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
           rc=${PIPESTATUS[0]}
-          if [ $rc -ne 0 ]; then
-            i=0
-            while IFS= read -r line && [ $i -lt 8 ]; do
-              [ -n "$line" ] && echo "::error::$(printf %s "$line" | head -c 240)"
-              i=$((i+1))
-            done < <(grep -a 'FAILED' /tmp/pest-pg.log | head -8 || true)
-            echo "::error::tail: $(tail -c 240 /tmp/pest-pg.log | tr '\n' ' ')"
-            grep -aE 'FAILED|Tests:' /tmp/pest-pg.log | head -20 >> "$GITHUB_STEP_SUMMARY" || true
+          if [ "$rc" -ne 0 ]; then
+            python3 ../../scripts/ci/pest-failure-annotations.py "/tmp/pest-$PEST_LOG.xml" "/tmp/pest-$PEST_LOG.log" apps/backend
           fi
           exit $rc
         env:
+          PEST_LOG: pgsql
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: '6378'
           DB_CONNECTION: pgsql
