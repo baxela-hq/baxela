@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Modules\Audit\Models\AuditLog;
 use Modules\Audit\Schemas\AuditLog\AuditLogSchema;
 use Modules\Core\Contracts\Events\AbstractBaseEvent;
+use Modules\Core\Contracts\Events\MustBeAudited;
 use Modules\Core\Utils\Auth;
 use Throwable;
 
@@ -80,6 +81,13 @@ class RecordAuditLogListener
                 AuditLogSchema::USER_AGENT => request()->userAgent(),
             ]);
         } catch (Throwable $e) {
+            if ($event instanceof MustBeAudited) {
+                // The audit record is a precondition of this change: let
+                // the failure roll back the caller's transaction instead
+                // of leaving the change unaudited.
+                throw $e;
+            }
+
             // An audit failure must never break the request it is auditing.
             Log::error('Failed to record audit log', [
                 'event' => $event::class,

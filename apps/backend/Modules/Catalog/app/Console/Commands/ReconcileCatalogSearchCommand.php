@@ -46,6 +46,9 @@ final class ReconcileCatalogSearchCommand extends Command
         SearchCursorManager $cursors,
     ): int {
         SearchWorkerHeartbeat::upsert();
+        // Maintenance: heartbeat rows of long-gone workers holding
+        // nothing open (a new row lands on every worker process start).
+        SearchWorkerHeartbeat::prune();
 
         if (! $client->configured()) {
             if (! $this->option('force')) {

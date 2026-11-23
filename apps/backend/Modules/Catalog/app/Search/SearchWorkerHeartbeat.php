@@ -71,4 +71,34 @@ final class SearchWorkerHeartbeat
         return $heartbeatAt !== null
             && now()->diffInSeconds($heartbeatAt, absolute: true) < $staleAfterSeconds;
     }
+
+    /**
+     * Drop heartbeat rows of workers that stopped reporting long ago and
+     * hold nothing open (reconciler maintenance). A worker gets a new row
+     * on every process start, so without this the table grows for the
+     * life of the deployment.
+     *
+     * Rows with an OPEN admission are kept: the drain's reclamation only
+     * considers admissions joined to a heartbeat row, so removing one
+     * would strand its admission fail-closed forever. A live worker whose
+     * row was dropped simply gets a new one on its next depth-0 gate
+     * entry (upsert), inside the same transaction as its admission.
+     *
+     * @return int the number of rows removed
+     */
+    public static function prune(int $keepHours = 24): int
+    {
+        $heartbeats = SearchCoordinationSchema::WORKER_HEARTBEATS_TABLE;
+        $admissions = SearchCoordinationSchema::ADMISSIONS_TABLE;
+
+        return DB::table($heartbeats)
+            ->where($heartbeats.'.'.SearchCoordinationSchema::HEARTBEAT_AT, '<', now()->subHours($keepHours))
+            ->whereNotExists(function ($query) use ($heartbeats, $admissions): void {
+                $query->selectRaw('1')
+                    ->from($admissions.' as a')
+                    ->whereColumn('a.'.SearchCoordinationSchema::INSTANCE_TOKEN, $heartbeats.'.'.SearchCoordinationSchema::INSTANCE_TOKEN)
+                    ->whereNull('a.'.SearchCoordinationSchema::RELEASED_AT);
+            })
+            ->delete();
+    }
 }

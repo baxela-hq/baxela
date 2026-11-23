@@ -116,6 +116,7 @@ class CatalogServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
+            \Modules\Catalog\Console\Commands\AssumeSearchWorkerDeadCommand::class,
             \Modules\Catalog\Console\Commands\ReconcileCatalogSearchCommand::class,
         ]);
     }

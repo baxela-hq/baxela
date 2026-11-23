@@ -14,6 +14,7 @@ use Modules\Core\Contracts\Events\Catalog\ProductCreatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductDeactivatedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductDeletedEvent;
 use Modules\Core\Contracts\Events\Catalog\ProductUpdatedEvent;
+use Modules\Core\Contracts\Events\Catalog\SearchAdmissionOverrideEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageDeletedEvent;
 use Modules\Core\Contracts\Events\Contact\ContactMessageStatusUpdatedEvent;
 use Modules\Core\Contracts\Events\Content\PagePublishedEvent;
@@ -115,6 +116,9 @@ class EventServiceProvider extends ServiceProvider
 
         TicketDeletedEvent::class => [RecordAuditLogListener::class],
         TicketStatusUpdatedEvent::class => [RecordAuditLogListener::class],
+
+        // Audited on every outcome, including refused attempts (§3.2.2).
+        SearchAdmissionOverrideEvent::class => [RecordAuditLogListener::class],
     ];
 
     /**
