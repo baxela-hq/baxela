@@ -73,6 +73,13 @@ return [
         ],
 
         RequestReceived::class => [
+            // Sentry scope replacement FIRST, before the request swap in
+            // prepareApplicationForNextRequest fires the enrichment
+            // provider's rebinding: the incoming request then tags a
+            // FRESH scope, and the previous request's tags, user context,
+            // and breadcrumbs die with the replaced object. The flush is
+            // SDK-global and depends on nothing from the event.
+            \App\Octane\FlushSentryScope::class,
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
             // The manager's static row cache is documented as per-request
