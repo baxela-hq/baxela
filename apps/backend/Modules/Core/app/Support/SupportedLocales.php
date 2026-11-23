@@ -18,6 +18,16 @@ class SupportedLocales
     private static ?array $codes = null;
 
     /**
+     * Drop the cached code list so the next read goes back to the
+     * languages table — for callers that change the active-language set
+     * (tests seeding a language; any future admin toggle).
+     */
+    public static function flush(): void
+    {
+        self::$codes = null;
+    }
+
+    /**
      * @return array<string>
      */
     public static function codes(): array

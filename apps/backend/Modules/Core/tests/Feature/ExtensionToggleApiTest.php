@@ -15,7 +15,7 @@ use Modules\Core\Tests\Feature\HelperTrait;
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
-const SLUG = 'acme/baxela-sandbox';
+const EXTENSION_TOGGLE_SLUG = 'acme/baxela-sandbox';
 
 beforeEach(function () {
     ExtensionManager::flush();
@@ -27,8 +27,8 @@ beforeEach(function () {
 function mockComposerPackages(?array $package): void
 {
     test()->mock(ComposerPackages::class, function (MockInterface $mock) use ($package) {
-        $mock->shouldReceive('package')->with(SLUG)->andReturn($package);
-        $mock->shouldReceive('version')->with(SLUG)->andReturn($package === null ? null : '0.0.1');
+        $mock->shouldReceive('package')->with(EXTENSION_TOGGLE_SLUG)->andReturn($package);
+        $mock->shouldReceive('version')->with(EXTENSION_TOGGLE_SLUG)->andReturn($package === null ? null : '0.0.1');
     });
 }
 
@@ -47,7 +47,7 @@ function grantAndActAs(string $permission): void
 function extensionRow(bool $enabled): void
 {
     ExtensionRow::query()->create([
-        ExtensionSchema::SLUG => SLUG,
+        ExtensionSchema::SLUG => EXTENSION_TOGGLE_SLUG,
         ExtensionSchema::ENABLED => $enabled,
     ]);
 }
@@ -80,36 +80,36 @@ it('enforces enable and disable permissions independently', function () {
 it('enables a disabled, installed extension and derives fresh state', function () {
     extensionRow(enabled: false);
     mockComposerPackages([
-        'name' => SLUG,
+        'name' => EXTENSION_TOGGLE_SLUG,
         'type' => 'baxela-extension',
-        'extra' => ['baxela' => ['slug' => SLUG, 'compat' => ['core' => '^0.1']]],
+        'extra' => ['baxela' => ['slug' => EXTENSION_TOGGLE_SLUG, 'compat' => ['core' => '^0.1']]],
     ]);
 
     $this->actingAs($this->superAdminUser());
 
     $this->postJson($this->adminUrl('/extensions/acme/baxela-sandbox/enable'))
         ->assertOk()
-        ->assertJsonPath('data.slug', SLUG)
+        ->assertJsonPath('data.slug', EXTENSION_TOGGLE_SLUG)
         ->assertJsonPath('data.enabled', true)
         ->assertJsonPath('data.installed', true)
         ->assertJsonPath('data.version', '0.0.1')
         ->assertJsonPath('data.skip_reason', null);
 
-    expect(ExtensionRow::query()->where(ExtensionSchema::SLUG, SLUG)->first()->{ExtensionSchema::ENABLED})->toBeTrue();
+    expect(ExtensionRow::query()->where(ExtensionSchema::SLUG, EXTENSION_TOGGLE_SLUG)->first()->{ExtensionSchema::ENABLED})->toBeTrue();
 });
 
 it('never reports a stale boot diagnostic after enabling', function () {
     extensionRow(enabled: false);
     mockComposerPackages([
-        'name' => SLUG,
+        'name' => EXTENSION_TOGGLE_SLUG,
         'type' => 'baxela-extension',
-        'extra' => ['baxela' => ['slug' => SLUG, 'compat' => ['core' => '^0.1']]],
+        'extra' => ['baxela' => ['slug' => EXTENSION_TOGGLE_SLUG, 'compat' => ['core' => '^0.1']]],
     ]);
 
     // The boot guard runs against the disabled row and records "disabled".
     $manager = app(ExtensionManager::class);
-    $manager->shouldBoot(SLUG, ['slug' => SLUG, 'compat' => ['core' => '^0.1']]);
-    expect($manager->skipReason(SLUG))->toBe('disabled');
+    $manager->shouldBoot(EXTENSION_TOGGLE_SLUG, ['slug' => EXTENSION_TOGGLE_SLUG, 'compat' => ['core' => '^0.1']]);
+    expect($manager->skipReason(EXTENSION_TOGGLE_SLUG))->toBe('disabled');
 
     $this->actingAs($this->superAdminUser());
 
@@ -125,9 +125,9 @@ it('never reports a stale boot diagnostic after enabling', function () {
 it('disables an enabled extension and derives the disabled reason', function () {
     extensionRow(enabled: true);
     mockComposerPackages([
-        'name' => SLUG,
+        'name' => EXTENSION_TOGGLE_SLUG,
         'type' => 'baxela-extension',
-        'extra' => ['baxela' => ['slug' => SLUG, 'compat' => ['core' => '^0.1']]],
+        'extra' => ['baxela' => ['slug' => EXTENSION_TOGGLE_SLUG, 'compat' => ['core' => '^0.1']]],
     ]);
 
     $this->actingAs($this->superAdminUser());
@@ -138,7 +138,7 @@ it('disables an enabled extension and derives the disabled reason', function () 
         ->assertJsonPath('data.installed', true)
         ->assertJsonPath('data.skip_reason', 'disabled');
 
-    expect(ExtensionRow::query()->where(ExtensionSchema::SLUG, SLUG)->first()->{ExtensionSchema::ENABLED})->toBeFalse();
+    expect(ExtensionRow::query()->where(ExtensionSchema::SLUG, EXTENSION_TOGGLE_SLUG)->first()->{ExtensionSchema::ENABLED})->toBeFalse();
 });
 
 it('disables a leftover row whose package is gone from vendor', function () {
@@ -169,9 +169,9 @@ it('refuses to enable an extension whose package is not in vendor', function () 
 
 it('refuses to toggle a slug with no registry row', function () {
     mockComposerPackages([
-        'name' => SLUG,
+        'name' => EXTENSION_TOGGLE_SLUG,
         'type' => 'baxela-extension',
-        'extra' => ['baxela' => ['slug' => SLUG]],
+        'extra' => ['baxela' => ['slug' => EXTENSION_TOGGLE_SLUG]],
     ]);
 
     $this->actingAs($this->superAdminUser());
@@ -211,9 +211,9 @@ it('rejects malformed package names before the action runs', function () {
 it('is idempotent for repeated toggles', function () {
     extensionRow(enabled: false);
     mockComposerPackages([
-        'name' => SLUG,
+        'name' => EXTENSION_TOGGLE_SLUG,
         'type' => 'baxela-extension',
-        'extra' => ['baxela' => ['slug' => SLUG, 'compat' => ['core' => '^0.1']]],
+        'extra' => ['baxela' => ['slug' => EXTENSION_TOGGLE_SLUG, 'compat' => ['core' => '^0.1']]],
     ]);
 
     $this->actingAs($this->superAdminUser());
@@ -224,7 +224,7 @@ it('is idempotent for repeated toggles', function () {
     $this->postJson($this->adminUrl('/extensions/acme/baxela-sandbox/disable'))->assertOk();
 
     expect(ExtensionRow::count())->toBe(1)
-        ->and(ExtensionRow::query()->where(ExtensionSchema::SLUG, SLUG)->first()->{ExtensionSchema::ENABLED})->toBeFalse();
+        ->and(ExtensionRow::query()->where(ExtensionSchema::SLUG, EXTENSION_TOGGLE_SLUG)->first()->{ExtensionSchema::ENABLED})->toBeFalse();
 });
 
 it('treats an absent compat constraint as incompatible without type errors', function () {

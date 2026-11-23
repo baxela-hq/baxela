@@ -10,7 +10,6 @@ use Modules\Core\Actions\Admin\Currency\SyncExchangeRatesAction;
 use Modules\Core\Models\Currency;
 use Modules\Setting\Models\Setting;
 use Modules\Setting\Support\ResolvesFxSettings;
-use Throwable;
 
 uses(RefreshDatabase::class);
 

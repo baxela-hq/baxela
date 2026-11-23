@@ -15,6 +15,9 @@ use Modules\Auth\Schemas\UserDevice\UserDeviceSchema;
 use Modules\Auth\Support\TwoFactor\TwoFactorService;
 use Modules\Auth\Tests\Feature\HelperTrait;
 use Modules\Core\Contracts\Events\Auth\NewDeviceSignInEvent;
+use Modules\Core\Models\Language;
+use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\SupportedLocales;
 use Modules\Notification\Emails\DynamicNotification;
 use Modules\Notification\Listeners\Auth\NewDeviceSignIn\SendNewDeviceSignInNotificationListener;
 use Modules\Notification\Models\Notification;
@@ -181,19 +184,36 @@ it('registers one device row for two racing first registrations of the same unse
 });
 
 it('captures the request locale on the new-device event', function () {
-    Event::fake();
-    $user = ndUser();
+    // The visitor language is negotiated only among the store's ACTIVE
+    // languages. With no language rows the list falls back to
+    // [en, app.locale] — which happens to contain `fa` on a machine whose
+    // .env sets APP_LOCALE=fa, and does not on CI's default. Seed the
+    // language so this asserts the negotiation, not the developer's locale.
+    Language::factory()->create([
+        LanguageSchema::LOCALE => 'fa',
+        LanguageSchema::CODE => 'fa',
+        LanguageSchema::IS_ACTIVE => true,
+    ]);
+    SupportedLocales::flush();
 
-    test()->postJson(test()->baseUrl(ND_SIGN_IN), [
-        UserSchema::EMAIL => $user->{UserSchema::EMAIL},
-        UserSchema::PASSWORD => 'Passw0rd!',
-        'device_name' => 'laptop',
-    ], ['Accept-Language' => 'fa'])->assertOk();
+    try {
+        Event::fake();
+        $user = ndUser();
 
-    Event::assertDispatched(
-        NewDeviceSignInEvent::class,
-        fn (NewDeviceSignInEvent $event): bool => $event->locale === 'fa' && $event->device_name === 'laptop',
-    );
+        test()->postJson(test()->baseUrl(ND_SIGN_IN), [
+            UserSchema::EMAIL => $user->{UserSchema::EMAIL},
+            UserSchema::PASSWORD => 'Passw0rd!',
+            'device_name' => 'laptop',
+        ], ['Accept-Language' => 'fa'])->assertOk();
+
+        Event::assertDispatched(
+            NewDeviceSignInEvent::class,
+            fn (NewDeviceSignInEvent $event): bool => $event->locale === 'fa' && $event->device_name === 'laptop',
+        );
+    } finally {
+        // Leave no cached language list behind for the tests that follow.
+        SupportedLocales::flush();
+    }
 });
 
 it('is queued off-request so delivery failures cannot affect authentication', function () {
