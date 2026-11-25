@@ -26,6 +26,7 @@ use Modules\Core\Http\Middleware\RequestLogger;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
 use Modules\Core\Support\Erd\ModuleTableResolver;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Core\Support\Transfer\TransferGuardRegistry;
 use Modules\Core\Support\Transfer\TransferRemapStore;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -107,6 +108,11 @@ class CoreServiceProvider extends ServiceProvider
         // process holds each connection's single ownership hook and its
         // active run context, so repeated imports never re-register hooks.
         $this->app->singleton(TransferGuardRegistry::class);
+
+        // Tenant state (multi-tenancy §2): one context per process, reset
+        // at the start of every request by the Octane listener and
+        // re-initialized per job attempt by the queue listeners.
+        $this->app->singleton(TenantContext::class);
     }
 
     /**

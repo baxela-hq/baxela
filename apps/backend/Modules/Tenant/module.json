@@ -1,0 +1,11 @@
+{
+    "name": "Tenant",
+    "alias": "tenant",
+    "description": "Stores (tenants): identity, domains, memberships, and the per-store language/currency links.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Tenant\\Providers\\TenantServiceProvider"
+    ],
+    "files": []
+}

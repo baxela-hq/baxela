@@ -19,5 +19,6 @@
   "Audit": true,
   "Tax": true,
   "Transfer": true,
-  "Webhooks": true
+  "Webhooks": true,
+  "Tenant": true
 }
