@@ -1,31 +1,254 @@
-# Multi-Tenancy Implementation Plan (rev 4.1)
+# Multi-Tenancy Implementation Plan (rev 4.10 — architecture approved)
 
-Status: **plan — approved in substance by the architecture review** · Rev 4.1 folds in the five
-targeted corrections from the final review (guest-safe idempotency identity, snapshot stack for
-nested jobs, phase assignments for operational requirements, payment rotation/no-fallback precision,
-concrete domain-verification protocol). Phase 1 may start; each phase requires the changed-file list,
-static-analysis, and test results to be reviewed before the next phase is authorized.
+Status: **architecture approved by the external review (9.7/10, eighth round); implementation
+in progress.** The review approved rev 4.10's architecture and carried one implementation-contract
+clarification — reference detachment follows the same generation-first lock ordering — which is
+folded into §6.4; no further architecture revision is required. The architecture and the rev 4.2
+inventory base are unchanged (full code inventory taken 2026-11-24 on commit `1305e55b`, after
+the PostgreSQL migration). On 2026-11-25 the owner authorized implementation of Phases 2–8 and
+waived the between-phase review gate; each phase is still verified (static analysis and both test
+planes) before the next builds on it. Progress and deviations from the plan text are logged in the
+Implementation Record at the end of this document.
 
-Architecture: **single database, `tenant_id` row scoping** · host/subdomain tenant resolution ·
-global users + per-tenant memberships · spatie-permission teams keyed by `tenant_id` ·
+Architecture (unchanged): **single database, `tenant_id` row scoping** · host/subdomain tenant
+resolution · global users + per-tenant memberships · spatie-permission teams keyed by `tenant_id` ·
 per-tenant payment credentials from day one · phased rollout, each phase leaves the suite green.
 
-Framing adopted from the review: **a tenant is an independent business/store, not an independent
-customer database.** Global customers shop across stores; staff memberships, roles, and permissions
-are tenant-specific.
+Framing (unchanged): **a tenant is an independent business/store, not an independent customer
+database.** Global customers shop across stores; staff memberships, roles, and permissions are
+tenant-specific.
 
-Rev 4 changes from rev 3 (architecture untouched):
-- Central mode is entered only through a dedicated `CentralOperations` service (§6.5).
-- Idempotency is redesigned as a concurrency-control mechanism with atomic reservation (§6.6).
-- Queue context lifecycle uses snapshot/restore so nested (sync) dispatch cannot wipe the request
-  context — verified against `SyncQueue` source (§6.1, F27).
-- Intra-module tenant-composite FKs strengthen referential integrity without breaking module
-  boundaries (§4.3).
-- Payment configuration resolution is a named contract covering every existing client/driver,
-  and the F11 "global paypal cache" classification is corrected (§6.3, F25).
-- Missing requirements section: deletion, domain takeover, rate limiting, realtime, logging,
-  exports, notifications, onboarding, search, backups (§9.5).
-- Phase acceptance and test matrix extended; a final security acceptance gate added (§8, §10).
+Rev 4.2 changes from rev 4.1 (architecture untouched):
+- Owner decisions recorded (§0): store admins see one store; only the platform super-admin operates
+  across stores, with no merged view; a multi-store owner works one store at a time; the tenant
+  filter applies by request on one model per table, not through model subclasses.
+- Five proposals marked **to confirm** (§0): shared search index, platform base currency,
+  platform-wide extensions, per-store media keys, platform vs store settings.
+- Facts refreshed after the PostgreSQL migration (§1: F1, F3, F7, F9, F10, F11, F13 amended;
+  F28–F47 new).
+- Every table classified: 91 store-owned / 39 installation-level (§4.4); all 90 unique indexes
+  dispositioned (§4.5); all 17 translation tables gain `tenant_id` (supersedes rev 4.1 §4.3).
+- Models: one line per model (`use TenantScopedTrait;`), registered through `bootTenantScopedTrait()`
+  because two models already override `booted()` (§2.1, F32).
+- `ResolveTenant` must run ahead of `ApplyDatabaseCredentials` and route binding (§3.1, F35).
+- Payments reuse the existing `payment_driver_credentials` table — no new table (§6.3, F42).
+- New sections for single-store assumptions the inventory found: store runtime (§6.7), search
+  (§6.8), order documents (§6.9), transfer (§6.10), extensions (§6.11), notifications, caches and
+  rate limits (§6.12).
+- Phases 7 → 8 (§8); isolation matrix 42 → 68 rows (§10); ten known defects listed with the phase
+  that fixes each (§9.8).
+
+Rev 4.3 changes from rev 4.2 (architecture untouched; per the external review):
+- B1: execution boundaries split into three categories — platform operations (super-admin +
+  `CentralOperations`), tenant operations (MODE_TENANT, permission-guarded), and tenant
+  provisioning (self-serve, single transaction, no central mode) — resolving the onboarding and
+  member-management conflict (§6.5, §4.1, §9.7).
+- B2: platform-role uniqueness enforced at the database level by a portable partial unique index;
+  `NULLS NOT DISTINCT` is dropped entirely in favour of partial indexes (PostgreSQL and SQLite
+  both support them); minimum PostgreSQL version stated; SQLite execution strategy defined
+  (§4.5, §5, §4.2).
+- B3: idempotency reservations are crash-safe — claim token + fenced completion, guarded
+  reclamation, a same-transaction commit marker, and a no-re-execute recovery policy (§6.6).
+- B4: customer addresses settled as global data with user scoping only; model inheritance, table
+  classification, and the security gate aligned, with three distinct authorization rules (§2.1,
+  §4.4, §8 Phase 8).
+- B5: the domain lifecycle is persisted (`verification_token_hash`, method, expiry, release,
+  cooling-off), one-primary-domain-per-tenant is a partial unique index, and verification is
+  HTTPS-first with SSRF protections (§4.1, §9.7).
+- F1–F6: platform-settings read path (§6.7), same-key media serialization (§6.4), search
+  stale-write guarantees tied to the existing fencing (§6.8), BIGINT terminology and the explicit
+  orphan-tenant-id trade-off (§4.2–§4.3), one route-audience grammar with fail-closed
+  unclassified routes (§3.1), and the order-code lookup contract (§6.9).
+- P1–P5: the review recommends accepting all five, with conditions recorded in §0; owner
+  confirmation is still required before the phase that implements each.
+- Matrix 68 → 82 rows (§10); Phase 2's schema-dump comparison is now a hard gate (§8).
+
+Rev 4.4 changes from rev 4.3 (architecture untouched; per the second review):
+- B1: tenant identification is a **two-stage lifecycle** — a pre-routing global normalizer
+  (headers/Host only) and a post-routing `ResolveTenant` in the `api` group whose position is
+  fixed by the middleware **priority list**, guaranteeing context before route binding and
+  credential application; the principal (sanctum guard) may be read for identification only
+  (§3.1).
+- B2: machine tokens carry a nullable `tenant_id` on `personal_access_tokens` (NULL for ordinary
+  user tokens) and are resolved in Stage 2 before binding (§3.1, §3.2, §4.4, §9.7).
+- B3: the root-folder partial unique index includes `tenant_id` — `(tenant_id, name) WHERE
+  parent_id IS NULL` (§4.5).
+- B4: the idempotency commit marker aborts the business transaction when claim ownership was lost
+  (exactly-one-row update, throw on zero); external provider idempotency keys derive from the
+  stable logical identity, never the claim token (§6.6).
+- B5: domain verification pins the connection to a validated IP (SNI/Host preserved) and checks
+  the actual peer — DNS rebinding closed (§9.7).
+- F1–F5: database-enforced default-currency and default-tax-class invariants and base-currency
+  ownership reconciliation (§4.5, §6.7.1); a fenced database lease for media per-key operations
+  (§6.4); the explicit provisioning write contract (§6.5); product tenant-ownership immutability
+  (§6.8); the platform-settings resolver contract, incl. missing-setting behaviour (§6.7).
+- Matrix 82 → 94 rows (§10).
+
+Rev 4.5 changes from rev 4.4 (architecture untouched; per the third review):
+- B1: a tenant-neutral **`onboarding` route audience** — no tenant resolution, MODE_INACTIVE
+  throughout, global-user authentication, allowlisted routes only (§3.1, §6.5).
+- B2: the payment-webhook `{tenant-slug}` route parameter is an authoritative Stage-2 resolution
+  source; tenant headers ignored on that audience (§3.1, §6.3).
+- B3: idempotency reclamation requires `committed_at IS NULL` — committed claims are never
+  reclaimed; response completion moves from `terminate()` into `handle()`; commit-marker
+  participation is mandatory and architecture-tested (§6.6).
+- B4: `CentralOperations` takes typed operation objects resolved through a handler registry —
+  the caller never supplies the closure; per-operation call-site allowlist + actor policy (§6.5).
+- B5: `media_object_locks` joins the schema classification (§4.4) and deletion becomes a durable
+  intent state machine with a transition-guarded unlink (§6.4).
+- B6: tenant-ownership immutability enforced at four layers, incl. a database trigger and
+  mass-assignment removal (§2, §6.8).
+- B7: the middleware priority list preserves Laravel's defaults verbatim and orders
+  `ResolveTenant` ahead of tenant-aware throttling too (§3.1).
+- B8: the super-admin bypass and `adminUserIds()` constrain the polymorphic `model_type` and
+  guard name (§5).
+- F1–F7: bulk-write wrong-tenant guard + per-query allowlist (§4.3); Tenant-module read
+  isolation (§2.1); default lifecycle guards (§6.7.1); onboarding quota serialization + the
+  last-owner invariant (§6.5); the staff branch of the order-code lookup (§6.9); machine-token
+  lifecycle rules + the F23 amendment (§1, §9.7); platform-settings cache invalidation (§6.7).
+- Matrix 94 → 110 rows (§10); `media_object_locks` makes it 92 store-owned tables (§4.4).
+
+Rev 4.6 changes from rev 4.5 (architecture untouched; per the fourth review):
+- B1: the media unlink is fenced by an **open row-lock transaction spanning the filesystem
+  call** — the critical section is the held lock, not the intent transition; lease reclamation
+  and the unlink are mutually exclusive; crash-while-held recovery defined (§6.4).
+- B2: the immutability trigger is specified **per engine** (PostgreSQL trigger function;
+  SQLite per-table trigger bodies) behind explicit driver branches, installed on the tables
+  that actually carry `tenant_id`; the nine pivots get their own documented strategy (§6.8).
+- B3: **every** claim-deletion path — including `terminate()` failure cleanup — requires
+  `committed_at IS NULL`; a committed claim on a response-persist failure becomes
+  `idempotency_unresolved`, never a clean retry; reclamation's delete-and-reinsert concurrency
+  is documented (§6.6).
+- B4: onboarding is the **`onboarding` audience everywhere** — one canonical route
+  (`POST /api/v1/onboarding/tenants`, `api.tenant.onboarding.*`); all stale `user`-audience
+  wording replaced (§4.1, §6.5, §9.7, §8).
+- F1: the query-builder allowlist is per query site, not per file (§4.3).
+- F2: the wrong-tenant bulk-insert guard has a concrete mechanism — a Core stamping helper the
+  architecture test verifies per registered site; caller input never carries `tenant_id` (§4.3).
+- F3: the central-operation registry binds **exact final operation classes**; `id()` is
+  display-only (§6.5).
+- F4: the deletion-intent lifecycle is a classified table (`media_deletion_intents`) with
+  statuses, permitted transitions, idempotent sweep, and publication serialization (§4.4, §6.4).
+- Matrix 110 → 116 rows (§10); `media_deletion_intents` makes it 93 store-owned tables (§4.4).
+
+Rev 4.7 changes from rev 4.6 (architecture untouched; per the fifth review):
+- B1: the media unlink becomes **rename-then-unlink** — the destructive-to-live-namespace step
+  (rename into a per-tenant trash path) stays inside the row-lock critical section; only the
+  idempotent unlink of trash files happens outside it. The database-session-loss race is narrowed
+  and its bounded, recoverable worst case is documented, with a connection-drop test (§6.4).
+- B2: a queue payload can no longer grant MODE_CENTRAL. `JobProcessing` initializes only
+  INACTIVE/TENANT; central-dispatched jobs carry the **registered operation id** and must invoke
+  it through `CentralOperations::run()` themselves — one enforceable entry point, queue included
+  (§6.1).
+- B4/F3: `media:outbox:sweep` is reclassified from `platform` to **`central`** with its touched
+  tables enumerated — it scans store-owned coordination rows and never tenant business data
+  (§6.7.2).
+- B5: the inventory is reconciled explicitly — 130 existing = 91 store-owned + 39
+  installation-level; tenancy adds 7 tables (5 Tenant-module + 2 media coordination); the §4.4
+  93/39 classification = 130 existing + the 2 media tables; the Tenant-module tables are
+  classified separately in §4.1 (§4.4).
+- B6: every mutation of a tenant's active-owner set serializes on the tenant row (`FOR UPDATE`
+  before check-and-change) — removal, suspension, demotion, transfer; competing-connection test
+  (§6.5).
+- B7: the provisioning lifecycle is explicit — unscoped metadata writes first, then
+  `runForTenant($newTenant)` for the owner membership, role attach, and tenant-owned defaults,
+  restoring MODE_INACTIVE in `finally`; team id set and restored (§6.5).
+- F1: the payment resolver cache identity is **per (tenant, driver)** — `credential_version`
+  lives on each driver row, bumped with that driver's write; cache key
+  `t{id}:payment.credentials:{driver}:{credential_version}` (§6.3).
+- F2: the pivot threat-model boundary is explicit — preventive for application writes through
+  the approved APIs; allowlist-covered for direct SQL in app code; **detective only** (`tenancy:
+  audit`) for SQL issued outside the application (§6.8).
+- Matrix 116 → 119 rows (§10).
+
+Rev 4.8 changes from rev 4.7 (architecture untouched; per the sixth review):
+- B1: the media object lifecycle is **generation-safe** — physical keys are immutable and
+  unique per publication (`{sha256}-{ulid}`), references point at an exact object generation,
+  keys with any deletion history are retired forever, and a deletion intent names its exact key:
+  a stale worker resuming after DB-session loss can only touch its retired generation, never a
+  newer publication's object (§6.4).
+- B2: `media:outbox:sweep` becomes **central discovery + tenant-scoped execution** — stage 1 is
+  a read-only registered operation returning `(tenant_id, record id)` work items; stage 2 runs
+  each cleanup under `runForTenant`, reloading and validating the record before any write; a
+  globally scheduled command never writes store-owned rows directly (§6.7.2).
+- F1: trigger acceptance is split by phase — Phase 2 verifies the tables it creates, Phase 4 the
+  two media coordination tables, Phase 8 the full inventory — against an explicit expected-table
+  list that excludes installation-level tenant-**key** tables (§10 row 113).
+- F2: the §4.4 installation-level heading now says "no store-ownership scope" and distinguishes
+  tenant-key columns from store-owned data columns.
+- F3: the trash root is explicitly outside the publicly served media namespace — not URL
+ -addressable, cleanup-process-only (§6.4, row 121).
+- Matrix 119 → 121 rows (§10; row 117 rewritten, row 113 re-phased).
+
+Rev 4.9 changes from rev 4.8 (clarifications only, per the seventh review):
+- B1 (durable retirement): retirement lives in a **persistent object-generation record** —
+  `media_object_generations`, one row per physical key a store has ever published, marked
+  `retired` when a deletion intent first targets it. Cancelling an intent never un-retires;
+  pruning intents never touches generation rows; reuse eligibility consults the generation
+  record, never intent history (§6.4, §4.4).
+- B1 (wording): **physical object creation** (a new immutable generation + key) is distinguished
+  from **logical media publication/reference** (may point at an existing *eligible* generation);
+  the six reviewer-listed invariants are stated explicitly (§6.4).
+- F3 (trash root): the physical trash location is `{disk}://trash/{tenant_id}/…` — a sibling of
+  the public `media/` tree, outside the served root and the disk's URL mapping; row 121 tests
+  both direct HTTP and URL-generator behaviour (§6.4).
+- B2 (stage-2 details): discovery results are hints, not authorization; every item reloads,
+  ownership-matches, and revalidates under `runForTenant`; stale items are safe no-ops;
+  filesystem targets come only from the validated record's exact key; per-tenant failure
+  isolation; `discovery+fan-out` stays narrowly registered (§6.7.2).
+- Matrix 121 → 122 rows (row 122: cancelled intent + pruned history + identical re-upload → the
+  retired key is never reused, and an eligible no-history object still is).
+- Inventory: `media_object_generations` makes it 94 store-owned / 138 total (§4.4).
+
+Rev 4.10 changes from rev 4.9 (per the eighth review — one blocker + two details):
+- B1 (blocker): the **generation row is the common serialization point** — reference
+  attachment/reuse locks the `media_object_generations` row `FOR UPDATE`, verifies `eligible`,
+  and holds the lock through the reference-insert transaction; deletion-intent creation locks
+  the same row, verifies reference state, marks `retired`, and writes the intent in one
+  transaction; retirement is a one-way conditional update guarded by an engine-branched trigger;
+  lock ordering is fixed — generation row first, media reference rows second, on every path
+  (§6.4).
+- Trash root: trash lives on a **dedicated private disk** with no public web-server mapping at
+  all — not a sibling directory under a served root (§6.4).
+- Matrix 122 → 123: row 123 is the deterministic two-connection PostgreSQL attach-vs-retire
+  race, both orderings (§10).
+
+---
+
+## 0. Owner decisions and proposals to confirm
+
+**Confirmed by the owner (2026-11-24):**
+
+- A3. **Store admins (merchants) see only their own store.** Enforced by `tenant_memberships` +
+  tenant roles (§3.2, §5).
+- A4. **Only the platform super-admin operates across stores** — they can open any store (§3.1
+  `X-Tenant-Id`) and use the platform screens (tenant CRUD, domains, extensions). There is **no
+  merged cross-store view**: every cross-store read happens inside a registered `CentralOperations`
+  operation (§6.5).
+- A5. **An owner of several stores works in one store at a time** and switches between their own
+  stores. No combined listing across a person's stores.
+- A6. **The tenant filter is switched on by request, on one model per table.** The alternative —
+  per-module model subclasses that carry their own global scope and are used only from
+  store-facing code (the `Vendor/` pattern) — is declined; reasons in §2.1.
+
+A1 and A2 (§1) remain in force.
+
+**Proposals — recommended defaults, each to be confirmed before the phase that implements it:**
+
+| # | Proposal | Phase |
+|---|---|---|
+| P1 | **One shared search index** with a `tenant_id` field on every document and a filter that the search client always injects. Alternative: one Meilisearch index per store (stronger isolation, more moving parts) — §6.8. | 5 |
+| P2 | **One platform base currency** (all stored amounts), each store chooses its default display currency and which currencies it offers. Exchange rates stay platform-wide. Alternative: a base currency per store (conversion and rounding on every stored amount) — §6.7. | 2 |
+| P3 | **Extensions are platform-wide**: installed and toggled by the super-admin only, no per-store switch. | 7 |
+| P4 | **Media files are stored per store** (`media/{tenant_id}/…`), giving up cross-store deduplication so deleting a file can never remove another store's object — §6.4. | 4 |
+| P5 | **Settings split** into platform-wide (FX provider + API key, platform identity) and per-store (everything that brands or configures a storefront) — §4.5, §6.7. | 2 |
+
+Review verdict on P1–P5 (2026-11-24, external): **accept all five, with conditions.** P1 only with
+the centrally enforced, non-optional tenant filter (§6.8 already makes it so); P2 with
+transaction-time currency snapshots preserved on monetary rows (§6.7.1); P4 with the same-tenant
+key race resolved first (§6.4); P5 with the explicit platform-settings read path (§6.7). Owner
+confirmation remains the gate; the plan is written so each proposal can still be flipped
+individually before its phase.
 
 ---
 
@@ -34,7 +257,8 @@ Rev 4 changes from rev 3 (architecture untouched):
 **Verified facts** (file-checked):
 
 - F1. No tenancy exists anywhere: no `tenant_id`/`store_id`/`team_id` columns; greps hit only a
-  comment in `Modules/Order/app/Support/StoreTimezone.php` anticipating this change.
+  comment in `Modules/Order/app/Support/StoreTimezone.php` anticipating this change. (rev 4.2:
+  re-checked after the PostgreSQL migration — still true for all 130 tables.)
 - F2. Eloquent scoping precedent: `Modules/Core/app/Models/Scopes/UserScope.php` +
   `Traits/UserScopeTrait.php` (global scope + `creating` hook). Correction (rev 4, per review):
   `where('user_id', Auth::id())` with a null id compiles to `WHERE user_id IS NULL`, **not** an
@@ -53,16 +277,17 @@ Rev 4 changes from rev 3 (architecture untouched):
   binding (or carry an explicit, exception-safe reset to `MODE_INACTIVE` at the very start of
   every request), and the isolation tests in the RoadRunner rollout plan (same-worker
   consecutive requests) must pass for tenant scenarios before tenancy ships.
+  (rev 4.2: decided — the reset is a `RequestReceived` listener placed first, see §2 and F39.)
   **Update (rev 6, 2026-11-26: reverting to php-fpm — the rev-5 requirements are withdrawn.**
-  The Octane/RoadRunner runtime was removed (branch `revert/php-fpm`); the API boots per request
-  again, so the persistent-worker prerequisites above no longer apply: the `ResetTenantContext`
-  Octane listener (§2, §6.7 item 2), the Octane isolation-gate tenant scenarios, risk R6,
-  defect K8, and test rows 43/44/109 are dropped. Two things survive the revert because they
-  are about processes that outlive a request regardless of the HTTP server: `TenantContext`
-  still needs an explicit reset — Pest runs the whole suite in one process (tests reset in
-  `TestCase::setUp`) — and the per-job tenant snapshot/restore for queue workers (§6.1) stands
-  unchanged. The per-request store runtime after `ResolveTenant` (§6.7 item 1) is also still
-  required: the tenant is only known after boot, under any server.)
+  The Octane/RoadRunner runtime was removed (branch `revert/php-fpm`, merged to `main`); the API
+  boots per request again, so the persistent-worker prerequisites above no longer apply: the
+  `ResetTenantContext` Octane listener (§2, §6.7 item 2), the Octane isolation-gate tenant
+  scenarios, risk R6, defect K8, and test rows 43/44/109 are dropped. Two things survive the
+  revert because they are about processes that outlive a request regardless of the HTTP server:
+  `TenantContext` still needs an explicit reset — Pest runs the whole suite in one process (tests
+  reset in `TestCase::setUp`) — and the per-job tenant snapshot/restore for queue workers (§6.1)
+  stands unchanged. The per-request store runtime after `ResolveTenant` (§6.7 item 1) is also
+  still required: the tenant is only known after boot, under any server.
 - F4. `PermissionMiddleware` (`Modules/Core/app/Http/Middleware/PermissionMiddleware.php`) is already
   fail-closed: no auth → throw; unnamed/non-admin route name → throw; delegates to
   `AccessGatewayInterface::userCan()` = `$user->can($permission)` with PermissionDoesNotExist → false.
@@ -76,12 +301,13 @@ Rev 4 changes from rev 3 (architecture untouched):
 - F7. **Migration execution order is global by filename timestamp across all modules**
   (`Migrator` sorts all registered paths by migration name), not module priority (all `module.json`
   priorities are 0). Cross-module FK constraints would therefore be order-fragile — and cross-module
-  table references violate the backend AGENTS.md module-boundary rule anyway.
+  table references violate the backend AGENTS.md module-boundary rule anyway. (rev 4.2: PostgreSQL
+  also caps identifiers at 63 bytes — F30.)
 - F8. Pre-v1 migration policy is explicit: `apps/backend/AGENTS.md` ("Database & Migrations"):
   edit original migrations in place; "No release has shipped yet". Root `DatabaseSeeder` is empty;
   dev DBs are disposable (`docker compose`, `migrate:fresh` sanctioned; compose `app` is sole
   migration owner via `RUN_MIGRATIONS=1`).
-- F9. Raw queries that would **bypass** an Eloquent tenant scope (complete app-code list):
+- F9. Raw queries that would **bypass** an Eloquent tenant scope:
   `Modules/Core/app/Rules/LanguageUniquePair.php:36`, `Modules/Core/app/Rules/UniquePair.php:28`,
   `Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php:742,882,910,933`,
   `Modules/Catalog/app/Support/AppliesProductPromotions.php:91`,
@@ -93,20 +319,25 @@ Rev 4 changes from rev 3 (architecture untouched):
   `Modules/Webhooks/app/Console/Commands/PruneWebhooksCommand.php:25-35`,
   `Modules/Webhooks/app/Jobs/DeliverWebhookJob.php:170`.
   No `DB::select`/`withoutGlobalScopes` anywhere. `selectRaw` usages sit on Eloquent builders (scoped).
+  (rev 4.2: this is the raw-SQL subset only. The complete surface a scope cannot see — 129
+  query-builder chains, bulk writes, validation rules — is F33.)
 - F10. Queued work: 22 `ShouldQueue` classes (1 `Webhooks/Jobs/DeliverWebhookJob`, 1 Media listener,
   20 Notification listeners). None carry any store/tenant context today (verified: `DeliverWebhookJob`
-  takes only `$deliveryId`; outbox tables have no tenant column).
+  takes only `$deliveryId`; outbox tables have no tenant column). (rev 4.2: now 28 classes, F36.)
 - F11. Tenant-varying caches (complete list): `catalog.public.sitemap`, `content.public.sitemap`,
   `core.language.default_id`, `setting.timezone`, `setting.prices_include_tax`,
   **`payment.paypal.access_token`** (reclassified in rev 4: per-tenant under A2 — the token belongs
   to whichever tenant's PayPal credentials produced it, §6.3); invalidation only in
   `Modules/Setting/app/Actions/Admin/Setting/UpdateSettingAction.php:26-27`. Remaining global
-  caches: `telegram:bot:username` (platform-level service, §9 R1).
+  caches: `telegram:bot:username` (platform-level service, §9 R1). (rev 4.2: the full inventory is
+  18 cache-key families — F37.)
 - F12. Payment webhooks identify nothing tenant-ish today: `POST /webhook/{driver}` →
   `HandleWebhookAction` matches `payments.transaction_id` globally against driver-verified payload,
   using single global gateway credentials/secrets per driver.
 - F13. Media: `$file->store()` with no path (`CreateMediaAction.php:35`) + `hashName()` — collision-safe
-  names, shared root namespace, no per-tenant directory.
+  names, shared root namespace, no per-tenant directory. (rev 4.2: names are now content-addressed
+  — `media/{ab}/{sha256}.{ext}` via the publication outbox — but the namespace is still shared
+  across stores; full picture in F45.)
 - F14. Exists-checks crossing modules (must become tenant-scoped):
   `CatalogGateway::{productExists,categoryExists,variantExists}`, `TaxGateway::taxClassExists`, and
   callers in Catalog/Cart/Content/Discount/Inventory/User requests + Transfer import paths.
@@ -128,7 +359,8 @@ Rev 4 changes from rev 3 (architecture untouched):
   `auth_model_has_permissions.tenant_id` are **NOT NULL** and lead their composite primary keys.
   NULL on the role row is the package's global-role mechanism; pivot team values are never NULL.
   The app migration `Modules/Auth/database/migrations/2026_09_08_153239_create_permission_tables.php`
-  is already a verbatim copy of the vendor stub.
+  is already a verbatim copy of the vendor stub (its roles unique is chosen by `$teams ||
+  config('permission.testing')`, lines 47–51).
 - F19. Laravel framework source (`vendor/laravel/framework/src/Illuminate/Queue/Worker.php:615-662`)
   fires `JobAttempted` in the worker's `finally` block after every attempt, including success,
   retry release, and terminal failure.
@@ -146,7 +378,9 @@ Rev 4 changes from rev 3 (architecture untouched):
   and listener-driven dispatch from domain events. `DeliverWebhookJob` receives a delivery id and
   needs an explicit bootstrap lookup before tenant-scoped delivery work (§6.2).
 - F23. Sanctum personal access tokens remain global user credentials; tenant selection and access
-  authorization are resolved per request. No tenant claim is embedded in the token.
+  authorization are resolved per request. No tenant claim is embedded in the token. (rev 4.5, F6
+  amendment: that holds for **ordinary user tokens**; **machine tokens** are a distinct issuance
+  that carries `tenant_id` on the token row — §9.7, B2 — immutable after issuance.)
 - F24. Owner decisions: A1 (no production data to preserve) and A2 (per-tenant payment gateway
   credentials from day one) are confirmed, not assumptions.
 - F25. Payment configuration read-sites (complete inventory for the §6.3 refactor): gateway clients
@@ -170,11 +404,127 @@ Rev 4 changes from rev 3 (architecture untouched):
   mid-request. The rev-4 lifecycle uses snapshot/restore semantics instead (§6.1), and both
   execution models get explicit tests (review requirement kept).
 
+**Facts added in rev 4.2 (inventory of 2026-11-24, commit `1305e55b`; counts are from greps over
+`apps/backend`, the file references were read directly):**
+
+- F28. Schema size: 130 tables in 100 migration files (6 framework/app-level, 124 module). No
+  tenant column anywhere.
+- F29. Keys: 9 composite primary keys; `catalog_variant_option_values` has no primary key at all.
+  71 foreign keys — 70 intra-module, 1 cross-module (`payment_refunds.order_id → order_orders`).
+  66 plain cross-module id columns carry no FK (24 → `auth_users`, 17 → `core_languages`,
+  5 → `media_media`, 4 each → `catalog_variants` / `tax_classes`, 3 each → `catalog_products` /
+  `order_orders`, …) — the F20 convention, applied consistently.
+- F30. Unique indexes: 90 — 71 auto-named, 19 explicit (5 of them raw `CREATE UNIQUE INDEX`
+  statements for case-insensitive keys: user email, variant SKU, variant barcode, newsletter email,
+  coupon code). 22 contain a nullable column. Three auto-generated names are exactly 63 characters
+  (`catalog_variant_option_values_…_unique`, `catalog_featured_items_…_unique`,
+  `content_featured_items_…_unique`) — PostgreSQL's identifier limit — so any index that gains a
+  column needs an explicit short name.
+- F31. 17 translation tables keyed on `language_id` (9 of them allow a NULL language): 9 Catalog
+  (attribute, attribute_value, attribute_group, brand, category, option, option_value, product,
+  product_seo), 4 Content (page, post, post_seo, post_category), 2 Menu (menu, menu_link),
+  1 Setting, 1 Shipping (method). Each has an `[owner_id, language_id]` unique; 8 also have a
+  `[language_id, slug]` unique (brand, category, option, option_value, product, page, post,
+  post_category).
+- F32. Models: 104 Eloquent models, no shared base class. Exactly one global scope exists
+  (`UserScope`, F2). 28 tables have no application model. 5 models override `boot()` (all call
+  `parent::boot()`); 2 override `booted()` (`Modules/Webhooks/app/Models/WebhookDelivery.php:76`,
+  `WebhookEvent.php:55`). A subclass-with-scope model already exists for the *user* dimension:
+  `Modules/User/app/Models/User/Address.php`
+  (`class Address extends \Modules\User\Models\Address { use UserScopeTrait; }`).
+- F33. Surface an Eloquent scope cannot see: 129 query-builder chains (119 `DB::table`, 10
+  connection-level) — Catalog 58 (50 on the search-coordination tables, which are
+  installation-level), Order 14, Discount 14, Media 10, Auth 8, Payment 8, Core 7, Support 5,
+  Webhooks 3, Content 2. Also 5 raw statements, 24 raw SQL fragments, 81 Eloquent bulk writes
+  (`insert` / `upsert` / builder `update` — no model events), 12 pivot `attach`/`sync` calls, and
+  48 framework `unique:` / `exists:` validation sites.
+- F34. Routes: 409 module routes — admin 296, user 63, public 44, webhook 2, machine 4. The
+  audience is the third segment of the route name (`api.{module}.{area}.*`); exceptions:
+  `api.notification.webpush.*`, `api.notification.telegram.*`, and the unnamed `/api/user`.
+- F35. Effective `api` middleware order today: `ApplyDatabaseCredentials` → `SubstituteBindings` →
+  `AssignRequestId` → `SetSecurityHeaders` → [`RequestLogger`]. `ApplyDatabaseCredentials` is
+  prepended from `Modules/Payment/app/Providers/PaymentServiceProvider.php:67-73` inside an
+  `app->booted()` callback: it runs before any tenant can be resolved and before route-model
+  binding.
+- F36. Async work: 28 `ShouldQueue` classes (Catalog 2, Media 1, Notification 24, Webhooks 1), all
+  listed in `Modules/Core/config/dispatch.php`; `NotificationCreated` (`ShouldBroadcast`) is
+  outside that registry. 13 scheduled commands: `sanctum:prune-expired`,
+  `auth:prune-sign-in-lockouts`, `catalog:search:reconcile`, `core:queue-check-backlog`,
+  `queue:prune-failed`, `currencies:sync-rates`, `media:outbox:process`, `media:outbox:sweep`,
+  `order:cancel-expired`, `order:sweep-generating-documents`,
+  `order:reconcile-refund-credit-notes`, `webhooks:dispatch-deliveries`, `webhooks:prune`.
+- F37. Caches, locks, limiters — none is tenant-aware. 18 cache-key families (16 named here; the
+  complete list is a Phase 4 entry artifact). Store-dependent: `setting.timezone`,
+  `setting.store_identity`, `setting.fx`, `setting.prices_include_tax`, `payment.credentials`,
+  `payment.paypal.access_token`, `core.language.default_id`, `catalog.public.sitemap`,
+  `content.public.sitemap`. Installation-level by nature: `telegram:bot:username`,
+  `core.extension-updates` (+ `.stale`), `core.regions.{CC}`, `catalog.search.reconcile.failures`,
+  the Google JWKS cache. 6 cache locks: `sign-in-gate:{hash}`, `media-variants:{id}`, the
+  variant-generation lock, `core.fx.sync`, `webhook-endpoint:{id}`, the Google JWKS refresh.
+  12 rate limiters: `auth-sign-in`, `auth-sign-up`, `auth-otp-request`, `auth-otp-verify`,
+  `cart-public`, `contact-submit`, `contact-subscribe`, `notification-webhook`,
+  `support-ticket-create`, `support-ticket-reply`, `webhook`, `machine`.
+- F38. Swallowed failures: seven places catch `Throwable` and fall back to a default while resolving
+  store-dependent values — `Modules/Setting/app/Support/AppliesStoreTimezone.php:32`,
+  `AppliesStoreIdentity.php:38`, `ResolvesPricingMode.php:26`, `ResolvesFxSettings.php:42,64,99`,
+  `Modules/Core/app/Support/SupportedLocales.php:44`,
+  `Modules/Payment/app/Support/ResolvesPaymentCredentials.php:50,83,117` (this one falls back to
+  the `.env` baseline), `Modules/Payment/app/Http/Middleware/ApplyDatabaseCredentials.php:62`.
+- F39. Store runtime is applied per process, not per request:
+  `Modules/Setting/app/Providers/SettingServiceProvider.php:34-45` runs `AppliesStoreTimezone` and
+  `AppliesStoreIdentity` once, in `boot()`. The timezone is set with `date_default_timezone_set()`
+  (process-global). Statics hold request-derived state: `SupportedLocales::$codes`,
+  `ResolvesPaymentCredentials::$baseline`, `SearchMutationGate::$depth`,
+  `SearchCursorManager::$held`. `config/octane.php` has `'flush' => []`; its `RequestReceived`
+  listeners are `FlushSentryScope` and `FlushExtensionState`, and nothing resets store state
+  between requests.
+- F40. Search: `catalog_search_gate` is a single row (`id = 1`); the index uid is `{uid_base}_g{n}`;
+  documents carry no tenant field (their only store-dependent values are base-currency prices,
+  minor units, precision 2); the primary key is `product_id`, which stays installation-unique
+  because ids come from one database sequence. Queue payloads carry only the product id.
+  `Modules/Catalog/app/Search/CatalogSearchEngine.php:60-100` hydrates hits through
+  `PublicProductQuery::hydrationQuery()` (Eloquent — scope-compatible) but returns `total`
+  straight from the engine. `catalog:reindex` — called the nightly backstop in the operations
+  runbook — is neither registered as a command nor scheduled; `catalog:search:install`,
+  `catalog:search:cleanup` and `media:regenerate-variants` are unregistered too.
+- F41. Order documents: `Modules/Order/app/Support/DocumentNumberService.php` numbers per
+  `(type, year)` installation-wide (`document_sequences` unique `[type, year]`); the year comes
+  from `StoreTimezone::year()` (the process timezone); the prefix from
+  `config("order.documents.prefixes.{type}")`; seller identity from `config('store.*')`; PDFs are
+  written to `documents/{number}.pdf` on the `local` disk; `order:cancel-expired`,
+  `order:sweep-generating-documents` and `order:reconcile-refund-credit-notes` sweep globally.
+- F42. Payments: `payment_driver_credentials` (`UNIQUE(driver, key)`) is read by
+  `ResolvesPaymentCredentials` in the order stored value → `.env` baseline; the stored map is
+  cached under `payment.credentials` for 15 minutes with no tenant in the key;
+  `ApplyDatabaseCredentials` copies the map into `config("payment.{driver}.{key}")`;
+  `POST /webhook/{driver}` looks up `payments.transaction_id` globally; return URLs come from env
+  and hard-code `/en/`.
+- F43. Transfer: `transfer_installation` is a single row (`FIXED_ID = 1`); `transfer_remaps` is
+  unique on `[source_installation, module, entity, source_id]` with no destination tenant; the
+  import lock is `transfer:import:{module}`; `SettingTransfer` exports every setting including
+  store identity and the `fx_api_key` ciphertext; `Modules/Discount/app/Transfer/DiscountTransfer.php:537-539`
+  updates every coupon row with no `WHERE`; exports are streamed to the response, not stored.
+- F44. Extensions: `core_extensions` is installation-level, but the toggle routes sit under
+  tenant-admin permissions (`core.admin.extensions.*`).
+- F45. Media: keys are content-addressed (`media/{ab}/{sha256}.{ext}`), so identical files share
+  one object across stores; `DeleteMediaAction` deletes files unconditionally; staging files live
+  in `.staging/media/{uuid}.{ext}`; `media_media_outbox` rows have no tenant;
+  `MediaGateway::upsertLocal` hard-codes `USER_ID => 1`; stored `catalog_images.url` values embed
+  the installation host.
+- F46. Settings and reference data: `setting_settings.name` is unique and holds store identity,
+  `language_id`, `currency_id`, `timezone`, `storefront_theme`, `prices_include_tax`,
+  `store_legal_*`, `fx_*`; `core_languages` / `core_currencies` carry store-level `is_default` /
+  `is_active` flags; exchange rates live on `core_currencies`; `tax_classes.is_default` is a single
+  default.
+- F47. Notifications: templates read `config('app.name')`; the mail sender is env; admin recipients
+  are a configured list or every staff user (`Modules/Notification/app/Support/AdminRecipients.php`);
+  broadcast channels are named by user id.
+
 **Confirmed owner decisions (gates closed):**
 
 - A1. **Confirmed: no production database data must be preserved.** Editing original migrations in
   place is the selected path; the backfill recipe is retained only in Appendix A if this changes.
-- A2. **Confirmed: payment gateway credentials are per-tenant from day one.** Phase 4/6 include
+- A2. **Confirmed: payment gateway credentials are per-tenant from day one.** Phase 4 includes
   tenant-scoped encrypted gateway configuration, per-tenant webhook secrets, and the full client
   refactor of F25.
 
@@ -209,9 +559,10 @@ New files in `Modules/Core/app/Support/Tenancy/`:
   singleton persists across requests, so `runForTenant`'s snapshot/restore is not enough on its
   own: **every request must begin in `MODE_INACTIVE`** via an explicit reset (Octane
   `RequestReceived` listener or a scoped binding) so a previous request's tenant can never leak
-  into the next one (F3 rev 5). Queue workers are handled in §6.1. `runCentral` is
-  **removed** from the public surface in rev 4 — cross-tenant execution goes through
-  `CentralOperations` (§6.5), which is the only caller of the internal `central()`.
+  into the next one (F3 rev 5). (rev 4.2: decided — a listener, `ResetTenantContext`, last item of
+  this section.) Queue workers are handled in §6.1. `runCentral` is **removed** from the public
+  surface in rev 4 — cross-tenant execution goes through `CentralOperations` (§6.5), which is the
+  only caller of the internal `central()`.
 
 - **`TenantScope`** (`Modules/Core/app/Models/Scopes/`) — the fail-closed global scope:
 
@@ -238,6 +589,21 @@ New files in `Modules/Core/app/Support/Tenancy/`:
 
 - **`TenantScopedTrait`** (`Modules/Core/app/Models/Traits/`) — adds `TenantScope` + sets `tenant_id`
   on `creating` from the context (throwing if inactive), mirroring `UserScopeTrait`'s shape.
+  (rev 4.2 mechanics:) it registers through **`bootTenantScopedTrait()`**, Laravel's trait-boot
+  hook, and does **not** define `booted()` on the trait: `WebhookDelivery` and `WebhookEvent`
+  already override `booted()` (F32), and a class method silently replaces a trait method of the same
+  name, so those two models would never receive the scope. The `creating` hook:
+  - `MODE_TENANT` → stamp `tenant_id` from the context;
+  - `MODE_CENTRAL` → stamp nothing, and allowed **only** on a model that declares a platform tier
+    (`audit_logs`, `settings` — §4.4); any other model throws — a central write to a store-owned
+    table without an explicit tenant is a programming error;
+  - `MODE_INACTIVE` → throw `TenantContextMissingException`.
+  (rev 4.5, B6 — `tenant_id` is **immutable**: the trait also registers an `updating` hook that
+  throws whenever `tenant_id` is dirty, and the column is never in `$fillable`. Query-builder
+  writes skip model events, so the same invariant is enforced by the §4.3 architecture allowlist
+  (bulk updates may not touch `tenant_id`) and by a database trigger on each table that carries
+  `tenant_id` — implemented **per engine** (§6.8, B2) — rejecting `UPDATE … SET tenant_id`
+  outright (§6.8, rows 92/101).)
 - **`TenantScopedTrait`** (column constants) in `Modules/Core/app/Schemas/Shared/` — exports
   `TENANT_ID = 'tenant_id'` the same way `PkAndTimestampsTrait` exports shared columns. Core is the
   sanctioned exporter of shared schema traits, so modules never reference the Tenant module's schemas
@@ -247,15 +613,110 @@ New files in `Modules/Core/app/Support/Tenancy/`:
   `defaultTenant(): ?TenantSnapshot`, `isMembershipActive(int $userId, int $tenantId): bool`,
   `membershipsFor(int $userId): array`. Implemented by `Modules/Tenant/app/Gateways/TenantGateway.php`,
   bound in `TenantServiceProvider::$bindings` (house Gateway pattern).
+- **`ResetTenantContext`** (rev 4.2, `app/Octane/`) — the **first** `RequestReceived` listener in
+  `config/octane.php`, ahead of `FlushSentryScope` / `FlushExtensionState` (F39). Sets
+  `MODE_INACTIVE`, clears the spatie team id, and drops the store-runtime snapshot (§6.7). Unit
+  tests follow the shape of `Modules/Core/tests/Unit/Octane/FlushSentryScopeTest.php`; the same
+  assertions join the Octane isolation gate.
+
+### 2.1 How models pick up the tenant filter (A6)
+
+- **One model per table.** Every existing model backed by a store-owned table (§4.4) gets one
+  added line: `use TenantScopedTrait;` — nothing else changes for callers. Read filter and write
+  stamp are automatic in every code path, admin and storefront alike.
+- **New models only for tenancy's own tables**, in the new `Tenant` module: `Tenant`,
+  `TenantDomain`, `TenantMembership`, `TenantLanguage`, `TenantCurrency` (§4.1). No copies of
+  existing models, no `Tenant/` model folders in other modules.
+- **Tenant-module read isolation (rev 4.5, F2).** `Tenant`, `TenantDomain`, `TenantMembership`
+  are metadata models without `TenantScopedTrait`; every read goes through
+  `TenantGatewayInterface`, whose global lookups are deliberate and enumerated (`resolveByDomain`,
+  `find`, `defaultTenant`, `isMembershipActive`, `membershipsFor` — the last is the
+  tenant-selection lookup of §3.1). Member **listing** of the active tenant runs in the membership
+  action constrained to the context tenant; `TenantLanguage` / `TenantCurrency` use
+  `TenantScopedTrait` (store-owned) and are never read unfiltered. Test: row 104.
+- **The existing subclass models stay as they are — but they differ (rev 4.3, B4).**
+  `User\Ticket`'s base gets `TenantScopedTrait` (support tickets are store-owned, §4.4); the
+  subclass composes `UserScopeTrait` on top, and Laravel boots traits per class, so both scopes
+  register for the subclass. `User\Address` is the opposite case: the customer address book is
+  **global** (§4.4), so its base model gets **no** `TenantScopedTrait` — `UserScopeTrait` stays its
+  only scope. Store staff never read the global address book; what a store sees of a customer's
+  address is the order-time snapshot in `order_addresses` (store-owned). The security gate
+  (§8 Phase 8) therefore asserts three distinct rules: a customer reads their own book in any
+  store; one customer never reads another's; staff read only their store's order-address
+  snapshots.
+- **Tables without a model (28, F32)** are reached through gateways and query-builder chains; they
+  are covered by §4.3 layer 0, not by a model.
+- **Why not per-module `Vendor/`-style subclasses** (the pattern is declined, its goal is kept):
+  1. The unscoped base model stays usable everywhere, so one forgotten subclass is a silent
+     cross-store read. With one scoped model, a missing context is a thrown exception.
+  2. 129 query-builder chains and 48 validation rules (F33) never pass through a model subclass, so
+     the subclass approach still needs the same per-site remediation — it only adds a second model
+     per table.
+  3. In Baxela the tenant is *the store being served* (`TenantContext`), not the authenticated
+     account. The reference implementation captures the vendor in `booted()`; on Octane that runs
+     once per worker, not per request (F39).
+  4. After Phase 2 there is no legitimate code path that should see all stores except
+     `CentralOperations`, so a second, unscoped model has no legitimate caller to serve.
 
 ---
 
 ## 3. Identification vs authorization — two middlewares
 
-### 3.1 `ResolveTenant` — identification only (api group, unauthenticated)
+### 3.1 Tenant identification — a two-stage lifecycle (rev 4.4, B1)
 
-Pushed in `CoreServiceProvider::boot()` right after `AssignRequestId` (F3). Order (audience-aware,
-since route audience is knowable from the route name `api.{module}.admin.{user|public|webhook}.*`):
+Identification must be established before route-model binding and credential application, but the
+audience decision needs the matched route's name and some paths need the principal — neither is
+available to a global middleware, which runs before routing (Laravel dispatches to the router only
+after the global stack). The design is therefore split:
+
+- **Stage 1 — `NormalizeTenantRequest` (global, prepended once in `bootstrap/app.php`).** Pure
+  transport-level work — no route, no database, no principal: lowercase/punycode normalization,
+  port and trailing-dot stripping, IP-literal and `*.local` rejection (production mode), and
+  extraction of the candidate signals (`X-Tenant-Id`, `X-Tenant-Host`, `Host`) into typed request
+  attributes. It decides nothing and is inert outside future tenant-aware surfaces.
+- **Stage 2 — `ResolveTenant` (first middleware of the `api` group, position fixed by the
+  middleware priority list).** Group middleware runs on the **matched** route, so the route name
+  and the audience grammar below are available here. `bootstrap/app.php` declares a priority
+  list that **preserves Laravel's complete default ordering verbatim** (rev 4.5, B7 — the
+  framework's list is extended, never replaced, so the framework's own guarantees around
+  authentication, sessions, throttling and authorization keep holding) and inserts
+  `ResolveTenant` ahead of `ApplyDatabaseCredentials`, `SubstituteBindings`, **and the throttling
+  middleware** — tenant-aware rate limiters (§6.12) need the context too. Laravel
+  sorts the route's gathered stack by that list, so the order is deterministic **whatever any
+  provider prepends or pushes later** — F35's registration-order fragility disappears.
+  `ResolveTenant` applies the audience rules to the Stage-1 candidates, performs the
+  `tenant_domains` lookup and the fallback, sets `TenantContext`, raises `TenantResolved`, and
+  404s when nothing resolves — all before any binding or credential middleware can run. It is not
+  in the stack at all for non-`api` routes.
+
+**Principal availability (rev 4.4, B1).** Two identification paths need the caller: admin default
+selection (memberships) and machine-token resolution. Both read the principal inside Stage 2 via
+the sanctum guard (`Auth::guard('sanctum')->user()` — an idempotent, on-demand check; invoking the
+guard early is safe and consumes nothing). **Identification may read the principal; authorization
+never happens here** — §3.2 remains the authorization boundary. Machine resolution parses the
+bearer token, validates it against `personal_access_tokens` (hash check, not revoked, not
+expired) and takes the tenant from the token row (§9.7); any token problem fails closed — a
+tenant header is never a substitute.
+
+**Order tests (rev 4.4, per review).** The order is proven **behaviorally**, not by asserting a
+configured list position: a route-model-bound scoped resource resolves under the correct tenant
+(binding ran after the context was set), the Octane reset listener is observed to run before both
+stages on the same worker, and a test reads the priority-sorted gathered middleware of a real
+matched route. Row 83.
+
+**Route-audience grammar (rev 4.3, F5 — the single definition; from F34).** Every module API
+route is named `api.{module}.{audience}.{…rest}`: the **third segment** is the audience, taken
+from the closed set `admin | user | public | webhook | machine | onboarding` (rev 4.5, B1 —
+`onboarding` is the **tenant-neutral** audience: Stage 2 performs **no** tenant resolution,
+`TenantContext` stays MODE_INACTIVE throughout, the global user is still authenticated, and only
+routes named in a config allowlist may carry it — the route-audience architecture test fails any
+other route using it, so it can never become a general bypass). Two declared exceptions map to
+`public`: `api.notification.webpush.*` and `api.notification.telegram.*` (platform notification
+channels). Any other `api.*` name — and any unnamed API route — is **unclassified, and
+unclassified fails closed**: `ResolveTenant` returns the 404 envelope in production and throws in
+non-production. A Phase 1 test enumerates the live route table and fails on any unclassified API
+route, so a future module route without a proper audience segment cannot silently mis-route tenant
+trust. Resolution order:
 
 | Priority | Source | Honored for | Notes |
 |---|---|---|---|
@@ -267,6 +728,18 @@ since route audience is knowable from the route name `api.{module}.admin.{user|p
 
 Normalization before lookup: lowercase, strip port, strip trailing dot; reject IP-literal/`*.local`
 mDNS hosts in production mode; IDN → punycode (`idn_to_ascii`).
+
+**Webhook audience (rev 4.5, B2).** For `webhook` routes the matched route's `{tenant-slug}`
+parameter is the **authoritative** source — it outranks every entry in the table above, and all
+tenant headers are ignored on that audience. Unknown or suspended tenants fail closed, the
+context is set before credential application and any scoped binding, and signature verification
+uses the resolved tenant's secret (§6.3). Test: row 96.
+
+**Admin default selection (rev 4.2, A5; lifecycle rev 4.4).** On a central host an admin request
+without `X-Tenant-Id`: exactly one active membership → that store; several → `422
+core::errors.tenant_selection_required` with the membership list; none → `403`. The super-admin
+always names the store. The membership lookup runs inside Stage 2 with the principal read via the
+sanctum guard (above) — identification only.
 
 Suspended tenants: identification succeeds but the snapshot carries suspended status. Public and
 storefront-user audiences receive `403 core::errors.tenant_suspended` (storefront closed); active
@@ -280,8 +753,9 @@ audit-logged; webhook deliveries remain pending and can be re-dispatched after r
 |---|---|
 | `public` | none (identification only) |
 | `user` (storefront customers) | any authenticated global user. **`X-Tenant-Id` is ignored** — identity came from host. Customers shop at any tenant without membership. |
-| `admin` | resolved tenant must have an **active `tenant_memberships` row for the user** (§4.1), or user is platform super-admin (F5). Else **403** `core::errors.tenant_membership_required`. This is what makes `X-Tenant-Id: <someone-else>` fail closed. Membership revocation takes effect on the next request (no caching of membership beyond the request; §10 row 33). |
+| `admin` | resolved tenant must have an **active `tenant_memberships` row for the user** (§4.1), or user is platform super-admin (F5). Else **403** `core::errors.tenant_membership_required`. This is what makes `X-Tenant-Id: <someone-else>` fail closed. Membership revocation takes effect on the next request (no caching of membership beyond the request; §10 row 33). A store admin has no route to another store's data — there is no cross-store listing (A3, A4). |
 | `webhook` | n/a — see §6.3 (payment webhooks resolve tenant from the route slug + per-tenant secret) |
+| `machine` (rev 4.2; design rev 4.4, B2) | the tenant is the one the machine token was issued for — resolved in Stage 2 from the token's stored `tenant_id` (§3.1, §9.7); no header can change it |
 
 Placement: `PermissionMiddleware` already terminates the admin chain; `AuthorizeTenantAccess` logic
 is invoked inside `PermissionMiddleware::handle()` (single registration point, no per-module route
@@ -297,7 +771,7 @@ constant — implementation picks the smaller diff; the rule itself is fixed).
 'tenancy' => [
     'fallback_hosts' => env('TENANCY_FALLBACK_HOSTS', 'localhost,127.0.0.1'), // dev default
     'fallback_tenant' => 'default',   // slug of the seeded default tenant
-    'central_hosts'   => env('TENANCY_CENTRAL_HOSTS', ''),  // admin API hosts: host-resolution off
+    'central_hosts'   => env('TENANCY_CENTRAL_HOSTS', ''), // admin API hosts: host-resolution off
 ],
 ```
 
@@ -319,24 +793,44 @@ references them**, so F7's interleaved ordering is irrelevant):
 
 - `tenants` — id, name, slug (unique), email, `status` enum(active|suspended), timestamps, softdeletes.
 - `tenant_domains` — id, `tenant_id` FK→tenants cascade, `domain` (unique, punycode-normalized),
-  `is_primary` bool, `verified_at` nullable timestamp. Custom domains stay inert until verified
-  (§9.5 domain management: takeover protection, verification expiry, reassignment rules).
+  `status` enum(pending|verified|released), `is_primary` bool, `verified_at` nullable timestamp,
+  `verification_token_hash` nullable string (the 32-byte challenge token is stored **hashed** — it
+  exists only ever to be compared), `verification_method` enum(https|dns),
+  `verification_expires_at` nullable, `released_at` nullable, `cooling_off_until` nullable,
+  timestamps. These columns are the persistence of the §9.7 lifecycle protocol (token expiry,
+  release, cooling-off) — the procedure and the schema now say the same thing. One invariant the
+  plain unique on `domain` cannot express — **at most one primary domain per tenant** — is
+  enforced at the database level by a partial unique index,
+  `tenant_domains_one_primary_unique ON (tenant_id) WHERE is_primary` (portable across PostgreSQL
+  and SQLite, B5).
 - `tenant_memberships` — id, `tenant_id` FK→tenants cascade, `user_id` plain indexed
   `unsignedBigInteger` (no cross-module FK; user existence is validated through
   `AccessGatewayInterface` / the User gateway), `status` enum(active|invited|suspended),
   `is_owner` bool, `joined_at`, timestamps, **`UNIQUE(tenant_id, user_id)`** (short index name
-  per the 64-char rule).
+  per the 63-byte rule).
   Membership ≠ authorization: membership answers *belongs to*, spatie answers *may do*.
   Platform super-admin authorization derives only from the NULL-team `SUPER_ADMIN` role; it never
   derives from membership. The seeded default-tenant owner membership exists only for ownership
   semantics (member management and ownership transfer).
+- `tenant_languages`, `tenant_currencies` (rev 4.2, P2) — id, `tenant_id` FK→tenants cascade, a
+  plain `language_id` / `currency_id` (no cross-module FK; validated through the Core gateways),
+  timestamps, `UNIQUE(tenant_id, language_id)` / `UNIQUE(tenant_id, currency_id)`. They replace the
+  store-level `is_active` / `is_default` flags on `core_languages` / `core_currencies` (F46):
+  reference tables become pure reference data, each store lists what it offers, and the store's
+  default language / display currency are per-store settings (§6.7).
 
-Schemas (`TenantSchema`, `TenantDomainSchema`, `TenantMembershipSchema`), models, admin CRUD
+Schemas (`TenantSchema`, `TenantDomainSchema`, `TenantMembershipSchema`,
+`TenantLanguageSchema`, `TenantCurrencySchema`), models, admin CRUD
 Actions/Controllers/Requests/Resources under `api/v1/tenant/admin/...` (super-admin only — no
 assignable permission; guarded by the same Gate::before), member-management endpoints
-(list/invite/activate/suspend/remove), self-serve onboarding endpoint (user audience, §9.5),
-`ErrorCodeEnum` + `lang/{ar,de,en,es,fa,fr}/errors.php`, `TenantDatabaseSeeder`. Domain CRUD and
-membership writes execute through `CentralOperations` (§6.5).
+(list/invite/activate/suspend/remove), self-serve onboarding endpoint (**`onboarding`
+audience** — the tenant-neutral route of §3.1; canonical route
+`POST /api/v1/onboarding/tenants`, name `api.tenant.onboarding.tenants.store`; requires an
+authenticated global user, never a resolved tenant, §9.7),
+`ErrorCodeEnum` + `lang/{ar,de,en,es,fa,fr}/errors.php`, `TenantDatabaseSeeder`. (rev 4.3, B1)
+Domain CRUD executes through `CentralOperations` (§6.5 Category 1); member management runs as
+tenant operations (§6.5 Category 2); self-serve store creation runs through `ProvisionTenantAction`
+(§6.5 Category 3) — the three categories are defined once, in §6.5.
 
 `CoreDatabaseSeeder` seeds the **default tenant** (slug `default`) + `localhost` domain +
 owner membership for the seeded super-admin — this is the "multi-tenant by default, single-store by
@@ -355,12 +849,71 @@ Primary path — **edit original migrations in place** (sanctioned pre-v1 policy
    (explicit short names). Tenancy integrity is enforced at the app layer (§4.3) plus intra-module
    composite FKs (§4.3), a deliberate, documented trade-off.
 3. NOT NULL from the start on fresh installs (no rows exist when the create-migration runs).
+4. (rev 4.2) **NOT NULL and no default.** A column default would turn a forgotten stamp into a row
+   that belongs to a wrong or placeholder store; without one, an unstamped insert fails at the
+   database — which is what covers the 81 bulk-write sites that skip model events (F33).
+5. (rev 4.2) **Platform tier.** Two tables legitimately hold platform-level rows next to store rows:
+   `audit_logs` (central operations, incl. the search admission override) and `settings` (P5). Their
+   `tenant_id` is nullable; `NULL` means platform-level and is readable only in `MODE_CENTRAL`. Every
+   other store-owned table is NOT NULL.
+6. (rev 4.3) **Identifiers ≤ 63 bytes** (F30) — checked for **every** new or renamed index and
+   constraint name, not only those that gain a column. Where a key column is nullable and NULLs
+   must collide, use a **partial unique index** (`CREATE UNIQUE INDEX … WHERE …`): both PostgreSQL
+   and SQLite support it. The rev 4.2 `NULLS NOT DISTINCT` idea is dropped — that syntax is
+   PostgreSQL-only and unnecessary given partial indexes (B2).
+7. (rev 4.3, F4) **Column type and engines.** `tenant_id` is declared `unsignedBigInteger`
+   (house style), which on pgsql compiles to **BIGINT** — PostgreSQL has no unsigned integer type;
+   the existing `PostgresUnsignedGrammar` adds `CHECK (tenant_id >= 0)`, and the referenced
+   `tenants.id` is a bigserial, so the domains match. **Minimum supported PostgreSQL: 15** (the
+   deploy stack runs `postgres:18-alpine`); the SQLite plane stays the default suite. Every
+   engine-specific raw statement carries an explicit driver branch, and both planes must migrate —
+   asserted by the suite itself (§10 row 70). PostgreSQL concurrency behaviour (locking, conflict
+   handling, transactions) is verified only by the PostgreSQL suite using separate connections,
+   never inferred from SQLite.
 
 ### 4.3 Cross-tenant reference integrity (layered)
+
+Layer 0 — write-stamp coverage (rev 4.2, F33):
+
+- Single-row saves: the `creating` hook of `TenantScopedTrait` (§2).
+- Bulk writes (81 Eloquent `insert` / `upsert` / builder `update` sites) skip model events, so the
+  caller supplies `tenant_id`; a forgotten value is rejected by the database (policy item 4), and
+  (rev 4.5, F1) a **wrong** value is rejected by contract: bulk-write tenant ids come from
+  `TenantContext`, never from request input or imported values — the provisioning path (§6.5
+  Category 3) and the transfer import are the two narrow exceptions, each writing only ids it
+  itself derived. **Enforcement mechanism (rev 4.6, F2):** the database's NOT NULL stops
+  *missing* values and the immutability trigger stops *updates* — neither stops an *insert*
+  carrying another tenant's id — so the actual guard is a Core stamping helper,
+  `TenantWriteStamp::tenantIdForWrite(): int`, which reads `TenantContext` (throwing outside
+  MODE_TENANT) and is the only sanctioned source of the column value at every registered bulk
+  site; caller-supplied arrays and request data never carry `tenant_id` (the DTO/FormRequest
+  layer rejects a submitted `tenant_id` outright), and the per-query architecture test verifies
+  each registered site obtains the value through the helper. The allowlist is **per query site,
+  not per file** (rev 4.5, F1):
+  each registered entry names the table and the justification, and the test asserts the expected
+  set — a new unsafe chain added to an already-allowlisted file still fails. Tests: rows 48, 102.
+- Builder `update` / `delete` on an Eloquent model pass through the global scope.
+- The 129 query-builder chains never see a scope. Every chain on a store-owned table gets either a
+  tenant clause read from `TenantContext` or a `CentralOperations` wrap with a justifying comment;
+  chains on installation-level tables (the 50 on search coordination, Auth, framework tables) are
+  unaffected. An architecture test holds the allowlist — **per query site, not per file
+  (rev 4.6, F1, matching the bulk-write rule below)**: each entry names the table, the operation,
+  the tenant predicate or central-operation justification, and the expected source location, and
+  the test detects a newly introduced chain even inside an already-registered file — the same
+  discipline as the dispatch registry.
+  (rev 4.3, F4 — the no-FK trade-off stated explicitly: `NOT NULL` prevents an omitted tenant id
+  only; on tables without the FK, the database does not verify that the tenant exists. Ordinary
+  invalid references are prevented at the application layer — the context tenant id always comes
+  from a resolved, existing tenant row — and `tenancy:audit` reports orphaned tenant references;
+  database-level tenant existence is deliberately not guaranteed for module tables.)
 
 Layer 1 — scoped reads: all exists-checks (F14) flow through Eloquent models once those use
 `TenantScopedTrait` → automatically tenant-filtered under MODE_TENANT. No signature changes at call
 sites. `LanguageUniquePair` / `UniquePair` (F9) gain a tenant clause from `TenantContext`.
+(rev 4.2) The 48 `unique:` / `exists:` validation sites (F33) belong to this layer: a `unique:` rule
+on a store-owned table becomes a tenant-composite rule (house pattern: `ScopedRateUniqueRule`), an
+`exists:` rule goes through the scoped gateway. An architecture test fails any bare `unique:` /
+`Rule::unique` left against a store-owned table.
 
 Layer 2 — validated writes: new Core helper `AssertsTenantOwnership` batch-checks supplied entity
 ids through scoped gateway `exists` methods and rejects any id not owned by the active tenant.
@@ -369,9 +922,11 @@ validation completes **before any pivot synchronization or bulk insertion**. App
 path taking cross-entity ids without a FormRequest: Promotion products/categories, `post_product`,
 `category_product` pivot syncs, Catalog importers, Transfer import/export, and directly callable
 Actions. API FormRequests continue using scoped validation; background jobs inherit context per §6.1.
+(rev 4.2) This is also what covers the 12 pivot `attach` / `sync` calls — pivots carry no
+`tenant_id` of their own.
 
-Layer 3 — intra-module composite FKs (rev 4 addition): **within a single module**, child tables add
-a composite FK `(tenant_id, {parent}_id)` → `(tenant_id, id)` on the parent where practical
+Layer 3 — intra-module composite FKs (rev 4 addition): **within a single module**, child tables add a
+composite FK `(tenant_id, {parent}_id)` → `(tenant_id, id)` on the parent where practical
 (e.g. Order items/returns/invoices → orders; Tax rates → tax classes; Catalog variants → products;
 Webhook deliveries → endpoints/events). This gives DB-level cross-tenant protection for the most
 common reference classes **without breaking module boundaries** (both tables live in the owning
@@ -382,20 +937,159 @@ Layer 4 — audit: `tenancy:audit` uses a config-declared relation map (owning t
 tables/columns, derived from module Schema constants, **including indirect relations through
 pivots** — e.g. promotions→products via `promotion_products`). It reports both `tenant_id IS NULL`
 rows and join violations where `owner.tenant_id <> referenced.tenant_id`. The map must cover every
-declared cross-entity relation and evolve alongside schema changes.
+declared cross-entity relation and evolve alongside schema changes. (rev 4.2: `tenant_id IS NULL` is
+a violation except on the two platform-tier tables.)
 
-Pivots between two tenant-owned tables (e.g. `promotion_products`) do **not** get their own
-`tenant_id`; tenancy derives from the parent row. Tables joined by a global table
-(e.g. `*_translations` keyed by `language_id`) get `tenant_id` on the owning entity only.
+Pivots between two tenant-owned tables (the 9 listed in §4.4) do **not** get their own
+`tenant_id`; tenancy derives from the parent row and Layer 2 validates both sides at write time.
 
-### 4.4 Tables that stay global
+**Translation tables are different (rev 4.2 — supersedes the rev 4.1 sentence "tables joined by a
+global table get `tenant_id` on the owning entity only"):** all 17 gain `tenant_id`. They carry
+their own natural keys (8 × `[language_id, slug]`, F31), they are queried directly — a storefront
+slug lookup starts at the translation row (`PicksTranslation`) — and a composite FK
+`(tenant_id, owner_id) → (tenant_id, id)` on the owning table (Layer 3) keeps the stamped value
+equal to the owner's.
 
-`tenants`, `tenant_domains`, `tenant_memberships`, `users`, `otp_codes`, `personal_access_tokens`,
-all `auth_*` permission tables (they gain `tenant_id` as team key in §5 but rows are platform-level),
-`languages`, `currencies`, `countries`/`regions`, framework tables (`cache*`, `jobs*`,
-`failed_jobs`). `idempotency_keys` gains `tenant_id` + composite uniqueness (§6.6).
-`webhook_deliveries`/`webhook_events` gain `tenant_id` (§6.2). Media rows are scoped; the shared
-disk gets tenant subdirectories (§6.4).
+### 4.4 Table classification (rev 4.2; rev 4.5–4.9 add the media coordination tables) — 94 store-owned, 39 installation-level
+
+**Inventory reconciliation (rev 4.7 B5; updated rev 4.9):** 130 tables exist today = **91
+store-owned + 39 installation-level** (the rev 4.2 baseline). Tenancy adds **8** tables: 5
+Tenant-module tables
+(§4.1 — `tenants`, `tenant_domains`, `tenant_memberships`, `tenant_languages`,
+`tenant_currencies`) and 3 media coordination tables (`media_object_locks`,
+`media_deletion_intents`, `media_object_generations` — rev 4.9). The classification below —
+**94 store-owned + 39 installation-level =
+133** — covers the 130 existing tables **plus** the 3 new media coordination tables; the
+5 Tenant-module tables are metadata, classified separately in §4.1 (they are neither store-owned
+business data nor installation-level reference data). Total after the tenancy migrations:
+**138**. Phase 2's hard-gate dump must reconcile against these numbers exactly — nothing missing,
+nothing double-counted.
+
+**Installation-level — 39 tables, no store-ownership scope (rev 4.8, F2: some of these carry a
+tenant **key** column — machine-token ownership on `personal_access_tokens`, spatie team identity
+— which is a lookup key, never a scoping instruction; architecture tests must not read every
+`tenant_id` column as store scoping):**
+
+- Framework/app (6): `cache`, `cache_locks`, `jobs`, `job_batches`, `failed_jobs`,
+  `personal_access_tokens` (rev 4.4, B2: gains a **nullable `tenant_id`** — set at issue time on
+  machine tokens, NULL on ordinary user tokens; a key column like `auth_roles.tenant_id`, not
+  store ownership; indexed on the non-NULL part).
+- Auth (13): `auth_users`, `auth_otp_codes`, `auth_social_accounts`, `auth_user_devices`,
+  `auth_two_factor_challenges`, `auth_sign_in_lockouts`, `password_reset_tokens`, `sessions`,
+  `auth_permissions`, `auth_roles`, `auth_role_has_permissions`, `auth_model_has_roles`,
+  `auth_model_has_permissions`. (The last five gain `tenant_id` as the spatie team key, §5 — a
+  key column, not store ownership.)
+- Catalog search coordination (8): `catalog_search_gate`, `_admissions`, `_writer_leases`,
+  `_operations`, `_replay_applied`, `_product_cursors`, `_retired_products`, `_worker_heartbeats`.
+- Core (7): `core_countries`, `core_regions`, `core_languages`, `core_currencies`,
+  `core_extensions`, `core_transfer_locks`, `core_transfer_installation`.
+- Notification (3): `notification_preferences`, `notification_push_subscriptions`,
+  `notification_telegram_subscriptions` — per user, across stores.
+- User (2): `users` (profiles), user addresses — a customer's account and address book travel with
+  the customer (rev 4.3, B4: the address book is user-scoped only, §2.1; a store's view of a
+  customer's address is the `order_addresses` snapshot, which is store-owned).
+
+**Store-owned — 94 tables: 85 gain `tenant_id` (82 existing tables + the three new media
+coordination tables, created with it), 9 pivots inherit it from their parent.**
+
+| Module | Tables |
+|---|---|
+| Audit (1) | `audit_logs` — platform tier |
+| Cart (2) | carts, cart items |
+| Catalog (30; 4 pivots) | products, variants, **variant_option_values** (pivot), images, product_shipping, product_translations, product_seo_translations, brands, brand_translations, categories, category_translations, **category_product** (pivot), **category_attribute** (pivot), options, option_translations, option_values, option_value_translations, attributes, attribute_translations, attribute_values, attribute_value_translations, attribute_groups, attribute_group_translations, attribute_templates, **attribute_template_groups** (pivot), product_attribute_values, product_comments, product_comment_reactions, featured_items, imports |
+| Contact (2) | contact_messages, newsletter subscribers |
+| Content (11; 2 pivots) | posts, post_translations, post_seo_translations, pages, page_translations, post_categories, post_category_translations, **post_category_post** (pivot), **post_product** (pivot), post_comments, featured_items |
+| Core (3) | idempotency keys, transfer imports, transfer remaps |
+| Discount (5; 2 pivots) | coupons, promotions, redemptions, **promotion_products** (pivot), **promotion_categories** (pivot) |
+| Inventory (1) | inventory stocks |
+| Media (6) | media, folders, media outbox, **object locks** (`media_object_locks`, rev 4.5, B5 — the per-key lease table of §6.4: `UNIQUE(tenant_id, object_key)`, `owner_token`, `generation`, `expires_at`; migration in Phase 4; expired rows pruned by the outbox sweep), **deletion intents** (`media_deletion_intents`, rev 4.6, B1/F4 — the durable intent table of §6.4: `owner_token`, `generation`, `status` enum(pending|executing|done|cancelled), partial unique `ON (tenant_id, object_key) WHERE status IN ('pending','executing')`; migration in Phase 4; terminal rows pruned by the sweep), **object generations** (`media_object_generations`, rev 4.9, B1 — the durable retirement record of §6.4: one row per physical key a store has ever published, `UNIQUE(tenant_id, object_key)`, `status` enum(eligible|retired); migration in Phase 4; **never pruned** — retirement must outlive intent pruning; status transitions `eligible → retired` only, enforced by a conditional update + engine-branched trigger, rev 4.10 — the `retired → eligible` rejection is tested through direct SQL and the application layer on both engines) |
+| Menu (4) | menus, menu_translations, menu_link_translations, menu links |
+| Notification (1) | notifications (judgment call: a notification row is about one store's order/ticket, and its admin recipients are that store's staff) |
+| Order (8) | orders, order items, order addresses, invoices, invoice items, credit notes, returns, document sequences |
+| Payment (4) | payments, refunds, payment methods, driver credentials |
+| Setting (2) | `setting_settings` — platform tier; `setting_translations` |
+| Shipping (6; 1 pivot) | zones, **zone_countries** (pivot), methods, method_translations, rates, shipments |
+| Support (2) | tickets, ticket messages |
+| Tax (2) | tax_classes, tax_rates |
+| User (1) | wishlist items |
+| Webhooks (3) | webhook endpoints, events, deliveries |
+
+Names are as declared by each module's Schema (prefix `catalog_`, `content_`, … omitted for
+readability). `catalog_search_*` rows stay installation-level because they coordinate writers of
+one shared index (§6.8) and are keyed by product id, which is unique installation-wide.
+
+### 4.5 Unique indexes — disposition of all 90 (rev 4.2)
+
+PostgreSQL and SQLite both treat NULLs as distinct in an ordinary unique index. Where NULLs must
+collide, the plan uses **partial unique indexes** (`CREATE UNIQUE INDEX … WHERE …`) — supported by
+both engines — rather than PostgreSQL's `NULLS NOT DISTINCT`, which SQLite cannot execute (B2).
+Raw statements follow the five existing `CREATE UNIQUE INDEX` precedents, each behind an explicit
+driver branch where the engines differ.
+
+| Class | Count | Rule |
+|---|---|---|
+| **T** | 22 | Natural key per store → gains a leading `tenant_id`, explicit name ≤ 63 bytes |
+| **F** | 4 | Case-insensitive natural key → rebuilt as `(tenant_id, LOWER(col))` |
+| **P** | 1 | Platform-tier key → `(tenant_id, name)` composite + partial unique on `(name) WHERE tenant_id IS NULL` |
+| **R** | 3 | Replaced by a redesign |
+| **S** | 33 | Stays, on a store-owned table: id-based keys (ids come from one database sequence, so they are unique installation-wide) and the order code |
+| **G** | 27 | Stays, on an installation-level table |
+
+- **T (22):** `catalog_attributes.code`; the eight `[language_id, slug]` keys (brand, category,
+  option, option_value, product, page, post, post_category); `catalog_featured_items
+  [featuredable_type, featuredable_id]`; `content_featured_items [same]` (both currently named at
+  exactly 63 characters — explicit short names required); `cart_carts.user_id`; `cart_carts.token`;
+  `menu_menus.location`; `order_invoices.number`; `order_credit_notes.number`;
+  `payment_methods.code`; `shipping_methods.code`;
+  `tax_rates [country_code, region_code, tax_class_id]`;
+  `media_folders [name, parent_id]` — **plus a partial unique index on `(tenant_id, name) WHERE
+  parent_id IS NULL` (rev 4.4, B3 — the index is per store; an installation-wide `(name)` index
+  would stop two stores from both having a root folder named `Images`)**: today two root folders
+  can share a name because NULL parent ids never collide (K10);
+  `transfer_remaps [source_installation, module,
+  entity, source_id]` (the leading column is the *destination* store); the `webhook_events` string
+  key.
+- **F (4):** `variants_sku_lower_unique`, `variants_barcode_lower_unique`,
+  `newsletter_email_lower_unique`, `coupons_code_lower_unique`.
+- **P (1):** `setting_settings.name` — a `(tenant_id, name)` composite for store rows **plus a
+  partial unique index on `(name) WHERE tenant_id IS NULL`** for the platform tier: exactly one
+  platform row per name, one row per store per name (P5).
+- **R (3):** `idempotency_keys.key` → `UNIQUE(tenant_id, principal_key, key)` (§6.6);
+  `payment_driver_credentials [driver, key]` → `UNIQUE(tenant_id, driver, key)` (§6.3);
+  `order_document_sequences [type, year]` → `UNIQUE(tenant_id, type, year)` (§6.9).
+- **S (33):** the seventeen `[owner_id, language_id]` translation keys;
+  `catalog_product_shipping (product_id)`;
+  `catalog_product_attribute_values [product_id, attribute_value_id]`;
+  `catalog_variant_option_values [option_value_id, variant_id]`;
+  `catalog_product_comment_reactions [comment_id, user_id]`; `discount_redemptions` (id column);
+  `discount_promotion_products`, `discount_promotion_categories` (pivots);
+  `inventory_stocks (variant_id)`; **`order_orders.order_code` — deliberately installation-wide**
+  (a customer quoting a code, a payment reference, or a support ticket must identify one order
+  without knowing the store); `order_invoices [order_id, revision]`; `order_credit_notes` (refund
+  reference, nullable); `payment_refunds` (uuid); `shipping_rates [method_id, zone_id]`;
+  `shipping_shipments (order_id)`; `user_wishlist_items [user_id, product_id]`;
+  `webhook_deliveries [endpoint_id, event_id]`.
+- **G (27):** `users_email_lower_unique`; `auth_social_accounts` ×2;
+  `auth_permissions [name, guard_name]`; `auth_roles [tenant_id, name, guard_name]` (already the
+  team key, §5) — **plus one added index (rev 4.3, B2): `auth_roles_platform_unique` on
+  `(name, guard_name) WHERE tenant_id IS NULL`**, a partial unique index that enforces exactly one
+  platform-role row per name at the database level on both engines — **plus two more added partial
+  uniques (rev 4.4, F1): `core_currencies_one_default_unique ON (is_default) WHERE is_default`
+  (at most one platform base currency) and `tax_classes_one_default_unique ON (tenant_id) WHERE
+  is_default` (at most one default tax class per store); "at least one" is the seeders' and
+  provisioning's job, and default changes are transactional** (the disposition count becomes
+  91 + these); `auth_user_devices [user_id, device_name]`; the 6 search-coordination keys;
+  `core_transfer_installation`, `core_languages.locale`, `core_extensions.slug`,
+  `core_regions.code`, `core_countries` ×2, `core_currencies.code`, `core_transfer_locks.name`;
+  `notification_push_subscriptions`, `notification_telegram_subscriptions` ×2,
+  `notification_preferences [user_id, audience, code, channel]`; profiles `user_id`;
+  `job_batches.uuid`; `personal_access_tokens.token`.
+
+Of the 22 unique keys that contain a nullable column (F30), only `media_folders` and the two
+platform-tier keys (`setting_settings` via class P, `auth_roles` via the added partial index) need
+NULLs to collide; the others (`cart_carts.user_id` / `token`, credit-note refund reference, the
+scalar rows of `catalog_product_attribute_values`, …) rely on NULLs being distinct and keep that
+behaviour.
 
 ---
 
@@ -413,13 +1107,22 @@ disk gets tenant subdirectories (§6.4).
     implemented by nullable `auth_roles.tenant_id`, not nullable pivots.
 - Platform super-admin is exactly one `SUPER_ADMIN` role row with `auth_roles.tenant_id = NULL`,
   carrying **no permissions**; the role name is used only for the platform bypass. Platform roles
-  are seeder-written only (`updateOrCreate`). The existing `assertNotSuperAdmin` guard in
-  `AbstractRoleAction` blocks admin role CRUD from creating NULL-team rows. A test asserts exactly
-  one NULL-team row per platform role name (MySQL unique indexes treat NULL values as distinct).
+  are seeder-written only (`updateOrCreate`). The existing `assertNotSuperAdmin`
+  guard in `AbstractRoleAction` blocks admin role CRUD from creating NULL-team rows. (rev 4.3, B2)
+  Exactly one platform-role row per name is enforced **by the database**: the partial unique index
+  `auth_roles_platform_unique ON (name, guard_name) WHERE tenant_id IS NULL` (§4.5). The vendor
+  `[tenant_id, name, guard_name]` unique cannot do it — PostgreSQL, like SQLite, treats NULLs as
+  distinct, so duplicate NULL-team rows would otherwise be insertable. Spatie's role creation and
+  lookup paths are unaffected: the partial index adds a constraint and changes no query semantics,
+  and the vendor teams schema is otherwise adopted verbatim. A test asserts the invariant by
+  attempting a duplicate platform-role insert (§10 row 69).
 - `AuthServiceProvider::Gate::before` becomes team-context-immune: directly query the user's role
   assignment by user id, join `auth_roles`, constrain role name to `SUPER_ADMIN`, and require
   `auth_roles.tenant_id IS NULL`. Do not rely on the active spatie team or the `roles()` relation's
-  team filtering.
+  team filtering. (rev 4.5, B8) the pivot is **polymorphic** — the query must constrain
+  `model_id` to the user's key **and `model_type` to the user model's morph type, plus the
+  expected guard name**; a numeric-id collision with a different model type can never trigger the
+  bypass. `AccessGateway::adminUserIds()` applies the same model-type discipline. Test: row 103.
 - Any attach of the platform role still writes a pivot team value. The platform seeder and
   `User::factory()->superAdmin()` must set `setPermissionsTeamId($defaultTenantId)` around the
   attach so the pivot's NOT NULL `tenant_id` is satisfied; restore the prior team context afterward.
@@ -430,29 +1133,36 @@ disk gets tenant subdirectories (§6.4).
   check permissions set it inside their tenant run. Under Octane the per-request lifecycle is no
   longer free: the team id must be cleared on request termination (spatie's octane reset listener
   is enabled via `config/permission.php`), so the static resolver stays safe (F3 rev 5).
-  resolver safe (F3).
+  (rev 4.2: `ResetTenantContext`, §2, clears it at the start of every request as well.)
+  (rev 4.3, B1: membership and role writes within the active tenant execute in MODE_TENANT as
+  tenant operations — §6.5 Category 2 — never through central mode.)
 - Permission cache is confirmed team-agnostic: one flat cache key stores role/permission definitions;
   tenant filtering occurs in pivot SQL. No per-team cache key is required (but see §6.3 for the
   payment token cache, which IS tenant-scoped).
 - Sign-in (`Modules/Auth/app/Actions/Public/Auth/SignInAction.php`) response gains `memberships`
   (from `tenant_memberships`, not roles) and `active_tenant` when unambiguous; Sanctum tokens remain
-  global user credentials and tenant selection is per request.
+  global user credentials and tenant selection is per request. (rev 4.2: with several memberships
+  the admin panel shows the store switcher and sends `X-Tenant-Id` on every request — A5 — and the
+  switch clears the query cache, §8 Phase 7.)
 
 ---
 
-## 6. Background execution, cache, storage, webhooks, idempotency
+## 6. Background execution, cache, storage, webhooks, payments, idempotency — and the subsystems
+## that assume one store
 
 ### 6.1 Queue lifecycle — snapshot/init/restore, both execution models
 
 `Queue::createPayloadUsing` stamps every payload at dispatch time:
-`{tenant_id: <id>|null, central: bool}` (`central=true` only when dispatched from MODE_CENTRAL).
+`{tenant_id: <id>|null, central_operation: <operation id>|null}` (rev 4.7, B2: the payload
+carries the **registered operation id** a centrally-dispatched job must invoke — never a mode
+grant; no payload field can set MODE_CENTRAL).
 This covers every dispatch origin (review requirement):
 
 | Dispatch origin | Stamp | Why |
 |---|---|---|
 | HTTP request (tenant context) | tenant id | middleware resolved it |
-| HTTP request (admin/central action) | central | `CentralOperations` context |
-| Console command (scheduled/ops) | central or tenant | commands declare their run mode |
+| HTTP request (admin/central action) | the registered operation id | `CentralOperations` context — the job must re-invoke it via `run()` |
+| Console command (scheduled/ops) | operation id or tenant | commands declare their run mode (§6.7) |
 | Job dispatched from another job | parent's effective mode | stamp reads the live context at dispatch |
 | Delayed / retried job | preserved | the stamp is part of the stored payload JSON |
 | Seeder / migration | central | explicit |
@@ -461,9 +1171,20 @@ Execution-side listeners (registered in `CoreServiceProvider`):
 
 - **`JobProcessing`**: push the current context onto a **stack of snapshots** (rev 4.1: a single
   mutable snapshot would be overwritten by nested execution), then **deterministically initialize**
-  from the payload markers: tenant id → MODE_TENANT; central flag → MODE_CENTRAL; neither →
-  MODE_INACTIVE. No job ever inherits the previous job's residue, and a stale/leaked context is
-  overwritten here regardless of cleanup failures.
+  from the payload markers: tenant id → MODE_TENANT; neither marker →
+  MODE_INACTIVE. **A `central_operation` marker does NOT set any mode** (rev 4.7, B2): the
+  listener only validates that the id exists in the `CentralOperations` registry and that the job
+  class is allowlisted for it — the job body must perform its cross-tenant reads by invoking
+  `CentralOperations::run($operation, $reason)` itself, where the registry, call-site policy,
+  actor policy, reason auditing, and exception-safe boundary are enforced. `CentralOperations`
+  stays the **single** entry to MODE_CENTRAL, queue path included; an architecture test fails any
+  listener or job code that sets central mode from a payload (row 118). No job ever inherits the
+  previous job's residue, and a stale/leaked context is
+  overwritten here regardless of cleanup failures. (rev 4.2: the snapshot also captures the
+  store-runtime values of §6.7, and a tenant-initialized attempt applies the store runtime for
+  that tenant before the job body runs.) (rev 4.7: the `JobAttempted`/`SyncQueue` lifecycle this
+  section relies on was independently verified against the Laravel 13 framework source by the
+  fifth review — B3 withdrawn; F27 stands.)
 - **`JobAttempted`** (fires in the worker/sync `finally` after **every** attempt — F19, F27):
   **pop the stack and restore exactly that snapshot**, not blind deactivation. This is the critical
   rev-4 fix: under the sync driver (F27) a job runs inside the HTTP request, so restoring returns
@@ -484,6 +1205,9 @@ rehydration, §6.2). Tests cover **both execution models independently** (review
 inline dispatch under feature tests, and a real worker pass (`queue:work --once` on the database
 driver) in the Tenant module suite — §10 rows 26–29.
 
+(rev 4.2) `NotificationCreated` (`ShouldBroadcast`, F36) joins the dispatch registry as a
+broadcast entry so the registry stays complete (K7).
+
 ### 6.2 Webhooks outbox
 
 `webhook_events`/`webhook_deliveries` gain `tenant_id` (stamped at write from request context).
@@ -497,7 +1221,7 @@ driver) in the Tenant module suite — §10 rows 26–29.
   `runForTenant($delivery->tenant_id, ...)` for all delivery work.
 
 The raw `DB::table` attempt lookup (F9) becomes an Eloquent query or receives an explicit tenant
-clause. `PruneWebhooksCommand` declares itself a central console operation (§6.5).
+clause. `PruneWebhooksCommand` runs per store (tenant fan-out, §6.7).
 
 ### 6.3 Payments — per-tenant configuration resolver (A2)
 
@@ -512,11 +1236,22 @@ interface PaymentConfigurationResolverInterface
 ```
 
 `PaymentConfiguration` DTO carries decrypted-on-demand credentials, per-tenant `webhook_secret`,
-mode/env, return-URL base, and a `credential_version` (incremented on config change). The
-implementation (Payment module) resolves from `payment_gateway_configs` (tenant-scoped table:
-`tenant_id`, `driver`, encrypted credentials cast, `webhook_secret` encrypted, `enabled`,
-`credential_version`) via TenantContext — fail-closed when no tenant context exists. Platform
-`.env` credentials serve only as local/test fallback, never in production.
+mode/env, return-URL base, and a `credential_version` (incremented on config change).
+
+**Storage (rev 4.2 — supersedes the `payment_gateway_configs` table of rev 4.1):** the existing
+`payment_driver_credentials` table (F42) becomes the per-tenant store. It gains `tenant_id`
+(NOT NULL); its unique becomes `UNIQUE(tenant_id, driver, key)` (class R, §4.5); any column the
+contract needs that the table lacks today (`enabled`, `credential_version`, the per-tenant
+`webhook_secret` if it is not already a credential key) is added in place. `ResolvesPaymentCredentials`
+is reworked into the tenant-scoped resolver: it reads through the scope, caches under
+`{tenant_cache_prefix}payment.credentials:{driver}:{credential_version}` (the unscoped 15-minute
+`payment.credentials` key is removed), and uses the `.env` baseline (`$baseline`) only in `local`
+and `testing`. **Cache identity (rev 4.7, F1):** `credential_version` is **per (tenant, driver)
+row** — each driver's credential write bumps that row's own version atomically, and the resolver
+cache key includes the driver, so versions never collide across drivers and a rotated Stripe key
+never invalidates the PayPal entry (the PayPal token cache key is already per driver). Its
+`catch (Throwable)` sites and those of `ApplyDatabaseCredentials` (F38)
+rethrow tenancy exceptions instead of falling back to the baseline.
 
 Refactor scope (complete, from F25) — every site switches from `config('payment.*')` to the
 resolver: clients `StripeCheckout`, `PaypalClient`, `CheckoutcomClient`, `NowpaymentsClient`,
@@ -547,51 +1282,274 @@ always uses the resolved tenant's secret. In addition:
   against platform defaults (production) or another tenant's credentials, and a signature check
   against the wrong secret fails closed rather than falling back to a global secret.
 
-Webhook routing: `POST /webhook/{tenant-slug}/{driver}` — resolve slug → reject suspended tenant →
+Webhook routing: `POST /webhook/{tenant-slug}/{driver}` — Stage 2 resolves the slug as the
+authoritative tenant source (§3.1, B2 — before credential application and any scoped binding,
+headers ignored) → reject suspended tenant →
 verify signature with that tenant's secret → `runForTenant` for transaction lookup and outcome
 writes. Return URLs derive from that tenant's verified domains. No tenant header is trusted on
-webhook routes.
+webhook routes. (rev 4.2) The `payments.transaction_id` lookup runs under the tenant scope (today
+it is global, F12/F42); return URLs use the tenant's primary domain and the request locale instead
+of env + hard-coded `/en/`.
+
+`ApplyDatabaseCredentials` is deleted once the last F25 read-site goes through the resolver; until
+then it stays registered after `ResolveTenant` (§3.1).
 
 ### 6.4 Media
 
-Uploads move to `$file->store("tenants/{tenant_id}")` (hash names retained); media rows are
-tenant-scoped; existing root-level files keep working (path is stored per row). Variant paths derive
-from the original's directory — unchanged. Export artifacts (Transfer) are stored under the same
-tenant prefix and downloadable only through tenant-scoped authorization (§9.5).
+- Rows: media, folders and the publication outbox are store-scoped (§4.4). `media_media_outbox`
+  gains `tenant_id`, so the processor derives the final key from the row itself.
+- **Keys (rev 4.2 P4; generation-unique rev 4.8; lifecycle record rev 4.9, B1):** two distinct
+  operations, kept distinct from here on — **physical object creation** writes a new immutable
+  object under `media/{tenant_id}/{ab}/{sha256}-{ulid}.{ext}` (content-addressed with a store
+  prefix **and a unique generation suffix**; the key is never reused), while a **logical media
+  publication/reference** records a media row that points at one exact physical generation — its
+  own new one, or an **existing eligible** generation (§6.4 reuse rule). Identical files
+  uploaded by two stores always mean separate objects, so `DeleteMediaAction` can never remove
+  another store's file (today the key is shared installation-wide and deletion is
+  unconditional — F45). Each media row stores the **exact physical key** it references — a
+  reference never points at "the content", it points at one object generation.
+  **Durable generation record (rev 4.9, B1):** every physical key a store has ever published has
+  a row in `media_object_generations` (`tenant_id`, `object_key` unique per store,
+  `status` enum(eligible|retired), timestamps), written in the same transaction as the object's
+  first reference. Reuse eligibility consults **this record** — never the presence or absence of
+  a deletion intent — so retirement survives intent pruning by construction.
+- Staging stays `.staging/media/{uuid}.{ext}` (unique by uuid); the outbox row carries the tenant
+  and the final key. Variants derive from the original's directory — per store automatically.
+- **Same-key serialization (rev 4.3; lease/fencing rev 4.4, F2).** Publication finalize and
+  deletion serialize per `(tenant_id, object key)` through a **database lease**,
+  `media_object_locks` (`tenant_id`, `object_key`, `owner_token`, `generation`, `expires_at`),
+  acquired with the same lease + fencing protocol as `core_transfer_locks` (DB-clock expiry,
+  fencing generation, reclaim advances it). Entries touching the same key are processed serially:
+  a new media row referencing an existing key acquires the lease before its transaction commits,
+  so a concurrent deletion either sees the new reference (and keeps the file) or the publication
+  lands after the unlink (and its own outbox entry re-publishes the file). **The unlink is
+  conditional**: one transaction rechecks references, verifies the lease is still owned
+  (`owner_token` + generation match, lease unexpired), and unlinks — a worker whose lease expired
+  fails closed before touching the filesystem; long operations (variant regeneration) renew the
+  lease. A crashed worker's lease expires and the next claimant advances the generation — the old
+  owner is fenced out exactly as in the transfer design (postgres-migration §3.1).
+  **Deletion is a durable state machine whose critical section is a held row lock, not an inline
+  unlink (rev 4.5 B5; fencing closed rev 4.6, B1).** Intents persist in their own classified
+  table, `media_deletion_intents` (§4.4): id, `tenant_id`, `object_key`, `owner_token`,
+  `generation`, `status` enum(pending|executing|done|cancelled), timestamps, and a partial unique
+  index `ON (tenant_id, object_key) WHERE status IN ('pending','executing')` — at most one active
+  intent per key. Permitted transitions: `pending → executing` only under the lease lock below;
+  `executing → done` idempotently after the unlink (a missing object already counts as deleted);
+  `pending → cancelled` when the reference recheck finds a live reference. Protocol:
+  (1) acquire the per-key lease; (2) transaction T1 — recheck references, insert the intent
+  (`pending`, carrying `owner_token` + `generation`), commit; (3) transaction T2 — `SELECT … FOR
+  UPDATE` the `media_object_locks` row, **re-verify under that lock** that `owner_token` and
+  `generation` are still ours and the lease is unexpired, transition the intent to `executing`,
+  then **perform the unlink while T2 is open** — every lease ownership transfer (reclaim or
+  renew) is a write to that same row, so it blocks on the lock: a newer owner cannot appear
+  while the unlink is in flight, and a worker whose lease expired before T2 sees it under the
+  lock and aborts without touching the filesystem. The open row-lock transaction spanning the
+  filesystem call **is** the critical section — the filesystem cannot check a fencing token, so
+  the database lock carries the exclusion for it; (4) commit T2 and finalize (`done`, or a
+  follow-up idempotent finalize). **Recovery:** a crash at any point drops the connection and
+  releases the lock; the intent stays `executing`; the sweep re-processes executing intents —
+  object missing → `done`; object present → take a fresh lease and re-run the unlink phase
+  (references rechecked again). An ambiguous storage failure leaves the intent `executing` for
+  the same idempotent retry. Duplicate sweep attempts are safe because every transition is
+  conditional on status + lease identity. Publication detects and serializes against an active
+  intent: it takes the same per-key lease and treats an active intent as "resolve first" — wait
+  for `done`/`cancelled` or process it — before committing a new reference.
+  **Generation-safe object lifecycle (rev 4.8, B1; durable retirement rev 4.9 — supersedes
+  rev 4.7's rename-then-unlink
+  reasoning).** A filesystem rename is atomic but not conditional on the lease generation, and a
+  worker suspended after losing its database session can resume arbitrarily later and execute a
+  previously authorized rename against a path recovery has since handed to a new publication — a
+  row lock cannot prove the old process stopped. The fix makes **physical object identity
+  immutable and generation-specific**, so a stale syscall can never reach a newer generation:
+  - a logical reference points at one exact physical key (see the Keys bullet); **once a
+    deletion intent targets a key, the key's `media_object_generations` row is marked `retired`
+    in the same transaction — permanently**. Cancelling the intent never un-retires; pruning the
+    intent never touches the generation row; the next publication of the same content therefore
+    writes a fresh generation, because reuse eligibility reads the generation record, not intent
+    history;
+  - the deletion intent therefore names the **exact key** it removes. The T2 rename-into-trash
+    (still inside the row-lock critical section) can only ever move a retired object: a stale
+    worker resuming after recovery performs its rename against the retired key, and the new
+    publication's generation is a **different object that remains untouched**. The trash unlink
+    stays idempotent and outside the critical section;
+  - recovery is unchanged and simpler: the sweep finalizes (object gone → `done`) or cancels the
+    intent when a live reference exists — and since a post-recovery reference always points at a
+    new generation, a cancelled intent just leaves the retired key to trash collection. No
+    live-referenced object can be lost, and the stale-worker race is eliminated rather than
+    bounded.
+  **Explicit invariants (rev 4.9, per review):** the exact physical key is immutable once
+  assigned to a media reference; an intent's target key cannot change across retries or
+  recovery; a retired generation never transitions back to eligible (cancellation included);
+  intent pruning can never remove the durable retirement record; cleanup never derives a
+  deletion target from a content hash alone — only from the exact key stored on the validated
+  tenant-owned record; and a new generation must be **fully published before its reference
+  becomes visible** (the object is written and finalized first, the reference row commits
+  pointing at it afterward — a partially written object is never a valid referenced
+  generation).
+  **Common serialization point (rev 4.10, B1 — the last concurrency guarantee).** The generation
+  record is the authority for reuse, so every path that can attach a reference and every path
+  that can retire a generation serializes on **the same `media_object_generations` row**:
+  - **reference attachment / reuse:** `SELECT … FOR UPDATE` the generation row, verify it is
+    still `eligible`, and **hold the lock through the transaction that inserts the media
+    reference** — a concurrent retirement blocks and, once it proceeds, sees the new reference
+    and follows the correct behaviour for a now-referenced object (no retirement of a live
+    generation);
+  - **deletion-intent creation:** lock the same row, verify the current reference state, mark
+    the generation `retired`, and create the intent **in one transaction** — a concurrent
+    attachment that lost the race finds the row `retired` on its own locked read and publishes
+    a fresh generation instead;
+  - **retirement is one-way:** the transition is a conditional
+    `UPDATE … WHERE status = 'eligible'` (application guard), backed by a database safeguard —
+    a `BEFORE UPDATE` trigger on `media_object_generations` rejecting any `retired → eligible`
+    change (the §6.8 engine-branched trigger pattern);
+  - **lock ordering:** the generation row is always taken **before** any media reference rows,
+    on every path — publication and deletion cannot deadlock against each other.
+  - **every reference-set mutation follows the protocol (approval clarification):** attachment,
+    **detachment/removal**, and any other change to a generation's reference set acquires the
+    generation-row lock first, before locking or modifying media reference rows — and the
+    reference-count/existence checks that decide whether a generation can be retired run
+    **while holding that lock**. Deletion that removes a reference and then evaluates
+    retirement is not an exception; the rule applies to the whole reference-set lifecycle, not
+    only to attachment and intent creation.
+  A physical object may be created before its generation row exists (first publication), but
+  from the moment the record is available the protocol is mandatory on both sides. Test:
+  row 123 — the deterministic two-connection PostgreSQL race, both orderings.
+  **Trash exposure boundary (rev 4.8 F3; private disk rev 4.10):** the physical trash location
+  is `trash://{tenant_id}/…` on a **dedicated private disk** — a storage root with **no public
+  web-server mapping at all**, not a sibling directory under a served root (exclusion from
+  Laravel's URL generator alone does not prove the web server cannot serve a directory): not
+  addressable through any media URL, not reachable over HTTP, readable only by the cleanup
+  process. (The earlier `media/{tenant_id}/.trash/` spelling was logical naming only.) Tested at
+  the storage/HTTP boundary — both direct HTTP access and the configured disk's URL-generation
+  behaviour (row 121). Tests:
+  rows 79, 91, 99–100, 112, 116–117, 120–123 — including the deterministic pause/resume race
+  (row 120): worker A suspended after session loss, worker B recovers, cancels, and publishes a
+  new generation, A resumes its rename — the new publication stays accessible and its exact
+  object generation remains intact.
+- `catalog_images.url` and other stored URLs become relative keys; absolute URLs are rendered with
+  the resolved store's host (Phase 6). Today the installation host is baked into the row (F45).
+- `MediaGateway::upsertLocal` takes the acting user explicitly instead of hard-coding user 1 (K6).
+- Export artifacts: exports are streamed today (F43), so nothing is stored. If an artifact is ever
+  stored it goes under `tenants/{id}/` and is downloadable only through tenant-scoped authorization
+  (§9.7).
 
-### 6.5 Central mode — dedicated service boundary (rev 4, per review)
+### 6.5 Execution boundaries — platform operations, tenant operations, provisioning (rev 4.3, B1)
 
-`Modules/Core/app/Support/Tenancy/CentralOperations.php` is the **only** public entry to
-MODE_CENTRAL:
+MODE_CENTRAL remains reachable through exactly one service,
+`Modules/Core/app/Support/Tenancy/CentralOperations.php`:
 
 ```php
 final class CentralOperations
 {
-    /** Run a registered cross-tenant operation. $operation must exist in the registry; $reason is audit-logged. */
-    public function run(string $operation, string $reason, Closure $fn): mixed;
+    /**
+     * Runs a REGISTERED operation handler. The registry maps the operation class to its
+     * authorized implementation; the caller passes a typed operation object with validated
+     * arguments — never a closure (rev 4.5, B4).
+     */
+    public function run(CentralOperation $operation, string $reason): mixed;
+}
+
+interface CentralOperation
+{
+    public function id(): string;
 }
 ```
 
-- The `$operation` registry is an explicit, reviewed list (config-constant in Core): tenant CRUD,
-  membership writes, domain management, transfer import/export, webhook dispatch/prune bootstrap,
-  `tenancy:audit`, seeders. Adding an entry is a visible diff reviewed like a permission grant.
+The registry binds operation identifiers to **implementations, not strings** (rev 4.5, B4): every
+operation is a final class; the registry maps it to the single action/service allowed to execute
+it; and an architecture test binds each operation to its **authorized call sites**, so reusing a
+registered name from an unauthorized caller fails the build even though the name exists.
+(rev 4.6, F3: the registry key is the **exact final operation class** — `id()` is display and
+audit labelling only; a different class implementing `CentralOperation` and returning the same
+string obtains nothing. The architecture test verifies that the registered operation class,
+handler, and caller set stay aligned.) Actor
+policy is defined at the boundary itself: HTTP platform operations run on super-admin-only
+routes; scheduled console operations execute as the system actor with the command + reason
+recorded. The central-mode guarantee never depends on a developer remembering the right caller.
+
+But central mode is now reserved for **cross-tenant reads and platform-tier writes** — never for
+writing store-scoped rows. Three categories cover every workflow the review found conflicting:
+
+**Category 1 — platform operations (super-admin + `CentralOperations`).** Tenant CRUD,
+suspension, deletion; domain administration (attach, release, force-revoke, verification
+bookkeeping); platform settings; membership writes that are *not* confined to one active tenant
+(a platform-initiated owner reset); transfer/search/media platform bootstrap; `tenancy:audit`;
+seeders; and the `order.lookup` read of §6.9. All exactly as rev 4.2 defined them: super-admin-only
+routes behind `PermissionMiddleware` + Gate::before, registry + mandatory reason, exception-safe
+restore; no request parameter, header, or user-controlled input reaches `run()`'s arguments.
+
+**Category 2 — tenant operations (MODE_TENANT, permission-guarded).** Membership invite /
+activate / suspend / remove and role assignment **within the active tenant** run in ordinary
+tenant mode: the rows carry the context tenant, and a model-level guard on `TenantMembership`
+rejects any write whose `tenant_id` differs from the context (an architecture test also fails
+membership/team writes made outside these actions). Authorization is the existing
+`PermissionMiddleware` with tenant roles (`tenant.memberships.manage`, role-CRUD permissions);
+`AbstractRoleAction::assertNotSuperAdmin` already blocks NULL-team role writes; ownership transfer
+additionally requires `is_owner` or super-admin. Nothing here enters MODE_CENTRAL, and a store
+admin's reach is structurally limited to their own store (A3). **Owner-set serialization
+(rev 4.7, B6):** every mutation capable of changing a tenant's active-owner set — removal,
+suspension, demotion, role change, ownership transfer — takes `SELECT … FOR UPDATE` on the
+tenant's row **before** checking and changing, so competing transactions block and re-check
+instead of both passing a read-committed check (the two-owners-both-deactivate race). Tested with
+competing operations on two separate PostgreSQL connections (row 119); a sequential last-owner
+test alone proves nothing.
+
+**Category 3 — tenant provisioning (self-serve, no central mode).** `ProvisionTenantAction`
+(Tenant module, **`onboarding` audience** — the tenant-neutral route of §3.1, canonical
+`POST /api/v1/onboarding/tenants`; requires an authenticated global user, never a resolved
+tenant or membership; rate-limited) validates the authenticated initiating user, applies
+onboarding limits (max active tenants per user, configurable; slug uniqueness with collision
+suffixes), and creates — in **one transaction** — the tenant row, its `<slug>` subdomain domain
+row, the initial owner membership, the owner role assignment, the default settings/menu, and the
+default language/currency links. Every table it touches is either the Tenant module's own
+unscoped metadata tables or is written through this one narrow, audited path; nothing commits
+partially. **Context lifecycle inside the transaction (rev 4.7, B7):** the request context stays
+MODE_INACTIVE at the boundary — the tenant and domain rows are unscoped metadata writes — and
+once the tenant row exists the action enters **`runForTenant($newTenantId)`** for the owner
+membership, the owner role assignment, and the tenant-owned defaults (settings, menu,
+language/currency links), restoring MODE_INACTIVE in `finally`. Scoped writes therefore happen
+under a real tenant context derived **only** from the id this transaction just created — the
+onboarding caller never supplies one — and the fail-closed rule is never weakened. The spatie
+team id is set to the new tenant around the role attach and restored afterward. The action never
+enters MODE_CENTRAL and is not in the registry. Audit: a `tenant.provisioned` event through the
+existing F21 map.
+(rev 4.5, B1: the endpoint carries the tenant-neutral **`onboarding` audience** — §3.1 — so Stage
+2 performs no tenant resolution at all: it works from the central API host where nothing resolves,
+and from an existing store's host the context still stays MODE_INACTIVE for the action. Test
+row 95.) The quota check is serialized per initiating user (rev 4.5, F4): the user row is locked
+(`SELECT … FOR UPDATE`) before counting memberships and creating — a transaction alone does not
+stop two concurrent onboarding requests both passing the limit (test row 105, two PostgreSQL
+connections). Owner invariant (rev 4.5, F4): a tenant always retains at least one active owner —
+ownership transfer grants and revokes in one transaction, and removing or deactivating the last
+owner is rejected (Category 2 enforces it).
+**Provisioning write contract (rev 4.4, F3):** the newly created tenant id is the **only**
+tenant id the path may write — every store-owned insert supplies it explicitly; the path cannot
+read or update any other tenant's rows; the query-builder architecture test recognizes only this
+one narrowly named path as the MODE_INACTIVE exception; the initial owner-role pivot is assigned
+with `setPermissionsTeamId($newTenantId)` and the prior team context restored afterward; any
+failure rolls back the entire transaction. Test: row 94.
+
+- The operation registry stays an explicit, reviewed list in Core — Category 1 above enumerates it
+  (incl. the rev 4.2 search/media bootstrap entries) — but each entry now binds operation class →
+  handler → call sites (B4). Adding or rewiring an entry is a visible diff reviewed like a
+  permission grant.
 - `$reason` is required and recorded: central admin operations emit an Audit event (F21 map) with
   actor, operation, reason; console operations log the command + reason.
 - Exception safety: `run()` restores the previous mode in `finally`.
 - `TenantContext::central()` is marked `@internal`; the architecture Pest test fails any direct use
-  of `->central(`/`MODE_CENTRAL` outside `CentralOperations` + `TenantContext` itself, and fails any
-  `CentralOperations::run()` call site whose `$operation` is not in the registry.
-- Authorization: HTTP-reachable central operations sit on super-admin-only admin routes behind
-  `PermissionMiddleware` + Gate::before; no request parameter, header, or user-controlled input may
-  reach `run()`'s arguments. Tests prove ordinary tenant admins receive 403 and that context stays
-  tenant/inactive after refused/failed attempts (§10 rows 21–22).
+  of `->central(`/`MODE_CENTRAL` outside `CentralOperations` + `TenantContext` itself, fails any
+  `CentralOperations::run()` call site outside the operation's allowlisted callers (rev 4.5, B4 —
+  a registered name invoked from an unauthorized call site fails even though the name exists,
+  row 98), and (rev 4.3) fails any **write to a store-scoped model while in MODE_CENTRAL**.
+- Tests: rows 21–22 (refused/failed Category-1 attempts leave context unchanged) and rows 71–72
+  (provisioning and tenant-operation writes work without central mode).
 
 ### 6.6 Idempotency — concurrency control, not just a response cache (rev 4, per review)
 
 Redesign (Phase 4), fixing F16 + F26:
 
 1. **Identity** (rev 4.1, review finding 1 — nullable `user_id` would let NULL duplicates through
-   a MySQL unique index): edit `2026_03_25_092852_create_idempotency_keys_table.php` in place (A1):
+   a unique index): edit `2026_03_25_092852_create_idempotency_keys_table.php` in place (A1):
    add `tenant_id` (NOT NULL), a **NOT NULL `principal_key`** string, and `status`
    enum(processing|completed); **replace the global `KEY` unique with
    `UNIQUE(tenant_id, principal_key, key)`**. `principal_key` identifies the caller for **every**
@@ -600,19 +1558,333 @@ Redesign (Phase 4), fixing F16 + F26:
    client resends the same token) and is not forgeable into someone else's principal (a made-up
    token only loses the caller's own dedup protection; it grants access to nothing). `user_id`
    stays as a nullable traceability column; it is never part of the unique identity.
-2. **Atomic reservation**: `IdempotencyMiddleware::handle()` inserts a claim row
-   (status=processing, expires) **before** executing the operation. The insert relies on the
-   composite unique constraint (all-NOT-NULL columns, so the guarantee holds for guests too —
-   §10 row 39):
-   - Insert succeeds → this request owns the key; proceed.
-   - Unique violation → a concurrent/previous request holds it: if `completed`, replay the stored
-     response (`X-Idempotency-Response: true`); if still `processing` (and not expired), return
-     **409 `core::errors.idempotency_in_progress`** — never execute twice.
-   - Expired processing row → reclaim (delete + re-insert, still constraint-guarded).
-3. **Completion**: `terminate()` updates the claim with the response and status=completed (or
-   deletes the claim on failure so a retry can start clean) — always scoped by tenant + principal.
-4. Replay matching in `handle()` includes `tenant_id` + `principal_key` — cross-tenant and
+2. **Atomic reservation with fencing (rev 4.3, B3)**: `IdempotencyMiddleware::handle()` inserts a
+   claim row — `claim_token` (fresh uuid), `expires_at`, status=processing — **before** executing
+   the operation, as one statement: `INSERT … ON CONFLICT DO NOTHING` (+ `RETURNING` where
+   available). The insert relies on the composite unique constraint (all-NOT-NULL columns, so the
+   guarantee holds for guests too — §10 row 39):
+   - Insert succeeds → this request owns the key; the claim token is this request's fencing
+     identity. Proceed.
+   - Conflict → an existing row: `completed` → replay the stored response
+     (`X-Idempotency-Response: true`); `processing` and unexpired → **409
+     `core::errors.idempotency_in_progress`**; `processing` and expired → reclamation (below).
+3. **Fenced reclamation**: an expired `processing` row is reclaimed by a **conditional DELETE
+   followed by a guarded INSERT** — `DELETE … WHERE id = ? AND claim_token = {old} AND
+   expires_at < now() AND committed_at IS NULL`, then the same one-statement reservation insert
+   as above. (rev 4.5, B3 — the `committed_at IS NULL` guard is the load-bearing one: a claim
+   whose business work committed can **never** be reclaimed or deleted by the retry path; it
+   stays put and surfaces `idempotency_unresolved` until operator recovery.) Concurrency of the
+   two-step sequence (rev 4.6, B3, wording corrected — reclamation is a DELETE + INSERT, not an
+   update): the DELETE and the completion UPDATE lock the same row, so a marker write and a
+   reclaim serialize on the row and cannot both win; two concurrent reclaimers serialize the same
+   way — the second DELETE matches 0 rows and stops — and after a successful DELETE the
+   reclaimers' INSERTs race under the composite unique, where exactly one wins and the loser
+   gets the conflict → 409. The original request may still be
+   running (slow, not crashed) — its later
+   completion matches **0 rows** (its token no longer owns the row) and can never overwrite the
+   new owner's result; the stale claimant logs, surfaces 409, and never re-executes.
+4. **Completion is fenced, runs in `handle()`, and is crash-aware (timing rev 4.5, B3)**: the
+   response is persisted and claim ownership verified in `handle()` **after `$next($request)`
+   returns but before the response reaches the framework** — a terminating middleware runs after
+   the response has been sent and cannot change it; `terminate()` keeps only failure cleanup,
+   and **every deletion path without exception — `terminate()` included — carries the same
+   `AND claim_token = {ours} AND committed_at IS NULL` guard** (rev 4.6, B3): a claim whose
+   business work committed is never deleted by cleanup, whatever fails downstream; a
+   response-persist failure after a committed marker **updates** the claim to surface
+   `idempotency_unresolved` (audited) rather than deleting it — a committed operation is never
+   converted back into a clean retry opportunity (test row 111). Completion is
+   `UPDATE … SET status = completed, response = … WHERE id = ? AND claim_token = {ours}` — always
+   scoped by tenant + principal. **If the completion update affects zero rows**, ownership was
+   lost: `committed_at` set → the request responds **409 `core::errors.idempotency_unresolved`**
+   and the computed response is discarded; otherwise the marker abort already rolled the business
+   work back and the error response propagates — a request never returns another claimant's data.
+   **Crash window** (business committed, response never stored): actions participating in
+   idempotency stamp `committed_at` on the claim **inside the business transaction, before it
+   commits**. The helper updates by claim id + claim token, **requires exactly one affected row,
+   and throws on zero** — a request that lost ownership (its claim was reclaimed mid-flight)
+   cannot commit unmarked business work; the throw rolls the whole business transaction back, so
+   marker and business write are one commit by force, not by convention. **Marker participation
+   is mandatory (rev 4.5, B3): an architecture registry fails any idempotent route or action
+   whose business transaction can commit without the helper.** Recovery
+   policy for an expired claim:
+   - no `committed_at` → nothing durable happened → safe to reclaim and re-execute;
+   - `committed_at` set, no stored response → **never re-execute**: the key returns
+     **409 `core::errors.idempotency_unresolved`** and is audited for operator review.
+   External side effects (payment creation and the like) are initiated only through providers with
+   their own idempotency keys or through the durable outboxes (the dispatch registry's REQUIRED
+   class rule), so a replay cannot double-charge; DB-only work is covered by the same-transaction
+   marker. **Provider idempotency keys derive from the stable logical request identity
+   (`tenant_id + principal_key + key`) — never from the claim token** — so a reclaimed claim
+   reuses the same provider key and cannot duplicate an external effect. Tests: rows 76–78, 88–89.
+5. Replay matching in `handle()` includes `tenant_id` + `principal_key` — cross-tenant and
    cross-principal replay are structurally impossible (§10 rows 11, 30, 39).
+
+### 6.7 Store runtime — per request, per job, per command (rev 4.2)
+
+Today the store's settings are read once per process: `SettingServiceProvider::boot()` applies the
+timezone and the store identity at boot (F39), languages and currencies carry single-store flags,
+and one settings table holds both platform and store values (F46). With several stores behind one
+worker that is wrong by construction — the first store to boot would configure every request.
+
+1. **Per request.** After `ResolveTenant` identifies the store, Core raises a `TenantResolved`
+   event (a Core contract); the Setting module listens and applies the store runtime: `app.timezone`
+   (+ `date_default_timezone_set()`), store identity (`config('store.*')`), default language and
+   supported locales, enabled currencies and default display currency (P2), pricing mode
+   (`prices_include_tax`), default tax class, FX values, mail from-name. `SettingServiceProvider::boot()`
+   no longer applies anything per process.
+2. **Reset first.** `ResetTenantContext` (§2), the first `RequestReceived` listener, restores the
+   platform defaults for every value the runtime touches. `UpdateSettingAction` keeps its
+   invalidation (F11) and the next request re-applies — which also closes K8 (a settings update
+   never reached an already-running worker).
+3. **Per job.** Part of the §6.1 snapshot: `JobProcessing` applies the runtime for the payload's
+   tenant, `JobAttempted` restores the captured values.
+4. **Process-global values.** `date_default_timezone_set()` and the statics of F39 are
+   process-wide. A RoadRunner worker serves requests one at a time and task/queue workers are
+   separate processes, so set-at-request-start and reset-at-request-start is sufficient for HTTP
+   and sync jobs. `SupportedLocales::$codes` becomes tenant-keyed. `ResolvesPaymentCredentials::$baseline`
+   is platform data (env) and stays as it is. `SearchMutationGate::$depth` and
+   `SearchCursorManager::$held` are transaction bookkeeping that holds no store data — they are
+   asserted released by the Octane isolation gate, not changed.
+5. **Fail closed inside the resolvers.** The seven `catch (Throwable)` sites of F38 rethrow
+   tenancy exceptions (`TenantContextMissingException` and the tenant-not-found family). Their
+   fallback to platform defaults stays for infrastructure failures only (a database outage must not
+   take a request down), and it is safe because a platform default is never another store's value.
+6. **Caches.** Every store-dependent key of F37 is built through `TenantContext::cachePrefix()`
+   (`t{id}:setting.timezone`, …); `UpdateSettingAction` invalidates with the same prefix;
+   installation-level keys are unchanged. The complete 18-key disposition table is a Phase 4 entry
+   artifact reviewed with the code.
+7. **Platform-settings read path (rev 4.3, F1; contract rev 4.4, F5).** Tenant-facing code never
+   enters MODE_CENTRAL to read platform values. The Setting module exposes a narrow resolver — a
+   Core contract, `PlatformSettingsInterface::get(string $name): mixed` over an **allowlisted**
+   set of platform names (FX provider + key, platform identity) — implemented as a direct,
+   indexed read of the NULL-tenant rows (cached `platform:setting.{name}`), consumed by the
+   runtime of item 1 and by `ResolvesFxSettings`. The contract separates the two kinds of platform
+   value: **config values** live in NULL-tenant `setting_settings` rows and come from this
+   resolver; **reference data** — the platform base currency above all — lives where it always did
+   (`core_currencies.is_default`, read through the Core gateway, §6.7.1) and never in a settings
+   row. A missing or malformed platform setting throws `PlatformSettingMissing` (reported, 500) —
+   it never silently becomes another store's value or an arbitrary application default. Precedence:
+   a tenant value overrides the platform default; reference data is platform-level; enabled/default
+   selections are per store. A store request therefore combines platform defaults (via the
+   resolver) with tenant settings (via the scope) — central mode is never involved. Tests:
+   rows 81, 93.
+   **Cache invalidation (rev 4.5, F7):** platform-setting writes invalidate
+   `platform:setting.{name}` in the same write path that updates the row (the super-admin
+   platform settings action) — acceptance: a worker running under RoadRunner serves the new value
+   on the next request without a restart (row 109).
+
+#### 6.7.1 Money, languages, settings (P2, P5)
+
+- **Platform base currency:** `core_currencies.is_default` keeps exactly one row and from now on
+  means *the platform base currency*; every stored amount is in it; `exchange_rate` and
+  `currencies:sync-rates` stay platform-wide. (rev 4.4, F1) at-most-one is database-enforced by
+  the `core_currencies_one_default_unique` partial index (§4.5); at-least-one is established by
+  the seeders and by provisioning; default changes are transactional. This flag — not a settings
+  row — is the owning representation of the base currency; the §6.7 resolver reads config values
+  only.
+- **Per store:** default display currency and enabled currencies (`tenant_currencies`), default
+  language and enabled languages (`tenant_languages`), `tax_classes.is_default` (scoped by
+  `tenant_id`; at most one default per store is database-enforced by the
+  `tax_classes_one_default_unique` partial index, §4.5), document prefixes (§6.9).
+- **Settings (P5):** `setting_settings` keeps its enum list of names. Platform-wide names move to
+  NULL-tenant rows (FX provider + `fx_api_key`, platform identity); everything else is per store.
+  A store admin's settings screens read and write store rows only; platform rows are reachable
+  only through super-admin routes under `CentralOperations`.
+- **Transaction-time currency identity (rev 4.3, P2 condition).** Order, invoice, credit-note,
+  refund and payment rows keep the currency and exchange rate captured when they were written
+  (presence verified in Phase 2 step 0; added there if missing). A later change of the platform
+  base currency never reinterprets historical amounts; cross-currency reporting converts
+  explicitly.
+- **Default lifecycle guards (rev 4.5, F3).** The at-least-one invariants are enforced by the
+  mutation actions, transactionally: deleting (or disabling) the default tax class, a tenant's
+  default currency, or unsetting the platform base currency is **rejected unless a replacement is
+  selected in the same transaction**. Seeding alone does not protect the lifecycle. Test: row 106.
+
+#### 6.7.2 Console command run modes
+
+Every command that touches a store-owned table declares one mode; an architecture test
+(dispatch-registry style) fails an undeclared one.
+
+| Mode | Behaviour | Commands |
+|---|---|---|
+| `platform` | touches installation-level tables only | `sanctum:prune-expired`, `auth:prune-sign-in-lockouts`, `core:queue-check-backlog`, `queue:prune-failed`, `currencies:sync-rates` |
+| `central` | a registry operation in `CentralOperations`; reads across stores, writes only installation-level data or rows stamped from their source row | `catalog:search:reconcile`, `catalog:reindex`, `catalog:search:install`, `catalog:search:cleanup`, `media:outbox:process` (bootstrap only), `tenancy:audit` |
+| `tenant-fan-out` | iterates active stores and runs the body per store under `runForTenant` | `order:cancel-expired`, `order:sweep-generating-documents`, `order:reconcile-refund-credit-notes`, `webhooks:prune`, `media:regenerate-variants` |
+| `bootstrap` | central lookup by primary key, then all work under `runForTenant` | `webhooks:dispatch-deliveries` (§6.2) |
+| `discovery+fan-out` | a registered central operation performs read-only cross-store discovery and returns `(tenant_id, record id)` work items; every cleanup item executes under `runForTenant` | `media:outbox:sweep` (rev 4.8, B2) |
+
+**`media:outbox:sweep` — two-stage execution (rev 4.8, B2; supersedes the rev 4.7
+classification).** A globally scheduled command never acquires permission to write tenant-owned
+rows. **Stage 1 — central discovery:** a registered operation reads across stores
+(`media_media_outbox` non-terminal staging references, `media_object_locks` expired leases,
+`media_deletion_intents` terminal/intent pruning candidates, retired trash keys) and returns
+**work items only** — `(tenant_id, record id, kind)` tuples; central mode performs reads, never
+writes. **Stage 2 — tenant-scoped cleanup:** each item executes under
+`runForTenant($tenantId)`: the record is **reloaded and validated** (scoped model or guarded
+query) before any update or delete, and filesystem cleanup (staging/trash unlink) follows the
+same ownership + generation checks of §6.4. The architecture test fails any globally scheduled
+command that writes a store-owned row directly. **Stage-2 contract (rev 4.9, per review):**
+discovery results are **hints, not authorization** — every item is reloaded under tenant scope,
+its ownership must match the work item's tenant id, and its current state and lease expiry are
+revalidated (discovery-time state may already be stale); a stale work item is a safe no-op;
+filesystem cleanup uses **only the exact key stored on the validated tenant-owned record**,
+never a path supplied by the discovery result; one tenant's cleanup failure never blocks the
+other tenants' work items. `discovery+fan-out` stays a narrowly registered operation with its
+authorized call sites — not a general-purpose licence for central discovery plus arbitrary
+tenant writes.
+
+### 6.8 Search (rev 4.2, P1) — replaces the rev 4.1 §9.7 row "any future search index…"
+
+Meilisearch exists and is installation-wide today (F40). Under P1:
+
+- **Documents** gain `tenant_id`, copied from the product row by the index writer; `tenant_id`
+  joins `filterableAttributes`.
+- **Primary key stays `product_id`.** Product ids come from one database sequence, so they are
+  unique installation-wide; the journal, cursor, lease and heartbeat tables (installation-level,
+  §4.4) need no change.
+- **One choke point, fail closed.** Every search goes through `SearchClientInterface`; the
+  implementations build the filter `tenant_id = {id}` from `TenantContext::tenantId()`
+  unconditionally and throw in `MODE_INACTIVE` and `MODE_CENTRAL` — the same rule as
+  `TenantScope`. No calling code can compose a search without the filter; a query that lacks a
+  tenant is never sent. Eloquent hydration (`PublicProductQuery::hydrationQuery()`) stays as a
+  second line but is not the isolation boundary: without the filter, `total` and facets would
+  still count other stores' products.
+- **Writers** read the product under `runForTenant(<the product's tenant>)` — the tenant comes
+  from a narrow central lookup by primary key, the §6.2 pattern — so snapshot building is a scoped
+  read.
+- **Gate and generation stay installation-wide:** one cutover for all stores. A reindex or a
+  cutover is therefore a platform event, not a per-store one.
+- **Commands:** `catalog:reindex` is registered and scheduled nightly (the operations runbook
+  already calls it the absolute backstop); `catalog:search:install`, `catalog:search:cleanup` and
+  `media:regenerate-variants` are registered (K2). Modes per §6.7.2.
+- **Alternative, not recommended:** one index per store (`{uid_base}_t{tenant_id}_g{n}`). Isolation
+  would not depend on a filter, at the cost of N indexes, per-store cutover, cleanup and
+  reconciler loops, and an index per store at onboarding.
+- **Stale-write and recovery guarantees (rev 4.3, F3).** `tenant_id` rides the existing fencing —
+  no new mechanism. Journal entries are append-only and per-product ordered under the cursor
+  lock-ordering invariant (postgres-migration §3.4.1b), so an older snapshot cannot overwrite a
+  newer product state, and a stale queued write cannot resurrect a deleted product (terminal
+  tombstone + retired-ID registry fail closed, §3.4.1a). The tenant field is stamped from the
+  product row at journal-append time, so a document can never carry a tenant its row did not have;
+  a tenant-lookup failure in a writer throws **before** any index write (fail closed — the same
+  rule as the client). The reconciler's convergence pass (§3.2; SLO ≈ 2 × interval) diffs the
+  journal against the serving generation and treats a **missing or mismatched `tenant_id` as a
+  repairable stale document**, repaired through the same re-snapshot path as any stale content —
+  the nightly reindex stays the backstop, not the primary recovery.
+- **Tenant ownership is immutable (rev 4.4, F4; enforcement rev 4.5 B6, portable rev 4.6 B2).** A
+  product row's `tenant_id` never changes after creation — and the same holds for every store-owned
+  row. Enforcement is layered, because query-builder writes skip model events: the trait's
+  `updating` guard plus no mass assignment (§2), the §4.3 per-query allowlist rejecting bulk
+  updates that touch `tenant_id`, and a **database trigger, implemented per engine** on every
+  table that carries `tenant_id` (the 85 of §4.4 — direct SQL included):
+  - **PostgreSQL**: one shared trigger function
+    `baxela_forbid_tenant_id_change()` (`BEFORE UPDATE … IF NEW.tenant_id IS DISTINCT FROM
+    OLD.tenant_id THEN RAISE EXCEPTION`), attached per table with
+    `CREATE TRIGGER {table}_tenant_immutable BEFORE UPDATE ON {table} FOR EACH ROW EXECUTE
+    FUNCTION …`.
+  - **SQLite** has no trigger functions: each table gets a per-table body,
+    `CREATE TRIGGER {table}_tenant_immutable BEFORE UPDATE ON {table} FOR EACH ROW WHEN
+    NEW.tenant_id IS NOT OLD.tenant_id BEGIN SELECT RAISE(ABORT, 'tenant_id is immutable');
+    END;`.
+    Both forms live behind explicit driver branches in the same migration edits that add
+    `tenant_id`, and migration tests assert on both engines that every expected trigger exists
+    and that a direct `UPDATE … SET tenant_id` is rejected (rows 101, 113).
+  - **The nine pivots have no `tenant_id` column, so no trigger applies.** Their cross-tenant
+    strategy is stated honestly rather than papered over: application-layer
+    `AssertsTenantOwnership` validates both parent ids in the same transaction as every pivot
+    write (§4.3 layer 2), the per-query allowlist covers direct SQL on pivot tables (layer 0),
+    and `tenancy:audit`'s relation map joins through every pivot and reports owner/reference
+    tenant mismatches (layer 4). **Threat-model boundary (rev 4.7, F2):** the guarantee is
+    **preventive** for application writes through the approved pivot APIs, **allowlist-enforced**
+    for direct SQL issued by application code, and **detective only** for SQL issued outside the
+    application — external SQL is explicitly outside the preventive threat model, and `tenancy:
+audit` is detection, not prevention. Direct SQL from within the app **can** still create a
+cross-tenant association on a pivot only by escaping the per-query allowlist — the same
+accepted module-boundary trade-off as R4, stated with its boundary.
+  If a store-to-store move is ever genuinely needed, it must be a fenced migration operation that
+  journals an ordered removal for the old tenant and an insertion for the new one under the
+  existing cursor-lock invariants — not an ordinary update. Tests: rows 92, 101, 113.
+- **Tests:** §10 rows 55–57, 80, 92.
+
+### 6.9 Order documents (rev 4.2)
+
+- **Sequences per store:** `order_document_sequences` becomes `UNIQUE(tenant_id, type, year)`;
+  `DocumentNumberService` locks the row for `(tenant, type, year)` (its `lockForUpdate` path is
+  otherwise unchanged). Document numbers (`invoices.number`, `credit_notes.number`) are unique per
+  store (class T, §4.5).
+- **Order codes stay installation-wide** (`orders.order_code`, class S, §4.5).
+- **Prefix:** a per-store setting with the platform default as fallback, in place of the single
+  `config('order.documents.prefixes.{type}')` value.
+- **Seller identity and year:** read from the store runtime (§6.7) at generation time — in a job
+  that is the job's tenant. The year already comes from `StoreTimezone::year()`, which becomes the
+  store's year once the runtime is per tenant.
+- **Files:** `tenants/{tenant_id}/documents/{number}.pdf` on the `local` disk; downloads resolve
+  through scoped models, so store B cannot fetch store A's file even given the file name.
+- **Sweeps:** `order:cancel-expired`, `order:sweep-generating-documents`,
+  `order:reconcile-refund-credit-notes` run as tenant fan-out — each store's timezone decides what
+  "expired" means.
+- **Order-code lookup contract (rev 4.3, F6).** `order_code` is installation-unique and ordinary
+  order queries stay tenant-scoped, so exactly one narrow workflow may resolve a code across
+  stores: `ResolveOrderCodeAction` — (1) resolve the code to `(id, tenant_id)` only, via a
+  registered central read (`order.lookup`, §6.5 Category 1); (2) authorize the requester:
+  platform super-admin; the order's customer (global user-id match, no tenant needed); or store
+  staff — active membership in the order's tenant, the order-view permission, and the resolved
+  tenant equal to the caller's active tenant (rev 4.5, F5 — staff never resolve other stores'
+  codes) — anything else stops here with 404; (3) `runForTenant($tenantId)` and load the order under the
+  full scope for the staff-side continuation; (4) return only the fields the audience may see. The
+  workflow discloses nothing beyond "this code exists" to a requester who already knows the code
+  and is the customer or a super-admin.
+- **Tests:** §10 rows 53–54.
+
+### 6.10 Transfer and export (rev 4.2)
+
+- **Per-store rows:** `transfer_imports` and `transfer_remaps` gain `tenant_id` (the destination
+  store); the remap unique becomes `(tenant_id, source_installation, module, entity, source_id)`
+  (class T). `transfer_installation` stays one row per installation and `core_transfer_locks`
+  stays installation-level; the lock name becomes `transfer:import:{tenant_id}:{module}`, so two
+  stores can import the same module at once.
+- **A cross-store import is a remap import.** Importing store A's export into store B creates B's
+  rows. The raw-id shortcut (same installation → reuse ids) is valid only when the source tenant
+  equals the destination tenant; otherwise it is refused. Lease, fencing and the savepoint rules of
+  the PostgreSQL plan are unchanged — they belong to the import session.
+- **Settings export (P5):** a store admin's export contains store rows only — never platform
+  settings and never credentials (payment credentials, `fx_api_key`). Today `SettingTransfer`
+  exports everything including the `fx_api_key` ciphertext (F43). A platform-level export, if it is
+  kept at all, is a super-admin `CentralOperations` operation.
+- **Blanket update removed:** `DiscountTransfer.php:537-539` updates every coupon row with no
+  `WHERE` (F43); with several stores that is a cross-store write. It gets a tenant clause (K5).
+- Exports are streamed (F43); artifact storage only per §6.4.
+- **Tests:** §10 rows 58–60.
+
+### 6.11 Extensions (rev 4.2, P3)
+
+`core_extensions` is installation-level, but its toggle routes are reachable by store admins
+(F44). Install / uninstall / toggle move to super-admin-only platform routes, the
+`core.admin.extensions.*` permissions are removed from tenant roles, and `core.extension-updates`
+stays a platform cache. A per-store enable switch is out of scope and recorded in §9.7.
+
+### 6.12 Notifications, caches, rate limits (rev 4.2)
+
+- **Notifications:** templates take store name and storefront URL from the tenant snapshot at
+  render time, inside the tenant run (rev 4.1 §9.7) — `config('app.name')` (F47) is no longer the
+  source. Admin recipients are the store's staff, read under the scope (the team-aware query of
+  §5). The 24 queued listeners carry the payload stamp (§6.1); the broadcast channel rename is
+  rev 4.1's realtime row.
+- **User-level tables:** `notification_preferences`, `notification_push_subscriptions`,
+  `notification_telegram_subscriptions` stay installation-level (per user); a Web Push payload
+  names the store it belongs to.
+- **Caches** — rule in §6.7 item 6. Store-dependent: `setting.*` (timezone, identity, fx,
+  prices-include-tax), `payment.credentials`, `payment.paypal.access_token`,
+  `core.language.default_id`, `catalog.public.sitemap`, `content.public.sitemap`.
+  Installation-level: `telegram:bot:username`, `core.extension-updates` (+ `.stale`),
+  `core.regions.{CC}`, `catalog.search.reconcile.failures`, the Google JWKS cache. Locks keyed by
+  a globally unique id (`media-variants:{id}`, `webhook-endpoint:{id}`) need no tenant because ids
+  never repeat across stores; `sign-in-gate`, `core.fx.sync` and the JWKS refresh lock are
+  platform.
+- **Rate limiters:** `cart-public`, `contact-submit`, `contact-subscribe`,
+  `support-ticket-create`, `support-ticket-reply` are keyed by tenant + ip; `webhook` by tenant
+  slug + driver; `auth-*`, `notification-webhook` and `machine` stay platform.
+- **Tests:** §10 rows 43–45, 63–65.
 
 ---
 
@@ -639,117 +1911,181 @@ tenant snapshot for metadataBase, sitemap, robots.
 ## 8. Phased delivery — files, order, acceptance criteria
 
 Heavy commands are sequenced and `nice -n 10`-prefixed (4-core machine); `composer analyse` before
-Pest in each phase; `vendor/bin/pint` on touched paths; full `composer test` once per phase.
+Pest in each phase; `vendor/bin/pint` on touched paths; full `composer test` once per phase —
+the SQLite suite, plus the PostgreSQL suite against the dev stack.
 Phase-by-phase approval: each phase ends with a changed-file list + analyse/test output for review
 before the next phase starts.
 
 ### Phase 1 — Tenancy core + Tenant module (backend)
 
-Files (new): `Modules/Tenant/**` (full module per §4.1, incl. onboarding endpoint stub wired in
-Phase 6); `Modules/Core/app/Support/Tenancy/{TenantContext,CentralOperations,TenantSnapshot}.php`,
+Files (new): `Modules/Tenant/**` (full module per §4.1, incl. the `onboarding`-audience endpoint
+stub — §3.1 — wired in
+Phase 7); `Modules/Core/app/Support/Tenancy/{TenantContext,CentralOperations,TenantSnapshot}.php`,
 `Modules/Core/app/Models/Scopes/TenantScope.php`, `Modules/Core/app/Models/Traits/TenantScopedTrait.php`,
 `Modules/Core/app/Schemas/Shared/TenantScopedTrait.php`,
 `Modules/Core/app/Http/Middleware/{ResolveTenant,AuthorizeTenantAccess}.php`,
-`Modules/Core/app/Contracts/Gateways/Tenant/**`, queue lifecycle listeners (snapshot stack), the
-central-mode architecture test, and tenant log-context/Sentry tagging (§9.5 logging, rev 4.1
-assignment). `Modules/Core/lang/*/errors.php` keys (`tenant_not_found`, `tenant_suspended`,
-`tenant_membership_required`, `tenant_context_missing`; `idempotency_in_progress` lands with
-Phase 4). Modified: `CoreServiceProvider` (middleware push + payload stamping + listeners),
-`CoreDatabaseSeeder`. `config/permission.php` untouched this phase.
+`Modules/Core/app/Contracts/Gateways/Tenant/**`, the `TenantResolved` event contract, queue
+lifecycle listeners (snapshot stack), the central-mode architecture test, and tenant
+log-context/Sentry tagging (§9.7 logging, rev 4.1 assignment). `Modules/Core/lang/*/errors.php`
+keys (`tenant_not_found`, `tenant_suspended`, `tenant_membership_required`,
+`tenant_context_missing`, `tenant_selection_required`; `idempotency_in_progress` lands with
+Phase 4). (rev 4.2) `app/Octane/ResetTenantContext.php` + its place first in
+`config/octane.php`. (rev 4.4) `NormalizeTenantRequest` (Stage 1) and the revised Stage-2
+`ResolveTenant` with the middleware priority list (§3.1). (rev 4.5) the tenant-neutral
+`onboarding` audience + its route allowlist (§3.1), webhook slug resolution in Stage 2 (§3.1),
+and the typed `CentralOperation` interface + handler registry (§6.5). Modified:
+`bootstrap/app.php`
+(global prepend of the Stage-1 normalizer + `$middleware->priority([...])`, §3.1), the
+`personal_access_tokens` migration (nullable `tenant_id`, B2), `CoreServiceProvider` (payload
+stamping + listeners), `CoreDatabaseSeeder`.
+`config/permission.php` untouched this phase.
 
 Tests: resolution matrix (rows 5, 8 public/user cells, 14), scope fail-closed unit tests (row 12),
 context snapshot/restore incl. nested `runForTenant` (row 20), queue lifecycle in **both models**
 (sync inline + `queue:work --once`, rows 26–28), tenant/domain/membership CRUD + non-super-admin
 403, `CentralOperations` registry/reason/exception-safety + architecture test (rows 21–22),
-default-tenant seeder assertion.
+default-tenant seeder assertion, (rev 4.2) effective middleware order and the Octane reset
+listener, (rev 4.3) route-table enumeration — every API route carries a classified audience or
+the test fails (row 82), (rev 4.4) behavioral lifecycle tests — the audience decision happens
+after route match, the context before binding and credential application, proven on real requests
+through the priority-sorted stack (row 83) — machine-token Stage-2 resolution incl.
+ordinary/revoked/header-override cases (row 84) and the provisioning write guard (row 94),
+(rev 4.5) tenant-neutral onboarding from the central host (row 95), webhook slug resolution
+(row 96), unauthorized central-operation call site (row 98), quota-boundary concurrency on
+PostgreSQL (row 105), suspended-tenant machine denial (row 108), and priority/defaults stack
+assertions across representative routes (row 110), (rev 4.6) exact-class central-operation
+binding (row 115), (rev 4.7) queue payloads cannot grant central mode (row 118).
 
 **Accept**: new tests green; **entire existing suite green with zero edits** (loopback fallback);
 `composer analyse` clean; seeder produces default tenant + domain + owner membership.
 
 ### Phase 2 — Data scoping (backend bulk) — A1 confirmed; in-place migrations approved
 
-Per-module batches (edit migrations in place + `TenantScopedTrait` on models + fillable +
+Step 0 (rev 4.2, entry artifact reviewed before any code change): the authoritative table and
+unique-index lists are dumped from the migrated database (`information_schema.columns`,
+`pg_indexes`) and diffed against §4.4 and §4.5; any difference is settled in this plan first.
+**This is a hard gate (rev 4.3, per review): no Phase 2 code change starts until the diff is empty
+or every difference is settled here.**
+
+Per-module batches (edit migrations in place + `use TenantScopedTrait;` on models + fillable +
 factories + HelperTrait `seedTenant()`/`withTenant()`):
 
-1. Commerce: Catalog (25 migrations incl. `*_translations`), Inventory, Cart, Order.
-2. Ops: Tax (`ScopedRateUniqueRule` + `UniquePair`/`LanguageUniquePair` tenant clause), Shipping,
-   Discount (pivot-sync `AssertsTenantOwnership` per §4.3), Payment (config table lands Phase 4;
-   payments/payment_refunds data scoping here), Webhooks (tenant columns per §6.2).
-3. Content: Content, Menu, Media (§6.4), Notification, Setting (settings rows per-tenant).
-4. Engagement: User (addresses/wishlist), Support, Contact, Audit, Transfer (per-tenant; central
-   exports via `CentralOperations`), Core `idempotency_keys` schema change lands with Phase 4.
-5. Raw-query remediation list F9 closed item by item; intra-module composite FKs added (§4.3
-   layer 3); `tenancy:audit` command with relation map incl. pivot relations.
+1. Commerce: Catalog (30 store-owned tables: 4 pivots, 9 translation tables), Inventory, Cart,
+   Order (8 tables; document numbering itself lands in Phase 5).
+2. Operations: Tax (`ScopedRateUniqueRule` + `UniquePair`/`LanguageUniquePair` tenant clause —
+   closes K1), Shipping, Discount (pivot-sync `AssertsTenantOwnership` per §4.3; closes K5),
+   Payment (4 tables; the resolver lands in Phase 4), Webhooks, Media (§6.4), Machine audience
+   (closes K3, K4).
+3. Content and configuration: Content, Menu, Setting (store rows + platform tier, P5),
+   Notification (`notifications`), Audit (platform tier), Contact, `tenant_languages` /
+   `tenant_currencies` (P2).
+4. Engagement: User (wishlist; addresses and profiles stay global — rev 4.3, B4: the address
+   book keeps user scoping only, staff read `order_addresses` snapshots), Support, Core
+   (`idempotency_keys` schema change lands with Phase 4; `transfer_*` with Phase 5).
+5. Close-out: every `DB::table` chain on a store-owned table gets a tenant clause or a
+   `CentralOperations` wrap with a justifying comment (§4.3 layer 0); every `unique:` / `exists:`
+   rule on a store-owned table becomes tenant-aware; intra-module composite FKs (layer 3);
+   `tenancy:audit` command with relation map incl. pivot relations.
 
-**Accept**: rows 1–4, 12–13, 19, 23, 31 pass via two seeded tenants; every F9 site tenant-claused
-or explicitly central-wrapped with a justifying comment; composite-FK violation test proves DB-level
-rejection of a cross-tenant intra-module reference; `tenancy:audit` reports zero violations after
-seeding; suite green.
+**Accept**: rows 1–4, 12–13, 19, 23, 31, 46–52, 68, 70, 73, 75, 85–87, 92, 101–102, 106, 113 pass via two seeded tenants; the §4.5
+dispositions are visible in `pg_indexes`; builder-chain and validation-rule architecture tests
+green; composite-FK violation test proves DB-level rejection of a cross-tenant intra-module
+reference; `tenancy:audit` reports zero violations after seeding; suite green.
 
 ### Phase 3 — Auth & permissions
 
 Files: `config/permission.php` (teams), permission-tables migration (in place, §5),
 `AuthServiceProvider` Gate::before pivot check, `AuthorizeTenantAccess` team-id set/reset,
-`SignInAction` memberships payload, role CRUD per-tenant aware, role seeder per tenant.
+`SignInAction` memberships payload, admin default selection (§3.1, A5), role CRUD per-tenant
+aware, role seeder per tenant; (rev 4.3) the `auth_roles_platform_unique` partial index (§5) and
+the Category-2 tenant-operation membership actions (§6.5).
 
-**Accept** (rev 4 additions per review): rows 6–7; platform (NULL-team) role vs tenant role
+**Accept** (rev 4 additions per review): rows 6–7, 69, 72; platform (NULL-team) role vs tenant role
 separation — identical role names coexist across tenants; role/team switching on consecutive
-requests; **membership revocation takes effect on the very next request** (row 33); existing
-super-admin factory flows green.
+requests; **membership revocation takes effect on the very next request** (row 33); (rev 4.2)
+row 67; existing super-admin factory flows green; (rev 4.5) rows 103–104; (rev 4.7) row 119.
 
-### Phase 4 — Jobs, cache, webhooks, payments, idempotency
+### Phase 4 — Jobs, cache, webhooks, payments, idempotency, media, store runtime
 
 Files per §6: queue stamping + listeners (if not already in Phase 1); `DeliverWebhookJob`
-bootstrap branches + `TenantAware` middleware; outbox tenant columns; `payment_gateway_configs`
-migration + `PaymentConfigurationResolverInterface` + **full F25 client/driver/manager refactor**
-(incl. atomic `credential_version` bumps and disabled-is-unusable enforcement, §6.3); PayPal token
-cache scoping (§6.3); `POST /webhook/{tenant-slug}/{driver}` routing; suspended-tenant job skip +
-audit; media store path; five cache keys + `UpdateSettingAction`; **idempotency redesign per §6.6**
-(NOT NULL `principal_key`, composite unique, atomic reservation, 409 in-progress); **Reverb channel
-migration to tenant-scoped names + broadcasting authorization checks** (§9.5 realtime);
-**tenant-aware rate-limiter keys** (§9.5); **tenant-branded notifications** (§9.5).
+bootstrap branches + `TenantAware` middleware; outbox tenant columns; `payment_driver_credentials`
+tenant columns + `PaymentConfigurationResolverInterface` + **full F25 client/driver/manager
+refactor** (incl. atomic `credential_version` bumps and disabled-is-unusable enforcement, §6.3);
+PayPal token cache scoping (§6.3); `POST /webhook/{tenant-slug}/{driver}` routing;
+suspended-tenant job skip + audit; media store path (§6.4, P4); **store runtime per request
+(§6.7)** incl. the seven resolver fixes (F38) and the `SettingServiceProvider::boot()` cleanup
+(closes K8); the 18-key cache disposition table + `UpdateSettingAction`; **idempotency redesign per
+§6.6** (NOT NULL `principal_key`, composite unique, atomic reservation, 409 in-progress);
+**Reverb channel migration to tenant-scoped names + broadcasting authorization checks** (§9.7
+realtime); **tenant-aware rate-limiter keys** (§9.7); **tenant-branded notifications** (§6.12);
+`NotificationCreated` registered (K7); `MediaGateway::upsertLocal` actor (K6). (rev 4.3–4.4
+additions: idempotency fencing per §6.6 — claim token, the abort-on-lost-ownership `committed_at`
+marker, `idempotency_unresolved`, provider keys derived from the stable logical identity; the
+platform-settings resolver per §6.7 incl. `PlatformSettingMissing`; the media per-key database
+lease per §6.4.)
 
-**Accept**: rows 9–11, 17–18, 24–25, 29–32; concurrency test proves exactly one of two parallel
-same-key requests executes (other 409 or replay); same key string reusable across tenants; tenant
-signature routing accepts only the matching tenant secret; credentials/token caches never cross
-tenants or credential versions.
+**Accept**: rows 9–11, 17–18, 24–25, 29–32, 42, 43–45, 61, 63–65, 76–79, 81, 88–89, 91, 93, 97, 99–100, 109, 111–112, 114, 116–117, 120–123, 113 (the media coordination tables' triggers); concurrency test proves exactly
+one of two parallel same-key requests executes (other 409 or replay); same key string reusable
+across tenants; tenant signature routing accepts only the matching tenant secret;
+credentials/token caches never cross tenants or credential versions; the Octane isolation gate
+passes with two stores on one worker.
 
-### Phase 5 — Storefront
+### Phase 5 — Search, order documents, transfer, console commands (rev 4.2)
+
+Files: §6.8 (index writer `tenant_id`, `filterableAttributes`, the fail-closed filter in the
+search client, tenant lookup for writers, registration of `catalog:reindex` — scheduled nightly —
+`catalog:search:install`, `catalog:search:cleanup`, `media:regenerate-variants`, closes K2);
+§6.9 (`order_document_sequences` unique, per-store numbering, prefix setting, PDF path, tenant
+fan-out sweeps); §6.10 (`transfer_imports` / `transfer_remaps` tenant columns, lock name,
+cross-store import = remap tier, settings export split, `DiscountTransfer` fix); the console
+command run-mode declaration + architecture test (§6.7.2); Octane isolation gate additions.
+
+**Accept**: rows 53–60, 66, 80, 107; a reindex over two seeded stores leaves no document without
+`tenant_id`; same-worker consecutive requests for two stores pass the gate; suite green.
+
+### Phase 6 — Storefront
 
 Files: `apps/storefront/lib/api/client.ts` (+ `server.ts`) forward `X-Tenant-Host`;
 `lib/site-url.ts` per-request origin; sitemap/robots/metadataBase per host; payment return URLs
-from tenant domains; settings/theme/menu per tenant.
+from tenant domains; settings/theme/menu per tenant; (rev 4.2) media and image URLs rendered with
+the resolved store host (§6.4).
 **Accept**: two local hosts (`a.localhost`, `b.localhost`) render different tenants end-to-end
 through compose; row 15 (guest cart isolation); **host-spoofing tests** — forged/`X-Forwarded-Host`
 combinations cannot switch a user-route tenant identity (row 14); customer account works across
-stores (global user, per-tenant carts/orders).
+stores (global user, per-tenant carts/orders); (rev 4.2) row 51.
 
-### Phase 6 — Admin panel
+### Phase 7 — Admin panel
 
 Files: `apps/admin/src/stores/tenant-store.ts`; `api-client.ts` `X-Tenant-Id` interceptor;
 sign-in memberships; real `team-switcher.tsx` (switch = set tenant + `queryClient.clear()` +
 router refresh); `src/features/tenants/` CRUD + members + onboarding UI; six locale files (en + fa
 complete); storefront deep-links from active tenant domain; payment gateway config UI
-(per-tenant credentials + webhook secret + enabled toggle).
+(per-tenant credentials + webhook secret + enabled toggle); (rev 4.2) the store switcher lists the
+member's own stores only (A5); extension toggles leave the store admin (P3); (rev 4.3)
+`ProvisionTenantAction` wiring (§6.5 Category 3) and the domain-verification UI (challenge
+issue/verify, release).
 **Accept**: row 16 verified by asserting refetch (not stale render) including rapid back-and-forth
 switching (concurrent in-flight requests cancel/refetch — row 34); tenant CRUD + member management
-+ onboarding round-trip; payment config UI reads/writes only the active tenant; locales en + fa.
++ onboarding round-trip (rows 71–72); payment config UI reads/writes only the active tenant;
+locales en + fa; (rev 4.2) row 62; (rev 4.3) row 74; (rev 4.4) row 90.
 
-### Phase 7 — Infra, Bruno, docs, security gate
+### Phase 8 — Infra, Bruno, docs, security gate
 
 Nginx passes Host already; document `*.localhost` dev hosts; `.env.example` gains
 `TENANCY_FALLBACK_HOSTS`/`TENANCY_CENTRAL_HOSTS` (prod: empty) and payment vars marked
 test-fallback-only; Bruno `Local.bru` tenant presets + `Tenant/Admin` folder; backend `AGENTS.md`
 tenancy section (when to add `TenantScopedTrait`, `CentralOperations` registry rules, global-table
-list, composite-FK rule); update `docs/PLATFORM_GAPS_ROADMAP.md`; regenerate module graph
-(`python3 scripts/generate-module-graph.py`, commit `docs(monorepo): regenerate module dependency
-graph`); tenant operations runbook (provisioning, suspension, domain verification, deletion,
-rate-limit tuning).
+list, composite-FK rule, console run modes); update `docs/PLATFORM_GAPS_ROADMAP.md`; regenerate
+module graph (`python3 scripts/generate-module-graph.py`, commit `docs(monorepo): regenerate
+module dependency graph`); tenant operations runbook (provisioning, suspension, domain
+verification, deletion, rate-limit tuning, search reindex).
 
 **Final security acceptance gate** (rev 4, per review): an automated adversarial suite asserts
-cross-tenant access is denied for products/categories, orders/payments, customer addresses, media
-and exports, payment credentials, private realtime channels, and background-job records (rows 35–37),
-run against a production-like config (empty fallback list).
+cross-tenant access is denied for products/categories, orders/payments, the customer address book
+under the three rules of §2.1 (rev 4.3, B4), media
+and exports, payment credentials, private realtime channels, background-job records, search
+results and document files (rows 35–38, 54–55, 73), run against a production-like config (empty
+fallback list).
 
 **Accept**: fresh-clone bootstrap serves a working default-tenant storefront + admin with zero
 tenant configuration; security gate green.
@@ -758,33 +2094,58 @@ tenant configuration; security gate green.
 
 ## 9. Additional risks, boundaries, and requirements
 
-### 9.1–9.4 Risks
+### 9.1–9.6 Risks
 
 - **R1 — Platform-level services**: Telegram bot, Mail mailer, and Reverb app remain platform-level
   (A2 covers only payment gateways). Per-tenant mail sending identities (from-name/domain from
-  tenant settings) ride the platform transport — §9.5 notifications.
+  tenant settings) ride the platform transport — §9.7 notifications.
 - **R2 — Idempotency**: resolved by the §6.6 redesign (was: tenant column only).
 - **R3 — Import/Transfer surfaces** (F9): high-risk raw-query sites; require `CentralOperations`
-  or tenant-context wrapping plus `AssertsTenantOwnership` (Phase 2).
+  or tenant-context wrapping plus `AssertsTenantOwnership` (Phase 2, Phase 5).
 - **R4 — App-layer tenant integrity for cross-module references**: deliberate module-boundary
   trade-off; mitigated by scoped validation, in-transaction ownership asserts, intra-module
   composite FKs (§4.3), and the relation-map audit. Residual risk: an unreviewed raw write
   bypassing all layers; the architecture test and audit map must evolve with schema.
+- **R5 — Shared search index (rev 4.2)**: isolation depends on one filter that one client always
+  injects. Mitigation: the filter is not optional in the client API, a missing tenant throws, and
+  Eloquent hydration is a second line. If the reviewer prefers isolation without a filter, P1
+  flips to one index per store (§6.8) without changing any other section.
+- **R6 — Process-global store runtime (rev 4.2)**: timezone and statics are per process (F39).
+  Mitigation: reset first, apply per request, snapshot per job, and the Octane isolation gate run
+  with two stores on one worker (§6.7).
 
-### 9.5 Missing requirements (rev 4, per review)
+### 9.7 Missing requirements (rev 4, per review; phases renumbered in rev 4.2)
 
 | Area | Requirement |
 |---|---|
 | Tenant deletion | Soft-delete is the default (storefront closes like suspension). Permanent deletion is a super-admin `CentralOperations` action with an audit reason: revokes memberships, detaches domains (after a configurable retention window), anonymizes rather than hard-deletes order/tax records where legally prudent. Retention/recovery window configurable; no automatic hard delete. |
-| Domain management | Concrete protocol (rev 4.1, review finding 5): **verification is HTTP-first with DNS TXT as the alternate** — the admin generates a 32-byte random token per domain attempt (stored on the `tenant_domains` row with `verified_at` null); HTTP challenge = serve the token at `http://{domain}/.well-known/baxela-verification.txt`, DNS alternate = a `TXT` record `_baxela-verify.{domain}` containing the token. Tokens expire after a configurable TTL (default 48 h) and an unverified/expired domain resolves nothing (§3.1 lookup requires `verified_at`). Loss of control: verified status is re-checked opportunistically on super-admin action and can be force-revoked; a **released domain enters a cooling-off window (default 7 days, configurable — longer than common DNS TTLs) during which it cannot be attached to a different tenant**, after which the new owner must complete their own verification. A domain is attachable to at most one tenant (unique index) and reassignment always requires release + cooling-off + fresh verification. |
-| Rate limiting | **Phase 4** (implementation): public/user rate limiters become tenant-aware (`by($tenantId.':'.$ip)`) so one tenant's traffic cannot exhaust another's quota; webhook limiter keyed by tenant slug + driver. **Phase 5** (verification): storefront-facing limiter isolation tested end-to-end (row 41). |
+| Domain management | Concrete protocol (rev 4.1, review finding 5; lifecycle persisted rev 4.3, B5): **verification is HTTPS-first with DNS TXT as the alternate** — the admin generates a 32-byte random token per domain attempt, stored **hashed** on the `tenant_domains` row (`verification_token_hash`) with `verified_at` null; the HTTPS challenge serves the token at `https://{domain}/.well-known/baxela-verification.txt` (plain HTTP only as an explicit non-production fallback), the DNS alternate is a `TXT` record `_baxela-verify.{domain}` containing the token. **Fetch protections (rev 4.3; rebinding closed rev 4.4, B5):** the verification fetch resolves both A/AAAA once, rejects private, loopback, link-local, unspecified and IPv4-mapped-IPv6 ranges, **then connects to a pinned, validated IP while preserving the hostname for TLS SNI and the HTTP Host header** (e.g. `CURLOPT_RESOLVE`) — the HTTP client never performs a second DNS lookup, and the actual peer address is validated after connect; no redirects are followed; short timeout; the token is compared in constant time. Test: row 90. Tokens expire after a configurable TTL (default 48 h; `verification_expires_at`) and an unverified/expired domain resolves nothing (§3.1 lookup requires `verified_at`). Loss of control: verified status is re-checked opportunistically on super-admin action and can be force-revoked; a **released domain enters a cooling-off window (default 7 days, configurable — longer than common DNS TTLs; `released_at` / `cooling_off_until`) during which it cannot be attached to a different tenant**, after which the new owner must complete their own verification. A domain is attachable to at most one tenant (unique index), at most one primary domain exists per tenant (partial unique index, §4.1), and reassignment always requires release + cooling-off + fresh verification. |
+| Rate limiting | **Phase 4** (implementation): public/user rate limiters become tenant-aware (`by($tenantId.':'.$ip)`) so one tenant's traffic cannot exhaust another's quota; webhook limiter keyed by tenant slug + driver. **Phase 6** (verification): storefront-facing limiter isolation tested end-to-end (row 41). |
 | Realtime | **Phase 4** (implementation, file-listed): channel names migrate to tenant scope (`private-tenant.{tenantId}.*`), the broadcasting authorization endpoint validates tenant identity + membership/customer status, and all `broadcasts()`/`Echo` channel references are updated with the rename; cross-tenant subscription by changing an identifier is denied (row 35). |
 | Logging | **Phase 1** (implementation): `ResolveTenant` adds `tenant.id` to the request log context (extending the `AssignRequestId` pattern) and tags the Sentry scope when the SDK is active; logs never include credentials (Audit redaction, §6.3). Acceptance: log-context assertion in the Phase 1 middleware tests. |
-| Exports | Transfer/export artifacts stored under `tenants/{id}/` and downloadable only through tenant-scoped authorization; export listings are tenant-scoped (row 37). Phases 2 (storage paths) and 7 (security gate). |
-| Notifications | **Phase 4** (implementation): notification mailables/listeners render tenant identity (store name, from-name, storefront URL from tenant settings — resolved at send time inside the tenant run); transport stays platform-level (R1). Acceptance: notification content test asserts the owning tenant's branding. |
-| Tenant onboarding | Self-serve workflow (user audience): sign up → `POST /api/v1/tenant/user/tenants` (rate-limited) → creator becomes owner (active membership + owner role for their tenant) → `<slug>` subdomain assigned + seeded default settings/menu → invite members. Super-admin CRUD remains for platform operations. |
-| Search | Any future search index (external service or DB fulltext) must carry `tenant_id` and filter on it; recorded as a constraint for future work, not built here. |
+| Exports | Exports are streamed today (F43); any stored artifact goes under `tenants/{id}/` and is downloadable only through tenant-scoped authorization; export listings are tenant-scoped (row 37). Phases 5 (§6.10) and 8 (security gate). |
+| Notifications | **Phase 4** (implementation): notification mailables/listeners render tenant identity (store name, from-name, storefront URL from tenant settings — resolved at send time inside the tenant run); transport stays platform-level (R1). Acceptance: notification content test asserts the owning tenant's branding (row 63). |
+| Tenant onboarding | Self-serve workflow (**`onboarding` audience** — tenant-neutral, §3.1; rev 4.6, B4: the canonical route is `POST /api/v1/onboarding/tenants`, named `api.tenant.onboarding.tenants.store` — earlier `user`-audience wording is superseded everywhere): sign up → `POST /api/v1/onboarding/tenants` (rate-limited; authenticated global user, no resolved tenant required) → creator becomes owner (active membership + owner role for their tenant) → `<slug>` subdomain assigned + seeded default settings/menu → invite members. Super-admin CRUD remains for platform operations. Phase 7. (rev 4.3, B1: executed by `ProvisionTenantAction` — §6.5 Category 3; single transaction, onboarding limits, no central mode; test row 71.) |
+| Search | (rev 4.2) Meilisearch is in production scope: §6.8, Phase 5. |
 | Backups | Per-tenant data export via the Transfer standard (already tenant-scoped); per-tenant restore is a follow-up decision, not in scope. |
+| Machine audience (rev 4.2; design rev 4.4, B2; lifecycle rev 4.5, F6) | Machine tokens are issued for one store — the tenant id is stored on the `personal_access_tokens` row at issue time (a nullable column; ordinary user tokens stay NULL, §4.4) — and resolved in Stage 2 by validating the token and reading its tenant before any binding (§3.1); machine routes ignore every tenant header. Lifecycle rules (rev 4.5): the token's `tenant_id` is **immutable after issuance**; ordinary token issuance always leaves it NULL; only the dedicated machine-token issuance action may set it; "revoked" means row deletion (Sanctum semantics — no extra column); machine tokens are issued with **explicit abilities** the machine routes check; machine requests against suspended or soft-deleted tenants are denied before any tenant-scoped work (row 8 includes the machine audience, row 108); permanent tenant deletion revokes its machine tokens. Today `MachineTokenRequest` validates against a nonexistent `users` table (K3) and the machine product listing has no ownership filter (K4). Phase 1 (column + Stage-2 resolution), Phase 2 (K3/K4). |
+| Multi-store owners (rev 4.2) | A5: one store at a time; the admin switcher lists the member's own stores; no combined view. Phase 3 (selection rule), Phase 7 (UI). |
+| Per-store extensions (rev 4.2) | Out of scope under P3; recorded as a possible follow-up if a store ever needs its own switch. |
+
+### 9.8 Known defects found by the inventory (rev 4.2) — pre-existing, fixed only where a phase touches the code
+
+| # | Defect | Fixed in |
+|---|---|---|
+| K1 | `Modules/Core/app/Rules/LanguageUniquePair.php`: the ignore-id clause is added on top of the equality clause, so on update the query can never match — uniqueness is not enforced on update. | Phase 2 (the rule is rewritten tenant-aware) |
+| K2 | `catalog:reindex`, `catalog:search:install`, `catalog:search:cleanup`, `media:regenerate-variants` are not registered as commands; `catalog:reindex` is not scheduled although the runbook calls it the nightly backstop. | Phase 5 |
+| K3 | `MachineTokenRequest` validates against a nonexistent `users` table. | Phase 2 |
+| K4 | The machine product listing has no ownership filter. | Phase 2 |
+| K5 | `Modules/Discount/app/Transfer/DiscountTransfer.php:537-539` updates every coupon row (no `WHERE`). | Phase 2, Phase 5 |
+| K6 | `MediaGateway::upsertLocal` hard-codes `USER_ID => 1`. | Phase 4 |
+| K7 | `NotificationCreated` (`ShouldBroadcast`) is outside the dispatch registry. | Phase 4 |
+| K8 | Store identity and timezone are applied at boot only, so a settings update never reaches a running Octane worker. | Phase 4 (§6.7) |
+| K9 | `catalog_images.url` stores absolute URLs with the installation host. | Phase 4 (storage), Phase 6 (rendering) |
+| K10 | Two root media folders can share a name (`[name, parent_id]` unique with NULL parent). | Phase 2 (partial unique index on `(tenant_id, name) WHERE parent_id IS NULL`, §4.5) |
 
 ---
 
@@ -799,24 +2160,24 @@ tenant configuration; security gate green.
 | 5 | Unknown host (prod-like config) | 404 envelope | 1 |
 | 6 | User switches via `X-Tenant-Id` without membership | 403 | 3 |
 | 7 | Super-admin switches via header | allowed | 3 |
-| 8 | Suspended tenant matrix: public/user; active member admin; platform super-admin admin; queued jobs | public/user and active member admin → 403; super-admin full access/reactivate; queued jobs skipped + audit logged | 1/3/4 |
+| 8 | Suspended tenant matrix: public/user; active member admin; platform super-admin admin; queued jobs; machine | public/user and active member admin → 403; super-admin full access/reactivate; queued jobs skipped + audit logged; machine denied before any scoped work | 1/3/4 |
 | 9 | Queued job runs for A | touches only A's rows | 4 |
 | 10 | Cache read under A then B | no shared values (sitemap, settings keys) | 4 |
 | 11 | Same idempotency key on A then B | no cross-replay; both usable independently | 4 |
 | 12 | Tenant context missing (unit) | `TenantContextMissingException`, no query | 1 |
 | 13 | Identical product name/slug in A and B | both allowed (tenant-scoped uniques) | 2 |
-| 14 | `X-Tenant-Id`/`X-Forwarded-Host` on a public/user route | ignored — host identity wins | 1/5 |
-| 15 | Guest cart token from A used against B | no access | 5 |
-| 16 | Admin tenant switch (incl. rapid back-and-forth) | query cache cleared, lists refetch, no stale cross-tenant render | 6 |
+| 14 | `X-Tenant-Id`/`X-Forwarded-Host` on a public/user route | ignored — host identity wins | 1/6 |
+| 15 | Guest cart token from A used against B | no access | 6 |
+| 16 | Admin tenant switch (incl. rapid back-and-forth) | query cache cleared, lists refetch, no stale cross-tenant render | 7 |
 | 17 | Payment webhook (signed, tenant slug route) | writes land in that tenant only | 4 |
-| 18 | Media upload under A | stored under `tenants/{A}`, invisible to B | 4 |
+| 18 | Media upload under A | stored under A's prefix, invisible to B | 4 |
 | 19 | Import/export run per tenant | never crosses tenants | 2 |
 | 20 | Context restore after nested `runForTenant` / central ops | previous mode exact-restored (incl. on exception) | 1 |
 | 21 | Non-super-admin calls a central-mode route | 403; context unchanged | 1 |
 | 22 | `CentralOperations::run` with unregistered operation / missing reason | throws; audit records nothing but the attempt logs | 1 |
 | 23 | `tenancy:audit` sees a planted cross-tenant relation (direct + via pivot) | reports owner/reference tenant mismatch | 2 |
 | 24 | Webhook signature with wrong/other tenant secret | rejected before any write | 4 |
-| 25 | Payment config isolation | A cannot read/use B's credentials, secrets, or token cache | 4/6 |
+| 25 | Payment config isolation | A cannot read/use B's credentials, secrets, or token cache | 4/7 |
 | 26 | Sync (inline) dispatch inside a tenant request | job runs scoped; **request context intact afterward** | 1 |
 | 27 | Real worker (`queue:work --once`, database driver) | context init from payload; restored between jobs; residue from a prior job cannot leak | 1 |
 | 28 | Job dispatched with no tenant markers touches a scoped model | throws `TenantContextMissingException` | 1 |
@@ -825,21 +2186,102 @@ tenant configuration; security gate green.
 | 31 | Same key string, different tenants (composite unique) | both succeed independently | 4 |
 | 32 | PayPal token cache after credential rotation | new `credential_version` → fresh token, no reuse | 4 |
 | 33 | Membership revoked mid-session | next request 403 (no stale authorization) | 3 |
-| 34 | Rapid tenant switching in admin (concurrent in-flight requests) | responses never mixed across tenants | 6 |
+| 34 | Rapid tenant switching in admin (concurrent in-flight requests) | responses never mixed across tenants | 7 |
 | 35 | Cross-tenant private channel subscription | denied by channel authorization | 4 |
 | 36 | Intra-module composite FK cross-tenant insert | rejected at DB level | 2 |
-| 37 | Export artifact of A downloaded under B | denied | 2/7 |
-| 38 | Security acceptance sweep (prod-like config) | all resource classes listed in Phase 7 gate deny cross-tenant access | 7 |
+| 37 | Export artifact of A downloaded under B | denied | 2/8 |
+| 38 | Security acceptance sweep (prod-like config) | all resource classes listed in the Phase 8 gate deny cross-tenant access | 8 |
 | 39 | Two simultaneous **guest** requests, same tenant + key + cart token | exactly one executes; other gets replay or 409 (NOT NULL `principal_key` closes the NULL-duplicate hole) | 4 |
 | 40 | Nested sync jobs pinned to **different tenants** unwind in order | each `JobAttempted` pops its own snapshot; outer request/tenant context exact-restored | 1 |
-| 41 | Rate limiter keyed per tenant | tenant A's saturation does not throttle tenant B | 4/5 |
+| 41 | Rate limiter keyed per tenant | tenant A's saturation does not throttle tenant B | 4/6 |
 | 42 | Disabled payment method invoked via direct driver/client call | resolver throws; no credential use | 4 |
+| 43 | Same Octane worker serves store A then store B | runtime values (timezone, identity, locales, currencies, pricing mode) are B's; nothing of A remains | 4 |
+| 44 | Settings updated while a worker is running | next request sees the new values without a worker restart | 4 |
+| 45 | Tenant exception raised inside a `catch (Throwable)` resolver | rethrown — not turned into a platform default | 4 |
+| 46 | Same SKU / barcode / coupon code / newsletter email in A and B (case-insensitive) | both allowed | 2 |
+| 47 | Two root folders with the same name in one store | rejected | 2 |
+| 48 | Bulk insert / `upsert` without `tenant_id` on a store-owned table | rejected by the database | 2 |
+| 49 | `DB::table` chain on a store-owned table outside the registered list | architecture test fails | 2 |
+| 50 | `unique:` / `exists:` validation under store A with a matching row in B | counts A's rows only | 2 |
+| 51 | Same slug in two stores, requested on each store's host | each storefront returns its own product | 2/6 |
+| 52 | Settings: platform tier | one platform row per name; one row per store per name | 2 |
+| 53 | Order codes and document numbers | order codes unique across stores; the same document number may exist in A and B; sequences independent | 5 |
+| 54 | Document PDF of store A requested under store B | denied | 5 |
+| 55 | Search under A with a matching product in B (identical slug/SKU) | only A's product returned; `total` counts A only | 5 |
+| 56 | Search request without tenant context | throws; no unfiltered query is sent | 5 |
+| 57 | Reindex / reconcile over two stores | every document carries its `tenant_id`; none missing after cutover | 5 |
+| 58 | Store A's export imported into store B | B's rows created; A's rows untouched; raw-id shortcut refused | 5 |
+| 59 | Store-admin settings export | contains no platform settings and no credentials | 5 |
+| 60 | Two stores import the same module concurrently | both proceed — the lock is per store | 5 |
+| 61 | Identical file uploaded by A and B, then deleted by A | two objects; B's file intact | 4 |
+| 62 | Store admin calls an extension install/uninstall/toggle route | 403; super-admin succeeds | 7 |
+| 63 | Notification for a store B order, rendered after a store A job on the same worker | carries B's name and URL | 4 |
+| 64 | Every store-dependent cache key written under A | not read under B | 4 |
+| 65 | Store A saturates `contact-submit` | store B is not throttled | 4 |
+| 66 | Console command without a declared run mode | architecture test fails | 5 |
+| 67 | Admin request on a central host without `X-Tenant-Id` | one membership → selected; several → 422 with the list; none → 403 | 3 |
+| 68 | Machine route with a token issued for store A | sees A's rows only; headers cannot change the store | 2 |
+| 69 | Duplicate NULL-team platform role row | rejected by `auth_roles_platform_unique` at the database level (both engines) | 3 |
+| 70 | Full migration run on both planes | SQLite suite and PostgreSQL suite both migrate cleanly (driver-branch coverage) | 2 |
+| 71 | Normal user completes onboarding | tenant + owner membership + defaults committed atomically; central mode never entered; onboarding limits enforced | 7 |
+| 72 | Tenant admin invites / suspends / removes a member | MODE_TENANT write, permission-guarded; a membership write for another tenant is rejected | 3 |
+| 73 | Customer address book across stores | own book readable in any store; another customer's never; staff see only their store's `order_addresses` snapshots | 2/8 |
+| 74 | Domain verification with an expired token | rejected; the domain stays pending | 7 |
+| 75 | Second `is_primary` domain for a tenant | rejected by the partial unique index | 2 |
+| 76 | Crash after business commit, before idempotency completion | retry gets 409 `idempotency_unresolved`; the operation is never re-executed | 4 |
+| 77 | Expired claim reclaimed while its original request still runs | the original's fenced completion matches 0 rows; the new owner's result stands | 4 |
+| 78 | Stale claimant attempts completion after another claimant acquired the key | overwrite rejected (claim-token fencing) | 4 |
+| 79 | Concurrent deletion + publication of the same content hash (one store) | no live reference points at a deleted object; no orphaned object | 4 |
+| 80 | Search: older queued write after newer state / after a tombstone | cannot overwrite or resurrect; the reconciler repairs stale documents | 5 |
+| 81 | Platform settings applied inside a store request | the resolver supplies platform values; MODE_CENTRAL never entered | 4 |
+| 82 | API route with an unclassified name (or an unnamed API route) | tenant resolution fails closed (404 envelope in production, throw in non-production) | 1 |
+| 83 | Middleware lifecycle: audience decided after route match; context set before binding and credential application | proven behaviorally on real requests through the priority-sorted stack | 1 |
+| 84 | Machine token matrix: valid / revoked / ordinary user token / header override | stored tenant selected; revoked or invalid fails closed; headers never override; an ordinary token is never treated as machine | 1 |
+| 85 | Same root folder name in two tenants | both succeed — the partial index is per store | 2 |
+| 86 | Two concurrent platform default-currency changes | at most one default survives (partial unique) | 2 |
+| 87 | Two concurrent default-tax-class changes in one store | at most one default survives (partial unique) | 2 |
+| 88 | Stale claimant reaches the commit marker after losing ownership | the helper affects 0 rows → throws → the business transaction rolls back | 4 |
+| 89 | Reclaimed request triggers an external payment | the provider key = tenant + principal + key → same key, no duplicate charge | 4 |
+| 90 | Domain verification under DNS rebinding (incl. IPv4-mapped IPv6, aliases) | the connection is pinned to a validated IP; a prohibited peer is never reached | 7 |
+| 91 | Media per-key lease expires during a deletion | the stale owner fails closed before unlink; the still-referenced object survives | 4 |
+| 92 | Product (any store-owned row) tenant reassignment | rejected — `tenant_id` is immutable | 2 |
+| 93 | Missing or malformed platform setting | `PlatformSettingMissing` — never another store's value or a silent default | 4 |
+| 94 | Provisioning path attempts to write any tenant id other than the new tenant | rejected by the runtime guard; the architecture test recognizes only the named path | 1 |
+| 95 | Authenticated user provisions a store from the production-like central API host (`onboarding` audience) | succeeds with MODE_INACTIVE; no tenant resolution performed; no existing tenant required | 1 |
+| 96 | Payment webhook on the central API host | Stage 2 resolves the tenant from `{tenant-slug}` before the controller runs; tenant headers ignored | 1 |
+| 97 | Expired claim whose `committed_at` is already set | reclamation refused (`committed_at IS NULL` guard); `idempotency_unresolved`; the business operation is never re-executed | 4 |
+| 98 | Registered central operation invoked from an unauthorized call site | rejected even though the operation exists in the registry | 1 |
+| 99 | Media lease expires **between the executing transition and the unlink** | the stale worker's under-lock recheck fails and it never touches the filesystem; the newer generation's owner proceeds | 4 |
+| 100 | Worker crashes mid-critical-section (lock held) or after the unlink, before finalization | the connection drop releases the lock; recovery finalizes (file gone) or re-verifies references under a fresh lease; no referenced file is lost | 4 |
+| 101 | Direct SQL reassignment of a store-owned row's `tenant_id` | rejected by the database trigger, on PostgreSQL and SQLite alike | 2 |
+| 102 | Bulk write whose request/DTO carries another tenant's `tenant_id` | the input is rejected before the write; the stamp comes only from `TenantWriteStamp` (context-derived) | 2 |
+| 103 | Polymorphic collision: a non-user model with the same numeric id holding roles | cannot trigger the super-admin bypass (`model_type` + guard constrained) | 3 |
+| 104 | Store admin lists memberships of another store | denied — member listing is scoped to the active tenant | 3 |
+| 105 | Concurrent onboarding at the quota boundary (two PostgreSQL connections) | exactly the permitted number of tenants is created (user-row lock) | 1 |
+| 106 | Deleting/disabling the last default tax class, a tenant's default currency, or the platform base currency without a replacement | rejected; at least one default remains | 2 |
+| 107 | Store staff resolve an order code of their own store (with permission) | allowed when the resolved tenant equals the active tenant; other stores' codes still denied | 5 |
+| 108 | Machine request against a suspended / soft-deleted tenant | denied before any tenant-scoped work | 1 |
+| 109 | Platform setting updated while workers run | the next request uses the new value without a worker restart | 4 |
+| 110 | Middleware priority: Laravel defaults preserved; `ResolveTenant` precedes bindings, credentials, and tenant-aware throttling | asserted on the gathered stacks of representative admin/user/machine/webhook/throttled routes | 1 |
+| 111 | Failure cleanup (`terminate()`) after the business transaction committed | the claim is **not** deleted — it becomes `idempotency_unresolved`; no clean retry is created | 4 |
+| 112 | Lease reclamation attempted while an unlink transaction is open | blocks on the row lock until the unlink commits — no overlap between a newer owner and an in-flight unlink | 4 |
+| 113 | Immutability triggers on the store-ownership `tenant_id` tables **that exist at each gate** (Phase 2: every Phase-2 table; Phase 4: + the two media coordination tables; Phase 8: the full inventory), checked against an explicit expected-table list that **excludes** installation-level tenant-*key* tables (machine tokens, spatie team tables) | migration test asserts presence + direct-SQL rejection on PostgreSQL and SQLite | 2/4/8 |
+| 114 | Two concurrent idempotency reclaimers on the same expired claim | exactly one reclaims (serialized DELETE, unique-guarded INSERT); the other gets 409 | 4 |
+| 115 | A different `CentralOperation` class returns an already-registered `id()` string | obtains nothing — the registry binds exact final classes, not strings | 1 |
+| 116 | Deletion-intent lifecycle: duplicate sweeps, ambiguous unlink failure, publication against an executing intent | idempotent finalize; the intent survives for retry; publication resolves the intent first | 4 |
+| 117 | DB connection terminated while a deletion worker is mid-critical-section but still alive | the stale worker's later filesystem call can only touch its **retired generation**; no live-referenced object is lost | 4 |
+| 118 | Queued job whose payload carries `central_operation` | the listener sets no mode; central reads happen only inside `CentralOperations::run()` — a job entering MODE_CENTRAL directly fails | 1 |
+| 119 | Competing owner-set mutations on two PostgreSQL connections (two owners deactivated concurrently) | serialized on the tenant row; the last active owner is never removed | 3 |
+| 120 | Deterministic stale-worker race: A suspended after DB-session loss; B recovers, cancels the intent, and publishes a new generation; A resumes its rename | the new publication remains accessible; its exact object generation is intact; only the retired key moved | 4 |
+| 121 | Trash objects addressed through the public media namespace, direct HTTP, or any disk URL mapping | not reachable — trash lives on a dedicated private disk (`trash://`) with no public web-server mapping at all; only the cleanup process can access it | 4 |
+| 122 | A deletion intent targets a key, recovery cancels it, the terminal intent is pruned, and a later upload has identical content; the mirror case re-uploads against an eligible no-history object | the retired key is **never** reused — the new reference points at a different physical generation; the eligible object **is** reused (the optimization still works) | 4 |
+| 123 | Concurrent attach-vs-retire on one generation, **genuinely independent PostgreSQL connections, both orderings**: A locks the generation row to attach a reference and pauses; B attempts retirement — then the reverse | B is verified to block on the generation row until A commits, then sees the live reference and does not retire; reversed, B retires first and A's locked read finds `retired` → A publishes a fresh generation; the final **database and physical object state** is asserted, not just the lock wait; no deadlock (generation row always locked first) | 4 |
 
 ---
 
 ## 11. Implementation-readiness assessment
 
-All eight second-review findings are incorporated: (1) idempotency redesigned as concurrency
+Rev 4.1's eight second-review findings remain incorporated: (1) idempotency redesigned as concurrency
 control with composite uniqueness and atomic reservation (§6.6); (2) every async dispatch origin
 enumerated with no-inheritance and dual-model test requirements (§6.1); (3) layered integrity with
 intra-module composite FKs, in-transaction validation, batch-before-sync, and pivot-aware auditing
@@ -849,16 +2291,71 @@ and the paypal-cache contradiction is fixed by tenant+version scoping (§6.3); (
 lifecycle works identically for sync and worker execution — verified against `SyncQueue` source,
 with the rev-3 mid-request deactivation hazard fixed via snapshot/restore (F27, §6.1); (7) F2's
 fail-open description corrected (IS NULL, not unscoped); (8) the idempotency unique constraint is
-replaced, not extended (§6.6). The missing-requirements table (§9.5) and the Phase-7 security gate
+replaced, not extended (§6.6). The missing-requirements table (§9.7) and the final security gate
 (§8) close the operational gaps.
 
-**Verdict: rev 4.1 is implementation-ready.** The review approved rev 4 in substance; rev 4.1
-folds in its five targeted corrections: guest-safe idempotency identity (§6.6), the snapshot stack
-for nested job execution (§6.1), phase assignments + tests for every operational requirement
-(§9.5, §8), payment rotation/disabled/no-fallback precision (§6.3), and the concrete
-domain-verification protocol (§9.5). Architecture decisions are unchanged. **Phase 1 is
-authorized to start**; each subsequent phase requires the complete changed-file list,
-static-analysis results, and test results to be reviewed before authorization.
+Rev 4.2 adds what the inventory showed: the owner decisions (§0), the table classification (§4.4),
+the unique-index dispositions (§4.5), how models pick up the filter (§2.1), the middleware order
+(§3.1), and the subsystems that assumed one store (§6.7–§6.12) with their phases. Rev 4.3 closes
+the external review of rev 4.2: the three-category execution boundary (§6.5), portable
+NULL-collision uniqueness via partial indexes (§4.5, §5), crash-safe idempotency fencing (§6.6),
+settled address semantics (§2.1, §4.4), the completed domain lifecycle (§4.1), the
+platform-settings read path (§6.7), media same-key serialization (§6.4), search stale-write
+guarantees (§6.8), the BIGINT/orphan-trade-off wording (§4.2–§4.3), the route-audience grammar
+(§3.1), and the order-code lookup contract (§6.9). Rev 4.4 closes the second review: the
+two-stage identification lifecycle with a priority-sorted middleware order (§3.1), machine-token
+tenant storage and pre-binding resolution (§4.4, §9.7), the per-store root-folder index (§4.5),
+the abort-on-lost-ownership idempotency marker and stable provider keys (§6.6), DNS-rebinding
+pinning (§9.7), the default-currency/default-tax-class invariants (§4.5, §6.7.1), the media
+database lease (§6.4), the provisioning write contract (§6.5), tenant-ownership immutability
+(§6.8), and the resolver contract (§6.7). Rev 4.5 closes the third review: the tenant-neutral
+`onboarding` audience (§3.1), webhook slug resolution (§3.1/§6.3), the `committed_at IS NULL`
+reclamation guard and in-`handle()` completion (§6.6), the typed `CentralOperation` registry
+(§6.5), the media lock table and deletion state machine (§4.4/§6.4), four-layer immutability
+incl. the database trigger (§2/§6.8), priority-list default preservation with throttling order
+(§3.1), and the polymorphic `model_type` constraint (§5), plus F1–F7. Rev 4.6 closes the fourth
+review: the row-lock media fencing with the `media_deletion_intents` lifecycle contract
+(§4.4/§6.4), per-engine immutability triggers with the pivot strategy (§6.8), the
+every-deletion-path `committed_at IS NULL` guard and corrected reclamation wording (§6.6),
+one canonical onboarding route (§4.1/§6.5/§9.7), per-query-site allowlists, the
+`TenantWriteStamp` enforcement mechanism, and exact-class central-operation binding. Rev 4.7
+closes the fifth review (of the condensed rev 4.6): rename-then-unlink media fencing with the
+session-loss race bounded and documented (§6.4), the queue's payload can no longer grant central
+mode — one enforceable `CentralOperations` entry point (§6.1), `media:outbox:sweep` reclassified
+as central with its tables enumerated (§6.7.2), the 130/132/137 inventory reconciled (§4.4),
+owner-set mutations serialized on the tenant row (§6.5), the provisioning context transition
+specified (§6.5), the per-(tenant, driver) resolver cache identity (§6.3), and the pivot
+threat-model boundary (§6.8). B3 was withdrawn by the reviewer after verifying the Laravel 13
+`SyncQueue` source (F27). Rev 4.8 closes the sixth review of the full document: the
+**generation-safe media object lifecycle** — immutable per-publication keys, retirement on
+deletion history, intents naming their exact generation — eliminating (not bounding) the
+stale-worker race (§6.4); `media:outbox:sweep` as **central discovery + tenant-scoped
+execution** so no globally scheduled command writes store-owned rows (§6.7.2); phased trigger
+acceptance with an explicit, key-column-excluding table list (row 113); the §4.4 heading
+corrected to "no store-ownership scope"; and the trash root fenced out of public serving (§6.4,
+row 121). Rev 4.9 closes the seventh review's clarifications: **durable retirement** in
+`media_object_generations` (retirement survives intent pruning; cancellation never un-retires;
+reuse eligibility reads the generation record, never intent history), the physical-creation vs
+logical-reference wording split with six explicit invariants, the physical trash root
+(`{disk}://trash/{tenant_id}/…`, sibling of the public tree), the sweep's stage-2 contract, and
+row 122. Rev 4.10 closes the eighth review's single blocker: the **generation row as the common
+serialization point** for reference attachment and retirement, with one-way transitions
+(application guard + engine-branched trigger) and a fixed lock ordering (generation row before
+reference rows), plus the dedicated private trash disk and row 123's two-connection
+attach-vs-retire test in both orderings.
+
+**Verdict: rev 4.10 is approved by the external review (9.7/10 — eighth round, final).** The
+architecture is approved as written: tenant isolation, media object identity, deletion recovery,
+stale-worker safety, concurrency serialization, and central cleanup are coherent end to end. The
+one carried clarification — reference detachment and every reference-set mutation follow the
+same generation-first lock ordering, with retirement-deciding checks held under the lock — is
+folded into §6.4 as an implementation-contract note, not a new revision. **Approval of the plan
+is not approval of implementation diffs or permission to commit:** Phase 1 may start on the
+owner's go, with each phase reviewed against its changed-file list, static analysis, and test
+results before the next is authorized, and the media lifecycle tests (rows 79, 91, 99–100, 112,
+116–117, 120–123) are mandatory Phase 4 acceptance criteria. P1–P5 and the two classification
+calls remain owner confirmations (§0), each required before the phase that implements it —
+Phase 1 implements none of them.
 
 ### Appendix A — contingency only if A1 changes
 
@@ -867,3 +2364,50 @@ with must-preserve data exists, stop before Phase 2 and redesign the migration s
 default tenant; add nullable `tenant_id` columns; backfill all existing rows to the default tenant;
 then enforce NOT NULL and add indexes/tenant-scoped unique constraints. Do not execute this appendix
 unless A1 is explicitly reversed and the migration plan is re-approved.
+
+---
+
+## Implementation Record
+
+The owner authorized implementation of Phases 2–8 on 2026-11-25 and waived the between-phase
+review gate. Proposals P1–P5 and the two classification calls are implemented as written unless
+the owner says otherwise. Every phase is still verified — `composer analyse`, Pint, the SQLite
+suite, and the PostgreSQL suite where it applies — before the next phase builds on it. This log
+records what landed and where the build deviates from the plan text.
+
+### Phase 1 — in progress
+
+Landed (part A): the Core runtime (`TenantContext`, `TenantScope`, `TenantScopedTrait`,
+`TenantColumn`), the tenant gateway contract, both identification middlewares and the
+machine-token resolver (classes only — not yet in the `api` group), the Tenant module (five
+tables, models, gateway, default-tenant seeder), and the nullable `tenant_id` on
+`personal_access_tokens`.
+
+Deviations from the plan text:
+
+1. **`TENANT_ID` is a final class (`Modules\Core\Schemas\Shared\TenantColumn`), not a shared
+   schema trait.** PHP resolves trait constants only through the using class, so the scope and
+   the model trait cannot reference a trait's constant.
+2. **The default tenant is seeded by `TenantDatabaseSeeder`, not `CoreDatabaseSeeder`.** Core
+   cannot reference the Tenant module; the owner membership is read through the Auth gateway.
+3. **The existing suite needs a testing-only fallback (landed).** Tests run on a fresh in-memory
+   database with no tenant row, so the loopback fallback alone cannot keep them green. In
+   `testing` only, an **empty** `tenants` table yields a built-in default snapshot; a real row
+   switches it off, and every other environment still fails closed.
+4. **Declared platform exceptions (landed in config).** The live route table confirms the
+   third-segment grammar (296 admin, 63 user, 42 public, 2 webhook, 4 machine) but also holds
+   routes without an audience segment: the unnamed `api/user` (signed-in-user lookup) and
+   `api.notification.` (broadcasting auth). Undeclared, the fail-closed rule would 404 the
+   signed-in-user lookup.
+5. **`ResetTenantContext` is the second `RequestReceived` listener, not the first (part B).**
+   `FlushSentryScope` is already first for a documented reason; the two are order-independent.
+6. **The priority list is extended with `prependToPriorityList`, never replaced (part B).**
+   Laravel's default ordering stays intact; `ResolveTenant` is inserted before its first entry.
+7. **`AuthorizeTenantAccess` lands with Phase 3, not Phase 1.** Its admin rule depends on
+   memberships, which gate nothing before Phase 3.
+8. **Payment webhooks resolve by host until Phase 4.** The `{tenant-slug}` route parameter is
+   authoritative when present (§3.1, B2), but the route itself changes in Phase 4.
+
+Tooling note: Larastan does not type-check `??=` assignments to typed properties (verified with
+a minimal probe). A `TypeError` in `TenantContext::tenant()` slipped through an exit-0 run; the
+coalesce-assign is avoided in this work and the path is covered by a test.
