@@ -3,6 +3,7 @@
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Tenant\Gateways\TenantGateway;
 use Modules\Tenant\Schemas\Tenant\TenantSchema;
@@ -57,8 +58,18 @@ it('keeps serving requests there as the built-in default, the way an empty table
         ->assertJsonPath('tenant_id', TenantGateway::BUILT_IN_DEFAULT_ID);
 });
 
-it('forgives nothing else: with the tenants table present, a missing domain table is raised', function () {
-    Schema::create(TenantSchema::TABLE, function (Blueprint $table): void {
+it('forgives nothing else: a broken tenancy schema is raised even outside production', function () {
+    // A table that exists but is not what the migrations built: the
+    // lookup fails on a missing column, which is not a missing-table
+    // error — the gateway raises it instead of answering "no rows".
+    // PostgreSQL-only: SQLite treats a quoted unknown column as a string
+    // literal (the DQS misfeature), so the same broken table matches zero
+    // rows there instead of failing, and the scenario cannot be expressed.
+    if (DB::connection()->getDriverName() !== 'pgsql') {
+        $this->markTestSkipped('Undefined-column classification needs PostgreSQL — run with DB_CONNECTION=pgsql.');
+    }
+
+    Schema::create(TenantDomainSchema::TABLE, function (Blueprint $table): void {
         $table->id();
     });
 

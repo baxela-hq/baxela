@@ -3,7 +3,6 @@
 namespace Modules\Tenant\Gateways;
 
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Schema;
 use Modules\Core\Contracts\Gateways\Tenant\DTOs\TenantSnapshotDto;
 use Modules\Core\Contracts\Gateways\Tenant\TenantGatewayInterface;
 use Modules\Tenant\Models\Tenant;
@@ -28,11 +27,11 @@ use Modules\Tenant\Schemas\TenantMembership\TenantMembershipSchema;
  * default tenant and fails closed without it. A real row always wins:
  * the built-in one is gone the moment a row with its id or slug exists.
  *
- * An uninstalled schema reads the same way: outside production, when the
- * tenants table does not exist, every lookup answers "no rows" — the test
- * suite holds route tests that never migrate a database, and tenant
- * identification reads on every request. That is the only failure
- * forgiven here; see read().
+ * An uninstalled schema reads the same way: outside production, a missing
+ * tenancy table answers "no rows" instead of a 500 — the test suite holds
+ * route tests that never migrate a database, and tenant identification
+ * reads on every request. That is the only failure forgiven here; see
+ * read().
  */
 class TenantGateway implements TenantGatewayInterface
 {
@@ -118,12 +117,21 @@ class TenantGateway implements TenantGatewayInterface
     }
 
     /**
-     * One read against the tenancy tables. Outside production a schema
-     * that was never migrated answers "no rows" instead of a 500: the
-     * tenants table is this module's first migration, so its absence means
-     * tenancy is not installed at all. Nothing else is forgiven — a real
-     * query failure, a half-installed schema, and anything in production
-     * are raised as they occurred.
+     * One read against the tenancy tables. Outside production, a missing
+     * tenancy table answers "no rows" instead of a 500: an environment
+     * whose migrations never ran serves the built-in default the same way
+     * it would serve an empty schema. Nothing else is forgiven — a broken
+     * or half-installed schema (any error that is not a missing table) and
+     * everything in production are raised as they occurred.
+     *
+     * Two PostgreSQL facts shape the mechanics. A failed statement puts
+     * the transaction into the aborted state, where every further
+     * statement fails with 25P02 until a rollback — so the classification
+     * reads the exception itself and runs no follow-up query, and the read
+     * runs inside its own savepoint: rolling back to it clears the aborted
+     * state while leaving any enclosing transaction (a caller's, or the
+     * test harness's) untouched. On SQLite and MySQL the savepoint is a
+     * harmless no-op.
      *
      * @template TReturn
      *
@@ -132,15 +140,41 @@ class TenantGateway implements TenantGatewayInterface
      */
     private function read(callable $read): mixed
     {
+        $connection = Tenant::resolveConnection();
+        $depth = $connection->transactionLevel();
+        $savepoint = $depth > 0;
+
+        if ($savepoint) {
+            $connection->beginTransaction();
+        }
+
         try {
             return $read();
         } catch (QueryException $exception) {
-            if ($this->environment === 'production' || Schema::hasTable(TenantSchema::TABLE)) {
+            if ($this->environment === 'production' || ! $this->missingTable($exception)) {
                 throw $exception;
             }
 
             return null;
+        } finally {
+            if ($savepoint && $connection->transactionLevel() > $depth) {
+                $connection->rollBack();
+            }
         }
+    }
+
+    /**
+     * True when the failure is a missing table: PostgreSQL 42P01
+     * (undefined_table), MySQL 42S02 (base_table_or_view_not_found), or
+     * SQLite's "no such table" wording.
+     */
+    private function missingTable(QueryException $exception): bool
+    {
+        $message = $exception->getMessage();
+
+        return str_contains($message, 'SQLSTATE[42P01]')
+            || str_contains($message, 'SQLSTATE[42S02]')
+            || str_contains($message, 'no such table:');
     }
 
     private function snapshotOf(?Tenant $tenant): ?TenantSnapshotDto
