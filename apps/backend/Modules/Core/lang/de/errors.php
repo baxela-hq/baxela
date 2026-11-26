@@ -36,4 +36,11 @@ return [
     'extensions' => [
         'not_installed' => 'Die Erweiterung :slug ist nicht installiert.',
     ],
+
+    'tenant' => [
+        'not_found' => 'Der Shop wurde nicht gefunden',
+        'suspended' => 'Dieser Shop ist derzeit nicht verfügbar',
+        'selection_required' => 'Wähle einen Shop, um fortzufahren',
+        'membership_required' => 'Du hast keinen Zugriff auf einen Shop',
+    ],
 ];

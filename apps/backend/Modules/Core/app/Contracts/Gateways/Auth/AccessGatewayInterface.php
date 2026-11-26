@@ -64,4 +64,13 @@ interface AccessGatewayInterface
      * winner via the email unique index.
      */
     public function ensureUserByEmail(string $email): int;
+
+    /**
+     * Lock the user's row for the rest of the current transaction
+     * (`SELECT … FOR UPDATE`), so two transactions about the same user
+     * serialize — tenant onboarding checks its per-user quota under this
+     * lock. False when no such user exists. Call inside a transaction;
+     * SQLite takes no row lock.
+     */
+    public function lockUser(int $userId): bool;
 }

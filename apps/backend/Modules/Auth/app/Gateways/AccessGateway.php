@@ -89,4 +89,12 @@ class AccessGateway implements AccessGatewayInterface
 
         return (int) $record->getKey();
     }
+
+    public function lockUser(int $userId): bool
+    {
+        return User::query()
+            ->whereKey($userId)
+            ->lockForUpdate()
+            ->first([UserSchema::ID]) !== null;
+    }
 }

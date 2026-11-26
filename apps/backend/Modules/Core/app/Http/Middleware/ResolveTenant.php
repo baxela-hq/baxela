@@ -5,11 +5,14 @@ namespace Modules\Core\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Modules\Core\Contracts\Gateways\Tenant\DTOs\TenantSnapshotDto;
 use Modules\Core\Contracts\Gateways\Tenant\TenantGatewayInterface;
 use Modules\Core\Exceptions\TenantNotFoundException;
 use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Core\Support\Tenancy\TenantResolved;
+use Sentry\Laravel\Integration as SentryIntegration;
+use Sentry\State\Scope;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,7 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
  * middleware of the `api` group. Group middleware runs on the MATCHED
  * route, so the route's name (hence its audience) is available here; its
  * position is fixed by the middleware priority list in bootstrap/app.php,
- * ahead of credential application, route-model binding, and throttling.
+ * ahead of credential application, authentication, throttling and
+ * route-model binding.
  *
  * This is identification, never authorization: it may read the principal
  * (membership selection, machine tokens) but grants nothing — §3.2 is the
@@ -35,8 +39,11 @@ class ResolveTenant
 
     public const string AUDIENCE_MACHINE = 'machine';
 
-    /** Tenant-neutral (§3.1, B1): no resolution, context stays INACTIVE. */
+    /** Tenant-neutral (§3.1): no resolution, context stays INACTIVE. */
     public const string AUDIENCE_ONBOARDING = 'onboarding';
+
+    /** Not a route audience: a declared platform-level route, tenant-neutral like onboarding. */
+    public const string PLATFORM = 'platform';
 
     public const array AUDIENCES = [
         self::AUDIENCE_ADMIN,
@@ -50,6 +57,7 @@ class ResolveTenant
     public function __construct(
         private readonly TenantGatewayInterface $gateway,
         private readonly ResolvesMachineTenant $machineTenant,
+        private readonly TenantContext $context,
     ) {}
 
     /**
@@ -57,36 +65,66 @@ class ResolveTenant
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Every request starts INACTIVE, whatever the previous one left —
+        // including when this middleware is about to refuse the request.
+        // php-fpm boots one request per process, but the invariant must
+        // hold wherever the process survives: queue workers and tests.
+        $this->context->reset();
+
         $route = $request->route();
         $name = (string) $route?->getName();
-
-        $audience = $this->audienceOf($name);
+        $audience = self::audienceOf($name);
 
         if ($audience === self::AUDIENCE_ONBOARDING) {
-            // Tenant-neutral: self-service provisioning creates the store,
-            // so there is nothing to resolve yet. The context must stay
-            // INACTIVE; a previous request's residue is reset here too.
-            app(TenantContext::class)->reset();
+            // The tenant-neutral audience is allowed on registered routes
+            // only; anything else carrying it fails closed, so it can never
+            // become a general bypass of tenant resolution.
+            if (! in_array($name, (array) config('core.tenancy.onboarding_routes', []), true)) {
+                throw TenantNotFoundException::unresolved('unregistered_onboarding_route', ['route' => $name]);
+            }
+        }
 
+        if ($audience === self::AUDIENCE_ONBOARDING || $audience === self::PLATFORM) {
+            // Tenant-neutral: self-service provisioning creates the store,
+            // and platform routes serve the installation rather than a
+            // store. The context stays INACTIVE.
             return $next($request);
         }
 
         $tenant = $this->resolve($audience, $request, $route?->parameters() ?? []);
 
-        app(TenantContext::class)->forTenant($tenant->id);
+        if ($tenant === null) {
+            // No store can be selected for an unauthenticated caller; their
+            // own auth middleware answers the request. The context is
+            // INACTIVE, as it has been since this request began.
+            return $next($request);
+        }
 
-        // Store-dependent consumers (the per-request runtime, logging,
-        // Sentry tagging) listen for this — Core raises it, modules react.
+        $this->context->forTenant($tenant->id);
+
+        // Same pattern as AssignRequestId: every log line and Sentry event
+        // of this request carries the store it served (§9.7 logging).
+        Log::withContext([
+            'tenant-id' => $tenant->id,
+            'tenant-slug' => $tenant->slug,
+        ]);
+
+        SentryIntegration::configureScope(function (Scope $scope) use ($tenant): void {
+            $scope->setTag('tenant_id', (string) $tenant->id);
+        });
+
+        // Store-dependent consumers listen for this — Core raises it, modules react.
         event(new TenantResolved($tenant, $audience));
 
         return $next($request);
     }
 
     /**
-     * The single audience definition (§3.1, F5): the THIRD segment of
+     * The single audience definition (§3.1): the THIRD segment of
      * `api.{module}.{audience}.{…}`. Anything else is unclassified and
      * fails closed — an API route without a classified audience must never
-     * be trusted with tenant signals.
+     * be trusted with tenant signals. Declared platform-level routes are the
+     * one exception and are tenant-neutral.
      *
      * @throws TenantNotFoundException
      */
@@ -100,21 +138,23 @@ class ResolveTenant
             return $audience;
         }
 
-        // Declared platform routes carry no audience segment (or an empty
-        // one). They identify like `public` — a host picks the storefront,
-        // no header or membership is trusted beyond that.
-        if (in_array(rtrim($name, '.'), (array) config('core.tenancy.platform_exceptions', []), true)) {
-            return self::AUDIENCE_PUBLIC;
+        if (in_array(rtrim($name, '.'), self::platformRoutes(), true)) {
+            return self::PLATFORM;
         }
 
-        // An unnamed API route: identification still has to work for the
-        // signed-in-user lookup (`/api/user`), so it is treated as public
-        // too — its own auth middleware remains the gate.
-        if ($name === '') {
-            return self::AUDIENCE_PUBLIC;
-        }
+        throw TenantNotFoundException::unresolved('unclassified_route', [
+            'route' => $name === '' ? '(unnamed)' : $name,
+        ]);
+    }
 
-        throw TenantNotFoundException::unresolved('unclassified_route', ['route' => $name]);
+    /**
+     * @return list<string>
+     */
+    private static function platformRoutes(): array
+    {
+        $routes = (array) config('core.tenancy.platform_routes', []);
+
+        return array_map(static fn (string $route): string => rtrim($route, '.'), $routes);
     }
 
     /**
@@ -122,15 +162,15 @@ class ResolveTenant
      *
      * @throws TenantNotFoundException
      */
-    private function resolve(string $audience, Request $request, array $parameters): TenantSnapshotDto
+    private function resolve(string $audience, Request $request, array $parameters): ?TenantSnapshotDto
     {
-        // The webhook audience's `{tenant-slug}` route parameter is
-        // authoritative (§3.1, B2) — it outranks every header.
-        if ($audience === self::AUDIENCE_WEBHOOK && isset($parameters['tenant-slug'])) {
-            return $this->requireServable(
-                $this->gateway->findBySlug((string) $parameters['tenant-slug']),
-                'unknown_webhook_slug',
-            );
+        // The webhook audience's route parameter is authoritative (§3.1) —
+        // it outranks every header. The parameter is `tenantSlug`: a
+        // hyphenated name (`{tenant-slug}`) registers but never matches.
+        $slug = $parameters['tenantSlug'] ?? null;
+
+        if ($audience === self::AUDIENCE_WEBHOOK && is_string($slug)) {
+            return $this->requireServable($this->gateway->findBySlug($slug), 'unknown_webhook_slug');
         }
 
         if ($audience === self::AUDIENCE_MACHINE) {
@@ -138,116 +178,107 @@ class ResolveTenant
             return $this->requireServable($this->machineTenant->resolve($request), 'invalid_machine_token');
         }
 
-        $host = $request->attributes->get(NormalizeTenantRequest::ATTR_HOST);
+        $host = $this->hostAttribute($request, NormalizeTenantRequest::ATTR_HOST);
 
         if ($audience === self::AUDIENCE_ADMIN) {
-            $id = $request->attributes->get(NormalizeTenantRequest::ATTR_TENANT_ID);
-
             // Priority 1: X-Tenant-Id (admin only). The header names a
             // store; whether the caller may enter it is §3.2's decision.
+            $id = $request->attributes->get(NormalizeTenantRequest::ATTR_TENANT_ID);
+
             if ($id !== null) {
                 return $this->requireServable($this->gateway->find((int) $id), 'unknown_tenant_id');
             }
 
-            if ($this->isCentralHost($host)) {
+            // On a central API host the store comes from the caller's memberships.
+            if ($this->hostMatches($host, 'central_hosts')) {
                 return $this->selectByMembership($request);
             }
         } elseif ($audience === self::AUDIENCE_PUBLIC || $audience === self::AUDIENCE_USER) {
             // Priority 2: X-Tenant-Host (public/user only) — the
             // storefront-forwarded host (§7). Never honored on admin routes.
-            $tenantHost = $request->attributes->get(NormalizeTenantRequest::ATTR_TENANT_HOST);
+            $tenantHost = $this->hostAttribute($request, NormalizeTenantRequest::ATTR_TENANT_HOST);
+            $resolved = $tenantHost === null ? null : $this->gateway->resolveByDomain($tenantHost);
 
-            if (is_string($tenantHost) && $tenantHost !== '') {
-                $resolved = $this->gateway->resolveByDomain($tenantHost);
-
-                if ($resolved !== null) {
-                    return $this->requireServable($resolved, 'unknown_tenant_host');
-                }
+            if ($resolved !== null) {
+                return $this->requireServable($resolved, 'suspended_tenant_host');
             }
         }
 
         // Priority 3: the Host itself (API served on a tenant domain).
-        if (is_string($host) && $host !== '') {
-            $resolved = $this->gateway->resolveByDomain($host);
+        $resolved = $host === null ? null : $this->gateway->resolveByDomain($host);
 
-            if ($resolved !== null) {
-                return $resolved;
-            }
+        if ($resolved !== null) {
+            return $this->requireServable($resolved, 'suspended_host');
         }
 
         // Priority 4: the fallback list (dev/legacy hosts only).
-        if (is_string($host) && $this->isFallbackHost($host)) {
+        if ($this->hostMatches($host, 'fallback_hosts')) {
             $resolved = $this->gateway->defaultTenant();
 
             if ($resolved !== null) {
-                return $resolved;
+                return $this->requireServable($resolved, 'suspended_default_tenant');
             }
         }
 
-        return $this->selectByMembership($request, true);
+        throw TenantNotFoundException::unresolved('unknown_host', ['host' => $host ?? '']);
     }
 
     /**
-     * Admin default selection (§3.1, A5): on a central host with no
-     * X-Tenant-Id, exactly one active membership selects it; several need
-     * the header; none is refused.
+     * Admin default selection (§3.1): on a central host with no
+     * X-Tenant-Id, exactly one active membership selects the store; several
+     * need the header; none is refused. Null only for an unauthenticated
+     * caller, whose own auth middleware answers.
      *
      * @throws TenantNotFoundException
      */
-    private function selectByMembership(Request $request, bool $lastResort = false): TenantSnapshotDto
-    {
-        $userId = $this->authenticatedUserId($request);
-
-        if ($userId === null) {
-            if ($lastResort) {
-                // Nothing identified the caller: the host is unknown and
-                // outside the fallback list.
-                throw TenantNotFoundException::unresolved('unknown_host', ['host' => $request->attributes->get(NormalizeTenantRequest::ATTR_HOST) ?? '']);
-            }
-
-            throw TenantNotFoundException::noMembership();
-        }
-
-        $memberships = $this->gateway->membershipsFor($userId);
-
-        if (count($memberships) === 1) {
-            return $this->gateway->find($memberships[0]['id']) ?? throw TenantNotFoundException::unresolved('membership_tenant_missing');
-        }
-
-        if ($lastResort) {
-            throw TenantNotFoundException::unresolved('unknown_host', ['host' => $request->attributes->get(NormalizeTenantRequest::ATTR_HOST) ?? '']);
-        }
-
-        return throw TenantNotFoundException::selectionRequired(array_column($memberships, 'slug'));
-    }
-
-    private function authenticatedUserId(Request $request): ?int
+    private function selectByMembership(Request $request): ?TenantSnapshotDto
     {
         // Identification may read the principal; it grants nothing. The
         // guard is idempotent — resolving it early consumes no token.
         $user = Auth::guard('sanctum')->user();
 
-        return $user === null ? null : (int) $user->getAuthIdentifier();
+        if ($user === null) {
+            return null;
+        }
+
+        $memberships = $this->gateway->membershipsFor((int) $user->getAuthIdentifier());
+
+        if (count($memberships) === 1) {
+            return $this->requireServable(
+                $this->gateway->find((int) $memberships[0]['id']),
+                'membership_tenant_missing',
+            );
+        }
+
+        if ($memberships === []) {
+            throw TenantNotFoundException::noMembership();
+        }
+
+        throw TenantNotFoundException::selectionRequired(array_column($memberships, 'slug'));
     }
 
-    private function isCentralHost(?string $host): bool
+    private function hostAttribute(Request $request, string $key): ?string
     {
-        $central = array_filter(array_map('trim', explode(',', (string) config('core.tenancy.central_hosts', ''))));
+        $value = $request->attributes->get($key);
 
-        return is_string($host) && in_array($host, $central, true);
+        return is_string($value) && $value !== '' ? $value : null;
     }
 
-    private function isFallbackHost(?string $host): bool
+    private function hostMatches(?string $host, string $list): bool
     {
-        $fallback = array_filter(array_map('trim', explode(',', (string) config('core.tenancy.fallback_hosts', ''))));
+        if ($host === null) {
+            return false;
+        }
 
-        return is_string($host) && in_array($host, $fallback, true);
+        $entries = array_filter(array_map('trim', explode(',', (string) config('core.tenancy.'.$list, ''))));
+
+        return in_array($host, $entries, true);
     }
 
     /**
-     * A suspended store resolves — identification succeeded — but may not
-     * be served. The platform super-admin keeps admin access and may
-     * reactivate (§3.1); everyone else is refused.
+     * A suspended store resolves — identification succeeded — but is not
+     * served until it is reactivated (§3.1). The platform super-admin's
+     * exemption on admin routes arrives with §3.2 (Phase 3).
      *
      * @throws TenantNotFoundException
      */

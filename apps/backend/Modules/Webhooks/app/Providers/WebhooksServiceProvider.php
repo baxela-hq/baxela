@@ -4,8 +4,10 @@ namespace Modules\Webhooks\Providers;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Modules\Webhooks\Console\Commands\DispatchWebhookDeliveriesCommand;
 use Modules\Webhooks\Console\Commands\PruneWebhooksCommand;
 use Modules\Webhooks\Console\Commands\RetryWebhookDeliveryCommand;
@@ -24,8 +26,13 @@ class WebhooksServiceProvider extends ServiceProvider
     /**
      * Boot the application events.
      */
-    public function boot(): void
+    public function boot(Router $router): void
     {
+        // The machine routes declare `abilities:<ability>`. Sanctum 4
+        // ships CheckAbilities but registers no alias for it, so without
+        // this every machine request failed to resolve its middleware.
+        $router->aliasMiddleware('abilities', CheckAbilities::class);
+
         RateLimiter::for('machine', function ($request) {
             // Per-token rate limit (gap-C2 D14): keyed on the bearer token
             // so one integration cannot starve another.

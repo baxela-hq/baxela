@@ -48,6 +48,8 @@ use Modules\Core\Contracts\Events\Shipping\ShipmentDeliveredEvent;
 use Modules\Core\Contracts\Events\Shipping\ShipmentShippedEvent;
 use Modules\Core\Contracts\Events\Support\TicketDeletedEvent;
 use Modules\Core\Contracts\Events\Support\TicketStatusUpdatedEvent;
+use Modules\Core\Contracts\Events\Tenant\CentralOperationRunEvent;
+use Modules\Core\Contracts\Events\Tenant\TenantProvisionedEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -61,6 +63,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
+        // Central operations run across stores (multi-tenancy §6.5): every
+        // outcome is recorded, refused attempts included.
+        CentralOperationRunEvent::class => [RecordAuditLogListener::class],
+
+        // Self-service onboarding creates a store, so it changes the
+        // platform like an admin mutation does.
+        TenantProvisionedEvent::class => [RecordAuditLogListener::class],
+
         UserActivatedEvent::class => [RecordAuditLogListener::class],
         UserDeactivatedEvent::class => [RecordAuditLogListener::class],
         UserSessionRevokedEvent::class => [RecordAuditLogListener::class],

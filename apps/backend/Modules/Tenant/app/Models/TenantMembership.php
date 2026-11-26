@@ -52,7 +52,19 @@ class TenantMembership extends Model
         // nothing may write a membership, and inside it the row must
         // belong to the context tenant. Provisioning (Category 3) runs
         // inside runForTenant($newTenant) and so satisfies this too.
+        //
+        // The model carries no store scope on purpose — reads go through
+        // the gateway, which must list a user's memberships across stores
+        // — so the creating hook stamps the context tenant itself, like
+        // TenantScopedTrait does.
         static::creating(function (self $membership): void {
+            if ($membership->getAttribute(TenantMembershipSchema::TENANT_ID) === null) {
+                $membership->setAttribute(
+                    TenantMembershipSchema::TENANT_ID,
+                    app(TenantContext::class)->tenantId(),
+                );
+            }
+
             $membership->assertWithinContextTenant();
         });
 

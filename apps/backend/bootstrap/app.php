@@ -3,12 +3,16 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Modules\Core\Exceptions\BaseException;
 use Modules\Core\Exceptions\ExceptionHelper;
 use Modules\Core\Exceptions\ExceptionMapper;
+use Modules\Core\Http\Middleware\NormalizeTenantRequest;
+use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
 use Modules\Core\Http\Middleware\TrustProxies;
 use Modules\Core\Support\SupportedLocales;
+use Modules\Payment\Http\Middleware\ApplyDatabaseCredentials;
 use Sentry\Laravel\Integration as SentryIntegration;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -24,6 +28,27 @@ return Application::configure(basePath: dirname(__DIR__))
         // replaces the stock middleware, which is boot-time-only and
         // untestable at runtime.
         $middleware->replace(Illuminate\Http\Middleware\TrustProxies::class, TrustProxies::class);
+
+        // Tenant identification, stage 1 (multi-tenancy §3.1): global, so
+        // it runs before the router matches a route. Appended, not
+        // prepended: it reads the Host, which TrustProxies must have
+        // settled first.
+        $middleware->append([NormalizeTenantRequest::class]);
+
+        // Stage 2 ordering. Laravel's default priority list is EXTENDED,
+        // never replaced: ResolveTenant goes before its first entry, and
+        // the payment credentials middleware right after the precognitive
+        // handler — so the store is known before credentials are applied,
+        // and both precede authentication, throttling and route-model
+        // binding. (Appends are applied before prepends, hence the order.)
+        $middleware->prependToPriorityList(
+            HandlePrecognitiveRequests::class,
+            ResolveTenant::class,
+        );
+        $middleware->appendToPriorityList(
+            HandlePrecognitiveRequests::class,
+            ApplyDatabaseCredentials::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Sentry captures reported exceptions via a reportable callback, so

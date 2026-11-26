@@ -3,8 +3,10 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Database\Connectors\ConnectionFactory;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Console\Commands\BaxelaDisableCommand;
 use Modules\Core\Console\Commands\BaxelaEnableCommand;
@@ -23,9 +25,12 @@ use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Gateways\CoreGateway;
 use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
+use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
+use Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
 use Modules\Core\Support\Erd\ModuleTableResolver;
+use Modules\Core\Support\Tenancy\CentralOperationRegistry;
 use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Core\Support\Transfer\TransferGuardRegistry;
 use Modules\Core\Support\Transfer\TransferRemapStore;
@@ -57,6 +62,23 @@ class CoreServiceProvider extends ServiceProvider
         $router->pushMiddlewareToGroup('api', AssignRequestId::class);
         $router->pushMiddlewareToGroup('api', SetSecurityHeaders::class);
 
+        // Tenant identification, stage 2 (multi-tenancy §3.1): first in
+        // the `api` group; its position against the credentials, auth and
+        // binding middleware is fixed by the priority list in
+        // bootstrap/app.php.
+        $router->prependMiddlewareToGroup('api', ResolveTenant::class);
+
+        // Every queued payload carries the tenant it was dispatched under
+        // and, for a centrally-dispatched job, the registered operation it
+        // must invoke itself (§6.1). The queue listeners read it back.
+        Queue::createPayloadUsing(function (): array {
+            $context = app(TenantContext::class);
+
+            return [
+                'tenant_id' => $context->tenantId(),
+                'central_operation' => $context->centralOperation(),
+            ];
+        });
 
         if (config('core.log_requests')) {
             $router->pushMiddlewareToGroup('api', RequestLogger::class);
@@ -84,8 +106,8 @@ class CoreServiceProvider extends ServiceProvider
         // every (re)instantiation: purge, reconnect, fresh resolution.
         $this->app->extend('db', function ($db) {
             $db->extend('pgsql', function ($config, $name) {
-                $connection = app(\Illuminate\Database\Connectors\ConnectionFactory::class)->make($config, $name);
-                $connection->setSchemaGrammar(new \Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar($connection));
+                $connection = app(ConnectionFactory::class)->make($config, $name);
+                $connection->setSchemaGrammar(new PostgresUnsignedGrammar($connection));
 
                 return $connection;
             });
@@ -109,10 +131,14 @@ class CoreServiceProvider extends ServiceProvider
         // active run context, so repeated imports never re-register hooks.
         $this->app->singleton(TransferGuardRegistry::class);
 
-        // Tenant state (multi-tenancy §2): one context per process, reset
-        // at the start of every request by the Octane listener and
-        // re-initialized per job attempt by the queue listeners.
+        // Tenant state (multi-tenancy §2): one context per process. HTTP
+        // serves one request per process (php-fpm) and identification
+        // resets it; the queue listeners re-initialize it per job attempt.
         $this->app->singleton(TenantContext::class);
+
+        // The central-operation registry (multi-tenancy §6.5): modules
+        // register their operations into it at boot.
+        $this->app->singleton(CentralOperationRegistry::class);
     }
 
     /**

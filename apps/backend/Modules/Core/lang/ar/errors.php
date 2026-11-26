@@ -36,4 +36,11 @@ return [
     'extensions' => [
         'not_installed' => 'الإضافة :slug غير مثبتة.',
     ],
+
+    'tenant' => [
+        'not_found' => 'لم يتم العثور على المتجر',
+        'suspended' => 'هذا المتجر غير متاح حاليًا',
+        'selection_required' => 'اختر متجرًا للمتابعة',
+        'membership_required' => 'ليس لديك صلاحية الوصول إلى أي متجر',
+    ],
 ];

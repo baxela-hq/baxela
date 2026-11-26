@@ -52,15 +52,37 @@ return [
 
         // Routes allowed to carry the tenant-neutral `onboarding`
         // audience (§3.1). They skip tenant resolution entirely; anything
-        // else using that audience fails the route-audience test.
-        'onboarding_routes' => [],
+        // else using that audience fails closed.
+        'onboarding_routes' => [
+            'api.tenant.onboarding.tenants.store',
+        ],
 
-        // Platform-level routes that carry no audience segment (or an
-        // empty one). Identification treats them like `public`.
-        'platform_exceptions' => [
+        // Platform-level routes: they carry no audience segment and serve
+        // the installation, not a store. Tenant-neutral — they skip tenant
+        // resolution and answer on any host.
+        'platform_routes' => [
+            'api.platform.me',
+            // Broadcasting auth (the group prefix with an empty leaf name).
+            'api.notification',
             'api.notification.webpush.vapid-public-key',
             'api.notification.telegram.bot-info',
-            'api.notification.',
+        ],
+
+        // Admin routes reserved for the platform super-admin: no
+        // permission row is created for them, so they can never be
+        // assigned to a role (§4.1).
+        'super_admin_only_routes' => [
+            'api.tenant.admin.',
+        ],
+
+        'domain' => [
+            'cooling_off_days' => (int) env('TENANCY_DOMAIN_COOLING_OFF_DAYS', 7),
+            'verification_ttl_hours' => (int) env('TENANCY_DOMAIN_VERIFICATION_TTL', 48),
+        ],
+
+        'onboarding' => [
+            'max_tenants_per_user' => (int) env('TENANCY_MAX_TENANTS_PER_USER', 3),
+            'subdomain_base' => env('TENANCY_SUBDOMAIN_BASE', 'localhost'),
         ],
     ],
 

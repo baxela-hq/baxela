@@ -36,4 +36,11 @@ return [
     'extensions' => [
         'not_installed' => 'افزونه :slug نصب نشده است.',
     ],
+
+    'tenant' => [
+        'not_found' => 'فروشگاه یافت نشد',
+        'suspended' => 'این فروشگاه در حال حاضر در دسترس نیست',
+        'selection_required' => 'برای ادامه یک فروشگاه انتخاب کنید',
+        'membership_required' => 'شما به هیچ فروشگاهی دسترسی ندارید',
+    ],
 ];

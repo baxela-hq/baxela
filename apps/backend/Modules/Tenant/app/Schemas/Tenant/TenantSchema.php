@@ -25,4 +25,6 @@ class TenantSchema
 
     /** Suspended: storefront closed, members denied, jobs skipped. */
     public const string STATUS_SUSPENDED = 'suspended';
+
+    public const string RES_DOMAINS = 'domains';
 }

@@ -8,14 +8,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Stage 1 of tenant identification (multi-tenancy §3.1) — a GLOBAL
- * middleware, prepended once in bootstrap/app.php. Global middleware runs
+ * middleware registered once in bootstrap/app.php. Global middleware runs
  * before the router matches a route, so nothing here may depend on the
  * route, the database, or the authenticated user: this stage only
  * normalizes the transport-level candidate signals and parks them as
  * typed request attributes for Stage 2 (ResolveTenant), which runs on the
  * matched route and decides.
  *
- * Decides nothing. Outside `api/*` it is inert.
+ * It decides nothing, and it normalizes every request: the `api` group
+ * also carries routes that live outside the `api/` URI prefix.
  */
 class NormalizeTenantRequest
 {
@@ -31,23 +32,21 @@ class NormalizeTenantRequest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->is('api/*')) {
-            $request->attributes->set(self::ATTR_HOST, self::normalizeHost($request->getHost()));
+        $request->attributes->set(self::ATTR_HOST, self::normalizeHost($request->getHost()));
 
-            $id = $request->header('X-Tenant-Id');
-            $id = is_string($id) ? trim($id) : '';
-            $request->attributes->set(
-                self::ATTR_TENANT_ID,
-                preg_match('/^[1-9]\d{0,17}$/', $id) === 1 ? (int) $id : null,
-            );
+        $id = $request->header('X-Tenant-Id');
+        $id = is_string($id) ? trim($id) : '';
+        $request->attributes->set(
+            self::ATTR_TENANT_ID,
+            preg_match('/^[1-9]\d{0,17}$/', $id) === 1 ? (int) $id : null,
+        );
 
-            // A missing header comes back as an empty string.
-            $host = (string) $request->header('X-Tenant-Host');
-            $request->attributes->set(
-                self::ATTR_TENANT_HOST,
-                $host !== '' ? self::normalizeHost($host) : null,
-            );
-        }
+        // A missing header comes back as an empty string.
+        $host = (string) $request->header('X-Tenant-Host');
+        $request->attributes->set(
+            self::ATTR_TENANT_HOST,
+            $host !== '' ? self::normalizeHost($host) : null,
+        );
 
         return $next($request);
     }

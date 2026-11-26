@@ -12,8 +12,11 @@ return new class extends Migration
         Schema::create(TenantSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->string(TenantSchema::NAME);
+            // The store's subdomain identity: unique, and never changed.
             $table->string(TenantSchema::SLUG)->unique();
-            $table->string(TenantSchema::EMAIL)->unique();
+            // The contact address is not unique: an owner running several
+            // stores shares one address across them.
+            $table->string(TenantSchema::EMAIL)->nullable()->index('tenant_tenants_email_idx');
             $table->string(TenantSchema::STATUS, 20)->default(TenantSchema::STATUS_ACTIVE);
             $table->index(TenantSchema::STATUS);
             $table->timestamps();

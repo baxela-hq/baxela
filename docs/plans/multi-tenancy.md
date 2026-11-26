@@ -7,8 +7,9 @@ folded into §6.4; no further architecture revision is required. The architectur
 inventory base are unchanged (full code inventory taken 2026-11-24 on commit `1305e55b`, after
 the PostgreSQL migration). On 2026-11-25 the owner authorized implementation of Phases 2–8 and
 waived the between-phase review gate; each phase is still verified (static analysis and both test
-planes) before the next builds on it. Progress and deviations from the plan text are logged in the
-Implementation Record at the end of this document.
+planes) before the next builds on it. **Progress: Phase 1 landed on 2026-11-25; Phases 2–8 are not
+started** — the owner stopped the work after Phase 1. Progress and deviations from the plan text
+are logged in the Implementation Record at the end of this document.
 
 Architecture (unchanged): **single database, `tenant_id` row scoping** · host/subdomain tenant
 resolution · global users + per-tenant memberships · spatie-permission teams keyed by `tenant_id` ·
@@ -2375,13 +2376,20 @@ the owner says otherwise. Every phase is still verified — `composer analyse`, 
 suite, and the PostgreSQL suite where it applies — before the next phase builds on it. This log
 records what landed and where the build deviates from the plan text.
 
-### Phase 1 — in progress
+### Phase 1 — Tenancy core + Tenant module
 
-Landed (part A): the Core runtime (`TenantContext`, `TenantScope`, `TenantScopedTrait`,
-`TenantColumn`), the tenant gateway contract, both identification middlewares and the
-machine-token resolver (classes only — not yet in the `api` group), the Tenant module (five
-tables, models, gateway, default-tenant seeder), and the nullable `tenant_id` on
-`personal_access_tokens`.
+Landed. Identification is live: `NormalizeTenantRequest` runs on every request, `ResolveTenant` is
+first in the `api` group with the priority list extended rather than replaced, and
+`ResetTenantContext` clears the process-level context at the start of each Octane request. Queue
+payloads carry `{tenant_id, central_operation}`; the `JobProcessing`/`JobAttempted` listeners run
+the job under the dispatching tenant on a snapshot stack. Central mode is reachable only through
+`CentralOperations` — a registry keyed on the exact operation class with authorized callers, a
+mandatory reason, a transaction that commits the operation together with its audit record, and an
+architecture test that scans the application source for call sites that bypass it. The Tenant
+module exposes the platform super-admin's store and domain CRUD (ten routes, created without
+permission rows, as §4.1 requires), the tenant-neutral onboarding endpoint
+(`POST /api/v1/onboarding/tenants`, the per-user quota serialized by a row lock), and machine
+tokens minted for the issuing admin's store.
 
 Deviations from the plan text:
 
@@ -2390,24 +2398,68 @@ Deviations from the plan text:
    the model trait cannot reference a trait's constant.
 2. **The default tenant is seeded by `TenantDatabaseSeeder`, not `CoreDatabaseSeeder`.** Core
    cannot reference the Tenant module; the owner membership is read through the Auth gateway.
-3. **The existing suite needs a testing-only fallback (landed).** Tests run on a fresh in-memory
-   database with no tenant row, so the loopback fallback alone cannot keep them green. In
-   `testing` only, an **empty** `tenants` table yields a built-in default snapshot; a real row
-   switches it off, and every other environment still fails closed.
-4. **Declared platform exceptions (landed in config).** The live route table confirms the
+3. **The built-in default tenant exists outside production, not in `testing` only (revised).** The
+   first cut applied it in `testing` to an *empty* tenants table — a rule that took the loopback
+   storefront down the moment a second store was created in a dev stack. The rule is now: outside
+   production, the default resolves to a built-in snapshot whenever no real row holds its id or
+   slug, and a real row always wins. Production must seed the default tenant and fails closed
+   without it. The trade-off is deliberate and should be read as what it is: an environment that
+   is not `production` and was never seeded serves the built-in default instead of revealing the
+   missing seed. The production deploy must run `TenantDatabaseSeeder` — that belongs to Phase 8.
+4. **An uninstalled schema reads as "no rows" outside production, and nothing else does.** The
+   plan's gate is "the entire existing suite green with zero edits". The first full run broke it
+   by exactly one test: route tests that never migrate a database — nothing before the controller
+   read the database until identification began reading it on every request — answered 500 on
+   "no such table: `tenant_domains`". `TenantGateway` now treats an absent `tenants` table (the
+   module's first migration, so its absence means tenancy is not installed) as holding no rows,
+   outside production. A half-installed schema, any other query failure, and everything in
+   production are raised as they occurred. `UninstalledSchemaTest` pins it from both sides; the
+   existing test is unchanged.
+5. **Declared platform routes (landed in config).** The live route table confirms the
    third-segment grammar (296 admin, 63 user, 42 public, 2 webhook, 4 machine) but also holds
    routes without an audience segment: the unnamed `api/user` (signed-in-user lookup) and
    `api.notification.` (broadcasting auth). Undeclared, the fail-closed rule would 404 the
    signed-in-user lookup.
-5. **`ResetTenantContext` is the second `RequestReceived` listener, not the first (part B).**
-   `FlushSentryScope` is already first for a documented reason; the two are order-independent.
-6. **The priority list is extended with `prependToPriorityList`, never replaced (part B).**
-   Laravel's default ordering stays intact; `ResolveTenant` is inserted before its first entry.
-7. **`AuthorizeTenantAccess` lands with Phase 3, not Phase 1.** Its admin rule depends on
+6. **`ResetTenantContext` is the second `RequestReceived` listener, not the first.** `FlushSentryScope`
+   is already first for a documented reason; the two are order-independent.
+7. **The priority list is extended with `prependToPriorityList`, never replaced.** Laravel's
+   default ordering stays intact; `ResolveTenant` is inserted before its first entry.
+8. **`AuthorizeTenantAccess` lands with Phase 3, not Phase 1.** Its admin rule depends on
    memberships, which gate nothing before Phase 3.
-8. **Payment webhooks resolve by host until Phase 4.** The `{tenant-slug}` route parameter is
-   authoritative when present (§3.1, B2), but the route itself changes in Phase 4.
+9. **Payment webhooks resolve by host until Phase 4, and the route parameter is `{tenantSlug}`.**
+   A route parameter with a hyphen registers but never matches, so the plan's `{tenant-slug}`
+   cannot be read; Stage 2 reads `{tenantSlug}`. The route itself changes in Phase 4.
+10. **K3 is closed in Phase 1, not Phase 2.** `MachineTokenRequest` validated the token's user
+    against `users` — the profile table — so no machine token could be minted at all, and Phase 1
+    exercises its resolution through that mint. It now validates against `auth_users`. K4, the
+    ownership filter, stays in Phase 2.
+11. **The `abilities` middleware alias is registered (a pre-existing defect, found here).** The
+    machine routes declare `abilities:<ability>`, but Sanctum 4 ships `CheckAbilities` without
+    registering that alias, so those routes could not have run. `WebhooksServiceProvider` registers
+    it because Phase 1's tests need them.
+12. **Test tooling.** The Tenant helpers are declared on Pest's proxies in `phpstan/test-stub.php`,
+    as every module's are. The baseline gains exactly one entry — the Tenant `HelperTrait`'s
+    "unused trait" false positive, which each of the other modules also carries. No other baseline
+    line was added or changed.
+13. **The test process gets its own memory limit (512M, in `scripts/test.sh` and CI's two pest
+    steps).** The suite is one long-lived PHP process that retains about 100 KB per test. Measured
+    with one probe on the same 366 tests: `main` went 90.2 MB → 113.8 MB (test 100 → test 340),
+    this branch 90.5 MB → 114.7 MB — the same, so the retention predates tenancy. It is reachable
+    from no application static, and an in-process request loop through the middleware is flat at
+    0 KB per request on every audience. At about 1,600 tests the suite outgrows the image's 256M
+    in its last tests (it died writing Pest's result cache, exit 255), and `main` was already
+    within a few MB of that. The limit is set where the suite is invoked, so the web runtime
+    keeps 256M.
 
-Tooling note: Larastan does not type-check `??=` assignments to typed properties (verified with
+Tooling notes: Larastan does not type-check `??=` assignments to typed properties (verified with
 a minimal probe). A `TypeError` in `TenantContext::tenant()` slipped through an exit-0 run; the
-coalesce-assign is avoided in this work and the path is covered by a test.
+coalesce-assign is avoided in this work and the path is covered by a test. Pest's `toThrow()`
+closure form asserts only the exception's class — it takes the closure's parameter type as the
+expected class and discards what the closure returns — so seven assertions that read as "refuses
+with code X" asserted nothing but the class. They go through `assertThrowsCode()` now, which
+checks the code, and the HTTP status where one matters.
+
+Observed on the way, not fixed: a guest request that does not ask for JSON gets 500 from an
+authenticated API route (`Route [login] not defined`) — Laravel's default `Authenticate`
+redirect assumes a `login` route this API-only app does not define. JSON requests get 401.
+Pre-existing and unrelated to tenancy; recorded for Phase 3.

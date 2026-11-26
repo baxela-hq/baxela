@@ -36,4 +36,11 @@ return [
     'extensions' => [
         'not_installed' => 'L\'extension :slug n\'est pas installée.',
     ],
+
+    'tenant' => [
+        'not_found' => 'La boutique est introuvable',
+        'suspended' => 'Cette boutique est actuellement indisponible',
+        'selection_required' => 'Sélectionnez une boutique pour continuer',
+        'membership_required' => 'Vous n\'avez accès à aucune boutique',
+    ],
 ];

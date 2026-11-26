@@ -64,6 +64,7 @@ namespace Pest\PendingCalls {
      * @method mixed stockFor(mixed ...$args)
      * @method $this withHeaders(array<string, string> $headers)
      * @method $this withServerVariables(array<string, mixed> $server)
+     * @method $this withToken(string $token, string $type = 'Bearer')
      * @method $this withoutExceptionHandling(mixed ...$args)
      * @method $this withoutMiddleware(mixed ...$args)
      * @method $this followingRedirects()
@@ -111,6 +112,16 @@ namespace Pest\PendingCalls {
      * @method mixed exportedTaxFile(mixed ...$args)
      * @method mixed exportedUserDataFile(mixed ...$args)
      * @method mixed webhookEndpoint(mixed ...$args)
+     * @method mixed plainUser()
+     * @method mixed createTenant(mixed ...$args)
+     * @method mixed addMembership(mixed ...$args)
+     * @method mixed machineToken(mixed ...$args)
+     * @method mixed mintMachineToken(mixed ...$args)
+     * @method mixed productionLikeTenancy()
+     * @method mixed registerProbeRoutes()
+     * @method mixed probeContext()
+     * @method mixed onHost(mixed ...$args)
+     * @method mixed assertThrowsCode(mixed ...$args)
      */
     class TestCall {}
 }
@@ -158,6 +169,7 @@ namespace Pest\Support {
      * @method mixed stockFor(mixed ...$args)
      * @method $this withHeaders(array<string, string> $headers)
      * @method $this withServerVariables(array<string, mixed> $server)
+     * @method $this withToken(string $token, string $type = 'Bearer')
      * @method $this withoutExceptionHandling(mixed ...$args)
      * @method $this withoutMiddleware(mixed ...$args)
      * @method $this followingRedirects()
@@ -205,6 +217,16 @@ namespace Pest\Support {
      * @method mixed exportedTaxFile(mixed ...$args)
      * @method mixed exportedUserDataFile(mixed ...$args)
      * @method mixed webhookEndpoint(mixed ...$args)
+     * @method mixed plainUser()
+     * @method mixed createTenant(mixed ...$args)
+     * @method mixed addMembership(mixed ...$args)
+     * @method mixed machineToken(mixed ...$args)
+     * @method mixed mintMachineToken(mixed ...$args)
+     * @method mixed productionLikeTenancy()
+     * @method mixed registerProbeRoutes()
+     * @method mixed probeContext()
+     * @method mixed onHost(mixed ...$args)
+     * @method mixed assertThrowsCode(mixed ...$args)
      */
     final class HigherOrderTapProxy {}
 }

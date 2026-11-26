@@ -32,6 +32,13 @@ class SyncPermissionsAction
                 continue;
             }
 
+            // Routes reserved for the platform super-admin get no permission
+            // row at all: what has no row can never be assigned to a role,
+            // so no store role can escalate to platform administration.
+            if ($this->isSuperAdminOnly($name)) {
+                continue;
+            }
+
             $permission = Permission::query()->firstOrCreate([
                 'name' => Str::after($name, 'api.'),
                 'guard_name' => GuardsEnum::WEB->value,
@@ -43,5 +50,16 @@ class SyncPermissionsAction
         }
 
         return $created;
+    }
+
+    private function isSuperAdminOnly(string $name): bool
+    {
+        foreach ((array) config('core.tenancy.super_admin_only_routes', []) as $prefix) {
+            if (is_string($prefix) && $prefix !== '' && str_starts_with($name, $prefix)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

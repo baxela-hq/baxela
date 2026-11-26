@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Cache;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Models\Language;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 abstract class TestCase extends BaseTestCase
@@ -34,5 +35,10 @@ abstract class TestCase extends BaseTestCase
         // test body runs, so a test's own config seeding is honored.
         app(PaymentCredentialResolverInterface::class)->refreshEnvBaseline();
         Cache::forget(ResolvesPaymentCredentials::CACHE_KEY);
+
+        // The tenant context is a process-level singleton (multi-tenancy
+        // §2). Pest runs every test in one process, so without this reset
+        // a tenant set by one test would leak into the next.
+        app(TenantContext::class)->reset();
     }
 }

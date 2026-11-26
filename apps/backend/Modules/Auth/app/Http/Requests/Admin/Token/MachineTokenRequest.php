@@ -5,6 +5,7 @@ namespace Modules\Auth\Http\Requests\Admin\Token;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Modules\Auth\Schemas\User\UserSchema;
 
 /**
  * Machine token minting (gap-C2 D14): abilities are explicit and
@@ -28,8 +29,9 @@ class MachineTokenRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             // The designated machine/service user (integration identity,
-            // never an arbitrary admin).
-            'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
+            // never an arbitrary admin). Auth accounts live in their own
+            // table — `users` is the profile table.
+            'user_id' => ['required', 'integer', Rule::exists(UserSchema::TABLE, UserSchema::ID)],
             'abilities' => ['required', 'array', 'min:1'],
             'abilities.*' => ['string', Rule::in(self::ALLOWED_ABILITIES)],
             'expires_days' => ['required', 'integer', 'min:1', 'max:3650'],

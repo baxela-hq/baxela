@@ -2,9 +2,25 @@
 
 namespace Modules\Tenant\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Tenant\TenantGatewayInterface;
+use Modules\Core\Support\Tenancy\CentralOperationRegistry;
+use Modules\Tenant\Actions\Admin\Tenant\CreateTenantAction;
+use Modules\Tenant\Actions\Admin\Tenant\DeleteTenantAction;
+use Modules\Tenant\Actions\Admin\Tenant\SetTenantStatusAction;
+use Modules\Tenant\Actions\Admin\Tenant\UpdateTenantAction;
+use Modules\Tenant\Actions\Admin\TenantDomain\AttachTenantDomainAction;
+use Modules\Tenant\Actions\Admin\TenantDomain\ReleaseTenantDomainAction;
 use Modules\Tenant\Gateways\TenantGateway;
+use Modules\Tenant\Operations\AttachTenantDomainOperation;
+use Modules\Tenant\Operations\CreateTenantOperation;
+use Modules\Tenant\Operations\DeleteTenantOperation;
+use Modules\Tenant\Operations\ReleaseTenantDomainOperation;
+use Modules\Tenant\Operations\SetTenantStatusOperation;
+use Modules\Tenant\Operations\UpdateTenantOperation;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -22,6 +38,8 @@ class TenantServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerCentralOperations();
+        $this->registerRateLimiters();
         $this->registerTranslations();
         $this->registerConfig();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
@@ -32,11 +50,45 @@ class TenantServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // The gateway takes the environment (the Phase 1 testing fallback
-        // is active in `testing` only), so it is bound through a closure.
+        // The gateway takes the environment (the built-in default tenant
+        // exists outside production only), so it is bound through a closure.
         $this->app->bind(TenantGatewayInterface::class, fn ($app) => new TenantGateway($app->environment()));
 
         $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * The module's central operations (multi-tenancy §6.5): platform
+     * administration of stores and their domains. Each Action that offers
+     * an operation is its only authorized caller; no queued class carries
+     * one.
+     */
+    protected function registerCentralOperations(): void
+    {
+        $registry = $this->app->make(CentralOperationRegistry::class);
+
+        $operations = [
+            CreateTenantOperation::class => [CreateTenantAction::class, 'execute'],
+            UpdateTenantOperation::class => [UpdateTenantAction::class, 'execute'],
+            SetTenantStatusOperation::class => [SetTenantStatusAction::class, 'execute'],
+            DeleteTenantOperation::class => [DeleteTenantAction::class, 'execute'],
+            AttachTenantDomainOperation::class => [AttachTenantDomainAction::class, 'execute'],
+            ReleaseTenantDomainOperation::class => [ReleaseTenantDomainAction::class, 'execute'],
+        ];
+
+        foreach ($operations as $operation => [$handler, $method]) {
+            $registry->register($operation, [
+                'handler' => [$handler, $method],
+                'callers' => [$handler],
+                'jobs' => [],
+            ]);
+        }
+    }
+
+    protected function registerRateLimiters(): void
+    {
+        RateLimiter::for('tenant-onboarding', fn (Request $request) => Limit::perHour(5)
+            ->by((string) ($request->user()?->getAuthIdentifier() ?? $request->ip())));
     }
 
     /**

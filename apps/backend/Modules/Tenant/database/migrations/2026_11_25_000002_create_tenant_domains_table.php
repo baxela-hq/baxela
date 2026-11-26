@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create(TenantDomainSchema::TABLE, function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger(TenantDomainSchema::TENANT_ID);
-            $table->string(TenantDomainSchema::DOMAIN)->unique();
+            $table->string(TenantDomainSchema::DOMAIN);
             $table->string(TenantDomainSchema::STATUS, 20)->default(TenantDomainSchema::STATUS_PENDING);
             $table->boolean(TenantDomainSchema::IS_PRIMARY)->default(false);
             $table->timestamp(TenantDomainSchema::VERIFIED_AT)->nullable();
@@ -32,11 +32,21 @@ return new class extends Migration
             $table->index(TenantDomainSchema::TENANT_ID);
         });
 
-        // At most one primary domain per tenant — the plain unique on
-        // domain cannot express this. A partial unique index works on
-        // PostgreSQL and SQLite alike (multi-tenancy §4.1). Written as a
-        // raw statement: Blueprint::rawIndex wraps its argument as an
-        // index *expression*, not a whole statement.
+        // A domain belongs to at most one store at a time — but a released
+        // row keeps it through its cooling-off window (§9.7) and must stop
+        // blocking a later attachment once that window has passed. So the
+        // unique key covers every row that is not released. A partial
+        // unique index works on PostgreSQL and SQLite alike; written as a
+        // raw statement because Blueprint::rawIndex wraps its argument as
+        // an index *expression*, not a whole statement.
+        DB::statement(
+            'CREATE UNIQUE INDEX tenant_domains_domain_unique ON '.TenantDomainSchema::TABLE
+            .' ('.TenantDomainSchema::DOMAIN.') WHERE '.TenantDomainSchema::STATUS
+            .' <> \''.TenantDomainSchema::STATUS_RELEASED.'\'',
+        );
+
+        // At most one primary domain per tenant — the unique above cannot
+        // express this.
         DB::statement(
             'CREATE UNIQUE INDEX tenant_domains_one_primary_unique ON '.TenantDomainSchema::TABLE
             .' ('.TenantDomainSchema::TENANT_ID.') WHERE '.TenantDomainSchema::IS_PRIMARY,

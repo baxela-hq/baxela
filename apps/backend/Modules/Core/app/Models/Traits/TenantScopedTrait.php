@@ -25,13 +25,16 @@ use Modules\Core\Support\Tenancy\TenantContext;
  * database triggers (§6.8).
  *
  * Models on the platform tier (nullable tenant_id, NULL = platform row)
- * declare `protected static bool $platformTier = true;` — only then may a
- * MODE_CENTRAL create leave the column unset.
+ * override isPlatformTier() to return true — only then may a MODE_CENTRAL
+ * create leave the column unset. A method, not a static property: PHP
+ * refuses a class redefining a trait's static property.
  */
 trait TenantScopedTrait
 {
-    /** Override to true on platform-tier models (audit_logs, settings). */
-    protected static bool $platformTier = false;
+    public static function isPlatformTier(): bool
+    {
+        return false;
+    }
 
     public static function bootTenantScopedTrait(): void
     {
@@ -55,7 +58,7 @@ trait TenantScopedTrait
                 return;
             }
 
-            if ($context->mode() === TenantContext::MODE_CENTRAL && static::$platformTier) {
+            if ($context->mode() === TenantContext::MODE_CENTRAL && static::isPlatformTier()) {
                 // Platform-tier row written by a registered central
                 // operation: the column stays NULL by design.
                 return;

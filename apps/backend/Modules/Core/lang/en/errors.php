@@ -37,4 +37,14 @@ return [
     'extensions' => [
         'not_installed' => 'The extension :slug is not installed.',
     ],
+
+    // Tenant identification (multi-tenancy §3.1) — safe client-facing
+    // outcomes. A missing context and an ownership violation are 500s and
+    // render the generic message.
+    'tenant' => [
+        'not_found' => 'The store could not be found',
+        'suspended' => 'This store is currently unavailable',
+        'selection_required' => 'Select a store to continue',
+        'membership_required' => 'You do not have access to a store',
+    ],
 ];
