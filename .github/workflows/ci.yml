@@ -106,7 +106,9 @@ jobs:
           # would abort the step before any diagnostics run, leaving only the
           # generic exit-code annotation. Capture the status explicitly.
           set +e
-          vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
+          # -d memory_limit: the runner retains ~100 KB per test, and the
+          # suite outgrows the image's 256M near 1,600 tests (scripts/test.sh).
+          php -d memory_limit=512M vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
           rc=${PIPESTATUS[0]}
           if [ "$rc" -ne 0 ]; then
             python3 ../../scripts/ci/pest-failure-annotations.py "/tmp/pest-$PEST_LOG.xml" "/tmp/pest-$PEST_LOG.log" apps/backend
@@ -138,9 +140,9 @@ jobs:
       - name: Run tests (PostgreSQL)
         shell: bash
         run: |
-          # Same errexit caveat as the SQLite step above.
+          # Same errexit caveat and memory limit as the SQLite step above.
           set +e
-          vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
+          php -d memory_limit=512M vendor/bin/pest --log-junit="/tmp/pest-$PEST_LOG.xml" 2>&1 | tee "/tmp/pest-$PEST_LOG.log"
           rc=${PIPESTATUS[0]}
           if [ "$rc" -ne 0 ]; then
             python3 ../../scripts/ci/pest-failure-annotations.py "/tmp/pest-$PEST_LOG.xml" "/tmp/pest-$PEST_LOG.log" apps/backend
