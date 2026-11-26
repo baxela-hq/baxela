@@ -1,8 +1,8 @@
 # Production environment
 
-Single-server deployment: backend (Laravel Octane + RoadRunner behind nginx),
-one-shot migrate, queue worker, scheduler, admin SPA, storefront (Next.js
-standalone server), PostgreSQL, Redis. Defined in
+Single-server deployment: backend (php-fpm + nginx), one-shot migrate,
+queue worker, scheduler, admin SPA, storefront (Next.js standalone server),
+PostgreSQL, Redis. Defined in
 [`docker-compose.prod.yml`](../../../docker-compose.prod.yml) at the repo
 root; this directory only holds the build assets (Dockerfiles, nginx configs,
 php.ini, entrypoint). Images are built from the **repo root** context, so
@@ -29,9 +29,9 @@ docker compose --env-file .env.production -f docker-compose.prod.yml up -d --bui
 ```
 
 `up` starts PostgreSQL/Redis, runs the one-shot `migrate` service, then brings up
-Octane (RoadRunner), nginx, queue, scheduler, and the admin panel. `backend`,
-`queue`, and `scheduler` wait for `migrate` to complete, so workers never
-race migrations.
+the backend (php-fpm + nginx), the outer nginx proxy, queue, scheduler, and
+the admin panel. `backend`, `queue`, and `scheduler` wait for `migrate` to
+complete, so workers never race migrations.
 
 - Backend API: `http://<host>:${BACKEND_PORT:-8080}`
 - Admin panel: `http://<host>:${ADMIN_PORT:-8081}`
@@ -70,41 +70,36 @@ docker compose exec -T postgres pg_restore -U baxela -d "${DB_DATABASE}_restored
 docker compose exec postgres pg_isready -U baxela -d "$DB_DATABASE"
 ```
 
-## The Octane server (RoadRunner)
+## The backend web server (php-fpm + nginx)
 
-The `backend` container runs `php artisan octane:start --host=0.0.0.0
---port=8000 --rpc-host=127.0.0.1 --workers=4 --max-requests=500`. The RPC
-listener is bound to loopback only and never published. nginx reaches the
-HTTP listener through the isolated `proxy` network (`backend-upstream`
-alias); `TRUSTED_PROXIES=172.28.0.0/29` in `.env.production` must stay in
-sync with that subnet.
+The `backend` container runs php-fpm and an embedded nginx under supervisord
+(`infrastructure/docker/production/backend/supervisord.conf`); the embedded
+nginx listens on `:8000`, serves `public/` directly, and fastcgi-passes the
+front controller to the local fpm pool. The outer `backend-nginx` proxy
+reaches it through the isolated `proxy` network (`backend-upstream` alias);
+`TRUSTED_PROXIES=172.28.0.0/29,127.0.0.1` in `.env.production` must stay in
+sync with that subnet (127.0.0.1 covers the in-container nginx→fpm hop).
 
-- **Fresh container vs reused container.** A deploy that recreates the
-  container (`docker compose up -d --build`) starts fresh workers — nothing
-  to do. If a container is ever reused after code or config changes, workers
-  still run the old code in memory (`opcache.validate_timestamps=0`):
-  `docker compose exec backend php artisan octane:reload` (graceful worker
-  replacement) or restart the container.
-- **Extension lifecycle.** `baxela:install/enable/disable/remove` run in a
-  separate CLI process and cannot reach running HTTP workers. After changing
-  an extension, run `php artisan octane:reload` (the extension's registered
-  driver/routes update on the replacement workers; the admin API's extension
-  *state* is always current because it re-reads per request).
-- **Worker sizing and memory.** `--workers` and `--max-requests` are baked
-  into the image command; resize via a compose `command:` override rather
-  than rebuilding. `max_worker_memory` (soft per-worker recycle limit) lives
-  in `apps/backend/.rr.yaml` — raise it only after measuring worker peaks
-  under real load (large catalog responses, invoice PDF generation, image
-  processing); a per-worker limit is not a container memory budget.
-- **Request timeout budget.** `max_execution_time` in `config/octane.php`
-  owns the request limit (RoadRunner's `exec_ttl` is derived from it), nginx
-  `proxy_read_timeout` must not be lower, and the compose
-  `stop_grace_period` must exceed it so in-flight requests survive shutdown.
-  Scale all three together.
-- **Healthchecks.** The `backend` healthcheck probes RoadRunner directly
-  (`127.0.0.1:8000/up`); the nginx check verifies the externally relevant
-  request path. A failing backend check with a passing nginx check points at
-  the app server, and vice versa.
+- **Deploys recreate the container** (`docker compose up -d --build`), which
+  starts fresh processes. The images are immutable
+  (`opcache.validate_timestamps=0`), so a reused container would keep
+  serving old code — always deploy by recreating.
+- **Extension lifecycle.** `baxela:install/enable/disable/remove` take
+  effect on the next request: the framework boots per request under FPM, so
+  the boot guard re-registers drivers/routes with current state. No reload
+  step exists.
+- **Pool sizing and memory.** The fpm pool keeps the stock process manager
+  (dynamic, 5 children); override via
+  `infrastructure/docker/production/backend/php-fpm-pool.conf` when measured
+  load demands it. PHP's `memory_limit` (256M) bounds each request — the
+  container budget is pool size × per-request peak.
+- **Request timeout budget.** PHP's `max_execution_time` (30s) owns the
+  request limit; the compose `stop_grace_period` (45s) exceeds it so
+  in-flight requests survive shutdown. Scale both together.
+- **Healthchecks.** The `backend` healthcheck probes the embedded web server
+  directly (`127.0.0.1:8000/up`); the outer nginx check verifies the
+  externally relevant request path. A failing backend check with a passing
+  nginx check points at the app server, and vice versa.
 
 ## Uptime monitoring
 

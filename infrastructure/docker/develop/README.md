@@ -1,9 +1,8 @@
 # Develop environment
 
-Laravel Octane (RoadRunner) + nginx + PostgreSQL + Redis for hacking on the
-backend, plus Vite / Next.js dev servers for the admin panel and storefront —
-application sources are bind-mounted from `apps/`, so no host PHP or Node is
-required.
+php-fpm + nginx + PostgreSQL + Redis for hacking on the backend, plus Vite /
+Next.js dev servers for the admin panel and storefront — application sources
+are bind-mounted from `apps/`, so no host PHP or Node is required.
 
 Defined in [`docker-compose.yml`](../../../docker-compose.yml) at the repo
 root (this directory only holds the build assets: the per-app Dockerfiles,
@@ -33,7 +32,7 @@ generation number — failed builds consume theirs permanently.
 
 A second develop stack (e.g. a clean-clone check) needs its own ports **and**
 its own proxy subnet — the default `172.28.0.0/29` is pinned for the
-nginx → Octane trusted-proxy path. In the second clone's root `.env` set
+nginx → backend trusted-proxy path. In the second clone's root `.env` set
 `COMPOSE_PROJECT_NAME`, shifted `*_PORT`/`BACKEND_*_PORT` values, and the
 `PROXY_SUBNET` / `PROXY_GATEWAY` / `TRUSTED_PROXIES` triplet (keep
 `TRUSTED_PROXIES` equal to `PROXY_SUBNET`) — see `.env.example`.
@@ -62,8 +61,8 @@ route).
 
 | Service | Image | Notes |
 |---------|-------|-------|
-| `app` | `baxela/backend:develop` (built from `infrastructure/docker/develop/backend`) | Laravel Octane (RoadRunner HTTP on `:8000`, RPC loopback-only, 4 workers, reloads on file changes via `--watch`); `www-data` uid/gid matched to host via `WWWUSER`/`WWWGROUP`; sole owner of `npm ci` (`INSTALL_NODE_DEPS=1`) and migrations (`RUN_MIGRATIONS=1`) |
-| `web` | `nginx:stable-bookworm` | Reverse proxy to Octane (static files served directly, unmatched requests proxied) from `infrastructure/docker/develop/nginx/backend.conf` |
+| `app` | `baxela/backend:develop` (built from `infrastructure/docker/develop/backend`) | php-fpm (pool on `:9000`, reached only over the `proxy` network); `www-data` uid/gid matched to host via `WWWUSER`/`WWWGROUP`; sole owner of migrations (`RUN_MIGRATIONS=1`) |
+| `web` | `nginx:stable-bookworm` | Laravel fpm vhost (static files served directly, everything else fastcgi-passed) from `infrastructure/docker/develop/nginx/backend.conf` |
 | `admin` | `baxela/admin:develop` (built from `infrastructure/docker/develop/admin`) | `frontend` profile (on by default): Vite dev server, host port `5173` |
 | `storefront` | `baxela/storefront:develop` (built from `infrastructure/docker/develop/storefront`) | `frontend` profile (on by default): Next.js dev server, host port `3000` |
 | `postgres` | `postgres:18-alpine` | credentials from `DEV_DB_*` in `.env`; host port `5433` |
@@ -111,28 +110,21 @@ docker compose --profile mail up -d
 # MAIL_PORT=1025
 ```
 
-## The Octane server
+## The php-fpm server
 
-The `app` service starts `php artisan octane:start --host=0.0.0.0 --port=8000
---rpc-host=127.0.0.1 --workers=4 --max-requests=500 --watch` (the same
-startup-command contract as production, plus `--watch`). Because the
-framework lives in memory per worker:
+The `app` service runs plain `php-fpm` (pool on `:9000`, the base image
+default). The framework boots per request, so there is no reload dance:
 
-- **Code/config changes reload automatically** — the watcher covers `app/`,
-  `Modules/`, `extensions/`, config, routes, `modules_statuses.json` (see
-  `watch` in `config/octane.php`).
-- **Env changes need a restart** — workers read `.env` once at boot:
-  `docker compose restart app` after editing `apps/backend/.env`.
-- **Extension lifecycle needs a reload** — `baxela:install/enable/disable`
-  run in a separate CLI process; running workers keep already-booted
-  extensions until `docker compose exec app php artisan octane:reload` (or a
-  restart). The admin API's extension *state* is always current (it re-reads
-  per request); what lags is the registered driver/routes.
-- The nginx vhost serves existing `public/` files directly and proxies
-  everything else to Octane over the isolated `proxy` network (`app-upstream`
-  alias, `TRUSTED_PROXIES=172.28.0.0/29`). Requests for `*.php`/`*.phtml`/
-  `*.phar` outside the front controller are rejected (404) — uploaded PHP
-  never executes or discloses source.
+- **Code, config and `.env` changes apply on the next request** — nothing to
+  restart or reload.
+- **Extension lifecycle commands** (`baxela:install/enable/disable`) take
+  effect on the next request too; the registered driver/routes re-register
+  per boot.
+- The nginx vhost serves existing `public/` files directly and fastcgi-passes
+  everything else to the fpm pool over the isolated `proxy` network
+  (`app-upstream` alias, `TRUSTED_PROXIES=172.28.0.0/29`). Requests for
+  `*.php`/`*.phtml`/`*.phar` outside the front controller are rejected (404) —
+  uploaded PHP never executes or discloses source.
 
 ## Reset
 

@@ -17,3 +17,6 @@ apps/backend/bootstrap/cache/*
 
 !infrastructure/docker/production/backend/entrypoint.sh
 !infrastructure/docker/production/backend/php.ini
+!infrastructure/docker/production/backend/nginx-app.conf
+!infrastructure/docker/production/backend/supervisord.conf
+!infrastructure/docker/production/backend/php-fpm-pool.conf

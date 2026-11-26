@@ -29,10 +29,10 @@ x-backend: &backend
     env_file: .env.production
     logging: *default-logging
     restart: unless-stopped
-    # Grace on SIGTERM: rr drains in-flight requests. Must exceed the longest
-    # allowed request — max_execution_time (config/octane.php) is 30s, so 45s
-    # covers it plus worker teardown. Scale both together if the PDF budget
-    # ever raises the execution limit.
+    # Grace on SIGTERM: supervisord stops nginx (QUIT drains in-flight
+    # requests) and php-fpm. Must exceed the longest allowed request —
+    # max_execution_time is 30s, so 45s covers it plus teardown. Scale both
+    # together if the PDF budget ever raises the execution limit.
     stop_grace_period: 45s
     security_opt:
         - no-new-privileges:true
@@ -57,16 +57,17 @@ services:
             default: null
             proxy:
                 # DNS alias advertised ONLY on the isolated proxy network —
-                # nginx resolves the Octane HTTP listener through it, so the
-                # connection source IP Laravel sees stays inside
+                # nginx resolves the backend's embedded web server through
+                # it, so the connection source IP Laravel sees stays inside
                 # TRUSTED_PROXIES (172.28.0.0/29). DNS aliasing does not set
                 # that source IP by itself; the pinned proxy subnet does.
                 aliases:
                     - backend-upstream
-        # Probes RoadRunner directly (not via nginx), so an app-server
-        # failure is distinguishable from a proxy failure. PHP streams with
-        # an explicit 2s timeout — the image ships no curl. `$$` escapes
-        # compose interpolation so the shell receives $ctx.
+        # Probes the backend's embedded web server directly (not via
+        # backend-nginx), so an app-server failure is distinguishable from a
+        # proxy failure. PHP streams with an explicit 2s timeout — the image
+        # ships no curl. `$$` escapes compose interpolation so the shell
+        # receives $ctx.
         healthcheck:
             test: ["CMD-SHELL", "php -r '$$ctx=stream_context_create([\"http\"=>[\"timeout\"=>2]]); exit(@file_get_contents(\"http://127.0.0.1:8000/up\",false,$$ctx)===false?1:0);'"]
             interval: 5s
@@ -97,8 +98,8 @@ services:
             start_period: 30s
         networks:
             # default: reaching reverb (the /app/ ws proxy) and service
-            # resolution. proxy: the isolated path to the Octane HTTP
-            # listener — see TRUSTED_PROXIES.
+            # resolution. proxy: the isolated path to the backend's web
+            # server — see TRUSTED_PROXIES.
             - default
             - proxy
 
@@ -230,11 +231,11 @@ volumes:
     postgres-data:
     redis-data:
 
-# S.3: the ONLY network path to the Octane HTTP listener (:8000). Everything
-# else (postgres, redis, queue, reverb, admin, storefront) stays on the default
-# network, so a container peer cannot feed forwarding headers to the app.
-# Set TRUSTED_PROXIES to this subnet in .env.production; keep both in sync
-# when changing the subnet.
+# S.3: the ONLY network path to the backend's embedded web server (:8000).
+# Everything else (postgres, redis, queue, reverb, admin, storefront) stays on
+# the default network, so a container peer cannot feed forwarding headers to
+# the app. Set TRUSTED_PROXIES to this subnet in .env.production; keep both in
+# sync when changing the subnet.
 networks:
     proxy:
         ipam:
