@@ -168,6 +168,10 @@ services:
                 NEXT_PUBLIC_REVERB_PORT: ${REVERB_PORT:-443}
                 NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-https}
                 NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN}
+                # Google sign-in, baked into the client bundle (and the CSP's
+                # GIS origins) — changing either requires an image rebuild.
+                NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID:-}
+                NEXT_PUBLIC_AUTH_GOOGLE_ENABLED: ${NEXT_PUBLIC_AUTH_GOOGLE_ENABLED:-false}
         restart: unless-stopped
         environment:
             # Browser code uses the build-time NEXT_PUBLIC value; server-side

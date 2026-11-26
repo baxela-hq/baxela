@@ -207,6 +207,14 @@ services:
             NEXT_PUBLIC_REVERB_SCHEME: ${REVERB_SCHEME:-http}
             # Public origin for sitemap.xml/robots.txt/metadataBase (server-only).
             SITE_URL: ${SITE_URL:-http://localhost:${STOREFRONT_DEV_PORT:-3000}}
+            # Google sign-in: the button renders only when both are set, and
+            # the client ID must match the backend's AUTH_GOOGLE_CLIENT_ID.
+            # Passed through bare on purpose — unset in the root .env leaves
+            # them out of the container, so apps/storefront/.env.local can
+            # still supply them (a `${VAR:-}` default would pin them to an
+            # empty string, which shadows that file).
+            NEXT_PUBLIC_GOOGLE_CLIENT_ID:
+            NEXT_PUBLIC_AUTH_GOOGLE_ENABLED:
             # Sentry: NEXT_PUBLIC_* feeds the browser SDK (and the CSP
             # connect-src derivation) at dev-serve time; SENTRY_DSN is the
             # server-side runtime DSN. Both empty by default (SDK disabled).
