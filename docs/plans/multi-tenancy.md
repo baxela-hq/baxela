@@ -7,8 +7,11 @@ folded into §6.4; no further architecture revision is required. The architectur
 inventory base are unchanged (full code inventory taken 2026-11-24 on commit `1305e55b`, after
 the PostgreSQL migration). On 2026-11-25 the owner authorized implementation of Phases 2–8 and
 waived the between-phase review gate; each phase is still verified (static analysis and both test
-planes) before the next builds on it. **Progress: Phase 1 landed on 2026-11-25; Phases 2–8 are not
-started** — the owner stopped the work after Phase 1. Progress and deviations from the plan text
+planes) before the next builds on it. **Progress: Phase 1 landed on 2026-11-25 (its Octane-era
+pieces were withdrawn on 2026-11-26 by the php-fpm revert, rev 6); Phases 2–8 are not started** —
+the owner stopped the work after Phase 1 and moved the implementation to another agent. The
+branch `feat/multi-tenancy` carries the phase; open Phase-1 verification debts are listed at the
+end of the Implementation Record. Progress and deviations from the plan text
 are logged in the Implementation Record at the end of this document.
 
 Architecture (unchanged): **single database, `tenant_id` row scoping** · host/subdomain tenant
@@ -282,7 +285,7 @@ individually before its phase.
   **Update (rev 6, 2026-11-26: reverting to php-fpm — the rev-5 requirements are withdrawn.**
   The Octane/RoadRunner runtime was removed (branch `revert/php-fpm`, merged to `main`); the API
   boots per request again, so the persistent-worker prerequisites above no longer apply: the
-  `ResetTenantContext` Octane listener (§2, §6.7 item 2), the Octane isolation-gate tenant
+  `ResetTenantContext` Octane listener (§2; it was §6.7 item 2 before this sweep), the Octane isolation-gate tenant
   scenarios, risk R6, defect K8, and test rows 43/44/109 are dropped. Two things survive the
   revert because they are about processes that outlive a request regardless of the HTTP server:
   `TenantContext` still needs an explicit reset — Pest runs the whole suite in one process (tests
@@ -478,7 +481,9 @@ individually before its phase.
   `ResolvesPaymentCredentials::$baseline`, `SearchMutationGate::$depth`,
   `SearchCursorManager::$held`. `config/octane.php` has `'flush' => []`; its `RequestReceived`
   listeners are `FlushSentryScope` and `FlushExtensionState`, and nothing resets store state
-  between requests.
+  between requests. (rev 6: withdrawn with the Octane runtime — under php-fpm `boot()` runs per
+  request, so the per-process staleness F39 described no longer exists for HTTP; it remains true
+  for `queue:work`, which §6.7 item 3 covers.)
 - F40. Search: `catalog_search_gate` is a single row (`id = 1`); the index uid is `{uid_base}_g{n}`;
   documents carry no tenant field (their only store-dependent values are base-currency prices,
   minor units, precision 2); the primary key is `product_id`, which stays installation-unique
@@ -556,12 +561,15 @@ New files in `Modules/Core/app/Support/Tenancy/`:
   }
   ```
 
-  `runForTenant` snapshots and **restores the previous mode in `finally`**. Under Octane the
-  singleton persists across requests, so `runForTenant`'s snapshot/restore is not enough on its
-  own: **every request must begin in `MODE_INACTIVE`** via an explicit reset (Octane
-  `RequestReceived` listener or a scoped binding) so a previous request's tenant can never leak
-  into the next one (F3 rev 5). (rev 4.2: decided — a listener, `ResetTenantContext`, last item of
-  this section.) Queue workers are handled in §6.1. `runCentral` is **removed** from the public
+  `runForTenant` snapshots and **restores the previous mode in `finally`**. The singleton lives
+  for the process lifetime — under `queue:work` many jobs share one process, and Pest runs the
+  whole suite in one process — so the invariant "**every request begins in `MODE_INACTIVE`**" is
+  owned by identification: `ResolveTenant` resets the context as its first act (§3.1), every job
+  attempt restores the snapshot its `JobProcessing` pushed (§6.1), and `TestCase::setUp` resets
+  it per test — a previous request's tenant can never leak into the next one. (rev 4.2: decided
+  on an Octane `RequestReceived` listener, `ResetTenantContext` — withdrawn by rev 6, the
+  php-fpm revert; `ResolveTenant`'s own reset is the single owner of the invariant.) Queue
+  workers are handled in §6.1. `runCentral` is **removed** from the public
   surface in rev 4 — cross-tenant execution goes through `CentralOperations` (§6.5), which is the
   only caller of the internal `central()`.
 
@@ -614,11 +622,6 @@ New files in `Modules/Core/app/Support/Tenancy/`:
   `defaultTenant(): ?TenantSnapshot`, `isMembershipActive(int $userId, int $tenantId): bool`,
   `membershipsFor(int $userId): array`. Implemented by `Modules/Tenant/app/Gateways/TenantGateway.php`,
   bound in `TenantServiceProvider::$bindings` (house Gateway pattern).
-- **`ResetTenantContext`** (rev 4.2, `app/Octane/`) — the **first** `RequestReceived` listener in
-  `config/octane.php`, ahead of `FlushSentryScope` / `FlushExtensionState` (F39). Sets
-  `MODE_INACTIVE`, clears the spatie team id, and drops the store-runtime snapshot (§6.7). Unit
-  tests follow the shape of `Modules/Core/tests/Unit/Octane/FlushSentryScopeTest.php`; the same
-  assertions join the Octane isolation gate.
 
 ### 2.1 How models pick up the tenant filter (A6)
 
@@ -654,8 +657,8 @@ New files in `Modules/Core/app/Support/Tenancy/`:
      the subclass approach still needs the same per-site remediation — it only adds a second model
      per table.
   3. In Baxela the tenant is *the store being served* (`TenantContext`), not the authenticated
-     account. The reference implementation captures the vendor in `booted()`; on Octane that runs
-     once per worker, not per request (F39).
+     account. The reference implementation captures the vendor in `booted()`; on a persistent
+     worker that runs once, not per request (the Octane-era F39 — withdrawn by rev 6).
   4. After Phase 2 there is no legitimate code path that should see all stores except
      `CentralOperations`, so a second, unscoped model has no legitimate caller to serve.
 
@@ -701,9 +704,9 @@ tenant header is never a substitute.
 
 **Order tests (rev 4.4, per review).** The order is proven **behaviorally**, not by asserting a
 configured list position: a route-model-bound scoped resource resolves under the correct tenant
-(binding ran after the context was set), the Octane reset listener is observed to run before both
-stages on the same worker, and a test reads the priority-sorted gathered middleware of a real
-matched route. Row 83.
+(binding ran after the context was set), a request that follows another store's request observes
+the context reset before both stages, and a test reads the priority-sorted gathered middleware of
+a real matched route. Row 83.
 
 **Route-audience grammar (rev 4.3, F5 — the single definition; from F34).** Every module API
 route is named `api.{module}.{audience}.{…rest}`: the **third segment** is the audience, taken
@@ -1130,11 +1133,11 @@ behaviour.
 - `AccessGateway::adminUserIds()` switches to a team-agnostic pivot-existence query; the `roles()`
   relation is no longer a safe all-team query after teams are enabled.
 - Team context lifecycle: `AuthorizeTenantAccess` sets `setPermissionsTeamId($tenantId)` before
-  permission checks and restores/clears it in a `finally`/request-termination path. Queue jobs that
-  check permissions set it inside their tenant run. Under Octane the per-request lifecycle is no
-  longer free: the team id must be cleared on request termination (spatie's octane reset listener
-  is enabled via `config/permission.php`), so the static resolver stays safe (F3 rev 5).
-  (rev 4.2: `ResetTenantContext`, §2, clears it at the start of every request as well.)
+  permission checks and restores/clears it in a `finally`. Queue jobs that check permissions set
+  it inside their tenant run (the §6.1 snapshot restores whatever preceded the job). Under
+  php-fpm the container boots per request, so the team id cannot leak between HTTP requests;
+  spatie's octane reset listener stays off (`register_octane_reset_listener => false`). (The
+  rev 4.2 wording that managed this with `ResetTenantContext` is withdrawn by rev 6.)
   (rev 4.3, B1: membership and role writes within the active tenant execute in MODE_TENANT as
   tenant operations — §6.5 Category 2 — never through central mode.)
 - Permission cache is confirmed team-agnostic: one flat cache key stores role/permission definitions;
@@ -1624,8 +1627,10 @@ Redesign (Phase 4), fixing F16 + F26:
 
 Today the store's settings are read once per process: `SettingServiceProvider::boot()` applies the
 timezone and the store identity at boot (F39), languages and currencies carry single-store flags,
-and one settings table holds both platform and store values (F46). With several stores behind one
-worker that is wrong by construction — the first store to boot would configure every request.
+and one settings table holds both platform and store values (F46). Under the Octane runtime the
+first store to boot configured every request; the php-fpm revert removed that HTTP staleness, and
+what §6.7 still must close is the queue-worker path — and the boot-time apply itself, so a
+settings change takes effect on the next request rather than at the next deploy.
 
 1. **Per request.** After `ResolveTenant` identifies the store, Core raises a `TenantResolved`
    event (a Core contract); the Setting module listens and applies the store runtime: `app.timezone`
@@ -1633,19 +1638,20 @@ worker that is wrong by construction — the first store to boot would configure
    supported locales, enabled currencies and default display currency (P2), pricing mode
    (`prices_include_tax`), default tax class, FX values, mail from-name. `SettingServiceProvider::boot()`
    no longer applies anything per process.
-2. **Reset first.** `ResetTenantContext` (§2), the first `RequestReceived` listener, restores the
-   platform defaults for every value the runtime touches. `UpdateSettingAction` keeps its
-   invalidation (F11) and the next request re-applies — which also closes K8 (a settings update
-   never reached an already-running worker).
+2. **Apply per request.** Under php-fpm the framework boots per request, so the platform
+   defaults hold until `TenantResolved` fires; `SettingServiceProvider::boot()` no longer applies
+   anything either (item 1). `UpdateSettingAction` keeps its invalidation (F11) and the next
+   request re-applies — a settings update reaches every HTTP request by construction (the
+   Octane-era defect K8 ceased to exist with the runtime).
 3. **Per job.** Part of the §6.1 snapshot: `JobProcessing` applies the runtime for the payload's
    tenant, `JobAttempted` restores the captured values.
 4. **Process-global values.** `date_default_timezone_set()` and the statics of F39 are
-   process-wide. A RoadRunner worker serves requests one at a time and task/queue workers are
-   separate processes, so set-at-request-start and reset-at-request-start is sufficient for HTTP
-   and sync jobs. `SupportedLocales::$codes` becomes tenant-keyed. `ResolvesPaymentCredentials::$baseline`
-   is platform data (env) and stays as it is. `SearchMutationGate::$depth` and
-   `SearchCursorManager::$held` are transaction bookkeeping that holds no store data — they are
-   asserted released by the Octane isolation gate, not changed.
+   process-wide. Under php-fpm one worker process serves one request at a time, and queue
+   workers are separate processes, so set-at-request-start (item 1) and the §6.1 job snapshot
+   cover every runtime. `SupportedLocales::$codes` becomes tenant-keyed.
+   `ResolvesPaymentCredentials::$baseline` is platform data (env) and stays as it is.
+   `SearchMutationGate::$depth` and `SearchCursorManager::$held` are transaction bookkeeping
+   that holds no store data — released in `finally`, unchanged.
 5. **Fail closed inside the resolvers.** The seven `catch (Throwable)` sites of F38 rethrow
    tenancy exceptions (`TenantContextMissingException` and the tenant-not-found family). Their
    fallback to platform defaults stays for infrastructure failures only (a database outage must not
@@ -1671,8 +1677,9 @@ worker that is wrong by construction — the first store to boot would configure
    rows 81, 93.
    **Cache invalidation (rev 4.5, F7):** platform-setting writes invalidate
    `platform:setting.{name}` in the same write path that updates the row (the super-admin
-   platform settings action) — acceptance: a worker running under RoadRunner serves the new value
-   on the next request without a restart (row 109).
+   platform settings action) — acceptance: the next request serves the new value (the
+   worker-restart scenario of the Octane era is withdrawn with the runtime; under php-fpm this
+   holds by construction).
 
 #### 6.7.1 Money, languages, settings (P2, P5)
 
@@ -1885,7 +1892,7 @@ stays a platform cache. A per-store enable switch is out of scope and recorded i
 - **Rate limiters:** `cart-public`, `contact-submit`, `contact-subscribe`,
   `support-ticket-create`, `support-ticket-reply` are keyed by tenant + ip; `webhook` by tenant
   slug + driver; `auth-*`, `notification-webhook` and `machine` stay platform.
-- **Tests:** §10 rows 43–45, 63–65.
+- **Tests:** §10 row 45, 63–65.
 
 ---
 
@@ -1930,8 +1937,7 @@ lifecycle listeners (snapshot stack), the central-mode architecture test, and te
 log-context/Sentry tagging (§9.7 logging, rev 4.1 assignment). `Modules/Core/lang/*/errors.php`
 keys (`tenant_not_found`, `tenant_suspended`, `tenant_membership_required`,
 `tenant_context_missing`, `tenant_selection_required`; `idempotency_in_progress` lands with
-Phase 4). (rev 4.2) `app/Octane/ResetTenantContext.php` + its place first in
-`config/octane.php`. (rev 4.4) `NormalizeTenantRequest` (Stage 1) and the revised Stage-2
+Phase 4). (rev 4.4) `NormalizeTenantRequest` (Stage 1) and the revised Stage-2
 `ResolveTenant` with the middleware priority list (§3.1). (rev 4.5) the tenant-neutral
 `onboarding` audience + its route allowlist (§3.1), webhook slug resolution in Stage 2 (§3.1),
 and the typed `CentralOperation` interface + handler registry (§6.5). Modified:
@@ -1945,8 +1951,8 @@ Tests: resolution matrix (rows 5, 8 public/user cells, 14), scope fail-closed un
 context snapshot/restore incl. nested `runForTenant` (row 20), queue lifecycle in **both models**
 (sync inline + `queue:work --once`, rows 26–28), tenant/domain/membership CRUD + non-super-admin
 403, `CentralOperations` registry/reason/exception-safety + architecture test (rows 21–22),
-default-tenant seeder assertion, (rev 4.2) effective middleware order and the Octane reset
-listener, (rev 4.3) route-table enumeration — every API route carries a classified audience or
+default-tenant seeder assertion, (rev 4.2) effective middleware order, (rev 4.3) route-table
+enumeration — every API route carries a classified audience or
 the test fails (row 82), (rev 4.4) behavioral lifecycle tests — the audience decision happens
 after route match, the context before binding and credential application, proven on real requests
 through the priority-sorted stack (row 83) — machine-token Stage-2 resolution incl.
@@ -2015,7 +2021,7 @@ refactor** (incl. atomic `credential_version` bumps and disabled-is-unusable enf
 PayPal token cache scoping (§6.3); `POST /webhook/{tenant-slug}/{driver}` routing;
 suspended-tenant job skip + audit; media store path (§6.4, P4); **store runtime per request
 (§6.7)** incl. the seven resolver fixes (F38) and the `SettingServiceProvider::boot()` cleanup
-(closes K8); the 18-key cache disposition table + `UpdateSettingAction`; **idempotency redesign per
+(store runtime per request — the Octane-era K8 ceased with the runtime); the 18-key cache disposition table + `UpdateSettingAction`; **idempotency redesign per
 §6.6** (NOT NULL `principal_key`, composite unique, atomic reservation, 409 in-progress);
 **Reverb channel migration to tenant-scoped names + broadcasting authorization checks** (§9.7
 realtime); **tenant-aware rate-limiter keys** (§9.7); **tenant-branded notifications** (§6.12);
@@ -2025,11 +2031,11 @@ marker, `idempotency_unresolved`, provider keys derived from the stable logical 
 platform-settings resolver per §6.7 incl. `PlatformSettingMissing`; the media per-key database
 lease per §6.4.)
 
-**Accept**: rows 9–11, 17–18, 24–25, 29–32, 42, 43–45, 61, 63–65, 76–79, 81, 88–89, 91, 93, 97, 99–100, 109, 111–112, 114, 116–117, 120–123, 113 (the media coordination tables' triggers); concurrency test proves exactly
+**Accept**: rows 9–11, 17–18, 24–25, 29–32, 42, 45, 61, 63–65, 76–79, 81, 88–89, 91, 93, 97, 99–100, 111–112, 114, 116–117, 120–123, 113 (the media coordination tables' triggers); concurrency test proves exactly
 one of two parallel same-key requests executes (other 409 or replay); same key string reusable
 across tenants; tenant signature routing accepts only the matching tenant secret;
-credentials/token caches never cross tenants or credential versions; the Octane isolation gate
-passes with two stores on one worker.
+credentials/token caches never cross tenants or credential versions; two stores served in
+sequence by one process see only their own store runtime (§6.7).
 
 ### Phase 5 — Search, order documents, transfer, console commands (rev 4.2)
 
@@ -2039,10 +2045,11 @@ search client, tenant lookup for writers, registration of `catalog:reindex` — 
 §6.9 (`order_document_sequences` unique, per-store numbering, prefix setting, PDF path, tenant
 fan-out sweeps); §6.10 (`transfer_imports` / `transfer_remaps` tenant columns, lock name,
 cross-store import = remap tier, settings export split, `DiscountTransfer` fix); the console
-command run-mode declaration + architecture test (§6.7.2); Octane isolation gate additions.
+command run-mode declaration + architecture test (§6.7.2); store-runtime isolation tests for
+the queue-worker path.
 
 **Accept**: rows 53–60, 66, 80, 107; a reindex over two seeded stores leaves no document without
-`tenant_id`; same-worker consecutive requests for two stores pass the gate; suite green.
+`tenant_id`; two stores served in sequence by one process see only their own values; suite green.
 
 ### Phase 6 — Storefront
 
@@ -2095,7 +2102,7 @@ tenant configuration; security gate green.
 
 ## 9. Additional risks, boundaries, and requirements
 
-### 9.1–9.6 Risks
+### 9.1–9.5 Risks
 
 - **R1 — Platform-level services**: Telegram bot, Mail mailer, and Reverb app remain platform-level
   (A2 covers only payment gateways). Per-tenant mail sending identities (from-name/domain from
@@ -2111,9 +2118,6 @@ tenant configuration; security gate green.
   injects. Mitigation: the filter is not optional in the client API, a missing tenant throws, and
   Eloquent hydration is a second line. If the reviewer prefers isolation without a filter, P1
   flips to one index per store (§6.8) without changing any other section.
-- **R6 — Process-global store runtime (rev 4.2)**: timezone and statics are per process (F39).
-  Mitigation: reset first, apply per request, snapshot per job, and the Octane isolation gate run
-  with two stores on one worker (§6.7).
 
 ### 9.7 Missing requirements (rev 4, per review; phases renumbered in rev 4.2)
 
@@ -2144,7 +2148,6 @@ tenant configuration; security gate green.
 | K5 | `Modules/Discount/app/Transfer/DiscountTransfer.php:537-539` updates every coupon row (no `WHERE`). | Phase 2, Phase 5 |
 | K6 | `MediaGateway::upsertLocal` hard-codes `USER_ID => 1`. | Phase 4 |
 | K7 | `NotificationCreated` (`ShouldBroadcast`) is outside the dispatch registry. | Phase 4 |
-| K8 | Store identity and timezone are applied at boot only, so a settings update never reaches a running Octane worker. | Phase 4 (§6.7) |
 | K9 | `catalog_images.url` stores absolute URLs with the installation host. | Phase 4 (storage), Phase 6 (rendering) |
 | K10 | Two root media folders can share a name (`[name, parent_id]` unique with NULL parent). | Phase 2 (partial unique index on `(tenant_id, name) WHERE parent_id IS NULL`, §4.5) |
 
@@ -2196,8 +2199,6 @@ tenant configuration; security gate green.
 | 40 | Nested sync jobs pinned to **different tenants** unwind in order | each `JobAttempted` pops its own snapshot; outer request/tenant context exact-restored | 1 |
 | 41 | Rate limiter keyed per tenant | tenant A's saturation does not throttle tenant B | 4/6 |
 | 42 | Disabled payment method invoked via direct driver/client call | resolver throws; no credential use | 4 |
-| 43 | Same Octane worker serves store A then store B | runtime values (timezone, identity, locales, currencies, pricing mode) are B's; nothing of A remains | 4 |
-| 44 | Settings updated while a worker is running | next request sees the new values without a worker restart | 4 |
 | 45 | Tenant exception raised inside a `catch (Throwable)` resolver | rethrown — not turned into a platform default | 4 |
 | 46 | Same SKU / barcode / coupon code / newsletter email in A and B (case-insensitive) | both allowed | 2 |
 | 47 | Two root folders with the same name in one store | rejected | 2 |
@@ -2262,7 +2263,6 @@ tenant configuration; security gate green.
 | 106 | Deleting/disabling the last default tax class, a tenant's default currency, or the platform base currency without a replacement | rejected; at least one default remains | 2 |
 | 107 | Store staff resolve an order code of their own store (with permission) | allowed when the resolved tenant equals the active tenant; other stores' codes still denied | 5 |
 | 108 | Machine request against a suspended / soft-deleted tenant | denied before any tenant-scoped work | 1 |
-| 109 | Platform setting updated while workers run | the next request uses the new value without a worker restart | 4 |
 | 110 | Middleware priority: Laravel defaults preserved; `ResolveTenant` precedes bindings, credentials, and tenant-aware throttling | asserted on the gathered stacks of representative admin/user/machine/webhook/throttled routes | 1 |
 | 111 | Failure cleanup (`terminate()`) after the business transaction committed | the claim is **not** deleted — it becomes `idempotency_unresolved`; no clean retry is created | 4 |
 | 112 | Lease reclamation attempted while an unlink transaction is open | blocks on the row lock until the unlink commits — no overlap between a newer owner and an in-flight unlink | 4 |
@@ -2379,8 +2379,9 @@ records what landed and where the build deviates from the plan text.
 ### Phase 1 — Tenancy core + Tenant module
 
 Landed. Identification is live: `NormalizeTenantRequest` runs on every request, `ResolveTenant` is
-first in the `api` group with the priority list extended rather than replaced, and
-`ResetTenantContext` clears the process-level context at the start of each Octane request. Queue
+first in the `api` group with the priority list extended rather than replaced, and it resets the
+context to INACTIVE as its first act — under php-fpm the framework boots per request, and the
+explicit reset keeps the invariant wherever a process survives (queue workers, the suite). Queue
 payloads carry `{tenant_id, central_operation}`; the `JobProcessing`/`JobAttempted` listeners run
 the job under the dispatching tenant on a snapshot stack. Central mode is reachable only through
 `CentralOperations` — a registry keyed on the exact operation class with authorized callers, a
@@ -2420,8 +2421,11 @@ Deviations from the plan text:
    routes without an audience segment: the unnamed `api/user` (signed-in-user lookup) and
    `api.notification.` (broadcasting auth). Undeclared, the fail-closed rule would 404 the
    signed-in-user lookup.
-6. **`ResetTenantContext` is the second `RequestReceived` listener, not the first.** `FlushSentryScope`
-   is already first for a documented reason; the two are order-independent.
+6. **The Octane pieces of this phase are withdrawn (rev 6, php-fpm revert).** The
+    `ResetTenantContext` listener, its placement relative to the other `RequestReceived`
+    listeners, and the isolation-gate tenant scenarios existed only for the persistent-worker
+    runtime and were dropped in the rebase onto the php-fpm `main`; `ResolveTenant`'s per-request
+    reset is the single owner of the invariant.
 7. **The priority list is extended with `prependToPriorityList`, never replaced.** Laravel's
    default ordering stays intact; `ResolveTenant` is inserted before its first entry.
 8. **`AuthorizeTenantAccess` lands with Phase 3, not Phase 1.** Its admin rule depends on
@@ -2442,7 +2446,7 @@ Deviations from the plan text:
     "unused trait" false positive, which each of the other modules also carries. No other baseline
     line was added or changed.
 13. **The test process gets its own memory limit (512M, in `scripts/test.sh` and CI's two pest
-    steps).** The suite is one long-lived PHP process that retains about 100 KB per test. Measured
+    steps — landed on `main` with the revert as `c58822f6`).** The suite is one long-lived PHP process that retains about 100 KB per test. Measured
     with one probe on the same 366 tests: `main` went 90.2 MB → 113.8 MB (test 100 → test 340),
     this branch 90.5 MB → 114.7 MB — the same, so the retention predates tenancy. It is reachable
     from no application static, and an in-process request loop through the middleware is flat at
@@ -2463,3 +2467,15 @@ Observed on the way, not fixed: a guest request that does not ask for JSON gets 
 authenticated API route (`Route [login] not defined`) — Laravel's default `Authenticate`
 redirect assumes a `login` route this API-only app does not define. JSON requests get 401.
 Pre-existing and unrelated to tenancy; recorded for Phase 3.
+
+Phase 1 open items after the rev-6 rebase (2026-11-26, for whoever resumes the phase):
+
+- Two PostgreSQL failures in `UninstalledSchemaTest` (its first two tests) were unresolved when
+  the work was parked: the "tables absent" premise holds for an in-memory database but not on a
+  persistent PostgreSQL test database. Diagnose before declaring Phase 1 done.
+- `CentralOperations::recordFailedAttempt()` now writes the failed attempt in its own
+  transaction (a savepoint under a caller's transaction) so PostgreSQL's aborted-transaction
+  state cannot swallow it — verified by inspection, needs a PostgreSQL re-run.
+- The rebase dropped the Octane pieces (listener + test, `config/octane.php`, the octane-gate
+  route and script) and aligned comments and `platform_routes`; run the scoped Tenant suite on
+  SQLite, then both legs in full, plus `composer analyse` and Pint, before committing the phase.
