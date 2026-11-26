@@ -21,11 +21,10 @@ use Modules\Core\Extensions\ExtensionStateBuilder;
  * - the toggle is write-through; flush() afterwards keeps this
  *   process's view honest for anything reading later in the request.
  *
- * What this changes is PERSISTED state. Under Octane, service providers
- * boot once per worker: an already-running worker keeps an extension's
- * registered bindings (e.g. merged payment drivers) until octane:reload
- * or a container restart. This action deliberately does not reload —
- * the admin UI surfaces the nuance (roadmap P5.4).
+ * What this changes is PERSISTED state. Under php-fpm the framework
+ * boots per request, so the next request's boot guard already sees the
+ * new row and applies the extension's registered bindings (e.g. merged
+ * payment drivers) — no reload step exists or is needed.
  */
 class ToggleExtensionAction
 {

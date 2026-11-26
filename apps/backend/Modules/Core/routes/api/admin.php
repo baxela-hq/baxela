@@ -49,9 +49,9 @@ Route::middleware(['auth:sanctum', PermissionMiddleware::class])->prefix('admin'
     Route::delete('/failed-jobs/{uuid}', ForgetFailedJobController::class)->name('failed-jobs.delete');
 
     // Extension runtime surface (E.1 + marketplace P5.1): the list is
-    // read-only; enable/disable mutate the persisted row (the boot guard
-    // re-evaluates it per boot — under Octane, already-running workers
-    // keep their bindings until a reload; see ToggleExtensionAction).
+    // read-only; enable/disable mutate the persisted row (the framework
+    // boots per request under php-fpm, so the next request's boot guard
+    // already sees the new state; see ToggleExtensionAction).
     // Route names derive the permissions
     // core.admin.extensions.{list,enable,disable} verbatim.
     Route::get('/extensions', ListExtensionController::class)->name('extensions.list');

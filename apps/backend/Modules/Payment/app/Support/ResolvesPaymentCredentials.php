@@ -16,11 +16,13 @@ use Throwable;
  * baseline — a snapshot of config('payment') taken on this class's first
  * call — never the live repository.
  *
- * Why the baseline: under Octane the config repository persists per
- * worker, and ApplyDatabaseCredentials writes resolved credentials into
- * it on every request. Resolving against the live repository would let a
- * deleted database credential be "resolved" from a previous request's
- * write instead of the true environment value (review F1). The snapshot
+ * Why the baseline: ApplyDatabaseCredentials writes resolved credentials
+ * into the config repository on every request, and in any process that
+ * outlives a request (queue workers, an app-server runtime) the
+ * repository then holds resolved values rather than plain env ones.
+ * Resolving against the live repository would let a deleted database
+ * credential be "resolved" from a previous request's write instead of
+ * the true environment value (review F1). The snapshot
  * initializes inside the middleware's first resolver call — before that
  * middleware writes anything in this process — and the middleware is the
  * sole writer of credential config keys, so the baseline cannot be

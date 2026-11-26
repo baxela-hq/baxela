@@ -28,7 +28,6 @@
         "firebase/php-jwt": "*",
         "intervention/image": "^4.4",
         "laravel/framework": "^13.0",
-        "laravel/octane": "^2.24",
         "laravel/reverb": "^1.11",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
@@ -40,7 +39,6 @@
         "sentry/sentry-laravel": "^4.29",
         "spatie/laravel-permission": "^8.3",
         "spatie/laravel-query-builder": "^7.2",
-        "spiral/roadrunner-http": "^4.2",
         "stripe/stripe-php": "^21.3",
         "meilisearch/meilisearch-php": "^1.15"
     },
@@ -53,8 +51,7 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.3",
-        "pestphp/pest-plugin-laravel": "^4.0",
-        "spiral/roadrunner-cli": "^3.1"
+        "pestphp/pest-plugin-laravel": "^4.0"
     },
     "autoload": {
         "psr-4": {
@@ -79,7 +76,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan octane:start --host=0.0.0.0 --port=8000 --rpc-host=127.0.0.1 --workers=4 --max-requests=500 --watch\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
         "test": [
             "sh scripts/test.sh"

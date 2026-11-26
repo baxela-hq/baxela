@@ -18,13 +18,14 @@ use Throwable;
  * explicit null when no effective credential exists.
  *
  * The full overwrite (not apply-when-present) is what makes this safe
- * under persistent Octane workers: the config repository survives
- * between requests, so an apply-only merge would keep serving a
- * credential whose database row was deleted (review F1). Rewriting every
- * declared slot — env fallback read from the resolver's immutable
- * baseline — makes the worker's credential state deterministic per
- * request, and an undecryptable stored value lands as null, never as a
- * live env credential (review F2, fail-closed).
+ * in any process that outlives a request (queue workers, an app-server
+ * runtime): the config repository survives between requests there, so an
+ * apply-only merge would keep serving a credential whose database row
+ * was deleted (review F1). Rewriting every declared slot — env fallback
+ * read from the resolver's immutable baseline — makes the process's
+ * credential state deterministic per request, and an undecryptable
+ * stored value lands as null, never as a live env credential (review
+ * F2, fail-closed).
  *
  * This middleware is the SOLE writer of payment.<driver>.<credentialKey>
  * configuration: no other component may mutate those keys before this

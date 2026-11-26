@@ -19,7 +19,7 @@ use Modules\Core\Schemas\Extension\ExtensionSchema;
  *
  * The manager also records WHY an extension was skipped at boot. These
  * recorded reasons are boot diagnostics scoped to this process (per
- * worker under Octane) — the admin API and `baxela:list` do NOT consume
+ * PHP worker) — the admin API and `baxela:list` do NOT consume
  * them; they surface *derived* state instead (see ExtensionStateBuilder),
  * so a runtime toggle can never report a stale boot reason.
  */

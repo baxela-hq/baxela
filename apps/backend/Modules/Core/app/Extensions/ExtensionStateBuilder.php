@@ -8,7 +8,7 @@ use Modules\Core\Schemas\Extension\ExtensionSchema;
  * The canonical five-field state the admin extensions API returns, for
  * one slug. Purely a function of current database rows and Composer
  * facts — never of boot-recorded diagnostics (those are per-process
- * boot artifacts and can be stale under persistent Octane workers).
+ * boot artifacts and can be stale until the process restarts).
  *
  * skip_reason precedence — the most immediate operational blocker first:
  *   missing_row    — no registry row (the boot guard treats this as

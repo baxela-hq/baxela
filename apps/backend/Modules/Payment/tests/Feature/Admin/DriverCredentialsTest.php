@@ -18,11 +18,12 @@ use Modules\Payment\Tests\Feature\HelperTrait;
 
 /*
  * Driver credential admin surface (marketplace P5.2). Multiple HTTP
- * calls inside one test share this process — exactly the persistent
- * Octane worker scenario: config written by the credential middleware
- * survives between calls, so every lifecycle test below crosses real
- * request boundaries (review F1). The global Pest beforeEach resets the
- * resolver's env baseline and the encrypted map per test.
+ * calls inside one test share this process — the same in-process config
+ * persistence a long-lived worker (queue worker, app server) would see:
+ * config written by the credential middleware survives between calls, so
+ * every lifecycle test below crosses real request boundaries (review
+ * F1). The global Pest beforeEach resets the resolver's env baseline and
+ * the encrypted map per test.
  */
 
 uses(RefreshDatabase::class);
@@ -193,7 +194,7 @@ it('keeps required-credential semantics: one stripe key is not enough', function
         ->assertJsonPath('data.is_configured', false);
 });
 
-it('does not leak a deleted credential across requests (octane simulation)', function () {
+it('does not leak a deleted credential across requests (persistent-process simulation)', function () {
     $this->actingAs($this->superAdminUser());
 
     // Request 1: the middleware runs BEFORE the controller writes the

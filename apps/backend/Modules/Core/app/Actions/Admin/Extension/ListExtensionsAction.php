@@ -10,7 +10,8 @@ use Modules\Core\Extensions\ExtensionStateBuilder;
  * Rows plus live composer facts, for the admin extensions surface. Each
  * slug's state comes from ExtensionStateBuilder — derived from current
  * rows + Composer, never from boot-recorded diagnostics, so the list
- * reflects a runtime toggle immediately and stays honest under Octane.
+ * reflects a runtime toggle immediately and stays honest in long-lived
+ * processes too.
  */
 class ListExtensionsAction
 {

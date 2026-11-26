@@ -10,7 +10,7 @@ use Modules\Catalog\Schemas\Search\SearchCoordinationSchema;
  * Worker-heartbeat row management (postgres-migration §3.2.2): one row per
  * live worker process, keyed by the per-process instance token. Refresh
  * points: gate `enter()` at depth 0 (via upsert), the reindex/drain loop,
- * writer-lease touches, and the Octane request listener. Staleness is a
+ * and writer-lease touches. Staleness is a
  * PRE-FILTER for reclamation — never proof of death on its own.
  */
 final class SearchWorkerHeartbeat

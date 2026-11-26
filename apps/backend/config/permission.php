@@ -125,10 +125,9 @@ return [
      * this will refresh permissions on every TickTerminated, TaskTerminated and RequestTerminated
      * NOTE: This should not be needed in most cases, but an Octane/Vapor combination benefited from it.
      *
-     * Enabled: the API is served by Octane/RoadRunner with persistent workers,
-     * so spatie's per-process permission cache must be reset between requests.
+     * Disabled: under php-fpm the permission cache is rebuilt per request.
      */
-    'register_octane_reset_listener' => true,
+    'register_octane_reset_listener' => false,
 
     /*
      * Events will fire when a role or permission is assigned/unassigned:
