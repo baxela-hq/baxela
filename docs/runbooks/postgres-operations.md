@@ -116,22 +116,10 @@ architecture test) and at runtime (the journal-append guard throws
 needs a documented exception entry in the registry — reviewed, not
 sneaked in.
 
-## Octane persistent workers
+## Request-scoped state
 
-State must never bleed between the requests a worker serves. Two
-per-request listeners lead `RequestReceived` in `config/octane.php`:
-
-- `FlushSentryScope` starts every request from a clean Sentry scope
-  (tags, user, breadcrumbs) before the request swap. The Sentry
-  integration's own per-request isolation is only active when a DSN is
-  configured, while the enrichment provider writes to the scope
-  regardless — without this listener a DSN-less worker collected every
-  request's tags and breadcrumbs on one scope for its whole lifetime.
-  Guarded by `Modules/Core/tests/Unit/Octane/FlushSentryScopeTest.php`.
-- `FlushExtensionState` re-reads extension state.
-
-Both are regression-proofed by the isolation gate (`scripts/octane-
-isolation-gate.php`; recipe in its header, PostgreSQL-flavoured). When
-touching anything request-scoped, restart the gated instance before
-reading its verdict — a still-running instance keeps serving the code
-it started with.
+The API is served by php-fpm: the framework boots per request, so
+request-scoped state dies with the request and no per-request flush
+listeners are needed. Processes that DO outlive a request — queue workers
+(`queue:work`) — snapshot and restore tenant context per job; anything
+tenant-scoped must keep that pattern.

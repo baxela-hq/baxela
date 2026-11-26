@@ -12,7 +12,7 @@ Monorepo for the Baxela e-commerce platform. It bundles the backend, admin panel
 ### Backend (`apps/backend`)
 
 - PHP 8.3+ / Laravel 13, structured as a modular monolith (`nwidart/laravel-modules`)
-- Served by **Laravel Octane on RoadRunner workers** behind nginx
+- Served by **PHP-FPM behind nginx**
 - PostgreSQL 18 and Redis 7
 - Auth via Laravel Sanctum, roles/permissions via `spatie/laravel-permission`
 - API docs generated with Scramble (OpenAPI 3.1, `/docs/api`), query filtering with `spatie/laravel-query-builder`

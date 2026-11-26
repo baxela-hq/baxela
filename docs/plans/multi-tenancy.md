@@ -53,6 +53,16 @@ Rev 4 changes from rev 3 (architecture untouched):
   binding (or carry an explicit, exception-safe reset to `MODE_INACTIVE` at the very start of
   every request), and the isolation tests in the RoadRunner rollout plan (same-worker
   consecutive requests) must pass for tenant scenarios before tenancy ships.
+  **Update (rev 6, 2026-11-26: reverting to php-fpm — the rev-5 requirements are withdrawn.**
+  The Octane/RoadRunner runtime was removed (branch `revert/php-fpm`); the API boots per request
+  again, so the persistent-worker prerequisites above no longer apply: the `ResetTenantContext`
+  Octane listener (§2, §6.7 item 2), the Octane isolation-gate tenant scenarios, risk R6,
+  defect K8, and test rows 43/44/109 are dropped. Two things survive the revert because they
+  are about processes that outlive a request regardless of the HTTP server: `TenantContext`
+  still needs an explicit reset — Pest runs the whole suite in one process (tests reset in
+  `TestCase::setUp`) — and the per-job tenant snapshot/restore for queue workers (§6.1) stands
+  unchanged. The per-request store runtime after `ResolveTenant` (§6.7 item 1) is also still
+  required: the tenant is only known after boot, under any server.)
 - F4. `PermissionMiddleware` (`Modules/Core/app/Http/Middleware/PermissionMiddleware.php`) is already
   fail-closed: no auth → throw; unnamed/non-admin route name → throw; delegates to
   `AccessGatewayInterface::userCan()` = `$user->can($permission)` with PermissionDoesNotExist → false.

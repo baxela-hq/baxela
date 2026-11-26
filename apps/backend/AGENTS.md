@@ -17,7 +17,7 @@ Guiding principles (from README):
 ## Tech Stack
 
 - PHP **^8.3**, Laravel **^13**, `nwidart/laravel-modules` **^12**
-- Runtime: **Laravel Octane on RoadRunner** — persistent workers behind nginx (see below)
+- Runtime: **PHP-FPM behind nginx** (see below)
 - Auth: `laravel/sanctum` (token auth)
 - Query/filtering: `spatie/laravel-query-builder`
 - API docs: `dedoc/scramble` serves OpenAPI 3.1 at `/docs/api` (config: `config/scramble.php`, scoped to `api/v1`, bearer security via middleware strategy; local-only docs access)
@@ -26,31 +26,23 @@ Guiding principles (from README):
 - DB: PostgreSQL 18 in dev (Docker), SQLite `:memory:` in tests
 - Frontend tooling: Vite + Tailwind (used only for assets, not the product UI)
 
-## Runtime (Octane / RoadRunner)
+## Runtime (PHP-FPM)
 
-The API is served by `php artisan octane:start --server=roadrunner --host=0.0.0.0 --port=8000
---rpc-host=127.0.0.1 --workers=4 --max-requests=500` (the same command in dev, prod, and
-`composer dev`, plus `--watch` in dev). nginx reverse-proxies to it over the isolated `proxy`
-network; the RPC listener is loopback-only.
+The API is served by **php-fpm behind nginx**. In dev, the compose `web` service fastcgi-passes
+to the `app` container's fpm pool (`:9000`) over the isolated `proxy` network. In production the
+backend container embeds nginx + php-fpm under supervisord (HTTP `:8000`) and the outer
+`backend-nginx` proxy reverse-proxies to it.
 
-Because workers keep the framework in memory:
+The framework boots per request:
 
-- Service providers boot **once per worker**. Anything request-scoped must reset per request —
-  Octane flushes framework state (log context, auth, config sandbox, …); app-level state that
-  pretends to be per-request (e.g. `ExtensionManager::$state`) is flushed via listeners in
-  `config/octane.php` / `app/Octane/`.
-- **Extension lifecycle** (`baxela:install/enable/disable/remove`) runs in a CLI process — running
-  workers keep already-booted extensions until `php artisan octane:reload` (or a container
-  restart). Row *state* is always current (it re-reads per request); what lags is the registered
-  driver/routes.
-- **Editing `.env` in dev needs `docker compose restart app`** — workers read env once at boot.
-  Code/config changes reload automatically (`--watch`, paths in `config/octane.php` `watch`).
-- Persistent-worker isolation is a release gate: `scripts/octane-isolation-gate.php` drives a real
-  RoadRunner server through auth/permission/log/Sentry-scope scenarios (see the script header for
-  usage). Run it before merging lifecycle-touching changes.
-
-Ops (worker sizing, memory budget, timeout coordination, healthchecks) live in
-`infrastructure/docker/develop/README.md` and `infrastructure/docker/production/README.md`.
+- Code, config, `.env` and **extension lifecycle** (`baxela:install/enable/disable/remove`)
+  changes all take effect on the next request — there is no worker reload step.
+- Request-scoped state dies with the request. State that must survive across requests belongs in
+  the database, cache or queue payloads — not in singletons or statics. (Processes that DO
+  outlive a request — queue workers, `queue:work` — still snapshot/restore per job; keep that
+  pattern for anything tenant-scoped.)
+- Ops (pool sizing, timeout coordination, healthchecks) live in
+  `infrastructure/docker/develop/README.md` and `infrastructure/docker/production/README.md`.
 
 ## Repository Layout
 
@@ -221,8 +213,7 @@ docker compose exec app php artisan migrate
 composer test               # Pest via scripts/test.sh (plain, greppable output)
 composer analyse            # Larastan (phpstan level 6 + baseline)
 vendor/bin/pint             # format code (use --test to check only)
-composer dev                # octane (RoadRunner, --watch) + queue + logs + vite (concurrently)
-                            # requires the RoadRunner binary: vendor/bin/rr get-binary (gitignored)
+composer dev                # artisan serve + queue + logs + vite (concurrently)
 ```
 
 
