@@ -2407,15 +2407,16 @@ Deviations from the plan text:
    without it. The trade-off is deliberate and should be read as what it is: an environment that
    is not `production` and was never seeded serves the built-in default instead of revealing the
    missing seed. The production deploy must run `TenantDatabaseSeeder` — that belongs to Phase 8.
-4. **An uninstalled schema reads as "no rows" outside production, and nothing else does.** The
+4. **A missing tenancy table reads as "no rows" outside production, and nothing else does.** The
    plan's gate is "the entire existing suite green with zero edits". The first full run broke it
    by exactly one test: route tests that never migrate a database — nothing before the controller
    read the database until identification began reading it on every request — answered 500 on
-   "no such table: `tenant_domains`". `TenantGateway` now treats an absent `tenants` table (the
-   module's first migration, so its absence means tenancy is not installed) as holding no rows,
-   outside production. A half-installed schema, any other query failure, and everything in
-   production are raised as they occurred. `UninstalledSchemaTest` pins it from both sides; the
-   existing test is unchanged.
+   "no such table: `tenant_domains`". `TenantGateway` reads a missing-table query error
+   (SQLSTATE 42P01 / 42S02 / SQLite's `no such table`) as "no rows" outside production, classified
+   from the exception itself — see the Phase 1 verification note for the PostgreSQL mechanics and
+   the broken-schema boundary. A broken or half-installed schema (any other error) and everything
+   in production are raised as they occurred. `UninstalledSchemaTest` pins it from both sides;
+   the existing test is unchanged.
 5. **Declared platform routes (landed in config).** The live route table confirms the
    third-segment grammar (296 admin, 63 user, 42 public, 2 webhook, 4 machine) but also holds
    routes without an audience segment: the unnamed `api/user` (signed-in-user lookup) and
@@ -2468,14 +2469,31 @@ authenticated API route (`Route [login] not defined`) — Laravel's default `Aut
 redirect assumes a `login` route this API-only app does not define. JSON requests get 401.
 Pre-existing and unrelated to tenancy; recorded for Phase 3.
 
-Phase 1 open items after the rev-6 rebase (2026-11-26, for whoever resumes the phase):
+Phase 1 verification (closed out 2026-11-27, after the rev-6 rebase):
 
-- Two PostgreSQL failures in `UninstalledSchemaTest` (its first two tests) were unresolved when
-  the work was parked: the "tables absent" premise holds for an in-memory database but not on a
-  persistent PostgreSQL test database. Diagnose before declaring Phase 1 done.
-- `CentralOperations::recordFailedAttempt()` now writes the failed attempt in its own
-  transaction (a savepoint under a caller's transaction) so PostgreSQL's aborted-transaction
-  state cannot swallow it — verified by inspection, needs a PostgreSQL re-run.
-- The rebase dropped the Octane pieces (listener + test, `config/octane.php`, the octane-gate
-  route and script) and aligned comments and `platform_routes`; run the scoped Tenant suite on
-  SQLite, then both legs in full, plus `composer analyse` and Pint, before committing the phase.
+- **The two parked PostgreSQL failures in `UninstalledSchemaTest` were a real gateway bug, not a
+  test quirk.** `TenantGateway::read()` classified a missing table by querying
+  `Schema::hasTable()` in the catch block — but on PostgreSQL the failed statement has already
+  put the transaction into the aborted state, so that follow-up query itself failed with 25P02
+  (SQLite has no such state, which is why the engine difference never showed in isolation). The
+  fix has two parts: the classification now reads the exception itself — SQLSTATE 42P01
+  (PostgreSQL undefined_table), 42S02 (MySQL), or SQLite's `no such table` — with no follow-up
+  query; and each read runs inside its own savepoint, so a failed read is undone with
+  `ROLLBACK TO SAVEPOINT` and any enclosing transaction (a caller's, or the test harness's)
+  stays usable — SQLite and MySQL treat the savepoint as a no-op. The one behaviour change that
+  follows: "which tenancy table is missing" is no longer distinguishable without a follow-up
+  query, so outside production a missing table anywhere in the tenancy schema is forgiven, and a
+  **broken** schema (any other error — e.g. a missing column) is still raised. The broken-schema
+  test is PostgreSQL-only: SQLite's double-quoted-string fallback turns a quoted unknown column
+  into a string literal, matching zero rows instead of failing, so the scenario cannot be
+  expressed there.
+- **Deviation 4's wording is superseded by the above** (absent-`tenants`-table rule →
+  missing-table-error rule); the `CentralOperations::recordFailedAttempt()` savepoint (its own
+  entry above) is confirmed on PostgreSQL — an operation whose audit write fails rolls back
+  without leaving the connection aborted.
+- **Final numbers** (2026-11-27, on the rebased php-fpm runtime): `composer analyse` clean
+  (exit 0); Pint clean; the Tenant module suite passes both planes — SQLite 66 passed/2 skipped
+  (the two PostgreSQL-gated tests), PostgreSQL 68 passed/0 skipped; the full suite is green on
+  both legs — SQLite **1603 passed / 7 skipped** (the PG-gated validations), PostgreSQL
+  **1610 passed / 0 failed** (~20 min, every gate runs there). Phase 1 is done; Phases 2–8 are
+  not started.
