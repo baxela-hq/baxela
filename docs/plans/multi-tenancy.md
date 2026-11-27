@@ -8,7 +8,8 @@ inventory base are unchanged (full code inventory taken 2026-11-24 on commit `13
 the PostgreSQL migration). On 2026-11-25 the owner authorized implementation of Phases 2–8 and
 waived the between-phase review gate; each phase is still verified (static analysis and both test
 planes) before the next builds on it. **Progress: Phase 1 landed on 2026-11-25 (its Octane-era
-pieces were withdrawn on 2026-11-26 by the php-fpm revert, rev 6); Phases 2–8 are not started** —
+pieces were withdrawn on 2026-11-26 by the php-fpm revert, rev 6); Phase 2 landed on 2026-11-27;
+Phases 3–8 are not started** —
 the owner stopped the work after Phase 1 and moved the implementation to another agent. The
 branch `feat/multi-tenancy` carries the phase; open Phase-1 verification debts are listed at the
 end of the Implementation Record. Progress and deviations from the plan text
@@ -803,10 +804,13 @@ references them**, so F7's interleaved ordering is irrelevant):
   `verification_expires_at` nullable, `released_at` nullable, `cooling_off_until` nullable,
   timestamps. These columns are the persistence of the §9.7 lifecycle protocol (token expiry,
   release, cooling-off) — the procedure and the schema now say the same thing. One invariant the
-  plain unique on `domain` cannot express — **at most one primary domain per tenant** — is
+  unique on `domain` cannot express — **at most one primary domain per tenant** — is
   enforced at the database level by a partial unique index,
   `tenant_domains_one_primary_unique ON (tenant_id) WHERE is_primary` (portable across PostgreSQL
-  and SQLite, B5).
+  and SQLite, B5). The `domain` key itself is also partial:
+  `tenant_domains_domain_unique ON (domain) WHERE status <> 'released'`, so a released row keeps
+  the domain through its cooling-off window without blocking a later attachment; the window is
+  enforced by the domain lifecycle actions, not by the index.
 - `tenant_memberships` — id, `tenant_id` FK→tenants cascade, `user_id` plain indexed
   `unsignedBigInteger` (no cross-module FK; user existence is validated through
   `AccessGatewayInterface` / the User gateway), `status` enum(active|invited|suspended),
@@ -986,7 +990,7 @@ tenant **key** column — machine-token ownership on `personal_access_tokens`, s
 - Catalog search coordination (8): `catalog_search_gate`, `_admissions`, `_writer_leases`,
   `_operations`, `_replay_applied`, `_product_cursors`, `_retired_products`, `_worker_heartbeats`.
 - Core (7): `core_countries`, `core_regions`, `core_languages`, `core_currencies`,
-  `core_extensions`, `core_transfer_locks`, `core_transfer_installation`.
+  `core_extensions`, `core_transfer_locks`, `transfer_installation`.
 - Notification (3): `notification_preferences`, `notification_push_subscriptions`,
   `notification_telegram_subscriptions` — per user, across stores.
 - User (2): `users` (profiles), user addresses — a customer's account and address book travel with
@@ -1044,7 +1048,7 @@ driver branch where the engines differ.
   [featuredable_type, featuredable_id]`; `content_featured_items [same]` (both currently named at
   exactly 63 characters — explicit short names required); `cart_carts.user_id`; `cart_carts.token`;
   `menu_menus.location`; `order_invoices.number`; `order_credit_notes.number`;
-  `payment_methods.code`; `shipping_methods.code`;
+  `payment_methods.method`; `shipping_methods.code`;
   `tax_rates [country_code, region_code, tax_class_id]`;
   `media_folders [name, parent_id]` — **plus a partial unique index on `(tenant_id, name) WHERE
   parent_id IS NULL` (rev 4.4, B3 — the index is per store; an installation-wide `(name)` index
@@ -1083,11 +1087,11 @@ driver branch where the engines differ.
   is_default` (at most one default tax class per store); "at least one" is the seeders' and
   provisioning's job, and default changes are transactional** (the disposition count becomes
   91 + these); `auth_user_devices [user_id, device_name]`; the 6 search-coordination keys;
-  `core_transfer_installation`, `core_languages.locale`, `core_extensions.slug`,
+  `transfer_installation`, `core_languages.locale`, `core_extensions.slug`,
   `core_regions.code`, `core_countries` ×2, `core_currencies.code`, `core_transfer_locks.name`;
   `notification_push_subscriptions`, `notification_telegram_subscriptions` ×2,
   `notification_preferences [user_id, audience, code, channel]`; profiles `user_id`;
-  `job_batches.uuid`; `personal_access_tokens.token`.
+  `failed_jobs.uuid`; `personal_access_tokens.token`.
 
 Of the 22 unique keys that contain a nullable column (F30), only `media_folders` and the two
 platform-tier keys (`setting_settings` via class P, `auth_roles` via the added partial index) need
@@ -1974,6 +1978,44 @@ unique-index lists are dumped from the migrated database (`information_schema.co
 **This is a hard gate (rev 4.3, per review): no Phase 2 code change starts until the diff is empty
 or every difference is settled here.**
 
+**Step 0 reconciliation (recorded 2026-11-27).** The dev database was recreated from the current
+working-tree migrations (`migrate:fresh`) and dumped with `information_schema.columns` and
+`pg_indexes` before any further Phase 2 edit. Results:
+
+- 136 physical base tables, of which `migrations` is Laravel bookkeeping outside the inventory;
+  135 classified = 91 store-owned (82 with `tenant_id` + 9 pivots) + 39 installation-level + 5
+  Tenant metadata. The final 138 = these 135 + 3 Phase-4 media coordination tables; no classified
+  table is missing.
+- 87 `tenant_id` columns: 82 store-owned NOT NULL, 3 nullable (`audit_logs`,
+  `personal_access_tokens`, `setting_settings`), 4 Tenant metadata NOT NULL; all BIGINT with
+  `tenant_id >= 0` checks and indexes. No unexpected column; the five Phase-3 spatie team keys and
+  the Phase-4 media tables are absent by design.
+- 100 entry-dump non-primary-key unique indexes = the 90 §4.5 dispositions + 4 added partials
+  (`core_currencies_one_default_unique`, `media_folders_root_name_unique`,
+  `setting_settings_name_platform_unique`, `tax_classes_one_default_unique`) + 6 Tenant-module
+  uniques. Phase 2's layer-3 composite FKs add 11 supporting `(tenant_id, id)` parent uniques, so
+  the final dump has 111. The three R indexes remain in their pre-redesign shape (Phase 4/5).
+  The index differences below are settled by correcting this plan's names, not by changing the dump.
+- Name corrections made here: §4.4/§4.5 `core_transfer_installation` → `transfer_installation`;
+  §4.5 `payment_methods.code` → `payment_methods.method`; §4.5 `job_batches.uuid` →
+  `failed_jobs.uuid` (the live key is `failed_jobs_uuid_unique`). §4.1's `domain` key is the
+  partial `WHERE status <> 'released'` index recorded there.
+- The provisional immutability objects in the entry dump are `prevent_tenant_id_change()` and
+  `{table}_tenant_id_immutable`; Phase 2 uses the §6.8 names
+  (`baxela_forbid_tenant_id_change()` / `{table}_tenant_immutable`) before final verification.
+  Semantics are unchanged. The `enum(...)` columns of §4.1 are stored as strings with
+  application-level enums, matching the existing schema style.
+- §6.7.1 transaction-time currency identity is not present in the entry dump: `order_orders` has
+  `currency_id` + `display_currency_code`/`display_fx_rate`; invoices and credit notes have
+  `currency_code` but no rate; payments have `currency_id` but no rate/code snapshot; refunds have
+  neither. Phase 2 adds the missing snapshots in place, as §6.7.1 requires.
+- Early tenant stamps on `core_idempotency_keys`, `payment_driver_credentials`,
+  `media_media_outbox`, `transfer_imports`, and `transfer_remaps` are kept: their final §4.4
+  classification is store-owned and adding the column during the bulk schema pass avoids rewriting
+  the original migrations twice. Their redesign-specific columns and indexes stay in Phases 4/5.
+
+The hard gate is settled: no §4.4/§4.5 difference remains unresolved.
+
 Per-module batches (edit migrations in place + `use TenantScopedTrait;` on models + fillable +
 factories + HelperTrait `seedTenant()`/`withTenant()`):
 
@@ -2495,5 +2537,338 @@ Phase 1 verification (closed out 2026-11-27, after the rev-6 rebase):
   (exit 0); Pint clean; the Tenant module suite passes both planes — SQLite 66 passed/2 skipped
   (the two PostgreSQL-gated tests), PostgreSQL 68 passed/0 skipped; the full suite is green on
   both legs — SQLite **1603 passed / 7 skipped** (the PG-gated validations), PostgreSQL
-  **1610 passed / 0 failed** (~20 min, every gate runs there). Phase 1 is done; Phases 2–8 are
-  not started.
+  **1610 passed / 0 failed** (~20 min, every gate runs there). Phase 1 is done; Phase 2 landed on 2026-11-27 (record below);
+  Phases 3–8 are not started.
+
+---
+
+### Phase 2 — Data scoping (backend bulk)
+
+Landed. Step 0 was closed first: the dev database was recreated from the working-tree migrations and the authoritative columns/indexes were dumped before any Phase 2 code edit (see the Step 0 reconciliation above; the final snapshot is retained in the verification record). The bulk pass then added tenant ownership to all 82 store-owned tables, the nine tenant-less pivots, and the two platform-tier nullable-owner tables; promoted every store-owned Eloquent read to `TenantScopedTrait`/`TenantQueryScope`, every write to the context-derived `TenantWriteStamp`, every `unique:`/`exists:` rule to the scoped rules, and every raw query site to the exact per-site allowlist. Intra-module composite foreign keys replaced their single-column duplicates, immutability triggers cover every `tenant_id` table that exists at this gate, and `tenancy:audit` is a registered Core `CentralOperations` operation with a `--reason` and a relation map that includes the nine pivots.
+
+**Step 0 / dump result (authoritative final snapshot, 2026-11-27).** `pg_dump`-style introspection of the migrated dev database produced **136 base tables**, **87 `tenant_id` columns** (82 store-owned NOT NULL, 3 nullable platform-tier, 4 Tenant metadata), **82 immutability triggers**, **76 foreign keys**, **111 non-PK unique indexes** (100 entry-dump dispositions plus 11 supporting `(tenant_id, id)` parent keys for the composite FKs) and **6 partial unique indexes**. The canonical inventory is 82 store-owned tables + 9 tenant-less pivots + 2 platform-tier nullable-owner tables; installation-level tenant-*key* tables (machine tokens, the Phase 3 spatie team keys) are excluded. No §4.4/§4.5 difference remains unresolved.
+
+Deviations from the plan text:
+
+1. **The Step 0 batch checklist's `fillable`/factory/`seedTenant()` edits were not applied.** §4.3 says `tenant_id` is never fillable and is stamped by `TenantScopedTrait::creating()` from `TenantContext`; adding it to `$fillable`, factories or a per-module helper would open the exact input channel row 102 closes. Multi-tenant tests use `runForTenant()` (and `productionLikeTenancy()`) with the existing helpers; the context is the single write authority.
+2. **`TenantColumn` stays a final class (as in Phase 1), and `PrimaryKeyColumn` was added.** PHPStan cannot read `PkAndTimestampsTrait::ID` through a using class; the new explicit column holder avoids a baseline entry.
+3. **Currency identity snapshots were added in Phase 2, not left for a later phase.** `order_invoices.exchange_rate`, `order_credit_notes.exchange_rate`, `payment_payments.currency_code`/`exchange_rate` and `payment_refunds.currency_code`/`exchange_rate` are present in the in-place migrations. Composite index names were shortened where the generated name would exceed PostgreSQL's 63-byte identifier limit.
+4. **Composite FKs are strictly intra-module.** Cross-module references stay gateway-validated ids (§4.4); the composite keys replace single-column duplicates rather than adding alongside them. TenantQueryScope fails closed outside `MODE_TENANT` (including CENTRAL), so a raw query cannot silently read all stores.
+5. **`tenancy:audit` is a Core operation, and the allowlists are exact.** `tenancy:audit` runs through `CentralOperations` with a mandatory `--reason`; the audit event is written after the operation commits in CLI context. Query-site and validation-rule allowlists are keyed by file/method/table/occurrence and regenerated from the scanner; the registry test now checks each site's justification against how the scanner actually guards it, and every centrally justified entry names its reason (audit traversal, scoped rule, transfer remap, parent-scoped pivot, declared console mode, bootstrap webhook) rather than carrying a generic label. No new `phpstan-baseline.neon` entries were added; the stale Tenant `HelperTrait` ignore was removed.
+6. **Row 31's cross-tenant collision is closed at the Phase 2 schema level, not with the full §6.6 protocol.** The original installation-wide `KEY` unique on `core_idempotency_keys` is replaced in place with `UNIQUE(tenant_id, key)`; a two-tenant schema test proves that A and B may use the same key while one store may not use it twice. The plan assigns the rest of the redesign (`principal_key`, `status`, atomic claim/fencing, 409-in-progress) to Phase 4, so this Phase 2 change closes the isolation defect without half-implementing the reservation protocol.
+7. **Default lifecycle guards are enforced where Phase 2 owns the mutation.** Deleting or directly demoting the incumbent default tax class is rejected, with a two-tenant proof that each store keeps its own default and a replacement promotion is transactional. Unsetting the store's `currency_id` setting is rejected by request validation, and the base currency cannot be disabled or have its rate changed via the currency update action. The remaining conflation — a store's display-currency setting still mirrors into the platform-wide `core_currencies.is_default` through `UpdateSettingAction`/`CoreGateway::markCurrencyDefault()` — is carried forward: separating per-store default selection from the platform base flag requires the §6.7 resolver and its consumers, which the plan assigns to Phase 4.
+8. **§6.7.2 console command run modes are Phase 5 work.** The Phase 2 registry declares only `tenancy:audit` (central, registered `CentralOperations`, mandatory `--reason`). Centrally justified query sites name their concrete reason; the full central/platform/tenant-fan-out/bootstrap/discovery+fan-out declaration table and its architecture test are not pulled forward, per the plan's Phase 5 assignment.
+9. **Row 19 and row 73 proofs were added without pulling Phase 5 transfer work forward.** A two-tenant catalog export→import test proves A's artifact never writes into B and vice versa, and a two-tenant test proves the customer address book stays global/user-owned while staff-facing `order_addresses` snapshots stay scoped to their store. The remaining transfer infrastructure (global `transfer_remaps` source unique, `transfer:import:{module}` lock name, cross-store remap tier) stays in Phase 5.
+
+Verification (all runs used Docker Compose; no host PHP/Node):
+
+- `composer analyse` — clean (exit 0) after clearing the PHPStan result cache.
+- Pint — `vendor/bin/pint --test` clean on all 273 changed PHP files with a fresh cache file (exit 0).
+- SQLite full suite (`docker compose exec -T app nice -n 10 sh scripts/test.sh`) — **7 skipped, 1640 passed (6393 assertions)**, 1049.52s, exit 0.
+- PostgreSQL full suite (`docker compose exec -T -e DB_CONNECTION=pgsql -e DB_HOST=postgres -e DB_DATABASE=baxela_backend ... app nice -n 10 sh scripts/test.sh`) — **1647 passed (6411 assertions)**, 1991.00s, exit 0.
+
+Phase 2 review (2026-11-27, post-implementation audit):
+
+- **Found and fixed: three early-stamped tables kept their installation-wide unique keys** — the
+  exact contradiction deviation 6 fixed for `core_idempotency_keys`, missed on the other three
+  R/T-class tables that were stamped early. `order_document_sequences` kept `UNIQUE(type, year)`:
+  the first store to allocate a document number that year permanently blocked every other store's
+  first allocation (the scoped re-query after the unique-violation catch finds nothing → 500).
+  `payment_driver_credentials` kept `UNIQUE(driver, key)`: the second store to configure the same
+  driver key hit the unique on `updateOrCreate` — A2 says per-tenant credentials from day one.
+  `transfer_remaps` kept the four-column `transfer_remaps_source_unique`: one store's import of an
+  artifact blocked every other store's import of the same source key, breaking the documented
+  convergence semantics. All three widened in place to the plan's §4.5 dispositions
+  (`UNIQUE(tenant_id, type, year)`, `UNIQUE(tenant_id, driver, key)`, leading-`tenant_id`
+  remap key); `Phase2SchemaInvariantsTest` gains the two-store proofs for each.
+- **Observation, no action**: a full-repo Pint run reports 52 style failures, all in files
+  Phase 2 never touched (pre-existing on `main`; the changed-file run above stays clean).
+- Re-verification after the fixes: `composer analyse` clean; Pint clean on the touched files;
+  Order (110 passed) and Payment (352 passed) module suites green; registry + Core tenancy tests
+  240 passed; SQLite full suite **7 skipped, 1641 passed (6396 assertions)**; PostgreSQL full
+  suite **1648 passed (6414 assertions)**, exit 0. (Running the PostgreSQL plane under pest
+  `--parallel` shares one database across the four processes and produces cross-suite
+  interference failures — 8 spurious fails that pass serially; the plane is run serially, as
+  the original verification was.)
+
+<details>
+<summary>Changed files (274: 273 PHP files plus this plan document)</summary>
+
+```text
+apps/backend/Modules/Audit/app/Models/AuditLog.php
+apps/backend/Modules/Audit/database/migrations/2026_10_12_000001_create_audit_logs_table.php
+apps/backend/Modules/Cart/app/Models/CartItem.php
+apps/backend/Modules/Cart/app/Models/Cart.php
+apps/backend/Modules/Cart/database/migrations/2026_03_11_022631_create_carts_table.php
+apps/backend/Modules/Cart/database/migrations/2026_03_11_023029_create_cart_items_table.php
+apps/backend/Modules/Catalog/app/Actions/Admin/DataTransfer/ExportCatalogDataAction.php
+apps/backend/Modules/Catalog/app/Actions/Admin/DataTransfer/ImportCatalogDataAction.php
+apps/backend/Modules/Catalog/app/Actions/Admin/Featured/UpdateFeaturedAction.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Attribute/AttributeRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/AttributeTemplate/AttributeTemplateRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Brand/BrandRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Category/CategoryRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Option/OptionRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/OptionValue/OptionValueRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/ProductComment/ProductCommentRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/Admin/Product/ProductRequest.php
+apps/backend/Modules/Catalog/app/Http/Requests/User/ProductComment/ProductCommentRequest.php
+apps/backend/Modules/Catalog/app/Models/AttributeGroup.php
+apps/backend/Modules/Catalog/app/Models/AttributeGroupTranslation.php
+apps/backend/Modules/Catalog/app/Models/Attribute.php
+apps/backend/Modules/Catalog/app/Models/AttributeTemplate.php
+apps/backend/Modules/Catalog/app/Models/AttributeTranslation.php
+apps/backend/Modules/Catalog/app/Models/AttributeValue.php
+apps/backend/Modules/Catalog/app/Models/AttributeValueTranslation.php
+apps/backend/Modules/Catalog/app/Models/Brand.php
+apps/backend/Modules/Catalog/app/Models/BrandTranslation.php
+apps/backend/Modules/Catalog/app/Models/CatalogImport.php
+apps/backend/Modules/Catalog/app/Models/Category.php
+apps/backend/Modules/Catalog/app/Models/CategoryTranslation.php
+apps/backend/Modules/Catalog/app/Models/FeaturedItem.php
+apps/backend/Modules/Catalog/app/Models/Image.php
+apps/backend/Modules/Catalog/app/Models/Option.php
+apps/backend/Modules/Catalog/app/Models/OptionTranslation.php
+apps/backend/Modules/Catalog/app/Models/OptionValue.php
+apps/backend/Modules/Catalog/app/Models/OptionValueTranslation.php
+apps/backend/Modules/Catalog/app/Models/ProductAttributeValue.php
+apps/backend/Modules/Catalog/app/Models/ProductComment.php
+apps/backend/Modules/Catalog/app/Models/ProductCommentReaction.php
+apps/backend/Modules/Catalog/app/Models/Product.php
+apps/backend/Modules/Catalog/app/Models/ProductSeoTranslation.php
+apps/backend/Modules/Catalog/app/Models/ProductShipping.php
+apps/backend/Modules/Catalog/app/Models/ProductTranslation.php
+apps/backend/Modules/Catalog/app/Models/Variant.php
+apps/backend/Modules/Catalog/app/Support/ProductImport/ProductImportOptionResolver.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_184900_create_brands_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_185021_create_products_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_185247_create_variants_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_185328_create_options_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_185408_create_option_values_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_02_12_185534_create_categories_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_03_27_075047_create_images_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_23_000001_create_attribute_groups_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_23_000002_create_attributes_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_23_000003_create_attribute_values_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_23_000005_create_product_attribute_values_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_23_000006_create_attribute_templates_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_25_000001_create_product_seo_translations_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_26_000001_create_product_shipping_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_08_30_000001_create_product_comments_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_09_29_000001_create_catalog_imports_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_10_02_000001_create_featured_items_table.php
+apps/backend/Modules/Catalog/database/migrations/2026_10_18_000001_create_product_comment_reactions_table.php
+apps/backend/Modules/Catalog/database/seeders/BrandSeeder.php
+apps/backend/Modules/Catalog/database/seeders/CategorySeeder.php
+apps/backend/Modules/Catalog/database/seeders/ProductSeeder.php
+apps/backend/Modules/Catalog/tests/Feature/Admin/CatalogDataTransferTest.php
+apps/backend/Modules/Catalog/tests/Feature/Tenancy/ProductTenantIsolationTest.php
+apps/backend/Modules/Contact/app/Models/ContactMessage.php
+apps/backend/Modules/Contact/app/Models/NewsletterSubscriber.php
+apps/backend/Modules/Contact/database/migrations/2026_09_09_000100_create_contact_messages_table.php
+apps/backend/Modules/Contact/database/migrations/2026_09_30_000100_create_newsletter_subscribers_table.php
+apps/backend/Modules/Content/app/Actions/Admin/Featured/UpdateFeaturedAction.php
+apps/backend/Modules/Content/app/Http/Requests/Admin/Featured/UpdateFeaturedRequest.php
+apps/backend/Modules/Content/app/Http/Requests/Admin/Page/PageRequest.php
+apps/backend/Modules/Content/app/Http/Requests/Admin/PostCategory/PostCategoryRequest.php
+apps/backend/Modules/Content/app/Http/Requests/Admin/PostComment/PostCommentRequest.php
+apps/backend/Modules/Content/app/Http/Requests/Admin/Post/PostRequest.php
+apps/backend/Modules/Content/app/Http/Requests/User/PostComment/PostCommentRequest.php
+apps/backend/Modules/Content/app/Models/FeaturedItem.php
+apps/backend/Modules/Content/app/Models/Page.php
+apps/backend/Modules/Content/app/Models/PageTranslation.php
+apps/backend/Modules/Content/app/Models/PostCategory.php
+apps/backend/Modules/Content/app/Models/PostCategoryTranslation.php
+apps/backend/Modules/Content/app/Models/PostComment.php
+apps/backend/Modules/Content/app/Models/Post.php
+apps/backend/Modules/Content/app/Models/PostSeoTranslation.php
+apps/backend/Modules/Content/app/Models/PostTranslation.php
+apps/backend/Modules/Content/app/Transfer/ContentTransfer.php
+apps/backend/Modules/Content/database/migrations/2026_03_13_202913_create_pages_table.php
+apps/backend/Modules/Content/database/migrations/2026_10_03_000001_create_posts_table.php
+apps/backend/Modules/Content/database/migrations/2026_10_03_000002_create_post_categories_table.php
+apps/backend/Modules/Content/database/migrations/2026_10_03_000003_create_post_comments_table.php
+apps/backend/Modules/Content/database/migrations/2026_10_09_000002_create_post_seo_translations_table.php
+apps/backend/Modules/Content/database/migrations/2026_10_10_000002_create_featured_items_table.php
+apps/backend/Modules/Core/app/Actions/Tenancy/AuditTenancyAction.php
+apps/backend/Modules/Core/app/Console/Commands/TenancyAuditCommand.php
+apps/backend/Modules/Core/app/Contracts/Gateways/Tenant/TenantGatewayInterface.php
+apps/backend/Modules/Core/app/Models/IdempotencyKey.php
+apps/backend/Modules/Core/app/Models/Scopes/TenantScope.php
+apps/backend/Modules/Core/app/Models/Traits/TenantScopedTrait.php
+apps/backend/Modules/Core/app/Models/TransferImport.php
+apps/backend/Modules/Core/app/Models/TransferRemap.php
+apps/backend/Modules/Core/app/Operations/AuditTenancyOperation.php
+apps/backend/Modules/Core/app/Providers/CoreServiceProvider.php
+apps/backend/Modules/Core/app/Rules/LanguageUniquePair.php
+apps/backend/Modules/Core/app/Rules/LowercaseUniquePair.php
+apps/backend/Modules/Core/app/Rules/ScopedExists.php
+apps/backend/Modules/Core/app/Rules/ScopedUnique.php
+apps/backend/Modules/Core/app/Rules/UniquePair.php
+apps/backend/Modules/Core/app/Schemas/Shared/PrimaryKeyColumn.php
+apps/backend/Modules/Core/app/Support/Tenancy/AssertsTenantOwnership.php
+apps/backend/Modules/Core/app/Support/Tenancy/CentralOperations.php
+apps/backend/Modules/Core/app/Support/Tenancy/TenancyAudit.php
+apps/backend/Modules/Core/app/Support/Tenancy/TenantQueryScope.php
+apps/backend/Modules/Core/app/Support/Tenancy/TenantTableInventory.php
+apps/backend/Modules/Core/app/Support/Tenancy/TenantWriteStamp.php
+apps/backend/Modules/Core/config/config.php
+apps/backend/Modules/Core/database/factories/CurrencyFactory.php
+apps/backend/Modules/Core/database/migrations/2026_03_25_092852_create_idempotency_keys_table.php
+apps/backend/Modules/Core/database/migrations/2026_05_27_141758_create_currencies_table.php
+apps/backend/Modules/Core/database/migrations/2026_11_07_000001_create_transfer_imports_table.php
+apps/backend/Modules/Core/database/migrations/2026_11_20_000002_create_transfer_remaps_table.php
+apps/backend/Modules/Core/database/migrations/2026_11_27_000001_create_tenant_id_immutability_triggers.php
+apps/backend/Modules/Core/tests/Feature/CollationPortabilityTest.php
+apps/backend/Modules/Core/tests/Feature/FullInstallRoundTripTest.php
+apps/backend/Modules/Core/tests/Feature/Phase2SchemaInvariantsTest.php
+apps/backend/Modules/Core/tests/Feature/PostgresValidationTest.php
+apps/backend/Modules/Core/tests/Feature/TenancyAuditCommandTest.php
+apps/backend/Modules/Core/tests/Feature/TenantImmutabilityTriggersTest.php
+apps/backend/Modules/Core/tests/Feature/TenantTableInventoryTest.php
+apps/backend/Modules/Core/tests/Feature/TenantValidationRulesTest.php
+apps/backend/Modules/Core/tests/Feature/TenantWriteStampTest.php
+apps/backend/Modules/Core/tests/Feature/TransferImportSessionTest.php
+apps/backend/Modules/Core/tests/Fixtures/Erd/Shop/app/Models/ErdDetail.php
+apps/backend/Modules/Core/tests/Fixtures/Erd/Shop/app/Models/ErdNote.php
+apps/backend/Modules/Core/tests/Fixtures/Erd/Shop/app/Models/ErdPost.php
+apps/backend/Modules/Core/tests/Fixtures/Erd/Shop/app/Models/ErdSummary.php
+apps/backend/Modules/Core/tests/Fixtures/Erd/Shop/app/Models/ErdTag.php
+apps/backend/Modules/Discount/app/Actions/Admin/Promotion/CreatePromotionAction.php
+apps/backend/Modules/Discount/app/Actions/Admin/Promotion/UpdatePromotionAction.php
+apps/backend/Modules/Discount/app/Http/Requests/Admin/Coupon/CouponRequest.php
+apps/backend/Modules/Discount/app/Models/Coupon.php
+apps/backend/Modules/Discount/app/Models/Promotion.php
+apps/backend/Modules/Discount/app/Models/Redemption.php
+apps/backend/Modules/Discount/app/Transfer/DiscountTransfer.php
+apps/backend/Modules/Discount/database/migrations/2026_09_24_000001_create_discount_coupons_table.php
+apps/backend/Modules/Discount/database/migrations/2026_09_24_000002_create_discount_redemptions_table.php
+apps/backend/Modules/Discount/database/migrations/2026_10_09_000001_create_discount_promotions_table.php
+apps/backend/Modules/Discount/tests/Feature/DiscountRedemptionImportTest.php
+apps/backend/Modules/Inventory/app/Models/InventoryStock.php
+apps/backend/Modules/Inventory/database/migrations/2026_03_13_225319_create_inventory_stocks_table.php
+apps/backend/Modules/Media/app/Actions/Admin/Media/CreateMediaAction.php
+apps/backend/Modules/Media/app/Console/Commands/SweepMediaStagingCommand.php
+apps/backend/Modules/Media/app/Http/Requests/Admin/Folder/FolderRequest.php
+apps/backend/Modules/Media/app/Http/Requests/Admin/Media/MediaRequest.php
+apps/backend/Modules/Media/app/Models/Folder.php
+apps/backend/Modules/Media/app/Models/Media.php
+apps/backend/Modules/Media/app/Support/MediaPublicationProcessor.php
+apps/backend/Modules/Media/database/migrations/2026_07_09_215139_create_folders_table.php
+apps/backend/Modules/Media/database/migrations/2026_07_10_215150_create_media_table.php
+apps/backend/Modules/Media/database/migrations/2026_11_22_000002_create_media_outbox_table.php
+apps/backend/Modules/Menu/app/Http/Requests/Admin/MenuLink/MenuLinkRequest.php
+apps/backend/Modules/Menu/app/Http/Requests/Admin/Menu/MenuRequest.php
+apps/backend/Modules/Menu/app/Models/MenuLink.php
+apps/backend/Modules/Menu/app/Models/MenuLinkTranslation.php
+apps/backend/Modules/Menu/app/Models/Menu.php
+apps/backend/Modules/Menu/app/Models/MenuTranslation.php
+apps/backend/Modules/Menu/app/Transfer/MenuTransfer.php
+apps/backend/Modules/Menu/database/migrations/2026_09_09_000001_create_menus_table.php
+apps/backend/Modules/Menu/database/migrations/2026_09_09_000002_create_menu_translations_table.php
+apps/backend/Modules/Menu/database/migrations/2026_09_09_000003_create_menu_links_table.php
+apps/backend/Modules/Menu/database/migrations/2026_09_09_000004_create_menu_link_translations_table.php
+apps/backend/Modules/Notification/app/Models/Notification.php
+apps/backend/Modules/Notification/database/migrations/2026_04_01_131239_create_notifications_table.php
+apps/backend/Modules/Order/app/Actions/Admin/CreditNote/IssueCreditNoteAction.php
+apps/backend/Modules/Order/app/Actions/Admin/Invoice/IssueInvoiceAction.php
+apps/backend/Modules/Order/app/Gateways/DTOs/GetOrderOutput.php
+apps/backend/Modules/Order/app/Models/DocumentSequence.php
+apps/backend/Modules/Order/app/Models/OrderAddress.php
+apps/backend/Modules/Order/app/Models/OrderCreditNote.php
+apps/backend/Modules/Order/app/Models/OrderInvoiceItem.php
+apps/backend/Modules/Order/app/Models/OrderInvoice.php
+apps/backend/Modules/Order/app/Models/OrderItem.php
+apps/backend/Modules/Order/app/Models/Order.php
+apps/backend/Modules/Order/app/Models/OrderReturn.php
+apps/backend/Modules/Order/app/Schemas/OrderCreditNote/OrderCreditNoteSchema.php
+apps/backend/Modules/Order/app/Schemas/OrderInvoice/OrderInvoiceSchema.php
+apps/backend/Modules/Order/app/Transfer/OrderTransfer.php
+apps/backend/Modules/Order/app/Transformers/Admin/CreditNote/OrderCreditNoteResource.php
+apps/backend/Modules/Order/app/Transformers/Admin/Invoice/OrderInvoiceResource.php
+apps/backend/Modules/Order/database/migrations/2026_03_11_172406_create_orders_table.php
+apps/backend/Modules/Order/database/migrations/2026_03_11_172413_create_order_items_table.php
+apps/backend/Modules/Order/database/migrations/2026_03_12_011204_create_order_addresses_table.php
+apps/backend/Modules/Order/database/migrations/2026_10_21_000002_create_order_returns_table.php
+apps/backend/Modules/Order/database/migrations/2026_11_07_000001_create_order_invoices_table.php
+apps/backend/Modules/Order/database/migrations/2026_11_07_000002_create_order_invoice_items_table.php
+apps/backend/Modules/Order/database/migrations/2026_11_07_000003_create_order_credit_notes_table.php
+apps/backend/Modules/Order/database/migrations/2026_11_07_000004_create_order_document_sequences_table.php
+apps/backend/Modules/Order/tests/Feature/Admin/InvoiceTest.php
+apps/backend/Modules/Order/tests/Feature/OrderAddressTenantScopeTest.php
+apps/backend/Modules/Order/tests/Feature/OrderTransferImportTest.php
+apps/backend/Modules/Payment/app/Actions/Admin/PaymentRefund/CreateRefundAction.php
+apps/backend/Modules/Payment/app/Actions/User/Payment/CreatePaymentAction.php
+apps/backend/Modules/Payment/app/Models/PaymentDriverCredential.php
+apps/backend/Modules/Payment/app/Models/PaymentMethod.php
+apps/backend/Modules/Payment/app/Models/Payment.php
+apps/backend/Modules/Payment/app/Models/PaymentRefund.php
+apps/backend/Modules/Payment/app/Schemas/Payment/PaymentSchema.php
+apps/backend/Modules/Payment/app/Schemas/PaymentRefund/PaymentRefundSchema.php
+apps/backend/Modules/Payment/app/Transfer/PaymentTransfer.php
+apps/backend/Modules/Payment/app/Transformers/Admin/Payment/PaymentResource.php
+apps/backend/Modules/Payment/app/Transformers/Admin/PaymentRefund/PaymentRefundResource.php
+apps/backend/Modules/Payment/database/migrations/2026_03_12_205120_create_payments_table.php
+apps/backend/Modules/Payment/database/migrations/2026_09_24_000000_create_payment_methods_table.php
+apps/backend/Modules/Payment/database/migrations/2026_10_21_000001_create_payment_refunds_table.php
+apps/backend/Modules/Payment/database/migrations/2026_11_14_100001_create_payment_driver_credentials_table.php
+apps/backend/Modules/Payment/tests/Feature/Admin/DriverCredentialsTest.php
+apps/backend/Modules/Payment/tests/Feature/Admin/Payment/UpdatePaymentTest.php
+apps/backend/Modules/Payment/tests/Feature/Admin/RefundTest.php
+apps/backend/Modules/Payment/tests/Feature/PaymentTransferImportTest.php
+apps/backend/Modules/Payment/tests/Feature/Webhook/RefundOutcomeTest.php
+apps/backend/Modules/Setting/app/Models/Setting.php
+apps/backend/Modules/Setting/app/Models/Translation.php
+apps/backend/Modules/Setting/database/migrations/2026_03_12_214600_create_settings_table.php
+apps/backend/Modules/Setting/tests/Feature/SettingTest.php
+apps/backend/Modules/Shipping/app/Http/Requests/Admin/Method/MethodRequest.php
+apps/backend/Modules/Shipping/app/Http/Requests/Admin/Rate/RateRequest.php
+apps/backend/Modules/Shipping/app/Models/Method.php
+apps/backend/Modules/Shipping/app/Models/MethodTranslation.php
+apps/backend/Modules/Shipping/app/Models/Rate.php
+apps/backend/Modules/Shipping/app/Models/Shipment.php
+apps/backend/Modules/Shipping/app/Models/Zone.php
+apps/backend/Modules/Shipping/app/Transfer/ShippingTransfer.php
+apps/backend/Modules/Shipping/database/migrations/2026_08_30_000001_create_shipping_methods_table.php
+apps/backend/Modules/Shipping/database/migrations/2026_08_30_000002_create_shipping_method_translations_table.php
+apps/backend/Modules/Shipping/database/migrations/2026_08_30_000003_create_shipping_zones_table.php
+apps/backend/Modules/Shipping/database/migrations/2026_08_30_000005_create_shipping_rates_table.php
+apps/backend/Modules/Shipping/database/migrations/2026_08_30_000006_create_shipping_shipments_table.php
+apps/backend/Modules/Support/app/Models/TicketMessage.php
+apps/backend/Modules/Support/app/Models/Ticket.php
+apps/backend/Modules/Support/app/Transfer/SupportTransfer.php
+apps/backend/Modules/Support/database/migrations/2026_10_04_000100_create_support_tickets_table.php
+apps/backend/Modules/Support/database/migrations/2026_10_04_000200_create_support_ticket_messages_table.php
+apps/backend/Modules/Tax/app/Actions/Admin/TaxClass/CreateTaxClassAction.php
+apps/backend/Modules/Tax/app/Actions/Admin/TaxClass/UpdateTaxClassAction.php
+apps/backend/Modules/Tax/app/Http/Requests/Admin/TaxRate/TaxRateRequest.php
+apps/backend/Modules/Tax/app/Models/TaxClass.php
+apps/backend/Modules/Tax/app/Models/TaxRate.php
+apps/backend/Modules/Tax/app/Transfer/TaxTransfer.php
+apps/backend/Modules/Tax/database/migrations/2026_10_20_000001_create_tax_classes_table.php
+apps/backend/Modules/Tax/database/migrations/2026_10_20_000002_create_tax_rates_table.php
+apps/backend/Modules/Tax/tests/Feature/Admin/TaxClassTest.php
+apps/backend/Modules/Tenant/app/Gateways/TenantGateway.php
+apps/backend/Modules/Tenant/tests/Feature/Http/MachineTokenTenantDataTest.php
+apps/backend/Modules/Tenant/tests/Feature/Registry/TenancyAuditRelationMapArchitectureTest.php
+apps/backend/Modules/Tenant/tests/Feature/Registry/TenantCommandModeArchitectureTest.php
+apps/backend/Modules/Tenant/tests/Feature/Registry/TenantQuerySiteArchitectureTest.php
+apps/backend/Modules/Tenant/tests/Feature/Registry/TenantValidationRuleArchitectureTest.php
+apps/backend/Modules/Tenant/tests/Feature/TenantContextTest.php
+apps/backend/Modules/Tenant/tests/Fixtures/TenantQueryScanner.php
+apps/backend/Modules/User/app/Models/WishlistItem.php
+apps/backend/Modules/User/database/migrations/2026_09_10_000001_create_wishlist_items_table.php
+apps/backend/Modules/Webhooks/app/Actions/Webhooks/ProcessOutboxEventAction.php
+apps/backend/Modules/Webhooks/app/Console/Commands/PruneWebhooksCommand.php
+apps/backend/Modules/Webhooks/app/Models/WebhookDelivery.php
+apps/backend/Modules/Webhooks/app/Models/WebhookEndpoint.php
+apps/backend/Modules/Webhooks/app/Models/WebhookEvent.php
+apps/backend/Modules/Webhooks/database/migrations/2026_11_08_000001_create_webhook_events_table.php
+apps/backend/Modules/Webhooks/database/migrations/2026_11_08_000002_create_webhook_endpoints_table.php
+apps/backend/Modules/Webhooks/database/migrations/2026_11_08_000003_create_webhook_deliveries_table.php
+apps/backend/tests/TestCase.php
+docs/plans/multi-tenancy.md
+```
+
+</details>
