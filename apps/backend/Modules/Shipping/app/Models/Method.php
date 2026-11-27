@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Shipping\Database\Factories\MethodFactory;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 
@@ -24,6 +25,8 @@ class Method extends Model
 {
     /** @use HasFactory<MethodFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MethodSchema::TABLE;
 

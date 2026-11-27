@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Menu\Database\Factories\MenuTranslationFactory;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema;
 
@@ -23,6 +24,8 @@ class MenuTranslation extends Model
 {
     /** @use HasFactory<MenuTranslationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MenuTranslationSchema::TABLE;
 

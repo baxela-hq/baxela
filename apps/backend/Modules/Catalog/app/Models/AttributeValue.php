@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Database\Factories\AttributeValueFactory;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -21,6 +22,8 @@ class AttributeValue extends Model
 {
     /** @use HasFactory<AttributeValueFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = AttributeValueSchema::TABLE;
 

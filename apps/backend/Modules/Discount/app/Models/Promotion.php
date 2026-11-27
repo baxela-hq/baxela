@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Catalog\Models\Category;
 use Modules\Catalog\Models\Product;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Discount\Database\Factories\PromotionFactory;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
 use Modules\Discount\Schemas\Promotion\PromotionCategorySchema;
@@ -39,6 +40,8 @@ class Promotion extends Model
 {
     /** @use HasFactory<PromotionFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PromotionSchema::TABLE;
 

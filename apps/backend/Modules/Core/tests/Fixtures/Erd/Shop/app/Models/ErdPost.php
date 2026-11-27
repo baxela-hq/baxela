@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * ERD test fixture model — discovered by ModelRelationsScanner via
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class ErdPost extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = 'erdfx_posts';
 
     /** @return HasMany<ErdDetail, $this> */

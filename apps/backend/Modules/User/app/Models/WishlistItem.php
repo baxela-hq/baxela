@@ -5,6 +5,7 @@ namespace Modules\User\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 /**
@@ -18,6 +19,8 @@ use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
  */
 class WishlistItem extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = WishlistItemSchema::TABLE;
 
     /**

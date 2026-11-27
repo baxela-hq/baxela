@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Database\Factories\ImageFactory;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,8 @@ class Image extends Model
 {
     /** @use HasFactory<ImageFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ImageSchema::TABLE;
 

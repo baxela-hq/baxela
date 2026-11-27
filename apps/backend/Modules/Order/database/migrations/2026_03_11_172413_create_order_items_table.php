@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
@@ -15,7 +16,12 @@ return new class extends Migration
     {
         Schema::create(OrderItemSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(OrderItemSchema::ORDER_ID)->constrained(OrderSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(OrderItemSchema::ORDER_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderItemSchema::ORDER_ID], 'order_items_tenant_order_fk')
+                ->references([TenantColumn::TENANT_ID, OrderSchema::ID])
+                ->on(OrderSchema::TABLE)->cascadeOnDelete();
             $table->unsignedBigInteger(OrderItemSchema::VARIANT_ID);
             $table->string(OrderItemSchema::PRODUCT_NAME_SNAPSHOT);
             $table->string(OrderItemSchema::PRODUCT_SLUG_SNAPSHOT)->nullable();

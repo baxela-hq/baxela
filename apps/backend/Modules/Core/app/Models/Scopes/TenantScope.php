@@ -28,6 +28,14 @@ class TenantScope implements Scope
         }
 
         if ($context->mode() !== TenantContext::MODE_TENANT) {
+            // Platform-tier rows (nullable owner) belong to the installation
+            // and are read from the central host, where no tenant is selected.
+            // Store-owned models still fail closed here.
+            /** @phpstan-ignore-next-line */
+            if (method_exists($model, 'isPlatformTier') && $model::isPlatformTier()) {
+                return;
+            }
+
             throw new TenantContextMissingException($model);
         }
 

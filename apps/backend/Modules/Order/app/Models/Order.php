@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Database\Factories\OrderFactory;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
@@ -48,6 +49,8 @@ class Order extends Model
 {
     /** @use HasFactory<OrderFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = OrderSchema::TABLE;
 

@@ -27,7 +27,7 @@ class OptionRequest extends FormRequest
 
         $rules = self::rulesFor($this->languageMap);
         $rules[OptionSchema::RES_TRANSLATIONS.'.*.'.OTSchema::SLUG][] =
-            new LanguageUniquePair(OTSchema::TABLE, OTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(OTSchema::TABLE, OTSchema::SLUG, $this->languageMap, $id, OTSchema::OPTION_ID);
 
         return $rules;
     }

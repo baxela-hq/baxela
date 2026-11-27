@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\OrderReturn\OrderReturnReasonEnum;
 use Modules\Order\Schemas\OrderReturn\OrderReturnSchema;
@@ -17,8 +18,12 @@ return new class extends Migration
     {
         Schema::create(OrderReturnSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(OrderReturnSchema::ORDER_ID)
-                ->constrained(OrderSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(OrderReturnSchema::ORDER_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderReturnSchema::ORDER_ID], 'order_returns_tenant_order_fk')
+                ->references([TenantColumn::TENANT_ID, OrderSchema::ID])
+                ->on(OrderSchema::TABLE)->cascadeOnDelete();
             $table->unsignedBigInteger(OrderReturnSchema::USER_ID)->index();
             $table->enum(OrderReturnSchema::STATUS, OrderReturnStatusEnum::cases())
                 ->default(OrderReturnStatusEnum::REQUESTED->value);

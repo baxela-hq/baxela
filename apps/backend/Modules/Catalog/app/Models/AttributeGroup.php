@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Database\Factories\AttributeGroupFactory;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -20,6 +21,8 @@ class AttributeGroup extends Model
 {
     /** @use HasFactory<AttributeGroupFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = AttributeGroupSchema::TABLE;
 

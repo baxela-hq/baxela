@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
 use Modules\Webhooks\Schemas\WebhookEndpoint\WebhookEndpointSchema;
@@ -17,11 +18,15 @@ return new class extends Migration
     {
         Schema::create(WebhookDeliverySchema::TABLE, function (Blueprint $table) {
             $table->uuid(WebhookDeliverySchema::ID)->primary();
-            $table->foreignId(WebhookDeliverySchema::ENDPOINT_ID)
-                ->constrained(WebhookEndpointSchema::TABLE)->cascadeOnDelete();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(WebhookDeliverySchema::ENDPOINT_ID);
+            $table->foreign([TenantColumn::TENANT_ID, WebhookDeliverySchema::ENDPOINT_ID], 'webhook_deliveries_tenant_endpoint_fk')
+                ->references([TenantColumn::TENANT_ID, WebhookEndpointSchema::ID])
+                ->on(WebhookEndpointSchema::TABLE)->cascadeOnDelete();
             $table->uuid(WebhookDeliverySchema::EVENT_ID);
-            $table->foreign(WebhookDeliverySchema::EVENT_ID)
-                ->references(WebhookEventSchema::ID)
+            $table->foreign([TenantColumn::TENANT_ID, WebhookDeliverySchema::EVENT_ID], 'webhook_deliveries_tenant_event_fk')
+                ->references([TenantColumn::TENANT_ID, WebhookEventSchema::ID])
                 ->on(WebhookEventSchema::TABLE)->cascadeOnDelete();
             $table->string(WebhookDeliverySchema::EVENT_TYPE)->index();
             $table->enum(WebhookDeliverySchema::STATUS, WebhookDeliveryStatusEnum::cases())

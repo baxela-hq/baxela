@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteSchema;
 use Modules\Order\Schemas\OrderInvoice\OrderInvoiceSchema;
@@ -32,6 +33,7 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  * @property CarbonInterface|null $voided_at
  * @property string|null $void_reason
  * @property string $currency_code
+ * @property string|null $exchange_rate
  * @property string $subtotal_amount
  * @property string $discount_amount
  * @property string|null $coupon_code
@@ -57,6 +59,8 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  */
 class OrderInvoice extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = OrderInvoiceSchema::TABLE;
 
     protected $fillable = [
@@ -68,6 +72,7 @@ class OrderInvoice extends Model
         OrderInvoiceSchema::VOIDED_AT,
         OrderInvoiceSchema::VOID_REASON,
         OrderInvoiceSchema::CURRENCY_CODE,
+        OrderInvoiceSchema::EXCHANGE_RATE,
         OrderInvoiceSchema::SUBTOTAL_AMOUNT,
         OrderInvoiceSchema::DISCOUNT_AMOUNT,
         OrderInvoiceSchema::COUPON_CODE,
@@ -97,6 +102,7 @@ class OrderInvoice extends Model
             OrderInvoiceSchema::ISSUED_AT => 'datetime',
             OrderInvoiceSchema::VOIDED_AT => 'datetime',
             OrderInvoiceSchema::PDF_GENERATED_AT => 'datetime',
+            OrderInvoiceSchema::EXCHANGE_RATE => 'decimal:8',
             OrderInvoiceSchema::GENERATION_CLAIMED_AT => 'datetime',
             OrderInvoiceSchema::BILLING_ADDRESS => 'array',
             OrderInvoiceSchema::BUYER_IDENTITY => 'array',

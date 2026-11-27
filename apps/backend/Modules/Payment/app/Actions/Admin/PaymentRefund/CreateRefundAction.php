@@ -76,6 +76,8 @@ class CreateRefundAction
                 PaymentRefundSchema::PAYMENT_ID => $payment->{PaymentSchema::ID},
                 PaymentRefundSchema::ORDER_ID => $payment->{PaymentSchema::ORDER_ID},
                 PaymentRefundSchema::AMOUNT => $data[PaymentRefundSchema::AMOUNT],
+                PaymentRefundSchema::CURRENCY_CODE => $payment->{PaymentSchema::CURRENCY_CODE},
+                PaymentRefundSchema::EXCHANGE_RATE => $payment->{PaymentSchema::EXCHANGE_RATE},
                 PaymentRefundSchema::REASON => $data[PaymentRefundSchema::REASON],
                 PaymentRefundSchema::STATUS => PaymentRefundStatusEnum::PENDING,
                 PaymentRefundSchema::REFUNDED_BY => Auth::id(),

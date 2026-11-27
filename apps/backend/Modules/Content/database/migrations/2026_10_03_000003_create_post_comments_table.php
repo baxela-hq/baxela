@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\PostComment\PostCommentSchema;
 use Modules\Content\Schemas\PostComment\PostCommentStatusEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(PostCommentSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(PostCommentSchema::POST_ID)
                 ->constrained(PostSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(PostCommentSchema::USER_ID)->index();

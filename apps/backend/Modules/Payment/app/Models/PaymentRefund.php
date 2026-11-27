@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Payment\Database\Factories\PaymentRefundFactory;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundSchema;
 use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
@@ -20,6 +21,8 @@ use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
  * @property int $payment_id
  * @property int $order_id
  * @property string $amount
+ * @property string|null $currency_code
+ * @property string|null $exchange_rate
  * @property string $reason
  * @property PaymentRefundStatusEnum $status
  * @property string|null $transaction_id
@@ -33,6 +36,8 @@ class PaymentRefund extends Model
     /** @use HasFactory<PaymentRefundFactory> */
     use HasFactory;
 
+    use TenantScopedTrait;
+
     protected $table = PaymentRefundSchema::TABLE;
 
     protected $fillable = [
@@ -40,6 +45,8 @@ class PaymentRefund extends Model
         PaymentRefundSchema::PAYMENT_ID,
         PaymentRefundSchema::ORDER_ID,
         PaymentRefundSchema::AMOUNT,
+        PaymentRefundSchema::CURRENCY_CODE,
+        PaymentRefundSchema::EXCHANGE_RATE,
         PaymentRefundSchema::REASON,
         PaymentRefundSchema::STATUS,
         PaymentRefundSchema::TRANSACTION_ID,
@@ -51,6 +58,7 @@ class PaymentRefund extends Model
         return [
             PaymentRefundSchema::UUID => 'string',
             PaymentRefundSchema::AMOUNT => 'decimal:2',
+            PaymentRefundSchema::EXCHANGE_RATE => 'decimal:8',
             PaymentRefundSchema::STATUS => PaymentRefundStatusEnum::class,
         ];
     }

@@ -53,23 +53,40 @@ final class CentralOperations
 
         $reason = trim($reason);
 
+        // A CLI has no tenant to inherit after runCentral() restores the
+        // context. Audit its operation while MODE_CENTRAL is still active so
+        // the platform-tier row is allowed; a request keeps its existing
+        // tenant-owned audit row (§6.5, Phase 1 record).
+        $auditInsideCentral = $this->context->mode() === TenantContext::MODE_INACTIVE;
+
         try {
             // One transaction for the operation and its audit record: a
             // handler's own beginTransaction() nests as a savepoint.
-            return DB::transaction(function () use ($operation, $reason, $caller, $handler): mixed {
-                $result = $this->context->runCentral(
-                    $operation::class,
-                    fn () => $this->container->call($handler, ['operation' => $operation]),
-                );
+            return DB::transaction(function () use ($operation, $reason, $caller, $handler, $auditInsideCentral): mixed {
+                $result = $this->context->runCentral($operation::class, function () use ($operation, $reason, $caller, $handler, $auditInsideCentral): mixed {
+                    $result = $this->container->call($handler, ['operation' => $operation]);
 
-                event($this->runEvent($operation, $reason, $caller, 'succeeded'));
+                    if ($auditInsideCentral) {
+                        event($this->runEvent($operation, $reason, $caller, 'succeeded'));
+                    }
+
+                    return $result;
+                });
+
+                // Still inside the transaction: a failed audit must roll the
+                // operation back (Phase 1 acceptance). The request's tenant
+                // context is restored here; a CLI has none, so its audit was
+                // written above instead.
+                if (! $auditInsideCentral) {
+                    event($this->runEvent($operation, $reason, $caller, 'succeeded'));
+                }
 
                 return $result;
             });
         } catch (Throwable $e) {
             // The attempt itself stays on the record, written after the
             // rollback — unless recording is what failed.
-            $this->recordFailedAttempt($operation, $reason, $caller);
+            $this->recordFailedAttempt($operation, $reason, $caller, $auditInsideCentral);
 
             throw $e;
         }
@@ -141,13 +158,25 @@ final class CentralOperations
         );
     }
 
-    private function recordFailedAttempt(CentralOperation $operation, string $reason, string $caller): void
-    {
+    private function recordFailedAttempt(
+        CentralOperation $operation,
+        string $reason,
+        string $caller,
+        bool $auditInsideCentral,
+    ): void {
         try {
             // Its own transaction: nested, that is a savepoint, so a record
             // that fails rolls back alone and leaves the caller's
             // transaction usable — PostgreSQL would otherwise abort it.
-            DB::transaction(fn () => event($this->runEvent($operation, $reason, $caller, 'failed')));
+            $record = fn () => DB::transaction(fn () => event($this->runEvent($operation, $reason, $caller, 'failed')));
+
+            if ($auditInsideCentral) {
+                $this->context->runCentral($operation::class, $record);
+
+                return;
+            }
+
+            $record();
         } catch (Throwable) {
             // Never mask the operation's own failure with an audit one.
         }

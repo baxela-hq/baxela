@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Modules\Audit\Schemas\AuditLog\AuditLogSchema;
 use Modules\Auth\Models\User;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * One immutable audit row for an admin mutation (S.2). Column names are
@@ -27,6 +28,8 @@ use Modules\Auth\Models\User;
  */
 class AuditLog extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = AuditLogSchema::TABLE;
 
     /**
@@ -54,5 +57,10 @@ class AuditLog extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, AuditLogSchema::USER_ID);
+    }
+
+    public static function isPlatformTier(): bool
+    {
+        return true;
     }
 }

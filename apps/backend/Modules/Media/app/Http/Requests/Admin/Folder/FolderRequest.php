@@ -3,8 +3,7 @@
 namespace Modules\Media\Http\Requests\Admin\Folder;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Exists;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Core\Rules\UniquePair;
 use Modules\Media\Schemas\Folder\FolderSchema;
 
@@ -12,14 +11,15 @@ class FolderRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, list<string|Exists|UniquePair>> */
     public function rules(): array
     {
         $id = $this->route('id');
 
         return [
-            FolderSchema::PARENT_ID => ['nullable', 'numeric', Rule::exists(FolderSchema::TABLE, FolderSchema::ID)],
+            FolderSchema::PARENT_ID => ['nullable', 'numeric', new ScopedExists(FolderSchema::TABLE, FolderSchema::ID)],
             // Partial updates (e.g. moving a folder) must not require the
             // name to be resent; it is only mandatory when creating.
             FolderSchema::NAME => [$id ? 'sometimes' : 'required', 'string', 'max:255', 'regex:/^[\p{L}\p{N}](?:[\p{L}\p{N} _.\-()]*[\p{L}\p{N}_\-()])?$/u',

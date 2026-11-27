@@ -8,25 +8,27 @@ use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\Product\ProductSchema as PSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
+use Modules\Core\Rules\ScopedExists;
 
 class ProductCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         // null on create, the comment id on update — /api/v1/catalog/admin/product-comments/{id}
         $id = $this->route('id');
 
         return [
-            Schema::PRODUCT_ID => ['required', 'integer', Rule::exists(PSchema::TABLE, PSchema::ID)],
+            Schema::PRODUCT_ID => ['required', 'integer', new ScopedExists(PSchema::TABLE, PSchema::ID)],
             // admin comments are replies; on update the parent may be cleared back to top-level
             Schema::PARENT_ID => [
                 is_null($id) ? 'required' : 'nullable',
                 'integer',
-                Rule::exists(Schema::TABLE, Schema::ID),
+                new ScopedExists(Schema::TABLE, Schema::ID),
             ],
             Schema::BODY => ['required', 'string', 'max:2000'],
             // ratings belong to top-level reviews only; null keeps legacy text-only rows editable

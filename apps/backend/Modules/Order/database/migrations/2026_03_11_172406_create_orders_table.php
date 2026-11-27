@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Order\OrderPaymentStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\Order\OrderStatusEnum;
@@ -16,6 +17,10 @@ return new class extends Migration
     {
         Schema::create(OrderSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            // Composite parent key for the layer-3 tenant-safe child FKs.
+            $table->unique([TenantColumn::TENANT_ID, OrderSchema::ID], 'order_orders_tenant_id_unique');
             $table->unsignedBigInteger(OrderSchema::USER_ID)->index();
             $table->string(OrderSchema::ORDER_CODE)->unique();
             $table->enum(OrderSchema::STATUS, OrderStatusEnum::cases());

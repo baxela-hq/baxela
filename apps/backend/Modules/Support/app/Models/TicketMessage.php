@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Support\Database\Factories\TicketMessageFactory;
 use Modules\Support\Schemas\TicketMessage\TicketMessageSchema;
 use Modules\Support\Schemas\TicketMessage\TicketSenderEnum;
@@ -24,6 +25,8 @@ class TicketMessage extends Model
 {
     /** @use HasFactory<TicketMessageFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = TicketMessageSchema::TABLE;
 

@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -20,6 +21,8 @@ use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
  */
 class ProductAttributeValue extends Model
 {
+    use TenantScopedTrait;
+
     public $timestamps = false;
 
     protected $table = ProductAttributeValueSchema::TABLE;

@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(CatalogImportSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // Plain unsigned ints, mirroring the catalog_images precedent:
             // cross-module ids stay denormalized, without FK constraints.
             $table->unsignedBigInteger(CatalogImportSchema::USER_ID)->index();

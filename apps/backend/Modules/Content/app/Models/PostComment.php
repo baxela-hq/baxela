@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Content\Database\Factories\PostCommentFactory;
 use Modules\Content\Schemas\PostComment\PostCommentSchema;
 use Modules\Content\Schemas\PostComment\PostCommentStatusEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @mixin Builder<PostComment>
@@ -33,6 +34,8 @@ class PostComment extends Model
 {
     /** @use HasFactory<PostCommentFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PostCommentSchema::TABLE;
 

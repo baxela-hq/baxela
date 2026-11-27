@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(ProductSeoTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(ProductSeoTranslationSchema::PRODUCT_ID)
                 ->constrained(ProductSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(ProductSeoTranslationSchema::LANGUAGE_ID)->nullable();

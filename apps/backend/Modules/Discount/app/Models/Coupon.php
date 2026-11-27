@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Discount\Database\Factories\CouponFactory;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Modules\Discount\Schemas\Coupon\CouponTypeEnum;
@@ -37,6 +38,8 @@ class Coupon extends Model
 {
     /** @use HasFactory<CouponFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = CouponSchema::TABLE;
 

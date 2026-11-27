@@ -5,6 +5,7 @@ namespace Modules\Webhooks\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Webhooks\Schemas\WebhookEndpoint\WebhookEndpointSchema;
 
 /**
@@ -28,6 +29,8 @@ use Modules\Webhooks\Schemas\WebhookEndpoint\WebhookEndpointSchema;
  */
 class WebhookEndpoint extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = WebhookEndpointSchema::TABLE;
 
     protected $fillable = [

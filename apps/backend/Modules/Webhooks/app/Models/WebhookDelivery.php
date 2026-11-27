@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
 
@@ -39,6 +40,8 @@ use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
  */
 class WebhookDelivery extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = WebhookDeliverySchema::TABLE;
 
     public $incrementing = false;

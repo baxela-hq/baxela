@@ -27,6 +27,8 @@ class PaymentResource extends JsonResource
             PaymentSchema::METHOD => $this->resource->{PaymentSchema::METHOD},
             PaymentSchema::AMOUNT => $this->resource->{PaymentSchema::AMOUNT},
             PaymentSchema::CURRENCY_ID => $this->resource->{PaymentSchema::CURRENCY_ID},
+            PaymentSchema::CURRENCY_CODE => $this->resource->{PaymentSchema::CURRENCY_CODE},
+            PaymentSchema::EXCHANGE_RATE => $this->resource->{PaymentSchema::EXCHANGE_RATE},
             PaymentSchema::STATUS => $this->resource->{PaymentSchema::STATUS},
             PaymentSchema::IS_REFUNDABLE => $manager->supportsRefund(
                 $this->resource->{PaymentSchema::METHOD}

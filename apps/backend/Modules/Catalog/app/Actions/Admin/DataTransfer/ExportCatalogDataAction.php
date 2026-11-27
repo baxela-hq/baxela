@@ -356,6 +356,10 @@ class ExportCatalogDataAction
                 ProductSchema::RES_TRANSLATIONS,
                 ProductSchema::RES_SEO,
                 ProductSchema::RES_SHIPPING,
+                // Deterministic export: variant order is part of the payload
+                // (and its index-aligned @variant_ids), but an unordered
+                // eager load is free to return a different order per engine.
+                ProductSchema::RES_VARIANTS => fn ($variants) => $variants->orderBy(VSchema::ID),
                 ProductSchema::RES_VARIANTS.'.'.ProductSchema::RES_OPTION_VALUES,
                 ProductSchema::RES_VARIANTS.'.'.VSchema::RES_IMAGES,
                 ProductSchema::RES_CATEGORIES,

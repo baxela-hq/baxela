@@ -3,8 +3,7 @@
 namespace Modules\Shipping\Http\Requests\Admin\Rate;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Exists;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Core\Rules\UniquePair;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Rate\RateSchema;
@@ -12,16 +11,16 @@ use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
 class RateRequest extends FormRequest
 {
-    /** @return array<string, list<string|Exists|UniquePair>> */
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         $id = $this->route('id');
 
         return [
             RateSchema::METHOD_ID => ['required', 'integer',
-                Rule::exists(MethodSchema::TABLE, MethodSchema::ID)],
+                new ScopedExists(MethodSchema::TABLE, MethodSchema::ID)],
             RateSchema::ZONE_ID => ['required', 'integer',
-                Rule::exists(ZoneSchema::TABLE, ZoneSchema::ID)],
+                new ScopedExists(ZoneSchema::TABLE, ZoneSchema::ID)],
             RateSchema::PRICE => ['required', 'numeric', 'min:0',
                 new UniquePair(RateSchema::TABLE, [
                     RateSchema::METHOD_ID => $this->input(RateSchema::METHOD_ID),

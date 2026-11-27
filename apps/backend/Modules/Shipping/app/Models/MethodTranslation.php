@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Shipping\Database\Factories\MethodTranslationFactory;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema;
 
@@ -23,6 +24,8 @@ class MethodTranslation extends Model
 {
     /** @use HasFactory<MethodTranslationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MethodTranslationSchema::TABLE;
 

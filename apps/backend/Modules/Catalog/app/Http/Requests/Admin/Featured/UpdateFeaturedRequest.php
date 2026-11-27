@@ -3,35 +3,34 @@
 namespace Modules\Catalog\Http\Requests\Admin\Featured;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema as FISchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Core\Rules\ScopedExists;
 
 class UpdateFeaturedRequest extends FormRequest
 {
     /**
      * Full-sync payload: every list must be sent, array order encodes
      * the position within each section.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [
             FISchema::REQ_PRODUCT_IDS => ['present', 'array', 'max:100'],
             FISchema::REQ_PRODUCT_IDS.'.*' => ['integer', 'distinct',
-                Rule::exists(ProductSchema::TABLE, ProductSchema::ID)
-                    ->whereNull(ProductSchema::DELETED_AT)],
+                new ScopedExists(ProductSchema::TABLE, ProductSchema::ID, [ProductSchema::DELETED_AT => null])],
 
             FISchema::REQ_CATEGORY_IDS => ['present', 'array', 'max:100'],
             FISchema::REQ_CATEGORY_IDS.'.*' => ['integer', 'distinct',
-                Rule::exists(CategorySchema::TABLE, CategorySchema::ID)],
+                new ScopedExists(CategorySchema::TABLE, CategorySchema::ID)],
 
             FISchema::REQ_BRAND_IDS => ['present', 'array', 'max:100'],
             FISchema::REQ_BRAND_IDS.'.*' => ['integer', 'distinct',
-                Rule::exists(BrandSchema::TABLE, BrandSchema::ID)],
+                new ScopedExists(BrandSchema::TABLE, BrandSchema::ID)],
         ];
     }
 

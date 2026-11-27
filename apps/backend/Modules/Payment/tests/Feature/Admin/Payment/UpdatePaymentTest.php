@@ -42,7 +42,7 @@ it('denies a guest with 401', function () {
 });
 
 it('confirms a pending payment and drives its order to paid', function () {
-    Event::fake();
+    Event::fake([PaymentSucceededEvent::class]);
     $this->actingAs($this->superAdminUser());
     $order = adminUnpaidOrder();
     $payment = adminPendingPayment($order);
@@ -60,7 +60,7 @@ it('confirms a pending payment and drives its order to paid', function () {
 });
 
 it('fails a pending payment without touching the order', function () {
-    Event::fake();
+    Event::fake([PaymentFailedEvent::class]);
     $this->actingAs($this->superAdminUser());
     $order = adminUnpaidOrder();
     $payment = adminPendingPayment($order);

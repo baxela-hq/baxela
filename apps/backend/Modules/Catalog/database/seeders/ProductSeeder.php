@@ -37,8 +37,8 @@ use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema as PSTSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
-use Modules\Catalog\Search\SearchMutationGate;
 use Modules\Catalog\Search\SearchCursorManager;
+use Modules\Catalog\Search\SearchMutationGate;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -111,7 +111,15 @@ class ProductSeeder extends Seeder
                 ProductShipping::query()->delete();
                 ProductAttributeValue::query()->delete();
                 Variant::query()->delete();
-                DB::table(CategoryProductSchema::TABLE)->delete();
+                // The pivot carries no tenant column: scope the wipe through
+                // the scoped product ids so one store cannot wipe another's
+                // category links (§4.3 layer 0).
+                DB::table(CategoryProductSchema::TABLE)
+                    ->whereIn(
+                        CategoryProductSchema::PRODUCT_ID,
+                        Product::query()->select(ProductSchema::ID),
+                    )
+                    ->delete();
 
                 foreach (Product::withTrashed()->get() as $product) {
                     app(SearchCursorManager::class)->append($product->id);

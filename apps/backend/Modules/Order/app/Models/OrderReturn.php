@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Database\Factories\OrderReturnFactory;
 use Modules\Order\Schemas\OrderReturn\OrderReturnSchema;
 use Modules\Order\Schemas\OrderReturn\OrderReturnStatusEnum;
@@ -31,6 +32,7 @@ use Modules\Order\Schemas\OrderReturn\OrderReturnStatusEnum;
 class OrderReturn extends Model
 {
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = OrderReturnSchema::TABLE;
 

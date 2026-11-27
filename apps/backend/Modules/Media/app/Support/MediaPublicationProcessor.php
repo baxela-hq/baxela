@@ -5,6 +5,7 @@ namespace Modules\Media\Support;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
 use Modules\Media\Schemas\Media\MediaSchema;
 use Modules\Media\Schemas\MediaOutbox\MediaOutboxSchema;
 use Throwable;
@@ -54,7 +55,7 @@ final class MediaPublicationProcessor
         $entryIds = $this->claimableEntryIds($limit);
 
         foreach ($entryIds as $entryId) {
-            $entry = DB::table(MediaOutboxSchema::TABLE)->where('id', $entryId)->first();
+            $entry = TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)->where('id', $entryId))->first();
 
             if ($entry === null) {
                 continue;
@@ -85,7 +86,7 @@ final class MediaPublicationProcessor
         }
 
         // Re-read post-claim: the entry (with the fresh claim fields).
-        $claimed = DB::table(MediaOutboxSchema::TABLE)->where('id', $entry->id)->first();
+        $claimed = TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)->where('id', $entry->id))->first();
 
         if ($claimed === null || $claimed->{MediaOutboxSchema::STATUS} !== MediaOutboxSchema::STATUS_PROCESSING) {
             return false;
@@ -113,11 +114,11 @@ final class MediaPublicationProcessor
         // 3) The fenced terminal transition — ONE transaction with the
         // media-row path update; zero affected rows = lost ownership.
         DB::transaction(function () use ($claimed, $token, $finalKey): void {
-            $updated = DB::table(MediaOutboxSchema::TABLE)
+            $updated = TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)
                 ->where('id', $claimed->id)
                 ->where(MediaOutboxSchema::CLAIM_TOKEN, $token)
                 ->where(MediaOutboxSchema::CLAIM_EPOCH, $claimed->{MediaOutboxSchema::CLAIM_EPOCH})
-                ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PROCESSING)
+                ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PROCESSING))
                 ->update([
                     MediaOutboxSchema::STATUS => MediaOutboxSchema::STATUS_DONE,
                     MediaOutboxSchema::PUBLISHED_PATH => $finalKey,
@@ -131,8 +132,8 @@ final class MediaPublicationProcessor
                 throw new \RuntimeException('media_publication_claim_lost');
             }
 
-            DB::table(MediaSchema::TABLE)
-                ->where('id', $claimed->{MediaOutboxSchema::MEDIA_ID})
+            TenantQueryScope::apply(DB::table(MediaSchema::TABLE)
+                ->where('id', $claimed->{MediaOutboxSchema::MEDIA_ID}))
                 ->update([MediaSchema::PATH => $finalKey]);
         });
 
@@ -155,13 +156,13 @@ final class MediaPublicationProcessor
     {
         $staleCutoff = now()->subSeconds($this->claimGraceSeconds);
 
-        $claimed = DB::table(MediaOutboxSchema::TABLE)
+        $claimed = TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)
             ->where('id', $entryId)
             ->where(fn ($q) => $q
                 ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PENDING)
                 ->orWhere(fn ($q2) => $q2
                     ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PROCESSING)
-                    ->where(MediaOutboxSchema::CLAIMED_AT, '<', $staleCutoff)))
+                    ->where(MediaOutboxSchema::CLAIMED_AT, '<', $staleCutoff))))
             ->update([
                 MediaOutboxSchema::STATUS => MediaOutboxSchema::STATUS_PROCESSING,
                 MediaOutboxSchema::CLAIM_TOKEN => $token,
@@ -178,14 +179,14 @@ final class MediaPublicationProcessor
     {
         $staleCutoff = now()->subSeconds($this->claimGraceSeconds);
 
-        return DB::table(MediaOutboxSchema::TABLE)
+        return TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)
             ->where(fn ($q) => $q
                 ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PENDING)
                 ->orWhere(fn ($q2) => $q2
                     ->where(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_PROCESSING)
                     ->where(MediaOutboxSchema::CLAIMED_AT, '<', $staleCutoff)))
             ->orderBy('id')
-            ->limit($limit)
+            ->limit($limit))
             ->pluck('id')
             ->all();
     }
@@ -193,8 +194,8 @@ final class MediaPublicationProcessor
     /** Terminal failure (hash mismatch): staging is kept for review. */
     private function markFailed(int $entryId, string $reason): void
     {
-        DB::table(MediaOutboxSchema::TABLE)
-            ->where('id', $entryId)
+        TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)
+            ->where('id', $entryId))
             ->update([
                 MediaOutboxSchema::STATUS => MediaOutboxSchema::STATUS_FAILED,
                 MediaOutboxSchema::LAST_ERROR => $reason,
@@ -203,9 +204,9 @@ final class MediaPublicationProcessor
 
     private function recordFailure(int $entryId, Throwable $e): void
     {
-        DB::table(MediaOutboxSchema::TABLE)
+        TenantQueryScope::apply(DB::table(MediaOutboxSchema::TABLE)
             ->where('id', $entryId)
-            ->whereNot(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_DONE)
+            ->whereNot(MediaOutboxSchema::STATUS, MediaOutboxSchema::STATUS_DONE))
             ->update([
                 MediaOutboxSchema::STATUS => MediaOutboxSchema::STATUS_PENDING,
                 MediaOutboxSchema::LAST_ERROR => mb_substr($e->getMessage(), 0, 1024),

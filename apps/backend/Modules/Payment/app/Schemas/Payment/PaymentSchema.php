@@ -39,6 +39,10 @@ class PaymentSchema
      */
     public const string CURRENCY_ID = 'currency_id';
 
+    public const string CURRENCY_CODE = 'currency_code';
+
+    public const string EXCHANGE_RATE = 'exchange_rate';
+
     public const string STATUS = 'status';
 
     /**

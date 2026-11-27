@@ -60,7 +60,7 @@ it('restores a full store into divergent ids without capturing any decoy', funct
     Profile::query()->create(['user_id' => $jane->id, 'full_name' => 'Jane Doe', 'bio' => 'restorable']);
     WishlistItem::query()->create(['user_id' => $jane->id, 'product_id' => $product->id]);
 
-    $taxClassId = DB::table('tax_classes')->insertGetId(['name' => 'Standard', 'is_default' => false, 'is_shipping' => true]);
+    $taxClassId = DB::table('tax_classes')->insertGetId(['tenant_id' => 1, 'name' => 'Standard', 'is_default' => false, 'is_shipping' => true]);
 
     $coupon = Coupon::query()->create([
         'code' => 'WELCOME10', 'name' => 'Welcome', 'type' => 'percent',
@@ -86,6 +86,7 @@ it('restores a full store into divergent ids without capturing any decoy', funct
     ]);
 
     $paymentId = DB::table('payment_payments')->insertGetId([
+        'tenant_id' => 1,
         'order_id' => $order->id, 'transaction_id' => 'SRC-TXN-1', 'method' => 'manual',
         'amount' => '100.00', 'status' => 'success',
         'created_at' => '2026-01-15 10:00:00', 'updated_at' => '2026-01-15 10:00:00',
@@ -97,6 +98,7 @@ it('restores a full store into divergent ids without capturing any decoy', funct
     ]);
     $refundUuid = 'a1b2c3d4-e5f6-4718-9276-616263646566';
     DB::table('payment_refunds')->insert([
+        'tenant_id' => 1,
         'uuid' => $refundUuid, 'payment_id' => $paymentId, 'order_id' => $order->id,
         'amount' => '10.00', 'reason' => 'return', 'status' => 'success',
         'created_at' => '2026-01-16 09:00:00', 'updated_at' => '2026-01-16 09:00:00',
@@ -154,15 +156,15 @@ it('restores a full store into divergent ids without capturing any decoy', funct
     DB::table('core_currencies')->insert(['id' => $source['currency'], 'code' => 'XYX', 'name' => 'Decoy', 'exchange_rate' => 1, 'is_default' => 0, 'is_active' => 1]);
     DB::table('core_countries')->insert(['id' => 1, 'code' => 'XY', 'code3' => 'XYZ', 'name' => 'Decoyland']);
     $decoyProductId = $source['product'];
-    DB::table('catalog_products')->insert(['id' => $decoyProductId, 'type' => 'simple', 'status' => 'in_stock', 'is_published' => 0]);
-    DB::table('catalog_variants')->insert(['id' => $source['variant'], 'product_id' => $decoyProductId, 'sku' => 'DECOY-SKU', 'price' => '999.99', 'quantity' => 0, 'is_default' => 1]);
+    DB::table('catalog_products')->insert(['id' => $decoyProductId, 'tenant_id' => 1, 'type' => 'simple', 'status' => 'in_stock', 'is_published' => 0]);
+    DB::table('catalog_variants')->insert(['id' => $source['variant'], 'tenant_id' => 1, 'product_id' => $decoyProductId, 'sku' => 'DECOY-SKU', 'price' => '999.99', 'quantity' => 0, 'is_default' => 1]);
     $decoyUserId = $source['user'];
     DB::table('auth_users')->insert(['id' => $decoyUserId, 'email' => 'decoy@example.com', 'password' => 'x', 'is_active' => 1]);
-    DB::table('tax_classes')->insert(['id' => $source['taxClass'], 'name' => 'DECOY', 'is_default' => 0, 'is_shipping' => 0]);
-    DB::table('discount_coupons')->insert(['id' => $source['coupon'], 'code' => 'DECOY10', 'name' => 'Decoy', 'type' => 'percent', 'value' => '99.00', 'is_active' => 1]);
+    DB::table('tax_classes')->insert(['id' => $source['taxClass'], 'tenant_id' => 1, 'name' => 'DECOY', 'is_default' => 0, 'is_shipping' => 0]);
+    DB::table('discount_coupons')->insert(['id' => $source['coupon'], 'tenant_id' => 1, 'code' => 'DECOY10', 'name' => 'Decoy', 'type' => 'percent', 'value' => '99.00', 'is_active' => 1]);
     $decoyOrderId = $source['order'];
-    DB::table('order_orders')->insert(['id' => $decoyOrderId, 'user_id' => $decoyUserId, 'order_code' => 'ORD-DECOY-1', 'status' => 'pending', 'payment_status' => 'unpaid', 'total_amount' => 0]);
-    DB::table('payment_payments')->insert(['id' => $source['payment'], 'order_id' => $decoyOrderId, 'transaction_id' => 'DECOY-TXN', 'method' => 'manual', 'amount' => '1.00', 'status' => 'failed', 'created_at' => now(), 'updated_at' => now()]);
+    DB::table('order_orders')->insert(['id' => $decoyOrderId, 'tenant_id' => 1, 'user_id' => $decoyUserId, 'order_code' => 'ORD-DECOY-1', 'status' => 'pending', 'payment_status' => 'unpaid', 'total_amount' => 0]);
+    DB::table('payment_payments')->insert(['id' => $source['payment'], 'tenant_id' => 1, 'order_id' => $decoyOrderId, 'transaction_id' => 'DECOY-TXN', 'method' => 'manual', 'amount' => '1.00', 'status' => 'failed', 'created_at' => now(), 'updated_at' => now()]);
 
     // ── Import in the documented whole-install order ────────────────
     $runner = app(ModuleTransferRunner::class);

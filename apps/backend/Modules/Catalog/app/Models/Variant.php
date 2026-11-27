@@ -13,6 +13,7 @@ use Modules\Catalog\Database\Factories\VariantFactory;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 // use Modules\Catalog\Database\Factories\VariantFactory;
 
@@ -38,6 +39,8 @@ class Variant extends Model
 
     /** @use HasFactory<VariantFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = VariantSchema::TABLE;
 

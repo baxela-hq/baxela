@@ -16,6 +16,7 @@ class GetOrderOutput
         $this->total_amount = $fields['total_amount'];
         $this->currency_id = $fields['currency_id'] ?? null;
         $this->currency_code = $fields['currency_code'] ?? null;
+        $this->display_fx_rate = $fields['display_fx_rate'] ?? null;
         $this->currency_decimal_places = isset($fields['currency_decimal_places'])
             ? (int) $fields['currency_decimal_places']
             : null;
@@ -36,6 +37,9 @@ class GetOrderOutput
     public ?string $currency_code = null;
 
     public ?int $currency_decimal_places = null;
+
+    /** The FX rate frozen on the order at checkout (§6.7.1). */
+    public ?string $display_fx_rate = null;
 
     public string $status;
 

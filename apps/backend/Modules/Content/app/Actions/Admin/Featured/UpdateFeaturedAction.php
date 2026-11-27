@@ -6,6 +6,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Modules\Content\Models\FeaturedItem;
 use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 
 class UpdateFeaturedAction
 {
@@ -33,7 +35,10 @@ class UpdateFeaturedAction
     {
         $now = now();
 
+        $tenantId = TenantWriteStamp::tenantIdForWrite();
+
         $rows = collect($ids)->values()->map(fn ($id, $index) => [
+            TenantColumn::TENANT_ID => $tenantId,
             FeaturedItemSchema::FEATUREDABLE_TYPE => $type,
             FeaturedItemSchema::FEATUREDABLE_ID => $id,
             FeaturedItemSchema::POSITION => $index + 1,

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\Product\DimensionUnitEnum;
 use Modules\Catalog\Schemas\Product\ProductShippingSchema;
 use Modules\Catalog\Schemas\Product\WeightUnitEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -24,6 +25,8 @@ use Modules\Catalog\Schemas\Product\WeightUnitEnum;
  */
 class ProductShipping extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = ProductShippingSchema::TABLE;
 
     protected $fillable = [

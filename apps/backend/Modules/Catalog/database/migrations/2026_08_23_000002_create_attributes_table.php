@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTranslationSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -17,9 +18,12 @@ return new class extends Migration
     {
         Schema::create(AttributeSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(AttributeSchema::GROUP_ID)
                 ->constrained(AttributeGroupSchema::TABLE)->restrictOnDelete();
-            $table->string(AttributeSchema::CODE)->unique();
+            $table->string(AttributeSchema::CODE);
+            $table->unique([TenantColumn::TENANT_ID, AttributeSchema::CODE]);
             $table->enum(AttributeSchema::DATA_TYPE, AttributeTypeEnum::cases());
             $table->boolean(AttributeSchema::IS_FILTERABLE)->default(false);
             $table->unsignedSmallInteger(AttributeSchema::POSITION)->nullable();
@@ -28,6 +32,8 @@ return new class extends Migration
 
         Schema::create(AttributeTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(AttributeTranslationSchema::ATTRIBUTE_ID)
                 ->constrained(AttributeSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(AttributeTranslationSchema::LANGUAGE_ID);

@@ -13,6 +13,7 @@ use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -28,6 +29,8 @@ class Attribute extends Model
 {
     /** @use HasFactory<AttributeFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = AttributeSchema::TABLE;
 

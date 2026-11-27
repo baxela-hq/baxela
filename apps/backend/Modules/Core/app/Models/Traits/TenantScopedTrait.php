@@ -25,9 +25,9 @@ use Modules\Core\Support\Tenancy\TenantContext;
  * database triggers (§6.8).
  *
  * Models on the platform tier (nullable tenant_id, NULL = platform row)
- * override isPlatformTier() to return true — only then may a MODE_CENTRAL
- * create leave the column unset. A method, not a static property: PHP
- * refuses a class redefining a trait's static property.
+ * override isPlatformTier() to return true — only then may a central or
+ * tenant-neutral create leave the column unset. A method, not a static
+ * property: PHP refuses a class redefining a trait's static property.
  */
 trait TenantScopedTrait
 {
@@ -58,9 +58,14 @@ trait TenantScopedTrait
                 return;
             }
 
-            if ($context->mode() === TenantContext::MODE_CENTRAL && static::isPlatformTier()) {
-                // Platform-tier row written by a registered central
-                // operation: the column stays NULL by design.
+            if (
+                in_array($context->mode(), [TenantContext::MODE_CENTRAL, TenantContext::MODE_INACTIVE], true)
+                && static::isPlatformTier()
+            ) {
+                // Platform-tier rows are installation-wide: a registered
+                // central operation or a tenant-neutral onboarding request
+                // leaves the owner NULL by design. Store-owned models still
+                // fail closed in both modes.
                 return;
             }
 

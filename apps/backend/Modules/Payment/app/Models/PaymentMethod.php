@@ -4,6 +4,7 @@ namespace Modules\Payment\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
 
 /**
@@ -16,6 +17,8 @@ use Modules\Payment\Schemas\Payment\PaymentMethodSchema;
  */
 class PaymentMethod extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = PaymentMethodSchema::TABLE;
 
     protected $fillable = [

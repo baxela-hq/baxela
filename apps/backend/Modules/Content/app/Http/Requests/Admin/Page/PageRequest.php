@@ -39,7 +39,7 @@ class PageRequest extends FormRequest
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::LANGUAGE_ID => ['required', 'integer'],
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::TITLE => ['required', 'string', 'max:255'],
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG => ['required', 'string',
-                new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id)],
+                new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id, PTSchema::PAGE_ID)],
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::CONTENT => ['required', 'string'],
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::DESCRIPTION => ['nullable', 'string', 'max:255'],
         ];

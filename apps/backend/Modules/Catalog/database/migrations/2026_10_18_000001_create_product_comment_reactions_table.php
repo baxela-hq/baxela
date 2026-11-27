@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(ProductCommentReactionSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(ProductCommentReactionSchema::PRODUCT_COMMENT_ID)
                 ->constrained(ProductCommentSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(ProductCommentReactionSchema::USER_ID)->index();

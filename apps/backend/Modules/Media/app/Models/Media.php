@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Media\Database\Factories\MediaFactory;
 use Modules\Media\Schemas\Media\MediaDiskEnum;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
@@ -31,6 +32,8 @@ class Media extends Model
 {
     /** @use HasFactory<MediaFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MediaSchema::TABLE;
 

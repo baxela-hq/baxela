@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -13,6 +14,7 @@ use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
 class AttributeGroupTranslation extends Model
 {
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = AttributeGroupTranslationSchema::TABLE;
 

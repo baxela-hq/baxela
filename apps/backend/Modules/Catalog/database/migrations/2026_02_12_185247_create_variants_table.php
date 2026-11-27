@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,7 +17,12 @@ return new class extends Migration
     {
         Schema::create(VariantSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(VariantSchema::PRODUCT_ID)->constrained(ProductSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(VariantSchema::PRODUCT_ID);
+            $table->foreign([TenantColumn::TENANT_ID, VariantSchema::PRODUCT_ID], 'catalog_variants_tenant_product_fk')
+                ->references([TenantColumn::TENANT_ID, ProductSchema::ID])
+                ->on(ProductSchema::TABLE)->cascadeOnDelete();
             $table->string(VariantSchema::SKU);
             $table->string(VariantSchema::BARCODE)->nullable();
             $table->decimal(VariantSchema::PRICE, 12, 2)->unsigned()->default(0.00);
@@ -31,10 +37,10 @@ return new class extends Migration
         // nullable barcode keeps multiple NULLs legal on every engine.
         $mysql = DB::connection()->getDriverName() === 'mysql';
         $skuSql = 'CREATE UNIQUE INDEX variants_sku_lower_unique ON '.VariantSchema::TABLE.' '.(
-            $mysql ? '((LOWER('.VariantSchema::SKU.')))' : '(LOWER('.VariantSchema::SKU.'))'
+            $mysql ? '('.TenantColumn::TENANT_ID.', (LOWER('.VariantSchema::SKU.')))' : '('.TenantColumn::TENANT_ID.', LOWER('.VariantSchema::SKU.'))'
         );
         $barcodeSql = 'CREATE UNIQUE INDEX variants_barcode_lower_unique ON '.VariantSchema::TABLE.' '.(
-            $mysql ? '((LOWER('.VariantSchema::BARCODE.')))' : '(LOWER('.VariantSchema::BARCODE.'))'
+            $mysql ? '('.TenantColumn::TENANT_ID.', (LOWER('.VariantSchema::BARCODE.')))' : '('.TenantColumn::TENANT_ID.', LOWER('.VariantSchema::BARCODE.'))'
         );
         DB::statement($skuSql);
         DB::statement($barcodeSql);

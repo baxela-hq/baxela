@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 use Modules\Discount\Schemas\Redemption\RedemptionSchema;
 
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(RedemptionSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(RedemptionSchema::COUPON_ID)
                 ->constrained(CouponSchema::TABLE)->onDelete('cascade');
             // Deliberately no cross-module FK to orders — the Discount module

@@ -5,6 +5,7 @@ namespace Modules\Notification\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Notification\Database\Factories\NotificationFactory;
 use Modules\Notification\Schemas\Notification\NotificationAudienceEnum;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
@@ -25,6 +26,8 @@ class Notification extends Model
 {
     /** @use HasFactory<NotificationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = NotificationSchema::TABLE;
 

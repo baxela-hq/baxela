@@ -29,6 +29,7 @@ class OrderCreditNoteResource extends JsonResource
             OrderCreditNoteSchema::VOIDED_AT => $this->resource->{OrderCreditNoteSchema::VOIDED_AT},
             OrderCreditNoteSchema::VOID_REASON => $this->resource->{OrderCreditNoteSchema::VOID_REASON},
             OrderCreditNoteSchema::CURRENCY_CODE => $this->resource->{OrderCreditNoteSchema::CURRENCY_CODE},
+            OrderCreditNoteSchema::EXCHANGE_RATE => $this->resource->{OrderCreditNoteSchema::EXCHANGE_RATE},
             OrderCreditNoteSchema::AMOUNT => Money::toDecimal(
                 Money::fromDecimal((string) $this->resource->{OrderCreditNoteSchema::AMOUNT})
             ),

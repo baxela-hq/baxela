@@ -5,6 +5,7 @@ namespace Modules\Order\Transfer;
 use BackedEnum;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Discount\DiscountGatewayInterface;
@@ -15,6 +16,9 @@ use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Core\Support\Transfer\TransferImportTransaction;
 use Modules\Core\Support\Transfer\TransferRunContext;
 use Modules\Order\Models\Order;
@@ -196,6 +200,7 @@ class OrderTransfer implements ModuleTransferInterface
                 $values = $payload;
                 unset($values['id']);
                 $values[OrderSchema::USER_ID] = $userId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
                 $this->resolveNullableRef($values, OrderSchema::CURRENCY_ID, 'core', 'currencies', $options, $result, $label);
                 $this->resolveCouponRef($values, $options, $result, $label);
                 $this->resolveNullableRef($values, OrderSchema::SHIPPING_METHOD_ID, 'shipping', 'methods', $options, $result, $label);
@@ -337,6 +342,7 @@ class OrderTransfer implements ModuleTransferInterface
                 $values = $entry['row'][self::KEY_PAYLOAD];
                 unset($values['id']);
                 $values[$orderKey] = $localOrderId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
 
                 if ($refResolution !== null && ! $refResolution($values, $options, $result, $entry['label'])) {
                     $groupFailed = true;
@@ -362,8 +368,8 @@ class OrderTransfer implements ModuleTransferInterface
                 $this->units->run(function (TransferRunContext $context) use ($table, $orderKey, $localOrderId, $prepared): void {
                     // F27: even an EMPTY prepared set is authoritative —
                     // delete the order's existing children, insert none.
-                    $staleLocalIds = DB::table($table)
-                        ->where($orderKey, $localOrderId)
+                    $staleLocalIds = TenantQueryScope::apply(DB::table($table)
+                        ->where($orderKey, $localOrderId))
                         ->pluck('id')
                         ->map(fn ($id): int => (int) $id)
                         ->all();
@@ -376,7 +382,7 @@ class OrderTransfer implements ModuleTransferInterface
                         $staleLocalIds,
                     );
 
-                    DB::table($table)->where($orderKey, $localOrderId)->delete();
+                    TenantQueryScope::apply(DB::table($table)->where($orderKey, $localOrderId))->delete();
 
                     foreach ($prepared as $entry) {
                         $childId = (int) DB::table($table)->insertGetId($entry['values']);
@@ -524,12 +530,13 @@ class OrderTransfer implements ModuleTransferInterface
     private function refExists(string $module, string $entity, int $id): bool
     {
         return match ([$module, $entity]) {
+            // Installation-level currency: deliberately global.
             ['core', 'currencies'] => DB::table('core_currencies')->where('id', $id)->exists(),
-            ['shipping', 'methods'] => DB::table('shipping_methods')->where('id', $id)->exists(),
-            ['tax', 'tax-classes'] => DB::table('tax_classes')->where('id', $id)->exists(),
-            ['discount', 'coupons'] => DB::table('discount_coupons')->where('id', $id)->exists(),
-            ['discount', 'promotions'] => DB::table('discount_promotions')->where('id', $id)->exists(),
-            ['catalog', 'variants'] => DB::table('catalog_variants')->where('id', $id)->exists(),
+            ['shipping', 'methods'] => TenantQueryScope::apply(DB::table('shipping_methods')->where('id', $id))->exists(),
+            ['tax', 'tax-classes'] => TenantQueryScope::apply(DB::table('tax_classes')->where('id', $id))->exists(),
+            ['discount', 'coupons'] => TenantQueryScope::apply(DB::table('discount_coupons')->where('id', $id))->exists(),
+            ['discount', 'promotions'] => TenantQueryScope::apply(DB::table('discount_promotions')->where('id', $id))->exists(),
+            ['catalog', 'variants'] => TenantQueryScope::apply(DB::table('catalog_variants')->where('id', $id))->exists(),
             default => false,
         };
     }
@@ -541,12 +548,12 @@ class OrderTransfer implements ModuleTransferInterface
 
     private function variantExists(int $id): bool
     {
-        return DB::table('catalog_variants')->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table('catalog_variants')->where('id', $id))->exists();
     }
 
     private function orderExists(int $id): bool
     {
-        return DB::table(OrderSchema::TABLE)->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table(OrderSchema::TABLE)->where('id', $id))->exists();
     }
 
     private function entityForTable(string $table): string
@@ -621,7 +628,7 @@ class OrderTransfer implements ModuleTransferInterface
      * @return array<string, mixed>
      */
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $record
+     * @param  Model  $record
      * @return array<string, mixed>
      */
     private function attributesToPayload($record): array

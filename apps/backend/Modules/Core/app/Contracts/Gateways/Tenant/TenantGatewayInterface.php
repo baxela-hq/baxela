@@ -22,6 +22,13 @@ interface TenantGatewayInterface
 
     public function findBySlug(string $slug): ?TenantSnapshotDto;
 
+    /**
+     * Every known tenant id, for installation-wide integrity checks.
+     *
+     * @return list<int>
+     */
+    public function allIds(): array;
+
     public function defaultTenant(): ?TenantSnapshotDto;
 
     public function isMembershipActive(int $userId, int $tenantId): bool;

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Content\Database\Factories\PostSeoTranslationFactory;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,8 @@ class PostSeoTranslation extends Model
 {
     /** @use HasFactory<PostSeoTranslationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PostSeoTranslationSchema::TABLE;
 

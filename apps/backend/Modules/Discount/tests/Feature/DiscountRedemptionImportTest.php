@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Core\Utils\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Models\TransferRemap;
 use Modules\Core\Support\Transfer\ModuleTransferRunner;
 use Modules\Core\Support\Transfer\TransferFormat;
+use Modules\Core\Utils\Auth;
 use Modules\Discount\Models\Coupon;
 use Modules\Discount\Models\Redemption;
 use Modules\Discount\Tests\Feature\HelperTrait;
@@ -81,6 +81,7 @@ it('skips order-linked redemptions with an expected warning, then resolves them 
 
     // The Order import happened; its ledger is now known.
     $localOrderId = DB::table('order_orders')->insertGetId([
+        'tenant_id' => 1,
         'user_id' => $localCustomerId, 'order_code' => 'SRC-2026-0400',
         'status' => 'completed', 'payment_status' => 'paid',
         'total_amount' => 0, 'created_at' => now(), 'updated_at' => now(),

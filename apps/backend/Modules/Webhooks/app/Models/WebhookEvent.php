@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookEvent\WebhookEventSchema;
 
@@ -30,6 +31,8 @@ use Modules\Webhooks\Schemas\WebhookEvent\WebhookEventSchema;
  */
 class WebhookEvent extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = WebhookEventSchema::TABLE;
 
     public $incrementing = false;

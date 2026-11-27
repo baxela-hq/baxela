@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Menu\Database\Factories\MenuFactory;
 use Modules\Menu\Schemas\Menu\MenuLocationEnum;
 use Modules\Menu\Schemas\Menu\MenuSchema;
@@ -24,6 +25,8 @@ class Menu extends Model
 {
     /** @use HasFactory<MenuFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MenuSchema::TABLE;
 

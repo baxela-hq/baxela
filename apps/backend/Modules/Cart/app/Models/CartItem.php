@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Cart\Database\Factories\CartItemFactory;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @mixin Builder<CartItem>
@@ -28,6 +29,8 @@ class CartItem extends Model
 {
     /** @use HasFactory<CartItemFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = CartItemSchema::TABLE;
 

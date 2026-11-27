@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Media\Schemas\MediaOutbox\MediaOutboxSchema;
 
 return new class extends Migration
@@ -19,6 +20,8 @@ return new class extends Migration
     {
         Schema::create(MediaOutboxSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(MediaOutboxSchema::MEDIA_ID)->index();
             $table->char(MediaOutboxSchema::EXPECTED_HASH, 64);
             $table->string(MediaOutboxSchema::STAGING_PATH);

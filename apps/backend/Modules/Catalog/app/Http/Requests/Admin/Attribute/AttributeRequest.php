@@ -10,6 +10,8 @@ use Modules\Catalog\Schemas\Attribute\AttributeTranslationSchema as ATSchema;
 use Modules\Catalog\Schemas\Attribute\AttributeTypeEnum;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
+use Modules\Core\Rules\ScopedExists;
+use Modules\Core\Rules\ScopedUnique;
 
 class AttributeRequest extends FormRequest
 {
@@ -30,9 +32,9 @@ class AttributeRequest extends FormRequest
         $rules = self::rulesFor($this->languageMap);
 
         $rules[AttributeSchema::GROUP_ID][] =
-            Rule::exists(AttributeGroupSchema::TABLE, AttributeGroupSchema::ID);
+            new ScopedExists(AttributeGroupSchema::TABLE, AttributeGroupSchema::ID);
         $rules[AttributeSchema::CODE][] =
-            Rule::unique(AttributeSchema::TABLE, AttributeSchema::CODE)->ignore($id);
+            new ScopedUnique(AttributeSchema::TABLE, AttributeSchema::CODE, is_null($id) ? null : (int) $id);
 
         return $rules;
     }
@@ -42,7 +44,7 @@ class AttributeRequest extends FormRequest
      * reused verbatim by the catalog module data importer.
      *
      * @param  array<string, int>  $languageMap  code => id of the active languages
-     * @return array<string, array<int, string|Enum>>
+     * @return array<string, mixed>
      */
     public static function rulesFor(array $languageMap): array
     {

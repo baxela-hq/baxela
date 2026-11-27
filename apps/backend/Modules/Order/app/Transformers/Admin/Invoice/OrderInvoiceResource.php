@@ -38,6 +38,7 @@ class OrderInvoiceResource extends JsonResource
             OrderInvoiceSchema::VOIDED_AT => $this->resource->{OrderInvoiceSchema::VOIDED_AT},
             OrderInvoiceSchema::VOID_REASON => $this->resource->{OrderInvoiceSchema::VOID_REASON},
             OrderInvoiceSchema::CURRENCY_CODE => $this->resource->{OrderInvoiceSchema::CURRENCY_CODE},
+            OrderInvoiceSchema::EXCHANGE_RATE => $this->resource->{OrderInvoiceSchema::EXCHANGE_RATE},
             OrderInvoiceSchema::SUBTOTAL_AMOUNT => $money($this->resource->{OrderInvoiceSchema::SUBTOTAL_AMOUNT}),
             OrderInvoiceSchema::DISCOUNT_AMOUNT => $money($this->resource->{OrderInvoiceSchema::DISCOUNT_AMOUNT}),
             OrderInvoiceSchema::COUPON_CODE => $this->resource->{OrderInvoiceSchema::COUPON_CODE},

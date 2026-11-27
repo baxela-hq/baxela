@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
 
 return new class extends Migration
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(ZoneSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->string(ZoneSchema::NAME);
             $table->boolean(ZoneSchema::IS_ACTIVE)->default(true);
             $table->unsignedSmallInteger(ZoneSchema::POSITION)->default(0);

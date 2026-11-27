@@ -3,6 +3,7 @@
 namespace ErdFixtures\Shop\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * ERD test fixture model — erdfx_notes.post_id has NO database FK, so the
@@ -10,5 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ErdNote extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = 'erdfx_notes';
 }

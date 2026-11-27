@@ -94,6 +94,7 @@ class IssueCreditNoteAction
                 OrderCreditNoteSchema::STATUS => OrderCreditNoteStatusEnum::ACTIVE,
                 OrderCreditNoteSchema::ISSUED_AT => now(),
                 OrderCreditNoteSchema::CURRENCY_CODE => $locked->{OrderInvoiceSchema::CURRENCY_CODE},
+                OrderCreditNoteSchema::EXCHANGE_RATE => $locked->{OrderInvoiceSchema::EXCHANGE_RATE},
                 OrderCreditNoteSchema::AMOUNT => Money::toDecimal($amountMinor),
                 OrderCreditNoteSchema::REASON => $reason,
             ]);

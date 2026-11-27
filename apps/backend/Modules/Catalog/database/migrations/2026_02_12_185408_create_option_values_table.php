@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema as OVTSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(OptionValueSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(OptionValueSchema::OPTION_ID)
                 ->constrained(OptionSchema::TABLE)->onDelete('cascade');
             $table->unsignedSmallInteger(OptionValueSchema::POSITION)->nullable();
@@ -24,6 +27,8 @@ return new class extends Migration
 
         Schema::create(OVTSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(OVTSchema::OPTION_VALUE_ID)
                 ->constrained(OptionValueSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(OVTSchema::LANGUAGE_ID);
@@ -33,7 +38,10 @@ return new class extends Migration
 
             $table->unique([OVTSchema::OPTION_VALUE_ID, OVTSchema::LANGUAGE_ID],
                 OVTSchema::OPTION_VALUE_ID.'_'.OVTSchema::LANGUAGE_ID);
-            $table->unique([OVTSchema::LANGUAGE_ID, OVTSchema::SLUG]);
+            $table->unique(
+                [TenantColumn::TENANT_ID, OVTSchema::LANGUAGE_ID, OVTSchema::SLUG],
+                'catalog_optval_trans_tenant_lang_slug_unique'
+            );
         });
     }
 

@@ -7,6 +7,7 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -17,6 +18,8 @@ return new class extends Migration
     {
         Schema::create(PostCategorySchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(PostCategorySchema::PARENT_ID)->nullable();
             $table->unsignedSmallInteger(PostCategorySchema::POSITION)->nullable();
             $table->timestamps();
@@ -24,6 +27,8 @@ return new class extends Migration
 
         Schema::create(PostCategoryTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(PostCategoryTranslationSchema::POST_CATEGORY_ID)
                 ->constrained(PostCategorySchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(PostCategoryTranslationSchema::LANGUAGE_ID)->nullable();
@@ -40,7 +45,7 @@ return new class extends Migration
                 'content_post_cat_trans_cat_lang_unique'
             );
             $table->unique(
-                [PostCategoryTranslationSchema::LANGUAGE_ID, PostCategoryTranslationSchema::SLUG],
+                [TenantColumn::TENANT_ID, PostCategoryTranslationSchema::LANGUAGE_ID, PostCategoryTranslationSchema::SLUG],
                 'content_post_cat_trans_lang_slug_unique'
             );
         });

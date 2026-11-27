@@ -5,6 +5,7 @@ namespace Modules\Order\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Schemas\Document\DocumentSequenceSchema;
 use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
 
@@ -27,6 +28,8 @@ use Modules\Order\Schemas\Document\DocumentSequenceTypeEnum;
  */
 class DocumentSequence extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = DocumentSequenceSchema::TABLE;
 
     protected $fillable = [

@@ -14,6 +14,9 @@ use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Core\Support\Transfer\TransferImportTransaction;
 use Modules\Core\Support\Transfer\TransferRunContext;
 use Modules\Support\Models\Ticket;
@@ -134,6 +137,7 @@ class SupportTransfer implements ModuleTransferInterface
                 $values = $payload;
                 unset($values['id']);
                 $values[TicketSchema::USER_ID] = $userId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
 
                 $this->units->run(function (TransferRunContext $context) use ($values, $sourceId): void {
                     $localId = (int) DB::table(TicketSchema::TABLE)->insertGetId($values);
@@ -214,6 +218,7 @@ class SupportTransfer implements ModuleTransferInterface
                 unset($values['id']);
                 $values[TicketMessageSchema::TICKET_ID] = $localTicketId;
                 $values[TicketMessageSchema::USER_ID] = $userId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
 
                 $this->units->run(function (TransferRunContext $context) use ($values, $sourceId): void {
                     $localId = (int) DB::table(TicketMessageSchema::TABLE)->insertGetId($values);
@@ -251,12 +256,12 @@ class SupportTransfer implements ModuleTransferInterface
 
     private function ticketExists(int $id): bool
     {
-        return DB::table(TicketSchema::TABLE)->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table(TicketSchema::TABLE)->where('id', $id))->exists();
     }
 
     private function messageExists(int $id): bool
     {
-        return DB::table(TicketMessageSchema::TABLE)->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table(TicketMessageSchema::TABLE)->where('id', $id))->exists();
     }
 
     private function dryMatched(ImportResult $result, ImportOptions $options): void

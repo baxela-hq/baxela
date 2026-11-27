@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Core\Schemas\Currency\CurrencySchema;
 
@@ -28,6 +29,11 @@ return new class extends Migration
             $table->boolean(CurrencySchema::IS_ACTIVE)->default(true);
             $table->timestamps();
         });
+
+        DB::statement(
+            'CREATE UNIQUE INDEX core_currencies_one_default_unique ON '.CurrencySchema::TABLE
+            .' ('.CurrencySchema::IS_DEFAULT.') WHERE '.CurrencySchema::IS_DEFAULT
+        );
     }
 
     /**

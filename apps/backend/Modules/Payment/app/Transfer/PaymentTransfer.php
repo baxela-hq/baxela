@@ -5,6 +5,7 @@ namespace Modules\Payment\Transfer;
 use BackedEnum;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportOptions;
@@ -14,6 +15,9 @@ use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Core\Support\Transfer\TransferImportTransaction;
 use Modules\Core\Support\Transfer\TransferRunContext;
 use Modules\Payment\Models\Payment;
@@ -132,6 +136,7 @@ class PaymentTransfer implements ModuleTransferInterface
                     PaymentMethodSchema::METHOD => $method,
                     PaymentMethodSchema::IS_ACTIVE => (bool) ($payload[PaymentMethodSchema::IS_ACTIVE] ?? false),
                     PaymentMethodSchema::SORT_ORDER => (int) ($payload[PaymentMethodSchema::SORT_ORDER] ?? 0),
+                    TenantColumn::TENANT_ID => TenantWriteStamp::tenantIdForWrite(),
                 ];
 
                 // Write + remap record share the ownership-verified unit.
@@ -210,11 +215,11 @@ class PaymentTransfer implements ModuleTransferInterface
                 // non-null transaction id, and only EXACTLY ONE match.
                 $adoptable = null;
                 if ($transactionId !== null && $transactionId !== '') {
-                    $matches = DB::table(PaymentSchema::TABLE)
+                    $matches = TenantQueryScope::apply(DB::table(PaymentSchema::TABLE)
                         ->where(PaymentSchema::ORDER_ID, $localOrderId)
                         ->where(PaymentSchema::METHOD, $payload[PaymentSchema::METHOD] ?? '')
                         ->where(PaymentSchema::AMOUNT, (string) ($payload[PaymentSchema::AMOUNT] ?? ''))
-                        ->where(PaymentSchema::TRANSACTION_ID, $transactionId)
+                        ->where(PaymentSchema::TRANSACTION_ID, $transactionId))
                         ->pluck('id');
 
                     if ($matches->count() > 1) {
@@ -235,6 +240,7 @@ class PaymentTransfer implements ModuleTransferInterface
                 $values = $payload;
                 unset($values['id']);
                 $values[PaymentSchema::ORDER_ID] = $localOrderId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
 
                 // Write + remap record share the ownership-verified unit.
                 $this->units->run(function (TransferRunContext $context) use ($values, $adoptable, $sourceId): void {
@@ -288,7 +294,9 @@ class PaymentTransfer implements ModuleTransferInterface
                     continue;
                 }
 
-                $existingId = DB::table(PaymentRefundSchema::TABLE)->where(PaymentRefundSchema::UUID, $uuid)->value('id');
+                $existingId = TenantQueryScope::apply(DB::table(PaymentRefundSchema::TABLE)
+                    ->where(PaymentRefundSchema::UUID, $uuid))
+                    ->value('id');
 
                 if ($options->dryRun) {
                     $this->dryOutcome($result, $existingId !== null, $options);
@@ -333,6 +341,7 @@ class PaymentTransfer implements ModuleTransferInterface
                 unset($values['id']);
                 $values[PaymentRefundSchema::PAYMENT_ID] = $localPaymentId;
                 $values[PaymentRefundSchema::ORDER_ID] = $localOrderId;
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
 
                 // The admin attributor is a nullable loose ref (auth domain).
                 $refundedBy = $payload[PaymentRefundSchema::REFUNDED_BY] ?? null;
@@ -409,12 +418,12 @@ class PaymentTransfer implements ModuleTransferInterface
 
     private function orderExists(int $id): bool
     {
-        return DB::table('order_orders')->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table('order_orders')->where('id', $id))->exists();
     }
 
     private function paymentExists(int $id): bool
     {
-        return DB::table(PaymentSchema::TABLE)->where('id', $id)->exists();
+        return TenantQueryScope::apply(DB::table(PaymentSchema::TABLE)->where('id', $id))->exists();
     }
 
     /** Dry runs only ever create (nothing exists in an empty preview). */
@@ -457,7 +466,7 @@ class PaymentTransfer implements ModuleTransferInterface
      * @return array<string, mixed>
      */
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $record
+     * @param  Model  $record
      * @return array<string, mixed>
      */
     private function attributesToPayload($record): array

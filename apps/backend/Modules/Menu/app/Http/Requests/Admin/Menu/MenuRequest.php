@@ -5,8 +5,8 @@ namespace Modules\Menu\Http\Requests\Admin\Menu;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\In;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
+use Modules\Core\Rules\ScopedUnique;
 use Modules\Menu\Schemas\Menu\MenuLocationEnum;
 use Modules\Menu\Schemas\Menu\MenuSchema;
 use Modules\Menu\Schemas\Menu\MenuTranslationSchema as MTSchema;
@@ -20,14 +20,14 @@ class MenuRequest extends FormRequest
         $this->resolveLanguages();
     }
 
-    /** @return array<string, array<int, string|array<int, string>|Enum|In>> */
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         $id = $this->route('id');
 
         return [
             MenuSchema::LOCATION => ['required', 'string', new Enum(MenuLocationEnum::class),
-                Rule::unique(MenuSchema::TABLE, MenuSchema::LOCATION)->ignore($id)],
+                new ScopedUnique(MenuSchema::TABLE, MenuSchema::LOCATION, is_null($id) ? null : (int) $id)],
 
             MenuSchema::IS_ACTIVE => ['required', 'boolean'],
 

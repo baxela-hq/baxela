@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageStatusEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(ContactMessageSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->string(ContactMessageSchema::NAME);
             $table->string(ContactMessageSchema::EMAIL);
             $table->string(ContactMessageSchema::PHONE)->nullable();

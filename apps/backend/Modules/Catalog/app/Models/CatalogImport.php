@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\CatalogImport\CatalogImportEntityEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportSchema;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStatusEnum;
 use Modules\Catalog\Schemas\CatalogImport\CatalogImportStrategyEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -23,6 +24,8 @@ class CatalogImport extends Model
 {
     /** @use HasFactory<CatalogImportFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = CatalogImportSchema::TABLE;
 

@@ -192,6 +192,7 @@ it('replaces children per order-section atomically, empty means empty (F27)', fu
     // ABSENT section is a NO-OP: re-import with orders only, seed a child
     // by hand, re-import → the hand-made child survives.
     DB::table('order_order_items')->insert([
+        'tenant_id' => 1,
         'order_id' => $order->id, 'variant_id' => $localVariant->id,
         'product_name_snapshot' => 'Manual', 'product_slug_snapshot' => 'manual',
         'price_snapshot' => '1.00', 'base_price' => null, 'promotion_discount' => null,

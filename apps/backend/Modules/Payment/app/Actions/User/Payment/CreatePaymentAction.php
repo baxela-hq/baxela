@@ -58,6 +58,8 @@ class CreatePaymentAction
             PaymentSchema::STATUS => PaymentStatusEnum::PENDING,
             PaymentSchema::AMOUNT => $order->total_amount,
             PaymentSchema::CURRENCY_ID => $order->currency_id,
+            PaymentSchema::CURRENCY_CODE => $order->currency_code,
+            PaymentSchema::EXCHANGE_RATE => $order->display_fx_rate,
         ]);
 
         // Initiated after the row is committed: a gateway outage must not

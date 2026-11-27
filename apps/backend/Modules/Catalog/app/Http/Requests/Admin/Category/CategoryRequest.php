@@ -10,6 +10,7 @@ use Modules\Catalog\Schemas\Category\CategorySchema as CSchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
+use Modules\Core\Rules\ScopedExists;
 
 class CategoryRequest extends FormRequest
 {
@@ -29,11 +30,11 @@ class CategoryRequest extends FormRequest
 
         $rules = self::rulesFor($this->languageMap);
 
-        $rules[CSchema::PARENT_ID][] = Rule::exists(CSchema::TABLE, CSchema::ID);
+        $rules[CSchema::PARENT_ID][] = new ScopedExists(CSchema::TABLE, CSchema::ID);
         $rules[CategoryAttributeSchema::REQ_ATTRIBUTE_IDS.'.*'][] =
-            Rule::exists(AttributeSchema::TABLE, AttributeSchema::ID);
+            new ScopedExists(AttributeSchema::TABLE, AttributeSchema::ID);
         $rules[CSchema::RES_TRANSLATIONS.'.*.'.CTSchema::SLUG][] =
-            new LanguageUniquePair(CTSchema::TABLE, CTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(CTSchema::TABLE, CTSchema::SLUG, $this->languageMap, $id, CTSchema::CATEGORY_ID);
 
         return $rules;
     }
@@ -43,7 +44,7 @@ class CategoryRequest extends FormRequest
      * reused verbatim by the catalog module data importer.
      *
      * @param  array<string, int>  $languageMap  code => id of the active languages
-     * @return array<string, array<int, string>>
+     * @return array<string, mixed>
      */
     public static function rulesFor(array $languageMap): array
     {

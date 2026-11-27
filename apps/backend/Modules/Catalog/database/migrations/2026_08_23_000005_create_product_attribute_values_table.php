@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -17,6 +18,8 @@ return new class extends Migration
     {
         Schema::create(ProductAttributeValueSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(ProductAttributeValueSchema::PRODUCT_ID)
                 ->constrained(ProductSchema::TABLE)->onDelete('cascade');
             $table->foreignId(ProductAttributeValueSchema::ATTRIBUTE_ID)

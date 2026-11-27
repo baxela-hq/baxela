@@ -132,6 +132,7 @@ class IssueInvoiceAction
                 OrderInvoiceSchema::STATUS => OrderInvoiceStatusEnum::ACTIVE,
                 OrderInvoiceSchema::ISSUED_AT => now(),
                 OrderInvoiceSchema::CURRENCY_CODE => $currency->code,
+                OrderInvoiceSchema::EXCHANGE_RATE => $order->{OrderSchema::DISPLAY_FX_RATE},
                 OrderInvoiceSchema::SUBTOTAL_AMOUNT => Money::toDecimal($subtotalMinor),
                 OrderInvoiceSchema::DISCOUNT_AMOUNT => $order->{OrderSchema::DISCOUNT_AMOUNT},
                 OrderInvoiceSchema::COUPON_CODE => $order->{OrderSchema::COUPON_CODE},

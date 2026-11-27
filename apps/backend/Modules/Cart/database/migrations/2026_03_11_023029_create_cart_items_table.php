@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Cart\Schemas\Cart\CartSchema;
 use Modules\Cart\Schemas\CartItem\CartItemSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -15,7 +16,12 @@ return new class extends Migration
     {
         Schema::create(CartItemSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(CartItemSchema::CART_ID)->constrained(CartSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(CartItemSchema::CART_ID);
+            $table->foreign([TenantColumn::TENANT_ID, CartItemSchema::CART_ID], 'cart_items_tenant_cart_fk')
+                ->references([TenantColumn::TENANT_ID, CartSchema::ID])
+                ->on(CartSchema::TABLE)->cascadeOnDelete();
             $table->unsignedBigInteger(CartItemSchema::VARIANT_ID)->index();
             $table->decimal(CartItemSchema::PRICE_SNAPSHOT, 12, 2)->unsigned()->default(0.00);
             $table->string(CartItemSchema::PRODUCT_NAME_SNAPSHOT);

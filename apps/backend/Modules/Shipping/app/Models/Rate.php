@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Shipping\Database\Factories\RateFactory;
 use Modules\Shipping\Schemas\Rate\RateSchema;
 
@@ -23,6 +24,8 @@ class Rate extends Model
 {
     /** @use HasFactory<RateFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = RateSchema::TABLE;
 

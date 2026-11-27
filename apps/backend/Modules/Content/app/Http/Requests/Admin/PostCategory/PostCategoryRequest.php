@@ -4,13 +4,11 @@ namespace Modules\Content\Http\Requests\Admin\PostCategory;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\Exists;
-use Illuminate\Validation\Rules\In;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema as PCSchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
+use Modules\Core\Rules\ScopedExists;
 
 class PostCategoryRequest extends FormRequest
 {
@@ -23,8 +21,9 @@ class PostCategoryRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, list<string|\Closure|Enum|In|Exists|LanguageUniquePair>> */
     public function rules(): array
     {
         // null on create, the category id on update — /api/v1/content/admin/post-categories/{id}
@@ -43,9 +42,9 @@ class PostCategoryRequest extends FormRequest
             PCSchema::RES_TRANSLATIONS.'.*.'.PCTSchema::DESCRIPTION => ['nullable', 'string', 'max:255'],
         ];
 
-        $rules[PCSchema::PARENT_ID][] = Rule::exists(PCSchema::TABLE, PCSchema::ID);
+        $rules[PCSchema::PARENT_ID][] = new ScopedExists(PCSchema::TABLE, PCSchema::ID);
         $rules[PCSchema::RES_TRANSLATIONS.'.*.'.PCTSchema::SLUG][] =
-            new LanguageUniquePair(PCTSchema::TABLE, PCTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(PCTSchema::TABLE, PCTSchema::SLUG, $this->languageMap, $id, PCTSchema::POST_CATEGORY_ID);
 
         return $rules;
     }

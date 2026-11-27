@@ -104,6 +104,19 @@ it('rejects a default language or currency that is not active', function () {
         ->and(Setting::query()->where('name', 'currency_id')->first()->value)->toBe('1');
 });
 
+it('refuses to unset the store default currency without a replacement', function () {
+    $this->actingAs($this->superAdminUser());
+    $currency = Currency::factory()->create([CurrencySchema::IS_ACTIVE => true, CurrencySchema::IS_DEFAULT => true]);
+    Setting::factory()->create(['name' => 'currency_id', 'value' => (string) $currency->id]);
+
+    $this->patchJson($this->baseUrl('/admin/settings'), [
+        ['name' => 'currency_id', 'value' => '', 'translations' => null],
+    ])->assertStatus(422);
+
+    expect(Setting::query()->where('name', 'currency_id')->first()->value)->toBe((string) $currency->id)
+        ->and($currency->refresh()->{CurrencySchema::IS_DEFAULT})->toBeTrue();
+});
+
 it('denies setting writes without permissions', function () {
     $this->actingAs(User::factory()->create(['is_active' => true]));
 

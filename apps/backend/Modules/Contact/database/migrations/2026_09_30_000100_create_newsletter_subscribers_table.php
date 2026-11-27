@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberStatusEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(NewsletterSubscriberSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->string(NewsletterSubscriberSchema::EMAIL);
             $table->string(NewsletterSubscriberSchema::LOCALE, 12)->nullable();
             $table->enum(NewsletterSubscriberSchema::STATUS, NewsletterSubscriberStatusEnum::cases())
@@ -28,8 +31,8 @@ return new class extends Migration
         // Functional case-insensitive unique (postgres-migration DD2).
         DB::statement('CREATE UNIQUE INDEX newsletter_email_lower_unique ON '.NewsletterSubscriberSchema::TABLE.' '.(
             DB::connection()->getDriverName() === 'mysql'
-                ? '((LOWER('.NewsletterSubscriberSchema::EMAIL.')))'
-                : '(LOWER('.NewsletterSubscriberSchema::EMAIL.'))'
+                ? '(tenant_id, (LOWER('.NewsletterSubscriberSchema::EMAIL.')))'
+                : '(tenant_id, LOWER('.NewsletterSubscriberSchema::EMAIL.'))'
         ));
     }
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Menu\Database\Factories\MenuLinkFactory;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTargetEnum;
@@ -30,6 +31,8 @@ class MenuLink extends Model
 {
     /** @use HasFactory<MenuLinkFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = MenuLinkSchema::TABLE;
 

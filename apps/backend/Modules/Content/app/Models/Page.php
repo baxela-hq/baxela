@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Content\Database\Factories\PageFactory;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageStatusEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -22,6 +23,8 @@ class Page extends Model
 {
     /** @use HasFactory<PageFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PageSchema::TABLE;
 

@@ -4,9 +4,9 @@ namespace Modules\Tax\Http\Requests\Admin\TaxRate;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Exists;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\RegionCodeRule;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Tax\Rules\ScopedRateUniqueRule;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
@@ -15,8 +15,9 @@ class TaxRateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, list<string|Exists|CountryCodeRule|RegionCodeRule|ScopedRateUniqueRule>> */
     public function rules(): array
     {
         // null on create, the rate id on update — /api/v1/tax/admin/tax-rates/{id}
@@ -54,7 +55,7 @@ class TaxRateRequest extends FormRequest
             TaxRateSchema::TAX_CLASS_ID => [
                 'required',
                 'integer',
-                Rule::exists(TaxClassSchema::TABLE, TaxClassSchema::ID),
+                new ScopedExists(TaxClassSchema::TABLE, TaxClassSchema::ID),
             ],
             // percentage, 0–100, at most 4 fraction digits so the stored
             // decimal(7,4) never has to round silently

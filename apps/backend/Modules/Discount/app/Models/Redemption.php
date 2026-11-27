@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Discount\Database\Factories\RedemptionFactory;
 use Modules\Discount\Schemas\Redemption\RedemptionSchema;
 
@@ -38,6 +39,8 @@ class Redemption extends Model
 {
     /** @use HasFactory<RedemptionFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = RedemptionSchema::TABLE;
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Database\Factories\NewsletterSubscriberFactory;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberStatusEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -21,6 +22,8 @@ class NewsletterSubscriber extends Model
 {
     /** @use HasFactory<NewsletterSubscriberFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = NewsletterSubscriberSchema::TABLE;
 

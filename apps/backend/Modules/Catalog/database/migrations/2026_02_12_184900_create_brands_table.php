@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(BrandSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedSmallInteger(BrandSchema::POSITION)->nullable();
             $table->unsignedBigInteger(BrandSchema::IMAGE_MEDIA_ID)->nullable();
             $table->string(BrandSchema::IMAGE_URL, 500)->nullable();
@@ -23,6 +26,8 @@ return new class extends Migration
 
         Schema::create(BrandTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(BrandTranslationSchema::BRAND_ID)
                 ->constrained(BrandSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(BrandTranslationSchema::LANGUAGE_ID)->nullable();
@@ -32,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([BrandTranslationSchema::BRAND_ID, BrandTranslationSchema::LANGUAGE_ID]);
-            $table->unique([BrandTranslationSchema::LANGUAGE_ID, BrandTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, BrandTranslationSchema::LANGUAGE_ID, BrandTranslationSchema::SLUG]);
         });
     }
 

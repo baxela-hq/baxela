@@ -69,6 +69,7 @@ use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferRemapInterface;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
 use Modules\Core\Support\Transfer\TransferFile;
 use Modules\Core\Support\Transfer\TransferImportSession;
 use Modules\Core\Utils\Auth;
@@ -811,11 +812,13 @@ class ImportCatalogDataAction
                 continue;
             }
 
-            $taken = DB::table($table)
+            $slugQuery = DB::table($table)
                 ->where('slug', $slug)
                 ->where('language_id', $languageId)
-                ->when($existingId !== null, fn ($query) => $query->where($entityColumn, '!=', $existingId))
-                ->exists();
+                ->when($existingId !== null, fn ($query) => $query->where($entityColumn, '!=', $existingId));
+            TenantQueryScope::apply($slugQuery);
+
+            $taken = $slugQuery->exists();
             if ($taken) {
                 $messages[] = "The slug {$slug} is already in use.";
             }
@@ -950,18 +953,25 @@ class ImportCatalogDataAction
             return null;
         }
 
+        // Both sides are tenant-owned; scoping the joined builder directly
+        // would leave `tenant_id` ambiguous, so scope the translations first
+        // and resolve the owning attribute values through their tenant-scoped
+        // model.
+        $translationQuery = DB::table(AttributeValueTranslationSchema::TABLE)
+            ->where(AttributeValueTranslationSchema::LANGUAGE_ID, $this->defaultLanguageId)
+            ->where(AttributeValueTranslationSchema::TITLE, $title);
+        TenantQueryScope::apply($translationQuery);
+
+        $translationIds = $translationQuery->pluck(AttributeValueTranslationSchema::ATTRIBUTE_VALUE_ID);
+        if ($translationIds->isEmpty()) {
+            return null;
+        }
+
         return $this->idOrNull(
-            DB::table(AttributeValueTranslationSchema::TABLE)
-                ->join(
-                    AttributeValueSchema::TABLE,
-                    AttributeValueSchema::TABLE.'.'.AttributeValueSchema::ID,
-                    '=',
-                    AttributeValueTranslationSchema::TABLE.'.'.AttributeValueTranslationSchema::ATTRIBUTE_VALUE_ID
-                )
-                ->where(AttributeValueTranslationSchema::TABLE.'.language_id', $this->defaultLanguageId)
-                ->where(AttributeValueTranslationSchema::TABLE.'.title', $title)
-                ->where(AttributeValueSchema::TABLE.'.'.AttributeValueSchema::ATTRIBUTE_ID, $ownerId)
-                ->value(AttributeValueSchema::TABLE.'.'.AttributeValueSchema::ID)
+            AttributeValue::query()
+                ->whereIn(AttributeValueSchema::ID, $translationIds)
+                ->where(AttributeValueSchema::ATTRIBUTE_ID, $ownerId)
+                ->value(AttributeValueSchema::ID)
         );
     }
 
@@ -979,10 +989,12 @@ class ImportCatalogDataAction
             return null;
         }
 
-        $match = DB::table(OptionValueTranslationSchema::TABLE)
+        $query = DB::table(OptionValueTranslationSchema::TABLE)
             ->where('language_id', $this->defaultLanguageId)
-            ->where('slug', $slug)
-            ->first();
+            ->where('slug', $slug);
+        TenantQueryScope::apply($query);
+
+        $match = $query->first();
 
         if ($match === null) {
             return null;
@@ -1001,12 +1013,12 @@ class ImportCatalogDataAction
             return null;
         }
 
-        return $this->idOrNull(
-            DB::table($table)
-                ->where('language_id', $this->defaultLanguageId)
-                ->where($field, $value)
-                ->value($entityColumn)
-        );
+        $query = DB::table($table)
+            ->where('language_id', $this->defaultLanguageId)
+            ->where($field, $value);
+        TenantQueryScope::apply($query);
+
+        return $this->idOrNull($query->value($entityColumn));
     }
 
     /**

@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -17,6 +18,8 @@ return new class extends Migration
     {
         Schema::create(CategorySchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(CategorySchema::PARENT_ID)->nullable();
             $table->unsignedSmallInteger(CategorySchema::POSITION)->nullable();
             $table->unsignedBigInteger(CategorySchema::IMAGE_MEDIA_ID)->nullable();
@@ -26,6 +29,8 @@ return new class extends Migration
 
         Schema::create(CategoryTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(CategoryTranslationSchema::CATEGORY_ID)
                 ->constrained(CategorySchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(CategoryTranslationSchema::LANGUAGE_ID)->nullable();
@@ -35,7 +40,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([CategoryTranslationSchema::CATEGORY_ID, CategoryTranslationSchema::LANGUAGE_ID]);
-            $table->unique([CategoryTranslationSchema::LANGUAGE_ID, CategoryTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, CategoryTranslationSchema::LANGUAGE_ID, CategoryTranslationSchema::SLUG]);
         });
 
         Schema::create(CategoryProductSchema::TABLE, function (Blueprint $table) {

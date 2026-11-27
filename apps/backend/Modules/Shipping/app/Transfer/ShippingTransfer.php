@@ -3,7 +3,6 @@
 namespace Modules\Shipping\Transfer;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportOptions;
@@ -13,6 +12,8 @@ use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Rules\CountryCodeRule;
+use Modules\Core\Rules\ScopedExists;
+use Modules\Core\Rules\ScopedUnique;
 use Modules\Core\Rules\UniquePair;
 use Modules\Core\Schemas\Country\CountrySchema;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -462,7 +463,7 @@ class ShippingTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @return array<string, list<mixed>>
+     * @return array<string, mixed>
      */
     private function zoneRules(): array
     {
@@ -478,7 +479,7 @@ class ShippingTransfer implements ModuleTransferInterface
     /**
      * Shape check before the language codes are resolved to ids.
      *
-     * @return array<string, list<mixed>>
+     * @return array<string, mixed>
      */
     private function methodShapeRules(): array
     {
@@ -497,13 +498,13 @@ class ShippingTransfer implements ModuleTransferInterface
      * Mirrors MethodRequest (uniqueness of the code, ignoring the record
      * an UPDATE strategy would overwrite) against the resolved item.
      *
-     * @return array<string, list<mixed>>
+     * @return array<string, mixed>
      */
     private function methodRules(int|string|null $ignoreId): array
     {
         return [
             MethodSchema::CODE => ['required', 'string', 'max:255',
-                Rule::unique(MethodSchema::TABLE, MethodSchema::CODE)->ignore($ignoreId)],
+                new ScopedUnique(MethodSchema::TABLE, MethodSchema::CODE, is_null($ignoreId) ? null : (int) $ignoreId)],
             MethodSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
         ];
     }
@@ -515,17 +516,17 @@ class ShippingTransfer implements ModuleTransferInterface
      * exists checks are deferred to the remap step.
      *
      * @param  array<string, mixed>  $payload  Method/zone ids already remapped
-     * @return array<string, list<mixed>>
+     * @return array<string, mixed>
      */
     private function rateRules(ImportOptions $options, array $payload, int|string|null $ignoreId): array
     {
         $rules = [
             RateSchema::METHOD_ID => $options->dryRun
                 ? ['required', 'integer']
-                : ['required', 'integer', Rule::exists(MethodSchema::TABLE, MethodSchema::ID)],
+                : ['required', 'integer', new ScopedExists(MethodSchema::TABLE, MethodSchema::ID)],
             RateSchema::ZONE_ID => $options->dryRun
                 ? ['required', 'integer']
-                : ['required', 'integer', Rule::exists(ZoneSchema::TABLE, ZoneSchema::ID)],
+                : ['required', 'integer', new ScopedExists(ZoneSchema::TABLE, ZoneSchema::ID)],
             RateSchema::PRICE => ['required', 'numeric', 'min:0',
                 new UniquePair(RateSchema::TABLE, [
                     RateSchema::METHOD_ID => $payload[RateSchema::METHOD_ID],
@@ -541,7 +542,7 @@ class ShippingTransfer implements ModuleTransferInterface
      *
      * @param  array<string, mixed>  $payload
      * @param  array<string, int>  $languageIdByCode
-     * @return array<string, mixed>|null
+     * @return array<string, mixed>
      */
     private function resolveMethodTranslations(
         array $payload,
@@ -593,7 +594,7 @@ class ShippingTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @return array<string, int>
+     * @return array<string, mixed>
      */
     private function languageIdByCode(): array
     {

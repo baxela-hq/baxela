@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Database\Factories\OptionFactory;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 // use Modules\Catalog\Database\Factories\OptionFactory;
 
@@ -21,6 +22,8 @@ class Option extends Model
 
     /** @use HasFactory<OptionFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = OptionSchema::TABLE;
 

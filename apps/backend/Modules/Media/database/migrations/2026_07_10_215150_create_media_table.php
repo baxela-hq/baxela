@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaDiskEnum;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
@@ -17,6 +18,8 @@ return new class extends Migration
     {
         Schema::create(MediaSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(MediaSchema::USER_ID);
             $table->foreignId(MediaSchema::FOLDER_ID)
                 ->nullable()

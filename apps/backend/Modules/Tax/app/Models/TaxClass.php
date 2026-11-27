@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Tax\Database\Factories\TaxClassFactory;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
@@ -28,6 +29,8 @@ class TaxClass extends Model
 {
     /** @use HasFactory<TaxClassFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = TaxClassSchema::TABLE;
 

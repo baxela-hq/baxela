@@ -124,7 +124,7 @@ it('rejects a refund on a gateway without refund support and records the failed 
 });
 
 it('holds an async-accepted refund in processing without firing the refunded event', function () {
-    Event::fake();
+    Event::fake([PaymentRefundedEvent::class]);
 
     [$order, $payment] = paidOrderWithGatewayPayment(100, 'paypal');
 

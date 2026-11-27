@@ -139,6 +139,7 @@ it('adopts a matching local payment only via the exact transaction tuple (F24)',
     // A pre-existing local payment that IS the same payment (an earlier
     // partial import): same order, method, amount, non-null txn id.
     $existingId = DB::table('payment_payments')->insertGetId([
+        'tenant_id' => 1,
         'order_id' => $localOrder->id, 'transaction_id' => 'src-txn-0001',
         'method' => 'manual', 'amount' => '200.00', 'currency_id' => null,
         'status' => 'success', 'created_at' => now(), 'updated_at' => now(),
@@ -177,6 +178,7 @@ it('fails ambiguous adoption instead of guessing (F24)', function () {
     // TWO local payments match the tuple — adoption is ambiguous.
     foreach ([1, 2] as $i) {
         DB::table('payment_payments')->insert([
+            'tenant_id' => 1,
             'order_id' => $localOrder->id, 'transaction_id' => 'src-txn-0001',
             'method' => 'manual', 'amount' => '200.00', 'currency_id' => null,
             'status' => 'success', 'created_at' => now(), 'updated_at' => now(),

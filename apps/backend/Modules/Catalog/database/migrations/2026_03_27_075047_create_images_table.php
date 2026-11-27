@@ -8,6 +8,7 @@ use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -18,6 +19,8 @@ return new class extends Migration
     {
         Schema::create(ImageSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(ImageSchema::PRODUCT_ID)->constrained(ProductSchema::TABLE)->onDelete('cascade');
             $table->foreignId(ImageSchema::VARIANT_ID)->nullable()->constrained(VariantSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(ImageSchema::MEDIA_ID)->index();

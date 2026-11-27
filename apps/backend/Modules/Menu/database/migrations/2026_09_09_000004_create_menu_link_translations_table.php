@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTranslationSchema;
 
@@ -15,8 +16,12 @@ return new class extends Migration
     {
         Schema::create(MenuLinkTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(MenuLinkTranslationSchema::MENU_LINK_ID)
-                ->constrained(MenuLinkSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(MenuLinkTranslationSchema::MENU_LINK_ID);
+            $table->foreign([TenantColumn::TENANT_ID, MenuLinkTranslationSchema::MENU_LINK_ID], 'menu_link_translations_tenant_link_fk')
+                ->references([TenantColumn::TENANT_ID, MenuLinkSchema::ID])
+                ->on(MenuLinkSchema::TABLE)->cascadeOnDelete();
             $table->unsignedBigInteger(MenuLinkTranslationSchema::LANGUAGE_ID);
             $table->string(MenuLinkTranslationSchema::TITLE);
             $table->string(MenuLinkTranslationSchema::DESCRIPTION)->nullable();

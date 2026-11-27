@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Database\Factories\BrandTranslationFactory;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,7 @@ class BrandTranslation extends Model
     use HasFactory;
 
     use SlugTrait;
+    use TenantScopedTrait;
 
     protected $table = BrandTranslationSchema::TABLE;
 

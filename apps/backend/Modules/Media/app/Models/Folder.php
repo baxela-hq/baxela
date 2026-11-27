@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Media\Database\Factories\FolderFactory;
 use Modules\Media\Schemas\Folder\FolderSchema;
 
@@ -24,6 +25,8 @@ class Folder extends Model
 {
     /** @use HasFactory<FolderFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = FolderSchema::TABLE;
 

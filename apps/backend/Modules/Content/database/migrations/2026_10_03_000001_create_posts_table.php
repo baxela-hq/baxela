@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(PostSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->enum(PostSchema::STATUS, PostStatusEnum::cases());
             $table->timestamp(PostSchema::PUBLISHED_AT)->nullable();
             // Cover photo columns follow the categories precedent: plain
@@ -27,6 +30,8 @@ return new class extends Migration
 
         Schema::create(PostTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(PostTranslationSchema::POST_ID)
                 ->constrained(PostSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(PostTranslationSchema::LANGUAGE_ID)->nullable();
@@ -37,7 +42,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([PostTranslationSchema::POST_ID, PostTranslationSchema::LANGUAGE_ID]);
-            $table->unique([PostTranslationSchema::LANGUAGE_ID, PostTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, PostTranslationSchema::LANGUAGE_ID, PostTranslationSchema::SLUG]);
         });
     }
 

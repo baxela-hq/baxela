@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Database\Factories\IdempotencyKeyFactory;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Core\Schemas\IdempotencyKeys\IdempotencyKeysSchema;
 
 /**
@@ -19,6 +20,7 @@ use Modules\Core\Schemas\IdempotencyKeys\IdempotencyKeysSchema;
 class IdempotencyKey extends Model
 {
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = IdempotencyKeysSchema::TABLE;
 

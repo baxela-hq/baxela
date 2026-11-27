@@ -4,6 +4,7 @@ namespace Modules\Core\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Core\Schemas\TransferRemap\TransferRemapSchema;
 
 /**
@@ -24,6 +25,8 @@ use Modules\Core\Schemas\TransferRemap\TransferRemapSchema;
  */
 class TransferRemap extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = TransferRemapSchema::TABLE;
 
     protected $fillable = [

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Attribute\AttributeSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueSchema;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema as AVTSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(AttributeValueSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(AttributeValueSchema::ATTRIBUTE_ID)
                 ->constrained(AttributeSchema::TABLE)->onDelete('cascade');
             $table->unsignedSmallInteger(AttributeValueSchema::POSITION)->nullable();
@@ -24,6 +27,8 @@ return new class extends Migration
 
         Schema::create(AVTSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(AVTSchema::ATTRIBUTE_VALUE_ID)
                 ->constrained(AttributeValueSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(AVTSchema::LANGUAGE_ID);

@@ -53,6 +53,8 @@ function paidInvoiceOrder(OrderPaymentStatusEnum $paymentStatus = OrderPaymentSt
         OrderSchema::PAYMENT_STATUS => $paymentStatus,
         OrderSchema::PAID_AT => now(),
         OrderSchema::CURRENCY_ID => $currency->id,
+        OrderSchema::DISPLAY_CURRENCY_CODE => 'USD',
+        OrderSchema::DISPLAY_FX_RATE => '0.92000000',
         OrderSchema::TOTAL_AMOUNT => 110.0,
         OrderSchema::TAX_AMOUNT => 10.0,
         OrderSchema::SHIPPING_COST => 0.0,
@@ -123,6 +125,7 @@ it('issues an invoice whose snapshot is copied from the finalized order', functi
         ->and($data[OrderInvoiceSchema::REVISION])->toBe(1)
         ->and($data[OrderInvoiceSchema::STATUS])->toBe('active')
         ->and($data[OrderInvoiceSchema::CURRENCY_CODE])->toBe('EUR')
+        ->and((float) $data[OrderInvoiceSchema::EXCHANGE_RATE])->toBe(0.92)
         // Totals copied from the order, never recalculated (D11 v2.2).
         ->and($data[OrderInvoiceSchema::TOTAL_AMOUNT])->toBe('110.00')
         ->and($data[OrderInvoiceSchema::TAX_AMOUNT])->toBe('10.00')

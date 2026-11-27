@@ -9,6 +9,7 @@ use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -19,6 +20,10 @@ return new class extends Migration
     {
         Schema::create(ProductSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            // Composite parent keys for the layer-3 tenant-safe child FKs.
+            $table->unique([TenantColumn::TENANT_ID, ProductSchema::ID], 'catalog_products_tenant_id_unique');
             $table->enum(ProductSchema::TYPE, ProductTypeEnum::cases());
             $table->enum(ProductSchema::STATUS, ProductStatusEnum::cases());
             $table->boolean(ProductSchema::IS_PUBLISHED)->default(false);
@@ -41,8 +46,12 @@ return new class extends Migration
 
         Schema::create(ProductTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(ProductTranslationSchema::PRODUCT_ID)
-                ->constrained(ProductSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(ProductTranslationSchema::PRODUCT_ID);
+            $table->foreign([TenantColumn::TENANT_ID, ProductTranslationSchema::PRODUCT_ID], 'catalog_product_translations_tenant_product_fk')
+                ->references([TenantColumn::TENANT_ID, ProductSchema::ID])
+                ->on(ProductSchema::TABLE)->cascadeOnDelete();
             $table->unsignedBigInteger(ProductTranslationSchema::LANGUAGE_ID)->nullable();
             $table->string(ProductTranslationSchema::TITLE);
             $table->string(ProductTranslationSchema::SLUG);
@@ -51,7 +60,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([ProductTranslationSchema::PRODUCT_ID, ProductTranslationSchema::LANGUAGE_ID]);
-            $table->unique([ProductTranslationSchema::LANGUAGE_ID, ProductTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, ProductTranslationSchema::LANGUAGE_ID, ProductTranslationSchema::SLUG]);
         });
     }
 

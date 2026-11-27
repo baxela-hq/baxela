@@ -3,6 +3,8 @@
 namespace Modules\Discount\Actions\Admin\Promotion;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
+use Modules\Core\Support\Tenancy\AssertsTenantOwnership;
 use Modules\Discount\Exceptions\Promotion\UpdateFailedException;
 use Modules\Discount\Models\Promotion;
 use Modules\Discount\Schemas\Promotion\PromotionSchema;
@@ -10,6 +12,8 @@ use Throwable;
 
 class UpdatePromotionAction
 {
+    public function __construct(private readonly CatalogGatewayInterface $catalog) {}
+
     /**
      * @throws UpdateFailedException|Throwable
      */
@@ -21,6 +25,17 @@ class UpdatePromotionAction
 
         try {
             DB::beginTransaction();
+
+            // Payload ids are untrusted: reject anything the active store
+            // does not own before updating the promotion or its pivots.
+            AssertsTenantOwnership::assertIds(
+                $data[PromotionSchema::PRODUCT_IDS] ?? [],
+                fn (int $id): bool => $this->catalog->productExists($id),
+            );
+            AssertsTenantOwnership::assertIds(
+                $data[PromotionSchema::CATEGORY_IDS] ?? [],
+                fn (int $id): bool => $this->catalog->categoryExists($id),
+            );
 
             $record->fill([
                 PromotionSchema::NAME => $data[PromotionSchema::NAME] ?? $record->{PromotionSchema::NAME},

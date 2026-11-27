@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Modules\Content\Schemas\Page\PageSchema;
 use Modules\Content\Schemas\Page\PageStatusEnum;
 use Modules\Content\Schemas\Page\PageTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -16,12 +17,16 @@ return new class extends Migration
     {
         Schema::create(PageSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->enum(PageSchema::STATUS, PageStatusEnum::cases());
             $table->timestamps();
         });
 
         Schema::create(PageTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(PageTranslationSchema::PAGE_ID)
                 ->constrained(PageSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(PageTranslationSchema::LANGUAGE_ID)->nullable();
@@ -32,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([PageTranslationSchema::PAGE_ID, PageTranslationSchema::LANGUAGE_ID]);
-            $table->unique([PageTranslationSchema::LANGUAGE_ID, PageTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, PageTranslationSchema::LANGUAGE_ID, PageTranslationSchema::SLUG]);
         });
     }
 

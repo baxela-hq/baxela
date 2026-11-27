@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Shipping\Schemas\Shipment\ShipmentSchema;
 use Modules\Shipping\Schemas\Shipment\ShipmentStatusEnum;
 
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(ShipmentSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // Plain column on purpose: orders live in another module (cross-module convention).
             $table->unsignedBigInteger(ShipmentSchema::ORDER_ID)->index();
             $table->string(ShipmentSchema::CARRIER_NAME)->nullable();

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Content\Database\Factories\PostCategoryTranslationFactory;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -27,6 +28,7 @@ class PostCategoryTranslation extends Model
     use HasFactory;
 
     use SlugTrait;
+    use TenantScopedTrait;
 
     protected $table = PostCategoryTranslationSchema::TABLE;
 

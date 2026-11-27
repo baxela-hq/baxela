@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\Option\OptionSchema;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -15,12 +16,16 @@ return new class extends Migration
     {
         Schema::create(OptionSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedSmallInteger(OptionSchema::POSITION)->nullable();
             $table->timestamps();
         });
 
         Schema::create(OptionTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(OptionTranslationSchema::OPTION_ID)
                 ->constrained(OptionSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(OptionTranslationSchema::LANGUAGE_ID);
@@ -29,7 +34,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique([OptionTranslationSchema::OPTION_ID, OptionTranslationSchema::LANGUAGE_ID]);
-            $table->unique([OptionTranslationSchema::LANGUAGE_ID, OptionTranslationSchema::SLUG]);
+            $table->unique([TenantColumn::TENANT_ID, OptionTranslationSchema::LANGUAGE_ID, OptionTranslationSchema::SLUG]);
         });
     }
 

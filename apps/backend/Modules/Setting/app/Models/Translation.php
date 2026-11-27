@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Setting\Database\Factories\TranslationFactory;
 use Modules\Setting\Schemas\Translation\TranslationSchema;
 
@@ -21,6 +22,8 @@ class Translation extends Model
 {
     /** @use HasFactory<TranslationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = TranslationSchema::TABLE;
 

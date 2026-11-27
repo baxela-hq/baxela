@@ -16,6 +16,7 @@ uses(HelperTrait::class);
 
 it('starts inactive and reports no tenant outside tenant mode', function () {
     $context = app(TenantContext::class);
+    $context->reset();
 
     expect($context->mode())->toBe(TenantContext::MODE_INACTIVE)
         ->and($context->tenantId())->toBeNull()
@@ -25,6 +26,7 @@ it('starts inactive and reports no tenant outside tenant mode', function () {
 });
 
 it('throws instead of querying unscoped when the context is missing', function () {
+    app(TenantContext::class)->reset();
     expect(fn () => TenantCurrency::query()->count())->toThrow(TenantContextMissingException::class)
         ->and(fn () => TenantCurrency::query()->exists())->toThrow(TenantContextMissingException::class)
         ->and(fn () => TenantCurrency::query()->find(1))->toThrow(TenantContextMissingException::class)
@@ -168,6 +170,7 @@ it('lets a central operation write a platform-tier row, and nothing else without
 });
 
 it('restores, in order, each state a job attempt pushed', function () {
+    app(TenantContext::class)->reset();
     $acme = $this->createTenant('acme');
     $other = $this->createTenant('other');
     $context = app(TenantContext::class);

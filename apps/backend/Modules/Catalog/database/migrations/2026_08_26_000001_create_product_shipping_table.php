@@ -7,6 +7,7 @@ use Modules\Catalog\Schemas\Product\DimensionUnitEnum;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductShippingSchema;
 use Modules\Catalog\Schemas\Product\WeightUnitEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -17,6 +18,8 @@ return new class extends Migration
     {
         Schema::create(ProductShippingSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(ProductShippingSchema::PRODUCT_ID)
                 ->constrained(ProductSchema::TABLE)->onDelete('cascade');
             $table->decimal(ProductShippingSchema::WEIGHT, 12, 2)->unsigned()->nullable();

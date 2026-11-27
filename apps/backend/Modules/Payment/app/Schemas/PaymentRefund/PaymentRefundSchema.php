@@ -23,6 +23,10 @@ class PaymentRefundSchema
 
     public const string AMOUNT = 'amount';
 
+    public const string CURRENCY_CODE = 'currency_code';
+
+    public const string EXCHANGE_RATE = 'exchange_rate';
+
     public const string REASON = 'reason';
 
     public const string STATUS = 'status';

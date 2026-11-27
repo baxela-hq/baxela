@@ -35,6 +35,7 @@ use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
 use Modules\Core\Support\Transfer\CrossModuleResolver;
 use Throwable;
 
@@ -669,9 +670,9 @@ class ContentTransfer implements ModuleTransferInterface
         string $label,
     ): bool {
         foreach ($translations as $translation) {
-            $query = DB::table($translationTable)
+            $query = TenantQueryScope::apply(DB::table($translationTable)
                 ->where(PageTranslationSchema::SLUG, $translation['slug'])
-                ->where(PageTranslationSchema::LANGUAGE_ID, $translation['language_id']);
+                ->where(PageTranslationSchema::LANGUAGE_ID, $translation['language_id']));
 
             if ($existingId !== null) {
                 $query->where($ownerKey, '!=', $existingId);
@@ -709,9 +710,9 @@ class ContentTransfer implements ModuleTransferInterface
             return null;
         }
 
-        $ownerId = DB::table($translationTable)
+        $ownerId = TenantQueryScope::apply(DB::table($translationTable)
             ->where('language_id', $defaultLanguageId)
-            ->where('slug', $slug)
+            ->where('slug', $slug))
             ->value($ownerKey);
 
         return $ownerId === null ? null : match ($translationTable) {

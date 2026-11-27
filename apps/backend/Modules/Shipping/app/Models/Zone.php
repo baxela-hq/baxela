@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Core\Models\Country;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Core\Schemas\Country\CountrySchema;
 use Modules\Shipping\Database\Factories\ZoneFactory;
 use Modules\Shipping\Schemas\Zone\ZoneCountrySchema;
@@ -26,6 +27,8 @@ class Zone extends Model
 {
     /** @use HasFactory<ZoneFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ZoneSchema::TABLE;
 

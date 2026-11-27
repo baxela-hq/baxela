@@ -6,8 +6,6 @@ use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\Exists;
-use Illuminate\Validation\Rules\In;
 use Modules\Content\Schemas\Post\PostSchema as PSchema;
 use Modules\Content\Schemas\Post\PostSeoTranslationSchema as PSTSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
@@ -16,6 +14,7 @@ use Modules\Content\Schemas\PostCategory\PostCategorySchema as PCSchema;
 use Modules\Core\Contracts\Gateways\Catalog\CatalogGatewayInterface;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
+use Modules\Core\Rules\ScopedExists;
 
 class PostRequest extends FormRequest
 {
@@ -29,8 +28,9 @@ class PostRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, list<string|Closure|Enum|In|Exists|LanguageUniquePair>> */
     public function rules(): array
     {
         // null on create, the post id on update — /api/v1/content/admin/posts/{id}
@@ -74,9 +74,9 @@ class PostRequest extends FormRequest
             PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::DESCRIPTION => ['nullable', 'string', 'max:255'],
         ];
 
-        $rules[PSchema::RES_CATEGORIES.'.*'][] = Rule::exists(PCSchema::TABLE, PCSchema::ID);
+        $rules[PSchema::RES_CATEGORIES.'.*'][] = new ScopedExists(PCSchema::TABLE, PCSchema::ID);
         $rules[PSchema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
-            new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id, PTSchema::POST_ID);
 
         return $rules;
     }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Inventory\Schemas\InventoryStock\InventoryStockSchema;
 
 return new class extends Migration
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(InventoryStockSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(InventoryStockSchema::VARIANT_ID)->unique();
             $table->unsignedSmallInteger(InventoryStockSchema::QUANTITY);
             $table->timestamps();

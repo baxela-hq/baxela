@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\User\Schemas\WishlistItem\WishlistItemSchema;
 
 return new class extends Migration
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(WishlistItemSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // One implicit wishlist per user: no parent wishlists table,
             // the unique pair makes (user, product) the natural key.
             $table->unsignedBigInteger(WishlistItemSchema::USER_ID)->index();

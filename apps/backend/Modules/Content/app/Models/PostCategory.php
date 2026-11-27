@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Content\Database\Factories\PostCategoryFactory;
 use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,8 @@ class PostCategory extends Model
 {
     /** @use HasFactory<PostCategoryFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PostCategorySchema::TABLE;
 

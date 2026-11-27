@@ -1,13 +1,13 @@
 <?php
 
-use Modules\Auth\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Contact\Schemas\NewsletterSubscriber\NewsletterSubscriberSchema;
-use Modules\Core\Support\Auth as CoreAuth;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 
 uses(RefreshDatabase::class);
@@ -24,11 +24,10 @@ function insert_expecting_rejection(callable $insert): bool
         DB::transaction(fn (): bool => $insert());
 
         return false;
-    } catch (Illuminate\Database\QueryException) {
+    } catch (QueryException) {
         return true;
     }
 }
-
 
 /**
  * Phase B portability tests (postgres-migration §4 Phase B, matrix 29–31):
@@ -39,7 +38,6 @@ function insert_expecting_rejection(callable $insert): bool
  * driver-branched DDL itself is exercised per-engine (SQLite here,
  * MySQL baseline, PostgreSQL in phase D).
  */
-
 it('rejects a case-variant duplicate user email (functional LOWER unique)', function () {
     User::query()->create([
         UserSchema::EMAIL => 'owner@example.com',
@@ -56,16 +54,19 @@ it('rejects a case-variant duplicate user email (functional LOWER unique)', func
 
 it('rejects a case-variant duplicate newsletter email', function () {
     DB::table(NewsletterSubscriberSchema::TABLE)->insert([
+        'tenant_id' => 1,
         NewsletterSubscriberSchema::EMAIL => 'news@example.com',
     ]);
 
     expect(insert_expecting_rejection(fn () => DB::table(NewsletterSubscriberSchema::TABLE)->insert([
+        'tenant_id' => 1,
         NewsletterSubscriberSchema::EMAIL => 'NEWS@Example.COM',
     ])))->toBeTrue();
 });
 
 it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcodes', function () {
     $productId = DB::table('catalog_products')->insertGetId([
+        'tenant_id' => 1,
         'type' => 'simple',
         'status' => 'in_stock',
         'is_published' => true,
@@ -74,6 +75,7 @@ it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcode
     ]);
 
     DB::table(VariantSchema::TABLE)->insert([
+        'tenant_id' => 1,
         VariantSchema::PRODUCT_ID => $productId,
         VariantSchema::SKU => 'ABC-123',
         VariantSchema::PRICE => 10,
@@ -81,6 +83,7 @@ it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcode
 
     // Case-variant SKU collides.
     expect(insert_expecting_rejection(fn () => DB::table(VariantSchema::TABLE)->insert([
+        'tenant_id' => 1,
         VariantSchema::PRODUCT_ID => $productId,
         VariantSchema::SKU => 'abc-123',
         VariantSchema::PRICE => 10,
@@ -88,6 +91,7 @@ it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcode
 
     // Nullable barcode: multiple NULLs stay legal on every engine.
     DB::table(VariantSchema::TABLE)->insert([
+        'tenant_id' => 1,
         VariantSchema::PRODUCT_ID => $productId,
         VariantSchema::SKU => 'ABC-124',
         VariantSchema::PRICE => 10,
@@ -95,21 +99,24 @@ it('rejects case-variant duplicate variant SKUs but allows multiple NULL barcode
     ]);
 
     expect(fn () => DB::table(VariantSchema::TABLE)->insert([
+        'tenant_id' => 1,
         VariantSchema::PRODUCT_ID => $productId,
         VariantSchema::SKU => 'ABC-125',
         VariantSchema::PRICE => 10,
         VariantSchema::BARCODE => null,
-    ]))->not->toThrow(Illuminate\Database\QueryException::class);
+    ]))->not->toThrow(QueryException::class);
 });
 
 it('rejects a case-variant duplicate coupon code', function () {
     DB::table(CouponSchema::TABLE)->insert([
+        'tenant_id' => 1,
         CouponSchema::CODE => 'SUMMER10',
         CouponSchema::TYPE => 'percent',
         CouponSchema::VALUE => 10,
     ]);
 
     expect(insert_expecting_rejection(fn () => DB::table(CouponSchema::TABLE)->insert([
+        'tenant_id' => 1,
         CouponSchema::CODE => 'summer10',
         CouponSchema::TYPE => 'percent',
         CouponSchema::VALUE => 10,
@@ -131,7 +138,7 @@ it('documents the accent-insensitivity delta: e-acute and plain e are distinct',
         UserSchema::EMAIL => 'café@example.com',
         UserSchema::PASSWORD => 'secret-password',
         UserSchema::IS_ACTIVE => true,
-    ]))->not->toThrow(Illuminate\Database\QueryException::class);
+    ]))->not->toThrow(QueryException::class);
 });
 
 it('documents the trailing-space delta: padded values are distinct', function () {
@@ -149,7 +156,7 @@ it('documents the trailing-space delta: padded values are distinct', function ()
         UserSchema::EMAIL => 'padded@example.com ',
         UserSchema::PASSWORD => 'secret-password',
         UserSchema::IS_ACTIVE => true,
-    ]))->not->toThrow(Illuminate\Database\QueryException::class);
+    ]))->not->toThrow(QueryException::class);
 });
 
 it('resolves sign-in case-insensitively through the canonical gateway path', function () {
@@ -202,6 +209,7 @@ it('concurrently creates one webhook delivery per (endpoint, event) pair (matrix
     // UUID primary key: insertGetId would return the rowid, not the id.
     $eventId = (string) Str::uuid();
     DB::table('webhook_events')->insert([
+        'tenant_id' => 1,
         'id' => $eventId,
         'event_type' => 'order.created',
         'source_key' => 'order:'.Str::uuid()->toString(),
@@ -209,6 +217,7 @@ it('concurrently creates one webhook delivery per (endpoint, event) pair (matrix
         'created_at' => now(),
     ]);
     $endpointId = DB::table('webhook_endpoints')->insertGetId([
+        'tenant_id' => 1,
         'name' => 'primary',
         'url' => 'https://example.com/hook',
         'events' => json_encode(['order.created']),
@@ -221,12 +230,13 @@ it('concurrently creates one webhook delivery per (endpoint, event) pair (matrix
 
     $insert = fn (): int => DB::connection()->getDriverName() === 'pgsql'
         ? DB::affectingStatement(
-            'INSERT INTO webhook_deliveries (id, event_id, endpoint_id, event_type, status, created_at)'
-            .' VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (endpoint_id, event_id) DO NOTHING',
-            [(string) Str::uuid(), $eventId, $endpointId, 'order.created', 'pending', now()],
+            'INSERT INTO webhook_deliveries (id, tenant_id, event_id, endpoint_id, event_type, status, created_at)'
+            .' VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (endpoint_id, event_id) DO NOTHING',
+            [(string) Str::uuid(), 1, $eventId, $endpointId, 'order.created', 'pending', now()],
         )
         : (int) DB::table('webhook_deliveries')->insertOrIgnore([
             'id' => (string) Str::uuid(),
+            'tenant_id' => 1,
             'event_id' => $eventId,
             'endpoint_id' => $endpointId,
             'event_type' => 'order.created',

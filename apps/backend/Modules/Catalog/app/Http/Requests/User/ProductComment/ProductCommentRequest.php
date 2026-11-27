@@ -4,20 +4,21 @@ namespace Modules\Catalog\Http\Requests\User\ProductComment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema as Schema;
+use Modules\Core\Rules\ScopedExists;
 
 class ProductCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, array<int, string|array<int, string>|Enum>> */
     public function rules(): array
     {
         return [
             Schema::BODY => ['required', 'string', 'max:2000'],
-            Schema::PARENT_ID => ['nullable', 'integer', Rule::exists(Schema::TABLE, Schema::ID)],
+            Schema::PARENT_ID => ['nullable', 'integer', new ScopedExists(Schema::TABLE, Schema::ID)],
             // top-level reviews carry the star rating; replies never do
             Schema::RATING => [
                 Rule::prohibitedIf(fn (): bool => filled($this->input(Schema::PARENT_ID))),

@@ -13,6 +13,7 @@ use Modules\Catalog\Schemas\Category\CategoryAttributeSchema;
 use Modules\Catalog\Schemas\Category\CategoryProductSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -29,6 +30,7 @@ class Category extends Model
     use HasFactory;
 
     use SlugTrait;
+    use TenantScopedTrait;
 
     protected $table = CategorySchema::TABLE;
 

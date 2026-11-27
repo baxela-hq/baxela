@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Webhooks\Schemas\WebhookEndpoint\WebhookEndpointSchema;
 
 return new class extends Migration
@@ -14,6 +15,10 @@ return new class extends Migration
     {
         Schema::create(WebhookEndpointSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            // Composite parent key for the layer-3 tenant-safe delivery FK.
+            $table->unique([TenantColumn::TENANT_ID, WebhookEndpointSchema::ID], 'webhook_endpoints_tenant_id_unique');
             $table->string(WebhookEndpointSchema::NAME);
             $table->string(WebhookEndpointSchema::URL, 500);
             // Encrypted at rest (gap-C2 D8).

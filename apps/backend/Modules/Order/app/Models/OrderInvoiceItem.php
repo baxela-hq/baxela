@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
 
 /**
@@ -34,6 +35,8 @@ use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
  */
 class OrderInvoiceItem extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = OrderInvoiceItemSchema::TABLE;
 
     protected $fillable = [

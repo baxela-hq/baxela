@@ -368,7 +368,7 @@ it('holds the reservation of a stale processing row while no outcome arrives', f
 });
 
 it('fires the refunded event with uncollided identifiers', function () {
-    Event::fake();
+    Event::fake([PaymentRefundedEvent::class]);
 
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
@@ -390,7 +390,7 @@ it('fires the refunded event with uncollided identifiers', function () {
 });
 
 it('fires the reversal event with the accounting flag set', function () {
-    Event::fake();
+    Event::fake([PaymentRefundReversedEvent::class]);
 
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [

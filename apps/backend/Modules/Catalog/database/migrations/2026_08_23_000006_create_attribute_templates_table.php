@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(AttributeTemplateSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->string(AttributeTemplateSchema::TITLE);
             $table->text(AttributeTemplateSchema::DESCRIPTION)->nullable();
             $table->boolean(AttributeTemplateSchema::IS_ACTIVE)->default(true)->index();

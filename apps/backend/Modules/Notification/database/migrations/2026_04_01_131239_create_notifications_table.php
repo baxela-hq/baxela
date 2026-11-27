@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Notification\Schemas\Notification\NotificationAudienceEnum;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(NotificationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(NotificationSchema::USER_ID)->index()->nullable();
             $table->enum(NotificationSchema::CODE, NotificationCodeEnum::cases())->index();
             $table->enum(NotificationSchema::AUDIENCE, NotificationAudienceEnum::cases())->index();

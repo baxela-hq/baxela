@@ -40,5 +40,10 @@ abstract class TestCase extends BaseTestCase
         // §2). Pest runs every test in one process, so without this reset
         // a tenant set by one test would leak into the next.
         app(TenantContext::class)->reset();
+        // Phase 2: keep the legacy suite (which creates store-owned rows
+        // without an explicit tenant) working by defaulting to the built-in
+        // default tenant. Tests that exercise the fail-closed path deactivate
+        // the context themselves (multi-tenancy §10 row 12).
+        app(TenantContext::class)->forTenant(1);
     }
 }

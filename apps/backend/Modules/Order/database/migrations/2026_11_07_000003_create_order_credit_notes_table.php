@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteSchema;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
@@ -17,20 +18,26 @@ return new class extends Migration
     {
         Schema::create(OrderCreditNoteSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // No cascade (D16): a credit note outlives any attempt to remove
             // the invoice it adjusts.
-            $table->foreignId(OrderCreditNoteSchema::INVOICE_ID)
-                ->constrained(OrderInvoiceSchema::TABLE)->restrictOnDelete();
+            $table->unsignedBigInteger(OrderCreditNoteSchema::INVOICE_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderCreditNoteSchema::INVOICE_ID], 'order_credit_notes_tenant_invoice_fk')
+                ->references([TenantColumn::TENANT_ID, OrderInvoiceSchema::ID])
+                ->on(OrderInvoiceSchema::TABLE)->restrictOnDelete();
             // The finalized refund this note documents; unique when set —
             // the idempotency key for the refund-backed automation (D15).
             $table->string(OrderCreditNoteSchema::REFUND_UUID)->nullable()->unique();
-            $table->string(OrderCreditNoteSchema::NUMBER)->unique();
+            $table->string(OrderCreditNoteSchema::NUMBER);
+            $table->unique([TenantColumn::TENANT_ID, OrderCreditNoteSchema::NUMBER]);
             $table->enum(OrderCreditNoteSchema::STATUS, OrderCreditNoteStatusEnum::cases())
                 ->default(OrderCreditNoteStatusEnum::ACTIVE->value);
             $table->timestamp(OrderCreditNoteSchema::ISSUED_AT);
             $table->timestamp(OrderCreditNoteSchema::VOIDED_AT)->nullable();
             $table->string(OrderCreditNoteSchema::VOID_REASON)->nullable();
             $table->string(OrderCreditNoteSchema::CURRENCY_CODE);
+            $table->decimal(OrderCreditNoteSchema::EXCHANGE_RATE, 16, 8)->nullable();
             $table->decimal(OrderCreditNoteSchema::AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->string(OrderCreditNoteSchema::REASON)->nullable();
 

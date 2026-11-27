@@ -23,6 +23,8 @@ class PaymentRefundResource extends JsonResource
             PaymentRefundSchema::PAYMENT_ID => $this->{PaymentRefundSchema::PAYMENT_ID},
             PaymentRefundSchema::ORDER_ID => $this->{PaymentRefundSchema::ORDER_ID},
             PaymentRefundSchema::AMOUNT => $this->{PaymentRefundSchema::AMOUNT},
+            PaymentRefundSchema::CURRENCY_CODE => $this->{PaymentRefundSchema::CURRENCY_CODE},
+            PaymentRefundSchema::EXCHANGE_RATE => $this->{PaymentRefundSchema::EXCHANGE_RATE},
             PaymentRefundSchema::REASON => $this->{PaymentRefundSchema::REASON},
             PaymentRefundSchema::STATUS => $this->{PaymentRefundSchema::STATUS},
             PaymentRefundSchema::TRANSACTION_ID => $this->{PaymentRefundSchema::TRANSACTION_ID},

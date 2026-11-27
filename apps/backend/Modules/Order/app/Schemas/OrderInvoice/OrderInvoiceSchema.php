@@ -36,6 +36,8 @@ class OrderInvoiceSchema
      */
     public const string CURRENCY_CODE = 'currency_code';
 
+    public const string EXCHANGE_RATE = 'exchange_rate';
+
     public const string SUBTOTAL_AMOUNT = 'subtotal_amount';
 
     public const string DISCOUNT_AMOUNT = 'discount_amount';

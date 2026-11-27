@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Catalog\Database\Factories\BrandFactory;
 use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,7 @@ class Brand extends Model
     use HasFactory;
 
     use SlugTrait;
+    use TenantScopedTrait;
 
     protected $table = BrandSchema::TABLE;
 

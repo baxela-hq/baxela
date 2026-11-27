@@ -5,6 +5,7 @@ namespace Modules\Catalog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -13,6 +14,8 @@ use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
  */
 class FeaturedItem extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = FeaturedItemSchema::TABLE;
 
     /**

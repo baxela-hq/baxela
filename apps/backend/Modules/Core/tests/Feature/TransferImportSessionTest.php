@@ -86,6 +86,7 @@ it('runs a write unit transactionally and refuses to run outside a run', functio
     $outcome = $session->run('tax', 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee', true, function () use ($transactions): string {
         return $transactions->run(function (): string {
             DB::table(TransferRemapSchema::TABLE)->insert([
+                'tenant_id' => 1,
                 TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                 TransferRemapSchema::MODULE => 'tax',
                 TransferRemapSchema::ENTITY => 'tax-classes',
@@ -109,6 +110,7 @@ it('rolls back the whole unit when a write inside it fails', function () {
         try {
             $transactions->run(function (): void {
                 DB::table(TransferRemapSchema::TABLE)->insert([
+                    'tenant_id' => 1,
                     TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                     TransferRemapSchema::MODULE => 'tax',
                     TransferRemapSchema::ENTITY => 'tax-classes',
@@ -172,6 +174,7 @@ it('fences a stale owner out of protected writes after reclamation (§3.1.1, mat
 
             $transactions->run(function () use (&$wrote): void {
                 DB::table(TransferRemapSchema::TABLE)->insert([
+                    'tenant_id' => 1,
                     TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                     TransferRemapSchema::MODULE => 'tax',
                     TransferRemapSchema::ENTITY => 'tax-classes',
@@ -276,6 +279,7 @@ it('intercepts the pending write when the session is lost mid-unit (F29)', funct
             DB::connection()->disconnect();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
+                'tenant_id' => 1,
                 TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                 TransferRemapSchema::MODULE => 'tax',
                 TransferRemapSchema::ENTITY => 'tax-classes',
@@ -299,6 +303,7 @@ it('intercepts the pending write on an explicit mid-unit reconnect (F29)', funct
             DB::connection()->reconnect();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
+                'tenant_id' => 1,
                 TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                 TransferRemapSchema::MODULE => 'tax',
                 TransferRemapSchema::ENTITY => 'tax-classes',
@@ -321,6 +326,7 @@ it('never retries a unit on a replacement session (F31)', function () {
             DB::connection()->disconnect();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
+                'tenant_id' => 1,
                 TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                 TransferRemapSchema::MODULE => 'tax',
                 TransferRemapSchema::ENTITY => 'tax-classes',
@@ -373,6 +379,7 @@ it('keeps lock_session_lost fatal even when the rollback itself fails (F33)', fu
             DB::connection()->beginTransaction();
 
             DB::table(TransferRemapSchema::TABLE)->insert([
+                'tenant_id' => 1,
                 TransferRemapSchema::SOURCE_INSTALLATION => 'aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee',
                 TransferRemapSchema::MODULE => 'tax',
                 TransferRemapSchema::ENTITY => 'tax-classes',

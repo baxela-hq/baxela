@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Support\Database\Factories\TicketFactory;
 use Modules\Support\Schemas\Ticket\TicketSchema;
 use Modules\Support\Schemas\Ticket\TicketStatusEnum;
@@ -27,6 +28,8 @@ class Ticket extends Model
 {
     /** @use HasFactory<TicketFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = TicketSchema::TABLE;
 

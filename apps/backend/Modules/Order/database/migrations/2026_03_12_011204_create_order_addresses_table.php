@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
 use Modules\Order\Schemas\OrderAddress\OrderAddressTypeEnum;
@@ -16,7 +17,12 @@ return new class extends Migration
     {
         Schema::create(OrderAddressSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(OrderAddressSchema::ORDER_ID)->constrained(OrderSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(OrderAddressSchema::ORDER_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderAddressSchema::ORDER_ID], 'order_addresses_tenant_order_fk')
+                ->references([TenantColumn::TENANT_ID, OrderSchema::ID])
+                ->on(OrderSchema::TABLE)->cascadeOnDelete();
             $table->enum(OrderAddressSchema::TYPE, OrderAddressTypeEnum::cases());
             $table->string(OrderAddressSchema::FULL_NAME);
             $table->string(OrderAddressSchema::PHONE);

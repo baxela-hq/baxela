@@ -16,6 +16,7 @@ use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Image\ImageCollectionEnum;
 use Modules\Catalog\Schemas\Image\ImageSchema;
+use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\Product\DimensionUnitEnum;
 use Modules\Catalog\Schemas\Product\ProductAttributeValueSchema as PAVSchema;
 use Modules\Catalog\Schemas\Product\ProductSchema as Schema;
@@ -29,6 +30,8 @@ use Modules\Catalog\Schemas\Variant\VariantSchema as VSchema;
 use Modules\Core\Contracts\Gateways\Tax\TaxGatewayInterface;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
 use Modules\Core\Rules\LanguageUniquePair;
+use Modules\Core\Rules\LowercaseUniquePair;
+use Modules\Core\Rules\ScopedExists;
 
 class ProductRequest extends FormRequest
 {
@@ -52,9 +55,9 @@ class ProductRequest extends FormRequest
         $rules = self::rulesFor($this->languageMap, $this->isTypeVariable());
 
         $rules[Schema::RES_CATEGORIES.'.*'][] =
-            Rule::exists(CategorySchema::TABLE, CategorySchema::ID);
+            new ScopedExists(CategorySchema::TABLE, CategorySchema::ID);
         $rules[Schema::BRAND_ID][] =
-            Rule::exists(BrandSchema::TABLE, BrandSchema::ID);
+            new ScopedExists(BrandSchema::TABLE, BrandSchema::ID);
         // Cross-module existence goes through the Tax gateway (Schemas are
         // module-internal), mirroring how other modules validate references
         $rules[Schema::TAX_CLASS_ID][] =
@@ -67,22 +70,17 @@ class ProductRequest extends FormRequest
         // functional LOWER() unique index on every engine. A closure rule —
         // per-variant values are only known at validation time.
         $rules[Schema::RES_VARIANTS.'.*.'.VSchema::SKU][] =
-            function (string $attribute, mixed $value, \Closure $fail) use ($id): void {
-                $taken = DB::table(VSchema::TABLE)
-                    ->whereRaw('LOWER('.VSchema::SKU.') = ?', [mb_strtolower(trim((string) $value))])
-                    ->when($id !== null, fn ($query) => $query->where(VSchema::PRODUCT_ID, '!=', $id))
-                    ->exists();
-
-                if ($taken) {
-                    $fail('validation.unique')->translate();
-                }
-            };
+            new LowercaseUniquePair(VSchema::TABLE, VSchema::SKU, is_null($id) ? null : (int) $id, VSchema::PRODUCT_ID);
         $rules[Schema::RES_TRANSLATIONS.'.*.'.PTSchema::SLUG][] =
-            new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(PTSchema::TABLE, PTSchema::SLUG, $this->languageMap, $id, PTSchema::PRODUCT_ID);
         $rules[PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_ID][] =
-            Rule::exists(AttributeSchema::TABLE, AttributeSchema::ID);
+            new ScopedExists(AttributeSchema::TABLE, AttributeSchema::ID);
         $rules[PAVSchema::REQ_ATTRIBUTE_VALUES.'.*.'.PAVSchema::ATTRIBUTE_VALUE_ID][] =
-            Rule::exists(AttributeValueSchema::TABLE, AttributeValueSchema::ID);
+            new ScopedExists(AttributeValueSchema::TABLE, AttributeValueSchema::ID);
+        // Pivot option values carry no tenant_id; validate every id before
+        // the variant actions attach them (§4.3, layer 2).
+        $rules[Schema::RES_VARIANTS.'.*.'.VSchema::REQ_OPTION_VALUE_IDS.'*'][] =
+            new ScopedExists(OptionValueSchema::TABLE, OptionValueSchema::ID);
 
         return $rules;
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionEnum;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @mixin Builder<ProductCommentReaction>
@@ -19,6 +20,8 @@ use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
  */
 class ProductCommentReaction extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = ProductCommentReactionSchema::TABLE;
 
     protected $fillable = [

@@ -12,6 +12,7 @@ use Modules\Catalog\Schemas\Option\OptionTranslationSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\OptionValue\OptionValueTranslationSchema;
 use Modules\Core\Support\Slug;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
 
 /**
  * Resolves the option cells of a variant row (e.g. "Color" + "Red")
@@ -224,10 +225,12 @@ final class ProductImportOptionResolver
 
         $candidate = $base;
         $suffix = 0;
-        while (DB::table($table)
-            ->where($languageColumn, $this->defaultLanguageId)
-            ->where($slugColumn, $candidate)
-            ->exists()) {
+
+        $baseQuery = DB::table($table)
+            ->where($languageColumn, $this->defaultLanguageId);
+        TenantQueryScope::apply($baseQuery);
+
+        while ((clone $baseQuery)->where($slugColumn, $candidate)->exists()) {
             $candidate = $base.'-'.(++$suffix);
         }
 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
 
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(TaxRateSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->string(TaxRateSchema::NAME);
             $table->char(TaxRateSchema::COUNTRY_CODE, 2)->index();
             // Regional tax rates (gap-C1a D1). region_code is a NOT NULL
@@ -22,8 +25,10 @@ return new class extends Migration
             // the database enforce one-rate-per-scope on BOTH engines (a
             // nullable column would allow duplicate country-wide rows).
             $table->string(TaxRateSchema::REGION_CODE, 10)->default('');
-            $table->foreignId(TaxRateSchema::TAX_CLASS_ID)
-                ->constrained(TaxClassSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TaxRateSchema::TAX_CLASS_ID);
+            $table->foreign([TenantColumn::TENANT_ID, TaxRateSchema::TAX_CLASS_ID], 'tax_rates_tenant_class_fk')
+                ->references([TenantColumn::TENANT_ID, TaxClassSchema::ID])
+                ->on(TaxClassSchema::TABLE)->cascadeOnDelete();
             $table->decimal(TaxRateSchema::RATE, 7, 4)->unsigned();
             $table->boolean(TaxRateSchema::IS_ACTIVE)->default(true)->index();
             $table->timestamps();
@@ -31,7 +36,7 @@ return new class extends Migration
             // one rate per country × region × class (name kept short for
             // MySQL's 64-char identifier limit)
             $table->unique(
-                [TaxRateSchema::COUNTRY_CODE, TaxRateSchema::REGION_CODE, TaxRateSchema::TAX_CLASS_ID],
+                [TenantColumn::TENANT_ID, TaxRateSchema::COUNTRY_CODE, TaxRateSchema::REGION_CODE, TaxRateSchema::TAX_CLASS_ID],
                 'tax_rates_country_region_class_unique'
             );
         });

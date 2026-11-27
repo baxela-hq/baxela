@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Database\Factories\OrderItemFactory;
 use Modules\Order\Schemas\OrderItem\OrderItemSchema;
 
@@ -32,6 +33,8 @@ class OrderItem extends Model
 {
     /** @use HasFactory<OrderItemFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = OrderItemSchema::TABLE;
 

@@ -14,6 +14,10 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Rules\LowercaseUniquePair;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantQueryScope;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Core\Support\Transfer\CrossModuleResolver;
 use Modules\Core\Support\Transfer\RecordsTransferRemaps;
 use Modules\Core\Support\Transfer\TransferRunContext;
@@ -352,7 +356,7 @@ class DiscountTransfer implements ModuleTransferInterface
         return [
             CouponSchema::CODE => [
                 'required', 'string', 'max:64', 'regex:/^[A-Z0-9_-]+$/',
-                Rule::unique(CouponSchema::TABLE, CouponSchema::CODE)->ignore($ignoreId),
+                new LowercaseUniquePair(CouponSchema::TABLE, CouponSchema::CODE, is_null($ignoreId) ? null : (int) $ignoreId),
             ],
             CouponSchema::NAME => ['nullable', 'string', 'max:255'],
             CouponSchema::TYPE => ['required', Rule::enum(CouponTypeEnum::class)],
@@ -483,7 +487,7 @@ class DiscountTransfer implements ModuleTransferInterface
                 }
 
                 $localOrderId = $this->transferRemaps->resolve($options->sourceInstallation, 'order', 'orders', (int) ($payload[RedemptionSchema::ORDER_ID] ?? 0));
-                if ($localOrderId === null || ! DB::table('order_orders')->where('id', $localOrderId)->exists()) {
+                if ($localOrderId === null || ! TenantQueryScope::apply(DB::table('order_orders')->where('id', $localOrderId))->exists()) {
                     // Pass 1 of the documented two-pass restore: the order
                     // section hasn't imported yet — expected, not a failure.
                     $result->recordSkipped();
@@ -513,6 +517,7 @@ class DiscountTransfer implements ModuleTransferInterface
                     RedemptionSchema::DISCOUNT_AMOUNT => $payload[RedemptionSchema::DISCOUNT_AMOUNT] ?? '0.00',
                     RedemptionSchema::CREATED_AT => $payload['created_at'] ?? now()->toIso8601String(),
                     RedemptionSchema::UPDATED_AT => $payload['created_at'] ?? now()->toIso8601String(),
+                    TenantColumn::TENANT_ID => TenantWriteStamp::tenantIdForWrite(),
                 ];
 
                 // Historical write + remap record share the unit (C7/F11);
@@ -534,7 +539,8 @@ class DiscountTransfer implements ModuleTransferInterface
         // The runtime counter is derived state: recompute from the LOCAL
         // dataset (import replays history, not counters — C1 payload rule).
         if (! $options->dryRun) {
-            DB::table(CouponSchema::TABLE)->update([
+            // Fail closed: outside tenant mode no coupon may be recounted.
+            TenantQueryScope::apply(DB::table(CouponSchema::TABLE))->update([
                 CouponSchema::USAGE_COUNT => DB::raw('(SELECT COUNT(*) FROM '.RedemptionSchema::TABLE.' WHERE '.RedemptionSchema::COUPON_ID.' = '.CouponSchema::TABLE.'.'.CouponSchema::ID.')'),
             ]);
         }

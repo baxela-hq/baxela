@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\AttributeValue\AttributeValueTranslationSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -27,6 +28,7 @@ class AttributeValueTranslation /**
 extends Model
 {
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = AttributeValueTranslationSchema::TABLE;
 

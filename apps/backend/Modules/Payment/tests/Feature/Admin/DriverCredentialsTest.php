@@ -257,6 +257,7 @@ it('makes an undecryptable credential fail closed for real clients', function ()
     // the encrypting cast (an APP_KEY-rotation signature without needing
     // to rebuild the encrypter mid-process).
     DB::table('payment_driver_credentials')->insert([
+        'tenant_id' => 1,
         'driver' => 'stripe',
         'key' => 'secret',
         'value' => 'garbage-ciphertext-not-from-this-app',

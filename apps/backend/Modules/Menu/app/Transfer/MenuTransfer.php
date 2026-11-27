@@ -4,7 +4,6 @@ namespace Modules\Menu\Transfer;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
@@ -14,6 +13,7 @@ use Modules\Core\Contracts\Gateways\Transfer\DTOs\TransferSection;
 use Modules\Core\Contracts\Gateways\Transfer\ModuleTransferInterface;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
+use Modules\Core\Rules\ScopedUnique;
 use Modules\Core\Schemas\Language\LanguageSchema;
 use Modules\Menu\Actions\Admin\Menu\CreateMenuAction;
 use Modules\Menu\Actions\Admin\Menu\UpdateMenuAction;
@@ -419,7 +419,7 @@ class MenuTransfer implements ModuleTransferInterface
     {
         return [
             MenuSchema::LOCATION => ['required', 'string',
-                Rule::unique(MenuSchema::TABLE, MenuSchema::LOCATION)->ignore($ignoreId)],
+                new ScopedUnique(MenuSchema::TABLE, MenuSchema::LOCATION, is_null($ignoreId) ? null : (int) $ignoreId)],
             MenuSchema::RES_TRANSLATIONS => ['required', 'array', 'min:1'],
         ];
     }

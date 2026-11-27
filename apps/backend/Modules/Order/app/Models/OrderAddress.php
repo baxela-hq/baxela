@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Database\Factories\OrderAddressFactory;
 use Modules\Order\Schemas\OrderAddress\OrderAddressSchema;
 
@@ -28,6 +29,8 @@ class OrderAddress extends Model
 {
     /** @use HasFactory<OrderAddressFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = OrderAddressSchema::TABLE;
 

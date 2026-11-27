@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Discount\Schemas\Coupon\CouponSchema;
 
 return new class extends Migration
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(CouponSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // Customer-facing code; normalized to uppercase-trimmed on write
             $table->string(CouponSchema::CODE);
             $table->string(CouponSchema::NAME)->nullable();
@@ -40,8 +43,8 @@ return new class extends Migration
         // direct/import writes honest about case collisions too.
         DB::statement('CREATE UNIQUE INDEX coupons_code_lower_unique ON '.CouponSchema::TABLE.' '.(
             DB::connection()->getDriverName() === 'mysql'
-                ? '((LOWER('.CouponSchema::CODE.')))'
-                : '(LOWER('.CouponSchema::CODE.'))'
+                ? '(tenant_id, (LOWER('.CouponSchema::CODE.')))'
+                : '(tenant_id, LOWER('.CouponSchema::CODE.'))'
         ));
     }
 

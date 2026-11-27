@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Rate\RateSchema;
 use Modules\Shipping\Schemas\Zone\ZoneSchema;
@@ -16,6 +17,8 @@ return new class extends Migration
     {
         Schema::create(RateSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(RateSchema::METHOD_ID)
                 ->constrained(MethodSchema::TABLE)->onDelete('cascade');
             $table->foreignId(RateSchema::ZONE_ID)

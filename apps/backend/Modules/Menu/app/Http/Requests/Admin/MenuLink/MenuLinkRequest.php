@@ -5,8 +5,8 @@ namespace Modules\Menu\Http\Requests\Admin\MenuLink;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\In;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Menu\Schemas\MenuLink\MenuLinkSchema;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTargetEnum;
 use Modules\Menu\Schemas\MenuLink\MenuLinkTranslationSchema as MLTSchema;
@@ -20,7 +20,7 @@ class MenuLinkRequest extends FormRequest
         $this->resolveLanguages();
     }
 
-    /** @return array<string, array<int, string|array<int, string>|Enum|In>> */
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         $menuId = $this->route('id');
@@ -28,8 +28,7 @@ class MenuLinkRequest extends FormRequest
 
         return [
             MenuLinkSchema::PARENT_ID => ['nullable', 'integer',
-                Rule::exists(MenuLinkSchema::TABLE, MenuLinkSchema::ID)
-                    ->where(MenuLinkSchema::MENU_ID, $menuId)],
+                new ScopedExists(MenuLinkSchema::TABLE, MenuLinkSchema::ID, [MenuLinkSchema::MENU_ID => $menuId])],
 
             MenuLinkSchema::URL => ['required', 'string', 'max:255'],
             MenuLinkSchema::TARGET => ['required', 'string', new Enum(MenuLinkTargetEnum::class)],

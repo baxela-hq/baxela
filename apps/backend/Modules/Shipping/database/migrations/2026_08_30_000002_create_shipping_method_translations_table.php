@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema;
 
@@ -15,6 +16,8 @@ return new class extends Migration
     {
         Schema::create(MethodTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(MethodTranslationSchema::METHOD_ID)
                 ->constrained(MethodSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(MethodTranslationSchema::LANGUAGE_ID)->nullable();

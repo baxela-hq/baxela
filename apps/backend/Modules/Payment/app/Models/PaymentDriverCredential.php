@@ -3,6 +3,7 @@
 namespace Modules\Payment\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Payment\Schemas\PaymentDriverCredential\PaymentDriverCredentialSchema;
 
 /**
@@ -16,6 +17,8 @@ use Modules\Payment\Schemas\PaymentDriverCredential\PaymentDriverCredentialSchem
  */
 class PaymentDriverCredential extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = PaymentDriverCredentialSchema::TABLE;
 
     protected $fillable = [

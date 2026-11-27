@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Schemas\Option\OptionTranslationSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 // use Modules\Catalog\Database\Factories\OptionFactory;
 
@@ -23,6 +24,7 @@ class OptionTranslation extends Model
 {
     use BelongToProductTrait;
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = OptionTranslationSchema::TABLE;
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
 
@@ -13,6 +14,8 @@ return new class extends Migration
     {
         Schema::create(TransferImportSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // Plain unsigned int, mirroring the catalog_imports precedent:
             // cross-module ids stay denormalized, without FK constraints.
             $table->unsignedBigInteger(TransferImportSchema::USER_ID)->index();

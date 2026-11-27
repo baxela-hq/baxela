@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\OrderInvoice\OrderInvoiceSchema;
 use Modules\Order\Schemas\OrderInvoiceItem\OrderInvoiceItemSchema;
 
@@ -15,8 +16,12 @@ return new class extends Migration
     {
         Schema::create(OrderInvoiceItemSchema::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignId(OrderInvoiceItemSchema::INVOICE_ID)
-                ->constrained(OrderInvoiceSchema::TABLE)->onDelete('cascade');
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
+            $table->unsignedBigInteger(OrderInvoiceItemSchema::INVOICE_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderInvoiceItemSchema::INVOICE_ID], 'order_invoice_items_tenant_invoice_fk')
+                ->references([TenantColumn::TENANT_ID, OrderInvoiceSchema::ID])
+                ->on(OrderInvoiceSchema::TABLE)->cascadeOnDelete();
 
             // Line snapshot (D4/D11): every money column is COPIED from the
             // finalized order-item snapshot at issue time — checkout's

@@ -22,7 +22,9 @@ class CurrencyFactory extends Factory
         return [
             CurrencySchema::CODE => $this->faker->unique()->currencyCode,
             CurrencySchema::NAME => $this->faker->currencyCode,
-            CurrencySchema::IS_DEFAULT => $this->faker->boolean,
+            // The database enforces at most one base currency (§4.5); a
+            // factory row must not randomly claim the platform default.
+            CurrencySchema::IS_DEFAULT => false,
             CurrencySchema::EXCHANGE_RATE => '1.00000000',
             CurrencySchema::IS_ACTIVE => true,
         ];

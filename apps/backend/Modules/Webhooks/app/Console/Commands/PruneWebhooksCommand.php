@@ -20,6 +20,9 @@ class PruneWebhooksCommand extends Command
 
     public function handle(): int
     {
+        // Installation-wide retention sweep: the scheduled command has no
+        // single tenant to scope to, so these deletes intentionally cover
+        // every store (maintenance, not tenant CRUD).
         $cutoff = now()->subDays((int) config('webhooks.retention_days'));
 
         $deliveries = DB::table(WebhookDeliverySchema::TABLE)

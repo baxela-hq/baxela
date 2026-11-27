@@ -27,8 +27,11 @@ use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Catalog\Support\DataTransfer\CatalogTransferFormat;
 use Modules\Catalog\Tests\Feature\HelperTrait;
 use Modules\Core\Models\Language;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Media\Models\Media;
 use Modules\Media\Schemas\Media\MediaSchema;
+use Modules\Tenant\Models\Tenant;
+use Modules\Tenant\Schemas\Tenant\TenantSchema;
 
 use function Modules\Catalog\Tests\Feature\defaultLanguage;
 
@@ -595,4 +598,61 @@ it('denies the data transfer endpoints without permission', function () {
         ->assertStatus(403)->assertJsonPath('code', 'http.403');
     $this->getJson($this->baseUrl('/admin/data/import/1'))
         ->assertStatus(403)->assertJsonPath('code', 'http.403');
+});
+
+it('exports and imports only the selected store\'s catalog', function () {
+    $context = app(TenantContext::class);
+    $makeTenant = fn (string $slug): Tenant => Tenant::query()->create([
+        TenantSchema::NAME => ucfirst($slug),
+        TenantSchema::SLUG => $slug,
+        TenantSchema::EMAIL => $slug.'@example.test',
+        TenantSchema::STATUS => TenantSchema::STATUS_ACTIVE,
+    ]);
+    $acme = $makeTenant('acme');
+    $other = $makeTenant('other');
+
+    $this->actingAs($this->superAdminUser());
+
+    $context->runForTenant((int) $acme->getKey(), fn () => seedTransferCatalog());
+    $context->runForTenant((int) $other->getKey(), function (): void {
+        $product = Product::factory()->create();
+        $product->translations()->create([
+            'language_id' => defaultLanguage()->id,
+            'title' => 'Other store only',
+            'slug' => 'other-store-only',
+            'content' => 'Content',
+        ]);
+    });
+
+    $export = $this->withHeaders(['X-Tenant-Id' => (string) $acme->getKey()])
+        ->getJson($this->baseUrl('/admin/data/export'))
+        ->streamedContent();
+
+    expect($export)->toContain('classic-tee')
+        ->and($export)->not->toContain('other-store-only');
+
+    // The artifact is created under the importing store, then replayed with
+    // that store's context; no A row may be written into B or vice versa.
+    $media = $context->runForTenant(
+        (int) $other->getKey(),
+        fn () => transferMedia($export),
+    );
+
+    $this->withHeaders(['X-Tenant-Id' => (string) $other->getKey()])
+        ->postJson($this->baseUrl('/admin/data/import'), transferImportPayload($media))
+        ->assertOk()
+        ->assertJsonPath('data.failed_count', 0);
+
+    $context->runForTenant((int) $acme->getKey(), function (): void {
+        expect(Product::query()->count())->toBe(1)
+            ->and(Product::query()->whereHas('translations', fn ($q) => $q->where('slug', 'classic-tee'))->exists())->toBeTrue()
+            ->and(Product::query()->whereHas('translations', fn ($q) => $q->where('slug', 'other-store-only'))->exists())->toBeFalse();
+    });
+
+    $context->runForTenant((int) $other->getKey(), function () use ($other): void {
+        expect(Product::query()->count())->toBe(2)
+            ->and(Product::query()->whereHas('translations', fn ($q) => $q->where('slug', 'other-store-only'))->exists())->toBeTrue()
+            ->and(Product::query()->whereHas('translations', fn ($q) => $q->where('slug', 'classic-tee'))->exists())->toBeTrue()
+            ->and(Product::query()->pluck('tenant_id')->unique()->all())->toBe([(int) $other->getKey()]);
+    });
 });

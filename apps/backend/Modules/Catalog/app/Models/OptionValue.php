@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Catalog\Schemas\OptionValue\OptionValueSchema;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 // use Modules\Catalog\Database\Factories\OptionFactory;
 
@@ -26,6 +27,7 @@ class OptionValue extends Model
 {
     use BelongToProductTrait;
     use HasFactory;
+    use TenantScopedTrait;
 
     protected $table = OptionValueSchema::TABLE;
 

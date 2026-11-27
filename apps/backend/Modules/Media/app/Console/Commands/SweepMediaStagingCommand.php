@@ -32,7 +32,8 @@ final class SweepMediaStagingCommand extends Command
         $graceHours = max(1, (int) ($this->option('grace') ?? 24));
         $cutoff = now()->subHours($graceHours);
 
-        // Non-terminal staging paths stay untouchable, whatever their age.
+        // Installation-wide maintenance scan across all stores, not tenant
+        // CRUD: non-terminal staging paths stay untouchable, whatever their age.
         $referenced = DB::table(MediaOutboxSchema::TABLE)
             ->whereIn(MediaOutboxSchema::STATUS, [
                 MediaOutboxSchema::STATUS_PENDING,

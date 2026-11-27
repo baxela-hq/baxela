@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -17,6 +18,8 @@ use Modules\Content\Schemas\FeaturedItem\FeaturedItemSchema;
  */
 class FeaturedItem extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = FeaturedItemSchema::TABLE;
 
     /**

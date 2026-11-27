@@ -8,6 +8,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Actions\Tenancy\AuditTenancyAction;
 use Modules\Core\Console\Commands\BaxelaDisableCommand;
 use Modules\Core\Console\Commands\BaxelaEnableCommand;
 use Modules\Core\Console\Commands\BaxelaInstallCommand;
@@ -17,6 +18,7 @@ use Modules\Core\Console\Commands\BaxelaUpdateCommand;
 use Modules\Core\Console\Commands\ErdGenerateCommand;
 use Modules\Core\Console\Commands\QueueCheckBacklogCommand;
 use Modules\Core\Console\Commands\SyncExchangeRatesCommand;
+use Modules\Core\Console\Commands\TenancyAuditCommand;
 use Modules\Core\Console\Commands\TransferClearRemapsCommand;
 use Modules\Core\Console\Commands\TransferResetIdentityCommand;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
@@ -27,6 +29,7 @@ use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
 use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
+use Modules\Core\Operations\AuditTenancyOperation;
 use Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
 use Modules\Core\Support\Erd\ModuleTableResolver;
@@ -85,6 +88,7 @@ class CoreServiceProvider extends ServiceProvider
         }
 
         $this->registerCommands();
+        $this->registerCentralOperations();
         $this->registerCommandSchedules();
         $this->registerTranslations();
         $this->registerConfig();
@@ -156,8 +160,25 @@ class CoreServiceProvider extends ServiceProvider
             ErdGenerateCommand::class,
             QueueCheckBacklogCommand::class,
             SyncExchangeRatesCommand::class,
+            TenancyAuditCommand::class,
             TransferClearRemapsCommand::class,
             TransferResetIdentityCommand::class,
+        ]);
+    }
+
+    /**
+     * Core's Category-1 central operation (multi-tenancy §6.5): the
+     * installation-wide tenancy audit. The console command is its only
+     * caller; no queued job may carry it.
+     */
+    protected function registerCentralOperations(): void
+    {
+        $registry = $this->app->make(CentralOperationRegistry::class);
+
+        $registry->register(AuditTenancyOperation::class, [
+            'handler' => [AuditTenancyAction::class, 'execute'],
+            'callers' => [TenancyAuditCommand::class],
+            'jobs' => [],
         ]);
     }
 

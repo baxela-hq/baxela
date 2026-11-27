@@ -1,9 +1,12 @@
 <?php
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Core\Schemas\TransferLock\TransferLockSchema;
+use Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar;
 use Modules\Core\Support\Transfer\TransferClock;
 
 uses(RefreshDatabase::class);
@@ -76,7 +79,7 @@ it('rejects a lease that expired while the verifying transaction was open (clock
 
         $leaseLiveBeforeSleep = (int) $row->lease_live;
 
-        $connection->statement("SELECT pg_sleep(1.5)");
+        $connection->statement('SELECT pg_sleep(1.5)');
         $row = $connection->selectOne(sprintf(
             'SELECT CASE WHEN %1$s > %2$s THEN 1 ELSE 0 END AS lease_live FROM %3$s WHERE %4$s = ?',
             TransferLockSchema::EXPIRES_AT,
@@ -95,6 +98,7 @@ it('rejects a lease that expired while the verifying transaction was open (clock
 
 it('enforces the unsigned CHECK constraints on live writes', function () {
     $productId = DB::table('catalog_products')->insertGetId([
+        TenantColumn::TENANT_ID => 1,
         'type' => 'simple', 'status' => 'in_stock', 'is_published' => true,
         'created_at' => now(), 'updated_at' => now(),
     ]);
@@ -106,11 +110,12 @@ it('enforces the unsigned CHECK constraints on live writes', function () {
     $insertVariant = function (string $sku, int|float $price, int $quantity) use ($productId): bool {
         try {
             DB::transaction(fn () => DB::table('catalog_variants')->insert([
+                TenantColumn::TENANT_ID => 1,
                 'product_id' => $productId, 'sku' => $sku, 'price' => $price, 'quantity' => $quantity,
             ]));
 
             return true;
-        } catch (Illuminate\Database\QueryException) {
+        } catch (QueryException) {
             return false; // Savepoint rolled back; the outer transaction stays usable.
         }
     };
@@ -121,8 +126,9 @@ it('enforces the unsigned CHECK constraints on live writes', function () {
     // MySQL-max values fit the widened types (range parity): quantity is
     // unsignedSmallInteger — its 65535 ceiling fits the widened integer.
     expect(fn () => DB::table('catalog_variants')->insert([
+        TenantColumn::TENANT_ID => 1,
         'product_id' => $productId, 'sku' => 'BIG-QTY', 'price' => 5, 'quantity' => 65535,
-    ]))->not->toThrow(Illuminate\Database\QueryException::class);
+    ]))->not->toThrow(QueryException::class);
 });
 
 it('keeps the grammar applied across reconnects (DD9b lifecycle, matrix 35)', function () {
@@ -132,6 +138,6 @@ it('keeps the grammar applied across reconnects (DD9b lifecycle, matrix 35)', fu
     Schema::hasTable('users');
 
     expect(get_class(DB::connection()->getSchemaGrammar()))->toBe(
-        Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar::class,
+        PostgresUnsignedGrammar::class,
     );
 });

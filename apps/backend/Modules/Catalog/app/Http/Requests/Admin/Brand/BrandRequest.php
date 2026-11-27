@@ -28,7 +28,7 @@ class BrandRequest extends FormRequest
         $rules = self::rulesFor($this->languageMap);
 
         $rules[BSchema::RES_TRANSLATIONS.'.*.'.BTSchema::SLUG][] =
-            new LanguageUniquePair(BTSchema::TABLE, BTSchema::SLUG, $this->languageMap, $id);
+            new LanguageUniquePair(BTSchema::TABLE, BTSchema::SLUG, $this->languageMap, $id, BTSchema::BRAND_ID);
 
         return $rules;
     }

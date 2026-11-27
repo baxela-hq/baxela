@@ -15,6 +15,8 @@ use Modules\Catalog\Schemas\Module;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 
 class CategorySeeder extends Seeder
 {
@@ -79,7 +81,9 @@ class CategorySeeder extends Seeder
     {
         $now = now();
 
+        $tenantId = TenantWriteStamp::tenantIdForWrite();
         $rows = collect($this->featuredIds)->values()->map(fn ($id, $index) => [
+            TenantColumn::TENANT_ID => $tenantId,
             FeaturedItemSchema::FEATUREDABLE_TYPE => FeaturedItemSchema::TYPE_CATEGORY,
             FeaturedItemSchema::FEATUREDABLE_ID => $id,
             FeaturedItemSchema::POSITION => $index + 1,

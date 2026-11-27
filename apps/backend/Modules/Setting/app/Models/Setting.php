@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Setting\Database\Factories\SettingFactory;
 use Modules\Setting\Schemas\Setting\SettingGroupEnum;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
@@ -29,6 +30,8 @@ class Setting extends Model
 {
     /** @use HasFactory<SettingFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     /**
      * The masked representation returned for the FX API key by the
@@ -67,5 +70,10 @@ class Setting extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(Translation::class);
+    }
+
+    public static function isPlatformTier(): bool
+    {
+        return true;
     }
 }

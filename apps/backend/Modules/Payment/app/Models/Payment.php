@@ -5,6 +5,7 @@ namespace Modules\Payment\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Payment\Database\Factories\PaymentFactory;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
@@ -16,6 +17,8 @@ use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
  * @property string $method
  * @property string $amount
  * @property int|null $currency_id
+ * @property string|null $currency_code
+ * @property string|null $exchange_rate
  * @property PaymentStatusEnum $status
  * @property string|null $gateway_transaction_id
  * @property CarbonInterface|null $created_at
@@ -26,6 +29,8 @@ class Payment extends Model
     /** @use HasFactory<PaymentFactory> */
     use HasFactory;
 
+    use TenantScopedTrait;
+
     protected $table = PaymentSchema::TABLE;
 
     protected $fillable = [
@@ -35,6 +40,8 @@ class Payment extends Model
         PaymentSchema::METHOD,
         PaymentSchema::AMOUNT,
         PaymentSchema::CURRENCY_ID,
+        PaymentSchema::CURRENCY_CODE,
+        PaymentSchema::EXCHANGE_RATE,
         PaymentSchema::STATUS,
     ];
 
@@ -42,6 +49,7 @@ class Payment extends Model
     {
         return [
             PaymentSchema::STATUS => PaymentStatusEnum::class,
+            PaymentSchema::EXCHANGE_RATE => 'decimal:8',
         ];
     }
 

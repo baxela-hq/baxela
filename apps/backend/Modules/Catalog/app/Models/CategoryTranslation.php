@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Catalog\Database\Factories\CategoryTranslationFactory;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -26,6 +27,7 @@ class CategoryTranslation extends Model
     use HasFactory;
 
     use SlugTrait;
+    use TenantScopedTrait;
 
     protected $table = CategoryTranslationSchema::TABLE;
 

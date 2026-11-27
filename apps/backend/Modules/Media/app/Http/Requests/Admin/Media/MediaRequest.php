@@ -3,9 +3,8 @@
 namespace Modules\Media\Http\Requests\Admin\Media;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Exists;
 use Illuminate\Validation\Rules\File;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Media\DTOs\Admin\CreateMediaInput;
 use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
@@ -15,8 +14,9 @@ class MediaRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
      */
-    /** @return array<string, list<string|Exists|File>> */
     public function rules(): array
     {
         return [
@@ -24,7 +24,7 @@ class MediaRequest extends FormRequest
                 File::types(MediaMimeTypeEnum::values())
                     ->max('20mb'),
             ],
-            MediaSchema::FOLDER_ID => ['nullable', 'numeric', Rule::exists(FolderSchema::TABLE, FolderSchema::ID)],
+            MediaSchema::FOLDER_ID => ['nullable', 'numeric', new ScopedExists(FolderSchema::TABLE, FolderSchema::ID)],
             MediaSchema::METADATA => ['nullable', 'array'],
         ];
     }

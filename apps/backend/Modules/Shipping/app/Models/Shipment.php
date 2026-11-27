@@ -5,6 +5,7 @@ namespace Modules\Shipping\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Shipping\Database\Factories\ShipmentFactory;
 use Modules\Shipping\Schemas\Shipment\ShipmentSchema;
 use Modules\Shipping\Schemas\Shipment\ShipmentStatusEnum;
@@ -30,6 +31,8 @@ class Shipment extends Model
 {
     /** @use HasFactory<ShipmentFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ShipmentSchema::TABLE;
 

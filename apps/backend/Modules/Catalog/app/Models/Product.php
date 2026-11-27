@@ -20,6 +20,7 @@ use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTypeEnum;
 use Modules\Catalog\Schemas\Variant\VariantOptionValueSchema;
 use Modules\Core\Models\Traits\SlugTrait;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -46,6 +47,7 @@ class Product extends Model
 
     use SlugTrait;
     use SoftDeletes;
+    use TenantScopedTrait;
 
     protected $table = ProductSchema::TABLE;
 

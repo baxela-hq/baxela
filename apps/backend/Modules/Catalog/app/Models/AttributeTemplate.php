@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Catalog\Database\Factories\AttributeTemplateFactory;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateGroupSchema;
 use Modules\Catalog\Schemas\AttributeTemplate\AttributeTemplateSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -23,6 +24,8 @@ class AttributeTemplate extends Model
 {
     /** @use HasFactory<AttributeTemplateFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = AttributeTemplateSchema::TABLE;
 

@@ -4,9 +4,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Product\ProductSchema;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Tests\Feature\HelperTrait;
+use Modules\Tenant\Models\Tenant;
+use Modules\Tenant\Schemas\Tenant\TenantSchema;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -98,6 +101,60 @@ it('refuses deleting the active default class', function () {
         ->assertJsonPath('code', 'tax.class.delete_default');
 
     expect(TaxClass::count())->toBe(1);
+});
+
+it('refuses demoting the active default class without a replacement', function () {
+    $this->actingAs($this->superAdminUser());
+
+    $id = $this->postJson($this->baseUrl('/admin/tax-classes'), classPayload())->json('data.id');
+
+    $this->patchJson($this->baseUrl("/admin/tax-classes/{$id}"), classPayload([
+        TaxClassSchema::IS_DEFAULT => false,
+    ]))->assertStatus(400)
+        ->assertJsonPath('code', 'tax.class.delete_default');
+
+    expect(TaxClass::query()->where(TaxClassSchema::IS_DEFAULT, true)->count())->toBe(1)
+        ->and(TaxClass::query()->find($id)->{TaxClassSchema::IS_DEFAULT})->toBeTrue();
+});
+
+it('keeps a default in each store when one store tries to drop its own', function () {
+    $context = app(TenantContext::class);
+    $makeTenant = fn (string $slug): Tenant => Tenant::query()->create([
+        TenantSchema::NAME => ucfirst($slug),
+        TenantSchema::SLUG => $slug,
+        TenantSchema::EMAIL => $slug.'@example.test',
+        TenantSchema::STATUS => TenantSchema::STATUS_ACTIVE,
+    ]);
+    $acme = $makeTenant('acme');
+    $other = $makeTenant('other');
+
+    $this->actingAs($this->superAdminUser());
+
+    $acmeDefault = $this->withHeaders(['X-Tenant-Id' => (string) $acme->getKey()])
+        ->postJson($this->baseUrl('/admin/tax-classes'), classPayload())
+        ->json('data.id');
+    $otherDefault = $this->withHeaders(['X-Tenant-Id' => (string) $other->getKey()])
+        ->postJson($this->baseUrl('/admin/tax-classes'), classPayload())
+        ->json('data.id');
+
+    $this->withHeaders(['X-Tenant-Id' => (string) $acme->getKey()])
+        ->patchJson($this->baseUrl("/admin/tax-classes/{$acmeDefault}"), classPayload([
+            TaxClassSchema::IS_DEFAULT => false,
+        ]))->assertStatus(400)->assertJsonPath('code', 'tax.class.delete_default');
+
+    $this->withHeaders(['X-Tenant-Id' => (string) $acme->getKey()])
+        ->postJson($this->baseUrl('/admin/tax-classes'), classPayload([
+            TaxClassSchema::NAME => 'Replacement',
+        ]))->assertCreated();
+
+    $context->runForTenant((int) $acme->getKey(), function () use ($acmeDefault): void {
+        expect(TaxClass::query()->where(TaxClassSchema::IS_DEFAULT, true)->count())->toBe(1)
+            ->and(TaxClass::query()->find($acmeDefault)->{TaxClassSchema::IS_DEFAULT})->toBeFalse();
+    });
+    $context->runForTenant((int) $other->getKey(), function () use ($otherDefault): void {
+        expect(TaxClass::query()->where(TaxClassSchema::IS_DEFAULT, true)->count())->toBe(1)
+            ->and(TaxClass::query()->find($otherDefault)->{TaxClassSchema::IS_DEFAULT})->toBeTrue();
+    });
 });
 
 it('refuses deleting a class still referenced by products', function () {

@@ -13,6 +13,7 @@ use Modules\Content\Database\Factories\PostFactory;
 use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\PostCategory\PostCategoryPostSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -32,6 +33,8 @@ class Post extends Model
 {
     /** @use HasFactory<PostFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = PostSchema::TABLE;
 

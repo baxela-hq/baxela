@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Contact\Database\Factories\ContactMessageFactory;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageSchema;
 use Modules\Contact\Schemas\ContactMessage\ContactMessageStatusEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,8 @@ class ContactMessage extends Model
 {
     /** @use HasFactory<ContactMessageFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ContactMessageSchema::TABLE;
 

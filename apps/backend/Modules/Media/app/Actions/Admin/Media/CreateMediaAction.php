@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Core\Contracts\Events\Media\MediaCreatedEvent;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Core\Utils\Auth;
 use Modules\Media\Dtos\Admin\CreateMediaInput;
 use Modules\Media\Exceptions\Admin\Media\CreationFailedException;
@@ -71,6 +73,7 @@ class CreateMediaAction extends AbstractMediaAction
             ]);
 
             DB::table(MediaOutboxSchema::TABLE)->insert([
+                TenantColumn::TENANT_ID => TenantWriteStamp::tenantIdForWrite(),
                 MediaOutboxSchema::MEDIA_ID => $record->getKey(),
                 MediaOutboxSchema::EXPECTED_HASH => $hash,
                 MediaOutboxSchema::STAGING_PATH => $stagingPath,
@@ -79,7 +82,7 @@ class CreateMediaAction extends AbstractMediaAction
             ]);
 
             DB::commit();
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             DB::rollBack();
             report($t);
             throw new CreationFailedException(previous: $t);

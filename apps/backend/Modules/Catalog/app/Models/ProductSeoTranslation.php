@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Catalog\Database\Factories\ProductSeoTranslationFactory;
 use Modules\Catalog\Schemas\Product\ProductSeoTranslationSchema;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @property int $id
@@ -25,6 +26,8 @@ class ProductSeoTranslation extends Model
 
     /** @use HasFactory<ProductSeoTranslationFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ProductSeoTranslationSchema::TABLE;
 

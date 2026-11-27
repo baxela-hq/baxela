@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\Order\OrderSchema;
 use Modules\Order\Schemas\OrderInvoice\OrderInvoiceSchema;
@@ -17,13 +18,20 @@ return new class extends Migration
     {
         Schema::create(OrderInvoiceSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             // Financial-record protection (D16): no cascade. Deleting an
             // order that carries issued documents must fail loudly, never
             // silently destroy the books.
-            $table->foreignId(OrderInvoiceSchema::ORDER_ID)
-                ->constrained(OrderSchema::TABLE)->restrictOnDelete();
+            $table->unsignedBigInteger(OrderInvoiceSchema::ORDER_ID);
+            $table->foreign([TenantColumn::TENANT_ID, OrderInvoiceSchema::ORDER_ID], 'order_invoices_tenant_order_fk')
+                ->references([TenantColumn::TENANT_ID, OrderInvoiceSchema::ID])
+                ->on(OrderSchema::TABLE)->restrictOnDelete();
             $table->unsignedInteger(OrderInvoiceSchema::REVISION)->default(1);
-            $table->string(OrderInvoiceSchema::NUMBER)->unique();
+            $table->string(OrderInvoiceSchema::NUMBER);
+            $table->unique([TenantColumn::TENANT_ID, OrderInvoiceSchema::NUMBER]);
+            // Composite parent key for invoice items and credit notes.
+            $table->unique([TenantColumn::TENANT_ID, OrderInvoiceSchema::ID], 'order_invoices_tenant_id_unique');
             $table->enum(OrderInvoiceSchema::STATUS, OrderInvoiceStatusEnum::cases())
                 ->default(OrderInvoiceStatusEnum::ACTIVE->value);
             $table->timestamp(OrderInvoiceSchema::ISSUED_AT);
@@ -33,6 +41,9 @@ return new class extends Migration
             // Frozen snapshot block (D4): copied at issue time, never
             // re-derived from live order rows or current settings.
             $table->string(OrderInvoiceSchema::CURRENCY_CODE);
+            // §6.7.1: the FX rate is frozen with the document, so a later
+            // base-currency change cannot reinterpret a historical amount.
+            $table->decimal(OrderInvoiceSchema::EXCHANGE_RATE, 16, 8)->nullable();
             $table->decimal(OrderInvoiceSchema::SUBTOTAL_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->decimal(OrderInvoiceSchema::DISCOUNT_AMOUNT, 12, 2)->unsigned()->default(0.00);
             $table->string(OrderInvoiceSchema::COUPON_CODE)->nullable();

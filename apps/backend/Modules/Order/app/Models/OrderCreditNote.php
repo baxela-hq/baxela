@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Order\Schemas\Document\DocumentPdfStatusEnum;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteSchema;
 use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
@@ -27,6 +28,7 @@ use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
  * @property CarbonInterface|null $voided_at
  * @property string|null $void_reason
  * @property string $currency_code
+ * @property string|null $exchange_rate
  * @property string $amount
  * @property DocumentPdfStatusEnum $pdf_status
  * @property string|null $pdf_disk
@@ -39,6 +41,8 @@ use Modules\Order\Schemas\OrderCreditNote\OrderCreditNoteStatusEnum;
  */
 class OrderCreditNote extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = OrderCreditNoteSchema::TABLE;
 
     protected $fillable = [
@@ -50,6 +54,7 @@ class OrderCreditNote extends Model
         OrderCreditNoteSchema::VOIDED_AT,
         OrderCreditNoteSchema::VOID_REASON,
         OrderCreditNoteSchema::CURRENCY_CODE,
+        OrderCreditNoteSchema::EXCHANGE_RATE,
         OrderCreditNoteSchema::AMOUNT,
         OrderCreditNoteSchema::REASON,
         OrderCreditNoteSchema::PDF_STATUS,
@@ -69,6 +74,7 @@ class OrderCreditNote extends Model
             OrderCreditNoteSchema::ISSUED_AT => 'datetime',
             OrderCreditNoteSchema::VOIDED_AT => 'datetime',
             OrderCreditNoteSchema::PDF_GENERATED_AT => 'datetime',
+            OrderCreditNoteSchema::EXCHANGE_RATE => 'decimal:8',
             OrderCreditNoteSchema::GENERATION_CLAIMED_AT => 'datetime',
         ];
     }

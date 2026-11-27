@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Audit\Schemas\AuditLog\AuditLogSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create(AuditLogSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID)->nullable();
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedBigInteger(AuditLogSchema::USER_ID)->nullable();
             $table->string(AuditLogSchema::MODULE);
             $table->string(AuditLogSchema::ENTITY);

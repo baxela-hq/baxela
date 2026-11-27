@@ -2,8 +2,11 @@
 
 namespace Modules\Webhooks\Actions\Webhooks;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantWriteStamp;
 use Modules\Webhooks\Models\WebhookDelivery;
 use Modules\Webhooks\Models\WebhookEndpoint;
 use Modules\Webhooks\Models\WebhookEvent;
@@ -44,6 +47,21 @@ class ProcessOutboxEventAction
 
                 $deliveryId = (string) Str::uuid();
 
+                $values = [
+                    WebhookDeliverySchema::ID => $deliveryId,
+                    WebhookDeliverySchema::EVENT_ID => $event->{WebhookEventSchema::ID},
+                    WebhookDeliverySchema::ENDPOINT_ID => $endpoint->getKey(),
+                    WebhookDeliverySchema::EVENT_TYPE => $event->{WebhookEventSchema::EVENT_TYPE},
+                    WebhookDeliverySchema::STATUS => 'pending',
+                    WebhookDeliverySchema::CREATED_AT => now(),
+                ];
+
+                // The event payload is caller data: never let it choose the
+                // owner. Drop any supplied stamp before stamping from the
+                // active tenant context.
+                $values = Arr::except($values, [TenantColumn::TENANT_ID]);
+                $values[TenantColumn::TENANT_ID] = TenantWriteStamp::tenantIdForWrite();
+
                 // Scoped conflict (postgres-migration DD13): only the
                 // intended (endpoint_id, event_id) duplicate is ignored —
                 // a targetless ON CONFLICT DO NOTHING on PostgreSQL would
@@ -52,19 +70,26 @@ class ProcessOutboxEventAction
                 $inserted = DB::connection()->getDriverName() === 'pgsql'
                     ? DB::affectingStatement(
                         'INSERT INTO '.WebhookDeliverySchema::TABLE
-                        .' (id, '.WebhookDeliverySchema::EVENT_ID.', '.WebhookDeliverySchema::ENDPOINT_ID.', '.WebhookDeliverySchema::EVENT_TYPE.', '.WebhookDeliverySchema::STATUS.', '.WebhookDeliverySchema::CREATED_AT.')'
-                        .' VALUES (?, ?, ?, ?, ?, ?)'
+                        .' (id, '
+                        .WebhookDeliverySchema::EVENT_ID.', '
+                        .WebhookDeliverySchema::ENDPOINT_ID.', '
+                        .WebhookDeliverySchema::EVENT_TYPE.', '
+                        .WebhookDeliverySchema::STATUS.', '
+                        .WebhookDeliverySchema::CREATED_AT.', '
+                        .TenantColumn::TENANT_ID.')'
+                        .' VALUES (?, ?, ?, ?, ?, ?, ?)'
                         .' ON CONFLICT ('.WebhookDeliverySchema::ENDPOINT_ID.', '.WebhookDeliverySchema::EVENT_ID.') DO NOTHING',
-                        [$deliveryId, $event->{WebhookEventSchema::ID}, $endpoint->getKey(), $event->{WebhookEventSchema::EVENT_TYPE}, 'pending', now()],
+                        [
+                            $deliveryId,
+                            $event->{WebhookEventSchema::ID},
+                            $endpoint->getKey(),
+                            $event->{WebhookEventSchema::EVENT_TYPE},
+                            'pending',
+                            $values[WebhookDeliverySchema::CREATED_AT],
+                            $values[TenantColumn::TENANT_ID],
+                        ],
                     )
-                    : WebhookDelivery::query()->insertOrIgnore([
-                        WebhookDeliverySchema::ID => $deliveryId,
-                        WebhookDeliverySchema::EVENT_ID => $event->{WebhookEventSchema::ID},
-                        WebhookDeliverySchema::ENDPOINT_ID => $endpoint->getKey(),
-                        WebhookDeliverySchema::EVENT_TYPE => $event->{WebhookEventSchema::EVENT_TYPE},
-                        WebhookDeliverySchema::STATUS => 'pending',
-                        WebhookDeliverySchema::CREATED_AT => now(),
-                    ]);
+                    : WebhookDelivery::query()->insertOrIgnore($values);
 
                 $created += (int) $inserted;
             }

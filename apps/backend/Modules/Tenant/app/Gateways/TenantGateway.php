@@ -62,6 +62,14 @@ class TenantGateway implements TenantGatewayInterface
         return $this->snapshotOf($this->read(fn () => Tenant::query()->where(TenantSchema::SLUG, $slug)->first()));
     }
 
+    /** @return list<int> */
+    public function allIds(): array
+    {
+        return array_map('intval', $this->read(
+            fn () => Tenant::query()->pluck(TenantSchema::ID)->all(),
+        ) ?? []);
+    }
+
     public function defaultTenant(): ?TenantSnapshotDto
     {
         $slug = (string) config('core.tenancy.fallback_tenant');

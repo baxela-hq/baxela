@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupSchema;
 use Modules\Catalog\Schemas\AttributeGroup\AttributeGroupTranslationSchema;
+use Modules\Core\Schemas\Shared\TenantColumn;
 
 return new class extends Migration
 {
@@ -15,12 +16,16 @@ return new class extends Migration
     {
         Schema::create(AttributeGroupSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->unsignedSmallInteger(AttributeGroupSchema::POSITION)->nullable();
             $table->timestamps();
         });
 
         Schema::create(AttributeGroupTranslationSchema::TABLE, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger(TenantColumn::TENANT_ID);
+            $table->index(TenantColumn::TENANT_ID);
             $table->foreignId(AttributeGroupTranslationSchema::ATTRIBUTE_GROUP_ID)
                 ->constrained(AttributeGroupSchema::TABLE)->onDelete('cascade');
             $table->unsignedBigInteger(AttributeGroupTranslationSchema::LANGUAGE_ID);

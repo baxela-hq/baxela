@@ -5,6 +5,7 @@ namespace Modules\Core\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 use Modules\Core\Schemas\TransferImport\TransferImportSchema;
 use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
 
@@ -29,6 +30,8 @@ use Modules\Core\Schemas\TransferImport\TransferImportStatusEnum;
  */
 class TransferImport extends Model
 {
+    use TenantScopedTrait;
+
     protected $table = TransferImportSchema::TABLE;
 
     protected $fillable = [

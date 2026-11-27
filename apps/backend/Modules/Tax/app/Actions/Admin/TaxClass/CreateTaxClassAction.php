@@ -20,6 +20,12 @@ class CreateTaxClassAction
         try {
             DB::beginTransaction();
 
+            // The partial unique index allows one default per store, so the
+            // incumbent must be demoted before the new row is inserted.
+            if ($data[TaxClassSchema::IS_DEFAULT]) {
+                TaxClass::query()->update([TaxClassSchema::IS_DEFAULT => false]);
+            }
+
             $record = TaxClass::query()->create([
                 TaxClassSchema::NAME => $data[TaxClassSchema::NAME],
                 TaxClassSchema::IS_DEFAULT => $data[TaxClassSchema::IS_DEFAULT],

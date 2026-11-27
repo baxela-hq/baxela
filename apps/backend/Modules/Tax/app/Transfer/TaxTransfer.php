@@ -3,7 +3,6 @@
 namespace Modules\Tax\Transfer;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use InvalidArgumentException;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportOptions;
 use Modules\Core\Contracts\Gateways\Transfer\DTOs\ImportResult;
@@ -13,6 +12,7 @@ use Modules\Core\Contracts\Gateways\Transfer\TransferStrategyEnum;
 use Modules\Core\Exceptions\Transfer\TransferLockSessionLostException;
 use Modules\Core\Rules\CountryCodeRule;
 use Modules\Core\Rules\RegionCodeRule;
+use Modules\Core\Rules\ScopedExists;
 use Modules\Core\Support\Transfer\RecordsTransferRemaps;
 use Modules\Tax\Actions\Admin\TaxClass\CreateTaxClassAction;
 use Modules\Tax\Actions\Admin\TaxClass\UpdateTaxClassAction;
@@ -20,6 +20,7 @@ use Modules\Tax\Actions\Admin\TaxRate\CreateTaxRateAction;
 use Modules\Tax\Actions\Admin\TaxRate\UpdateTaxRateAction;
 use Modules\Tax\Models\TaxClass;
 use Modules\Tax\Models\TaxRate;
+use Modules\Tax\Rules\ScopedRateUniqueRule;
 use Modules\Tax\Schemas\Module;
 use Modules\Tax\Schemas\TaxClass\TaxClassSchema;
 use Modules\Tax\Schemas\TaxRate\TaxRateSchema;
@@ -329,7 +330,7 @@ class TaxTransfer implements ModuleTransferInterface
     }
 
     /**
-     * @return array<string, list<string>>
+     * @return array<string, mixed>
      */
     private function classRules(): array
     {
@@ -347,7 +348,7 @@ class TaxTransfer implements ModuleTransferInterface
      * (sentinel ids), so the exists check is deferred to the remap step.
      *
      * @param  array<string, mixed>  $payload  Class id already remapped
-     * @return array<string, list<mixed>>
+     * @return array<string, mixed>
      */
     private function rateRules(ImportOptions $options, array $payload, int|string|null $ignoreId): array
     {
@@ -366,14 +367,15 @@ class TaxTransfer implements ModuleTransferInterface
                 'string',
                 'max:10',
                 new RegionCodeRule($payload[TaxRateSchema::COUNTRY_CODE] ?? ''),
-                Rule::unique(TaxRateSchema::TABLE, TaxRateSchema::REGION_CODE)
-                    ->where(TaxRateSchema::COUNTRY_CODE, $payload[TaxRateSchema::COUNTRY_CODE] ?? '')
-                    ->where(TaxRateSchema::TAX_CLASS_ID, $payload[TaxRateSchema::TAX_CLASS_ID])
-                    ->ignore($ignoreId),
+                new ScopedRateUniqueRule(
+                    (string) ($payload[TaxRateSchema::COUNTRY_CODE] ?? ''),
+                    (int) $payload[TaxRateSchema::TAX_CLASS_ID],
+                    is_null($ignoreId) ? null : (int) $ignoreId,
+                ),
             ],
             TaxRateSchema::TAX_CLASS_ID => $options->dryRun
                 ? ['required', 'integer']
-                : ['required', 'integer', Rule::exists(TaxClassSchema::TABLE, TaxClassSchema::ID)],
+                : ['required', 'integer', new ScopedExists(TaxClassSchema::TABLE, TaxClassSchema::ID)],
             // percentage, 0–100, at most 4 fraction digits so the stored
             // decimal(7,4) never has to round silently
             TaxRateSchema::RATE => [

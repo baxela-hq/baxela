@@ -4,8 +4,8 @@ namespace Modules\Shipping\Http\Requests\Admin\Method;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Modules\Core\Http\Requests\ResolvesLanguagesTrait;
+use Modules\Core\Rules\ScopedUnique;
 use Modules\Shipping\Schemas\Method\MethodSchema;
 use Modules\Shipping\Schemas\Method\MethodTranslationSchema as MTSchema;
 
@@ -18,14 +18,14 @@ class MethodRequest extends FormRequest
         $this->resolveLanguages();
     }
 
-    /** @return array<string, array<int, string|Enum|array<int, string>>> */
+    /** @return array<string, mixed> */
     public function rules(): array
     {
         $id = $this->route('id');
 
         return [
             MethodSchema::CODE => ['required', 'string', 'max:255',
-                Rule::unique(MethodSchema::TABLE, MethodSchema::CODE)->ignore($id)],
+                new ScopedUnique(MethodSchema::TABLE, MethodSchema::CODE, is_null($id) ? null : (int) $id)],
 
             MethodSchema::IS_ACTIVE => ['required', 'boolean'],
             MethodSchema::POSITION => ['nullable', 'numeric', 'max:255'],

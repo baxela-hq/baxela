@@ -12,6 +12,7 @@ use Modules\Catalog\Database\Factories\ProductCommentFactory;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentReactionSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentSchema;
 use Modules\Catalog\Schemas\ProductComment\ProductCommentStatusEnum;
+use Modules\Core\Models\Traits\TenantScopedTrait;
 
 /**
  * @mixin Builder<ProductComment>
@@ -29,6 +30,8 @@ class ProductComment extends Model
 {
     /** @use HasFactory<ProductCommentFactory> */
     use HasFactory;
+
+    use TenantScopedTrait;
 
     protected $table = ProductCommentSchema::TABLE;
 
