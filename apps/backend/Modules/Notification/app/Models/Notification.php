@@ -13,6 +13,7 @@ use Modules\Notification\Schemas\Notification\NotificationSchema;
 
 /**
  * @property int $id
+ * @property int|null $tenant_id
  * @property int|null $user_id
  * @property NotificationCodeEnum $code
  * @property NotificationAudienceEnum $audience

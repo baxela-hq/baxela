@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>Eine Gutschrift <strong>{{ $credit_note_number }}</strong> wurde für Rechnung <strong>{{ $invoice_number }}</strong> (Bestellung <strong>{{ $order_code }}</strong>) ausgestellt.</p>
 

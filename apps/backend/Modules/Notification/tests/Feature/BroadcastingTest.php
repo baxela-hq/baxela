@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Modules\Auth\Models\User;
 use Modules\Core\Contracts\Events\Order\OrderCreatedEvent;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Notification\Events\NotificationCreated;
 use Modules\Notification\Models\Notification;
 use Modules\Notification\Schemas\Notification\NotificationCodeEnum;
@@ -14,6 +16,8 @@ use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherI
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
 use Modules\Notification\Support\BroadcastChannels;
 use Modules\Notification\Tests\Feature\HelperTrait;
+use Modules\Tenant\Models\Tenant;
+use Modules\Tenant\Schemas\Tenant\TenantSchema;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -37,7 +41,9 @@ it('queues a broadcast for every created notification on the recipient private c
 
     dispatchDatabaseNotification($user->id);
 
-    Queue::assertPushed(BroadcastEvent::class, function (BroadcastEvent $job) use ($user): bool {
+    $tenantId = (int) app(TenantContext::class)->tenantId();
+
+    Queue::assertPushed(BroadcastEvent::class, function (BroadcastEvent $job) use ($user, $tenantId): bool {
         $event = $job->event;
 
         if (! $event instanceof NotificationCreated) {
@@ -47,11 +53,12 @@ it('queues a broadcast for every created notification on the recipient private c
         $channels = $event->broadcastOn();
         $payload = $event->broadcastWith();
 
-        return $event->notifiableId === $user->id
+        return $event->tenantId === $tenantId
+            && $event->notifiableId === $user->id
             && $event->audience === 'user'
             && $event->broadcastAs() === 'notification.created'
             && count($channels) === 1
-            && $channels[0]->name === "private-notification.user.{$user->id}"
+            && $channels[0]->name === "private-tenant.{$tenantId}.notification.user.{$user->id}"
             && $payload['code'] === NotificationCodeEnum::ORDER_ORDER_CREATED->value
             && $payload['meta'] === ['order_code' => 'ORD-1001']
             && $payload['read_at'] === null
@@ -101,17 +108,20 @@ it('scopes the broadcast unread count and channel to the notification audience',
 
     dispatchDatabaseNotification($user->id, 'admin');
 
-    Queue::assertPushed(BroadcastEvent::class, function (BroadcastEvent $job) use ($user): bool {
+    $tenantId = (int) app(TenantContext::class)->tenantId();
+
+    Queue::assertPushed(BroadcastEvent::class, function (BroadcastEvent $job) use ($user, $tenantId): bool {
         $event = $job->event;
 
         return $event instanceof NotificationCreated
+            && $event->tenantId === $tenantId
             && $event->audience === 'admin'
-            && $event->broadcastOn()[0]->name === "private-notification.admin.{$user->id}"
+            && $event->broadcastOn()[0]->name === "private-tenant.{$tenantId}.notification.admin.{$user->id}"
             && $event->broadcastWith()['unread_count'] === 2;
     });
 });
 
-it('authorizes the private channel only for its owner', function () {
+it('authorizes tenant-scoped private channels and denies cross-tenant subscriptions', function () {
     // The suite's null broadcaster accepts every channel; re-bind the
     // module channels to a real pusher-compatible connection so the
     // closure is actually consulted.
@@ -128,33 +138,76 @@ it('authorizes the private channel only for its owner', function () {
     $this->app->forgetInstance(BroadcasterContract::class);
     BroadcastChannels::register();
 
-    $owner = User::factory()->create();
-    $other = User::factory()->create();
+    $owner = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($owner);
+    $tenantId = (int) app(TenantContext::class)->tenantId();
+
+    $other = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($other);
+
+    $foreign = Tenant::query()->create([
+        TenantSchema::NAME => 'Foreign Store',
+        TenantSchema::SLUG => 'foreign-store',
+        TenantSchema::EMAIL => 'foreign@example.test',
+        TenantSchema::STATUS => TenantSchema::STATUS_ACTIVE,
+    ]);
+
+    $userChannel = "private-tenant.{$tenantId}.notification.user.{$owner->id}";
+    $foreignChannel = "private-tenant.{$foreign->getKey()}.notification.user.{$owner->id}";
+    $adminChannel = "private-tenant.{$tenantId}.notification.admin.{$owner->id}";
 
     $this->postJson($this->baseUrl('/broadcasting/auth'), [
-        'channel_name' => "private-notification.user.{$owner->id}",
+        'channel_name' => $userChannel,
     ])->assertUnauthorized();
 
     $this->actingAs($owner, 'sanctum')
         ->postJson($this->baseUrl('/broadcasting/auth'), [
-            'channel_name' => "private-notification.user.{$owner->id}",
+            'channel_name' => $userChannel,
             'socket_id' => '1.1',
         ])
         ->assertOk();
 
+    // Same user id, different store: editing the channel prefix must not
+    // grant access to another store's stream (§10 row 35).
     $this->actingAs($owner, 'sanctum')
         ->postJson($this->baseUrl('/broadcasting/auth'), [
-            'channel_name' => "private-notification.admin.{$owner->id}",
-            'socket_id' => '1.1',
-        ])
-        ->assertOk();
-
-    $this->actingAs($other, 'sanctum')
-        ->postJson($this->baseUrl('/broadcasting/auth'), [
-            'channel_name' => "private-notification.user.{$owner->id}",
+            'channel_name' => $foreignChannel,
             'socket_id' => '1.1',
         ])
         ->assertForbidden();
+
+    $this->actingAs($other, 'sanctum')
+        ->postJson($this->baseUrl('/broadcasting/auth'), [
+            'channel_name' => $userChannel,
+            'socket_id' => '1.1',
+        ])
+        ->assertForbidden();
+
+    // A customer is not a store staff member: no admin stream.
+    $this->actingAs($owner, 'sanctum')
+        ->postJson($this->baseUrl('/broadcasting/auth'), [
+            'channel_name' => $adminChannel,
+            'socket_id' => '1.1',
+        ])
+        ->assertForbidden();
+
+    // A platform role is not a store role: only this store's active
+    // staff may join its admin stream.
+    $admin = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($admin);
+    $access = app(AccessGatewayInterface::class);
+    $roleId = app(TenantContext::class)->runForTenant(
+        $tenantId,
+        fn () => $access->seedTenantRoles($tenantId),
+    );
+    $access->assignTenantRole($admin->id, $tenantId, $roleId);
+
+    $this->actingAs($admin, 'sanctum')
+        ->postJson($this->baseUrl('/broadcasting/auth'), [
+            'channel_name' => "private-tenant.{$tenantId}.notification.admin.{$admin->id}",
+            'socket_id' => '1.1',
+        ])
+        ->assertOk();
 });
 
 it('keeps broadcasting realtime notifications when an order is created', function () {

@@ -26,9 +26,12 @@ interface MediaGatewayInterface
      * media id stable while refreshing the stored file and its metadata.
      * The media row is filed under the given folder id when provided.
      * Returns the media record (id + public url) or null when it could
-     * not be registered.
+     * not be registered. $actorId is the user who owns the row: callers
+     * pass it explicitly for unattended seeding, or leave it null for the
+     * gateway to take the authenticated user (multi-tenancy §6.4, K6).
+     * There is no implicit user 1.
      */
-    public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null): ?CreateMediaOutput;
+    public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null, ?int $actorId = null): ?CreateMediaOutput;
 
     /**
      * Resolve a slash-separated folder path (e.g. 'Catalog/Product')

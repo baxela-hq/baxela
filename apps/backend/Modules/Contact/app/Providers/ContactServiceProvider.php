@@ -5,6 +5,7 @@ namespace Modules\Contact\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class ContactServiceProvider extends ModuleServiceProvider
@@ -40,15 +41,17 @@ class ContactServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Per-IP rate limiter for the public contact submission endpoint. The
+     * Tenant + IP rate limiters for the public endpoints (§6.12). The
      * limit is read per-request from config so tests can override it at
      * runtime.
      */
     protected function registerRateLimiters(): void
     {
-        RateLimiter::for('contact-submit', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.submit'))->by($request->ip()));
+        RateLimiter::for('contact-submit', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.submit'))
+            ->by('contact-submit:'.app(TenantContext::class)->cachePrefix().$request->ip()));
 
-        RateLimiter::for('contact-subscribe', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.subscribe'))->by($request->ip()));
+        RateLimiter::for('contact-subscribe', fn (Request $request) => Limit::perMinute((int) config('contact.rate_limit.subscribe'))
+            ->by('contact-subscribe:'.app(TenantContext::class)->cachePrefix().$request->ip()));
     }
 
     /**

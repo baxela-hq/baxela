@@ -121,6 +121,10 @@ class WebPushChannel implements NotificationChannelInterface
             'meta' => empty($message->meta) ? null : $message->meta,
             'locale' => $message->locale,
             'dir' => $message->dir,
+            // A subscription is installation-level (per user); the payload
+            // still identifies the store this notification belongs to.
+            'store_name' => $message->storeName,
+            'storefront_url' => $message->storefrontUrl,
         ];
 
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE);

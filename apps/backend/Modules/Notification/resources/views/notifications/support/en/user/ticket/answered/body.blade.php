@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>Our support team replied to your ticket:</p>
 

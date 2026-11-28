@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>A new comment on a blog post is awaiting your approval:</p>
 

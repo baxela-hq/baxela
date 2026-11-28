@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>Votre facture <strong>{{ $invoice_number }}</strong> pour la commande <strong>{{ $order_code }}</strong> est prête.</p>
 

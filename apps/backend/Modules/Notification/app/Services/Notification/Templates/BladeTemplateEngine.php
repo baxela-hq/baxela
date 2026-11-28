@@ -7,14 +7,22 @@ use Illuminate\Support\Facades\Log;
 use Modules\Notification\Schemas\Module;
 use Modules\Notification\Services\Notification\Contracts\TemplateEngineInterface;
 use Modules\Notification\Services\Notification\DTOs\RenderedTemplate;
+use Modules\Notification\Support\TenantBranding;
 use Throwable;
 
 class BladeTemplateEngine implements TemplateEngineInterface
 {
-    public function __construct(private ViewFactory $view) {}
+    public function __construct(
+        private ViewFactory $view,
+        private readonly TenantBranding $branding,
+    ) {}
 
     public function render(array $variables, string $locale, string $code, string $audience): RenderedTemplate
     {
+        // The active tenant is read here, at render time — the queued
+        // message carries no store identity (§6.12).
+        $variables = array_merge($variables, $this->branding->variables());
+
         [$module, $entity, $action] = array_pad(explode('.', $code), 3, null);
 
         foreach ($this->candidateLocales($locale) as $candidate) {

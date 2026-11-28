@@ -140,6 +140,7 @@ dependency order:
 
 ```bash
 docker compose exec app php artisan db:seed --class="Modules\Core\Database\Seeders\CoreDatabaseSeeder"
+docker compose exec app php artisan db:seed --class="Modules\Auth\Database\Seeders\AuthDatabaseSeeder"
 docker compose exec app php artisan db:seed --class="Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
 docker compose exec app php artisan db:seed --class="Modules\Media\Database\Seeders\MediaDatabaseSeeder"
 docker compose exec app php artisan db:seed --class="Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"
@@ -148,7 +149,8 @@ docker compose exec app php artisan db:seed --class="Modules\Catalog\Database\Se
 docker compose exec app php artisan db:seed --class="Modules\Tax\Database\Seeders\TaxDatabaseSeeder"
 ```
 
-Core first (languages/countries/currencies), **Media before Catalog** — the product
-seeder needs the `Catalog/Product` media folder tree. The e2e suite
+Core first (languages/countries/currencies), then Auth (the catalog/content media
+seeders need a real staff actor for `media.user_id`), then **Media before Catalog** —
+the product seeder needs the `Catalog/Product` media folder tree. The e2e suite
 (`apps/storefront`, `pnpm test:e2e`) expects this seed plus Mailpit running, and
 completes checkout through the manual payment method the Payment seeder activates.

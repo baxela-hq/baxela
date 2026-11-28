@@ -260,6 +260,8 @@ export interface ApiOptionGroup {
 
 export interface ApiUser {
   id: number;
+  /** Store resolved for this session, used for the tenant-scoped Echo channel. */
+  tenant_id: number | null;
   email: string;
   email_verified_at: string | null;
   is_active: boolean;

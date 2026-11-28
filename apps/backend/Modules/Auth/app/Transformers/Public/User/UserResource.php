@@ -4,9 +4,11 @@ namespace Modules\Auth\Transformers\Public\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\User\UserSchema;
+use Modules\Core\Support\Tenancy\TenantContext;
 
-/** @mixin \Modules\Auth\Models\User */
+/** @mixin User */
 class UserResource extends JsonResource
 {
     /**
@@ -21,6 +23,9 @@ class UserResource extends JsonResource
             UserSchema::EMAIL_VERIFIED_AT => $this->resource->{UserSchema::EMAIL_VERIFIED_AT},
             UserSchema::IS_ACTIVE => $this->resource->{UserSchema::IS_ACTIVE},
             UserSchema::COMMENT => $this->resource->{UserSchema::COMMENT},
+            // Tenant-scoped realtime clients need the store they are
+            // browsing/administering to build their private channel name.
+            UserSchema::TENANT_ID => app(TenantContext::class)->tenantId(),
         ];
     }
 }

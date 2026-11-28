@@ -1,5 +1,8 @@
 <?php
 
+use Modules\Core\Support\Dispatch\SanctionedDispatch;
+use Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface;
+
 /**
  * The dispatch registry (postgres-migration 3.3.0a / 3.3.0): the
  * reviewed, machine-checked inventory of every deferred-work mechanism -
@@ -195,6 +198,20 @@ return [
         ],
     ],
 
+    // Broadcast events are queued through Illuminate's BroadcastEvent
+    // wrapper (K7). Like notification listeners they are best-effort: the
+    // authoritative notification row is inserted before the broadcast, so
+    // a dropped websocket delivery only costs a realtime refresh — the
+    // inbox and unread endpoints are the replay source.
+    'broadcast' => [
+        'Modules\\Notification\\Events\\NotificationCreated' => [
+            'classification' => 'best-effort',
+            'durable_record' => 'notifications row (authoritative; inserted before the broadcast)',
+            'processor' => 'queue workers → Reverb broadcaster',
+            'retry' => 'queue tries; inbox/unread endpoints are the replay source',
+        ],
+    ],
+
     // Observer registrations (->observe( / #[ObservedBy]): none today -
     // Modules/Catalog/app/Observers/VariantObserver.php exists but is
     // unwired; wiring it requires an entry here.
@@ -204,7 +221,7 @@ return [
     // The sanctioned choke points for statically-undiscoverable dispatch:
     // variable-target dispatch is only legal through these.
     'sanctioned' => [
-        \Modules\Core\Support\Dispatch\SanctionedDispatch::class,
-        \Modules\Notification\Services\Notification\Contracts\NotificationDispatcherInterface::class,
+        SanctionedDispatch::class,
+        NotificationDispatcherInterface::class,
     ],
 ];

@@ -44,8 +44,12 @@ class PaymentServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
 
+        // The webhook route is tenant-neutral at resolution time: the
+        // store comes from the signed {tenantSlug} path segment, and the
+        // driver from the next one (§6.12). The two together are stable
+        // across provider IP changes and cannot be spoofed by a header.
         RateLimiter::for('webhook', fn (Request $request) => Limit::perMinute((int) config('payment.rate_limit.webhook'))
-            ->by($request->ip()));
+            ->by('webhook:'.$request->route('tenantSlug').':'.$request->route('driver')));
     }
 
     /**

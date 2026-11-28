@@ -81,6 +81,7 @@ jobs:
           }
           seed() { docker compose exec -T app php artisan db:seed --class="$1" || exit 1; }
           seed "Modules\Core\Database\Seeders\CoreDatabaseSeeder"
+          seed "Modules\Auth\Database\Seeders\AuthDatabaseSeeder"
           seed "Modules\Setting\Database\Seeders\SettingDatabaseSeeder"
           seed "Modules\Media\Database\Seeders\MediaDatabaseSeeder"
           seed "Modules\Payment\Database\Seeders\PaymentDatabaseSeeder"

@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>خبر خوب — سفارش شما <strong dir="rtl">{{ $order_code }}</strong> ارسال شد!</p>
 

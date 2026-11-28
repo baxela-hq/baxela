@@ -12,6 +12,7 @@ use Modules\Catalog\Schemas\Brand\BrandSchema;
 use Modules\Catalog\Schemas\Brand\BrandTranslationSchema as BTSchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Module;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -26,6 +27,9 @@ class BrandSeeder extends Seeder
 
     private int $brandFolderId;
 
+    /** Explicit media owner for unattended seeding (K6). */
+    private int $actorId;
+
     /** @var array<string, int|null> */
     private array $languageIds = [];
 
@@ -39,6 +43,8 @@ class BrandSeeder extends Seeder
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
         $this->mediaGateway = App::make(MediaGatewayInterface::class);
+        $ids = app(AccessGatewayInterface::class)->adminUserIds();
+        $this->actorId = $ids[0] ?? throw new \RuntimeException('Seeded media needs an existing staff actor.');
         $moduleKey = Module::NAME_LOWER.'::seeder.brands';
 
         $brandFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Brand');
@@ -139,6 +145,7 @@ class BrandSeeder extends Seeder
             $source,
             'catalog/brands/'.basename($source),
             $this->brandFolderId,
+            $this->actorId,
         );
     }
 

@@ -14,8 +14,8 @@ use Modules\Auth\Schemas\Role\RoleSchema;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Support\PlatformRoleAssignment;
 use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
-use Spatie\Permission\PermissionRegistrar;
 
 class AccessGateway implements AccessGatewayInterface
 {
@@ -50,6 +50,25 @@ class AccessGateway implements AccessGatewayInterface
             ->pluck(UserSchema::ID)
             ->map(fn (int|string $id): int => (int) $id)
             ->all();
+    }
+
+    public function tenantAdminUserIds(int $tenantId): array
+    {
+        // The spatie `roles()` relation is team-filtered through
+        // TenantTeamResolver (§5). Running the query as the store makes
+        // both the pivot predicate and the role's tenant agree; a user
+        // with a role in another store never enters this list.
+        return app(TenantContext::class)->runForTenant($tenantId, fn () => User::query()
+            ->where(UserSchema::IS_ACTIVE, true)
+            ->whereHas('roles', fn ($query) => $query
+                // spatie's roles() relation already scopes the pivot and the
+                // role row to the active team/tenant; an extra unqualified
+                // predicate here would be ambiguous against the pivot's
+                // tenant_id column.
+                ->where(RoleSchema::TABLE.'.'.RoleSchema::GUARD_NAME, GuardsEnum::WEB->value))
+            ->pluck(UserSchema::ID)
+            ->map(static fn (int|string $id): int => (int) $id)
+            ->all());
     }
 
     public function getUserEmailsByIds(array $ids): array
@@ -184,7 +203,7 @@ class AccessGateway implements AccessGatewayInterface
         // The pivot team follows the context (TenantTeamResolver, §5):
         // the attach runs as the tenant the role belongs to, restoring
         // the caller's context afterward (§6.5 B7).
-        app(\Modules\Core\Support\Tenancy\TenantContext::class)
+        app(TenantContext::class)
             ->runForTenant($tenantId, function () use ($userId, $role): void {
                 User::query()->findOrFail($userId)->assignRole($role);
             });
@@ -203,10 +222,9 @@ class AccessGateway implements AccessGatewayInterface
         // Team-scoped sync as the owning store (§5): only that store's
         // pivot rows are replaced — the member's roles in other stores are
         // untouched.
-        app(\Modules\Core\Support\Tenancy\TenantContext::class)
+        app(TenantContext::class)
             ->runForTenant($tenantId, function () use ($userId, $roles): void {
                 User::query()->findOrFail($userId)->syncRoles($roles);
             });
     }
-
 }

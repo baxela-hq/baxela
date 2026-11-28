@@ -3,6 +3,7 @@
 namespace Modules\Media\Gateways;
 
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaInput;
 use Modules\Core\Contracts\Gateways\Media\DTOs\CreateMediaOutput;
@@ -17,6 +18,7 @@ use Modules\Media\Schemas\Folder\FolderSchema;
 use Modules\Media\Schemas\Media\MediaDiskEnum;
 use Modules\Media\Schemas\Media\MediaMimeTypeEnum;
 use Modules\Media\Schemas\Media\MediaSchema;
+use RuntimeException;
 
 class MediaGateway implements MediaGatewayInterface
 {
@@ -63,21 +65,29 @@ class MediaGateway implements MediaGatewayInterface
         ]);
     }
 
-    public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null): ?CreateMediaOutput
+    public function upsertLocal(string $sourcePath, string $targetPath, ?int $folderId = null, ?int $actorId = null): ?CreateMediaOutput
     {
+        // K6: the actor is the authenticated caller, or an explicit id
+        // supplied by an unattended caller (a seeder). No user 1 default.
+        $actorId ??= Auth::id() === null ? null : (int) Auth::id();
+
+        if ($actorId === null) {
+            throw new RuntimeException('upsertLocal requires an authenticated or explicit actor id.');
+        }
+
         $disk = MediaDiskEnum::PUBLIC->value;
         $filename = basename($targetPath);
 
         Storage::disk($disk)->put($targetPath, file_get_contents($sourcePath));
 
-        // Ownership mirrors the Media module's own seeder (user 1). Keying
-        // the upsert on the path keeps the media id stable across re-seeds
-        // while the stored file's metadata is refreshed. Mime types outside
-        // the stored set resolve to null and fail the insert loudly.
+        // Keying the upsert on the path keeps the media id stable across
+        // re-seeds while the stored file's metadata is refreshed. Mime
+        // types outside the stored set resolve to null and fail the insert
+        // loudly.
         $media = Media::query()->updateOrCreate(
             [MediaSchema::PATH => $targetPath],
             [
-                MediaSchema::USER_ID => 1,
+                MediaSchema::USER_ID => $actorId,
                 MediaSchema::FOLDER_ID => $folderId,
                 MediaSchema::DISK => $disk,
                 MediaSchema::NAME => pathinfo($filename, PATHINFO_FILENAME),

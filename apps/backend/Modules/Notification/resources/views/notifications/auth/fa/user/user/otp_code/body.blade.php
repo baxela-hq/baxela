@@ -1,4 +1,4 @@
-<h1>{{config('app.name')}}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 @if($action === 'forgot_password')
     <p>برای بازنشانی گذرواژه خود از کد زیر استفاده کنید.</p>

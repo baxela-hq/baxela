@@ -39,6 +39,7 @@ use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
 use Modules\Catalog\Schemas\Variant\VariantSchema;
 use Modules\Catalog\Search\SearchCursorManager;
 use Modules\Catalog\Search\SearchMutationGate;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -51,6 +52,9 @@ class ProductSeeder extends Seeder
     private MediaGatewayInterface $mediaGateway;
 
     private int $productFolderId;
+
+    /** Explicit media owner for unattended seeding (K6). */
+    private int $actorId;
 
     private string $masterLang = 'en';
 
@@ -69,6 +73,8 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $this->mediaGateway = App::make(MediaGatewayInterface::class);
+        $ids = app(AccessGatewayInterface::class)->adminUserIds();
+        $this->actorId = $ids[0] ?? throw new \RuntimeException('Seeded media needs an existing staff actor.');
 
         $productFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Product');
         if ($productFolderId === null) {
@@ -256,7 +262,7 @@ class ProductSeeder extends Seeder
             // a media record; the media gateway registers the seeded photo
             // idempotently — keeping the media id stable across re-seeds —
             // and files it under the Catalog/Product media folder.
-            $media = $this->mediaGateway->upsertLocal($source, $path, $this->productFolderId);
+            $media = $this->mediaGateway->upsertLocal($source, $path, $this->productFolderId, $this->actorId);
 
             $rows[] = [
                 ImageSchema::MEDIA_ID => (int) $media?->id,

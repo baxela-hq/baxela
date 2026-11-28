@@ -24,7 +24,7 @@ export const Route = createFileRoute('/_authenticated')({
     if (user && user.permissions === undefined) {
       try {
         const account = await fetchAdminAccount()
-        setUser({ ...user, permissions: account.permissions ?? [] })
+        setUser({ ...user, permissions: account.permissions ?? [], tenant_id: account.tenant_id })
       } catch {
         // ignored on purpose
       }

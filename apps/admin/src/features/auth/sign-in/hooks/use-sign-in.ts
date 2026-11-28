@@ -58,6 +58,7 @@ export function useSignIn() {
 
       setUser({
         id: account.id,
+        tenant_id: account.tenant_id,
         accountNo: 'ACC001',
         email: account.email,
         role: account.roles.map((role) => role.name),

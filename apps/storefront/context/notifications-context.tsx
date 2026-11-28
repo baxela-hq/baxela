@@ -101,13 +101,13 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   // signed-in user's private channel for the storefront (user) audience
   // with the fresh unread total for that audience alone.
   useEffect(() => {
-    if (!token || !user?.id) return;
+    if (!token || !user?.id || !user.tenant_id) return;
     // Idempotent connect: the auth context owns the connection, but it
     // may attach after this effect in the same commit.
     const echo = connectNotificationEcho(token) ?? getNotificationEcho();
     if (!echo) return;
 
-    const channel = `notification.user.${user.id}`;
+    const channel = `tenant.${user.tenant_id}.notification.user.${user.id}`;
     echo
       .private(channel)
       .listen(".notification.created", (payload: RealtimeNotification) => {
@@ -123,7 +123,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     return () => {
       echo.leave(channel);
     };
-  }, [token, user?.id]);
+  }, [token, user?.id, user?.tenant_id]);
 
   // Reads never broadcast on the websocket (only .notification.created
   // does), so the badge can go stale when rows are read in another tab or

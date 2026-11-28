@@ -24,16 +24,16 @@ export function useRealtimeNotifications() {
   const token = useAuthStore((state) => state.accessToken)
 
   useEffect(() => {
-    if (!token || !user || user.id) return
+    if (!token || !user || (user.id && user.tenant_id !== undefined)) return
 
-    // Sessions signed in before the channel went live persist a user
-    // without an id; refetch the account once so the bell keeps working
-    // without a forced re-login.
+    // Sessions persisted before the tenant-scoped channel went live lack
+    // an id or store id; refetch the account once so the bell keeps
+    // working without a forced re-login.
     let active = true
     void fetchAdminAccount()
       .then((account) => {
         if (!active) return
-        useAuthStore.getState().setUser({ ...user, id: account.id })
+        useAuthStore.getState().setUser({ ...user, id: account.id, tenant_id: account.tenant_id })
       })
       .catch(() => {
         // 401s reset the session through the API client; nothing to do.
@@ -44,13 +44,13 @@ export function useRealtimeNotifications() {
   }, [token, user])
 
   useEffect(() => {
-    if (!token || !user?.id) return
+    if (!token || !user?.id || !user.tenant_id) return
 
     const echo = connectEcho(token)
     if (!echo) return
 
     echo
-      .private(`notification.admin.${user.id}`)
+      .private(`tenant.${user.tenant_id}.notification.admin.${user.id}`)
       .listen('.notification.created', (payload: RealtimeNotification) => {
         queryClient.setQueryData([FeatureRoutes.CACHE_KEY, 'unread-count'], {
           data: { unread_count: payload.unread_count },
@@ -63,5 +63,5 @@ export function useRealtimeNotifications() {
     return () => {
       disconnectEcho()
     }
-  }, [token, user?.id, queryClient])
+  }, [token, user?.id, user?.tenant_id, queryClient])
 }

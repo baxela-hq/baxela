@@ -196,8 +196,12 @@ class TenantGateway implements TenantGatewayInterface
             slug: (string) $tenant->getAttribute(TenantSchema::SLUG),
             name: (string) $tenant->getAttribute(TenantSchema::NAME),
             suspended: $tenant->isSuspended(),
+            // Primary first: branding resolves the storefront URL from the
+            // snapshot, and a multi-domain store must pick its canonical
+            // host rather than whichever verified row came back first.
             domains: $tenant->domains()
                 ->where(TenantDomainSchema::STATUS, TenantDomainSchema::STATUS_VERIFIED)
+                ->orderByDesc(TenantDomainSchema::IS_PRIMARY)
                 ->pluck(TenantDomainSchema::DOMAIN)
                 ->all(),
         );

@@ -2,8 +2,10 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface AuthUser {
-  /** Numeric user id — drives the private `user.{id}` Reverb channel. */
+  /** Numeric user id — drives the tenant-scoped private Reverb channel. */
   id?: number
+  /** Store selected for the account request; null on the central host. */
+  tenant_id?: number | null
   accountNo: string
   email: string
   role: string[]

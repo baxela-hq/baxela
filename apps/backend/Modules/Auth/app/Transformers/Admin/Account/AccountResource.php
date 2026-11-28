@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Schemas\User\UserSchema;
 use Modules\Auth\Transformers\Admin\Role\RoleResource;
+use Modules\Core\Support\Tenancy\TenantContext;
 
 class AccountResource extends JsonResource
 {
@@ -22,6 +23,9 @@ class AccountResource extends JsonResource
             UserSchema::EMAIL => $this->resource->{UserSchema::EMAIL},
             UserSchema::ROLES => RoleResource::collection($this->resource->roles),
             UserSchema::PERMISSIONS => $this->permissions(),
+            // The admin Echo channel carries this id; it is the store the
+            // ResolveTenant middleware selected for the account request.
+            UserSchema::TENANT_ID => app(TenantContext::class)->tenantId(),
         ];
     }
 

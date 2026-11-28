@@ -3,6 +3,9 @@
 namespace Modules\Notification\Services\Notification\Channels;
 
 use Illuminate\Support\Facades\Log;
+use Modules\Core\Contracts\Gateways\Tenant\TenantGatewayInterface;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Notification\Events\NotificationCreated;
 use Modules\Notification\Models\Notification;
 use Modules\Notification\Schemas\Notification\NotificationSchema;
@@ -13,12 +16,33 @@ use Modules\Notification\Services\Notification\DTOs\SendResult;
 
 class DatabaseChannel implements NotificationChannelInterface
 {
+    public function __construct(private readonly TenantGatewayInterface $tenants) {}
+
     public function send(MessageInterface $message): SendResult
     {
         if (! $message instanceof DatabaseMessage) {
             throw new \InvalidArgumentException('Invalid message type');
         }
 
+        $context = app(TenantContext::class);
+
+        if ($context->tenantId() === null) {
+            // System alerts fire in a tenant-neutral worker/console. The
+            // notification table is store-owned, so write the platform
+            // alert into the installation's default store rather than
+            // letting the model's fail-closed guard drop the recipient.
+            $default = $this->tenants->defaultTenant();
+
+            if ($default !== null) {
+                return $context->runForTenant($default->id, fn (): SendResult => $this->sendInTenant($message));
+            }
+        }
+
+        return $this->sendInTenant($message);
+    }
+
+    private function sendInTenant(DatabaseMessage $message): SendResult
+    {
         $ids = [];
         foreach ($message->recipients as $recipient) {
             $record = Notification::query()->create([
@@ -53,6 +77,7 @@ class DatabaseChannel implements NotificationChannelInterface
         $code = $record->{NotificationSchema::CODE};
 
         NotificationCreated::dispatch(
+            tenantId: (int) $record->{TenantColumn::TENANT_ID},
             notifiableId: $recipientId,
             audience: $audience,
             payload: [

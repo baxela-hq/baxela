@@ -20,6 +20,8 @@ class DynamicNotification extends Mailable
         public $body,
         public $meta,
         public array $attachedDocuments = [],
+        /** Store name for the From header — resolved when the mail was rendered, not from config. */
+        public ?string $storeName = null,
     ) {}
 
     /**
@@ -30,6 +32,10 @@ class DynamicNotification extends Mailable
         $message = $this
             ->subject($this->subject)
             ->html($this->body);
+
+        if ($this->storeName !== null && $this->storeName !== '') {
+            $message->from((string) config('mail.from.address'), $this->storeName);
+        }
 
         foreach ($this->attachedDocuments as $document) {
             $message->attachData($document['data'], $document['name'], [

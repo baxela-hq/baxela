@@ -7,12 +7,14 @@ use Modules\Notification\Services\Notification\Contracts\ChannelPayloadBuilderIn
 use Modules\Notification\Services\Notification\Contracts\TemplateRepositoryInterface;
 use Modules\Notification\Services\Notification\DTOs\Messages\WebPushMessage;
 use Modules\Notification\Services\Notification\DTOs\NotificationMessage;
+use Modules\Notification\Support\TenantBranding;
 
 class WebPushPayloadBuilder implements ChannelPayloadBuilderInterface
 {
     public function __construct(
         private readonly TemplateRepositoryInterface $templates,
         private readonly CoreGatewayInterface $coreGateway,
+        private readonly TenantBranding $branding,
     ) {}
 
     /**
@@ -32,6 +34,10 @@ class WebPushPayloadBuilder implements ChannelPayloadBuilderInterface
             $message->audience
         );
 
+        // Installation-level subscription rows stay per user; the payload
+        // names the store that produced the notification (§6.12).
+        $branding = $this->branding->variables();
+
         return new WebPushMessage(
             code: $message->code,
             audience: $message->audience,
@@ -41,6 +47,8 @@ class WebPushPayloadBuilder implements ChannelPayloadBuilderInterface
             meta: $message->meta,
             locale: $locale,
             dir: $this->directionFor($locale),
+            storeName: $branding['store_name'],
+            storefrontUrl: $branding['storefront_url'],
         );
     }
 

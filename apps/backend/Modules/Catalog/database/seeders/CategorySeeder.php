@@ -12,6 +12,7 @@ use Modules\Catalog\Schemas\Category\CategorySchema;
 use Modules\Catalog\Schemas\Category\CategoryTranslationSchema as CTSchema;
 use Modules\Catalog\Schemas\FeaturedItem\FeaturedItemSchema;
 use Modules\Catalog\Schemas\Module;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -26,6 +27,9 @@ class CategorySeeder extends Seeder
 
     private int $categoryFolderId;
 
+    /** Explicit media owner for unattended seeding (K6). */
+    private int $actorId;
+
     /** @var array<string, int|null> */
     private array $languageIds = [];
 
@@ -39,6 +43,8 @@ class CategorySeeder extends Seeder
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
         $this->mediaGateway = App::make(MediaGatewayInterface::class);
+        $ids = app(AccessGatewayInterface::class)->adminUserIds();
+        $this->actorId = $ids[0] ?? throw new \RuntimeException('Seeded media needs an existing staff actor.');
         $moduleKey = Module::NAME_LOWER.'::seeder.categories';
 
         $categoryFolderId = $this->mediaGateway->getFolderIdByPath('Catalog/Category');
@@ -189,6 +195,7 @@ class CategorySeeder extends Seeder
             $source,
             'catalog/categories/'.basename($source),
             $this->categoryFolderId,
+            $this->actorId,
         );
     }
 

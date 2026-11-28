@@ -1,4 +1,4 @@
-<h1>{{ config('app.name') }}</h1>
+<h1><a href="{{ $storefront_url }}">{{ $store_name }}</a></h1>
 
 <p>Se ha emitido una nota de crédito <strong>{{ $credit_note_number }}</strong> para la factura <strong>{{ $invoice_number }}</strong> del pedido <strong>{{ $order_code }}</strong>.</p>
 

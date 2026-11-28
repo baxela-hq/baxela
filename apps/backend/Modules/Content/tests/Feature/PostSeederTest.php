@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Database\Seeders\AuthDatabaseSeeder;
+use Modules\Auth\Models\User;
 use Modules\Content\Database\Seeders\ContentDatabaseSeeder;
 use Modules\Content\Models\Post;
 use Modules\Content\Models\PostCategory;
@@ -11,12 +13,16 @@ use Modules\Content\Tests\Feature\HelperTrait;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
 use Modules\Core\Models\Language;
 use Modules\Media\Database\Seeders\MediaDatabaseSeeder;
+use Modules\Media\Models\Media;
+use Modules\Media\Schemas\Media\MediaSchema;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 it('seeds posts and post categories with translations', function () {
     $this->seed(CoreDatabaseSeeder::class);
+    // The media seeders need a real staff actor (K6), not an implicit user 1.
+    $this->seed(AuthDatabaseSeeder::class);
     // post cover photos upsert into the Content/Post media folder
     $this->seed(MediaDatabaseSeeder::class);
     $this->seed(ContentDatabaseSeeder::class);
@@ -39,7 +45,14 @@ it('seeds posts and post categories with translations', function () {
         ->toHaveCount(Language::query()->where('is_active', true)->count())
         // the welcome post is attached to the news category
         ->and($welcome->categories()->count())->toBe(1)
-        // each seeded post carries its cover photo on the public disk
+        // each seeded post carries its cover photo on the public disk,
+        // owned by one of the seeded staff accounts (K6)
         ->and($welcome->{PostSchema::IMAGE_URL})->toContain('welcome-to-baxela.jpg')
         ->and($welcome->{PostSchema::IMAGE_MEDIA_ID})->not->toBeNull();
+
+    $mediaActorId = Media::query()
+        ->whereKey($welcome->{PostSchema::IMAGE_MEDIA_ID})
+        ->value(MediaSchema::USER_ID);
+
+    expect(in_array($mediaActorId, User::query()->pluck('id')->all(), true))->toBeTrue();
 });

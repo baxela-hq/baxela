@@ -50,4 +50,7 @@ class UserSchema
 
     /** Serialization key for the user's permission names — not a column. */
     public const string PERMISSIONS = 'permissions';
+
+    /** Serialization key for the tenant resolved for this request — not a users column. */
+    public const string TENANT_ID = 'tenant_id';
 }

@@ -9,10 +9,13 @@ use Modules\Notification\Services\Notification\Contracts\MessageInterface;
 use Modules\Notification\Services\Notification\Contracts\NotificationChannelInterface;
 use Modules\Notification\Services\Notification\DTOs\Messages\EmailMessage;
 use Modules\Notification\Services\Notification\DTOs\SendResult;
+use Modules\Notification\Support\TenantBranding;
 use Throwable;
 
 class EmailChannel implements NotificationChannelInterface
 {
+    public function __construct(private readonly TenantBranding $branding) {}
+
     public function send(MessageInterface $message): SendResult
     {
         if (! $message instanceof EmailMessage) {
@@ -31,6 +34,7 @@ class EmailChannel implements NotificationChannelInterface
                 body: $message->body,
                 meta: $message->meta,
                 attachedDocuments: $message->attachments,
+                storeName: $this->branding->storeName(),
             ));
         } catch (Throwable $e) {
             report($e);

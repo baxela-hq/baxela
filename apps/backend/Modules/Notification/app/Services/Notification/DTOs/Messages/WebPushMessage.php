@@ -24,5 +24,8 @@ class WebPushMessage implements MessageInterface
         public ?string $locale = null,
         /** Text direction hint for the OS-level notification. */
         public string $dir = 'ltr',
+        /** Store identity resolved at render time — never carried in the queued message. */
+        public ?string $storeName = null,
+        public ?string $storefrontUrl = null,
     ) {}
 }

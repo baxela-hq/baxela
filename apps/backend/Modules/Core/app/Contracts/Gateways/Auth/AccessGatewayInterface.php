@@ -30,6 +30,16 @@ interface AccessGatewayInterface
     public function adminUserIds(): array;
 
     /**
+     * Active staff of one store, read under that store's permission team
+     * (multi-tenancy §5/§6.12). Unlike the team-agnostic adminUserIds(),
+     * this follows the tenant-filtered role pivot and is safe for
+     * per-store notification fan-out and channel authorization.
+     *
+     * @return array<int, int>
+     */
+    public function tenantAdminUserIds(int $tenantId): array;
+
+    /**
      * Email addresses for the given user ids (users are keyed by id;
      * unknown ids are absent from the result).
      *

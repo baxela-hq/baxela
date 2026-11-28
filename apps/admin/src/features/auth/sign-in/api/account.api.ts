@@ -9,8 +9,10 @@ export interface AdminAccountRole {
 }
 
 export interface AdminAccount {
-  /** Numeric user id — drives the private `user.{id}` Reverb channel. */
+  /** Numeric user id — drives the tenant-scoped private Reverb channel. */
   id: number
+  /** Store selected for this request; null on the tenant-neutral host. */
+  tenant_id: number | null
   email: string
   roles: AdminAccountRole[]
   /** Permission names; `['*']` for super-admins. */

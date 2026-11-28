@@ -13,6 +13,7 @@ use Modules\Content\Schemas\Post\PostSchema;
 use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
+use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
 use Modules\Core\Contracts\Gateways\Media\MediaGatewayInterface;
 use Modules\Core\Schemas\Language\LanguageSchema;
@@ -25,6 +26,9 @@ class PostSeeder extends Seeder
 
     private int $postFolderId;
 
+    /** Explicit media owner for unattended seeding (K6). */
+    private int $actorId;
+
     /** @var array<string, int|null> */
     private array $languageIds = [];
 
@@ -35,6 +39,8 @@ class PostSeeder extends Seeder
     {
         $this->coreGateway = App::make(CoreGatewayInterface::class);
         $this->mediaGateway = App::make(MediaGatewayInterface::class);
+        $ids = app(AccessGatewayInterface::class)->adminUserIds();
+        $this->actorId = $ids[0] ?? throw new \RuntimeException('Seeded media needs an existing staff actor.');
 
         $languageId = $this->coreGateway->getLanguageIdByCode(App::currentLocale());
         if (! $languageId) {
@@ -111,6 +117,7 @@ class PostSeeder extends Seeder
             $source,
             'content/posts/'.basename($source),
             $this->postFolderId,
+            $this->actorId,
         );
     }
 

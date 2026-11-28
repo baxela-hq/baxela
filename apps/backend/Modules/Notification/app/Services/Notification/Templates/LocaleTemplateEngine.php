@@ -6,11 +6,19 @@ use Illuminate\Support\Facades\Log;
 use Modules\Notification\Schemas\Module;
 use Modules\Notification\Services\Notification\Contracts\TemplateEngineInterface;
 use Modules\Notification\Services\Notification\DTOs\RenderedTemplate;
+use Modules\Notification\Support\TenantBranding;
 
 class LocaleTemplateEngine implements TemplateEngineInterface
 {
+    public function __construct(private readonly TenantBranding $branding) {}
+
     public function render(array $variables, string $locale, string $code, string $audience): RenderedTemplate
     {
+        // All locale-based channels (database, webpush, telegram) get the
+        // store identity from the live tenant context, not from the
+        // listener's payload (§6.12).
+        $variables = array_merge($variables, $this->branding->variables());
+
         $codeArr = explode('.', $code);
         $module = $codeArr[0];
         $entity = $codeArr[1];

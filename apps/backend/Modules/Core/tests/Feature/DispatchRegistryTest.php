@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Core\Support\Dispatch\SanctionedDispatch;
+use Modules\Notification\Events\NotificationCreated;
 
 // Self-contained by design: an architecture test scans files and reads the
 // registry config directly — no booted application, no database.
@@ -10,7 +11,8 @@ use Modules\Core\Support\Dispatch\SanctionedDispatch;
  * Enforcement layers:
  *
  * 1. DISCOVERY — every `ShouldQueue` class under `Modules/.../app` must be
- *    a registry key (`core.dispatch.queued`). A new queued class fails
+ *    a registry key (`core.dispatch.queued`), and every `ShouldBroadcast`
+ *    class a key under `core.dispatch.broadcast` (K7). A new class fails
  *    the build until it is classified (required ⇒ durable backing record;
  *    best-effort ⇒ accepted loss, stated).
  * 2. VALIDITY — every registry key resolves to a real class with the
@@ -27,7 +29,6 @@ use Modules\Core\Support\Dispatch\SanctionedDispatch;
  * routes through SanctionedDispatch; the boundary scan catches the
  * syntactically visible variable-target forms.
  */
-
 it('registers every ShouldQueue class in the dispatch registry', function () {
     $registered = config('core.dispatch.queued', []);
     $discovered = discover_should_queue_classes();
@@ -41,21 +42,41 @@ it('registers every ShouldQueue class in the dispatch registry', function () {
     ));
 });
 
+it('registers every ShouldBroadcast class in the dispatch registry', function () {
+    $registered = config('core.dispatch.broadcast', []);
+    $discovered = discover_should_broadcast_classes();
+    $notificationCreated = NotificationCreated::class;
+
+    $unregistered = array_values(array_diff($discovered, array_keys($registered)));
+
+    expect($discovered)->toContain($notificationCreated)
+        // K7: an empty discovery result must never make this test vacuous.
+        ->and(array_key_exists($notificationCreated, $registered))->toBeTrue()
+        ->and($unregistered)->toBe([], sprintf(
+            "Unregistered broadcast events (classify in Modules/Core/config/dispatch.php):\n  %s",
+            implode("\n  ", $unregistered),
+        ));
+});
+
 it('keeps only real classes with complete entries in the registry', function () {
-    foreach (config('core.dispatch.queued', []) as $class => $entry) {
-        expect(class_exists($class))->toBeTrue("Registry entry {$class} does not resolve to a class.")
-            ->and(in_array($entry['classification'] ?? '', ['required', 'best-effort'], true))
-            ->toBeTrue("Registry entry {$class} lacks a valid classification.")
-            ->and(trim((string) ($entry['durable_record'] ?? '')))->not->toBe('')
-            ->and(trim((string) ($entry['processor'] ?? '')))->not->toBe('');
+    foreach (['queued', 'broadcast'] as $section) {
+        foreach (config("core.dispatch.{$section}", []) as $class => $entry) {
+            expect(class_exists($class))->toBeTrue("Registry entry {$class} does not resolve to a class.")
+                ->and(in_array($entry['classification'] ?? '', ['required', 'best-effort'], true))
+                ->toBeTrue("Registry entry {$class} lacks a valid classification.")
+                ->and(trim((string) ($entry['durable_record'] ?? '')))->not->toBe('')
+                ->and(trim((string) ($entry['processor'] ?? '')))->not->toBe('');
+        }
     }
 });
 
 it('requires durable backing for required-classified entries', function () {
-    foreach (config('core.dispatch.queued', []) as $class => $entry) {
-        if (($entry['classification'] ?? '') === 'required') {
-            expect($entry['durable_record'])->not->toBe('none (accepted loss — current semantics)',
-                "{$class} is classified required but declares no durable record.");
+    foreach (['queued', 'broadcast'] as $section) {
+        foreach (config("core.dispatch.{$section}", []) as $class => $entry) {
+            if (($entry['classification'] ?? '') === 'required') {
+                expect($entry['durable_record'])->not->toBe('none (accepted loss — current semantics)',
+                    "{$class} is classified required but declares no durable record.");
+            }
         }
     }
 });
@@ -117,6 +138,37 @@ function discover_should_queue_classes(): array
         }
 
         $classes[] = $ns[1].'\\'.$class[1];
+    }
+
+    return array_values(array_unique($classes));
+}
+
+/**
+ * @return list<string> FQCNs of ShouldBroadcast events under
+ *                      Modules/*\/app (K7 — Laravel queues broadcasts via
+ *                      its own BroadcastEvent wrapper, not ShouldQueue).
+ */
+function discover_should_broadcast_classes(): array
+{
+    $classes = [];
+
+    foreach (glob(base_path('Modules/*/app'), GLOB_ONLYDIR) ?: [] as $moduleApp) {
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($moduleApp));
+
+        foreach ($iterator as $file) {
+            if (! $file->isFile() || $file->getExtension() !== 'php') {
+                continue;
+            }
+
+            $source = file_get_contents($file->getPathname());
+
+            if (preg_match('/\bclass\s+(\w+)[^{]*implements[^{]*ShouldBroadcast/', $source, $class) !== 1
+                || preg_match('/namespace\s+([^;]+);/', $source, $ns) !== 1) {
+                continue;
+            }
+
+            $classes[] = $ns[1].'\\'.$class[1];
+        }
     }
 
     return array_values(array_unique($classes));

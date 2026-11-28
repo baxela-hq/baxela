@@ -5,6 +5,7 @@ namespace Modules\Support\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class SupportServiceProvider extends ModuleServiceProvider
@@ -40,15 +41,18 @@ class SupportServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Rate limiters for the customer ticket endpoints, keyed per
-     * authenticated user (falling back to the IP). The limits are read
-     * per-request from config so tests can override them at runtime.
+     * Rate limiters for the customer ticket endpoints, keyed by tenant +
+     * caller IP (§6.12). The authenticated id remains as a secondary
+     * discriminator so two accounts sharing one NAT keep their own quota.
+     * Limits are read per-request so tests can override them at runtime.
      */
     protected function registerRateLimiters(): void
     {
-        RateLimiter::for('support-ticket-create', fn (Request $request) => Limit::perMinute((int) config('support.rate_limit.create'))->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('support-ticket-create', fn (Request $request) => Limit::perMinute((int) config('support.rate_limit.create'))
+            ->by('support-ticket-create:'.app(TenantContext::class)->cachePrefix().$request->ip().':'.(auth()->id() ?? '')));
 
-        RateLimiter::for('support-ticket-reply', fn (Request $request) => Limit::perMinute((int) config('support.rate_limit.reply'))->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('support-ticket-reply', fn (Request $request) => Limit::perMinute((int) config('support.rate_limit.reply'))
+            ->by('support-ticket-reply:'.app(TenantContext::class)->cachePrefix().$request->ip().':'.(auth()->id() ?? '')));
     }
 
     /**
