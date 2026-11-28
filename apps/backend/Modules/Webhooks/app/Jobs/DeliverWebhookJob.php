@@ -40,6 +40,18 @@ class DeliverWebhookJob implements ShouldQueue
 
     public function __construct(protected string $deliveryId) {}
 
+    /**
+     * Defense-in-depth (multi-tenancy §6.1): the payload stamp is re-pinned
+     * on every attempt and restored afterward, so the attempt below is
+     * always row-authoritative for one store.
+     *
+     * @return list<class-string>
+     */
+    public function middleware(): array
+    {
+        return [\Modules\Core\Queue\TenantAware::class];
+    }
+
     public function handle(
         UrlGuard $guard,
         WebhookDeliveryClient $client,
@@ -49,8 +61,57 @@ class DeliverWebhookJob implements ShouldQueue
         $delivery = WebhookDelivery::query()->find($this->deliveryId);
 
         if (is_null($delivery)) {
+            // §6.2, the central-dispatch branch: the payload carries no
+            // usable stamp (console retry, lost stamp). One central lookup
+            // by primary key — reads only — hands the row's own tenant id
+            // to the runForTenant body. No fallback to cross-store work.
+            $delivery = app(\Modules\Core\Support\Tenancy\CentralOperations::class)
+                ->run(new \Modules\Webhooks\Operations\LookupWebhookDeliveryOperation($this->deliveryId), static::class.': delivery bootstrap');
+        }
+
+        if (is_null($delivery)) {
             return;
         }
+
+        $tenantId = (int) $delivery->getAttribute(\Modules\Core\Schemas\Shared\TenantColumn::TENANT_ID);
+
+        // A suspended store's deliveries stay pending and are skipped,
+        // audit-logged, until reactivation (§3.1).
+        $context = app(\Modules\Core\Support\Tenancy\TenantContext::class);
+
+        $suspended = $context->runForTenant($tenantId, fn (): bool => $this->isTenantSuspended());
+
+        if ($suspended) {
+            event(new \Modules\Webhooks\Events\WebhookDeliverySkippedEvent(
+                (string) $delivery->getKey(),
+                $tenantId,
+            ));
+
+            return;
+        }
+
+        $context->runForTenant($tenantId, function () use ($guard, $client, $outcomes, $delivery): void {
+            $this->attempt($delivery, $guard, $client, $outcomes);
+        });
+    }
+
+    /** Runs inside runForTenant — TRUE when the delivery may proceed. */
+    private function isTenantSuspended(): bool
+    {
+        $snapshot = app(\Modules\Core\Support\Tenancy\TenantContext::class)->tenant();
+
+        return $snapshot === null || $snapshot->suspended;
+    }
+
+    /**
+     * One delivery attempt for one store (the pre-tenancy handle body).
+     */
+    private function attempt(
+        WebhookDelivery $delivery,
+        UrlGuard $guard,
+        WebhookDeliveryClient $client,
+        RecordDeliveryOutcomeAction $outcomes,
+    ): void {
 
         $claimToken = (string) Str::uuid();
 
@@ -167,7 +228,9 @@ class DeliverWebhookJob implements ShouldQueue
         array $attributes,
         RecordDeliveryOutcomeAction $outcomes,
     ): void {
-        $attemptCount = (int) DB::table('webhook_deliveries')->where('id', $deliveryId)->value('attempt_count');
+        $attemptCount = (int) WebhookDelivery::query()
+            ->where(WebhookDeliverySchema::ID, $deliveryId)
+            ->value(WebhookDeliverySchema::ATTEMPT_COUNT);
         $attemptCount += 1;
 
         $isLastAttempt = $attemptCount >= (int) config('webhooks.max_attempts');

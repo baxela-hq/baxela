@@ -43,6 +43,7 @@ class WebhooksServiceProvider extends ServiceProvider
         $this->registerCommandSchedules();
         $this->registerTranslations();
         $this->registerConfig();
+        $this->registerCentralOperations();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
     }
 
@@ -137,5 +138,34 @@ class WebhooksServiceProvider extends ServiceProvider
         $module_config = require $path;
 
         config([$key => array_replace_recursive($existing, $module_config)]);
+    }
+
+    /**
+     * The module's central operations (multi-tenancy §6.5): the bootstrap
+     * lookups of the delivery sweep and the retry path — read-only central
+     * reads; every write happens under the delivery's own tenant.
+     */
+    protected function registerCentralOperations(): void
+    {
+        $registry = $this->app->make(\Modules\Core\Support\Tenancy\CentralOperationRegistry::class);
+
+        $operations = [
+            \Modules\Webhooks\Operations\DiscoverDueDeliveriesOperation::class => [\Modules\Webhooks\Actions\Webhooks\DiscoverDueDeliveriesAction::class, 'execute'],
+            \Modules\Webhooks\Operations\LookupWebhookDeliveryOperation::class => [\Modules\Webhooks\Actions\Webhooks\LookupWebhookDeliveryAction::class, 'execute'],
+        ];
+
+        foreach ($operations as $operation => [$handler, $method]) {
+            $registry->register($operation, [
+                'handler' => [$handler, $method],
+                'callers' => [
+                    \Modules\Webhooks\Actions\Webhooks\DiscoverDueDeliveriesAction::class,
+                    \Modules\Webhooks\Actions\Webhooks\LookupWebhookDeliveryAction::class,
+                    \Modules\Webhooks\Jobs\DeliverWebhookJob::class,
+                    \Modules\Webhooks\Console\Commands\DispatchWebhookDeliveriesCommand::class,
+                    \Modules\Webhooks\Console\Commands\RetryWebhookDeliveryCommand::class,
+                ],
+                'jobs' => [\Modules\Webhooks\Jobs\DeliverWebhookJob::class],
+            ]);
+        }
     }
 }

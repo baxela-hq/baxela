@@ -19,4 +19,9 @@ class PaymentDriverCredentialSchema
 
     /** Encrypted at rest (marketplace P5.2) — plaintext never stored, never served. */
     public const string VALUE = 'value';
+
+    public const string ENABLED = 'enabled';
+
+    /** Per-(tenant, driver) rotation counter — bumped with the driver's write (§6.3 F1). */
+    public const string CREDENTIAL_VERSION = 'credential_version';
 }
