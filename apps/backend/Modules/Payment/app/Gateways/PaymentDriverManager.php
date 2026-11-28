@@ -17,8 +17,10 @@ class PaymentDriverManager
         $driver = config("payment.drivers.{$name}");
 
         if (is_null($driver)) {
+            file_put_contents('/tmp/fn.log', 'MISS name='.var_export($name, true)."\n", FILE_APPEND);
             throw PaymentException::methodNotSupported();
         }
+        file_put_contents('/tmp/fn.log', 'HIT name='.var_export($name, true)."\n", FILE_APPEND);
 
         return app($driver);
     }
@@ -49,12 +51,11 @@ class PaymentDriverManager
      * contract (fail closed); a driver declaring no keys counts as
      * configured.
      *
-     * The check reads CONFIG, deliberately: the ApplyDatabaseCredentials
-     * middleware deterministically rewrites every declared credential
-     * slot from the resolver (database → env fallback, undecryptable →
-     * null) on every HTTP request, so on both call surfaces (user
-     * checkout method listing, admin methods resource) config IS the
-     * effective credential state. Legacy truthiness semantics preserved
+     * The check reads the context-scoped resolver, deliberately: the
+     * active tenant's stored rows (with the env fallback in
+     * local/testing) are the effective credential state on both call
+     * surfaces (user checkout method listing, admin methods resource).
+     * Legacy truthiness semantics preserved
      * verbatim — '' and '0' count as unconfigured. Only this policy
      * answer is boolean: unexpected driver-resolution failures
      * propagate, never silently become "unconfigured".
@@ -77,8 +78,17 @@ class PaymentDriverManager
             return true;
         }
 
+        // A disabled driver is unconfigured for every surface (multi-
+        // tenancy §6.3, row 42): direct construction cannot use it either.
+        if (app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->driverDisabled($driver)) {
+            return false;
+        }
+
         foreach ($keys as $key) {
-            if (! config("payment.{$driver}.{$key}")) {
+            // The resolver reads the active tenant's scoped rows with the
+            // env fallback in local/testing — config() is no longer the
+            // credential state (§6.3).
+            if (! app(\Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface::class)->credential($driver, $key)) {
                 return false;
             }
         }

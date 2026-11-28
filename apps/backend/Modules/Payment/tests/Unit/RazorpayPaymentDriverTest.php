@@ -9,6 +9,7 @@ use Modules\Payment\Gateways\Drivers\RazorpayPaymentDriver;
 use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 uses(HelperTrait::class);
 
@@ -30,7 +31,7 @@ function razorpayDriver(callable $configureClient): RazorpayPaymentDriver
     $client = Mockery::mock(RazorpayClient::class);
     $configureClient($client);
 
-    return new RazorpayPaymentDriver($client);
+    return new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -135,7 +136,7 @@ it('creates a payment link with minor units, reference and callback url', functi
 
 it('refuses to initiate when the gateway is not configured', function (array $config) {
     config($config);
-    $driver = new RazorpayPaymentDriver(app(RazorpayClient::class));
+    $driver = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -171,12 +172,12 @@ it('fails loudly when the link response is missing its short url', function () {
 it('refuses webhooks when the webhook secret is not configured', function () {
     config(['payment.razorpay.webhook_secret' => null]);
 
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload()));
 })->throws(PaymentException::class);
 
 it('settles a paid link event', function () {
-    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+    $result = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload()));
 
     expect($result->transaction_id)->toBe('9')
@@ -184,14 +185,14 @@ it('settles a paid link event', function () {
 });
 
 it('maps a cancelled link to failed', function () {
-    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+    $result = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload(['event' => 'payment_link.cancelled'])));
 
     expect($result->status)->toBe(PaymentStatusEnum::FAILED->value);
 });
 
 it('rejects non-terminal events so the payment stays pending', function (string $event) {
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload(['event' => $event])));
 })->throws(PaymentException::class)->with([
     'failed attempt is not terminal' => ['payment.failed'],
@@ -204,22 +205,22 @@ it('rejects a webhook whose body was modified after signing', function () {
         'payload' => ['payment_link' => ['entity' => ['id' => 'plink_KfskYmqDPG9hXY', 'reference_id' => '10', 'status' => 'paid', 'amount' => 1, 'currency' => 'INR', 'short_url' => 'https://rzp.io/i/other']]],
     ]), JSON_THROW_ON_ERROR);
 
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload(), rawBodyOverride: $tampered));
 })->throws(PaymentException::class);
 
 it('rejects a webhook signed with the wrong secret', function () {
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload(), secret: 'rzp-webhook-other'));
 })->throws(PaymentException::class);
 
 it('rejects a webhook without a signature', function () {
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload(), sign: false));
 })->throws(PaymentException::class);
 
 it('rejects an event with an empty reference', function () {
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload([
             'payload' => ['payment_link' => ['entity' => ['id' => 'plink_KfskYmqDPG9hXY', 'reference_id' => '', 'status' => 'paid', 'amount' => 30500, 'currency' => 'INR', 'short_url' => 'https://rzp.io/i/abc123']]],
         ])));
@@ -228,7 +229,7 @@ it('rejects an event with an empty reference', function () {
 it('rejects a webhook whose body is not valid json even when correctly signed', function () {
     $rawBody = 'not-json';
 
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/razorpay', 'POST', [], [], [], [
             'HTTP_X_RAZORPAY_SIGNATURE' => razorpaySignature($rawBody, 'rzp-webhook-test'),
         ], $rawBody));
@@ -302,7 +303,7 @@ it('refuses to refund a payment without a persisted pay id', function () {
 })->throws(PaymentException::class, 'payment.refund.not_supported');
 
 it('routes a refund processed webhook to the refund ledger via the echoed notes', function () {
-    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+    $result = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent([
             'event' => 'refund.processed',
             'payload' => [
@@ -327,7 +328,7 @@ it('routes a refund processed webhook to the refund ledger via the echoed notes'
 });
 
 it('routes a refund failed webhook as a definitive failure', function () {
-    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+    $result = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent([
             'event' => 'refund.failed',
             'payload' => [
@@ -346,7 +347,7 @@ it('routes a refund failed webhook as a definitive failure', function () {
 });
 
 it('rejects a refund webhook without any correlation key', function () {
-    new RazorpayPaymentDriver(app(RazorpayClient::class))
+    new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent([
             'event' => 'refund.processed',
             'payload' => [
@@ -358,7 +359,7 @@ it('rejects a refund webhook without any correlation key', function () {
 })->throws(PaymentException::class);
 
 it('still persists the captured pay id from a paid link webhook', function () {
-    $result = new RazorpayPaymentDriver(app(RazorpayClient::class))
+    $result = new RazorpayPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(RazorpayClient::class))
         ->handleWebhook(razorpayEvent(razorpayEventPayload()));
 
     expect($result->refund_outcome)->toBeNull()

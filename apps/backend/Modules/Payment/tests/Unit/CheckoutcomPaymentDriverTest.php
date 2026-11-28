@@ -9,6 +9,7 @@ use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Gateways\Drivers\CheckoutcomPaymentDriver;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 uses(HelperTrait::class);
 
@@ -29,7 +30,7 @@ function checkoutcomDriver(callable $configureClient): CheckoutcomPaymentDriver
     $client = Mockery::mock(CheckoutcomClient::class);
     $configureClient($client);
 
-    return new CheckoutcomPaymentDriver($client);
+    return new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -149,7 +150,7 @@ it('respects zero-decimal currencies', function () {
 
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.checkoutcom.secret_key' => null]);
-    $driver = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class));
+    $driver = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -185,12 +186,12 @@ it('fails loudly when the link response is missing its hosted url', function (ar
 it('refuses webhooks when the webhook secret is not configured', function () {
     config(['payment.checkoutcom.webhook_secret' => null]);
 
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload()));
 })->throws(PaymentException::class);
 
 it('settles a captured event', function () {
-    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    $result = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload()));
 
     expect($result->transaction_id)->toBe('9')
@@ -198,7 +199,7 @@ it('settles a captured event', function () {
 });
 
 it('maps terminal failure events', function (string $type) {
-    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    $result = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(['type' => $type])));
 
     expect($result->status)->toBe(PaymentStatusEnum::FAILED->value);
@@ -210,7 +211,7 @@ it('maps terminal failure events', function (string $type) {
 ]);
 
 it('rejects non-terminal events so the payment stays pending', function (string $type) {
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(['type' => $type])));
 })->throws(PaymentException::class)->with([
     'approved is authorised, not captured' => ['payment_approved'],
@@ -281,7 +282,7 @@ it('refuses to refund a payment without a persisted payment id', function () {
 })->throws(PaymentException::class, 'payment.refund.not_supported');
 
 it('routes a refunded event to the refund ledger', function () {
-    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    $result = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent([
             'id' => 'evt_refund_1',
             'type' => 'payment_refunded',
@@ -302,7 +303,7 @@ it('routes a refunded event to the refund ledger', function () {
 });
 
 it('routes a refund declined event as a definitive failure', function () {
-    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    $result = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent([
             'id' => 'evt_refund_2',
             'type' => 'payment_refund_declined',
@@ -317,7 +318,7 @@ it('routes a refund declined event as a definitive failure', function () {
 });
 
 it('rejects a refund event without a reference', function () {
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent([
             'id' => 'evt_refund_3',
             'type' => 'payment_refunded',
@@ -326,7 +327,7 @@ it('rejects a refund event without a reference', function () {
 })->throws(PaymentException::class);
 
 it('still persists the payment id from a captured event', function () {
-    $result = new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    $result = new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload()));
 
     expect($result->refund_outcome)->toBeNull()
@@ -336,29 +337,29 @@ it('still persists the payment id from a captured event', function () {
 it('rejects a webhook whose body was modified after signing', function () {
     $tampered = json_encode(checkoutcomEventPayload(['data' => ['id' => 'pay_other', 'reference' => '10', 'status' => 'Captured', 'amount' => 1, 'currency' => 'USD']]), JSON_THROW_ON_ERROR);
 
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(), rawBodyOverride: $tampered));
 })->throws(PaymentException::class);
 
 it('rejects a webhook signed with the wrong secret', function () {
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(), secret: 'cko-webhook-other'));
 })->throws(PaymentException::class);
 
 it('rejects a webhook without a signature', function () {
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(), sign: false));
 })->throws(PaymentException::class);
 
 it('rejects an event with an empty reference', function () {
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(checkoutcomEvent(checkoutcomEventPayload(['data' => ['id' => 'pay_mbabxz242c5syclbu3swqk43ea', 'reference' => '', 'status' => 'Captured', 'amount' => 30500, 'currency' => 'USD']])));
 })->throws(PaymentException::class);
 
 it('rejects a webhook whose body is not valid json even when correctly signed', function () {
     $rawBody = 'not-json';
 
-    new CheckoutcomPaymentDriver(app(CheckoutcomClient::class))
+    new CheckoutcomPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(CheckoutcomClient::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/checkoutcom', 'POST', [], [], [], [
             'HTTP_CKO_SIGNATURE' => checkoutcomSignature($rawBody, 'cko-webhook-test'),
         ], $rawBody));

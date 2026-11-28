@@ -25,6 +25,8 @@ class PaymentDriverCredential extends Model
         PaymentDriverCredentialSchema::DRIVER,
         PaymentDriverCredentialSchema::KEY,
         PaymentDriverCredentialSchema::VALUE,
+        PaymentDriverCredentialSchema::ENABLED,
+        PaymentDriverCredentialSchema::CREDENTIAL_VERSION,
     ];
 
     protected function casts(): array

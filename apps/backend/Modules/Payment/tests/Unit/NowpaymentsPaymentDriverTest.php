@@ -8,6 +8,7 @@ use Modules\Payment\Gateways\Drivers\NowpaymentsPaymentDriver;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 uses(HelperTrait::class);
 
@@ -31,7 +32,7 @@ function nowpaymentsDriver(callable $configureClient): NowpaymentsPaymentDriver
     $client = Mockery::mock(NowpaymentsClient::class);
     $configureClient($client);
 
-    return new NowpaymentsPaymentDriver($client);
+    return new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -201,7 +202,7 @@ it('omits the ipn callback when not configured', function () {
 
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.nowpayments.api_key' => null]);
-    $driver = new NowpaymentsPaymentDriver(app(NowpaymentsClient::class));
+    $driver = new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -234,12 +235,12 @@ it('fails loudly when the invoice response is missing its url', function () {
 it('refuses webhooks when the ipn secret is not configured', function () {
     config(['payment.nowpayments.ipn_secret' => null]);
 
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn()));
 })->throws(PaymentException::class);
 
 it('settles a finished ipn', function () {
-    $result = new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    $result = new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn()));
 
     expect($result->transaction_id)->toBe('9')
@@ -247,7 +248,7 @@ it('settles a finished ipn', function () {
 });
 
 it('maps terminal failure statuses', function (string $status) {
-    $result = new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    $result = new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn(['payment_status' => $status])));
 
     expect($result->status)->toBe(PaymentStatusEnum::FAILED->value);
@@ -257,7 +258,7 @@ it('maps terminal failure statuses', function (string $status) {
 ]);
 
 it('rejects non-terminal ipns so the payment stays pending', function (string $status) {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn(['payment_status' => $status])));
 })->throws(PaymentException::class)->with([
     'waiting' => ['waiting'],
@@ -269,7 +270,7 @@ it('rejects non-terminal ipns so the payment stays pending', function (string $s
 ]);
 
 it('rejects ipns whose signed fields were tampered with', function (array $tampered) {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn($tampered), signIpn: nowpaymentsIpn()));
 })->throws(PaymentException::class)->with([
     'order reference' => [['order_id' => '10']],
@@ -278,17 +279,17 @@ it('rejects ipns whose signed fields were tampered with', function (array $tampe
 ]);
 
 it('rejects an ipn without a signature', function () {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn(), sign: false));
 })->throws(PaymentException::class);
 
 it('rejects an ipn signed with the wrong secret', function () {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn(), secret: 'np-ipn-other'));
 })->throws(PaymentException::class);
 
 it('verifies signatures over recursively sorted nested fields', function () {
-    $result = new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    $result = new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn([
             'outcome' => ['z' => 'last', 'a' => 'first'],
         ])));
@@ -297,7 +298,7 @@ it('verifies signatures over recursively sorted nested fields', function () {
 });
 
 it('rejects malformed ipn bodies', function (string $body) {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/nowpayments', 'POST', [], [], [], [], $body));
 })->throws(PaymentException::class)->with([
     'not json' => ['not-json'],
@@ -305,6 +306,6 @@ it('rejects malformed ipn bodies', function (string $body) {
 ]);
 
 it('rejects an ipn with an empty order reference', function () {
-    new NowpaymentsPaymentDriver(app(NowpaymentsClient::class))
+    new NowpaymentsPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(NowpaymentsClient::class))
         ->handleWebhook(nowpaymentsSignedRequest(nowpaymentsIpn(['order_id' => ''])));
 })->throws(PaymentException::class);

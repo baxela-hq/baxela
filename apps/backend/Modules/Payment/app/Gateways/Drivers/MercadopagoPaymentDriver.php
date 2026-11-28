@@ -15,10 +15,15 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected MercadopagoClient $mercadopago) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected MercadopagoClient $mercadopago,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -51,7 +56,7 @@ class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
         ];
 
         // Optional: when empty, the account-level webhook config applies.
-        $notification = (string) config('payment.mercadopago.notification_url');
+        $notification = (string) $this->configs->credential('mercadopago', 'notification_url');
 
         if ($notification !== '') {
             $params['notification_url'] = $notification;
@@ -59,7 +64,7 @@ class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 
         $preference = $this->mercadopago->createPreference($params);
 
-        $url = config('payment.mercadopago.sandbox')
+        $url = $this->configs->credential('mercadopago', 'sandbox')
             ? (string) ($preference->sandbox_init_point ?? '')
             : (string) ($preference->init_point ?? '');
 
@@ -78,7 +83,7 @@ class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.mercadopago.webhook_secret') === '') {
+        if ((string) $this->configs->credential('mercadopago', 'webhook_secret') === '') {
             // Without the signing secret every notification would fail
             // verification; say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -231,6 +236,6 @@ class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(string $key, ?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config("payment.mercadopago.{$key}"));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('mercadopago', $key));
     }
 }

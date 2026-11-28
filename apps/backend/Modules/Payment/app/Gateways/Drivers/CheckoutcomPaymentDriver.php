@@ -15,10 +15,15 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\CheckoutcomClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class CheckoutcomPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected CheckoutcomClient $checkoutcom) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected CheckoutcomClient $checkoutcom,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -59,7 +64,7 @@ class CheckoutcomPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.checkoutcom.webhook_secret') === '') {
+        if ((string) $this->configs->credential('checkoutcom', 'webhook_secret') === '') {
             // Without the signing secret every event would fail
             // verification; say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -169,6 +174,6 @@ class CheckoutcomPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config('payment.checkoutcom.return_url'));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('checkoutcom', 'return_url'));
     }
 }

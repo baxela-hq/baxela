@@ -11,6 +11,7 @@ use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 uses(HelperTrait::class);
 
@@ -33,7 +34,7 @@ function paypalDriver(callable $configureClient): PaypalPaymentDriver
     $client = Mockery::mock(PaypalClient::class);
     $configureClient($client);
 
-    return new PaypalPaymentDriver($client);
+    return new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -141,7 +142,7 @@ it('respects zero-decimal currencies', function () {
 
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.paypal.client_id' => null]);
-    $driver = new PaypalPaymentDriver(app(PaypalClient::class));
+    $driver = new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(PaypalClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,

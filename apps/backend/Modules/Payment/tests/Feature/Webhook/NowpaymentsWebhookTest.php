@@ -104,7 +104,7 @@ it('settles an order through a finished ipn', function () {
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -118,9 +118,9 @@ it('acks a replayed ipn as a no-op', function () {
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -131,7 +131,7 @@ it('acks a late expiry after settlement as a no-op', function () {
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
 
     // Out-of-order delivery: an expiry arriving after the settle must not
@@ -140,7 +140,7 @@ it('acks a late expiry after settlement as a no-op', function () {
         'payment_id' => 4607606999,
         'payment_status' => 'expired',
     ]);
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $expired, nowpaymentsSigHeader($expired))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $expired, nowpaymentsSigHeader($expired))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID)
@@ -152,7 +152,7 @@ it('marks the payment failed on a failed ipn without touching the order', functi
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody((string) $payment->id, ['payment_status' => 'failed']);
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -167,7 +167,7 @@ it('keeps the payment pending on non-terminal ipns', function () {
 
     // On-chain states crawl along for minutes to hours; the terminal
     // finished ipn settles, intermediate ones must not touch the payment.
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -180,7 +180,7 @@ it('rejects a well-formed ipn whose reference matches no payment', function () {
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody('999');
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -195,7 +195,7 @@ it('rejects an ipn with a bad signature', function () {
 
     // Signed for a different order: any tampered field produces the same
     // invalid outcome.
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader(nowpaymentsIpnBody('999')))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader(nowpaymentsIpnBody('999')))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -209,7 +209,7 @@ it('rejects ipns when the ipn secret is not configured', function () {
     $payment = nowpaymentsPendingPayment($order);
     $body = nowpaymentsIpnBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/nowpayments'), $body, nowpaymentsSigHeader($body))
+    $this->postJson($this->baseUrl('/webhook/default/nowpayments'), $body, nowpaymentsSigHeader($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

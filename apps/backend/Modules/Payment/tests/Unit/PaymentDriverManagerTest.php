@@ -143,6 +143,10 @@ it('reports a driver configured only when its full lifecycle credentials are set
     config(['payment.checkoutcom.webhook_secret' => 'cko-webhook-test']);
     config(['payment.razorpay.webhook_secret' => 'rzp-webhook-test']);
 
+    // The env baseline is an immutable process snapshot (multi-tenancy
+    // §6.3): controlled test reloads re-capture it after the seeding.
+    app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->refreshEnvBaseline();
+
     expect($manager->isConfigured('stripe'))->toBeTrue()
         ->and($manager->isConfigured('paypal'))->toBeTrue()
         ->and($manager->isConfigured('adyen'))->toBeTrue()

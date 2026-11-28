@@ -92,7 +92,7 @@ it('settles an order through an approved paypal webhook', function () {
         ->andReturn(paypalCaptureCompleted());
     $this->app->instance(PaypalClient::class, $client);
 
-    $this->postJson($this->baseUrl('/webhook/paypal'), paypalApprovedEvent(), paypalTransmission())
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), paypalApprovedEvent(), paypalTransmission())
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -118,9 +118,9 @@ it('acks a replayed approval after settlement as a no-op', function () {
     );
     $this->app->instance(PaypalClient::class, $client);
 
-    $this->postJson($this->baseUrl('/webhook/paypal'), paypalApprovedEvent(), paypalTransmission())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), paypalApprovedEvent(), paypalTransmission())->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/paypal'), paypalApprovedEvent(), paypalTransmission())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), paypalApprovedEvent(), paypalTransmission())->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -130,7 +130,7 @@ it('marks the payment failed on a denied capture event without touching the orde
     $order = paypalUnpaidOrder();
     $payment = paypalPendingPayment($order, '5O190127TN3647153');
 
-    $this->postJson($this->baseUrl('/webhook/paypal'), [
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), [
         'id' => 'evt_1',
         'event_type' => 'PAYMENT.CAPTURE.DENIED',
         'resource' => [
@@ -152,7 +152,7 @@ it('rejects a paypal webhook that fails signature verification', function () {
     $client->shouldReceive('verifyWebhookSignature')->andReturnFalse();
     $this->app->instance(PaypalClient::class, $client);
 
-    $this->postJson($this->baseUrl('/webhook/paypal'), [
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), [
         'id' => 'evt_1',
         'event_type' => 'PAYMENT.CAPTURE.COMPLETED',
         'resource' => [
@@ -172,7 +172,7 @@ it('rejects a paypal webhook when the webhook id is not configured', function ()
     $order = paypalUnpaidOrder();
     paypalPendingPayment($order, '5O190127TN3647153');
 
-    $this->postJson($this->baseUrl('/webhook/paypal'), [
+    $this->postJson($this->baseUrl('/webhook/default/paypal'), [
         'id' => 'evt_1',
         'event_type' => 'PAYMENT.CAPTURE.COMPLETED',
         'resource' => [

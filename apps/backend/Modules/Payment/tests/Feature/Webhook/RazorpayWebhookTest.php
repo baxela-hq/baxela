@@ -79,7 +79,7 @@ it('settles an order through a paid razorpay webhook', function () {
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -93,9 +93,9 @@ it('acks a replayed webhook as a no-op', function () {
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -106,13 +106,13 @@ it('acks a late cancellation after settlement as a no-op', function () {
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
 
     // Out-of-order delivery: a cancellation arriving after the settle must
     // not overwrite the success — HandleWebhookAction only mutates PENDING.
     $cancelled = razorpayEventBody((string) $payment->id, 'payment_link.cancelled');
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $cancelled, razorpaySignedHeaders($cancelled))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $cancelled, razorpaySignedHeaders($cancelled))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID)
@@ -124,7 +124,7 @@ it('marks the payment failed on a cancelled link without touching the order', fu
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody((string) $payment->id, 'payment_link.cancelled');
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -139,7 +139,7 @@ it('keeps the payment pending on failed payment attempts', function () {
 
     // A failed attempt leaves the link payable — only payment_link.paid
     // or payment_link.cancelled are terminal.
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -152,7 +152,7 @@ it('rejects a well-formed event whose reference matches no payment', function ()
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody('999');
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -167,7 +167,7 @@ it('rejects a razorpay webhook with a bad signature', function () {
 
     // Signed for a different payload: any post-signing modification
     // produces the same invalid outcome.
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body, razorpayEventBody('999')))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body, razorpayEventBody('999')))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -181,7 +181,7 @@ it('rejects webhooks when the webhook secret is not configured', function () {
     $payment = razorpayPendingPayment($order);
     $body = razorpayEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/razorpay'), $body, razorpaySignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/razorpay'), $body, razorpaySignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

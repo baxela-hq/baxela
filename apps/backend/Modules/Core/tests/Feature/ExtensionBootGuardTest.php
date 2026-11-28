@@ -108,13 +108,20 @@ it('skips an incompatible extension and names the required range', function () {
 });
 
 it('keeps a skipped extension inert at the payment webhook', function () {
+    // The webhook route carries {tenantSlug} (multi-tenancy §3.1 B2):
+    // seed the default store the probe resolves through.
+    \Modules\Tenant\Models\Tenant::query()->firstOrCreate(
+        ['slug' => 'default'],
+        ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
+    );
+
     guardRow(enabled: false);
 
     guardExtensionProvider(guardManifest())->boot();
 
     // The driver never reached the registry, so the webhook answers the
     // standard unknown-driver error — present but inert, never fatal.
-    $this->postJson('api/v1/payment/webhook/guard-test')
+    $this->postJson('api/v1/payment/webhook/default/guard-test')
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.process.method_not_supported');
 });

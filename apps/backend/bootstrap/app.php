@@ -12,7 +12,6 @@ use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
 use Modules\Core\Http\Middleware\TrustProxies;
 use Modules\Core\Support\SupportedLocales;
-use Modules\Payment\Http\Middleware\ApplyDatabaseCredentials;
 use Sentry\Laravel\Integration as SentryIntegration;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -44,10 +43,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->prependToPriorityList(
             HandlePrecognitiveRequests::class,
             ResolveTenant::class,
-        );
-        $middleware->appendToPriorityList(
-            HandlePrecognitiveRequests::class,
-            ApplyDatabaseCredentials::class,
         );
     })
     ->withExceptions(function (Exceptions $exceptions): void {

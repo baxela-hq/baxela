@@ -494,21 +494,6 @@ return [
                 'operation' => 'select',
                 'justification' => 'tenant predicate via TenantQueryScope (§4.3 layer 0)',
             ],
-            'Modules/Webhooks/app/Console/Commands/PruneWebhooksCommand.php::handle::webhook_deliveries#1' => [
-                'table' => 'webhook_deliveries',
-                'operation' => 'delete',
-                'justification' => 'central operation: declared console maintenance mode (§6.7.2)',
-            ],
-            'Modules/Webhooks/app/Console/Commands/PruneWebhooksCommand.php::handle::webhook_events#1' => [
-                'table' => 'webhook_events',
-                'operation' => 'select',
-                'justification' => 'central operation: declared console maintenance mode (§6.7.2)',
-            ],
-            'Modules/Webhooks/app/Jobs/DeliverWebhookJob.php::finalize::webhook_deliveries#1' => [
-                'table' => 'webhook_deliveries',
-                'operation' => 'select',
-                'justification' => 'central operation: bootstrap-mode webhook finalize after tenant resolution (§6.2)',
-            ],
         ],
         // Bare unique/exists rules are permitted only on installation-level
         // tables, and only at the exact sites listed here.
@@ -557,7 +542,14 @@ return [
 
         // Console commands that must enter MODE_CENTRAL through the registry.
         'command_modes' => [
+            // Declared here: the commands whose own source enters central
+            // mode (the architecture test checks exactly that symmetry).
+            // The FULL §6.7.2 declaration table (dispatch-deliveries,
+            // prune, the order/media sweeps) is Phase 5 work (§8 Phase 5;
+            // Phase 2 deviation 8) — retry-delivery's central bootstrap
+            // lookup (§6.2) lands with Phase 4, so it declares itself now.
             'tenancy:audit' => 'central',
+            'webhooks:retry-delivery' => 'central',
         ],
     ],
 

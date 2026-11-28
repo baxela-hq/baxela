@@ -6,6 +6,7 @@ use Modules\Payment\Exceptions\PaymentException;
 use Stripe\Checkout\Session;
 use Stripe\Refund;
 use Stripe\StripeClient;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin wrapper around the Stripe SDK's checkout session creation. Keeps the
@@ -13,6 +14,10 @@ use Stripe\StripeClient;
  */
 class StripeCheckout
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createSession(array $params): Session
     {
         return $this->client()->checkout->sessions->create($params);
@@ -35,7 +40,7 @@ class StripeCheckout
 
     private function client(): StripeClient
     {
-        $secret = (string) config('payment.stripe.secret');
+        $secret = (string) $this->configs->credential('stripe', 'secret');
 
         if ($secret === '') {
             // Fail as a safe 400 instead of the SDK's opaque 500.

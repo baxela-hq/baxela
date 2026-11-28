@@ -38,7 +38,7 @@ it('refunds the completed capture with a decimal string and the request id', fun
         'refund-uuid-1',
     )->andReturn((object) ['id' => 'REF-9']);
 
-    $driver = new PaypalPaymentDriver($client);
+    $driver = new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
 
     expect($driver->refund(paypalRefundInput())->transaction_id)->toBe('REF-9');
 });
@@ -49,11 +49,11 @@ it('refuses an order without a completed capture', function () {
         'purchase_units' => [(object) ['payments' => (object) ['captures' => []]]],
     ]);
 
-    (new PaypalPaymentDriver($client))->refund(paypalRefundInput());
+    (new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client))->refund(paypalRefundInput());
 })->throws(PaymentException::class, 'payment.refund.not_supported');
 
 it('fails loudly on drivers without refund support', function () {
-    $adyen = new AdyenPaymentDriver(Mockery::mock(AdyenCheckout::class));
+    $adyen = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, Mockery::mock(AdyenCheckout::class));
 
     $adyen->refund(paypalRefundInput());
 })->throws(PaymentException::class, 'payment.refund.not_supported');

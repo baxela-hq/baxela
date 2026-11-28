@@ -20,7 +20,6 @@ use Modules\Core\Exceptions\TenantNotFoundException;
 use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Core\Support\Tenancy\TenantContext;
-use Modules\Payment\Http\Middleware\ApplyDatabaseCredentials;
 use Modules\Tenant\Models\TenantCurrency;
 use Modules\Tenant\Schemas\TenantCurrency\TenantCurrencySchema;
 use Modules\Tenant\Tests\Feature\HelperTrait;
@@ -116,9 +115,10 @@ it('extends the middleware priority list without disturbing Laravel defaults', f
 
     $position = fn (string $class): int => (int) array_search($class, $priority, true);
 
-    expect($position(ResolveTenant::class))->toBeLessThan($position(ApplyDatabaseCredentials::class))
-        ->and($position(ApplyDatabaseCredentials::class))->toBeLessThan($position(AuthenticatesRequests::class))
-        ->and($position(ResolveTenant::class))->toBeLessThan($position(ThrottleRequests::class))
+    // ApplyDatabaseCredentials is deleted (multi-tenancy §6.3): every
+    // credential read-site goes through the context-scoped resolver, so
+    // the api group's priority list holds only the framework defaults.
+    expect($position(ResolveTenant::class))->toBeLessThan($position(ThrottleRequests::class))
         ->and($position(ResolveTenant::class))->toBeLessThan($position(SubstituteBindings::class));
 });
 
@@ -139,8 +139,7 @@ it('puts tenant identification first on representative admin, machine and thrott
         // route's own guard, route-model binding and — where present —
         // throttling.
         expect($stack[0])->toBe(ResolveTenant::class)
-            ->and($stack[1])->toBe(ApplyDatabaseCredentials::class)
-            ->and($position($guard))->toBeGreaterThan(1)
+            ->and($position($guard))->toBeGreaterThan(0)
             ->and($position(SubstituteBindings::class))->toBeGreaterThan(0);
 
         if ($throttled) {

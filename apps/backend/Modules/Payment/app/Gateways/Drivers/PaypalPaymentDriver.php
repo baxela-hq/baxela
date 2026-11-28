@@ -14,10 +14,15 @@ use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected PaypalClient $paypal) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected PaypalClient $paypal,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -56,7 +61,7 @@ class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.paypal.webhook_id') === '') {
+        if ((string) $this->configs->credential('paypal', 'webhook_id') === '') {
             // Without the webhook id the signature API cannot verify
             // anything; say so instead of reporting each event as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -186,6 +191,6 @@ class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(string $key, ?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config("payment.paypal.{$key}"));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('paypal', $key));
     }
 }

@@ -40,7 +40,7 @@ it('settles a payment webhook and drives its order to paid', function () {
     $order = unpaidOrder();
     $payment = pendingPaymentFor($order, 777);
 
-    $this->postJson($this->baseUrl('/webhook/test'), [
+    $this->postJson($this->baseUrl('/webhook/default/test'), [
         'transaction_id' => 777,
         'status' => 'success',
     ], ['X-Test-Signature' => 'secret'])
@@ -59,10 +59,10 @@ it('acks a replayed webhook as a no-op without double transitions', function () 
     $payload = ['transaction_id' => 777, 'status' => 'success'];
     $headers = ['X-Test-Signature' => 'secret'];
 
-    $this->postJson($this->baseUrl('/webhook/test'), $payload, $headers)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/test'), $payload, $headers)->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
 
-    $this->postJson($this->baseUrl('/webhook/test'), $payload, $headers)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/test'), $payload, $headers)->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -72,7 +72,7 @@ it('marks the payment failed without touching the order', function () {
     $order = unpaidOrder();
     $payment = pendingPaymentFor($order, 777);
 
-    $this->postJson($this->baseUrl('/webhook/test'), [
+    $this->postJson($this->baseUrl('/webhook/default/test'), [
         'transaction_id' => 777,
         'status' => 'failed',
     ], ['X-Test-Signature' => 'secret'])->assertOk();
@@ -84,7 +84,7 @@ it('marks the payment failed without touching the order', function () {
 it('rejects a webhook whose transaction resolves to no payment', function () {
     unpaidOrder();
 
-    $this->postJson($this->baseUrl('/webhook/test'), [
+    $this->postJson($this->baseUrl('/webhook/default/test'), [
         'transaction_id' => 424242,
         'status' => 'success',
     ], ['X-Test-Signature' => 'secret'])
@@ -93,7 +93,7 @@ it('rejects a webhook whose transaction resolves to no payment', function () {
 });
 
 it('rejects a webhook that fails signature verification', function () {
-    $this->postJson($this->baseUrl('/webhook/test'), [
+    $this->postJson($this->baseUrl('/webhook/default/test'), [
         'transaction_id' => 777,
         'status' => 'success',
     ], ['X-Test-Signature' => 'wrong'])
@@ -102,7 +102,7 @@ it('rejects a webhook that fails signature verification', function () {
 });
 
 it('rejects webhooks for the manual driver, which has none', function () {
-    $this->postJson($this->baseUrl('/webhook/manual'), [
+    $this->postJson($this->baseUrl('/webhook/default/manual'), [
         'transaction_id' => 777,
         'status' => 'success',
     ])->assertStatus(400)

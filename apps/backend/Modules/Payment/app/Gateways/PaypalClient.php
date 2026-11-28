@@ -6,6 +6,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around PayPal's Orders v2 REST API (the official
@@ -14,6 +15,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class PaypalClient
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     /** Flushed when paypal credentials are mutated — an 8-hour OAuth token must not outlive a rotation (marketplace P5.2 D7). */
     public const string ACCESS_TOKEN_CACHE_KEY = 'payment.paypal.access_token';
 
@@ -64,7 +69,7 @@ class PaypalClient
     {
         $response = $this->request()->post('/v1/notifications/verify-webhook-signature', [
             ...$transmission,
-            'webhook_id' => (string) config('payment.paypal.webhook_id'),
+            'webhook_id' => (string) $this->configs->credential('paypal', 'webhook_id'),
             'webhook_event' => $event,
         ])->throw();
 
@@ -80,8 +85,8 @@ class PaypalClient
 
     private function accessToken(): string
     {
-        $clientId = (string) config('payment.paypal.client_id');
-        $clientSecret = (string) config('payment.paypal.client_secret');
+        $clientId = (string) $this->configs->credential('paypal', 'client_id');
+        $clientSecret = (string) $this->configs->credential('paypal', 'client_secret');
 
         if ($clientId === '' || $clientSecret === '') {
             // Fail as a safe 400 instead of an opaque auth error from PayPal.
@@ -89,7 +94,15 @@ class PaypalClient
         }
 
         // PayPal tokens live ~9 hours; refresh slightly before expiry.
-        return Cache::remember(self::ACCESS_TOKEN_CACHE_KEY, now()->addHours(8), function () use ($clientId, $clientSecret): string {
+        // The cache key is scoped by tenant AND credential version
+        // (multi-tenancy §6.3 F1, row 32): a rotated credential can never
+        // reuse another tenant's/version's token, and a rotation takes
+        // effect without invalidation (the version bump rekeys).
+        $version = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal');
+        $key = app(\Modules\Core\Support\Tenancy\TenantContext::class)->cachePrefix()
+            .'payment.paypal.access_token:'.$version;
+
+        return Cache::remember($key, now()->addHours(8), function () use ($clientId, $clientSecret): string {
             return (string) Http::withBasicAuth($clientId, $clientSecret)
                 ->asForm()
                 ->post($this->baseUrl().'/v1/oauth2/token', ['grant_type' => 'client_credentials'])
@@ -100,7 +113,7 @@ class PaypalClient
 
     private function baseUrl(): string
     {
-        return config('payment.paypal.mode') === 'live'
+        return $this->configs->credential('paypal', 'mode') === 'live'
             ? 'https://api-m.paypal.com'
             : 'https://api-m.sandbox.paypal.com';
     }

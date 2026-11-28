@@ -16,10 +16,15 @@ use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use UnexpectedValueException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class StripePaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected StripeCheckout $stripe) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected StripeCheckout $stripe,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -64,7 +69,7 @@ class StripePaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.stripe.webhook_secret') === '') {
+        if ((string) $this->configs->credential('stripe', 'webhook_secret') === '') {
             // Without the signing secret every event would fail verification;
             // say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -74,7 +79,7 @@ class StripePaymentDriver implements ConfigurableDriver, RefundableDriver
             $event = Webhook::constructEvent(
                 $request->getContent(),
                 (string) $request->header('Stripe-Signature'),
-                (string) config('payment.stripe.webhook_secret'),
+                (string) $this->configs->credential('stripe', 'webhook_secret'),
             );
         } catch (SignatureVerificationException|UnexpectedValueException) {
             throw PaymentException::webhookInvalid();
@@ -134,6 +139,6 @@ class StripePaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(string $key, ?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config("payment.stripe.{$key}"));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('stripe', $key));
     }
 }

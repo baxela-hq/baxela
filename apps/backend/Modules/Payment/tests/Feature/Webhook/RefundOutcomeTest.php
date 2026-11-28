@@ -98,7 +98,7 @@ it('confirms a processing refund through a success webhook and applies the order
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'gateway_refund_id' => 'rf-gateway-1',
         'gateway_payment_id' => $payment->{PaymentSchema::GATEWAY_TRANSACTION_ID},
@@ -117,7 +117,7 @@ it('confirms a pending refund whose webhook outran the accept response', functio
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [PaymentRefundSchema::STATUS => PaymentRefundStatusEnum::PENDING]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
     ]))->assertOk();
@@ -130,7 +130,7 @@ it('fails a processing refund and frees its reservation', function () {
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [PaymentRefundSchema::AMOUNT => 100.0]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'failed',
     ]))->assertOk();
@@ -158,7 +158,7 @@ it('reverses a finalized refund and restores the order accounting', function () 
         OrderSchema::REFUNDED_AMOUNT => 100.0,
     ]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'reversed',
         'gateway_refund_id' => 'rf-finalized',
@@ -175,7 +175,7 @@ it('reverses a refund the success webhook never reached, from every pre-terminal
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [PaymentRefundSchema::STATUS => $state]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'reversed',
     ]))->assertOk();
@@ -196,7 +196,7 @@ it('releases the reservation when a pre-terminal refund is reversed', function (
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [PaymentRefundSchema::AMOUNT => 100.0]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'reversed',
     ]))->assertOk();
@@ -216,8 +216,8 @@ it('acks a duplicate success webhook without applying accounting twice', functio
         'status' => 'success',
     ]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...$delivery)->assertOk();
-    $this->postJson($this->baseUrl('/webhook/test'), ...$delivery)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...$delivery)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...$delivery)->assertOk();
 
     expect($refund->refresh()->{PaymentRefundSchema::STATUS})->toBe(PaymentRefundStatusEnum::SUCCESS)
         ->and((float) $order->refresh()->{OrderSchema::REFUNDED_AMOUNT})->toBe(40.0)
@@ -229,12 +229,12 @@ it('acks a late success after reversal without regressing the ledger', function 
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'reversed',
     ]))->assertOk();
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
     ]))->assertOk();
@@ -247,7 +247,7 @@ it('acks a late success after reversal without regressing the ledger', function 
 it('acks a webhook for a refund Baxela never issued', function () {
     paidGatewayOrder();
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => (string) Str::uuid(),
         'status' => 'success',
     ]))->assertOk()->assertJsonPath('data.received', true);
@@ -261,7 +261,7 @@ it('rejects a refund webhook that fails signature verification before correlatin
 
     [$payload] = refundWebhook(['reference' => $refund->{PaymentRefundSchema::UUID}, 'status' => 'success']);
 
-    $this->postJson($this->baseUrl('/webhook/test'), $payload, ['X-Test-Signature' => 'forged'])
+    $this->postJson($this->baseUrl('/webhook/default/test'), $payload, ['X-Test-Signature' => 'forged'])
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -272,7 +272,7 @@ it('never finalizes on an amount mismatch', function () {
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
         'amount_minor' => 999999,
@@ -286,7 +286,7 @@ it('never finalizes on a payment association mismatch', function () {
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
         'gateway_payment_id' => 'psp-belongs-to-someone-else',
@@ -303,7 +303,7 @@ it('never finalizes on a currency mismatch', function () {
     ]);
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
         'currency' => 'USD',
@@ -317,7 +317,7 @@ it('correlates through the gateway refund id when the uuid is not echoed', funct
     [$order, $payment] = paidGatewayOrder();
     $refund = refundFor($payment, [PaymentRefundSchema::TRANSACTION_ID => 'rf-known']);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         // Some lifecycle events may not echo the merchant reference —
         // the event's own refund id is the documented fallback key.
         'reference' => 'not-our-merchant-reference',
@@ -341,7 +341,7 @@ it('routes a definitive failure on a finalized refund to the reversal path', fun
         OrderSchema::REFUNDED_AMOUNT => 100.0,
     ]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'failed',
     ]))->assertOk();
@@ -373,7 +373,7 @@ it('fires the refunded event with uncollided identifiers', function () {
     [, $payment] = paidGatewayOrder();
     $refund = refundFor($payment);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'success',
     ]))->assertOk();
@@ -403,7 +403,7 @@ it('fires the reversal event with the accounting flag set', function () {
         OrderSchema::REFUNDED_AMOUNT => 100.0,
     ]);
 
-    $this->postJson($this->baseUrl('/webhook/test'), ...refundWebhook([
+    $this->postJson($this->baseUrl('/webhook/default/test'), ...refundWebhook([
         'reference' => $refund->{PaymentRefundSchema::UUID},
         'status' => 'reversed',
     ]))->assertOk();

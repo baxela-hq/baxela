@@ -194,58 +194,42 @@ it('keeps required-credential semantics: one stripe key is not enough', function
         ->assertJsonPath('data.is_configured', false);
 });
 
-it('does not leak a deleted credential across requests (persistent-process simulation)', function () {
+it('stops resolving a deleted credential on the next request (persistent-process simulation)', function () {
+    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+
     $this->actingAs($this->superAdminUser());
 
-    // Request 1: the middleware runs BEFORE the controller writes the
-    // row — so this request's config write is null (nothing stored yet).
+    // Request 1: the row is written through the action — the version bump
+    // rekeys the cache, so the next resolve sees it (multi-tenancy §6.3).
     $this->patchJson(credentialsUrl('/stripe'), ['secret' => STRIPE_SECRET_PLAIN])->assertOk();
 
-    expect(config('payment.stripe.secret'))->toBeNull();
+    expect($resolver->credential('stripe', 'secret'))->toBe(STRIPE_SECRET_PLAIN);
 
-    // Request 2: the middleware now resolves the stored row → the
-    // plaintext lands in this worker's config.
-    $this->getJson(credentialsUrl())->assertOk();
-
-    expect(config('payment.stripe.secret'))->toBe(STRIPE_SECRET_PLAIN);
-
-    // Request 3: the middleware still applies the stored value; the row
-    // is deleted inside the request.
+    // Request 2: the delete action bumps the version again — the deleted
+    // credential stops resolving immediately (review F1), never lingering
+    // in a process-level config write.
     $this->deleteJson(credentialsUrl('/stripe/secret'))->assertOk();
 
-    // The value lingers in this worker's config until the next request's
-    // deterministic overwrite — that is the documented nuance.
-    expect(config('payment.stripe.secret'))->toBe(STRIPE_SECRET_PLAIN);
-
-    // Request 4: full overwrite with no row and no env → null. The
-    // deleted credential is gone from the worker (review F1).
-    $this->getJson(credentialsUrl())->assertOk();
-
-    expect(config('payment.stripe.secret'))->toBeNull()
-        ->and(config('payment.stripe.webhook_secret'))->toBeNull();
+    expect($resolver->credential('stripe', 'secret'))->toBeNull()
+        ->and($resolver->stateFor('stripe', 'secret'))->toBe(\Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface::KEY_STATE_NONE);
 });
 
 it('restores env fallback across requests after deletion', function () {
     seedEnvCredentials(['secret' => 'sk_env_fallback']);
+    app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->refreshEnvBaseline();
+
+    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
 
     $this->actingAs($this->superAdminUser());
 
-    // Request 1: nothing stored yet, so the middleware applied the env
-    // value — the row is written after the middleware ran.
+    // The stored override resolves over the env value.
     $this->patchJson(credentialsUrl('/stripe'), ['secret' => STRIPE_SECRET_PLAIN])->assertOk();
-    expect(config('payment.stripe.secret'))->toBe('sk_env_fallback');
+    expect($resolver->credential('stripe', 'secret'))->toBe(STRIPE_SECRET_PLAIN);
 
-    // Request 2: the stored value reaches config.
-    $this->getJson(credentialsUrl())->assertOk();
-    expect(config('payment.stripe.secret'))->toBe(STRIPE_SECRET_PLAIN);
-
-    // Request 3: delete — the applied value lingers inside the request.
+    // Delete — the version bump rekeys — the env fallback is the
+    // effective credential again (review F6).
     $this->deleteJson(credentialsUrl('/stripe/secret'))->assertOk();
-    expect(config('payment.stripe.secret'))->toBe(STRIPE_SECRET_PLAIN);
-
-    // Request 4: no row → baseline env → the environment value.
-    $this->getJson(credentialsUrl())->assertOk();
-    expect(config('payment.stripe.secret'))->toBe('sk_env_fallback');
+    expect($resolver->credential('stripe', 'secret'))->toBe('sk_env_fallback');
 });
 
 it('makes an undecryptable credential fail closed for real clients', function () {
@@ -271,10 +255,12 @@ it('makes an undecryptable credential fail closed for real clients', function ()
     expect($stripe['keys']['secret'])->toBe('undecryptable')
         ->and($stripe['is_configured'])->toBeFalse();
 
-    // Fail-closed for the actual client (review F2): the middleware
-    // overwrote the env value with null — the environment credential is
-    // NOT available to the gateway client.
-    expect(config('payment.stripe.secret'))->toBeNull();
+    // Fail-closed for the actual client (review F2): the resolver answers
+    // UNDECRYPTABLE — the environment credential is NOT available to the
+    // gateway client, and the plaintext never surfaces.
+    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+    expect($resolver->stateFor('stripe', 'secret'))->toBe('undecryptable')
+        ->and($resolver->credential('stripe', 'secret'))->toBeNull();
 
     expect(fn () => app(StripeCheckout::class)->retrieveSession('cs_test_123'))
         ->toThrow(PaymentException::class);
@@ -328,25 +314,29 @@ it('rolls multi-key updates back completely on failure', function () {
         'webhook_secret' => STRIPE_WEBHOOK_PLAIN,
     ])->assertStatus(500);
 
-    // No rows, no invalidation, no audit event (review F3/F5).
+    // No rows, no version bump, no audit event (review F3/F5).
     expect(PaymentDriverCredential::count())->toBe(0);
-    $cache->shouldNotHaveReceived('forget', [ResolvesPaymentCredentials::CACHE_KEY]);
     Event::assertNotDispatched(PaymentCredentialsUpdatedEvent::class);
 });
 
-it('invalidates the credential cache only after a committed mutation', function () {
-    $cache = Cache::spy();
+it('bumps the credential version only after a committed mutation', function () {
     Event::fake([PaymentCredentialsUpdatedEvent::class]);
 
     $this->actingAs($this->superAdminUser());
 
-    // A validation failure invalidates nothing.
-    $this->patchJson(credentialsUrl('/stripe'), ['not_declared' => 'x'])->assertStatus(422);
-    $cache->shouldNotHaveReceived('forget', [ResolvesPaymentCredentials::CACHE_KEY]);
+    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
 
-    // The committed PATCH invalidates the map.
+    // A validation failure bumps nothing.
+    $this->patchJson(credentialsUrl('/stripe'), ['not_declared' => 'x'])->assertStatus(422);
+    $before = $resolver->credentialVersion('stripe');
+    $this->patchJson(credentialsUrl('/stripe'), ['not_declared' => 'x'])->assertStatus(422);
+    expect($resolver->credentialVersion('stripe'))->toBe($before);
+
+    // The committed PATCH bumps the driver's rotation counter (multi-
+    // tenancy §6.3 F1): the version-keyed caches rekey on the next
+    // resolve — no explicit invalidation, no other driver touched.
     $this->patchJson(credentialsUrl('/stripe'), ['secret' => STRIPE_SECRET_PLAIN])->assertOk();
-    $cache->shouldHaveReceived('forget', [ResolvesPaymentCredentials::CACHE_KEY]);
+    expect($resolver->credentialVersion('stripe'))->toBeGreaterThan($before);
 });
 
 it('dispatches one audit event per committed mutation and never with values', function () {
@@ -428,20 +418,19 @@ it('rejects unknown drivers, undeclared keys and non-configurable drivers withou
     expect(PaymentDriverCredential::count())->toBe(0);
 });
 
-it('flushes the paypal oauth token cache when paypal credentials change', function () {
-    $cache = Cache::spy();
-
+it('bumps the paypal credential version when paypal credentials rotate', function () {
     $this->actingAs($this->superAdminUser());
 
-    // Seed a pretend 8-hour token, then rotate credentials.
-    Cache::put(PaypalClient::ACCESS_TOKEN_CACHE_KEY, 'stale-token', now()->addHours(8));
+    // The version-keyed token cache rekeys on rotation (multi-tenancy
+    // §6.3 F1, row 32): a rotated credential can never reuse another
+    // tenant's/version's token, and the bump needs no explicit flush.
+    $before = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal');
 
     $this->patchJson(credentialsUrl('/paypal'), [
         'client_secret' => 'rotated_secret_value',
     ])->assertOk();
 
-    $cache->shouldHaveReceived('forget', [PaypalClient::ACCESS_TOKEN_CACHE_KEY]);
-    expect(Cache::get(PaypalClient::ACCESS_TOKEN_CACHE_KEY))->toBeNull();
+    expect(app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal'))->toBeGreaterThan($before);
 });
 
 it('treats empty environment values as unconfigured (legacy truthiness)', function () {
@@ -474,12 +463,13 @@ it('resolves env fallback from the immutable baseline, not the live config', fun
     config(['payment.stripe.secret' => 'sk_contaminated']);
 
     // 4: the resolver must fall back to the ORIGINAL baseline (no env),
-    // never the contaminated live value (review F1b).
+    // never the contaminated live value (review F1b) — the baseline is an
+    // immutable process snapshot, so the live-config mutation is invisible.
     $this->getJson(credentialsUrl())
         ->assertOk()
         ->assertJsonPath('data.1.keys.secret', 'none');
 
-    expect(config('payment.stripe.secret'))->toBeNull();
+    expect(app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credential('stripe', 'secret'))->toBeNull();
 });
 
 it('keeps the manager unconfigured matrix intact through the resolver', function () {

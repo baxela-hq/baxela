@@ -71,7 +71,7 @@ function mercadopagoSignedHeaders(string $dataId = '123456789', string $secret =
  */
 function bindMercadopagoClient(object $payment, int $times = 1): void
 {
-    $client = Mockery::mock(MercadopagoClient::class)->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->times($times)->andReturn($payment);
     app()->instance(MercadopagoClient::class, $client);
 }
@@ -85,7 +85,7 @@ it('settles an order through an approved payment notification', function () {
     $payment = mercadopagoPendingPayment($order);
     bindMercadopagoClient(mercadopagoFetchedPayment('approved', (string) $payment->id));
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders())
@@ -102,9 +102,9 @@ it('acks a replayed notification as a no-op', function () {
     $payment = mercadopagoPendingPayment($order);
     bindMercadopagoClient(mercadopagoFetchedPayment('approved', (string) $payment->id), 2);
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -113,7 +113,7 @@ it('acks a replayed notification as a no-op', function () {
 it('acks a late rejection after settlement as a no-op', function () {
     $order = mercadopagoUnpaidOrder();
     $payment = mercadopagoPendingPayment($order);
-    $client = Mockery::mock(MercadopagoClient::class)->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
     // First delivery fetches an approved payment; the out-of-order replay
     // fetches a rejected one — the settled success must not be overwritten
     // because HandleWebhookAction only mutates PENDING.
@@ -123,9 +123,9 @@ it('acks a late rejection after settlement as a no-op', function () {
     );
     $this->app->instance(MercadopagoClient::class, $client);
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), ['type' => 'payment', 'data' => ['id' => '123456789']], mercadopagoSignedHeaders())->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID)
@@ -137,7 +137,7 @@ it('marks the payment failed on a rejected payment without touching the order', 
     $payment = mercadopagoPendingPayment($order);
     bindMercadopagoClient(mercadopagoFetchedPayment('rejected', (string) $payment->id));
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders())
@@ -155,7 +155,7 @@ it('keeps the payment pending on non-terminal payment statuses', function (strin
 
     // Pix vouchers and Boleto slips sit here for hours; the terminal
     // approved notification settles, intermediate ones must not.
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders())
@@ -174,7 +174,7 @@ it('rejects a well-formed notification whose reference matches no payment', func
     $payment = mercadopagoPendingPayment($order);
     bindMercadopagoClient(mercadopagoFetchedPayment('approved', '999'));
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders())
@@ -190,11 +190,11 @@ it('rejects a notification with a bad signature', function () {
     $payment = mercadopagoPendingPayment($order);
 
     // The signature is checked before anything is fetched.
-    $client = Mockery::mock(MercadopagoClient::class)->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->never();
     $this->app->instance(MercadopagoClient::class, $client);
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders('999'))
@@ -210,7 +210,7 @@ it('rejects notifications when the webhook secret is not configured', function (
     $order = mercadopagoUnpaidOrder();
     $payment = mercadopagoPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/mercadopago'), [
+    $this->postJson($this->baseUrl('/webhook/default/mercadopago'), [
         'type' => 'payment',
         'data' => ['id' => '123456789'],
     ], mercadopagoSignedHeaders())

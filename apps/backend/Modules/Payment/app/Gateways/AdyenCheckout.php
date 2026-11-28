@@ -5,6 +5,7 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around Adyen's Checkout API (Pay by Link). Keeps
@@ -12,6 +13,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class AdyenCheckout
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createPaymentLink(array $params): object
     {
         return $this->request()->post('/paymentLinks', $params)->throw()->object();
@@ -51,7 +56,7 @@ class AdyenCheckout
         $expected = base64_encode(hash_hmac(
             'sha256',
             $this->canonicalString($item),
-            base64_decode((string) config('payment.adyen.hmac_key')),
+            base64_decode((string) $this->configs->credential('adyen', 'hmac_key')),
             true,
         ));
 
@@ -60,7 +65,7 @@ class AdyenCheckout
 
     private function request(): PendingRequest
     {
-        $apiKey = (string) config('payment.adyen.api_key');
+        $apiKey = (string) $this->configs->credential('adyen', 'api_key');
 
         if ($apiKey === '') {
             // Fail as a safe 400 instead of an opaque 401 from Adyen.
@@ -76,7 +81,7 @@ class AdyenCheckout
     {
         // Regional live hosts (e.g. checkout-live-us.adyen.com) exist but
         // the generic one serves every region.
-        return config('payment.adyen.env') === 'live'
+        return $this->configs->credential('adyen', 'env') === 'live'
             ? 'https://checkout-live.adyen.com/v69'
             : 'https://checkout-test.adyen.com/v69';
     }

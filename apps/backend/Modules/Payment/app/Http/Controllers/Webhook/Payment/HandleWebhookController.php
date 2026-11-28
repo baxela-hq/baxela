@@ -11,7 +11,10 @@ class HandleWebhookController extends Controller
 {
     public function __construct(protected HandleWebhookAction $action) {}
 
-    public function __invoke(string $driver, Request $request): JsonResponse
+    // Route params inject in URI order (§3.1 B2): {tenantSlug} is
+    // resolved by Stage 2 before this controller runs — the context is
+    // already the store, so only $driver is forwarded.
+    public function __invoke(string $tenantSlug, string $driver, Request $request): JsonResponse
     {
         $this->action->handle($driver, $request);
 

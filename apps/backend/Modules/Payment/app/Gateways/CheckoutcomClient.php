@@ -5,6 +5,7 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around Checkout.com's Payment Links API (plain
@@ -12,6 +13,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class CheckoutcomClient
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createPaymentLink(array $params): object
     {
         return $this->request()->post('/payment-links', $params)->throw()->object();
@@ -47,7 +52,7 @@ class CheckoutcomClient
      */
     public function verifyWebhookSignature(string $rawBody, string $signature): bool
     {
-        $secret = (string) config('payment.checkoutcom.webhook_secret');
+        $secret = (string) $this->configs->credential('checkoutcom', 'webhook_secret');
         $signature = strtolower(trim($signature));
 
         // The signature may arrive hex or base64 encoded depending on the
@@ -63,7 +68,7 @@ class CheckoutcomClient
 
     private function request(): PendingRequest
     {
-        $secretKey = (string) config('payment.checkoutcom.secret_key');
+        $secretKey = (string) $this->configs->credential('checkoutcom', 'secret_key');
 
         if ($secretKey === '') {
             // Fail as a safe 400 instead of an opaque 401 from Checkout.com.
@@ -78,7 +83,7 @@ class CheckoutcomClient
 
     private function baseUrl(): string
     {
-        return config('payment.checkoutcom.env') === 'live'
+        return $this->configs->credential('checkoutcom', 'env') === 'live'
             ? 'https://api.checkout.com'
             : 'https://api.sandbox.checkout.com';
     }

@@ -5,6 +5,7 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around Mercado Pago's Checkout Pro preferences
@@ -14,6 +15,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class MercadopagoClient
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createPreference(array $params): object
     {
         return $this->request()->post('/checkout/preferences', $params)->throw()->object();
@@ -57,14 +62,14 @@ class MercadopagoClient
 
         $manifest = "id:{$dataId};request-id:{$requestId};ts:{$ts[1]};";
 
-        $expected = hash_hmac('sha256', $manifest, (string) config('payment.mercadopago.webhook_secret'));
+        $expected = hash_hmac('sha256', $manifest, (string) $this->configs->credential('mercadopago', 'webhook_secret'));
 
         return hash_equals($expected, strtolower(trim($v1[1])));
     }
 
     private function request(): PendingRequest
     {
-        $token = (string) config('payment.mercadopago.access_token');
+        $token = (string) $this->configs->credential('mercadopago', 'access_token');
 
         if ($token === '') {
             // Fail as a safe 400 instead of an opaque 401 from Mercado Pago.

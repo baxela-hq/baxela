@@ -5,6 +5,7 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around NowPayments' invoice API (plain REST). Keeps
@@ -12,6 +13,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class NowpaymentsClient
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createInvoice(array $params): object
     {
         return $this->request()->post('/v1/invoice', $params)->throw()->object();
@@ -30,7 +35,7 @@ class NowpaymentsClient
         $expected = hash_hmac(
             'sha512',
             json_encode($this->sortKeys($ipn), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            (string) config('payment.nowpayments.ipn_secret'),
+            (string) $this->configs->credential('nowpayments', 'ipn_secret'),
         );
 
         return hash_equals($expected, strtolower(trim($signature)));
@@ -38,7 +43,7 @@ class NowpaymentsClient
 
     private function request(): PendingRequest
     {
-        $apiKey = (string) config('payment.nowpayments.api_key');
+        $apiKey = (string) $this->configs->credential('nowpayments', 'api_key');
 
         if ($apiKey === '') {
             // Fail as a safe 400 instead of an opaque 401 from NowPayments.
@@ -52,7 +57,7 @@ class NowpaymentsClient
 
     private function baseUrl(): string
     {
-        return config('payment.nowpayments.env') === 'live'
+        return $this->configs->credential('nowpayments', 'env') === 'live'
             ? 'https://api.nowpayments.io'
             : 'https://api-sandbox.nowpayments.io';
     }

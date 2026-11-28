@@ -13,7 +13,10 @@ use Modules\Tenant\Tests\Fixtures\AppCodeScanner;
  */
 
 it('declares the audit command as a central operation', function () {
-    expect(config('core.tenancy.command_modes'))->toBe(['tenancy:audit' => 'central']);
+    expect(config('core.tenancy.command_modes'))->toBe([
+        'tenancy:audit' => 'central',
+        'webhooks:retry-delivery' => 'central',
+    ]);
 
     $code = AppCodeScanner::code('Modules/Core/app/Console/Commands/TenancyAuditCommand.php');
 

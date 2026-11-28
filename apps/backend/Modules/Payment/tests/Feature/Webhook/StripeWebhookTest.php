@@ -47,7 +47,7 @@ it('settles an order through a signed stripe webhook', function () {
     $timestamp = time();
     $signature = sprintf('t=%d,v1=%s', $timestamp, hash_hmac('sha256', "{$timestamp}.{$body}", 'whsec_test'));
 
-    $this->call('POST', $this->baseUrl('/webhook/stripe'), [], [], [], [
+    $this->call('POST', $this->baseUrl('/webhook/default/stripe'), [], [], [], [
         'HTTP_STRIPE_SIGNATURE' => $signature,
         'HTTP_ACCEPT' => 'application/json',
         'CONTENT_TYPE' => 'application/json',
@@ -70,7 +70,7 @@ it('rejects a stripe webhook signed with the wrong secret', function () {
     $timestamp = time();
     $signature = sprintf('t=%d,v1=%s', $timestamp, hash_hmac('sha256', "{$timestamp}.{$body}", 'whsec_wrong'));
 
-    $this->call('POST', $this->baseUrl('/webhook/stripe'), [], [], [], [
+    $this->call('POST', $this->baseUrl('/webhook/default/stripe'), [], [], [], [
         'HTTP_STRIPE_SIGNATURE' => $signature,
         'HTTP_ACCEPT' => 'application/json',
         'CONTENT_TYPE' => 'application/json',

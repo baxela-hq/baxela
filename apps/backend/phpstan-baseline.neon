@@ -960,7 +960,6 @@ parameters:
 			count: 1
 			path: Modules/Catalog/tests/Feature/Search/ProductIndexTest.php
 
-
 		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Collection\<int, Modules\\Catalog\\Models\\ProductComment\>\|Modules\\Catalog\\Models\\ProductComment\:\:\$body\.$#'
 			identifier: property.notFound
@@ -2420,6 +2419,12 @@ parameters:
 			path: Modules/Payment/app/Support/FiresRefundFinalizedEvent.php
 
 		-
+			message: '#^Access to an undefined property Modules\\Payment\\Models\\PaymentDriverCredential\:\:\$enabled\.$#'
+			identifier: property.notFound
+			count: 1
+			path: Modules/Payment/app/Support/ResolvesPaymentCredentials.php
+
+		-
 			message: '#^Function stripeMethod\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -2552,19 +2557,19 @@ parameters:
 			path: Modules/Payment/tests/Unit/AdyenPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$adyen of class Modules\\Payment\\Gateways\\Drivers\\AdyenPaymentDriver constructor expects Modules\\Payment\\Gateways\\AdyenCheckout, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$adyen of class Modules\\Payment\\Gateways\\Drivers\\AdyenPaymentDriver constructor expects Modules\\Payment\\Gateways\\AdyenCheckout, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/AdyenPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$checkoutcom of class Modules\\Payment\\Gateways\\Drivers\\CheckoutcomPaymentDriver constructor expects Modules\\Payment\\Gateways\\CheckoutcomClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$checkoutcom of class Modules\\Payment\\Gateways\\Drivers\\CheckoutcomPaymentDriver constructor expects Modules\\Payment\\Gateways\\CheckoutcomClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/CheckoutcomPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$mercadopago of class Modules\\Payment\\Gateways\\Drivers\\MercadopagoPaymentDriver constructor expects Modules\\Payment\\Gateways\\MercadopagoClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$mercadopago of class Modules\\Payment\\Gateways\\Drivers\\MercadopagoPaymentDriver constructor expects Modules\\Payment\\Gateways\\MercadopagoClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 4
 			path: Modules/Payment/tests/Unit/MercadopagoPaymentDriverTest.php
@@ -2606,7 +2611,7 @@ parameters:
 			path: Modules/Payment/tests/Unit/NowpaymentsPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$nowpayments of class Modules\\Payment\\Gateways\\Drivers\\NowpaymentsPaymentDriver constructor expects Modules\\Payment\\Gateways\\NowpaymentsClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$nowpayments of class Modules\\Payment\\Gateways\\Drivers\\NowpaymentsPaymentDriver constructor expects Modules\\Payment\\Gateways\\NowpaymentsClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/NowpaymentsPaymentDriverTest.php
@@ -2624,37 +2629,37 @@ parameters:
 			path: Modules/Payment/tests/Unit/PaymentDriverManagerTest.php
 
 		-
-			message: '#^Parameter \#1 \$paypal of class Modules\\Payment\\Gateways\\Drivers\\PaypalPaymentDriver constructor expects Modules\\Payment\\Gateways\\PaypalClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$paypal of class Modules\\Payment\\Gateways\\Drivers\\PaypalPaymentDriver constructor expects Modules\\Payment\\Gateways\\PaypalClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/PaypalPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$adyen of class Modules\\Payment\\Gateways\\Drivers\\AdyenPaymentDriver constructor expects Modules\\Payment\\Gateways\\AdyenCheckout, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$adyen of class Modules\\Payment\\Gateways\\Drivers\\AdyenPaymentDriver constructor expects Modules\\Payment\\Gateways\\AdyenCheckout, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/PaypalRefundDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$paypal of class Modules\\Payment\\Gateways\\Drivers\\PaypalPaymentDriver constructor expects Modules\\Payment\\Gateways\\PaypalClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$paypal of class Modules\\Payment\\Gateways\\Drivers\\PaypalPaymentDriver constructor expects Modules\\Payment\\Gateways\\PaypalClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 2
 			path: Modules/Payment/tests/Unit/PaypalRefundDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$razorpay of class Modules\\Payment\\Gateways\\Drivers\\RazorpayPaymentDriver constructor expects Modules\\Payment\\Gateways\\RazorpayClient, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$razorpay of class Modules\\Payment\\Gateways\\Drivers\\RazorpayPaymentDriver constructor expects Modules\\Payment\\Gateways\\RazorpayClient, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/RazorpayPaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/StripePaymentDriverTest.php
 
 		-
-			message: '#^Parameter \#1 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'
+			message: '#^Parameter \#2 \$stripe of class Modules\\Payment\\Gateways\\Drivers\\StripePaymentDriver constructor expects Modules\\Payment\\Gateways\\StripeCheckout, Mockery\\MockInterface given\.$#'
 			identifier: argument.type
 			count: 1
 			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php

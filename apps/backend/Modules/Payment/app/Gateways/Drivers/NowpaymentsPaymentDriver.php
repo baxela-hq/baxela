@@ -12,12 +12,17 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInterface
 {
+
     use CannotRefund;
 
-    public function __construct(protected NowpaymentsClient $nowpayments) {}
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected NowpaymentsClient $nowpayments,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -44,7 +49,7 @@ class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInter
 
         // Optional: when empty, NowPayments falls back to the account-level
         // IPN callback setting.
-        $callback = (string) config('payment.nowpayments.ipn_callback_url');
+        $callback = (string) $this->configs->credential('nowpayments', 'ipn_callback_url');
 
         if ($callback !== '') {
             $params['ipn_callback_url'] = $callback;
@@ -69,7 +74,7 @@ class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInter
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.nowpayments.ipn_secret') === '') {
+        if ((string) $this->configs->credential('nowpayments', 'ipn_secret') === '') {
             // Without the IPN secret every notification would fail
             // verification; say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -110,6 +115,6 @@ class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInter
 
     private function url(string $key, ?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config("payment.nowpayments.{$key}"));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('nowpayments', $key));
     }
 }

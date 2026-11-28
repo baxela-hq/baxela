@@ -15,10 +15,15 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\RazorpayClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class RazorpayPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected RazorpayClient $razorpay) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected RazorpayClient $razorpay,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -60,7 +65,7 @@ class RazorpayPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.razorpay.webhook_secret') === '') {
+        if ((string) $this->configs->credential('razorpay', 'webhook_secret') === '') {
             // Without the signing secret every event would fail
             // verification; say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -174,6 +179,6 @@ class RazorpayPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config('payment.razorpay.return_url'));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('razorpay', 'return_url'));
     }
 }

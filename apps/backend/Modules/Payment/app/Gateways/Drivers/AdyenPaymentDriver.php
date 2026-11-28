@@ -15,10 +15,15 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-    public function __construct(protected AdyenCheckout $adyen) {}
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+        protected AdyenCheckout $adyen,
+    ) {}
 
     public function credentialKeys(): array
     {
@@ -29,7 +34,7 @@ class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function initiate(PaymentInitiateInput $input): PaymentGatewayResult
     {
-        if ((string) config('payment.adyen.merchant_account') === '') {
+        if ((string) $this->configs->credential('adyen', 'merchant_account') === '') {
             // AdyenCheckout guards the api key; this is the payload half of
             // the credential pair.
             throw PaymentException::gatewayUnconfigured();
@@ -40,7 +45,7 @@ class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
             // as merchantReference — so it doubles as the stored
             // transaction_id the settle path matches on.
             'reference' => (string) $input->payment_id,
-            'merchantAccount' => (string) config('payment.adyen.merchant_account'),
+            'merchantAccount' => (string) $this->configs->credential('adyen', 'merchant_account'),
             'amount' => [
                 'currency' => strtoupper((string) $input->currency),
                 // Adyen wants integer minor units (cents), built from
@@ -67,7 +72,7 @@ class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     public function handleWebhook(Request $request): WebhookResult
     {
-        if ((string) config('payment.adyen.hmac_key') === '') {
+        if ((string) $this->configs->credential('adyen', 'hmac_key') === '') {
             // Without the signing key every notification would fail
             // verification; say so instead of reporting each one as invalid.
             throw PaymentException::gatewayUnconfigured();
@@ -171,7 +176,7 @@ class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
             // Echoed back as the REFUND webhook's merchantReference: the
             // whole bridge back to this ledger row.
             'reference' => (string) $input->idempotency_key,
-            'merchantAccount' => (string) config('payment.adyen.merchant_account'),
+            'merchantAccount' => (string) $this->configs->credential('adyen', 'merchant_account'),
             'amount' => [
                 'currency' => strtoupper((string) $input->currency),
                 // Adyen wants integer minor units (cents), built from the
@@ -199,6 +204,6 @@ class AdyenPaymentDriver implements ConfigurableDriver, RefundableDriver
 
     private function url(?string $orderCode): string
     {
-        return str_replace('{order_code}', (string) $orderCode, (string) config('payment.adyen.return_url'));
+        return str_replace('{order_code}', (string) $orderCode, (string) $this->configs->credential('adyen', 'return_url'));
     }
 }

@@ -9,6 +9,16 @@ trait HelperTrait
 {
     public function baseUrl(string $endpoint): string
     {
+        // The webhook routes carry {tenantSlug} (multi-tenancy §3.1 B2):
+        // the tests resolve the seeded default store — production seeds
+        // the same row (TenantDatabaseSeeder, §4.1).
+        if (str_contains($endpoint, '/webhook/')) {
+            \Modules\Tenant\Models\Tenant::query()->firstOrCreate(
+                ['slug' => 'default'],
+                ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
+            );
+        }
+
         return 'api/v1/payment'.$endpoint;
     }
 

@@ -75,7 +75,7 @@ it('settles an order through a captured checkoutcom webhook', function () {
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -89,9 +89,9 @@ it('acks a replayed webhook as a no-op', function () {
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -102,13 +102,13 @@ it('acks a late decline after settlement as a no-op', function () {
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
 
     // Out-of-order delivery: a decline arriving after the settle must not
     // overwrite the success — HandleWebhookAction only mutates PENDING.
     $declined = checkoutcomEventBody((string) $payment->id, 'payment_declined');
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $declined, checkoutcomSignedHeaders($declined))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $declined, checkoutcomSignedHeaders($declined))->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAYMENT_STATUS})->toBe(OrderPaymentStatusEnum::PAID)
@@ -120,7 +120,7 @@ it('marks the payment failed on a declined event without touching the order', fu
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody((string) $payment->id, 'payment_declined');
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -135,7 +135,7 @@ it('keeps the payment pending on approved-but-not-captured events', function () 
 
     // On auto-capture accounts approval is immediately followed by
     // payment_captured; an approval alone must not settle the order.
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -148,7 +148,7 @@ it('rejects a well-formed event whose reference matches no payment', function ()
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody('999');
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -163,7 +163,7 @@ it('rejects a checkoutcom webhook with a bad signature', function () {
 
     // Signed for a different payload: any post-signing modification
     // produces the same invalid outcome.
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body, checkoutcomEventBody('999')))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body, checkoutcomEventBody('999')))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -177,7 +177,7 @@ it('rejects webhooks when the webhook secret is not configured', function () {
     $payment = checkoutcomPendingPayment($order);
     $body = checkoutcomEventBody((string) $payment->id);
 
-    $this->postJson($this->baseUrl('/webhook/checkoutcom'), $body, checkoutcomSignedHeaders($body))
+    $this->postJson($this->baseUrl('/webhook/default/checkoutcom'), $body, checkoutcomSignedHeaders($body))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

@@ -93,7 +93,7 @@ it('settles an order through an authorised adyen webhook', function () {
     $order = adyenUnpaidOrder();
     $payment = adyenPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -107,9 +107,9 @@ it('acks a replayed notification as a no-op', function () {
     $payment = adyenPendingPayment($order);
     $body = adyenDelivery(adyenAuthItem((string) $payment->id));
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), $body)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), $body)->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
-    $this->postJson($this->baseUrl('/webhook/adyen'), $body)->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), $body)->assertOk();
 
     expect($payment->refresh()->{PaymentSchema::STATUS})->toBe(PaymentStatusEnum::SUCCESS)
         ->and($order->refresh()->{OrderSchema::PAID_AT}->equalTo($paidAt))->toBeTrue();
@@ -119,12 +119,12 @@ it('acks a late refusal after settlement as a no-op', function () {
     $order = adyenUnpaidOrder();
     $payment = adyenPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))->assertOk();
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))->assertOk();
     $paidAt = $order->refresh()->{OrderSchema::PAID_AT};
 
     // Out-of-order delivery: a refusal arriving after the settle must not
     // overwrite the success — HandleWebhookAction only mutates PENDING.
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id, [
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id, [
         'pspReference' => '8836123456789012',
         'success' => false,
     ])))->assertOk();
@@ -138,7 +138,7 @@ it('marks the payment failed on a refused notification without touching the orde
     $order = adyenUnpaidOrder();
     $payment = adyenPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id, ['success' => false])))
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id, ['success' => false])))
         ->assertOk()
         ->assertJsonPath('data.received', true);
 
@@ -150,7 +150,7 @@ it('rejects a well-formed notification whose reference matches no payment', func
     $order = adyenUnpaidOrder();
     $payment = adyenPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem('999')))
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem('999')))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -164,7 +164,7 @@ it('rejects an adyen webhook with a bad signature', function () {
 
     // Delivered for our reference but signed for another: any tampered
     // canonical field produces the same invalid outcome.
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id), adyenAuthItem('999')))
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id), adyenAuthItem('999')))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.webhook.invalid');
 
@@ -177,7 +177,7 @@ it('rejects an adyen webhook when the hmac key is not configured', function () {
     $order = adyenUnpaidOrder();
     $payment = adyenPendingPayment($order);
 
-    $this->postJson($this->baseUrl('/webhook/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))
+    $this->postJson($this->baseUrl('/webhook/default/adyen'), adyenDelivery(adyenAuthItem((string) $payment->id)))
         ->assertStatus(400)
         ->assertJsonPath('code', 'payment.process.gateway_unconfigured');
 });

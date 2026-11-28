@@ -20,7 +20,7 @@ function stripeRefundDriver(callable $configure): StripePaymentDriver
     $checkout = Mockery::mock(StripeCheckout::class);
     $configure($checkout);
 
-    return new StripePaymentDriver($checkout);
+    return new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $checkout);
 }
 
 /**

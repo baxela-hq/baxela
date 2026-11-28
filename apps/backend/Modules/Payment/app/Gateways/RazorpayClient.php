@@ -5,6 +5,7 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin SDK-less wrapper around Razorpay's Payment Links API (plain REST,
@@ -13,6 +14,10 @@ use Modules\Payment\Exceptions\PaymentException;
  */
 class RazorpayClient
 {
+
+    public function __construct(
+        private readonly PaymentCredentialResolverInterface $configs,
+    ) {}
     public function createPaymentLink(array $params): object
     {
         return $this->request()->post('/v1/payment_links', $params)->throw()->object();
@@ -44,15 +49,15 @@ class RazorpayClient
      */
     public function verifyWebhookSignature(string $rawBody, string $signature): bool
     {
-        $expected = hash_hmac('sha256', $rawBody, (string) config('payment.razorpay.webhook_secret'));
+        $expected = hash_hmac('sha256', $rawBody, (string) $this->configs->credential('razorpay', 'webhook_secret'));
 
         return hash_equals($expected, strtolower(trim($signature)));
     }
 
     private function request(): PendingRequest
     {
-        $keyId = (string) config('payment.razorpay.key_id');
-        $keySecret = (string) config('payment.razorpay.key_secret');
+        $keyId = (string) $this->configs->credential('razorpay', 'key_id');
+        $keySecret = (string) $this->configs->credential('razorpay', 'key_secret');
 
         if ($keyId === '' || $keySecret === '') {
             // Fail as a safe 400 instead of an opaque 401 from Razorpay.
