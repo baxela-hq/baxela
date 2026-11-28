@@ -150,7 +150,7 @@ it('applies the store timezone over the app default at boot', function () {
         'type' => 'string',
         'is_translatable' => false,
     ]);
-    Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+    Cache::forget(AppliesStoreTimezone::cacheKey());
 
     config(['app.timezone' => 'UTC']);
 
@@ -161,7 +161,7 @@ it('applies the store timezone over the app default at boot', function () {
 
     // garbage in the DB row falls back to the configured default
     Setting::query()->where('name', 'timezone')->update(['value' => 'not-a-zone']);
-    Cache::forget(AppliesStoreTimezone::CACHE_KEY);
+    Cache::forget(AppliesStoreTimezone::cacheKey());
     config(['app.timezone' => 'UTC']);
     date_default_timezone_set('UTC');
 

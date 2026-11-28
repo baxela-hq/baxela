@@ -48,6 +48,10 @@ return [
     // Tenant identification (multi-tenancy §3.1) — safe client-facing
     // outcomes. A missing context and an ownership violation are 500s and
     // render the generic message.
+    'platform_setting' => [
+        'missing' => 'The platform setting :name is missing or invalid.',
+    ],
+
     'tenant' => [
         'not_found' => 'The store could not be found',
         'suspended' => 'This store is currently unavailable',

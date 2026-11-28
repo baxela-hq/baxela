@@ -14,9 +14,12 @@ use Modules\Content\Schemas\Post\PostStatusEnum;
 use Modules\Content\Schemas\Post\PostTranslationSchema as PTSchema;
 use Modules\Content\Schemas\PostCategory\PostCategorySchema;
 use Modules\Content\Schemas\PostCategory\PostCategoryTranslationSchema as PCTSchema;
+use Modules\Core\Support\Tenancy\TenantContext;
 
 class ListSitemapAction
 {
+    public const string CACHE_KEY = 'content.public.sitemap';
+
     public function __construct(
         protected Post $posts,
         protected PostCategory $postCategories,
@@ -32,7 +35,7 @@ class ListSitemapAction
     public function handle(): array
     {
         return Cache::remember(
-            'content.public.sitemap',
+            app(TenantContext::class)->cachePrefix().self::CACHE_KEY,
             now()->addSeconds((int) config('content.sitemap.cache_ttl', 3600)),
             function (): array {
                 return [

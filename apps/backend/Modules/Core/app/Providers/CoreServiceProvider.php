@@ -29,6 +29,7 @@ use Modules\Core\Http\Middleware\AssignRequestId;
 use Modules\Core\Http\Middleware\RequestLogger;
 use Modules\Core\Http\Middleware\ResolveTenant;
 use Modules\Core\Http\Middleware\SetSecurityHeaders;
+use Modules\Core\Listeners\QueueTenantLifecycle;
 use Modules\Core\Operations\AuditTenancyOperation;
 use Modules\Core\Support\Database\Grammars\PostgresUnsignedGrammar;
 use Modules\Core\Support\Erd\ModelRelationsScanner;
@@ -118,6 +119,10 @@ class CoreServiceProvider extends ServiceProvider
 
             return $db;
         });
+
+        // The queue runtime snapshot stack belongs to one listener for the
+        // whole process (a new instance per attempt would lose it).
+        $this->app->singleton(QueueTenantLifecycle::class);
 
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);

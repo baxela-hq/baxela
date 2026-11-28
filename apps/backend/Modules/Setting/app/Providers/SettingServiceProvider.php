@@ -5,9 +5,11 @@ namespace Modules\Setting\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Gateways\Setting\FxSettingsResolverInterface;
+use Modules\Core\Contracts\Gateways\Setting\PlatformSettingsInterface;
 use Modules\Core\Contracts\Gateways\Setting\PricingModeResolverInterface;
-use Modules\Setting\Support\AppliesStoreIdentity;
-use Modules\Setting\Support\AppliesStoreTimezone;
+use Modules\Core\Contracts\Gateways\Tenant\StoreRuntimeInterface;
+use Modules\Setting\Support\AppliesStoreRuntime;
+use Modules\Setting\Support\PlatformSettings;
 use Modules\Setting\Support\ResolvesFxSettings;
 use Modules\Setting\Support\ResolvesPricingMode;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -20,6 +22,7 @@ class SettingServiceProvider extends ServiceProvider
     public $bindings = [
         PricingModeResolverInterface::class => ResolvesPricingMode::class,
         FxSettingsResolverInterface::class => ResolvesFxSettings::class,
+        PlatformSettingsInterface::class => PlatformSettings::class,
     ];
 
     use PathNamespace;
@@ -33,13 +36,8 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Store timezone overrides app.timezone when the setting exists
-        (new AppliesStoreTimezone)();
-
-        // Store legal identity snapshots onto config('store.*') — the
-        // seller block invoices freeze at issue time (gap-B1 D4)
-        (new AppliesStoreIdentity)();
-
+        // Store runtime is applied per TenantResolved event / per job
+        // attempt (§6.7) — never once per process here.
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();
@@ -53,6 +51,10 @@ class SettingServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // The queue lifecycle captures/restores one runtime per attempt;
+        // the snapshot stack must therefore live in a singleton.
+        $this->app->singleton(StoreRuntimeInterface::class, AppliesStoreRuntime::class);
+
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }

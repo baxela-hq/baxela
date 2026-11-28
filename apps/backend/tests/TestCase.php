@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Modules\Auth\Models\User;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Models\Language;
+use Modules\Core\Support\SupportedLocales;
 use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Tenant\Database\Seeders\TenantDatabaseSeeder;
 use Modules\Tenant\Models\Tenant;
@@ -44,6 +45,10 @@ abstract class TestCase extends BaseTestCase
         // §2). Pest runs every test in one process, so without this reset
         // a tenant set by one test would leak into the next.
         app(TenantContext::class)->reset();
+        // §6.7 installs the active locale list in a process-level static.
+        // Without a cold list per test, a store runtime from an earlier
+        // test would narrow Accept-Language negotiation here.
+        SupportedLocales::flush();
         // Phase 2: keep the legacy suite (which creates store-owned rows
         // without an explicit tenant) working by defaulting to the built-in
         // default tenant. Tests that exercise the fail-closed path deactivate

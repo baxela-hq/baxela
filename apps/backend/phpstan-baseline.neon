@@ -2665,12 +2665,6 @@ parameters:
 			path: Modules/Payment/tests/Unit/StripeRefundDriverTest.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: Modules/Setting/app/Support/ResolvesFxSettings.php
-
-		-
 			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$code\.$#'
 			identifier: property.notFound
 			count: 1

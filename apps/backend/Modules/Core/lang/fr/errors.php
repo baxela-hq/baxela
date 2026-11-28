@@ -44,6 +44,10 @@ return [
         'not_installed' => 'L\'extension :slug n\'est pas installée.',
     ],
 
+    'platform_setting' => [
+        'missing' => 'Le paramètre de plateforme :name est absent ou invalide.',
+    ],
+
     'tenant' => [
         'not_found' => 'La boutique est introuvable',
         'suspended' => 'Cette boutique est actuellement indisponible',

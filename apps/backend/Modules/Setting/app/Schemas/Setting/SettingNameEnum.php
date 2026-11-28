@@ -53,4 +53,7 @@ enum SettingNameEnum: string
     case FX_SYNC_INTERVAL_HOURS = 'fx_sync_interval_hours';
 
     case FX_SYNC_STATUS = 'fx_sync_status';
+
+    /** Installation identity (name + storefront URL), a platform row. */
+    case PLATFORM_IDENTITY = 'platform_identity';
 }

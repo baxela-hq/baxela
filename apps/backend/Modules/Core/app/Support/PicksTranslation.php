@@ -5,7 +5,7 @@ namespace Modules\Core\Support;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Modules\Core\Contracts\Gateways\Core\CoreGatewayInterface;
-use Modules\Core\Schemas\Language\LanguageSchema;
+use Modules\Core\Support\Tenancy\TenantContext;
 
 /**
  * Picks a translation row for display: the requested language first, then
@@ -19,6 +19,11 @@ class PicksTranslation
     private const CACHE_KEY = 'core.language.default_id';
 
     private const CACHE_TTL = 300;
+
+    public static function cacheKey(): string
+    {
+        return app(TenantContext::class)->cachePrefix().self::CACHE_KEY;
+    }
 
     /**
      * @param  Collection<int, mixed>|null  $translations
@@ -60,7 +65,7 @@ class PicksTranslation
     public static function defaultLanguageId(): ?int
     {
         return Cache::remember(
-            self::CACHE_KEY,
+            self::cacheKey(),
             self::CACHE_TTL,
             fn (): ?int => app(CoreGatewayInterface::class)->getDefaultLanguage()?->id,
         );

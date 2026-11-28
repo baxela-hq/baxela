@@ -104,6 +104,21 @@ class SettingRequest extends FormRequest
     {
         $name = request()->input(str_replace('.'.SettingSchema::VALUE, '.'.SettingSchema::NAME, $attribute));
 
+        if ($name === SettingNameEnum::PLATFORM_IDENTITY->value) {
+            $identity = json_decode((string) $value, true);
+
+            if (
+                ! is_array($identity)
+                || ! isset($identity['name'], $identity['url'])
+                || ! is_string($identity['name']) || $identity['name'] === ''
+                || ! is_string($identity['url']) || $identity['url'] === ''
+            ) {
+                $fail('The platform identity must be a JSON object with a non-empty name and url.');
+            }
+
+            return;
+        }
+
         if ($name === SettingNameEnum::FX_API_KEY->value) {
             if ($value === Setting::MASKED_VALUE) {
                 $fail('The masked placeholder is not a valid API key — submit a new key, empty to keep, or clear the field.');

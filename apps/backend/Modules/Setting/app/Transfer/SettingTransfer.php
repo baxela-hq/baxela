@@ -19,6 +19,7 @@ use Modules\Setting\Models\Setting;
 use Modules\Setting\Schemas\Setting\SettingNameEnum;
 use Modules\Setting\Schemas\Setting\SettingSchema;
 use Modules\Setting\Schemas\Translation\TranslationSchema;
+use Modules\Setting\Support\PlatformSettings;
 use Throwable;
 
 /**
@@ -96,6 +97,17 @@ class SettingTransfer implements ModuleTransferInterface
 
             if (! is_array($payload)) {
                 $result->recordFailed($label.': invalid_row');
+
+                continue;
+            }
+
+            // Installation-level rows are not transferable store settings.
+            // They are seeded per installation and writable only through
+            // the platform-super-admin path (§6.7.1); a store transfer must
+            // neither fail on them nor overwrite the destination platform.
+            $name = $payload[SettingSchema::NAME] ?? null;
+            if (is_string($name) && PlatformSettings::isPlatformName($name)) {
+                $result->recordSkipped();
 
                 continue;
             }

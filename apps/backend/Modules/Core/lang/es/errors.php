@@ -44,6 +44,10 @@ return [
         'not_installed' => 'La extensión :slug no está instalada.',
     ],
 
+    'platform_setting' => [
+        'missing' => 'La configuración de la plataforma :name no existe o no es válida.',
+    ],
+
     'tenant' => [
         'not_found' => 'No se encontró la tienda',
         'suspended' => 'Esta tienda no está disponible actualmente',

@@ -54,6 +54,41 @@ it('round-trips settings via the module endpoint', function () {
         ->and(Setting::query()->where('name', 'language_id')->value('value'))->toBe((string) $en->id);
 });
 
+it('skips platform settings during a store import', function () {
+    $this->defaultLanguage();
+    $this->seedTransferSettings((int) $this->defaultLanguage()->id, 'EUR');
+    $this->actingAs($this->superAdminUser());
+
+    $payload = [
+        'format' => 'baxela.module-export',
+        'module' => 'setting',
+        'version' => 1,
+        'sections' => [[
+            'entity' => 'settings',
+            'rows' => [
+                ['source_id' => 1, 'payload' => ['name' => 'fx_provider', 'value' => 'evil-provider']],
+                ['source_id' => 2, 'payload' => ['name' => 'website_title', 'value' => 'Imported Shop']],
+            ],
+        ]],
+    ];
+
+    $response = $this->postJson($this->baseUrl('/admin/data/import'), [
+        'file' => $this->transferFile(json_encode($payload)),
+        'on_duplicate' => 'update',
+        'dry_run' => false,
+    ]);
+
+    $response->assertOk();
+    expect($response->json('data.errors'))->toBe([])
+        ->and($response->json('data.skipped_count'))->toBe(1)
+        ->and($response->json('data.updated_count'))->toBe(1)
+        ->and(Setting::query()->where('name', 'website_title')->value('value'))->toBe('Imported Shop')
+        ->and(Setting::withoutGlobalScopes()
+            ->whereNull('tenant_id')
+            ->where('name', 'fx_provider')
+            ->exists())->toBeFalse();
+});
+
 it('denies the data endpoints to guests', function () {
     $this->getJson($this->baseUrl('/admin/data/export'))->assertStatus(401);
     $this->postJson($this->baseUrl('/admin/data/import'), [

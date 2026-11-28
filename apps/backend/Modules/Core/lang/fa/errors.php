@@ -44,6 +44,10 @@ return [
         'not_installed' => 'افزونه :slug نصب نشده است.',
     ],
 
+    'platform_setting' => [
+        'missing' => 'تنظیم پلتفرم :name وجود ندارد یا نامعتبر است.',
+    ],
+
     'tenant' => [
         'not_found' => 'فروشگاه یافت نشد',
         'suspended' => 'این فروشگاه در حال حاضر در دسترس نیست',

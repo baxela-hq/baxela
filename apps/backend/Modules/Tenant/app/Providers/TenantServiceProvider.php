@@ -6,6 +6,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Tenant\StoreSelectionGatewayInterface;
 use Modules\Core\Contracts\Gateways\Tenant\TenantGatewayInterface;
 use Modules\Core\Support\Tenancy\CentralOperationRegistry;
 use Modules\Tenant\Actions\Admin\Tenant\CreateTenantAction;
@@ -14,6 +15,7 @@ use Modules\Tenant\Actions\Admin\Tenant\SetTenantStatusAction;
 use Modules\Tenant\Actions\Admin\Tenant\UpdateTenantAction;
 use Modules\Tenant\Actions\Admin\TenantDomain\AttachTenantDomainAction;
 use Modules\Tenant\Actions\Admin\TenantDomain\ReleaseTenantDomainAction;
+use Modules\Tenant\Gateways\StoreSelectionGateway;
 use Modules\Tenant\Gateways\TenantGateway;
 use Modules\Tenant\Operations\AttachTenantDomainOperation;
 use Modules\Tenant\Operations\CreateTenantOperation;
@@ -53,6 +55,8 @@ class TenantServiceProvider extends ServiceProvider
         // The gateway takes the environment (the built-in default tenant
         // exists outside production only), so it is bound through a closure.
         $this->app->bind(TenantGatewayInterface::class, fn ($app) => new TenantGateway($app->environment()));
+
+        $this->app->bind(StoreSelectionGatewayInterface::class, StoreSelectionGateway::class);
 
         $this->app->register(RouteServiceProvider::class);
     }

@@ -44,6 +44,10 @@ return [
         'not_installed' => 'Die Erweiterung :slug ist nicht installiert.',
     ],
 
+    'platform_setting' => [
+        'missing' => 'Die Plattformeinstellung :name fehlt oder ist ungültig.',
+    ],
+
     'tenant' => [
         'not_found' => 'Der Shop wurde nicht gefunden',
         'suspended' => 'Dieser Shop ist derzeit nicht verfügbar',

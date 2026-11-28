@@ -3,12 +3,15 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Modules\Auth\Models\User;
 use Modules\Core\Actions\Admin\Currency\SyncExchangeRatesAction;
 use Modules\Core\Models\Currency;
-use Modules\Setting\Models\Setting;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Setting\Schemas\Setting\SettingSchema;
+use Modules\Setting\Support\PlatformSettings;
 use Modules\Setting\Support\ResolvesFxSettings;
 
 uses(RefreshDatabase::class);
@@ -43,11 +46,16 @@ function SettingNameEnum(string $caseName): string
     return constant("Modules\Setting\Schemas\Setting\SettingNameEnum::$caseName")->value;
 }
 
-/** Write one FX setting row directly (the admin-configured state) and bust the resolver cache. */
+/** Write one platform FX row (tenant_id NULL) and bust both caches. */
 function fxSetting(string $name, string $value): void
 {
-    Setting::query()->updateOrCreate(['name' => $name], ['value' => $value]);
-    Cache::forget(ResolvesFxSettings::CACHE_KEY);
+    DB::table(SettingSchema::TABLE)->updateOrInsert(
+        [TenantColumn::TENANT_ID => null, SettingSchema::NAME => $name],
+        [SettingSchema::VALUE => $value, SettingSchema::UPDATED_AT => now()],
+    );
+
+    app(PlatformSettings::class)->forget($name);
+    Cache::forget(ResolvesFxSettings::cacheKey());
 }
 
 /**
@@ -63,9 +71,12 @@ function fxWriteStatus(array $status): void
  */
 function fxReadStatus(): ?array
 {
-    $raw = Setting::query()->where('name', SettingNameEnum('FX_SYNC_STATUS'))->value('value');
+    $raw = DB::table(SettingSchema::TABLE)
+        ->whereNull(TenantColumn::TENANT_ID)
+        ->where(SettingSchema::NAME, SettingNameEnum('FX_SYNC_STATUS'))
+        ->value(SettingSchema::VALUE);
 
-    return $raw ? json_decode($raw, true) : null;
+    return $raw ? json_decode((string) $raw, true) : null;
 }
 
 /**

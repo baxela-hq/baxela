@@ -44,6 +44,10 @@ return [
         'not_installed' => 'الإضافة :slug غير مثبتة.',
     ],
 
+    'platform_setting' => [
+        'missing' => 'إعداد المنصة :name مفقود أو غير صالح.',
+    ],
+
     'tenant' => [
         'not_found' => 'لم يتم العثور على المتجر',
         'suspended' => 'هذا المتجر غير متاح حاليًا',

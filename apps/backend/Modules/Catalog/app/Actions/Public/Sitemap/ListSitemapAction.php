@@ -8,9 +8,12 @@ use Modules\Catalog\Models\Product;
 use Modules\Catalog\Schemas\Product\ProductSchema;
 use Modules\Catalog\Schemas\Product\ProductStatusEnum;
 use Modules\Catalog\Schemas\Product\ProductTranslationSchema as PTSchema;
+use Modules\Core\Support\Tenancy\TenantContext;
 
 class ListSitemapAction
 {
+    public const string CACHE_KEY = 'catalog.public.sitemap';
+
     public function __construct(protected Product $model) {}
 
     /**
@@ -23,7 +26,7 @@ class ListSitemapAction
     public function handle(): Collection
     {
         return Cache::remember(
-            'catalog.public.sitemap',
+            app(TenantContext::class)->cachePrefix().self::CACHE_KEY,
             now()->addSeconds((int) config('catalog.sitemap.cache_ttl', 3600)),
             fn () => $this->model
                 ->where(ProductSchema::STATUS, ProductStatusEnum::IN_STOCK)

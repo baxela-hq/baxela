@@ -23,6 +23,13 @@ class TaxGateway implements TaxGatewayInterface
         return TaxClass::query()->whereKey($taxClassId)->exists();
     }
 
+    public function defaultTaxClassId(): ?int
+    {
+        $id = TaxClass::query()->where(TaxClassSchema::IS_DEFAULT, true)->value(TaxClassSchema::ID);
+
+        return is_null($id) ? null : (int) $id;
+    }
+
     public function validateVatId(string $countryCode, string $vatId): ?bool
     {
         return $this->vatValidator->plausibleFormat($countryCode, $vatId);

@@ -5,6 +5,8 @@ namespace Modules\Setting\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Core\Contracts\Events\Setting\SettingUpdatedEvent;
 use Modules\Core\Listeners\LogAllEvents;
+use Modules\Core\Support\Tenancy\TenantResolved;
+use Modules\Setting\Listeners\ApplyTenantRuntime;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         SettingUpdatedEvent::class => [LogAllEvents::class],
+        TenantResolved::class => [ApplyTenantRuntime::class],
     ];
 
     /**

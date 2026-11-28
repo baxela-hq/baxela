@@ -16,6 +16,12 @@ interface TaxGatewayInterface
     public function taxClassExists(int $taxClassId): bool;
 
     /**
+     * The active store's default tax class, resolved under the tenant
+     * scope (§6.7.1). Null when the store has none configured.
+     */
+    public function defaultTaxClassId(): ?int;
+
+    /**
      * Offline VAT-identifier FORMAT check (gap-C1c D2): true when the
      * value is a plausible format for the country, false when it is not,
      * NULL when the country has no rule (stored without a validation
