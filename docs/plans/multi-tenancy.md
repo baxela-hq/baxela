@@ -2591,6 +2591,92 @@ Phase 2 review (2026-11-27, post-implementation audit):
   interference failures — 8 spurious fails that pass serially; the plane is run serially, as
   the original verification was.)
 
+---
+
+### Phase 3 — Auth & permissions
+
+Landed. Spatie teams are enabled with `team_foreign_key => 'tenant_id'` (§5): `auth_roles.tenant_id`
+is the nullable team key (NULL = platform role), the two pivots carry NOT NULL leading tenant ids,
+and the `auth_roles_platform_unique` partial index enforces one platform role per name at the
+database level (§10 row 69). The Gate::before bypass is team-context-immune — it reads the pivot
+through `PlatformRoleAssignment`, constrained to the user model's morph type and the web guard, so
+the platform super-admin answers whatever team is active (§10 row 103); `AccessGateway::adminUserIds()`
+uses the same morph-disciplined pivot query. `AuthorizeTenantAccess` is the §3.2 authorization
+boundary, invoked inside `PermissionMiddleware` (single registration point): active membership or
+the super-admin bypass earns the store, a suspended store denies its members while the super-admin
+retains reactivation access, and membership is read per request (§10 row 33). `ResolveTenant`
+identification now distinguishes the admin audience — a suspended store still resolves there so
+the §3.2 decision (member 403 vs super-admin exemption) can happen. Sign-in responses carry
+`memberships` (from tenant_memberships) and `active_tenant` when unambiguous (§5, A5). Role CRUD
+is scoped to the active store with the `owner` role seeded per tenant through the Auth gateway
+(`seedTenantRoles` — per-module admin wildcards, never a global `*`, so platform routes stay
+unreachable); provisioning assigns the owner role under the new tenant's spatie team (§6.5 B7).
+Category-2 membership operations (list / invite / activate / suspend / remove / transfer-ownership /
+role sync) run in MODE_TENANT on new `api.tenant.admin.memberships.*` routes — real permission rows,
+never central mode — with owner-set mutations serialized on a `FOR UPDATE` of the tenant row before
+check-and-change (rev 4.7 B6). The legacy suite's team lifecycle: `TestCase::setUp` sets the spatie
+team to the same default tenant the Phase 2 tenant context already uses.
+
+Deviations from the plan text:
+
+1. **`super_admin_only_routes` narrowed from `api.tenant.admin.` to `api.tenant.admin.tenants.`**
+   The blanket prefix gave the platform route treatment to the whole module; Category-2 membership
+   routes need real permission rows, so only tenants.* (and its nested tenants.domains.*) stay
+   super-admin-only.
+2. **The per-tenant role seeder is `AccessGateway::seedTenantRoles()` (an Auth-gateway method),
+   not a Tenant-module seeder.** Roles and permissions are Auth's tables; the module-boundary rule
+   makes the gateway the sanctioned write path. It seeds the `owner` role with an explicit
+   per-module wildcard list (§4.1's "wildcards are created where they are granted").
+3. **The legacy suite's actors became members.** §3.2 makes an active membership part of admin
+   authorization, so pre-tenancy tests whose actor was only "a user with a role" now grant the
+   default-store membership (`TestCase::withDefaultStoreMembership`, seeding the default tenant
+   row exactly as `TenantDatabaseSeeder` does), and tests asserting a role-less actor's refusal
+   expect the membership boundary (`core.tenant.membership_required`) instead of the generic
+   `http.403` — the store is earned before the permission check.
+4. **RoleRequest's uniqueness moved to the scoped rule (§4.3 layer 1).** The bare
+   `Rule::unique(auth_roles, name)` would refuse the same role name in two stores; the
+   `ScopedUnique` rule carries the context tenant, and the §4.3 architecture allowlist drops the
+   stale site.
+5. **Suspended-store resolution on the admin audience moved into §3.2** (as the plan's §3.1
+   requires the super-admin exemption "with §3.2, Phase 3"): identification requires existence
+   only; `AuthorizeTenantAccess` denies members (403) and exempts the super-admin.
+6. **Row 119's competing-mutation test asserts the serialization with a held uncommitted row lock
+   plus the post-release last-owner rejection**, following the onboarding-quota test's
+   two-connection pattern; the fully-concurrent two-mutation interleaving is what the lock
+   ordering guarantees structurally (every owner-set mutation locks the tenant row before its
+   check-and-change).
+
+Verification: `composer analyse` clean; Pint clean on the touched files; SQLite full suite
+**8 skipped, 1657 passed (6455 assertions)**; PostgreSQL full suite **1665 passed (6478
+assertions)**, exit 0 (serial plane — §4.3's parallel-run interference note applies). Row 119's
+two-connection owner-set race ran on the PostgreSQL plane; row 103's morph-collision proof ran on
+both.
+
+**The resolver iteration (found by the PostgreSQL plane, fixed architecturally).** The first
+Phase-3 build passed SQLite (parallel) and failed 15 tests on the PostgreSQL serial plane: the
+spatie permission team was managed as a set/restore value around each pivot write and each
+request's check, while the pivots' tenant ids came from whichever context happened to be active at
+write time — the resolved store (a seeded default row, id N) and the pivot (team 1) diverged, and
+spatie's team-filtered `roles()` answered empty for a correctly-permissioned user. The fix removes
+the juggling class entirely: a `TenantTeamResolver` (Core) makes the permission team **read the
+tenant context** (`getPermissionsTeamId()` = `TenantContext::tenantId()`; the setter is accepted
+and ignored), so pivot writes and lookups can never disagree with the resolved store — the team IS
+the tenant context, by construction (§5). `PermissionMiddleware` drops its set/restore block;
+`AccessGateway::assignTenantRole()`/`syncTenantMemberRoles()` enter the owning store's context
+(`runForTenant`) around pivot writes; `AssignsPlatformRole` (seeder/factory) attaches under
+`runForTenant($defaultTenantId)`; `AbstractUserAction::assertRoleAssignmentAllowed` reads the
+super-admin status through the team-context-immune `PlatformRoleAssignment` (the same §5
+discipline as Gate::before — the team-filtered `roles()` is never authoritative for platform
+roles); the legacy suite's actors gain default-store memberships (`TestCase::
+withDefaultStoreMembership` seeding the default row exactly as `TenantDatabaseSeeder` does, and
+tests whose actors hold only direct permissions call it before the pivot writes so the permission
+team and the resolved store agree). `config/permission.php` also names the wildcard class
+explicitly (`'wildcard_permission' => WildcardPermission::class`): with
+`enable_wildcard_permission => true` and the class unset, spatie's lazy resolution skipped the
+wildcard path on the first (cold) check of a process. Both planes re-ran green after the resolver
+change; the whole surface of per-call-site `setPermissionsTeamId` juggling is gone from the
+application code.
+
 <details>
 <summary>Changed files (274: 273 PHP files plus this plan document)</summary>
 
