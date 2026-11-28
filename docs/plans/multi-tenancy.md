@@ -2041,6 +2041,34 @@ dispositions are visible in `pg_indexes`; builder-chain and validation-rule arch
 green; composite-FK violation test proves DB-level rejection of a cross-tenant intra-module
 reference; `tenancy:audit` reports zero violations after seeding; suite green.
 
+### Phase 4 — Jobs, cache, webhooks, payments, idempotency, media, store runtime (IN PROGRESS)
+
+Landed so far (part 1, commit d9db53da): the webhook surface (§6.2, §6.7.2) — the two-stage
+bootstrap sweep (registered central discovery + per-record tenant dispatch), the TenantAware
+middleware (§6.1, opt-in defense-in-depth), the job's central-dispatch bootstrap lookup and
+suspended-tenant skip (audited, §3.1), scoped finalize, bootstrap retry, tenant-fan-out prune.
+
+In flight (part 2, §6.3 payments): `payment_driver_credentials` gained `enabled` +
+`credential_version` (per-(tenant, driver) rotation counter, §6.3 F1) in the in-place migration.
+REMAINING, in order: (1) the resolver rework — per-(tenant, driver) cache key
+`{cachePrefix}payment.credentials:{driver}:{credential_version}`, the env baseline restricted to
+local/testing, the F38 catch sites rethrowing tenancy exceptions, disabled-drivers-throw (row 42);
+(2) the F25 refactor — every client/driver/manager config-read switches to the resolver (5 clients,
+10 drivers, manager availability gating per-tenant); (3) webhook routing `POST
+/webhook/{tenantSlug}/{driver}` with per-tenant secret verification (§3.1 B2, the route parameter
+is `{tenantSlug}` — Phase 1's deviation 9); (4) PayPal token cache keyed by tenant + version
+(row 32). THEN: 4c media (§6.4 — the three coordination tables, per-store generation keys
+`media/{tenant_id}/{ab}/{sha256}-{ulid}.{ext}`, the lease/intent/generation protocol, rows
+79/91/99/100/112/116/117/120/121/122/123); 4d idempotency (§6.6 full redesign — principal_key,
+claim token, fenced completion, committed_at marker, rows 30/31/76/77/78/88/89/97/111/114); 4e
+store runtime (§6.7 — TenantResolved listener applying the runtime per request, the seven F38
+resolver fixes, the 18-key cache disposition, the platform-settings resolver, rows 10/64/81/93);
+4f notifications/rate-limits/Reverb (§6.12, §9.7 — rows 63/65) + K6/K7.
+
+Verification gates for the phase: analyse + Pint + SQLite parallel + PostgreSQL serial; the media
+races (row 120/123) and the idempotency concurrency (rows 30/77/114) run on two PostgreSQL
+connections in dedicated isolation files.
+
 ### Phase 3 — Auth & permissions
 
 Files: `config/permission.php` (teams), permission-tables migration (in place, §5),
