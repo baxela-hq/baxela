@@ -11,8 +11,8 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\MercadopagoPaymentDriver;
 use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
-use Modules\Payment\Tests\Feature\HelperTrait;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
+use Modules\Payment\Tests\Feature\HelperTrait;
 
 uses(HelperTrait::class);
 
@@ -38,7 +38,7 @@ function mercadopagoDriver(callable $configureClient): MercadopagoPaymentDriver
     $client = Mockery::mock(MercadopagoClient::class);
     $configureClient($client);
 
-    return new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
+    return new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -47,10 +47,10 @@ function mercadopagoDriver(callable $configureClient): MercadopagoPaymentDriver
  */
 function mercadopagoFetchingDriver(object $payment): MercadopagoPaymentDriver
 {
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->once()->andReturn($payment);
 
-    return new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
+    return new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -59,10 +59,10 @@ function mercadopagoFetchingDriver(object $payment): MercadopagoPaymentDriver
  */
 function mercadopagoRejectingDriver(): MercadopagoPaymentDriver
 {
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->never();
 
-    return new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
+    return new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -240,7 +240,7 @@ it('omits the notification url when not configured', function () {
 
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.mercadopago.access_token' => null]);
-    $driver = new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(MercadopagoClient::class));
+    $driver = new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, app(MercadopagoClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -273,7 +273,7 @@ it('fails loudly when the preference response is missing its redirect url', func
 it('refuses webhooks when the webhook secret is not configured', function () {
     config(['payment.mercadopago.webhook_secret' => null]);
 
-    new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(MercadopagoClient::class))
+    new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, app(MercadopagoClient::class))
         ->handleWebhook(mercadopagoNotification('123456789'));
 })->throws(PaymentException::class);
 
@@ -445,20 +445,20 @@ it('rejects a payment resource with an empty external reference', function () {
 it('rejects a notification without a payment id', function () {
     $body = json_encode(['type' => 'payment'], JSON_THROW_ON_ERROR);
 
-    new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(MercadopagoClient::class))
+    new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, app(MercadopagoClient::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/mercadopago', 'POST', [], [], [], [], $body));
 })->throws(PaymentException::class);
 
 it('rejects a notification whose body is not valid json', function () {
-    new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(MercadopagoClient::class))
+    new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, app(MercadopagoClient::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/mercadopago', 'POST', [], [], [], [], 'not-json'));
 })->throws(PaymentException::class);
 
 it('bubbles payment fetch failures so mercado pago retries the webhook', function () {
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')
         ->andThrow(new RequestException(new Response(new Psr7Response(503, [], 'unavailable'))));
 
-    (new MercadopagoPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client))
+    (new MercadopagoPaymentDriver(new ResolvesPaymentCredentials, $client))
         ->handleWebhook(mercadopagoNotification('123456789'));
 })->throws(RequestException::class);

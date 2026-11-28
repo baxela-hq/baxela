@@ -10,6 +10,8 @@ use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
 
+use function Modules\Payment\Tests\Feature\useDefaultWebhookTenant;
+
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
@@ -86,6 +88,7 @@ function adyenAuthSignature(array $item): string
 }
 
 beforeEach(function () {
+    useDefaultWebhookTenant();
     config(['payment.adyen.hmac_key' => base64_encode('adyen-hmac-test')]);
 });
 

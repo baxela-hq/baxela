@@ -276,9 +276,12 @@ it('lets two stores use the same idempotency key but not one store twice', funct
     $claim = fn (int $tenant): array => [
         TenantColumn::TENANT_ID => $tenant,
         IdempotencyKeysSchema::USER_ID => 7,
+        IdempotencyKeysSchema::PRINCIPAL_KEY => 'user:7',
         IdempotencyKeysSchema::KEY => 'same-request-key',
+        IdempotencyKeysSchema::STATUS => IdempotencyKeysSchema::STATUS_PROCESSING,
+        IdempotencyKeysSchema::CLAIM_TOKEN => 'claim-'.$tenant,
         IdempotencyKeysSchema::RESPONSE => null,
-        IdempotencyKeysSchema::EXPIRED_AT => null,
+        IdempotencyKeysSchema::EXPIRES_AT => null,
         IdempotencyKeysSchema::CREATED_AT => now(),
     ];
 

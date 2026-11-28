@@ -20,10 +20,13 @@ use Modules\Payment\Schemas\PaymentRefund\PaymentRefundStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
 use Modules\Payment\Tests\Feature\Webhook\TestWebhookDriver;
 
+use function Modules\Payment\Tests\Feature\useDefaultWebhookTenant;
+
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
 beforeEach(function () {
+    useDefaultWebhookTenant();
     config(['payment.drivers.test' => TestWebhookDriver::class]);
 });
 

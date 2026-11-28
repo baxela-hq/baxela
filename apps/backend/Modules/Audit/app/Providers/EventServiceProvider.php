@@ -49,8 +49,9 @@ use Modules\Core\Contracts\Events\Shipping\ShipmentShippedEvent;
 use Modules\Core\Contracts\Events\Support\TicketDeletedEvent;
 use Modules\Core\Contracts\Events\Support\TicketStatusUpdatedEvent;
 use Modules\Core\Contracts\Events\Tenant\CentralOperationRunEvent;
-use Modules\Webhooks\Events\WebhookDeliverySkippedEvent;
+use Modules\Core\Contracts\Events\Tenant\IdempotencyUnresolvedEvent;
 use Modules\Core\Contracts\Events\Tenant\TenantProvisionedEvent;
+use Modules\Webhooks\Events\WebhookDeliverySkippedEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -68,6 +69,7 @@ class EventServiceProvider extends ServiceProvider
         // outcome is recorded, refused attempts included.
         CentralOperationRunEvent::class => [RecordAuditLogListener::class],
         WebhookDeliverySkippedEvent::class => [RecordAuditLogListener::class],
+        IdempotencyUnresolvedEvent::class => [RecordAuditLogListener::class],
 
         // Self-service onboarding creates a store, so it changes the
         // platform like an admin mutation does.

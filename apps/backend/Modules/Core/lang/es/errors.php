@@ -9,6 +9,13 @@ return [
     '500' => 'Algo salió mal',
     'internal_server_error' => 'Algo salió mal',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'Otra solicitud todavía está procesando esta clave. Inténtalo de nuevo en un momento.',
+        'unresolved' => 'Esta solicitud se confirmó pero su respuesta no está disponible; usa una nueva clave de idempotencia.',
+        'principal_missing' => 'Esta solicitud requiere una sesión autenticada o un token de carrito.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
     'failed_jobs' => [
         'not_found' => 'El trabajo fallido no se encontró',

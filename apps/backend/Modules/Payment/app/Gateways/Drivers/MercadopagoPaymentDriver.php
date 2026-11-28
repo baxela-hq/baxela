@@ -10,16 +10,15 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\RefundWebhookOutcome;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
-use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class MercadopagoPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
         protected MercadopagoClient $mercadopago,

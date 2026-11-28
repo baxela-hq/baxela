@@ -8,8 +8,8 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\AdyenCheckout;
 use Modules\Payment\Gateways\Drivers\AdyenPaymentDriver;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
-use Modules\Payment\Tests\Feature\HelperTrait;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
+use Modules\Payment\Tests\Feature\HelperTrait;
 
 uses(HelperTrait::class);
 
@@ -33,7 +33,7 @@ function adyenDriver(callable $configureClient): AdyenPaymentDriver
     $checkout = Mockery::mock(AdyenCheckout::class);
     $configureClient($checkout);
 
-    return new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $checkout);
+    return new AdyenPaymentDriver(new ResolvesPaymentCredentials, $checkout);
 }
 
 /**
@@ -155,7 +155,7 @@ it('respects zero-decimal currencies', function () {
 
 it('refuses to initiate when the gateway is not configured', function (array $config) {
     config($config);
-    $driver = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class));
+    $driver = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -191,12 +191,12 @@ it('fails loudly when the link response is missing its url', function () {
 it('refuses webhooks when the hmac key is not configured', function () {
     config(['payment.adyen.hmac_key' => null]);
 
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem()));
 })->throws(PaymentException::class);
 
 it('settles an authorised notification', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem()));
 
     expect($result->transaction_id)->toBe('9')
@@ -204,14 +204,14 @@ it('settles an authorised notification', function () {
 });
 
 it('marks a refused notification failed', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(['success' => false])));
 
     expect($result->status)->toBe(PaymentStatusEnum::FAILED->value);
 });
 
 it('rejects notifications whose signed fields were tampered with', function (array $tampered) {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem($tampered), signItem: adyenItem()));
 })->throws(PaymentException::class)->with([
     'psp reference' => [['pspReference' => '8836123456789012']],
@@ -221,17 +221,17 @@ it('rejects notifications whose signed fields were tampered with', function (arr
 ]);
 
 it('rejects a notification without an hmac signature', function () {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(), sign: false));
 })->throws(PaymentException::class);
 
 it('rejects a notification signed with the wrong key', function () {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(), rawKey: 'adyen-hmac-other'));
 })->throws(PaymentException::class);
 
 it('accepts references containing separator characters', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(['merchantReference' => 'ORD:9\\X'])));
 
     expect($result->transaction_id)->toBe('ORD:9\\X')
@@ -239,7 +239,7 @@ it('accepts references containing separator characters', function () {
 });
 
 it('rejects malformed notification structures', function (string $body) {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/adyen', 'POST', [], [], [], [], $body));
 })->throws(PaymentException::class)->with([
     'no notification items' => ['{"live":"false"}'],
@@ -249,17 +249,17 @@ it('rejects malformed notification structures', function (string $body) {
 ]);
 
 it('rejects a notification with an empty merchant reference', function () {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(['merchantReference' => ''])));
 })->throws(PaymentException::class);
 
 it('rejects event codes it cannot settle', function () {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem(['eventCode' => 'CANCELLATION'])));
 })->throws(PaymentException::class);
 
 it('rejects a webhook whose body is not valid json', function () {
-    new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(Request::create('/api/v1/payment/webhook/adyen', 'POST', [], [], [], [], 'not-json'));
 })->throws(PaymentException::class);
 
@@ -342,7 +342,7 @@ it('refuses to refund a payment without a persisted psp reference', function () 
 })->throws(PaymentException::class, 'payment.refund.not_supported');
 
 it('routes a successful refund notification to the refund ledger', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem([
             'eventCode' => 'REFUND',
             'merchantReference' => 'refund-uuid-1',
@@ -361,7 +361,7 @@ it('routes a successful refund notification to the refund ledger', function () {
 });
 
 it('routes a failed refund notification as a definitive failure', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem([
             'eventCode' => 'REFUND_FAILED',
             'merchantReference' => 'refund-uuid-1',
@@ -372,7 +372,7 @@ it('routes a failed refund notification as a definitive failure', function () {
 });
 
 it('routes a rejected refund notification as a failure', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem([
             'eventCode' => 'REFUND',
             'success' => false,
@@ -384,7 +384,7 @@ it('routes a rejected refund notification as a failure', function () {
 });
 
 it('routes a reversed refund notification as a reversal', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem([
             'eventCode' => 'REFUNDED_REVERSED',
             'merchantReference' => 'refund-uuid-1',
@@ -395,7 +395,7 @@ it('routes a reversed refund notification as a reversal', function () {
 });
 
 it('still persists the payment psp reference from an authorisation webhook', function () {
-    $result = new AdyenPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(AdyenCheckout::class))
+    $result = new AdyenPaymentDriver(new ResolvesPaymentCredentials, app(AdyenCheckout::class))
         ->handleWebhook(adyenWebhook(adyenItem()));
 
     expect($result->refund_outcome)->toBeNull()

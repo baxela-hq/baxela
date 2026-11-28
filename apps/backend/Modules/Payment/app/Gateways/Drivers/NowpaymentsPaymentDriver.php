@@ -7,16 +7,15 @@ use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentGatewayResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\NowpaymentsClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use RuntimeException;
-use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class NowpaymentsPaymentDriver implements ConfigurableDriver, PaymentDriverInterface
 {
-
     use CannotRefund;
 
     public function __construct(

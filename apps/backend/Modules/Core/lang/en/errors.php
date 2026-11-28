@@ -9,6 +9,13 @@ return [
     '500' => 'Something went wrong',
     'internal_server_error' => 'Something went wrong',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'Another request is still processing this key. Retry shortly.',
+        'unresolved' => 'This request committed but its response is unavailable; retry with a new idempotency key.',
+        'principal_missing' => 'An authenticated session or a cart token is required for this request.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — nested keys resolve via
     // ExceptionHelper (core.failed_jobs.* → core::errors.failed_jobs.*).
     'failed_jobs' => [

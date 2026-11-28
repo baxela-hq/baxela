@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Exceptions\TenantContextMissingException;
-use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Payment\Models\PaymentDriverCredential;
 use Modules\Payment\Schemas\PaymentDriverCredential\PaymentDriverCredentialSchema;
@@ -138,7 +137,7 @@ class ResolvesPaymentCredentials implements PaymentCredentialResolverInterface
      * The stored credential rows of ONE driver, read through the tenant
      * scope and cached per (tenant, driver, credential_version).
      *
-     * @return list<\Modules\Payment\Models\PaymentDriverCredential>
+     * @return list<PaymentDriverCredential>
      */
     protected function storedRows(string $driver): array
     {

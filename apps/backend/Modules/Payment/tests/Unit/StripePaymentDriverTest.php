@@ -7,9 +7,9 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Modules\Payment\Tests\Feature\HelperTrait;
 use Stripe\Checkout\Session;
-use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 uses(HelperTrait::class);
 
@@ -31,7 +31,7 @@ function stripeDriver(callable $configureCheckout): StripePaymentDriver
     $checkout = Mockery::mock(StripeCheckout::class);
     $configureCheckout($checkout);
 
-    return new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $checkout);
+    return new StripePaymentDriver(new ResolvesPaymentCredentials, $checkout);
 }
 
 /**
@@ -57,7 +57,7 @@ it('creates a checkout session with minor units, order metadata and return urls'
                 $captured = $params;
 
                 return true;
-            }))
+            }), null)
             ->andReturn(Session::constructFrom([
                 'id' => 'cs_test_123',
                 'url' => 'https://checkout.stripe.com/pay/cs_test_123',
@@ -97,7 +97,7 @@ it('respects zero-decimal currencies', function () {
                 $captured = $params;
 
                 return true;
-            }))
+            }), null)
             ->andReturn(Session::constructFrom(['id' => 'cs_test_1', 'url' => 'https://checkout.stripe.com/pay/cs_test_1']));
     });
 
@@ -114,9 +114,32 @@ it('respects zero-decimal currencies', function () {
     expect($captured['line_items'][0]['price_data']['unit_amount'])->toBe(305);
 });
 
+it('forwards the stable provider idempotency key', function () {
+    $driver = stripeDriver(function (MockInterface $checkout): void {
+        $checkout->shouldReceive('createSession')
+            ->once()
+            ->with(Mockery::any(), 'stable-provider-key')
+            ->andReturn(Session::constructFrom([
+                'id' => 'cs_test_idem',
+                'url' => 'https://checkout.stripe.com/pay/cs_test_idem',
+            ]));
+    });
+
+    $driver->initiate(new PaymentInitiateInput(
+        payment_id: 9,
+        order_id: 4,
+        amount: 305.0,
+        method: 'stripe',
+        order_code: 'ABCD2345',
+        currency: 'USD',
+        currency_decimal_places: 2,
+        idempotency_key: 'stable-provider-key',
+    ));
+});
+
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.stripe.secret' => null]);
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,
@@ -131,7 +154,7 @@ it('refuses to initiate when the gateway is not configured', function () {
 
 it('refuses webhooks when the signing secret is not configured', function () {
     config(['payment.stripe.webhook_secret' => null]);
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $driver->handleWebhook(signedStripeEvent([
         'id' => 'evt_1',
@@ -141,7 +164,7 @@ it('refuses webhooks when the signing secret is not configured', function () {
 })->throws(PaymentException::class);
 
 it('maps a paid completed session webhook to success', function () {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $result = $driver->handleWebhook(signedStripeEvent([
         'id' => 'evt_1',
@@ -154,7 +177,7 @@ it('maps a paid completed session webhook to success', function () {
 });
 
 it('maps deferred payment outcome events', function (string $type, string $expectedStatus) {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $result = $driver->handleWebhook(signedStripeEvent([
         'id' => 'evt_1',
@@ -170,7 +193,7 @@ it('maps deferred payment outcome events', function (string $type, string $expec
 ]);
 
 it('rejects a completed-but-unpaid session so the payment stays pending', function () {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $driver->handleWebhook(signedStripeEvent([
         'id' => 'evt_1',
@@ -180,7 +203,7 @@ it('rejects a completed-but-unpaid session so the payment stays pending', functi
 })->throws(PaymentException::class);
 
 it('rejects webhook events it cannot settle', function (array $payload) {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $driver->handleWebhook(signedStripeEvent($payload));
 })->throws(PaymentException::class)->with([
@@ -196,7 +219,7 @@ it('rejects webhook events it cannot settle', function (array $payload) {
 ]);
 
 it('rejects a webhook whose body is not valid json', function () {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $body = 'not-json';
     $timestamp = time();
@@ -208,7 +231,7 @@ it('rejects a webhook whose body is not valid json', function () {
 })->throws(PaymentException::class);
 
 it('rejects a webhook with a bad signature', function () {
-    $driver = new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(StripeCheckout::class));
+    $driver = new StripePaymentDriver(new ResolvesPaymentCredentials, app(StripeCheckout::class));
 
     $driver->handleWebhook(signedStripeEvent(
         ['id' => 'evt_1', 'type' => 'checkout.session.completed', 'data' => ['object' => ['id' => 'cs_test_123', 'payment_status' => 'paid']]],

@@ -4,8 +4,8 @@ namespace Modules\Payment\Gateways;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Modules\Payment\Exceptions\PaymentException;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Exceptions\PaymentException;
 
 /**
  * Thin SDK-less wrapper around Razorpay's Payment Links API (plain REST,
@@ -14,10 +14,10 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class RazorpayClient
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
+
     public function createPaymentLink(array $params): object
     {
         return $this->request()->post('/v1/payment_links', $params)->throw()->object();

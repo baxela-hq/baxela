@@ -36,6 +36,7 @@ use Modules\Core\Contracts\Gateways\User\UserGatewayInterface;
 use Modules\Core\Exceptions\Discount\RedemptionRefusedException;
 use Modules\Core\Providers\SentryContextServiceProvider;
 use Modules\Core\Support\Money;
+use Modules\Core\Support\Tenancy\IdempotencyCommitMarker;
 use Modules\Core\Utils\Auth;
 use RuntimeException;
 
@@ -146,7 +147,7 @@ class CheckoutAction
                 ['user_id' => Auth::id(), 'cart_items' => $cart?->items()->count() ?? 0],
             );
 
-            $orderCode = DB::transaction(function () use ($orderGateway, $inventoryGateway, $input, $cart, $address): ?string {
+            $orderCode = DB::transaction(function () use ($request, $orderGateway, $inventoryGateway, $input, $cart, $address): ?string {
                 $cart = Cart::query()
                     ->where(CartSchema::USER_ID, Auth::id())
                     ->lockForUpdate()
@@ -276,6 +277,11 @@ class CheckoutAction
 
                 $cart->items()->delete();
                 $cart->delete();
+
+                // Last statement in the transaction (§6.6): if this claim
+                // lost ownership to a reclaimer, zero rows are updated and
+                // the throw rolls the order, stock and cart back with it.
+                IdempotencyCommitMarker::mark($request);
 
                 return $orderCode;
             });

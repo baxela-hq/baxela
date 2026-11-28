@@ -6,6 +6,7 @@ use Modules\Core\Extensions\ExtensionManager;
 use Modules\Core\Models\Extension as ExtensionRow;
 use Modules\Core\Schemas\Extension\ExtensionSchema;
 use Modules\Core\Tests\Feature\HelperTrait;
+use Modules\Tenant\Models\Tenant;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -110,7 +111,7 @@ it('skips an incompatible extension and names the required range', function () {
 it('keeps a skipped extension inert at the payment webhook', function () {
     // The webhook route carries {tenantSlug} (multi-tenancy §3.1 B2):
     // seed the default store the probe resolves through.
-    \Modules\Tenant\Models\Tenant::query()->firstOrCreate(
+    Tenant::query()->firstOrCreate(
         ['slug' => 'default'],
         ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
     );

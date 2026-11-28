@@ -2,12 +2,13 @@
 
 namespace Modules\Webhooks\Actions\Webhooks;
 
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\CentralOperations;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Webhooks\Jobs\DeliverWebhookJob;
 use Modules\Webhooks\Models\WebhookDelivery;
 use Modules\Webhooks\Operations\DiscoverDueDeliveriesOperation;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
-use Modules\Core\Support\Tenancy\CentralOperations;
-use Modules\Core\Support\Tenancy\TenantContext;
 
 /**
  * The delivery sweep, two-stage (multi-tenancy §6.7.2 bootstrap): stage 1
@@ -64,10 +65,10 @@ class DiscoverDueDeliveriesAction
                     ->orWhere(WebhookDeliverySchema::NEXT_ATTEMPT_AT, '<=', now());
             })
             ->limit(100)
-            ->get([WebhookDeliverySchema::ID, \Modules\Core\Schemas\Shared\TenantColumn::TENANT_ID])
+            ->get([WebhookDeliverySchema::ID, TenantColumn::TENANT_ID])
             ->map(static fn ($delivery): array => [
                 'id' => (string) $delivery->getKey(),
-                'tenant_id' => (int) $delivery->getAttribute(\Modules\Core\Schemas\Shared\TenantColumn::TENANT_ID),
+                'tenant_id' => (int) $delivery->getAttribute(TenantColumn::TENANT_ID),
             ])
             ->all();
     }

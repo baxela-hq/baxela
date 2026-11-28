@@ -3,6 +3,7 @@
 namespace Modules\Core\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\Core\Models\IdempotencyKey;
 use Modules\Core\Schemas\IdempotencyKeys\IdempotencyKeysSchema;
 
@@ -21,9 +22,12 @@ class IdempotencyKeyFactory extends Factory
     {
         return [
             IdempotencyKeysSchema::USER_ID => $this->faker->randomDigitNotZero(),
+            IdempotencyKeysSchema::PRINCIPAL_KEY => 'user:'.$this->faker->randomDigitNotZero(),
             IdempotencyKeysSchema::KEY => $this->faker->unique()->word(),
+            IdempotencyKeysSchema::STATUS => IdempotencyKeysSchema::STATUS_PROCESSING,
+            IdempotencyKeysSchema::CLAIM_TOKEN => (string) Str::uuid(),
             IdempotencyKeysSchema::RESPONSE => [],
-            IdempotencyKeysSchema::EXPIRED_AT => now()->addMinutes(1),
+            IdempotencyKeysSchema::EXPIRES_AT => now()->addMinutes(1),
         ];
     }
 }

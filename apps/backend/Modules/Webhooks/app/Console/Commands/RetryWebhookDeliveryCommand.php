@@ -3,6 +3,7 @@
 namespace Modules\Webhooks\Console\Commands;
 
 use Illuminate\Console\Command;
+use Modules\Core\Schemas\Shared\TenantColumn;
 use Modules\Core\Support\Tenancy\CentralOperations;
 use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Webhooks\Jobs\DeliverWebhookJob;
@@ -25,7 +26,7 @@ class RetryWebhookDeliveryCommand extends Command
 
     public function handle(CentralOperations $central): int
     {
-        /** @var \Modules\Webhooks\Models\WebhookDelivery|null $delivery */
+        /** @var WebhookDelivery|null $delivery */
         $delivery = $central->run(new LookupWebhookDeliveryOperation((string) $this->argument('delivery_id')), static::class.': retry lookup');
 
         if (is_null($delivery)) {
@@ -40,7 +41,7 @@ class RetryWebhookDeliveryCommand extends Command
             return self::FAILURE;
         }
 
-        $tenantId = (int) $delivery->getAttribute(\Modules\Core\Schemas\Shared\TenantColumn::TENANT_ID);
+        $tenantId = (int) $delivery->getAttribute(TenantColumn::TENANT_ID);
 
         app(TenantContext::class)->runForTenant($tenantId, function () use ($delivery): void {
             WebhookDelivery::query()

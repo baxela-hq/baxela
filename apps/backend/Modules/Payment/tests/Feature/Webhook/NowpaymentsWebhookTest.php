@@ -10,6 +10,8 @@ use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
 
+use function Modules\Payment\Tests\Feature\useDefaultWebhookTenant;
+
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
@@ -96,6 +98,7 @@ function nowpaymentsSortedKeys(array $value): array
 }
 
 beforeEach(function () {
+    useDefaultWebhookTenant();
     config(['payment.nowpayments.ipn_secret' => 'np-ipn-test']);
 });
 

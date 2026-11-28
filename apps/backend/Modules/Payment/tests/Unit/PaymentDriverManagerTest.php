@@ -18,6 +18,7 @@ use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\Drivers\RazorpayPaymentDriver;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 use Modules\Payment\Gateways\PaymentDriverManager;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Modules\Payment\Tests\Feature\HelperTrait;
 
 uses(RefreshDatabase::class);
@@ -145,7 +146,7 @@ it('reports a driver configured only when its full lifecycle credentials are set
 
     // The env baseline is an immutable process snapshot (multi-tenancy
     // §6.3): controlled test reloads re-capture it after the seeding.
-    app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->refreshEnvBaseline();
+    app(ResolvesPaymentCredentials::class)->refreshEnvBaseline();
 
     expect($manager->isConfigured('stripe'))->toBeTrue()
         ->and($manager->isConfigured('paypal'))->toBeTrue()

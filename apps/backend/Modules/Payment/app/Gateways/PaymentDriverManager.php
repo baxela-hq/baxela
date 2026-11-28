@@ -3,9 +3,11 @@
 namespace Modules\Payment\Gateways;
 
 use Modules\Core\Contracts\Gateways\Payment\ConfigurableDriver;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Contracts\Gateways\Payment\PaymentDriverInterface;
 use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 class PaymentDriverManager
 {
@@ -80,7 +82,7 @@ class PaymentDriverManager
 
         // A disabled driver is unconfigured for every surface (multi-
         // tenancy §6.3, row 42): direct construction cannot use it either.
-        if (app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->driverDisabled($driver)) {
+        if (app(ResolvesPaymentCredentials::class)->driverDisabled($driver)) {
             return false;
         }
 
@@ -88,7 +90,7 @@ class PaymentDriverManager
             // The resolver reads the active tenant's scoped rows with the
             // env fallback in local/testing — config() is no longer the
             // credential state (§6.3).
-            if (! app(\Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface::class)->credential($driver, $key)) {
+            if (! app(PaymentCredentialResolverInterface::class)->credential($driver, $key)) {
                 return false;
             }
         }

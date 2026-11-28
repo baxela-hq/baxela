@@ -6,12 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Modules\Core\Queue\TenantAware;
+use Modules\Core\Schemas\Shared\TenantColumn;
+use Modules\Core\Support\Tenancy\CentralOperations;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Webhooks\Actions\Webhooks\RecordDeliveryOutcomeAction;
+use Modules\Webhooks\Events\WebhookDeliverySkippedEvent;
 use Modules\Webhooks\Gateways\WebhookDeliveryClient;
 use Modules\Webhooks\Models\WebhookDelivery;
 use Modules\Webhooks\Models\WebhookEvent;
+use Modules\Webhooks\Operations\LookupWebhookDeliveryOperation;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliverySchema;
 use Modules\Webhooks\Schemas\WebhookDelivery\WebhookDeliveryStatusEnum;
 use Modules\Webhooks\Schemas\WebhookEvent\WebhookEventSchema;
@@ -49,7 +54,7 @@ class DeliverWebhookJob implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [\Modules\Core\Queue\TenantAware::class];
+        return [TenantAware::class];
     }
 
     public function handle(
@@ -65,24 +70,24 @@ class DeliverWebhookJob implements ShouldQueue
             // usable stamp (console retry, lost stamp). One central lookup
             // by primary key — reads only — hands the row's own tenant id
             // to the runForTenant body. No fallback to cross-store work.
-            $delivery = app(\Modules\Core\Support\Tenancy\CentralOperations::class)
-                ->run(new \Modules\Webhooks\Operations\LookupWebhookDeliveryOperation($this->deliveryId), static::class.': delivery bootstrap');
+            $delivery = app(CentralOperations::class)
+                ->run(new LookupWebhookDeliveryOperation($this->deliveryId), static::class.': delivery bootstrap');
         }
 
         if (is_null($delivery)) {
             return;
         }
 
-        $tenantId = (int) $delivery->getAttribute(\Modules\Core\Schemas\Shared\TenantColumn::TENANT_ID);
+        $tenantId = (int) $delivery->getAttribute(TenantColumn::TENANT_ID);
 
         // A suspended store's deliveries stay pending and are skipped,
         // audit-logged, until reactivation (§3.1).
-        $context = app(\Modules\Core\Support\Tenancy\TenantContext::class);
+        $context = app(TenantContext::class);
 
         $suspended = $context->runForTenant($tenantId, fn (): bool => $this->isTenantSuspended());
 
         if ($suspended) {
-            event(new \Modules\Webhooks\Events\WebhookDeliverySkippedEvent(
+            event(new WebhookDeliverySkippedEvent(
                 (string) $delivery->getKey(),
                 $tenantId,
             ));
@@ -98,7 +103,7 @@ class DeliverWebhookJob implements ShouldQueue
     /** Runs inside runForTenant — TRUE when the delivery may proceed. */
     private function isTenantSuspended(): bool
     {
-        $snapshot = app(\Modules\Core\Support\Tenancy\TenantContext::class)->tenant();
+        $snapshot = app(TenantContext::class)->tenant();
 
         return $snapshot === null || $snapshot->suspended;
     }

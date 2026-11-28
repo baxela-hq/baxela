@@ -9,6 +9,13 @@ return [
     '500' => 'Etwas ist schiefgelaufen',
     'internal_server_error' => 'Etwas ist schiefgelaufen',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'Eine andere Anfrage verarbeitet diesen Schlüssel noch. Bitte kurz erneut versuchen.',
+        'unresolved' => 'Diese Anfrage wurde gespeichert, aber ihre Antwort ist nicht verfügbar. Bitte einen neuen Idempotency-Schlüssel verwenden.',
+        'principal_missing' => 'Für diese Anfrage ist eine angemeldete Sitzung oder ein Warenkorb-Token erforderlich.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
     'failed_jobs' => [
         'not_found' => 'Der fehlgeschlagene Job wurde nicht gefunden',

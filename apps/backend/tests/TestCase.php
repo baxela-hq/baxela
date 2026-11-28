@@ -7,7 +7,6 @@ use Modules\Auth\Models\User;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Models\Language;
 use Modules\Core\Support\Tenancy\TenantContext;
-use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Modules\Tenant\Database\Seeders\TenantDatabaseSeeder;
 use Modules\Tenant\Models\Tenant;
 use Modules\Tenant\Models\TenantMembership;

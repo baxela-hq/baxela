@@ -9,7 +9,10 @@ use Modules\Payment\Gateways\MercadopagoClient;
 use Modules\Payment\Models\Payment;
 use Modules\Payment\Schemas\Payment\PaymentSchema;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Modules\Payment\Tests\Feature\HelperTrait;
+
+use function Modules\Payment\Tests\Feature\useDefaultWebhookTenant;
 
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
@@ -71,12 +74,13 @@ function mercadopagoSignedHeaders(string $dataId = '123456789', string $secret =
  */
 function bindMercadopagoClient(object $payment, int $times = 1): void
 {
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->times($times)->andReturn($payment);
     app()->instance(MercadopagoClient::class, $client);
 }
 
 beforeEach(function () {
+    useDefaultWebhookTenant();
     config(['payment.mercadopago.webhook_secret' => 'mp-webhook-test']);
 });
 
@@ -113,7 +117,7 @@ it('acks a replayed notification as a no-op', function () {
 it('acks a late rejection after settlement as a no-op', function () {
     $order = mercadopagoUnpaidOrder();
     $payment = mercadopagoPendingPayment($order);
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     // First delivery fetches an approved payment; the out-of-order replay
     // fetches a rejected one — the settled success must not be overwritten
     // because HandleWebhookAction only mutates PENDING.
@@ -190,7 +194,7 @@ it('rejects a notification with a bad signature', function () {
     $payment = mercadopagoPendingPayment($order);
 
     // The signature is checked before anything is fetched.
-    $client = Mockery::mock(MercadopagoClient::class, [new \Modules\Payment\Support\ResolvesPaymentCredentials])->makePartial();
+    $client = Mockery::mock(MercadopagoClient::class, [new ResolvesPaymentCredentials])->makePartial();
     $client->shouldReceive('getPayment')->never();
     $this->app->instance(MercadopagoClient::class, $client);
 

@@ -11,6 +11,8 @@ use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
 use Modules\Payment\Tests\Feature\HelperTrait;
 use Modules\Payment\Tests\Feature\Webhook\TestWebhookDriver;
 
+use function Modules\Payment\Tests\Feature\useDefaultWebhookTenant;
+
 uses(RefreshDatabase::class);
 uses(HelperTrait::class);
 
@@ -33,6 +35,7 @@ function unpaidOrder(): Order
 }
 
 beforeEach(function () {
+    useDefaultWebhookTenant();
     config(['payment.drivers.test' => TestWebhookDriver::class]);
 });
 

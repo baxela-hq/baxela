@@ -4,8 +4,8 @@ namespace Modules\Payment\Gateways;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Modules\Payment\Exceptions\PaymentException;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Exceptions\PaymentException;
 
 /**
  * Thin SDK-less wrapper around NowPayments' invoice API (plain REST). Keeps
@@ -13,10 +13,10 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class NowpaymentsClient
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
+
     public function createInvoice(array $params): object
     {
         return $this->request()->post('/v1/invoice', $params)->throw()->object();

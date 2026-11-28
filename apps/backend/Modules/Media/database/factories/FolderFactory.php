@@ -22,7 +22,7 @@ class FolderFactory extends Factory
         return [
             FolderSchema::USER_ID => $this->faker->randomDigitNotZero(),
             FolderSchema::PARENT_ID => null,
-            FolderSchema::NAME => $this->faker->word(),
+            FolderSchema::NAME => $this->faker->unique()->word(),
             FolderSchema::POSITION => $this->faker->numberBetween(1, 255),
         ];
     }

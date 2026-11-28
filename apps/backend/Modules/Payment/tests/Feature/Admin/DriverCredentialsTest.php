@@ -8,9 +8,9 @@ use Modules\Auth\Models\Permission;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Core\Contracts\Events\Payment\PaymentCredentialsUpdatedEvent;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaymentDriverManager;
-use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Gateways\StripeCheckout;
 use Modules\Payment\Models\PaymentDriverCredential;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
@@ -195,7 +195,7 @@ it('keeps required-credential semantics: one stripe key is not enough', function
 });
 
 it('stops resolving a deleted credential on the next request (persistent-process simulation)', function () {
-    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+    $resolver = app(ResolvesPaymentCredentials::class);
 
     $this->actingAs($this->superAdminUser());
 
@@ -211,14 +211,14 @@ it('stops resolving a deleted credential on the next request (persistent-process
     $this->deleteJson(credentialsUrl('/stripe/secret'))->assertOk();
 
     expect($resolver->credential('stripe', 'secret'))->toBeNull()
-        ->and($resolver->stateFor('stripe', 'secret'))->toBe(\Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface::KEY_STATE_NONE);
+        ->and($resolver->stateFor('stripe', 'secret'))->toBe(PaymentCredentialResolverInterface::KEY_STATE_NONE);
 });
 
 it('restores env fallback across requests after deletion', function () {
     seedEnvCredentials(['secret' => 'sk_env_fallback']);
-    app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->refreshEnvBaseline();
+    app(ResolvesPaymentCredentials::class)->refreshEnvBaseline();
 
-    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+    $resolver = app(ResolvesPaymentCredentials::class);
 
     $this->actingAs($this->superAdminUser());
 
@@ -258,7 +258,7 @@ it('makes an undecryptable credential fail closed for real clients', function ()
     // Fail-closed for the actual client (review F2): the resolver answers
     // UNDECRYPTABLE — the environment credential is NOT available to the
     // gateway client, and the plaintext never surfaces.
-    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+    $resolver = app(ResolvesPaymentCredentials::class);
     expect($resolver->stateFor('stripe', 'secret'))->toBe('undecryptable')
         ->and($resolver->credential('stripe', 'secret'))->toBeNull();
 
@@ -324,7 +324,7 @@ it('bumps the credential version only after a committed mutation', function () {
 
     $this->actingAs($this->superAdminUser());
 
-    $resolver = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class);
+    $resolver = app(ResolvesPaymentCredentials::class);
 
     // A validation failure bumps nothing.
     $this->patchJson(credentialsUrl('/stripe'), ['not_declared' => 'x'])->assertStatus(422);
@@ -424,13 +424,13 @@ it('bumps the paypal credential version when paypal credentials rotate', functio
     // The version-keyed token cache rekeys on rotation (multi-tenancy
     // §6.3 F1, row 32): a rotated credential can never reuse another
     // tenant's/version's token, and the bump needs no explicit flush.
-    $before = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal');
+    $before = app(ResolvesPaymentCredentials::class)->credentialVersion('paypal');
 
     $this->patchJson(credentialsUrl('/paypal'), [
         'client_secret' => 'rotated_secret_value',
     ])->assertOk();
 
-    expect(app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal'))->toBeGreaterThan($before);
+    expect(app(ResolvesPaymentCredentials::class)->credentialVersion('paypal'))->toBeGreaterThan($before);
 });
 
 it('treats empty environment values as unconfigured (legacy truthiness)', function () {
@@ -469,7 +469,7 @@ it('resolves env fallback from the immutable baseline, not the live config', fun
         ->assertOk()
         ->assertJsonPath('data.1.keys.secret', 'none');
 
-    expect(app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credential('stripe', 'secret'))->toBeNull();
+    expect(app(ResolvesPaymentCredentials::class)->credential('stripe', 'secret'))->toBeNull();
 });
 
 it('keeps the manager unconfigured matrix intact through the resolver', function () {

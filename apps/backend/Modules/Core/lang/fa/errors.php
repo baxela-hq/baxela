@@ -9,6 +9,13 @@ return [
     '500' => 'مشکلی پیش آمده است',
     'internal_server_error' => 'مشکلی پیش آمده است',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'درخواست دیگری هنوز در حال پردازش این کلید است. کمی بعد دوباره تلاش کنید.',
+        'unresolved' => 'این درخواست ثبت شده اما پاسخ آن در دسترس نیست؛ با کلید تکرارکننده جدیدی تلاش کنید.',
+        'principal_missing' => 'برای این درخواست نشست احراز هویت یا نشانه سبد خرید لازم است.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
     'failed_jobs' => [
         'not_found' => 'کار ناموفق یافت نشد',

@@ -2,11 +2,11 @@
 
 namespace Modules\Payment\Gateways;
 
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Payment\Exceptions\PaymentException;
 use Stripe\Checkout\Session;
 use Stripe\Refund;
 use Stripe\StripeClient;
-use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 /**
  * Thin wrapper around the Stripe SDK's checkout session creation. Keeps the
@@ -14,13 +14,15 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class StripeCheckout
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
-    public function createSession(array $params): Session
+
+    public function createSession(array $params, ?string $idempotencyKey = null): Session
     {
-        return $this->client()->checkout->sessions->create($params);
+        $options = $idempotencyKey === null ? [] : ['idempotency_key' => $idempotencyKey];
+
+        return $this->client()->checkout->sessions->create($params, $options);
     }
 
     public function retrieveSession(string $id): Session

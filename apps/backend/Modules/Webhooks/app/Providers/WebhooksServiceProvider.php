@@ -8,9 +8,15 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
+use Modules\Core\Support\Tenancy\CentralOperationRegistry;
+use Modules\Webhooks\Actions\Webhooks\DiscoverDueDeliveriesAction;
+use Modules\Webhooks\Actions\Webhooks\LookupWebhookDeliveryAction;
 use Modules\Webhooks\Console\Commands\DispatchWebhookDeliveriesCommand;
 use Modules\Webhooks\Console\Commands\PruneWebhooksCommand;
 use Modules\Webhooks\Console\Commands\RetryWebhookDeliveryCommand;
+use Modules\Webhooks\Jobs\DeliverWebhookJob;
+use Modules\Webhooks\Operations\DiscoverDueDeliveriesOperation;
+use Modules\Webhooks\Operations\LookupWebhookDeliveryOperation;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -147,24 +153,24 @@ class WebhooksServiceProvider extends ServiceProvider
      */
     protected function registerCentralOperations(): void
     {
-        $registry = $this->app->make(\Modules\Core\Support\Tenancy\CentralOperationRegistry::class);
+        $registry = $this->app->make(CentralOperationRegistry::class);
 
         $operations = [
-            \Modules\Webhooks\Operations\DiscoverDueDeliveriesOperation::class => [\Modules\Webhooks\Actions\Webhooks\DiscoverDueDeliveriesAction::class, 'execute'],
-            \Modules\Webhooks\Operations\LookupWebhookDeliveryOperation::class => [\Modules\Webhooks\Actions\Webhooks\LookupWebhookDeliveryAction::class, 'execute'],
+            DiscoverDueDeliveriesOperation::class => [DiscoverDueDeliveriesAction::class, 'execute'],
+            LookupWebhookDeliveryOperation::class => [LookupWebhookDeliveryAction::class, 'execute'],
         ];
 
         foreach ($operations as $operation => [$handler, $method]) {
             $registry->register($operation, [
                 'handler' => [$handler, $method],
                 'callers' => [
-                    \Modules\Webhooks\Actions\Webhooks\DiscoverDueDeliveriesAction::class,
-                    \Modules\Webhooks\Actions\Webhooks\LookupWebhookDeliveryAction::class,
-                    \Modules\Webhooks\Jobs\DeliverWebhookJob::class,
-                    \Modules\Webhooks\Console\Commands\DispatchWebhookDeliveriesCommand::class,
-                    \Modules\Webhooks\Console\Commands\RetryWebhookDeliveryCommand::class,
+                    DiscoverDueDeliveriesAction::class,
+                    LookupWebhookDeliveryAction::class,
+                    DeliverWebhookJob::class,
+                    DispatchWebhookDeliveriesCommand::class,
+                    RetryWebhookDeliveryCommand::class,
                 ],
-                'jobs' => [\Modules\Webhooks\Jobs\DeliverWebhookJob::class],
+                'jobs' => [DeliverWebhookJob::class],
             ]);
         }
     }

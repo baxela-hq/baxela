@@ -10,15 +10,14 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundResult;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\WebhookResult;
+use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 use Modules\Core\Contracts\Gateways\Payment\RefundableDriver;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
-use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
 
 class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
         protected PaypalClient $paypal,
@@ -49,7 +48,7 @@ class PaypalPaymentDriver implements ConfigurableDriver, RefundableDriver
                 'return_url' => $this->url('return_url', $input->order_code),
                 'cancel_url' => $this->url('cancel_url', $input->order_code),
             ],
-        ]);
+        ], $input->idempotency_key);
 
         // The PayPal order id doubles as the stored transaction_id: every
         // webhook event for this checkout resolves back to it.

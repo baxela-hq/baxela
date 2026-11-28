@@ -5,6 +5,7 @@ use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentRefundInput;
 use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\StripePaymentDriver;
 use Modules\Payment\Gateways\StripeCheckout;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Modules\Payment\Tests\Feature\HelperTrait;
 use Stripe\Checkout\Session;
 use Stripe\Refund;
@@ -20,7 +21,7 @@ function stripeRefundDriver(callable $configure): StripePaymentDriver
     $checkout = Mockery::mock(StripeCheckout::class);
     $configure($checkout);
 
-    return new StripePaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $checkout);
+    return new StripePaymentDriver(new ResolvesPaymentCredentials, $checkout);
 }
 
 /**

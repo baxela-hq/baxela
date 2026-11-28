@@ -10,8 +10,8 @@ use Modules\Payment\Exceptions\PaymentException;
 use Modules\Payment\Gateways\Drivers\PaypalPaymentDriver;
 use Modules\Payment\Gateways\PaypalClient;
 use Modules\Payment\Schemas\Payment\PaymentStatusEnum;
-use Modules\Payment\Tests\Feature\HelperTrait;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
+use Modules\Payment\Tests\Feature\HelperTrait;
 
 uses(HelperTrait::class);
 
@@ -34,7 +34,7 @@ function paypalDriver(callable $configureClient): PaypalPaymentDriver
     $client = Mockery::mock(PaypalClient::class);
     $configureClient($client);
 
-    return new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, $client);
+    return new PaypalPaymentDriver(new ResolvesPaymentCredentials, $client);
 }
 
 /**
@@ -90,7 +90,7 @@ it('creates an order with a decimal amount, order metadata and return urls', fun
                 $captured = $params;
 
                 return true;
-            }))
+            }), null)
             ->andReturn(paypalOrderResponse());
     });
 
@@ -123,7 +123,7 @@ it('respects zero-decimal currencies', function () {
                 $captured = $params;
 
                 return true;
-            }))
+            }), null)
             ->andReturn(paypalOrderResponse());
     });
 
@@ -140,9 +140,29 @@ it('respects zero-decimal currencies', function () {
     expect($captured['purchase_units'][0]['amount']['value'])->toBe('305');
 });
 
+it('forwards the stable provider idempotency key', function () {
+    $driver = paypalDriver(function (MockInterface $client): void {
+        $client->shouldReceive('createOrder')
+            ->once()
+            ->with(Mockery::any(), 'stable-provider-key')
+            ->andReturn(paypalOrderResponse());
+    });
+
+    $driver->initiate(new PaymentInitiateInput(
+        payment_id: 9,
+        order_id: 4,
+        amount: 305.0,
+        method: 'paypal',
+        order_code: 'ABCD2345',
+        currency: 'USD',
+        currency_decimal_places: 2,
+        idempotency_key: 'stable-provider-key',
+    ));
+});
+
 it('refuses to initiate when the gateway is not configured', function () {
     config(['payment.paypal.client_id' => null]);
-    $driver = new PaypalPaymentDriver(new \Modules\Payment\Support\ResolvesPaymentCredentials, app(PaypalClient::class));
+    $driver = new PaypalPaymentDriver(new ResolvesPaymentCredentials, app(PaypalClient::class));
 
     $driver->initiate(new PaymentInitiateInput(
         payment_id: 9,

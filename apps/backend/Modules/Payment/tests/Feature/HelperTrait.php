@@ -3,20 +3,40 @@
 namespace Modules\Payment\Tests\Feature;
 
 use Modules\Auth\Models\User;
+use Modules\Core\Support\Tenancy\TenantContext;
 use Modules\Order\Models\Order;
+use Modules\Tenant\Models\Tenant;
+
+/**
+ * Point the process tenant context at the same default-store row the
+ * webhook route resolves. PostgreSQL sequences are not rolled back by
+ * RefreshDatabase, so the row's id is not necessarily 1 by the time
+ * these tests run; store rows must be stamped with the resolved id.
+ */
+function useDefaultWebhookTenant(): void
+{
+    $tenant = Tenant::query()->firstOrCreate(
+        ['slug' => 'default'],
+        ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
+    );
+
+    app(TenantContext::class)->forTenant((int) $tenant->getKey());
+}
 
 trait HelperTrait
 {
+    public function useDefaultWebhookTenant(): void
+    {
+        useDefaultWebhookTenant();
+    }
+
     public function baseUrl(string $endpoint): string
     {
         // The webhook routes carry {tenantSlug} (multi-tenancy §3.1 B2):
         // the tests resolve the seeded default store — production seeds
         // the same row (TenantDatabaseSeeder, §4.1).
         if (str_contains($endpoint, '/webhook/')) {
-            \Modules\Tenant\Models\Tenant::query()->firstOrCreate(
-                ['slug' => 'default'],
-                ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
-            );
+            $this->useDefaultWebhookTenant();
         }
 
         return 'api/v1/payment'.$endpoint;

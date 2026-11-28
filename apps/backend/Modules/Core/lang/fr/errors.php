@@ -9,6 +9,13 @@ return [
     '500' => 'Une erreur est survenue',
     'internal_server_error' => 'Une erreur est survenue',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'Une autre requête traite encore cette clé. Veuillez réessayer dans un instant.',
+        'unresolved' => 'Cette requête a été validée mais sa réponse est indisponible ; utilisez une nouvelle clé d’idempotence.',
+        'principal_missing' => 'Une session authentifiée ou un jeton de panier est requis pour cette requête.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
     'failed_jobs' => [
         'not_found' => "Le travail en échec n'a pas été trouvé",

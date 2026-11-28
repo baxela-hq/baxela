@@ -5,6 +5,7 @@ namespace Modules\Payment\Actions\User\Payment;
 use Modules\Core\Contracts\Events\Payment\PaymentInitiatedEvent;
 use Modules\Core\Contracts\Gateways\Order\OrderGatewayInterface;
 use Modules\Core\Contracts\Gateways\Payment\DTOs\PaymentInitiateInput;
+use Modules\Core\Support\Tenancy\IdempotencyIdentity;
 use Modules\Core\Utils\Auth;
 use Modules\Payment\DTOs\User\Payment\CreatePaymentOutput;
 use Modules\Payment\Exceptions\PaymentException;
@@ -73,6 +74,9 @@ class CreatePaymentAction
             order_code: $order->order_code,
             currency: $order->currency_code,
             currency_decimal_places: $order->currency_decimal_places,
+            // §6.6: external effects reuse the same provider key after a
+            // claim is reclaimed; the claim token must never appear here.
+            idempotency_key: IdempotencyIdentity::providerKey($request, $method),
         ));
 
         if (! is_null($result->transaction_id)) {

@@ -4,8 +4,8 @@ namespace Modules\Payment\Gateways;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Modules\Payment\Exceptions\PaymentException;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Exceptions\PaymentException;
 
 /**
  * Thin SDK-less wrapper around Mercado Pago's Checkout Pro preferences
@@ -15,10 +15,10 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class MercadopagoClient
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
+
     public function createPreference(array $params): object
     {
         return $this->request()->post('/checkout/preferences', $params)->throw()->object();

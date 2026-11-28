@@ -9,6 +9,13 @@ return [
     '500' => 'حدث خطأ ما',
     'internal_server_error' => 'حدث خطأ ما',
 
+    // Idempotency reservation outcomes (multi-tenancy §6.6).
+    'idempotency' => [
+        'in_progress' => 'طلب آخر لا يزال يعالج هذا المفتاح. يُرجى المحاولة قريبًا.',
+        'unresolved' => 'تم تأكيد هذا الطلب لكن ردّه غير متاح؛ استخدم مفتاح تكرار جديدًا.',
+        'principal_missing' => 'يتطلب هذا الطلب جلسة مسجّلة أو رمز سلة تسوّق.',
+    ],
+
     // Failed-jobs admin surface (gap-B3) — agent-drafted, pending owner review.
     'failed_jobs' => [
         'not_found' => 'المهمة الفاشلة غير موجودة',

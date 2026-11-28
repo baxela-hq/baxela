@@ -1,5 +1,6 @@
 <?php
 
+use Modules\Cart\Actions\User\Cart\CheckoutAction;
 use Modules\Core\Transfer\CoreTransfer;
 
 return [
@@ -31,6 +32,25 @@ return [
     |
     */
     'trusted_proxies' => env('TRUSTED_PROXIES', ''),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Idempotency (multi-tenancy §6.6)
+    |--------------------------------------------------------------------------
+    |
+    | Every route guarded by IdempotencyMiddleware must name the action
+    | whose business transaction stamps the claim with commitMarker().
+    | The architecture test rejects an unregistered route or an action
+    | that does not call the helper: a committed operation must never be
+    | reclaimable as a clean retry.
+    |
+    */
+    'idempotency' => [
+        'ttl_minutes' => env('IDEMPOTENCY_TTL_MINUTES', 1),
+        'participants' => [
+            'api.cart.user.checkout' => CheckoutAction::class,
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

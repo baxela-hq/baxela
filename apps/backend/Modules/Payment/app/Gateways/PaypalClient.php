@@ -5,8 +5,10 @@ namespace Modules\Payment\Gateways;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Modules\Payment\Exceptions\PaymentException;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Core\Support\Tenancy\TenantContext;
+use Modules\Payment\Exceptions\PaymentException;
+use Modules\Payment\Support\ResolvesPaymentCredentials;
 
 /**
  * Thin SDK-less wrapper around PayPal's Orders v2 REST API (the official
@@ -15,16 +17,24 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class PaypalClient
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
+
     /** Flushed when paypal credentials are mutated — an 8-hour OAuth token must not outlive a rotation (marketplace P5.2 D7). */
     public const string ACCESS_TOKEN_CACHE_KEY = 'payment.paypal.access_token';
 
-    public function createOrder(array $params): object
+    public function createOrder(array $params, ?string $requestId = null): object
     {
-        return $this->request()->post('/v2/checkout/orders', $params)->throw()->object();
+        $request = $this->request();
+
+        if ($requestId !== null) {
+            // PayPal's idempotency header makes a retried order creation
+            // reuse the original order (multi-tenancy §6.6).
+            $request = $request->withHeaders(['PayPal-Request-Id' => $requestId]);
+        }
+
+        return $request->post('/v2/checkout/orders', $params)->throw()->object();
     }
 
     public function captureOrder(string $id): object
@@ -98,8 +108,8 @@ class PaypalClient
         // (multi-tenancy §6.3 F1, row 32): a rotated credential can never
         // reuse another tenant's/version's token, and a rotation takes
         // effect without invalidation (the version bump rekeys).
-        $version = app(\Modules\Payment\Support\ResolvesPaymentCredentials::class)->credentialVersion('paypal');
-        $key = app(\Modules\Core\Support\Tenancy\TenantContext::class)->cachePrefix()
+        $version = app(ResolvesPaymentCredentials::class)->credentialVersion('paypal');
+        $key = app(TenantContext::class)->cachePrefix()
             .'payment.paypal.access_token:'.$version;
 
         return Cache::remember($key, now()->addHours(8), function () use ($clientId, $clientSecret): string {

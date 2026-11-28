@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Contracts\Gateways\Payment\PaymentConfigurationResolverInterface;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Support\ResolvesPaymentConfiguration;
 use Modules\Payment\Support\ResolvesPaymentCredentials;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -27,7 +29,7 @@ class PaymentServiceProvider extends ServiceProvider
      */
     public $bindings = [
         PaymentCredentialResolverInterface::class => ResolvesPaymentCredentials::class,
-        \Modules\Core\Contracts\Gateways\Payment\PaymentConfigurationResolverInterface::class => \Modules\Payment\Support\ResolvesPaymentConfiguration::class,
+        PaymentConfigurationResolverInterface::class => ResolvesPaymentConfiguration::class,
     ];
 
     /**
@@ -54,7 +56,6 @@ class PaymentServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }
-
 
     /**
      * Register commands in the format of Command::class

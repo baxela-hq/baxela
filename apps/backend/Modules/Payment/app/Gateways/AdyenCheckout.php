@@ -4,8 +4,8 @@ namespace Modules\Payment\Gateways;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Modules\Payment\Exceptions\PaymentException;
 use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
+use Modules\Payment\Exceptions\PaymentException;
 
 /**
  * Thin SDK-less wrapper around Adyen's Checkout API (Pay by Link). Keeps
@@ -13,10 +13,10 @@ use Modules\Core\Contracts\Gateways\Payment\PaymentCredentialResolverInterface;
  */
 class AdyenCheckout
 {
-
     public function __construct(
         private readonly PaymentCredentialResolverInterface $configs,
     ) {}
+
     public function createPaymentLink(array $params): object
     {
         return $this->request()->post('/paymentLinks', $params)->throw()->object();

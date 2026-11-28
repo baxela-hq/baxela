@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Queue;
 
+use Illuminate\Contracts\Queue\Job;
 use Modules\Core\Support\Tenancy\TenantContext;
 
 /**
@@ -14,7 +15,7 @@ use Modules\Core\Support\Tenancy\TenantContext;
  */
 class TenantAware
 {
-    public function handle(\Illuminate\Contracts\Queue\Job $job, \Closure $next): void
+    public function handle(Job $job, \Closure $next): void
     {
         $context = app(TenantContext::class);
         $previous = $context->mode() === TenantContext::MODE_TENANT ? $context->tenantId() : null;
