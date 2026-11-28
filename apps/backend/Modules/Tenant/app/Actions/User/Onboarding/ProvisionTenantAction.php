@@ -89,6 +89,13 @@ class ProvisionTenantAction
                             TenantMembershipSchema::JOINED_AT => now(),
                         ]);
 
+                        // The store's default roles (multi-tenancy §8 Phase 3)
+                        // and the owner's role assignment: the pivot attach
+                        // runs under the new tenant's spatie team, set and
+                        // restored inside the gateway (§6.5 B7).
+                        $ownerRoleId = $this->access->seedTenantRoles((int) $tenant->getKey());
+                        $this->access->assignTenantRole($userId, (int) $tenant->getKey(), $ownerRoleId);
+
                         return $tenant;
                     },
                 );

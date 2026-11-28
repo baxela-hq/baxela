@@ -187,6 +187,8 @@ it('rejects the failed-job endpoints without any failed-job permission', functio
 
 it('allows show-only admins to read but not to retry or forget', function () {
     $user = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($user);
+
     foreach (['core.admin.failed-jobs.list', 'core.admin.failed-jobs.show'] as $name) {
         $user->givePermissionTo(
             Permission::query()->firstOrCreate([

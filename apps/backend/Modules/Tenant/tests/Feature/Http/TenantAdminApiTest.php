@@ -112,9 +112,11 @@ it('keeps every tenant route to the platform super-admin', function () {
     ];
 
     foreach ($routes as [$method, $uri, $payload]) {
+        // §3.2: the store is earned before the permission check, so a
+        // non-member staff account answers with the membership boundary.
         $this->actingAs($staff, 'sanctum')->json($method, $uri, $payload ?? [])
             ->assertStatus(403)
-            ->assertJsonPath('code', 'http.403');
+            ->assertJsonPath('code', 'core.tenant.membership_required');
     }
 
     // Refused means refused: nothing was written, moved or removed.

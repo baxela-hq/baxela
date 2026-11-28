@@ -19,9 +19,15 @@ class CreateRoleAction extends AbstractRoleAction
     {
         $params = $request->validated();
         $permissionIds = $this->takePermissionIds($params);
+        $tenantId = $this->requireContextTenantId();
 
-        $record = DB::transaction(function () use ($params, $permissionIds): Role {
+        $record = DB::transaction(function () use ($params, $permissionIds, $tenantId): Role {
+            // The role is born in the active tenant's team (§5): identical
+            // role names coexist across tenants through the
+            // [tenant_id, name, guard_name] unique. NULL-team rows are
+            // seeder-written only (§5).
             $record = $this->model->query()->create([
+                RoleSchema::TENANT_ID => $tenantId,
                 RoleSchema::NAME => $params[RoleSchema::NAME],
                 RoleSchema::GUARD_NAME => GuardsEnum::WEB->value,
             ]);

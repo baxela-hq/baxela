@@ -70,9 +70,14 @@ return [
 
         // Admin routes reserved for the platform super-admin: no
         // permission row is created for them, so they can never be
-        // assigned to a role (§4.1).
+        // assigned to a role (§4.1). Tenant CRUD and domain
+        // administration are platform operations (§6.5, Category 1);
+        // membership management within the active tenant is a tenant
+        // operation (Category 2) and carries real permission rows.
         'super_admin_only_routes' => [
-            'api.tenant.admin.',
+            // Covers tenants.* and tenants.domains.*; memberships.* is a
+            // Category-2 tenant operation and carries permission rows.
+            'api.tenant.admin.tenants.',
         ],
 
         'domain' => [
@@ -512,10 +517,10 @@ return [
                 'table' => 'auth_permissions',
                 'kind' => 'exists',
             ],
-            'Modules/Auth/app/Http/Requests/Admin/Role/RoleRequest.php::rules::unique:auth_roles#1' => [
-                'table' => 'auth_roles',
-                'kind' => 'unique',
-            ],
+            // RoleRequest's former unique:auth_roles site became the
+            // ScopedUnique rule (§5 — the spatie team key); the scoped rule
+            // carries the tenant predicate itself and leaves no raw
+            // Rule::unique site to register.
             'Modules/Auth/app/Http/Requests/Admin/Token/MachineTokenRequest.php::rules::exists:auth_users#1' => [
                 'table' => 'auth_users',
                 'kind' => 'exists',

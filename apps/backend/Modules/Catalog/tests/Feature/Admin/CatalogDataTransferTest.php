@@ -589,15 +589,15 @@ it('denies the data transfer endpoints without permission', function () {
     $media = transferMedia('{}');
 
     $this->getJson($this->baseUrl('/admin/data/export'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->postJson($this->baseUrl('/admin/data/import/preview'), ['media_id' => $media->id])
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->postJson($this->baseUrl('/admin/data/import'), transferImportPayload($media))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->getJson($this->baseUrl('/admin/data/import'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->getJson($this->baseUrl('/admin/data/import/1'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
 });
 
 it('exports and imports only the selected store\'s catalog', function () {

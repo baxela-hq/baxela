@@ -186,7 +186,7 @@ class ResolveTenant
             $id = $request->attributes->get(NormalizeTenantRequest::ATTR_TENANT_ID);
 
             if ($id !== null) {
-                return $this->requireServable($this->gateway->find((int) $id), 'unknown_tenant_id');
+                return $this->requireIdentified($this->gateway->find((int) $id), 'unknown_tenant_id');
             }
 
             // On a central API host the store comes from the caller's memberships.
@@ -208,7 +208,9 @@ class ResolveTenant
         $resolved = $host === null ? null : $this->gateway->resolveByDomain($host);
 
         if ($resolved !== null) {
-            return $this->requireServable($resolved, 'suspended_host');
+            return $audience === self::AUDIENCE_ADMIN
+                ? $this->requireIdentified($resolved, 'suspended_host')
+                : $this->requireServable($resolved, 'suspended_host');
         }
 
         // Priority 4: the fallback list (dev/legacy hosts only).
@@ -216,7 +218,9 @@ class ResolveTenant
             $resolved = $this->gateway->defaultTenant();
 
             if ($resolved !== null) {
-                return $this->requireServable($resolved, 'suspended_default_tenant');
+                return $audience === self::AUDIENCE_ADMIN
+                    ? $this->requireIdentified($resolved, 'suspended_default_tenant')
+                    : $this->requireServable($resolved, 'suspended_default_tenant');
             }
         }
 
@@ -244,7 +248,9 @@ class ResolveTenant
         $memberships = $this->gateway->membershipsFor((int) $user->getAuthIdentifier());
 
         if (count($memberships) === 1) {
-            return $this->requireServable(
+            // Suspension is §3.2's decision on the admin audience — a
+            // super-admin entering to reactivate must still resolve.
+            return $this->requireIdentified(
                 $this->gateway->find((int) $memberships[0]['id']),
                 'membership_tenant_missing',
             );
@@ -277,8 +283,11 @@ class ResolveTenant
 
     /**
      * A suspended store resolves — identification succeeded — but is not
-     * served until it is reactivated (§3.1). The platform super-admin's
-     * exemption on admin routes arrives with §3.2 (Phase 3).
+     * served until it is reactivated (§3.1). Public/user/webhook/machine
+     * audiences are refused here (the storefront is closed). On the admin
+     * audience the decision belongs to §3.2: a member receives the 403
+     * there, and the platform super-admin retains access — including
+     * reactivation — so a suspended store still sets the context.
      *
      * @throws TenantNotFoundException
      */
@@ -293,5 +302,21 @@ class ResolveTenant
         }
 
         throw TenantNotFoundException::suspended($tenant);
+    }
+
+    /**
+     * Admin-audience identification (§3.1/§3.2): existence is required,
+     * suspension is not — the 403 member case and the super-admin
+     * exemption are `AuthorizeTenantAccess`'s decision.
+     *
+     * @throws TenantNotFoundException
+     */
+    private function requireIdentified(?TenantSnapshotDto $tenant, string $reason): TenantSnapshotDto
+    {
+        if ($tenant === null) {
+            throw TenantNotFoundException::unresolved($reason);
+        }
+
+        return $tenant;
     }
 }

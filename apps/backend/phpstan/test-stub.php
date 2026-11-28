@@ -27,6 +27,7 @@ namespace Pest\PendingCalls {
      * TestCall runtime method surface (see file header).
      *
      * @method mixed actingAs(mixed ...$args)
+     * @method mixed withDefaultStoreMembership(mixed ...$args)
      * @method mixed getJson(string $uri, array<string, string> $headers = [])
      * @method mixed postJson(string $uri, mixed $data = [], array<string, string> $headers = [])
      * @method mixed patchJson(string $uri, mixed $data = [], array<string, string> $headers = [])
@@ -132,6 +133,7 @@ namespace Pest\Support {
      * HigherOrderTapProxy runtime method surface (see file header).
      *
      * @method mixed actingAs(mixed ...$args)
+     * @method mixed withDefaultStoreMembership(mixed ...$args)
      * @method mixed getJson(string $uri, array<string, string> $headers = [])
      * @method mixed postJson(string $uri, mixed $data = [], array<string, string> $headers = [])
      * @method mixed patchJson(string $uri, mixed $data = [], array<string, string> $headers = [])

@@ -5,10 +5,17 @@ namespace Modules\Auth\Gateways;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
+use Modules\Auth\Models\Permission;
+use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
+use Modules\Auth\Schemas\GuardsEnum;
+use Modules\Auth\Schemas\Role\RoleSchema;
 use Modules\Auth\Schemas\User\UserSchema;
+use Modules\Auth\Support\PlatformRoleAssignment;
 use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Spatie\Permission\PermissionRegistrar;
 
 class AccessGateway implements AccessGatewayInterface
 {
@@ -22,13 +29,26 @@ class AccessGateway implements AccessGatewayInterface
         }
     }
 
+    public function isPlatformSuperAdmin(Authenticatable $user): bool
+    {
+        if (! $user instanceof User) {
+            return false;
+        }
+
+        return PlatformRoleAssignment::holdsSuperAdmin($user);
+    }
+
     public function adminUserIds(): array
     {
+        // Team-agnostic pivot existence (multi-tenancy §5): with spatie
+        // teams enabled the `roles()` relation filters by the active team
+        // and is no longer a safe all-team query. The morph-disciplined
+        // pivot query answers across every team (§10 row 103 discipline).
         return User::query()
             ->where(UserSchema::IS_ACTIVE, true)
-            ->whereHas('roles')
+            ->whereIntegerInRaw(UserSchema::ID, PlatformRoleAssignment::assignedUserIds())
             ->pluck(UserSchema::ID)
-            ->map(fn (int $id): int => $id)
+            ->map(fn (int|string $id): int => (int) $id)
             ->all();
     }
 
@@ -97,4 +117,96 @@ class AccessGateway implements AccessGatewayInterface
             ->lockForUpdate()
             ->first([UserSchema::ID]) !== null;
     }
+
+    /**
+     * The per-module admin wildcards a store owner needs. One wildcard per
+     * module, never a global `*`: platform routes carry no permission row
+     * (§4.1), but a wildcard MATCHES the checked name — a global wildcard
+     * would silently unlock the platform. The membership wildcard is
+     * Category 2 (the store's own member administration); the Tenant
+     * module's platform CRUD (tenants.*) is deliberately absent.
+     */
+    private const array TENANT_OWNER_WILDCARDS = [
+        'audit.admin.*',
+        'auth.admin.*',
+        'cart.admin.*',
+        'catalog.admin.*',
+        'contact.admin.*',
+        'content.admin.*',
+        'discount.admin.*',
+        'inventory.admin.*',
+        'media.admin.*',
+        'menu.admin.*',
+        'notification.admin.*',
+        'order.admin.*',
+        'payment.admin.*',
+        'setting.admin.*',
+        'shipping.admin.*',
+        'support.admin.*',
+        'tax.admin.*',
+        'tenant.admin.memberships.*',
+        'user.admin.*',
+        'webhook.admin.*',
+    ];
+
+    public function seedTenantRoles(int $tenantId): int
+    {
+        // Wildcards are rows too (SyncPermissionsAction's note): created
+        // here where they are granted, idempotently.
+        $ids = [];
+        foreach (self::TENANT_OWNER_WILDCARDS as $name) {
+            $ids[] = (int) Permission::query()->firstOrCreate([
+                'name' => $name,
+                'guard_name' => GuardsEnum::WEB->value,
+            ])->getKey();
+        }
+
+        $role = Role::query()->firstOrCreate([
+            'name' => Role::TENANT_OWNER,
+            'guard_name' => GuardsEnum::WEB->value,
+            'tenant_id' => $tenantId,
+        ]);
+
+        $role->syncPermissions($ids);
+
+        return (int) $role->getKey();
+    }
+
+    public function assignTenantRole(int $userId, int $tenantId, int $roleId): void
+    {
+        $role = Role::query()->findOrFail($roleId);
+
+        if ((int) ($role->{RoleSchema::TENANT_ID} ?? 0) !== $tenantId) {
+            // Platform and foreign-team roles are not assignable here (§5).
+            throw new InvalidArgumentException('The role does not belong to the tenant.');
+        }
+
+        // The pivot team follows the context (TenantTeamResolver, §5):
+        // the attach runs as the tenant the role belongs to, restoring
+        // the caller's context afterward (§6.5 B7).
+        app(\Modules\Core\Support\Tenancy\TenantContext::class)
+            ->runForTenant($tenantId, function () use ($userId, $role): void {
+                User::query()->findOrFail($userId)->assignRole($role);
+            });
+    }
+
+    public function syncTenantMemberRoles(int $userId, int $tenantId, array $roleIds): void
+    {
+        $roles = Role::query()->findOrFail($roleIds);
+
+        foreach ($roles as $role) {
+            if ((int) ($role->{RoleSchema::TENANT_ID} ?? 0) !== $tenantId) {
+                throw new InvalidArgumentException('The role does not belong to the tenant.');
+            }
+        }
+
+        // Team-scoped sync as the owning store (§5): only that store's
+        // pivot rows are replaced — the member's roles in other stores are
+        // untouched.
+        app(\Modules\Core\Support\Tenancy\TenantContext::class)
+            ->runForTenant($tenantId, function () use ($userId, $roles): void {
+                User::query()->findOrFail($userId)->syncRoles($roles);
+            });
+    }
+
 }

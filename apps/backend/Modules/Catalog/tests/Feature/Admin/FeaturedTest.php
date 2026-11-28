@@ -173,11 +173,11 @@ it('denies the featured endpoints without permission', function () {
     $this->actingAs(User::factory()->create());
 
     $this->getJson($this->baseUrl('/admin/featured'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
 
     $this->putJson($this->baseUrl('/admin/featured'), [
         'product_ids' => [],
         'category_ids' => [],
         'brand_ids' => [],
-    ])->assertStatus(403)->assertJsonPath('code', 'http.403');
+    ])->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
 });

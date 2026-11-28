@@ -18,6 +18,7 @@ class UpdateRoleAction extends AbstractRoleAction
     {
         $record = $this->model->query()->findOrFail($id);
         $this->assertNotSuperAdmin($record);
+        $this->assertWithinContextTenant($record);
 
         $params = $request->validated();
         $permissionIds = $this->takePermissionIds($params);

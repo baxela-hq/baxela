@@ -28,6 +28,7 @@ it('requires the extensions permission', function () {
 
 it('grants the list permission on its own', function () {
     $user = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($user);
     $user->givePermissionTo(
         Permission::query()->firstOrCreate([
             'name' => 'core.admin.extensions.list',

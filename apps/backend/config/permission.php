@@ -106,11 +106,12 @@ return [
         'model_morph_key' => 'model_id',
 
         /*
-         * Change this if you want to use the teams feature and your related model's
-         * foreign key is other than `team_id`.
+         * The spatie team key IS the tenant (multi-tenancy §5): every
+         * store is one permission team, and NULL-team rows are platform
+         * roles.
          */
 
-        'team_foreign_key' => 'team_id',
+        'team_foreign_key' => 'tenant_id',
     ],
 
     /*
@@ -150,12 +151,12 @@ return [
      * (view the latest version of this package's migration file)
      */
 
-    'teams' => false,
+    'teams' => true,
 
     /*
      * The class to use to resolve the permissions team id
      */
-    'team_resolver' => DefaultTeamResolver::class,
+    'team_resolver' => Modules\Core\Support\Tenancy\TenantTeamResolver::class,
 
     /*
      * Passport Client Credentials Grant
@@ -188,10 +189,13 @@ return [
     'enable_wildcard_permission' => true,
 
     /*
-     * The class to use for interpreting wildcard permissions.
-     * If you need to modify delimiters, override the class and specify its name here.
+     * The class to use for interpreting wildcard permissions. With
+     * wildcards enabled (multi-tenancy §5 role checks), the class must be
+     * named explicitly: spatie's lazy resolution of an unset class is
+     * inconsistent between the first (cold) and later checks — an
+     * explicitly configured default removes that variance.
      */
-    // 'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
+    'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
 
     /* Cache-specific settings */
 

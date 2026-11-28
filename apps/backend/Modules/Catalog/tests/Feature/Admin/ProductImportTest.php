@@ -743,13 +743,13 @@ it('denies the import endpoints without permission', function () {
     $media = importMedia(sampleCsv());
 
     $this->postJson($this->baseUrl('/admin/products/import/preview'), ['media_id' => $media->id])
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->postJson($this->baseUrl('/admin/products/import'), importPayload($media, fullMapping()))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->getJson($this->baseUrl('/admin/products/import/template'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->getJson($this->baseUrl('/admin/products/import'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
     $this->getJson($this->baseUrl('/admin/products/import/1'))
-        ->assertStatus(403)->assertJsonPath('code', 'http.403');
+        ->assertStatus(403)->assertJsonPath('code', 'core.tenant.membership_required');
 });

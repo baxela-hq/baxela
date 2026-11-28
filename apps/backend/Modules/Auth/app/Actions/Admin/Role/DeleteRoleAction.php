@@ -13,6 +13,7 @@ class DeleteRoleAction extends AbstractRoleAction
     {
         $record = $this->model->query()->findOrFail($id);
         $this->assertNotSuperAdmin($record);
+        $this->assertWithinContextTenant($record);
 
         if ($record->users()->exists()) {
             throw new InUseException;

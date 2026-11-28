@@ -13,6 +13,11 @@ it('lists roles as reference data', function () {
     $this->superAdminRole();
     $this->actingAs($this->superAdminUser());
 
+    // The listing is scoped to the active store (§5): the platform
+    // NULL-team rows are never listed, so the store's own roles are
+    // seeded for the assertion.
+    app(\Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface::class)->seedTenantRoles(1);
+
     $response = $this->getJson($this->baseUrl('/admin/roles'));
 
     $response->assertOk()->assertJsonStructure([
@@ -20,6 +25,8 @@ it('lists roles as reference data', function () {
             ['id', 'name'],
         ],
     ]);
+
+    $response->assertJsonPath('data.0.name', 'owner');
 });
 
 it('shows the acting admin account with roles', function () {

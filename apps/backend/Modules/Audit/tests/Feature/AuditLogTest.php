@@ -114,6 +114,7 @@ it('allows non-super-admin users holding the audit permission', function () {
             'guard_name' => GuardsEnum::WEB->value,
         ])
     );
+    $this->withDefaultStoreMembership($user);
     $this->actingAs($user);
 
     AuditLog::query()->create(auditLogRow());
@@ -132,6 +133,7 @@ it('exposes the account permissions payload for the admin UI', function () {
         ->assertJsonPath('data.permissions.0', '*');
 
     $user = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($user);
     foreach (['audit.admin.logs.list', 'auth.admin.account.show'] as $name) {
         $user->givePermissionTo(
             Permission::query()->firstOrCreate([

@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
 use Modules\Auth\Schemas\User\UserSchema;
+use Modules\Auth\Support\PlatformRoleAssignment;
 use Modules\Core\Utils\Auth;
 
 abstract class AbstractUserAction
@@ -44,7 +45,10 @@ abstract class AbstractUserAction
     {
         $actingUser = Auth::user();
 
-        if ($actingUser instanceof User && $actingUser->hasRole(Role::SUPER_ADMIN)) {
+        // §5: the platform-role check is team-context-immune — the
+        // team-filtered roles() relation would silently miss a super-admin
+        // whose pivot was written under another store's team.
+        if ($actingUser instanceof User && PlatformRoleAssignment::holdsSuperAdmin($actingUser)) {
             return;
         }
 
@@ -53,7 +57,7 @@ abstract class AbstractUserAction
             ->pluck('name')
             ->contains(Role::SUPER_ADMIN);
 
-        if ($grantsSuperAdmin || ($target !== null && $target->hasRole(Role::SUPER_ADMIN))) {
+        if ($grantsSuperAdmin || ($target !== null && PlatformRoleAssignment::holdsSuperAdmin($target))) {
             throw new AuthorizationException;
         }
     }

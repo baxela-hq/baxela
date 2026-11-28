@@ -44,6 +44,7 @@ it('allows a properly named admin route when the permission is granted', functio
     $role->givePermissionTo($permission);
 
     $user = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($user);
     $user->assignRole($role);
     $this->actingAs($user);
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -114,6 +115,16 @@ return new class extends Migration
             $table->primary([$pivotPermission, $pivotRole], 'role_has_permissions_permission_id_role_id_primary');
         });
 
+        // Platform-role uniqueness at the database level (multi-tenancy §5,
+        // rev 4.3 B2; §10 row 69): PostgreSQL and SQLite both treat NULLs as
+        // distinct, so the vendor [tenant_id, name, guard_name] unique
+        // cannot stop duplicate NULL-team rows. The partial unique index
+        // below enforces exactly one platform role per name on both engines
+        // and changes no spatie query semantics.
+        if ($teams) {
+            DB::statement('CREATE UNIQUE INDEX auth_roles_platform_unique ON '.$tableNames['roles'].' (name, guard_name) WHERE '.($columnNames['team_foreign_key'] ?? 'tenant_id').' IS NULL');
+        }
+
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
@@ -127,6 +138,8 @@ return new class extends Migration
         $tableNames = config('permission.table_names');
 
         throw_if(empty($tableNames), 'Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
+
+        DB::statement('DROP INDEX IF EXISTS auth_roles_platform_unique');
 
         Schema::dropIfExists($tableNames['role_has_permissions']);
         Schema::dropIfExists($tableNames['model_has_roles']);

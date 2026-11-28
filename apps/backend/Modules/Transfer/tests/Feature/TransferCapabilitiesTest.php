@@ -14,9 +14,10 @@ it('denies capabilities to guests', function () {
 it('denies capabilities without permissions', function () {
     $this->actingAs(User::factory()->create(['is_active' => true]));
 
+    // §3.2: the store is earned before the permission check.
     $this->getJson($this->baseUrl('/admin/capabilities'))
         ->assertStatus(403)
-        ->assertJsonPath('code', 'http.403');
+        ->assertJsonPath('code', 'core.tenant.membership_required');
 });
 
 it('lists every enabled module with its transfer support', function () {

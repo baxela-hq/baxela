@@ -31,7 +31,30 @@ function createUserWithRole(string $roleName, array $permissionNames): User
     $user = User::factory()->create([
         UserSchema::IS_ACTIVE => true,
     ]);
-    $user->assignRole($role);
+    // §3.2: a store admin is a member — the authorization boundary
+    // demands an active membership in the resolved (default) store. The
+    // default tenant row is seeded first: memberships FK the tenants
+    // table (runtime mirrors tests/TestCase::withDefaultStoreMembership).
+    $tenantId = (int) \Modules\Tenant\Models\Tenant::query()->firstOrCreate(
+        ['slug' => \Modules\Tenant\Database\Seeders\TenantDatabaseSeeder::DEFAULT_SLUG],
+        ['name' => 'Default Store', 'email' => 'store@localhost', 'status' => 'active'],
+    )->getKey();
+
+    // The permission team follows the context (§5): the role assignment
+    // and the membership run as the default store, and the context stays
+    // there for the rest of the test so every pivot and every resolved
+    // request agree.
+    app(\Modules\Core\Support\Tenancy\TenantContext::class)->runForTenant($tenantId, function () use ($user, $role): void {
+        $user->assignRole($role);
+        \Modules\Tenant\Models\TenantMembership::query()->create([
+            'user_id' => $user->getKey(),
+            'status' => 'active',
+            'is_owner' => true,
+            'joined_at' => now(),
+        ]);
+    });
+    app(\Modules\Core\Support\Tenancy\TenantContext::class)->forTenant($tenantId);
+
 
     return $user;
 }

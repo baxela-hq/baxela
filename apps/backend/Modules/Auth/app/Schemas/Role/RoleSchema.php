@@ -15,6 +15,9 @@ class RoleSchema
 
     public const string GUARD_NAME = 'guard_name';
 
+    /** The spatie team key (config permission.team_foreign_key) — NULL on a platform role. */
+    public const string TENANT_ID = 'tenant_id';
+
     /** Virtual payload field for syncing permissions by id — not a column. */
     public const string PERMISSION_IDS = 'permission_ids';
 

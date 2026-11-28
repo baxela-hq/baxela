@@ -13,6 +13,14 @@ interface AccessGatewayInterface
     public function userCan(Authenticatable $user, string $permission): bool;
 
     /**
+     * Whether the user is the platform super-admin — the NULL-team role
+     * bypass (multi-tenancy §3.2/§5), read team-context-immune and
+     * morph-disciplined. This is what lets the super-admin retain access
+     * to a suspended store and switch stores by header.
+     */
+    public function isPlatformSuperAdmin(Authenticatable $user): bool;
+
+    /**
      * Ids of active staff accounts — users holding any Spatie role
      * (customers sign up without a role). Backs fan-out of admin
      * database notifications.
@@ -73,4 +81,32 @@ interface AccessGatewayInterface
      * SQLite takes no row lock.
      */
     public function lockUser(int $userId): bool;
+
+    /**
+     * Seed the default roles of one store (multi-tenancy §8 Phase 3): the
+     * tenant-scoped `owner` role with the per-module wildcard permissions
+     * a store admin needs — platform routes stay unreachable because no
+     * permission row exists for them (§4.1). Idempotent; returns the
+     * owner role's id.
+     */
+    public function seedTenantRoles(int $tenantId): int;
+
+    /**
+     * Assign one role to a user AS the given store (§6.5 Category 2): the
+     * spatie team id is set to the tenant around the attach and restored
+     * afterward, so the pivot row carries the store (§5). The role must
+     * belong to the tenant — platform NULL-team roles are not assignable
+     * here.
+     */
+    public function assignTenantRole(int $userId, int $tenantId, int $roleId): void;
+
+    /**
+     * Replace a member's role set within one store (§6.5 Category 2, role
+     * assignment): the team-scoped sync touches only that store's pivot
+     * rows — the member's roles in other stores are untouched. Every role
+     * id must belong to the tenant.
+     *
+     * @param  array<int, int>  $roleIds
+     */
+    public function syncTenantMemberRoles(int $userId, int $tenantId, array $roleIds): void;
 }

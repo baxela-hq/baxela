@@ -13,8 +13,8 @@ use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Console\Commands\PruneSignInLockoutsCommand;
 use Modules\Auth\Console\Commands\SyncPermissionsCommand;
 use Modules\Auth\Gateways\AccessGateway;
-use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
+use Modules\Auth\Support\PlatformRoleAssignment;
 use Modules\Core\Contracts\Gateways\Auth\AccessGatewayInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -38,8 +38,17 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // The platform super-admin bypass is team-context-immune
+        // (multi-tenancy §5): with spatie teams enabled, `hasRole` filters
+        // by the active permission team and would silently stop firing.
+        // The bypass reads the pivot directly through the morph- and
+        // guard-disciplined helper (§10 row 103).
         Gate::before(function ($user) {
-            return $user instanceof User && $user->hasRole(Role::SUPER_ADMIN) ? true : null;
+            if (! $user instanceof User) {
+                return null;
+            }
+
+            return PlatformRoleAssignment::holdsSuperAdmin($user) ? true : null;
         });
 
         $this->registerPasswordDefaults();

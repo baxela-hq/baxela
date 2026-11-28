@@ -29,4 +29,16 @@ enum ErrorCodeEnum: string implements ErrorCodeInterface
     case ONBOARDING_LIMIT_REACHED = 'tenant.onboarding.limit_reached';
 
     case ONBOARDING_FAILED = 'tenant.onboarding.failed';
+
+    case MEMBERSHIP_ALREADY_MEMBER = 'tenant.membership.already_member';
+
+    case MEMBERSHIP_LAST_OWNER = 'tenant.membership.last_owner';
+
+    case MEMBERSHIP_OWNERSHIP_REQUIRED = 'tenant.membership.ownership_required';
+
+    case MEMBERSHIP_INVITE_FAILED = 'tenant.membership.invite_failed';
+
+    case MEMBERSHIP_CHANGE_FAILED = 'tenant.membership.change_failed';
+
+    case MEMBERSHIP_ROLE_SYNC_FAILED = 'tenant.membership.role_sync_failed';
 }

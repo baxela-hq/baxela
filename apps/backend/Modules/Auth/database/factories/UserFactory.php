@@ -4,16 +4,17 @@ namespace Modules\Auth\Database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Modules\Auth\Models\Role;
 use Modules\Auth\Models\User;
-use Modules\Auth\Schemas\GuardsEnum;
 use Modules\Auth\Schemas\User\UserSchema;
+use Modules\Auth\Support\AssignsPlatformRole;
 
 /**
  * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
+    use AssignsPlatformRole;
+
     protected $model = User::class;
 
     /**
@@ -55,17 +56,13 @@ class UserFactory extends Factory
 
     /**
      * Active user carrying the super-admin role — the standard admin-side
-     * test actor.
+     * test actor. The pivot attach runs under the default tenant's
+     * permission team (multi-tenancy §5).
      */
     public function superAdmin(): static
     {
         return $this->active()->afterCreating(function (User $user): void {
-            $role = Role::query()->firstOrCreate([
-                'name' => Role::SUPER_ADMIN,
-                'guard_name' => GuardsEnum::WEB->value,
-            ]);
-
-            $user->assignRole($role);
+            $this->attachPlatformRole($user);
         });
     }
 }

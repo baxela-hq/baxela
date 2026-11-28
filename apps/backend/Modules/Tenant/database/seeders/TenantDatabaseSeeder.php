@@ -58,9 +58,14 @@ class TenantDatabaseSeeder extends Seeder
 
         // Seeders run in MODE_INACTIVE, and membership writes are
         // tenant-confined (§6.5 Category 2) — so the owner rows are
-        // created inside the default tenant's context.
+        // created inside the default tenant's context, together with the
+        // store's default roles (§8 Phase 3) and the owners' role
+        // assignments.
         app(TenantContext::class)->runForTenant((int) $tenant->getKey(), function () use ($tenant): void {
-            foreach (app(AccessGatewayInterface::class)->adminUserIds() as $userId) {
+            $access = app(AccessGatewayInterface::class);
+            $ownerRoleId = $access->seedTenantRoles((int) $tenant->getKey());
+
+            foreach ($access->adminUserIds() as $userId) {
                 TenantMembership::query()->firstOrCreate([
                     TenantMembershipSchema::TENANT_ID => $tenant->getKey(),
                     TenantMembershipSchema::USER_ID => $userId,
@@ -69,6 +74,8 @@ class TenantDatabaseSeeder extends Seeder
                     TenantMembershipSchema::IS_OWNER => true,
                     TenantMembershipSchema::JOINED_AT => now(),
                 ]);
+
+                $access->assignTenantRole($userId, (int) $tenant->getKey(), $ownerRoleId);
             }
         });
     }

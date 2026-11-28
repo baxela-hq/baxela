@@ -82,6 +82,7 @@ it('rejects guests and permission-less users', function () {
 
 it('serves the derived permission', function () {
     $user = User::factory()->active()->create();
+    $this->withDefaultStoreMembership($user);
     $user->givePermissionTo(
         Permission::query()->firstOrCreate([
             'name' => 'core.admin.extensions.updates',
